@@ -1,0 +1,21 @@
+//
+//  LianZhiTeacher.pch
+//  LianZhiTeacher
+//
+//  Created by jslsxu on 14/12/16.
+//  Copyright (c) 2014年 jslsxu. All rights reserved.
+//
+
+#ifndef LianZhiTeacher_LianZhiTeacher_pch
+#define LianZhiTeacher_LianZhiTeacher_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#ifdef __OBJC__
+#import "BaseFoundation.h"
+#import "AppDelegate.h"
+#import "UserCenter.h"
+#import "LoginVC.h"
+#import "PhotoFlowVC.h"
+#endif
+#endif

@@ -1,0 +1,15 @@
+//
+//  PhotoFlowVC.h
+//  LianZhiParent
+//
+//  Created by jslsxu on 14/12/22.
+//  Copyright (c) 2014年 jslsxu. All rights reserved.
+//
+
+#import "TNBaseCollectionViewController.h"
+#import "CHTCollectionViewWaterfallLayout.h"
+#import "MJPhotoBrowser.h"
+#import "PhotoFlowModel.h"
+@interface PhotoFlowVC : TNBaseCollectionViewController<CHTCollectionViewDelegateWaterfallLayout>
+@property (nonatomic, copy)NSString *classID;
+@end

@@ -1,0 +1,354 @@
+//
+//  UIImage+Utility.m
+//
+//  Created by sho yakushiji on 2013/05/17.
+//  Copyright (c) 2013年 CALACULU. All rights reserved.
+//
+
+#import "UIImage+Utility.h"
+
+#import <Accelerate/Accelerate.h>
+
+@implementation UIImage (Utility)
+
++ (UIImage*)decode:(UIImage*)image
+{
+    if(image==nil){  return nil; }
+    
+    UIGraphicsBeginImageContext(image.size);
+    {
+        [image drawAtPoint:CGPointMake(0, 0)];
+        image = UIGraphicsGetImageFromCurrentImageContext();
+    }
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+
++ (UIImage*)fastImageWithData:(NSData *)data
+{
+    UIImage *image = [UIImage imageWithData:data];
+    return [self decode:image];
+}
+
++ (UIImage*)fastImageWithContentsOfFile:(NSString*)path
+{
+    UIImage *image = [[UIImage alloc] initWithContentsOfFile:path];
+    return [self decode:image];
+}
+
+#pragma mark- Copy
+
+- (UIImage*)deepCopy
+{
+    return [UIImage decode:self];
+}
+
+#pragma mark- Resizing
+
+- (UIImage *)formatImage
+{
+    CGSize size = self.size;
+    if(MIN(size.width, size.height) <= 1080)
+        return self;
+    CGSize targetSize;
+    if(size.width > size.height)
+    {
+        targetSize = CGSizeMake(size.width * 1080/ size.height, 1080);
+    }
+    else
+        targetSize = CGSizeMake(1080, size.height * 1080 / size.width);
+    return [self resize:targetSize];
+}
+
++ (UIImage *)formatAsset:(ALAsset *)asset
+{
+    CGImageRef imageRef = [asset.defaultRepresentation fullResolutionImage];
+    UIImageOrientation orientation = (UIImageOrientation)[asset.defaultRepresentation orientation];
+    CGSize size = CGSizeMake(CGImageGetWidth(imageRef), CGImageGetHeight(imageRef));
+    if(MIN(size.width, size.height) <= 1080)
+        return [UIImage imageWithCGImage:imageRef];
+    CGSize targetSize;
+    if(size.width > size.height)
+    {
+        targetSize = CGSizeMake(size.width * 1080/ size.height, 1080);
+    }
+    else
+        targetSize = CGSizeMake(1080, size.height * 1080 / size.width);
+    int W = targetSize.width;
+    int H = targetSize.height;
+    
+    if(orientation == UIImageOrientationLeft || orientation == UIImageOrientationRight || UIImageOrientationLeftMirrored == orientation|| UIImageOrientationRightMirrored == orientation){
+        W = targetSize.height;
+        H = targetSize.width;
+        targetSize.height = H;
+        targetSize.width = W;
+    }
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    
+    switch (orientation) {
+        case UIImageOrientationDown:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, targetSize.width, targetSize.height);
+            transform = CGAffineTransformRotate(transform, M_PI);
+            break;
+            
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+            transform = CGAffineTransformTranslate(transform, targetSize.width, 0);
+            transform = CGAffineTransformRotate(transform, M_PI_2);
+            break;
+            
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, 0, targetSize.height);
+            transform = CGAffineTransformRotate(transform, -M_PI_2);
+            break;
+        default:
+            break;
+    }
+    
+    switch (orientation) {
+        case UIImageOrientationUpMirrored:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, targetSize.width, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+            
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, targetSize.height, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+        default:
+            break;
+    }
+    
+    // Now we draw the underlying CGImage into a new context, applying the transform
+    // calculated above.
+    CGContextRef ctx = CGBitmapContextCreate(NULL, targetSize.width, targetSize.height,
+                                             CGImageGetBitsPerComponent(imageRef), 0,
+                                             CGImageGetColorSpace(imageRef),
+                                             CGImageGetBitmapInfo(imageRef));
+    CGContextConcatCTM(ctx, transform);
+    switch (orientation) {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            // Grr...
+            CGContextDrawImage(ctx, CGRectMake(0,0,targetSize.height,targetSize.width), imageRef);
+            break;
+            
+        default:
+            CGContextDrawImage(ctx, CGRectMake(0,0,targetSize.width,targetSize.height), imageRef);
+            break;
+    }
+    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+    UIImage *img = [UIImage imageWithCGImage:cgimg];
+    CGContextRelease(ctx);
+    CGImageRelease(cgimg);
+    return img;
+    
+}
+
++ (UIImage *)resize:(CGSize)size withImageRef:(CGImageRef)imageRef
+{
+    int W = size.width;
+    int H = size.height;
+    
+    CGColorSpaceRef colorSpaceInfo = CGImageGetColorSpace(imageRef);
+    CGContextRef bitmap = CGBitmapContextCreate(NULL, W, H, 8, 4*W, colorSpaceInfo, kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Little);
+    CGContextDrawImage(bitmap, CGRectMake(0, 0, W, H), imageRef);
+    CGImageRef ref = CGBitmapContextCreateImage(bitmap);
+    UIImage* newImage = [UIImage imageWithCGImage:ref];
+    
+    CGContextRelease(bitmap);
+    CGImageRelease(ref);
+    return newImage;
+    
+}
+
+- (UIImage*)resize:(CGSize)targetSize
+{
+    CGImageRef imageRef = self.CGImage;
+    UIImageOrientation orientation = self.imageOrientation;
+//    if(orientation == UIImageOrientationLeft || orientation == UIImageOrientationRight || UIImageOrientationLeftMirrored == orientation|| UIImageOrientationRightMirrored == orientation){
+//        W = targetSize.height;
+//        H = targetSize.width;
+//        targetSize.height = H;
+//        targetSize.width = W;
+//    }
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    
+    switch (orientation) {
+        case UIImageOrientationDown:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, targetSize.width, targetSize.height);
+            transform = CGAffineTransformRotate(transform, M_PI);
+            break;
+            
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+            transform = CGAffineTransformTranslate(transform, targetSize.width, 0);
+            transform = CGAffineTransformRotate(transform, M_PI_2);
+            break;
+            
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, 0, targetSize.height);
+            transform = CGAffineTransformRotate(transform, -M_PI_2);
+            break;
+        default:
+            break;
+    }
+    
+    switch (orientation) {
+        case UIImageOrientationUpMirrored:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, targetSize.width, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+            
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, targetSize.height, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+        default:
+            break;
+    }
+    
+    // Now we draw the underlying CGImage into a new context, applying the transform
+    // calculated above.
+    CGContextRef ctx = CGBitmapContextCreate(NULL, targetSize.width, targetSize.height,
+                                             CGImageGetBitsPerComponent(imageRef), 0,
+                                             CGImageGetColorSpace(imageRef),
+                                             CGImageGetBitmapInfo(imageRef));
+    CGContextConcatCTM(ctx, transform);
+    switch (orientation) {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            // Grr...
+            CGContextDrawImage(ctx, CGRectMake(0,0,targetSize.height,targetSize.width), imageRef);
+            break;
+            
+        default:
+            CGContextDrawImage(ctx, CGRectMake(0,0,targetSize.width,targetSize.height), imageRef);
+            break;
+    }
+    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+    UIImage *img = [UIImage imageWithCGImage:cgimg];
+    CGContextRelease(ctx);
+    CGImageRelease(cgimg);
+    return img;
+}
+
+- (UIImage*)aspectFit:(CGSize)size
+{
+    CGFloat ratio = MIN(size.width/self.size.width, size.height/self.size.height);
+    return [self resize:CGSizeMake(self.size.width*ratio, self.size.height*ratio)];
+}
+
+- (UIImage*)aspectFill:(CGSize)size
+{
+    return [self aspectFill:size offset:0];
+}
+
+- (UIImage*)aspectFill:(CGSize)size offset:(CGFloat)offset
+{
+    int W  = size.width;
+    int H  = size.height;
+    int W0 = self.size.width;
+    int H0 = self.size.height;
+    
+    CGImageRef   imageRef = self.CGImage;
+    CGColorSpaceRef colorSpaceInfo = CGImageGetColorSpace(imageRef);
+    
+    CGContextRef bitmap = CGBitmapContextCreate(NULL, W, H, 8, 4*W, colorSpaceInfo, kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Little);
+    
+    if(self.imageOrientation == UIImageOrientationLeft || self.imageOrientation == UIImageOrientationRight){
+        W  = size.height;
+        H  = size.width;
+        W0 = self.size.height;
+        H0 = self.size.width;
+    }
+    
+    double ratio = MAX(W/(double)W0, H/(double)H0);
+    W0 = ratio * W0;
+    H0 = ratio * H0;
+    
+    int dW = abs((W0-W)/2);
+    int dH = abs((H0-H)/2);
+    
+    if(dW==0){ dH += offset; }
+    if(dH==0){ dW += offset; }
+    
+    if(self.imageOrientation == UIImageOrientationLeft || self.imageOrientation == UIImageOrientationLeftMirrored){
+        CGContextRotateCTM (bitmap, M_PI/2);
+        CGContextTranslateCTM (bitmap, 0, -H);
+    }
+    else if (self.imageOrientation == UIImageOrientationRight || self.imageOrientation == UIImageOrientationRightMirrored){
+        CGContextRotateCTM (bitmap, -M_PI/2);
+        CGContextTranslateCTM (bitmap, -W, 0);
+    }
+    else if (self.imageOrientation == UIImageOrientationUp || self.imageOrientation == UIImageOrientationUpMirrored){
+        // Nothing
+    }
+    else if (self.imageOrientation == UIImageOrientationDown || self.imageOrientation == UIImageOrientationDownMirrored){
+        CGContextTranslateCTM (bitmap, W, H);
+        CGContextRotateCTM (bitmap, -M_PI);
+    }
+    
+    CGContextDrawImage(bitmap, CGRectMake(-dW, -dH, W0, H0), imageRef);
+    CGImageRef ref = CGBitmapContextCreateImage(bitmap);
+    UIImage* newImage = [UIImage imageWithCGImage:ref];
+    
+    CGContextRelease(bitmap);
+    CGImageRelease(ref);
+    
+    return newImage;
+}
+
+#pragma mark- Clipping
+
+- (UIImage*)crop:(CGRect)rect
+{
+    CGPoint origin = CGPointMake(-rect.origin.x, -rect.origin.y);
+    
+    UIImage *img = nil;
+    
+    UIGraphicsBeginImageContext(CGSizeMake(rect.size.width, rect.size.height));
+    [self drawAtPoint:origin];
+    img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return img;
+}
+
+#pragma mark- Masking
+
+- (UIImage*)maskedImage:(UIImage*)maskImage
+{
+    CGImageRef mask = CGImageMaskCreate(CGImageGetWidth(maskImage.CGImage),
+                                        CGImageGetHeight(maskImage.CGImage),
+                                        CGImageGetBitsPerComponent(maskImage.CGImage),
+                                        CGImageGetBitsPerPixel(maskImage.CGImage),
+                                        CGImageGetBytesPerRow(maskImage.CGImage),
+                                        CGImageGetDataProvider(maskImage.CGImage), NULL, false);
+    
+    CGImageRef masked = CGImageCreateWithMask(self.CGImage, mask);
+    
+    UIImage *result = [UIImage imageWithCGImage:masked];
+    
+    CGImageRelease(mask);
+    CGImageRelease(masked);
+    
+    return result;
+}
+
+
+
+@end
