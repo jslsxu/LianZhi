@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import "PhotoItem.h"
-@class MJPhotoBrowser, MJPhotoView;
+@class  MJPhotoView;
 
 @protocol MJPhotoViewDelegate <NSObject>
 - (void)photoViewSingleTap:(MJPhotoView *)photoView;

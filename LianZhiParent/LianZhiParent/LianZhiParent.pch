@@ -21,6 +21,5 @@
 #import "AppDelegate.h"
 #import "UserCenter.h"
 #import "LoginVC.h"
-#import "PhotoFlowVC.h"
 #endif
 #endif

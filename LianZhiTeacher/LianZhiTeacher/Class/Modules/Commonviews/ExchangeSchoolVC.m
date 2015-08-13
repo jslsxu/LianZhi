@@ -295,7 +295,7 @@
     else if (indexPath.row == 1)
     {
         [[UserCenter sharedInstance] changeCurSchool:selectedSchool];
-        [ApplicationDelegate.homeVC switchToIndex:0];
+        [ApplicationDelegate.homeVC selectAtIndex:0];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

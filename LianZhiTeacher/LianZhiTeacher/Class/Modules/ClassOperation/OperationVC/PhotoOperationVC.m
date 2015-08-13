@@ -24,7 +24,6 @@
     {
         _imageArray = [[NSMutableArray alloc] initWithCapacity:0];
         _imageItemViewArray = [[NSMutableArray alloc] initWithCapacity:0];
-        [self setPhotoOperationDelegate:ApplicationDelegate.homeVC.classOperationVC];
     }
     return self;
 }

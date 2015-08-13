@@ -234,7 +234,7 @@ static SystemSoundID shake_sound_male_id = 0;
                 UIApplicationState appState = [[UIApplication sharedApplication] applicationState];
                 if (appState == UIApplicationStateInactive) // 后台切换到前台
                 {
-                    [self.homeVC switchToIndex:0];
+                    [self.homeVC selectAtIndex:0];
                     [self.homeVC.messageVC refreshData];
                 }
                  else if (appState == UIApplicationStateActive) // 程序在前台

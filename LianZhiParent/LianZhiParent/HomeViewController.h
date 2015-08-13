@@ -17,12 +17,9 @@
 #import "ChildrenSelectView.h"
 extern NSString *const kCurrentChildInfoChangedNotification;
 
-@interface HomeViewController : UITabBarController<UITabBarControllerDelegate, ChildrenSelectDelegate>
+@interface HomeViewController : UITabBarController<ChildrenSelectDelegate>
 {
-    UIView*             _tabBarCover;
-//    ChildProfileView *  _childProfile;
-    NSArray *           _tabDatas;
-    NSMutableArray *    _tabbarButtons;
+    NSMutableArray* _tabbarButtons;
 }
 @property (nonatomic, strong)AvatarView* avatar;
 @property (nonatomic, strong)ClassZoneVC *classZoneVC;
@@ -31,7 +28,7 @@ extern NSString *const kCurrentChildInfoChangedNotification;
 @property (nonatomic, strong)MessageVC *messageVC;
 @property (nonatomic, strong)TreeHouseVC *treeHouseVC;
 
-- (void)switchToIndex:(NSInteger)index;
+- (void)selectAtIndex:(NSInteger)index;
 
 @end
 

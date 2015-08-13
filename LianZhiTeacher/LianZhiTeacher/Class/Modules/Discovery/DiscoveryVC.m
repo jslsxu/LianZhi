@@ -27,7 +27,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.title = @"发现";
 }
 
 - (void)didReceiveMemoryWarning {

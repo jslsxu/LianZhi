@@ -13,6 +13,10 @@ NSString *const kTreeHouseItemDeleteNotification = @"TreeHouseItemDeleteNotifica
 NSString *const kTreeHouseItemTagDeleteNotification = @"TreeHouseItemTagDeleteNotification";
 NSString *const kTreeHouseItemTagSelectNotification = @"TreeHouseItemTagSelectNotification";
 NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
+
+@interface TreeHouseCell ()<PhotoBrowserDelegate>
+
+@end
 @implementation TreeHouseCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

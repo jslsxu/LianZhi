@@ -20,11 +20,21 @@
         [_avatar setUserInteractionEnabled:NO];
         [_avatar setBorderColor:[UIColor whiteColor]];
         [_avatar setBorderWidth:2];
+        [_avatar.layer setCornerRadius:_avatar.width / 2];
+        [_avatar.layer setMasksToBounds:YES];
         [self addSubview:_avatar];
         
-        _redDot = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 12, 12)];
+        _tintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height - 13, self.width, 13)];
+        [_tintLabel setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7]];
+        [_tintLabel setTextAlignment:NSTextAlignmentCenter];
+        [_tintLabel setFont:[UIFont systemFontOfSize:9]];
+        [_tintLabel setTextColor:[UIColor whiteColor]];
+        [_tintLabel setText:@"当前"];
+        [_avatar addSubview:_tintLabel];
+        
+        _redDot = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 8, 8)];
         [_redDot setImage:[UIImage imageNamed:MJRefreshSrcName(@"RedDot.png")]];
-        [_redDot setOrigin:CGPointMake(_avatar.right - 9, _avatar.y)];
+        [_redDot setOrigin:CGPointMake(_avatar.right - 6, _avatar.y)];
         [self addSubview:_redDot];
         [_redDot setHidden:YES];
     }
@@ -36,6 +46,12 @@
     _childInfo = childInfo;
     _redDot.hidden = !childInfo.hasNew;
     [_avatar setImageWithUrl:[NSURL URLWithString:childInfo.avatar] placeHolder:nil];
+}
+
+- (void)setChildSelected:(BOOL)childSelected
+{
+    _childSelected = childSelected;
+    [_tintLabel setHidden:!_childSelected];
 }
 
 @end
@@ -109,8 +125,7 @@
         spaceXStart += (length + 15);
         [childInfoView addTarget:self action:@selector(onChildItemClicked:) forControlEvents:UIControlEventTouchUpInside];
         [childInfoView setChildInfo:childInfo];
-        if(i == 0)
-            childInfoView.alpha = 0.8f;
+        [childInfoView setChildSelected:i == 0];
         [_scrollView addSubview:childInfoView];
         [_childButtonArray addObject:childInfoView];
     }

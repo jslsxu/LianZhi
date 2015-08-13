@@ -162,7 +162,7 @@ static SystemSoundID shake_sound_male_id = 0;
                 {
                     if([self.rootNavigation.viewControllers lastObject] == self.homeVC)
                     {
-                        [self.homeVC switchToIndex:0];
+                        [self.homeVC selectAtIndex:0];
                         [self.homeVC.messageVC refreshData];
                     }
                 }

@@ -118,9 +118,13 @@
     }
     
     UIView *locationView = [[UIView alloc] initWithFrame:CGRectMake(kBorderMargin, bgHeight - kBorderMargin - 40, _imageBGImageView.width - kBorderMargin * 2, 40)];
-    [self setupLocationView];
+    [self setupLocationView:locationView];
 }
 
+- (void)setupLocationView:(UIView *)viewParent
+{
+    
+}
 
 - (void)onLongPressGesture:(UILongPressGestureRecognizer *)longGesture
 {

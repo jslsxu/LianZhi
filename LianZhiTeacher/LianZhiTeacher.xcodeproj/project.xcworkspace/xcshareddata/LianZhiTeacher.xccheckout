@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F63C3C59-78A1-4CF9-90D2-124E5E77694B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>LianZhiTeacher</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>6D852BA0ACEF52C067326419733E775644441EF0</key>
+		<string>https://github.com/jslsxu/LianZhi.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>LianZhiTeacher/LianZhiTeacher.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>6D852BA0ACEF52C067326419733E775644441EF0</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/jslsxu/LianZhi.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>6D852BA0ACEF52C067326419733E775644441EF0</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6D852BA0ACEF52C067326419733E775644441EF0</string>
+			<key>IDESourceControlWCCName</key>
+			<string>LianZhi</string>
+		</dict>
+	</array>
+</dict>
+</plist>

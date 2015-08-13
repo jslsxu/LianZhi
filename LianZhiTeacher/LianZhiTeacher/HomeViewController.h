@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ContactListVC.h"
-#import "ClassZoneVC.h"
+#import "ApplicationBoxVC.h"
 #import "DiscoveryVC.h"
 #import "MessageVC.h"
-#import "ClassOperationVC.h"
+#import "MineVC.h"
 #import "SettingsVC.h"
 #import "LZTabBarButton.h"
 
@@ -23,22 +22,15 @@
 
 @end
 
-@interface HomeViewController : UITabBarController<UITabBarControllerDelegate>
+@interface HomeViewController : UITabBarController
 {
     SwitchSchoolButton *_switchButton;
     UIView*             _tabBarCover;
     NSArray *           _tabDatas;
     NSMutableArray *    _tabbarButtons;
 }
-@property (nonatomic, strong)AvatarView *avatar;
-@property (nonatomic, strong)ClassZoneVC *classZoneVC;
-@property (nonatomic, strong)ContactListVC *contactListVC;
-@property (nonatomic, strong)TNBaseWebViewController* schoolVC;
-@property (nonatomic, strong)DiscoveryVC *discoveryVC;
-@property (nonatomic, strong)MessageVC *messageVC;
-@property (nonatomic, strong)ClassOperationVC *classOperationVC;
-
-- (void)switchToIndex:(NSInteger)index;
+@property (nonatomic, readonly)MessageVC *messageVC;
+- (void)selectAtIndex:(NSInteger)index;
 
 
 @end

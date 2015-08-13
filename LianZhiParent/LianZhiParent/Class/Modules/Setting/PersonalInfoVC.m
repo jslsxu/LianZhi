@@ -294,10 +294,6 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
         }
     }
     
-    PersonalInfoItem *qrCodeItem = [[PersonalInfoItem alloc] initWithKey:@"二维码:" value:@"" canEdit:NO];
-    [qrCodeItem setImage:[UIImage imageNamed:MJRefreshSrcName(@"setting_myQR.png")]];
-    [_infoArray addObject:qrCodeItem];
-    
     [_nameField setText:nameItem.value];
     [_birthdayLabel setText:birthDayItem.value];
 }

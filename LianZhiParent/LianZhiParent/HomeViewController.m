@@ -8,6 +8,7 @@
 
 #import "HomeViewController.h"
 #import "PublishSelectionView.h"
+#import "MineVC.h"
 
 #define kReservedStretchButtonHeight                            60
 
@@ -62,142 +63,90 @@ static NSArray *tabDatas = nil;
 
 - (void)initialViewControllers
 {
-    self.tabBar.translucent = NO;
-    _tabbarButtons = [[NSMutableArray alloc] initWithCapacity:0];
-
-    [self.tabBar.subviews enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
-        if (view.class != NSClassFromString([NSString stringWithFormat:@"%@%@",@"UITabBar",@"Button"]))
-        {
-            [view removeFromSuperview];
-        }
-    }];
-    
-    tabDatas = @[
-                 @[@"HomeTabMessageNormal.png",@"HomeTabMessageHighlighted.png",@(NO),@"消息"],
-                 @[@"HomeTabContactsNormal.png",@"HomeTabContactsHighlighted.png",@(NO),@"联系人"],
-                 @[@"HomeTabHome.png",@"HomeTabHome.png",@(YES),@""],
-                 @[@"HomeTabClassZoneNormal.png",@"HomeTabClassZoneHighlighted.png",@(NO),@"班空间"],
-                 @[@"HomeTabDiscoveryNormal.png",@"HomeTabDiscoveryHighlighted.png",@(NO),@"发现"],
-                 ];
-    
-    [tabDatas enumerateObjectsUsingBlock:^(NSArray *data, NSUInteger idx, BOOL *stop) {
-        NSString *title = data[3];
-        NSString *imageName = data[0];
-        NSString *selectedImageName = data[1];
-        BOOL presenting = [data[2] boolValue];
-        LZTabBarButton *barButton = [[LZTabBarButton alloc] initWithFrame:CGRectZero];
-        [barButton setPresenting:presenting];
-        if ([title isKindOfClass:[NSString class]] && title.length) {
-            [barButton setTitle:title forState:UIControlStateNormal];
-        }
-        [barButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-        [barButton setImage:[UIImage imageNamed:selectedImageName] forState:UIControlStateSelected];
-        [barButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        [barButton setTitleColor:kCommonParentTintColor forState:UIControlStateSelected];
-        barButton.backgroundColor = [UIColor clearColor];
-        [barButton setUserInteractionEnabled:NO];
-        [_tabbarButtons addObject:barButton];
-        
-        if(idx == 2)
-        {
-            //中间头像
-            self.avatar = [[AvatarView alloc] initWithFrame:CGRectMake(0, 0, 72, 72)];
-            [self.avatar setBorderWidth:7];
-            [self.avatar setBorderColor:[UIColor clearColor]];
-            [self.avatar setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar]];
-            [barButton addSubview:self.avatar];
-        }
-
-    }];
-    
-    self.tabBar.clipsToBounds = NO;
-    for (LZTabBarButton *item in _tabbarButtons) {
-        if(item.presenting == NO)
-            [self.tabBar addSubview:item];
-        else
-            [self.view addSubview:item];
+    if(_tabbarButtons == nil)
+        _tabbarButtons = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < _tabbarButtons.count; i++) {
+        LZTabBarButton *tabBarButton = _tabbarButtons[i];
+        [tabBarButton removeFromSuperview];
     }
-    self.messageVC = [[MessageVC alloc] init];
-    self.contactListVC = [[ContactListVC alloc] init];
+    [_tabbarButtons removeAllObjects];
+    [self.tabBar setBarTintColor:[UIColor whiteColor]];
+    [self.tabBar.subviews enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
+        if (view.class == NSClassFromString([NSString stringWithFormat:@"%@%@",@"UITabBar",@"Button"]))
+        {
+            view.hidden = YES;
+        }
+    }];
+    NSArray *tabItemTitleArray = @[@"消息",@"联系人",@"树屋",@"班空间",@"发现"];
+    CGFloat tabWidth = self.view.width / tabItemTitleArray.count;
+    for (NSInteger i = 0; i < tabItemTitleArray.count; i++)
+    {
+        CGFloat spaceX = tabWidth * i;
+        LZTabBarButton *barButton = [[LZTabBarButton alloc] initWithFrame:CGRectMake(spaceX, 0, tabWidth, self.tabBar.height)];
+        
+        [barButton setTitle:tabItemTitleArray[i] forState:UIControlStateNormal];
+        [barButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [barButton addTarget:self action:@selector(onTabButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_tabbarButtons addObject:barButton];
+        [self.tabBar addSubview:barButton];
+    }
     
-    self.treeHouseVC = [[TreeHouseVC alloc] init];
-    
-    self.classZoneVC = [[ClassZoneVC alloc] init];
-    
-    self.discoveryVC = [[DiscoveryVC alloc] init];
-    
-    self.viewControllers = @[self.messageVC,self.contactListVC,self.treeHouseVC,self.classZoneVC,self.discoveryVC];
+    [self selectAtIndex:0];
+
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-//    if([UserCenter sharedInstance].userData.children.count > 1)
-//        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_childProfile];
     ChildrenSelectView *childrenView = [[ChildrenSelectView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
     [childrenView setDelegate:self];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:childrenView];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"Setting.png")] style:UIBarButtonItemStylePlain target:self action:@selector(onSettingClicked)];
     
+    NSMutableArray *subVCs = [[NSMutableArray alloc] initWithCapacity:0];
+    NSArray *subVCArray = @[@"MessageVC",@"ContactListVC",@"TreeHouseVC",@"ClassZoneVC",@"DiscoveryVC"];
+    
+    for (NSInteger i = 0; i < subVCArray.count; i++)
+    {
+        NSString *className = subVCArray[i];
+        TNBaseViewController *vc = [[NSClassFromString(className) alloc] init];
+        [subVCs addObject:vc];
+    }
+    [self setViewControllers:subVCs];
     [self initialViewControllers];
     
-    [self setDelegate:self];
-    
 }
 
-- (void)viewDidLayoutSubviews
+
+- (void)onTabButtonClicked:(UIButton *)button
 {
-    [super viewDidLayoutSubviews];
-    
-    CGFloat middleHeight = 63;
-    CGFloat middleWidth = 72;
-    CGFloat itemWidth = (self.tabBar.width - middleWidth) / (_tabbarButtons.count - 1);
-    CGFloat itemHeight = self.tabBar.height;
-    __block CGFloat spaceXStart = 0;
-    [_tabbarButtons enumerateObjectsUsingBlock:^(LZTabBarButton *item, NSUInteger idx, BOOL *stop) {
-        if (item.presenting) {
-            [item setFrame:(CGRect){spaceXStart, self.view.height - middleHeight,
-                middleWidth, middleHeight}];
-            spaceXStart += middleWidth;
-        } else {
-            [item setFrame:(CGRect){spaceXStart, 0, itemWidth, itemHeight}];
-            spaceXStart += itemWidth;
-        }
-    }];
-    [self switchToIndex:self.selectedIndex];
+    NSInteger index = [_tabbarButtons indexOfObject:button];
+    [self selectAtIndex:index];
 }
 
-
-- (void)switchToIndex:(NSInteger)index
+- (void)selectAtIndex:(NSInteger)index
 {
     self.selectedIndex = index;
-    self.curIndex = index;
+    NSArray *tabImageNameArray = @[@"HomeTabMessage",@"HomeTabContacts",@"HomeTabHome",@"HomeTabClassZone",@"HomeTabDiscovery"];
     for (NSInteger i = 0; i < _tabbarButtons.count; i++)
     {
-        [_tabbarButtons[i] setSelected:i == self.curIndex];
+        LZTabBarButton *barButton = _tabbarButtons[i];
+        BOOL selected = (i == self.selectedIndex);
+        NSString *imageName = selected ? [NSString stringWithFormat:@"%@Highlighted",tabImageNameArray[i]] : [NSString stringWithFormat:@"%@Normal",tabImageNameArray[i]];
+        UIColor *titleColor = selected ? kCommonParentTintColor : [UIColor grayColor];
+        [barButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+        [barButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateHighlighted];
+        [barButton setTitleColor:titleColor forState:UIControlStateNormal];
+        [barButton setTitleColor:titleColor forState:UIControlStateHighlighted];
     }
-    if(self.curIndex == 4)//发现页面
-    {
-        
-    }
-}
-
-
-#pragma mark UITabBarControllerDelegate
-
-- (void)tabBarController:(UITabBarController *)tabBarController
- didSelectViewController:(UIViewController *)viewController
-{
-    [self switchToIndex:self.selectedIndex];
 }
 
 #pragma mark Actions
 - (void)onSettingClicked
 {
-    SettingsVC *settingVC = [[SettingsVC alloc] init];
-    [self.navigationController pushViewController:settingVC animated:YES];
+    MineVC *mineVC = [[MineVC alloc] init];
+    [self.navigationController pushViewController:mineVC animated:YES];
 }
 
 #pragma mark - ChildIconAction

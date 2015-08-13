@@ -16,6 +16,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
+        self.width = kScreenWidth;
         [self.moreOptionsButton setBackgroundColor:kCommonParentTintColor];
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(10, 8, 44, 44)];
         [_logoView setBorderWidth:2];

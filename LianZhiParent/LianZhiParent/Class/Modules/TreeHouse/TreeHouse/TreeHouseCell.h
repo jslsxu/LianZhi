@@ -14,7 +14,7 @@ extern NSString *const kTreeHouseItemTagDeleteNotification;
 extern NSString *const kTreeHouseItemTagSelectNotification;
 extern NSString *const kTreeHouseItemKey;
 
-@interface TreeHouseCell : TNTableViewCell<UICollectionViewDataSource, UICollectionViewDelegate, PhotoBrowserDelegate>
+@interface TreeHouseCell : TNTableViewCell<UICollectionViewDataSource, UICollectionViewDelegate>
 {
     UILabel*            _dateLabel;
     UIImageView*        _icon;

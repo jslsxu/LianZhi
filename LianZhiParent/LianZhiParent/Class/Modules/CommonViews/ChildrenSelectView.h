@@ -12,8 +12,10 @@ typedef void (^ChildInfoBlk)(NSInteger idx);
 @interface ChildInfoView : UIButton
 {
     AvatarView*     _avatar;
+    UILabel*        _tintLabel;
     UIImageView*    _redDot;
 }
+@property (nonatomic, assign)BOOL childSelected;
 @property (nonatomic, readonly)UIImageView* redDot;
 @property (nonatomic, strong)ChildInfo *childInfo;
 @property (nonatomic, assign)NSInteger idx;
