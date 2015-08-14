@@ -24,7 +24,7 @@
         if([UserCenter sharedInstance].curSchool.classes.count > 1)
         {
             _arrowButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            [_arrowButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"WhiteRightArrow.png")] forState:UIControlStateNormal];
+            [_arrowButton setImage:[UIImage imageNamed:(@"WhiteRightArrow.png")] forState:UIControlStateNormal];
             [_arrowButton setFrame:CGRectMake(frame.size.width - 40 ,0, 40, frame.size.height)];
             [self addSubview:_arrowButton];
         }

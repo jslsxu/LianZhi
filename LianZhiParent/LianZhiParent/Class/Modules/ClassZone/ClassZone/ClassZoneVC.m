@@ -21,17 +21,17 @@
         CGFloat buttonWidth = 40;
         _albumButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_albumButton addTarget:self action:@selector(onAlbumButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_albumButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ClassAlbum.png")] forState:UIControlStateNormal];
+        [_albumButton setImage:[UIImage imageNamed:@"ClassAlbum.png"] forState:UIControlStateNormal];
         [_albumButton setFrame:CGRectMake(self.width - buttonWidth, self.height - 20 - buttonWidth, buttonWidth, buttonWidth)];
         [self addSubview:_albumButton];
         
         _appButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_appButton addTarget:self action:@selector(onAppButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_appButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ZoneApp.png")] forState:UIControlStateNormal];
+        [_appButton setImage:[UIImage imageNamed:@"ZoneApp.png"] forState:UIControlStateNormal];
         [_appButton setFrame:CGRectMake(self.width - buttonWidth, _albumButton.top - buttonWidth, buttonWidth, buttonWidth)];
         [self addSubview:_appButton];
         
-        _newpaperImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"BlackboardText.png")]];
+        _newpaperImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BlackboardText.png"]];
         [_newpaperImageView setOrigin:CGPointMake(20, 40)];
         [self addSubview:_newpaperImageView];
         
@@ -44,7 +44,7 @@
         [_contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [self addSubview:_contentLabel];
         
-        _brashImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"Brash.png")]];
+        _brashImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Brash.png"]];
         [_brashImage setFrame:CGRectMake(15, frame.size.height - 12 - _brashImage.height, _brashImage.width, _brashImage.height)];
         [self addSubview:_brashImage];
         
@@ -169,11 +169,11 @@
     [coverButton setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.5]];
     [parentView addSubview:coverButton];
     
-    UIImageView *image1 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"ClassZoneGuide1.png")]];
+    UIImageView *image1 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ClassZoneGuide1.png"]];
     [image1 setOrigin:CGPointMake(coverButton.width - image1.width - 10, 180)];
     [coverButton addSubview:image1];
     
-    UIImageView *image2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"ClassZoneSwipe.png")]];
+    UIImageView *image2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ClassZoneSwipe.png"]];
     [image2 setOrigin:CGPointMake((self.view.width - image2.width) / 2, image1.bottom + 100)];
     [coverButton addSubview:image2];
 }

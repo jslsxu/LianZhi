@@ -21,7 +21,7 @@
     if(self)
     {
         [self setBackgroundColor:[UIColor clearColor]];
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [_bgImageView setFrame:CGRectMake(40, 22, self.width - 40 - 10, 60)];
         [self addSubview:_bgImageView];
         
@@ -38,7 +38,7 @@
         
         _classButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_classButton setUserInteractionEnabled:NO];
-        [_classButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+        [_classButton setBackgroundImage:[[UIImage imageNamed:(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
         [_classButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_classButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
         [_classButton setFrame:CGRectMake(105, _nameLabel.bottom, 130, 22)];
@@ -48,7 +48,7 @@
         {
             _switchButton = [UIButton buttonWithType:UIButtonTypeCustom];
             [_switchButton setFrame:CGRectMake(_classButton.right + 5, _classButton.top, 60, 22)];
-            [_switchButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+            [_switchButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
             [_switchButton addTarget:self action:@selector(onSwitchClass) forControlEvents:UIControlEventTouchUpInside];
             [_switchButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [_switchButton setTitle:@"切换" forState:UIControlStateNormal];

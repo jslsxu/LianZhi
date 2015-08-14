@@ -26,12 +26,12 @@
         [_titleLabel setHighlightedTextColor:[UIColor whiteColor]];
         [self addSubview:_titleLabel];
         
-        _redDot = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"RedDot.png")]];
+        _redDot = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RedDot.png"]];
         [_redDot setCenter:CGPointMake(_titleLabel.right + 20, self.height / 2)];
         [self addSubview:_redDot];
         
-        _rightArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"DatePickerNext.png")]];
-        [_rightArrow setHighlightedImage:[UIImage imageNamed:MJRefreshSrcName(@"WhiteRightArrow.png")]];
+        _rightArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DatePickerNext.png"]];
+        [_rightArrow setHighlightedImage:[UIImage imageNamed:@"WhiteRightArrow.png"]];
         [_rightArrow setFrame:CGRectMake(self.width - 20 - _rightArrow.width, (self.height - _rightArrow.height) / 2, _rightArrow.width, _rightArrow.height)];
         [self addSubview:_rightArrow];
         

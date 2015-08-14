@@ -26,7 +26,7 @@
         [_bgButton addTarget:self action:@selector(onBgButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_bgButton];
         
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]];
+        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(8, 8, 8, 8)]];
         [_bgImageView setFrame:CGRectMake((self.width - 210) / 2 ,(self.height - 210) / 2, 210, 210)];
         [_bgImageView setUserInteractionEnabled:YES];
         [self addSubview:_bgImageView];

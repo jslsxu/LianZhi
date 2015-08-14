@@ -32,7 +32,7 @@
     _registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_registerButton setFrame:CGRectMake(25 + _phoneNumField.width / 2, _phoneNumField.bottom + 15, _phoneNumField.width / 2, 45)];
     [_registerButton addTarget:self action:@selector(onRegisterClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_registerButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_registerButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [_registerButton.titleLabel setFont:kButtonTextFont];
     [_registerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_registerButton setTitle:@"下一步" forState:UIControlStateNormal];

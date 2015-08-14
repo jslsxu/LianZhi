@@ -25,11 +25,11 @@
         [_dateLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
         [self addSubview:_dateLabel];
         
-        _dot = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"TimelinePoint.png")]];
+        _dot = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TimelinePoint.png"]];
         [_dot setCenter:CGPointMake(56, _dateLabel.centerY)];
         [self addSubview:_dot];
         
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [self addSubview:_bgImageView];
         
         CGFloat width = 36;
@@ -51,7 +51,7 @@
         [_sleepLabel setBackgroundColor:[UIColor clearColor]];
         [_bgImageView addSubview:_sleepLabel];
         
-        _contentBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        _contentBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"GrayBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [_bgImageView addSubview:_contentBG];
         
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -145,25 +145,25 @@
     
     NSString *temp = timelineItem.temparature;
     if([temp isEqualToString:@"正常"])
-        [_temparature setImage:[UIImage imageNamed:MJRefreshSrcName(@"TempNormal.png")]];
+        [_temparature setImage:[UIImage imageNamed:@"TempNormal.png"]];
     else if([temp isEqualToString:@"发烧"])
-        [_temparature setImage:[UIImage imageNamed:MJRefreshSrcName(@"TempHigh.png")]];
+        [_temparature setImage:[UIImage imageNamed:@"TempHigh.png"]];
     
     NSInteger stoolNum = timelineItem.stoolNum;
     if(stoolNum == 0)
-        [_toilet setImage:[UIImage imageNamed:MJRefreshSrcName(@"ToiletNo.png")]];
+        [_toilet setImage:[UIImage imageNamed:@"ToiletNo.png"]];
     else if(stoolNum == 1)
-        [_toilet setImage:[UIImage imageNamed:MJRefreshSrcName(@"ToiletOnce.png")]];
+        [_toilet setImage:[UIImage imageNamed:@"ToiletOnce.png"]];
     else if (stoolNum == 2)
-        [_toilet setImage:[UIImage imageNamed:MJRefreshSrcName(@"ToiletTwice.png")]];
+        [_toilet setImage:[UIImage imageNamed:@"ToiletTwice.png"]];
     
     NSString *emotion = timelineItem.emotion;
     if([emotion isEqualToString:@"高兴"])
-        [_feeling setImage:[UIImage imageNamed:MJRefreshSrcName(@"ExpressionHappy.png")]];
+        [_feeling setImage:[UIImage imageNamed:@"ExpressionHappy.png"]];
     else if ([emotion isEqualToString:@"哭闹"])
-        [_feeling setImage:[UIImage imageNamed:MJRefreshSrcName(@"ExpressionCry.png")]];
+        [_feeling setImage:[UIImage imageNamed:@"ExpressionCry.png"]];
     else
-        [_feeling setImage:[UIImage imageNamed:MJRefreshSrcName(@"ExpressionSimple.png")]];
+        [_feeling setImage:[UIImage imageNamed:@"ExpressionSimple.png"]];
     
     NSInteger water = timelineItem.water;
     CGFloat sleep = timelineItem.sleep;

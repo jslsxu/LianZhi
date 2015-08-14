@@ -19,13 +19,13 @@
         
         _preButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_preButton setFrame:CGRectMake( width, (self.height - width) / 2, width, width)];
-        [_preButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"BlueLeftArrow.png")] forState:UIControlStateNormal];
+        [_preButton setImage:[UIImage imageNamed:(@"BlueLeftArrow.png")] forState:UIControlStateNormal];
         [_preButton addTarget:self action:@selector(onPre) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_preButton];
         
         _nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_nextButton setFrame:CGRectMake(self.width - width - width, (self.height - width) / 2, width, width)];
-        [_nextButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"BlueRightArrow.png")] forState:UIControlStateNormal];
+        [_nextButton setImage:[UIImage imageNamed:(@"BlueRightArrow.png")] forState:UIControlStateNormal];
         [_nextButton addTarget:self action:@selector(onNext) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_nextButton];
         

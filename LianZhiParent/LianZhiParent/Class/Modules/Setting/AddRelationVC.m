@@ -60,7 +60,7 @@
     UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveButton setFrame:CGRectMake(12, (viewParent.height - 45) / 2, viewParent.width - 12 * 2, 45)];
     [saveButton addTarget:self action:@selector(onSaveButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [saveButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [saveButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [saveButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [saveButton setTitle:@"申请添加家庭成员" forState:UIControlStateNormal];

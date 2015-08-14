@@ -37,7 +37,7 @@
 
 - (void)setupSubviews
 {
-    _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+    _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
     [_bgImageView setUserInteractionEnabled:YES];
     [_bgImageView setFrame:CGRectInset(self.view.bounds, kBorderMargin, kBorderMargin)];
     [self.view addSubview:_bgImageView];
@@ -45,13 +45,13 @@
     _sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_sendButton setFrame:CGRectMake(kBorderMargin, _bgImageView.height - 45 - kBorderMargin, _bgImageView.width - kBorderMargin * 2, 45)];
     [_sendButton addTarget:self action:@selector(onSendButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_sendButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_sendButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_sendButton.titleLabel setFont:kButtonTextFont];
     [_sendButton setTitle:@"录好了，发送" forState:UIControlStateNormal];
     [_bgImageView addSubview:_sendButton];
     
-    _whiteBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+    _whiteBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
     [_whiteBG setFrame:CGRectMake(kBorderMargin, kBorderMargin, _bgImageView.width - kBorderMargin * 2, _sendButton.y - kBorderMargin * 2)];
     [_whiteBG setUserInteractionEnabled:YES];
     [_bgImageView addSubview:_whiteBG];

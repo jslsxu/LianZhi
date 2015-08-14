@@ -59,7 +59,7 @@
 //    [groupItem setMsgNum:1];
 //    MessageFromInfo *fromInfo = [[MessageFromInfo alloc] init];
 //    [fromInfo setName:@"发图片"];
-//    [fromInfo setLogoImage:[UIImage imageNamed:MJRefreshSrcName(@"PostPhoto.png")]];
+//    [fromInfo setLogoImage:[UIImage imageNamed:@"PostPhoto.png")]];
 //    [groupItem setFromInfo:fromInfo];
 //    [groupItem setContent:@"照片发送成功"];
 //    [groupItem setSoundOn:YES];

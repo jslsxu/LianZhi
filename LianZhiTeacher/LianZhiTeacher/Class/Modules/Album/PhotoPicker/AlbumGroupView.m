@@ -18,7 +18,7 @@
         _albumCoverImage = [[UIImageView alloc] initWithFrame:CGRectMake(25, 15, 35, 35)];
         [_albumCoverImage setImage:[UIImage imageNamed:@"Icon.png"]];
         UIImageView *maskView = [[UIImageView alloc] initWithFrame:_albumCoverImage.bounds];
-        [maskView setImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        [maskView setImage:[[UIImage imageNamed:(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [_albumCoverImage.layer setMask:maskView.layer];
         [_albumCoverImage setClipsToBounds:YES];
         [_albumCoverImage setContentMode:UIViewContentModeScaleAspectFill];

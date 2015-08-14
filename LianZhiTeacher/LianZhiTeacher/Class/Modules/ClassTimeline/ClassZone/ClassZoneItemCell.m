@@ -20,7 +20,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     {
         [self setBackgroundColor:[UIColor clearColor]];
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [_bgImageView setUserInteractionEnabled:YES];
         [self addSubview:_bgImageView];
         
@@ -68,7 +68,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         
         _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_deleteButton addTarget:self action:@selector(onDeleteButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_deleteButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"MessageDetailTrash.png")] forState:UIControlStateNormal];
+        [_deleteButton setImage:[UIImage imageNamed:(@"MessageDetailTrash.png")] forState:UIControlStateNormal];
         [_deleteButton setFrame:CGRectMake(5, _sepLine.bottom, 30, 30)];
         [_bgImageView addSubview:_deleteButton];
         

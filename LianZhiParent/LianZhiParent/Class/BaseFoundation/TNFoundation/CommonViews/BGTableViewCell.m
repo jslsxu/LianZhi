@@ -50,13 +50,13 @@
 {
     NSString *imageStr = nil;
     if(cellType == TableViewCellTypeFirst)
-        imageStr = MJRefreshSrcName(@"CellBGFirst.png");
+        imageStr = @"CellBGFirst.png";
     else if(cellType == TableViewCellTypeMiddle)
-        imageStr = MJRefreshSrcName(@"CellBGMiddle.png");
+        imageStr = @"CellBGMiddle.png";
     else if(cellType == TableViewCellTypeLast)
-        imageStr = MJRefreshSrcName(@"CellBGLast.png");
+        imageStr = @"CellBGLast.png";
     else
-        imageStr = MJRefreshSrcName(@"WhiteBG.png");
+        imageStr = @"WhiteBG.png";
     return [[UIImage imageNamed:imageStr] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
 }
 
@@ -64,13 +64,13 @@
 {
     NSString *imageStr = nil;
     if(cellType == TableViewCellTypeFirst)
-        imageStr = MJRefreshSrcName(@"GreenBG.png");
+        imageStr = @"GreenBG.png";
     else if(cellType == TableViewCellTypeMiddle)
         imageStr = @"Middle_Selected.png";
     else if(cellType == TableViewCellTypeLast)
         imageStr = @"Last_Selected.png";
     else
-        imageStr = MJRefreshSrcName(@"GreenBG.png");
+        imageStr = @"GreenBG.png";
     return [[UIImage imageNamed:imageStr] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
 }
 

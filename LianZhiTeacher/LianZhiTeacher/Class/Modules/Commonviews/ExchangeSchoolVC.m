@@ -17,7 +17,7 @@
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
         _bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, self.width - 15 * 2, 60)];
-        [_bgImageView setImage:[[UIImage imageNamed:MJRefreshSrcName(@"CellBGFirst.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        [_bgImageView setImage:[[UIImage imageNamed:(@"CellBGFirst.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [self addSubview:_bgImageView];
         
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(30, 10, 40, 40)];
@@ -28,7 +28,7 @@
         [_nameLabel setTextColor:[UIColor grayColor]];
         [self addSubview:_nameLabel];
         
-        _arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"BlueRightArrow.png")]];
+        _arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"BlueRightArrow.png")]];
         [_arrowImage setOrigin:CGPointMake(self.width - _arrowImage.width - 30, (60 - _arrowImage.height) / 2)];
         [self addSubview:_arrowImage];
     }
@@ -56,7 +56,7 @@
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
         _bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, self.width - 15 * 2, 60)];
-        [_bgImageView setImage:[[UIImage imageNamed:MJRefreshSrcName(@"CellBGLast.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        [_bgImageView setImage:[[UIImage imageNamed:(@"CellBGLast.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [self addSubview:_bgImageView];
         
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(30, 10, 40, 40)];
@@ -138,7 +138,7 @@
 
 - (void)setupCurSchoolView:(UIView *)viewParent
 {
-    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
     [bgImageView setFrame:CGRectInset(viewParent.bounds, 15, 15)];
     [viewParent addSubview:bgImageView];
     
@@ -154,7 +154,7 @@
     [nameLabel setOrigin:CGPointMake(logoView.right + 10, (bgImageView.height - nameLabel.height) / 2)];
     [bgImageView addSubview:nameLabel];
     
-    UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"WhiteRightArrow.png")]];
+    UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"WhiteRightArrow.png")]];
     [arrow setOrigin:CGPointMake(bgImageView.width - arrow.width - 15, (bgImageView.height - arrow.height) / 2)];
     [bgImageView addSubview:arrow];
     

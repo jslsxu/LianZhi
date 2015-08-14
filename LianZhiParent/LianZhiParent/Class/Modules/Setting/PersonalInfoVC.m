@@ -48,7 +48,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
         [self addSubview:_textField];
         
         _addButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_addButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"Add.png")] forState:UIControlStateNormal];
+        [_addButton setImage:[UIImage imageNamed:@"Add.png"] forState:UIControlStateNormal];
         [_addButton addTarget:self action:@selector(onAddButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [_addButton setFrame:CGRectMake(self.width - 30, (self.height - 40) / 2, 30, 40)];
         [_addButton setHidden:YES];
@@ -147,7 +147,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
     UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveButton setFrame:CGRectMake(12, (footerView.height - 45) / 2, footerView.width - 12 * 2, 45)];
     [saveButton addTarget:self action:@selector(onSaveButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [saveButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [saveButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [saveButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [saveButton setTitle:@"保存个人信息修改" forState:UIControlStateNormal];

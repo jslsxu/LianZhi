@@ -36,7 +36,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         _icon = [[UIImageView alloc] initWithFrame:CGRectZero];
         [self addSubview:_icon];
         
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [_bgImageView setUserInteractionEnabled:YES];
         [self addSubview:_bgImageView];
         

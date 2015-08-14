@@ -48,7 +48,7 @@
         _animationImages = [[NSMutableArray alloc] initWithCapacity:0];
         for (NSInteger i = 1; i <= 10; i++) {
             NSString *imageStr = [NSString stringWithFormat:@"Loading%ld.png",(long)i];
-            UIImage *image = [UIImage imageNamed:MJRefreshSrcName(imageStr)];
+            UIImage *image = [UIImage imageNamed:(imageStr)];
             [_animationImages addObject:image];
         }
 
@@ -191,7 +191,7 @@
     {
         NSInteger index = (NSInteger)(fabs(scrollView.contentOffset.y) / 7) % 10 + 1;
         NSString *imageStr = [NSString stringWithFormat:@"Loading%ld.png",(long)index];
-        [_animatedImageView setImage:[UIImage imageNamed:MJRefreshSrcName(imageStr)]];
+        [_animatedImageView setImage:[UIImage imageNamed:(imageStr)]];
 		BOOL _loading = NO;
 		if ([_delegate respondsToSelector:@selector(egoRefreshTableHeaderDataSourceIsLoading:)]) {
 			_loading = [_delegate egoRefreshTableHeaderDataSourceIsLoading:self];

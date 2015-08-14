@@ -22,7 +22,7 @@
         [_logoView setBorderColor:[UIColor colorWithHexString:@"C0C0C0"]];
         [self.actualContentView addSubview:_logoView];
         
-        _redDot = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"MsgNumBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 7.5, 0, 7.5)]];
+        _redDot = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"MsgNumBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 7.5, 0, 7.5)]];
         [self.actualContentView addSubview:_redDot];
         
         _numLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -49,7 +49,7 @@
         [_sepLine setBackgroundColor:[UIColor colorWithHexString:@"d8d8d8"]];
         [self.actualContentView addSubview:_sepLine];
         
-        _soundOff = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"Nobell.png")]];
+        _soundOff = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"Nobell.png")]];
         [_soundOff setCenter:CGPointMake(self.width - _soundOff.width, 0)];
         [_soundOff setHidden:YES];
         [self.actualContentView addSubview:_soundOff];
@@ -76,9 +76,9 @@
     {
         NSString *imageStr = nil;
         if(_messageItem.fromInfo.type == 13)
-            imageStr = MJRefreshSrcName(@"NoAvatarDefault.png");
+            imageStr = (@"NoAvatarDefault.png");
         else
-            imageStr = MJRefreshSrcName(@"NoLogoDefault.png");
+            imageStr = (@"NoLogoDefault.png");
         [_logoView setImageWithUrl:[NSURL URLWithString:_messageItem.fromInfo.logoUrl] placeHolder:[UIImage imageNamed:imageStr]];
     }
     

@@ -46,13 +46,13 @@
 {
     UIImage *image = nil;
     if(cellType == TableViewCellTypeFirst)
-        image = [[UIImage imageNamed:MJRefreshSrcName(@"CellBGFirst.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+        image = [[UIImage imageNamed:(@"CellBGFirst.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
     else if(cellType == TableViewCellTypeMiddle)
-        image = [[UIImage imageNamed:MJRefreshSrcName(@"CellBGMiddle.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+        image = [[UIImage imageNamed:(@"CellBGMiddle.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
     else if(cellType == TableViewCellTypeLast)
-        image = [[UIImage imageNamed:MJRefreshSrcName(@"CellBGLast.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+        image = [[UIImage imageNamed:(@"CellBGLast.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
     else
-        image = [[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+        image = [[UIImage imageNamed:(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
     return image;
 }
 
@@ -79,9 +79,9 @@
     {
         _checkBox.hidden = NO;
         if(_groupItem.selected)
-            [_checkBox setImage:[UIImage imageNamed:MJRefreshSrcName(@"CheckboxOn.png")]];
+            [_checkBox setImage:[UIImage imageNamed:(@"CheckboxOn.png")]];
         else
-            [_checkBox setImage:[UIImage imageNamed:MJRefreshSrcName(@"CheckboxOff.png")]];
+            [_checkBox setImage:[UIImage imageNamed:(@"CheckboxOff.png")]];
     }
     else
         _checkBox.hidden = YES;
@@ -107,7 +107,7 @@
 {
     UIButton *postTextButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [postTextButton addTarget:self action:@selector(onPostButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [postTextButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [postTextButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [postTextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [postTextButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [postTextButton setTitle:@"填写通知内容" forState:UIControlStateNormal];

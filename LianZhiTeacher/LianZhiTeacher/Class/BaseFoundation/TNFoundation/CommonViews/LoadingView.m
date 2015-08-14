@@ -29,7 +29,7 @@
         [self.layer setMasksToBounds:YES];
         
         _animationLayer = [CALayer layer];
-        [_animationLayer setContents:(id)[UIImage imageNamed:MJRefreshSrcName(@"LoadingArrow.png")].CGImage];
+        [_animationLayer setContents:(id)[UIImage imageNamed:(@"LoadingArrow.png")].CGImage];
         [_animationLayer setFrame:CGRectMake((self.width - 32) / 2, (self.height - 32) / 2 - 10, 32, 32)];
         
         [self.layer addSublayer:_animationLayer];

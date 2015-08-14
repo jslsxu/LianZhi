@@ -48,7 +48,7 @@
         _animationImages = [[NSMutableArray alloc] initWithCapacity:0];
         for (NSInteger i = 1; i <= 10; i++) {
             NSString *imageStr = [NSString stringWithFormat:@"Loading%ld.png",(long)i];
-            UIImage *image = [UIImage imageNamed:MJRefreshSrcName(imageStr)];
+            UIImage *image = [UIImage imageNamed:imageStr];
             [_animationImages addObject:image];
         }
 
@@ -77,7 +77,7 @@
 //		CALayer *layer = [CALayer layer];
 //		layer.frame = CGRectMake(25.0f, frame.size.height - 65.0f, 30.0f, 55.0f);
 //		layer.contentsGravity = kCAGravityResizeAspect;
-//		layer.contents = (id)[UIImage imageNamed:MJRefreshSrcName(@"blueArrow.png")].CGImage;
+//		layer.contents = (id)[UIImage imageNamed:@"blueArrow.png")].CGImage;
 //		
 //#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 40000
 //		if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) {
@@ -191,7 +191,7 @@
     {
         NSInteger index = (NSInteger)(fabs(scrollView.contentOffset.y) / 7) % 10 + 1;
         NSString *imageStr = [NSString stringWithFormat:@"Loading%ld.png",(long)index];
-        [_animatedImageView setImage:[UIImage imageNamed:MJRefreshSrcName(imageStr)]];
+        [_animatedImageView setImage:[UIImage imageNamed:imageStr]];
 		BOOL _loading = NO;
 		if ([_delegate respondsToSelector:@selector(egoRefreshTableHeaderDataSourceIsLoading:)]) {
 			_loading = [_delegate egoRefreshTableHeaderDataSourceIsLoading:self];

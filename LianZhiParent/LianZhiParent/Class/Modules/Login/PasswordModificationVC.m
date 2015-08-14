@@ -39,7 +39,7 @@
     _confirmButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_confirmButton setFrame:CGRectMake(self.view.width / 2, _secondField.bottom + 15, _secondField.width / 2, 45)];
     [_confirmButton addTarget:self action:@selector(onConfirmClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_confirmButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_confirmButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [_confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_confirmButton.titleLabel setFont:kButtonTextFont];
     [_confirmButton setTitle:@"进入" forState:UIControlStateNormal];

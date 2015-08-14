@@ -17,11 +17,11 @@
     {
         [self setBackgroundColor:[UIColor clearColor]];
         _bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.width)];
-        [_bgImageView setImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        [_bgImageView setImage:[[UIImage imageNamed:(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [self addSubview:_bgImageView];
         
         UIImageView *maskView = [[UIImageView alloc] initWithFrame:_bgImageView.bounds];
-        [maskView setImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        [maskView setImage:[[UIImage imageNamed:(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         
         _avatarView = [[UIImageView alloc] initWithFrame:_bgImageView.frame];
         [_avatarView.layer setMask:maskView.layer];

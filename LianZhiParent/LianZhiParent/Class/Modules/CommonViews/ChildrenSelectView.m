@@ -33,7 +33,7 @@
         [_avatar addSubview:_tintLabel];
         
         _redDot = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 8, 8)];
-        [_redDot setImage:[UIImage imageNamed:MJRefreshSrcName(@"RedDot.png")]];
+        [_redDot setImage:[UIImage imageNamed:@"RedDot.png"]];
         [_redDot setOrigin:CGPointMake(_avatar.right - 6, _avatar.y)];
         [self addSubview:_redDot];
         [_redDot setHidden:YES];

@@ -41,7 +41,7 @@
     [_retrieveButton setFrame:CGRectMake(_authCodeField.right + 15, _authCodeField.y, _authCodeField.width / 2, 45)];
     [_retrieveButton addTarget:self action:@selector(retriveAuthCode) forControlEvents:UIControlEventTouchUpInside];
     [_retrieveButton setTitleColor:kCommonParentTintColor forState:UIControlStateNormal];
-    [_retrieveButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_retrieveButton setBackgroundImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [self.view addSubview:_retrieveButton];
     
     _nameField = [[LZTextField alloc] initWithFrame:CGRectMake(25, _authCodeField.bottom + 15, self.view.width - 25 * 2, 45)];
@@ -55,7 +55,7 @@
     _authButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_authButton setFrame:CGRectMake(25, _nameField.bottom + 15, self.view.width - 25 * 2, 45)];
     [_authButton addTarget:self action:@selector(onLoginButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_authButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_authButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [_authButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
     [_authButton setTitle:@"验证并登录" forState:UIControlStateNormal];
     [_authButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

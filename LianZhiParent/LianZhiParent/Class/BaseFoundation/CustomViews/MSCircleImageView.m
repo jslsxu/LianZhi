@@ -114,7 +114,7 @@
     if(self)
     {
         [self setContentMode:UIViewContentModeScaleAspectFill];
-        [self setImage:[UIImage imageNamed:MJRefreshSrcName(@"NoAvatarDefault.png")]];
+        [self setImage:[UIImage imageNamed:@"NoAvatarDefault.png"]];
     }
     return self;
 }
@@ -132,7 +132,7 @@
 
 - (void)setImageWithUrl:(NSURL *)url
 {
-    [self setImage:[UIImage imageNamed:MJRefreshSrcName(@"NoAvatarDefault.png")]];
+    [self setImage:[UIImage imageNamed:@"NoAvatarDefault.png"]];
     [[SDWebImageManager sharedManager] downloadImageWithURL:url options:SDWebImageRetryFailed progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
         if(error == nil && finished &&image)
             self.image = image;
@@ -147,7 +147,7 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        [self setImage:[UIImage imageNamed:MJRefreshSrcName(@"NoLogoDefault.png")]];
+        [self setImage:[UIImage imageNamed:@"NoLogoDefault.png"]];
     }
     return self;
 }
@@ -165,7 +165,7 @@
 
 - (void)setImageWithUrl:(NSURL *)url
 {
-    [self setImage:[UIImage imageNamed:MJRefreshSrcName(@"NoLogoDefault.png")]];
+    [self setImage:[UIImage imageNamed:@"NoLogoDefault.png"]];
     [[SDWebImageManager sharedManager] downloadImageWithURL:url options:SDWebImageRetryFailed progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
         if(error == nil && finished &&image)
             self.image = image;

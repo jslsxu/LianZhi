@@ -24,7 +24,7 @@
         
         _nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_nextButton setFrame:CGRectMake(self.width - 10 - width, (self.height - width) / 2, width, width)];
-        [_nextButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"DatePickerNext.png")] forState:UIControlStateNormal];
+        [_nextButton setImage:[UIImage imageNamed:@"DatePickerNext.png"] forState:UIControlStateNormal];
         [_nextButton addTarget:self action:@selector(onNext) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_nextButton];
         
@@ -37,7 +37,7 @@
         
         _preButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_preButton setFrame:CGRectMake(_curMonth.left - width, (self.height - width) / 2, width, width)];
-        [_preButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"DatePickerPre.png")] forState:UIControlStateNormal];
+        [_preButton setImage:[UIImage imageNamed:@"DatePickerPre.png"] forState:UIControlStateNormal];
         [_preButton addTarget:self action:@selector(onPre) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_preButton];
         

@@ -20,7 +20,7 @@
     [super viewDidLoad];
     self.title = @"黑板报";
     
-    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
     [bgImageView setUserInteractionEnabled:YES];
     [bgImageView setFrame:CGRectMake(kBorderMargin, kBorderMargin, self.view.width - kBorderMargin * 2, 240)];
     [self.view addSubview:bgImageView];
@@ -36,13 +36,13 @@
     _publishButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_publishButton setFrame:CGRectMake(_notificationButton.right + kBorderMargin, _notificationButton.y, width * 2 / 3, 45)];
     [_publishButton addTarget:self action:@selector(onPublishClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_publishButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_publishButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [_publishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_publishButton.titleLabel setFont:kButtonTextFont];
     [_publishButton setTitle:@"写好了，公布" forState:UIControlStateNormal];
     [bgImageView addSubview:_publishButton];
     
-    UIImageView *textBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+    UIImageView *textBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
     [textBG setUserInteractionEnabled:YES];
     [textBG setFrame:CGRectMake(kBorderMargin, kBorderMargin, bgImageView.width - kBorderMargin * 2, bgImageView.height - kBorderMargin * 3 - _publishButton.height)];
     [bgImageView addSubview:textBG];

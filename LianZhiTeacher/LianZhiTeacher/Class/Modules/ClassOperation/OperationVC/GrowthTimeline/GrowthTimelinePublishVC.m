@@ -26,7 +26,7 @@
         [_timelineArray addObject:modelItem];
     }
     self.title = @"成长手册";
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"WhiteLeftArrow.png")] style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:(@"WhiteLeftArrow.png")] style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"%ld人",(long)self.students.count] style:UIBarButtonItemStylePlain target:nil action:nil];
     
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
@@ -39,7 +39,7 @@
     UIButton *publishRecordButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [publishRecordButton addTarget:self action:@selector(onPublish) forControlEvents:UIControlEventTouchUpInside];
     [publishRecordButton setFrame:CGRectMake(30, (footerView.height - 45) / 2, footerView.width - 30 * 2, 45)];
-    [publishRecordButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [publishRecordButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [publishRecordButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [publishRecordButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [publishRecordButton setTitle:@"发送成长记录" forState:UIControlStateNormal];

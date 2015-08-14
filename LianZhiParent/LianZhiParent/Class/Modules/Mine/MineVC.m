@@ -35,9 +35,9 @@
         _genderView = [[UIImageView alloc] initWithFrame:CGRectZero];
         GenderType gender = [UserCenter sharedInstance].userInfo.gender;
         if(gender == GenderFemale)
-            [_genderView setImage:[UIImage imageNamed:MJRefreshSrcName(@"GenderFemale")]];
+            [_genderView setImage:[UIImage imageNamed:@"GenderFemale"]];
         else
-            [_genderView setImage:[UIImage imageNamed:MJRefreshSrcName(@"GenderMale")]];
+            [_genderView setImage:[UIImage imageNamed:@"GenderMale"]];
         [_genderView setFrame:CGRectMake(_nameLabel.right + 5, _nameLabel.y, 15, 15)];
         [self addSubview:_genderView];
         
@@ -139,7 +139,7 @@
         }
         NSArray *imageArray = @[@[@"MineChildren",@"MineSetting"],@[@"MineAbout",@"MineContact"]];
         NSArray *titleArray = @[@[@"孩子档案",@"系统设置"],@[@"关于连枝",@"联系客服"]];
-        [cell.imageView setImage:[UIImage imageNamed:MJRefreshSrcName(imageArray[section - 1][indexPath.row])]];
+        [cell.imageView setImage:[UIImage imageNamed:imageArray[section - 1][indexPath.row]]];
         [cell.textLabel setText:titleArray[section - 1][indexPath.row]];
         return cell;
     }

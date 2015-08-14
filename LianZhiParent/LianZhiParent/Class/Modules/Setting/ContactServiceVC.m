@@ -21,8 +21,8 @@
         [_titleLabel setFont:[UIFont systemFontOfSize:16]];
         [self addSubview:_titleLabel];
         
-        _arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"DatePickerNext.png")]];
-        [_arrow setHighlightedImage:[UIImage imageNamed:MJRefreshSrcName(@"WhiteRightArrow.png")]];
+        _arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DatePickerNext.png"]];
+        [_arrow setHighlightedImage:[UIImage imageNamed:@"WhiteRightArrow.png"]];
         [_arrow setOrigin:CGPointMake(self.width - _arrow.width - 20, (self.height - _arrow.height) / 2)];
         [self addSubview:_arrow];
     }
@@ -39,13 +39,13 @@
 {
     NSString *imageStr = nil;
     if(cellType == TableViewCellTypeFirst)
-        imageStr = MJRefreshSrcName(@"GreenBG.png");
+        imageStr = @"GreenBG.png";
     else if(cellType == TableViewCellTypeMiddle)
         imageStr = @"Middle_Selected.png";
     else if(cellType == TableViewCellTypeLast)
         imageStr = @"Last_Selected.png";
     else
-        imageStr = MJRefreshSrcName(@"GreenBG.png");
+        imageStr = @"GreenBG.png";
     return [[UIImage imageNamed:imageStr] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
 }
 @end

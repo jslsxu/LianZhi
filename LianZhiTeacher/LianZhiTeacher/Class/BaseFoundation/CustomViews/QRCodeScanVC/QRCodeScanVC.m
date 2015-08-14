@@ -55,12 +55,12 @@
     
     maskRect.size.height = 2;
     _scanLine = [[UIImageView alloc] initWithFrame:CGRectMake((_readerView.width - scanLength) / 2, scanY, scanLength, 2)];
-    [_scanLine setImage:[UIImage imageNamed:MJRefreshSrcName(@"ScanLine.png")]];
+    [_scanLine setImage:[UIImage imageNamed:(@"ScanLine.png")]];
     [self.view addSubview:_scanLine];
     
     UIButton *scanFromAlbumButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [scanFromAlbumButton addTarget:self action:@selector(onScanFromAlbumClicked) forControlEvents:UIControlEventTouchUpInside];
-    [scanFromAlbumButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [scanFromAlbumButton setBackgroundImage:[[UIImage imageNamed:(@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [scanFromAlbumButton setTitle:@"从相册选取二维码" forState:UIControlStateNormal];
     [scanFromAlbumButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [scanFromAlbumButton.titleLabel setFont:[UIFont systemFontOfSize:14]];

@@ -20,7 +20,7 @@
         [sepLine setBackgroundColor:[UIColor colorWithHexString:@"D8D8D8"]];
         [self addSubview:sepLine];
         
-        UIImageView*    locationImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"LocationIcon")]];
+        UIImageView*    locationImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"LocationIcon")]];
         [locationImage setCenter:CGPointMake(self.height / 2, self.height / 2)];
         [self addSubview:locationImage];
         

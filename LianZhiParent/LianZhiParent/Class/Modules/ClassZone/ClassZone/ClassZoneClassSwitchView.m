@@ -22,7 +22,7 @@
         [self addSubview:_classNameLabel];
         
         _arrowButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_arrowButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"WhiteRightArrow.png")] forState:UIControlStateNormal];
+        [_arrowButton setImage:[UIImage imageNamed:@"WhiteRightArrow.png"] forState:UIControlStateNormal];
         [_arrowButton setFrame:CGRectMake(frame.size.width - 40 ,0, 40, frame.size.height)];
         [self addSubview:_arrowButton];
         _arrowButton.hidden = ([UserCenter sharedInstance].curChild.classes.count == 1);

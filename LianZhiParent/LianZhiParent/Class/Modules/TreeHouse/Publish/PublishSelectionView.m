@@ -19,20 +19,20 @@
         
         _textButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_textButton setFrame:CGRectMake(0, 0, 48, 48)];
-        [_textButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"PostText.png")] forState:UIControlStateNormal];
+        [_textButton setImage:[UIImage imageNamed:@"PostText.png"] forState:UIControlStateNormal];
         [_textButton addTarget:self action:@selector(onPostButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_textButton];
         
         _photoButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_photoButton setFrame:CGRectMake(0, 0, 48, 48)];
-        [_photoButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"PostPhoto.png")] forState:UIControlStateNormal];
+        [_photoButton setImage:[UIImage imageNamed:@"PostPhoto.png"] forState:UIControlStateNormal];
         [_photoButton addTarget:self action:@selector(onPostButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_photoButton];
 
         
         _audioButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_audioButton setFrame:CGRectMake(0, 0, 48, 48)];
-        [_audioButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"PostAudio.png")] forState:UIControlStateNormal];
+        [_audioButton setImage:[UIImage imageNamed:@"PostAudio.png"] forState:UIControlStateNormal];
         [_audioButton addTarget:self action:@selector(onPostButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_audioButton];
         

@@ -16,7 +16,7 @@
     if(self)
     {
         self.type = MLPlayVoiceButtonTypeRight;
-        [self setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+        [self setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
         
 //        _audioIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"MicrophoneWhite.png")]];
 //        [_audioIcon setCenter:CGPointMake(25, frame.size.height / 2)];

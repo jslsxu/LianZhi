@@ -17,7 +17,7 @@
     if(self)
     {
         CGFloat margin = 10;
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [_bgImageView setFrame:CGRectInset(self.bounds, 15, 15)];
         [self addSubview:_bgImageView];
         
@@ -52,7 +52,7 @@
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avtarView.right + 10, _bgImageView.height / 2 - 5 - _nameLabel.height)];
     
-    [_genderImageView setImage:[UIImage imageNamed:_childInfo.gender == GenderMale ? MJRefreshSrcName(@"GenderMale.png") : MJRefreshSrcName(@"GenderFemale.png")]];
+    [_genderImageView setImage:[UIImage imageNamed:_childInfo.gender == GenderMale ? @"GenderMale.png" : @"GenderFemale.png"]];
     [_genderImageView setOrigin:CGPointMake(_nameLabel.right + 10, _nameLabel.top + (_nameLabel.height - _genderImageView.height) / 2)];
     
     NSString *birthday = [NSString stringWithFormat:@"%@ (%@)",_childInfo.birthday,_childInfo.constellation];
@@ -73,7 +73,7 @@
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
         
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"CellBGFirst.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"CellBGFirst.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [_bgImageView setFrame:CGRectMake(15, 0, self.width - 15 * 2, 60)];
         [self addSubview:_bgImageView];
         
@@ -127,13 +127,13 @@
     _cellType = cellType;
     NSString *bgStr = nil;
     if(cellType == TableViewCellTypeLast)
-        bgStr = MJRefreshSrcName(@"CellBGLast.png");
+        bgStr = @"CellBGLast.png";
     else if(cellType == TableViewCellTypeMiddle)
-        bgStr = MJRefreshSrcName(@"CellBGMiddle.png");
+        bgStr = @"CellBGMiddle.png";
     else if(cellType == TableViewCellTypeFirst)
-        bgStr = MJRefreshSrcName(@"CellBGFirst.png");
+        bgStr = @"CellBGFirst.png";
     else
-        bgStr = MJRefreshSrcName(@"WhiteBG.png");
+        bgStr = @"WhiteBG.png";
     [_bgImageView setImage:[[UIImage imageNamed:bgStr] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
 }
 @end
@@ -179,7 +179,7 @@
     
     UIButton *reportButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [reportButton addTarget:self action:@selector(onReport) forControlEvents:UIControlEventTouchUpInside];
-    [reportButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [reportButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [reportButton setFrame:CGRectMake(15, self.view.height - 45 - 15, self.view.width - 15 * 2, 45)];
     [reportButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [reportButton setTitle:@"报告关联错误" forState:UIControlStateNormal];

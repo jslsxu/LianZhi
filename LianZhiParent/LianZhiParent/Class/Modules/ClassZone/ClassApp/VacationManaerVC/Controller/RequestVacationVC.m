@@ -26,12 +26,12 @@
 {
     
     UIImageView *maskView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
-    [maskView setImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+    [maskView setImage:[[UIImage imageNamed:@"GrayBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
     
     UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
     [avatarView.layer setMask:maskView.layer];
     [avatarView.layer setMasksToBounds:YES];
-    [avatarView sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar] placeholderImage:[UIImage imageNamed:MJRefreshSrcName(@"NoAvatarDefault.png")]];
+    [avatarView sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar] placeholderImage:[UIImage imageNamed:@"NoAvatarDefault.png"]];
     [self.view addSubview:avatarView];
     
     UILabel *nickLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, avatarView.bottom + 5, avatarView.width, 20)];
@@ -75,12 +75,12 @@
     [self setupBottomView:bottomView];
     [self.view addSubview:bottomView];
     
-    UIImageView *textViewBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+    UIImageView *textViewBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"GrayBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
     [textViewBG setUserInteractionEnabled:YES];
     [textViewBG setFrame:CGRectMake(10, segmentControl.bottom + 20, self.view.width - 10 * 2, bottomView.top - (segmentControl.bottom + 20))];
     [self.view addSubview:textViewBG];
     
-    UIImageView *innerTextViewBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+    UIImageView *innerTextViewBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
     [innerTextViewBG setUserInteractionEnabled:YES];
     [innerTextViewBG setFrame:CGRectInset(textViewBG.bounds, kMargin, kMargin)];
     [textViewBG addSubview:innerTextViewBG];
@@ -100,7 +100,7 @@
 //    [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 //    [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
 //    [cancelButton addTarget:self action:@selector(onCancel) forControlEvents:UIControlEventTouchUpInside];
-//    [cancelButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(kMargin, kMargin, kMargin, kMargin)] forState:UIControlStateNormal];
+//    [cancelButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(kMargin, kMargin, kMargin, kMargin)] forState:UIControlStateNormal];
 //    [viewParent addSubview:cancelButton];
     
     UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -109,7 +109,7 @@
     [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [sendButton setTitle:@"发送给班主任" forState:UIControlStateNormal];
     [sendButton addTarget:self action:@selector(onSend) forControlEvents:UIControlEventTouchUpInside];
-    [sendButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(kMargin, kMargin, kMargin, kMargin)] forState:UIControlStateNormal];
+    [sendButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(kMargin, kMargin, kMargin, kMargin)] forState:UIControlStateNormal];
     [viewParent addSubview:sendButton];
 }
 

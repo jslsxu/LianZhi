@@ -28,7 +28,7 @@
 - (void)setupSubviews
 {
     CGFloat margin = 15;
-    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
     [bgImageView setUserInteractionEnabled:YES];
     [bgImageView setFrame:CGRectMake(margin, margin, self.view.width - margin * 2, 240)];
     [self.view addSubview:bgImageView];
@@ -42,7 +42,7 @@
     [_contactField setText:[UserCenter sharedInstance].userInfo.mobile];
     [bgImageView addSubview:_contactField];
     
-    UIImageView *textViewBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+    UIImageView *textViewBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
     [textViewBG setUserInteractionEnabled:YES];
     [textViewBG setFrame:CGRectMake(margin, _contactField.bottom + margin, bgImageView.width - margin * 2, 100)];
     [bgImageView addSubview:textViewBG];
@@ -71,7 +71,7 @@
     
     _sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_sendButton addTarget:self action:@selector(onSend) forControlEvents:UIControlEventTouchUpInside];
-    [_sendButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_sendButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [_sendButton setFrame:CGRectMake(margin * 2 + _contactButton.right, textViewBG.bottom + margin, _contactButton.width * 2, 45)];
     [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_sendButton setTitle:@"提交给客服处理" forState:UIControlStateNormal];
@@ -83,9 +83,9 @@
 {
     _contactMe = contactMe;
     if(_contactMe)
-        [_contactButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ContactMe.png")] forState:UIControlStateNormal];
+        [_contactButton setImage:[UIImage imageNamed:(@"ContactMe.png")] forState:UIControlStateNormal];
     else
-        [_contactButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"NoContactMe.png")] forState:UIControlStateNormal];
+        [_contactButton setImage:[UIImage imageNamed:(@"NoContactMe.png")] forState:UIControlStateNormal];
 }
 
 - (void)onContactButtonClicked

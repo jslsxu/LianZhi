@@ -41,9 +41,9 @@
     {
         [_accessView setHidden:NO];
         if(classInfo.selected)
-            [_accessView setImage:[UIImage imageNamed:MJRefreshSrcName(@"CheckboxOn.png")]];
+            [_accessView setImage:[UIImage imageNamed:(@"CheckboxOn.png")]];
         else
-            [_accessView setImage:[UIImage imageNamed:MJRefreshSrcName(@"CheckboxOff.png")]];
+            [_accessView setImage:[UIImage imageNamed:(@"CheckboxOff.png")]];
     }
 }
 

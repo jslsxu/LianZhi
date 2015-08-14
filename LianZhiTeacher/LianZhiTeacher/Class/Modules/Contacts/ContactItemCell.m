@@ -78,7 +78,7 @@
 - (void)setUserInfo:(UserInfo *)userInfo
 {
     _userInfo = userInfo;
-    [_avatar setImageWithUrl:[NSURL URLWithString:userInfo.avatar] placeHolder:[UIImage imageNamed:MJRefreshSrcName(@"NoAvatarDefault.png")]];
+    [_avatar setImageWithUrl:[NSURL URLWithString:userInfo.avatar] placeHolder:[UIImage imageNamed:(@"NoAvatarDefault.png")]];
     
     [_nameLabel setText:userInfo.name];
     [_nameLabel sizeToFit];

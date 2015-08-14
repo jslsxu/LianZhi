@@ -314,7 +314,7 @@
     _saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_saveButton addTarget:self action:@selector(onSaveButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [_saveButton setFrame:CGRectMake(15, label.bottom, self.view.width - 10 * 2, self.view.height - 10 - label.bottom)];
-    [_saveButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_saveButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [_saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_saveButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [_saveButton setTitle:@"保存修改" forState:UIControlStateNormal];

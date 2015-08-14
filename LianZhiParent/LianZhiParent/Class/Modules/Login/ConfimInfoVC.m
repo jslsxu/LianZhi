@@ -18,7 +18,7 @@
     [super viewDidLoad];
     self.title = @"关联信息";
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"WhiteLeftArrow.png")] style:UIBarButtonItemStylePlain target:self action:@selector(onBack)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WhiteLeftArrow.png"] style:UIBarButtonItemStylePlain target:self action:@selector(onBack)];
 }
 
 - (void)setupSubviews
@@ -35,7 +35,7 @@
     [_tableView setTableHeaderView:_headerView];
     
     _reportButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_reportButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_reportButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [_reportButton addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
     [_reportButton setFrame:CGRectMake(15, self.view.height - 45 - 15, self.view.width - 15 * 2, 45)];
     [_reportButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -57,7 +57,7 @@
 
 - (void)setupHeaderView:(UIView *)viewParent
 {
-    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
     [bgImageView setFrame:CGRectMake(10, 10, viewParent.width - 10 * 2, 60)];
     [bgImageView setUserInteractionEnabled:YES];
     [viewParent addSubview:bgImageView];

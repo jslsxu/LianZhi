@@ -18,7 +18,7 @@
         _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(10, 10, 40, 40)];
         [self addSubview:_avatar];
         
-        _redDot = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"RedDot.png")]];
+        _redDot = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RedDot.png"]];
         [self addSubview:_redDot];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];

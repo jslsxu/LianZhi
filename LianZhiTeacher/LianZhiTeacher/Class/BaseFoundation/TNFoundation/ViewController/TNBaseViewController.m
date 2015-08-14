@@ -57,7 +57,7 @@
     [self.view addSubview:_loadingView];
     [_loadingView setHidden:YES];
     
-    _showError = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"ShowError.png")]];
+    _showError = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"ShowError.png")]];
     [_showError setCenter:CGPointMake(self.view.width / 2, self.view.height / 2 - 30)];
     [self.view addSubview:_showError];
     [_showError setAlpha:0.f];

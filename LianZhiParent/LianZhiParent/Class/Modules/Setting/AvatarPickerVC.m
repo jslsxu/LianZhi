@@ -28,13 +28,13 @@
     [self.view addSubview:_imageView];
     
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [cancelButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"AvatarCancel.png")] forState:UIControlStateNormal];
+    [cancelButton setImage:[UIImage imageNamed:@"AvatarCancel.png"] forState:UIControlStateNormal];
     [cancelButton setFrame:CGRectMake(20, 20, 40, 40)];
     [cancelButton addTarget:self action:@selector(onCancel) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:cancelButton];
     
     UIButton *confirmButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [confirmButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"AvatarConfirm.png")] forState:UIControlStateNormal];
+    [confirmButton setImage:[UIImage imageNamed:@"AvatarConfirm.png"] forState:UIControlStateNormal];
     [confirmButton setFrame:CGRectMake((self.view.width - 40) / 2, self.view.height - 40 - 20, 40, 40)];
     [confirmButton addTarget:self action:@selector(onConfirm) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:confirmButton];

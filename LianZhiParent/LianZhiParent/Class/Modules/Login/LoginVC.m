@@ -62,7 +62,7 @@
     _loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_loginButton setFrame:CGRectMake(_registerButton.right, _registerButton.y, _passwordField.right - _registerButton.right, 45)];
     [_loginButton addTarget:self action:@selector(onLoginClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_loginButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_loginButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [_loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_loginButton.titleLabel setFont:kButtonTextFont];
     [_loginButton setTitle:@"登录" forState:UIControlStateNormal];

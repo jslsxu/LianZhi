@@ -18,7 +18,7 @@
     {
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"CellBGFirst.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"CellBGFirst.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [_bgImageView setFrame:CGRectMake(15, 0, self.width - 15 * 2, 60)];
         [self addSubview:_bgImageView];
         
@@ -51,7 +51,7 @@
     {
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"CellBGFirst.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"CellBGFirst.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [_bgImageView setFrame:CGRectMake(15, 0, self.width - 15 * 2, 60)];
         [self addSubview:_bgImageView];
         
@@ -71,9 +71,9 @@
 {
     _cellType = cellType;
     if(cellType == TableViewCellTypeLast)
-        [_bgImageView setImage:[[UIImage imageNamed:MJRefreshSrcName(@"CellBGLast.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        [_bgImageView setImage:[[UIImage imageNamed:(@"CellBGLast.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
     else
-        [_bgImageView setImage:[[UIImage imageNamed:MJRefreshSrcName(@"CellBGMiddle.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        [_bgImageView setImage:[[UIImage imageNamed:(@"CellBGMiddle.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
 }
 - (void)setClassInfo:(ClassInfo *)classInfo
 {
@@ -121,7 +121,7 @@
     UIButton *reportButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [reportButton setFrame:CGRectMake(15, self.view.height - 60, self.view.width - 15 * 2, 45)];
     [reportButton addTarget:self action:@selector(onReport) forControlEvents:UIControlEventTouchUpInside];
-    [reportButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [reportButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [reportButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [reportButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
     [reportButton setTitle:@"报告关联错误" forState:UIControlStateNormal];
@@ -133,7 +133,7 @@
     NSArray *subviews = [viewParent subviews];
     [subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     CGFloat margin = 10;
-    UIImageView*    bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+    UIImageView*    bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
     [bgImageView setFrame:CGRectInset(viewParent.bounds, 15, 15)];
     [viewParent addSubview:bgImageView];
     
@@ -150,7 +150,7 @@
     [bgImageView addSubview:nameLabel];
     
     GenderType gender = [UserCenter sharedInstance].userInfo.gender;
-    NSString *imageStr = gender == GenderMale ? MJRefreshSrcName(@"GenderMale.png") : MJRefreshSrcName(@"GenderFemale.png");
+    NSString *imageStr = gender == GenderMale ? (@"GenderMale.png") : (@"GenderFemale.png");
     UIImageView *genderImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageStr]];
     [genderImage setOrigin:CGPointMake(nameLabel.right + 10, nameLabel.top + (nameLabel.height - genderImage.height) / 2)];
     [bgImageView addSubview:genderImage];
@@ -164,7 +164,7 @@
     [birthdayLabel setOrigin:CGPointMake(avatar.right + 10, bgImageView.height / 2 + 5)];
     [bgImageView addSubview:birthdayLabel];
 
-    UIImageView*    arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TeacherRelationArrow.png"]];
+    UIImageView*    arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]];
     [arrowImage setOrigin:CGPointMake(bgImageView.width - arrowImage.width - margin, (bgImageView.height - arrowImage.height) / 2)];
     [bgImageView addSubview:arrowImage];
     

@@ -37,7 +37,7 @@
     {
         [self setBackgroundColor:kCommonTeacherTintColor];
         [_imageView setFrame:CGRectInset(self.bounds, 30, 30)];
-        [_imageView setImage:[UIImage imageNamed:MJRefreshSrcName(@"PhotoFromAlbum.png")]];
+        [_imageView setImage:[UIImage imageNamed:(@"PhotoFromAlbum.png")]];
     }
 }
 @end

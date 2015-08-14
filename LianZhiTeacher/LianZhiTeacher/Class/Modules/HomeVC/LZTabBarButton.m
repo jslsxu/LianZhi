@@ -36,7 +36,7 @@
     
     if(_redDot == nil)
     {
-        _redDot = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"RedDot.png")]];
+        _redDot = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"RedDot.png")]];
         [self addSubview:_redDot];
          [_redDot setHidden:YES];
     }

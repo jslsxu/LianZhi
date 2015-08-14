@@ -114,7 +114,7 @@
     UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveButton setFrame:CGRectMake(12, (footerView.height - 45) / 2, footerView.width - 12 * 2, 45)];
     [saveButton addTarget:self action:@selector(onSaveButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [saveButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [saveButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [saveButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [saveButton setTitle:@"保存个人信息修改" forState:UIControlStateNormal];
@@ -240,7 +240,7 @@
     PersonalInfoItem *passwordItem = [[PersonalInfoItem alloc] initWithKey:@"登录密码:" value:@"******" canEdit:NO];
     
     PersonalInfoItem *qrCodeItem = [[PersonalInfoItem alloc] initWithKey:@"二维码:" value:nil canEdit:NO];
-    [qrCodeItem setImage:[UIImage imageNamed:MJRefreshSrcName(@"setting_myQR.png")]];
+    [qrCodeItem setImage:[UIImage imageNamed:(@"setting_myQR.png")]];
     
     [_infoArray addObjectsFromArray:@[nameItem,genderItem,birthDayItem,emailItem,phoneItem,passwordItem,qrCodeItem]];
     

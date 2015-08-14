@@ -48,7 +48,7 @@
     [scanButton addTarget:self action:@selector(onScanClicked) forControlEvents:UIControlEventTouchUpInside];
     [scanButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [scanButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [scanButton setBackgroundImage:[UIImage imageNamed:MJRefreshSrcName(@"GreenBG.png")] forState:UIControlStateNormal];
+    [scanButton setBackgroundImage:[UIImage imageNamed:@"GreenBG.png"] forState:UIControlStateNormal];
     [scanButton setTitle:@"扫一扫" forState:UIControlStateNormal];
     [viewParent addSubview:scanButton];
 }

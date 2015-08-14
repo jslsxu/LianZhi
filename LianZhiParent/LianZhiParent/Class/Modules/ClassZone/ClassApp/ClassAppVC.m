@@ -36,11 +36,11 @@
 
 - (void)setupSubviews
 {
-    UIImageView *grayBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+    UIImageView *grayBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"GrayBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
     [grayBG setFrame:CGRectMake(12, 15, self.view.width - 12 * 2, self.view.height - 15 * 2)];
     [self.view insertSubview:grayBG belowSubview:self.collectionView];
     
-    UIImageView *whiteBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+    UIImageView *whiteBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
     [whiteBG setFrame:CGRectMake(12, 15, grayBG.width - 12 * 2, grayBG.height - 15 * 2)];
     [grayBG addSubview:whiteBG];
 }

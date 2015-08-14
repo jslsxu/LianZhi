@@ -51,7 +51,7 @@
         _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_deleteButton setFrame:CGRectMake(10, 10, 40, 40)];
         [_deleteButton addTarget:self action:@selector(onDeleteAudioClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_deleteButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"MessageTrash.png")] forState:UIControlStateNormal];
+        [_deleteButton setImage:[UIImage imageNamed:(@"MessageTrash.png")] forState:UIControlStateNormal];
         [_deleteButton setHidden:YES];
         [self addSubview:_deleteButton];
         

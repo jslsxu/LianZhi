@@ -39,7 +39,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"WhiteLeftArrow.png")] style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:(@"WhiteLeftArrow.png")] style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
     NSString *right = nil;
     if(self.classInfo && self.classInfo.classID.integerValue != -1)
     {
@@ -95,7 +95,7 @@
 {
     if(_imageBGImageView == nil)
     {
-        _imageBGImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        _imageBGImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [_imageBGImageView setFrame:CGRectMake(kBorderMargin, kBorderMargin, _scrollView.width - kBorderMargin * 2, 240)];
         [_imageBGImageView setUserInteractionEnabled:YES];
         [_scrollView addSubview:_imageBGImageView];
@@ -106,7 +106,7 @@
     if(_operationView == nil)
     {
         _operationView = [[UIImageView alloc] initWithFrame:CGRectMake(kBorderMargin, _imageBGImageView.bottom + kBorderMargin, _scrollView.width - kBorderMargin * 2, 130)];
-        [_operationView setImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        [_operationView setImage:[[UIImage imageNamed:(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [_operationView setUserInteractionEnabled:YES];
         [_scrollView addSubview:_operationView];
     }
@@ -194,7 +194,7 @@
     {
         UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [sendButton setFrame:CGRectMake(viewParent.width - kBorderMargin - 95, viewParent.height - 56 - kBorderMargin, 95, 56)];
-        [sendButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+        [sendButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
         [sendButton addTarget:self action:@selector(onSendButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [viewParent addSubview:sendButton];
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectInset(sendButton.bounds, 5, 0)];
@@ -220,7 +220,7 @@
     
     if(_textView == nil)
     {
-        UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [bgImageView setUserInteractionEnabled:YES];
         [bgImageView setFrame:CGRectMake(kBorderMargin, kBorderMargin, viewParent.width - 95 - kBorderMargin - kBorderMargin - kBorderMargin, viewParent.height - kBorderMargin * 2)];
         [viewParent addSubview:bgImageView];

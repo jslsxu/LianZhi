@@ -69,7 +69,7 @@
     UIButton *confirmButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [confirmButton addTarget:self action:@selector(onConfirmButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [confirmButton setFrame:CGRectMake(16, self.view.height - 40 - 30, self.view.width - 15 * 2, 40)];
-    [confirmButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(5, 5, 5, 5)] forState:UIControlStateNormal];
+    [confirmButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(5, 5, 5, 5)] forState:UIControlStateNormal];
     [confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [confirmButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [confirmButton setTitle:@"保存" forState:UIControlStateNormal];

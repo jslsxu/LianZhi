@@ -51,7 +51,7 @@
         _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_deleteButton setFrame:CGRectMake(10, 10, 40, 40)];
         [_deleteButton addTarget:self action:@selector(onDeleteAudioClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_deleteButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"MessageTrash.png")] forState:UIControlStateNormal];
+        [_deleteButton setImage:[UIImage imageNamed:@"MessageTrash.png"] forState:UIControlStateNormal];
         [_deleteButton setHidden:YES];
         [self addSubview:_deleteButton];
         
@@ -214,7 +214,7 @@
     {
         changed = !changed;
         [_timeLabel setTextColor:changed ? [UIColor colorWithRed:192 / 255.0 green:118 / 255.0 blue:119 / 255.0 alpha:1.f] : [UIColor colorWithRed:83 / 255.0 green:83 / 255.0 blue:83 / 255.0 alpha:1.f]];
-//        [_audioIndicator setImage:[UIImage imageNamed:MJRefreshSrcName(@"MicrophoneRed.png")]];
+//        [_audioIndicator setImage:[UIImage imageNamed:@"MicrophoneRed.png")]];
     }
     else
         changed = NO;

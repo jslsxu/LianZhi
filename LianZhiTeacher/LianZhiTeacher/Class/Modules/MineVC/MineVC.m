@@ -7,7 +7,9 @@
 //
 
 #import "MineVC.h"
-
+#import "PersonalInfoVC.h"
+#import "ContactServiceVC.h"
+#import "ExchangeSchoolVC.h"
 #define kUserInfoCellHeight                     75
 
 @implementation UserInfoCell
@@ -32,10 +34,10 @@
         _genderView = [[UIImageView alloc] initWithFrame:CGRectZero];
         GenderType gender = [UserCenter sharedInstance].userInfo.gender;
         if(gender == GenderFemale)
-            [_genderView setImage:[UIImage imageNamed:MJRefreshSrcName(@"GenderFemale")]];
+            [_genderView setImage:[UIImage imageNamed:(@"GenderFemale")]];
         else
-            [_genderView setImage:[UIImage imageNamed:MJRefreshSrcName(@"GenderMale")]];
-        [_genderView setFrame:CGRectMake(_nameLabel.right + 5, _nameLabel.y, 15, 15)];
+            [_genderView setImage:[UIImage imageNamed:(@"GenderMale")]];
+        [_genderView setFrame:CGRectMake(_nameLabel.right + 5, _nameLabel.y, 8, 14)];
         [self addSubview:_genderView];
         
         _idLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -65,7 +67,7 @@
     if(self)
     {
         self.titleArray = @[@[@"我的学校",@"系统设置"],@[@"关于连枝",@"联系客服"]];
-        self.imageArray = @[@[@"",@""],@[@"",@""]];
+        self.imageArray = @[@[@"IconMySchool",@"IconSetting"],@[@"IconAbout",@"IconContact"]];
     }
     return self;
 }
@@ -133,13 +135,14 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
             [cell.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
             [cell.textLabel setFont:[UIFont systemFontOfSize:15]];
-            [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DatePickerNext"]]];
+            [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BlueRightArrow"]]];
         }
         NSInteger row = indexPath.row;
         if(section > 0)
         {
             NSString *title = self.titleArray[section - 1][row];
             [cell.textLabel setText:title];
+            [cell.imageView setImage:[UIImage imageNamed:self.imageArray[section - 1][row]]];
         }
         return cell;
     }
@@ -148,5 +151,32 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+    if(section == 0)
+    {
+        PersonalInfoVC *personalInfoVC = [[PersonalInfoVC alloc] init];
+        [CurrentROOTNavigationVC pushViewController:personalInfoVC animated:YES];
+    }
+    else if(section == 1)
+    {
+        if(row == 0)
+        {
+            ExchangeSchoolVC *exchangeSchoolVC = [[ExchangeSchoolVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:exchangeSchoolVC animated:YES];
+        }
+    }
+    else
+    {
+        if(row == 0)
+        {
+            
+        }
+        else
+        {
+            ContactServiceVC *contactServiceVC = [[ContactServiceVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:contactServiceVC animated:YES];
+        }
+    }
 }
 @end

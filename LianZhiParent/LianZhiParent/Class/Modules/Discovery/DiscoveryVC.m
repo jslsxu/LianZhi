@@ -87,7 +87,7 @@
     }
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    [cell.imageView setImage:[UIImage imageNamed:MJRefreshSrcName(self.imageArray[section][row])]];
+    [cell.imageView setImage:[UIImage imageNamed:self.imageArray[section][row]]];
     [cell.textLabel setText:self.titleArray[section][row]];
     return cell;
 }

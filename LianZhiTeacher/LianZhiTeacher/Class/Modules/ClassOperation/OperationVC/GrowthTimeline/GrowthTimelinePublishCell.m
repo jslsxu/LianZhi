@@ -17,12 +17,12 @@
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
         
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [_bgImageView setFrame:CGRectMake(12, 10, self.width - 12 * 2, 230 - 10 * 2)];
         [_bgImageView setUserInteractionEnabled:YES];
         [self addSubview:_bgImageView];
         
-        _grayBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        _grayBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [_grayBG setUserInteractionEnabled:YES];
         [_grayBG setFrame:CGRectMake(40, 15, _bgImageView.width - 40 - 12, 45)];
         [_bgImageView addSubview:_grayBG];
@@ -43,19 +43,19 @@
         _temperatureButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_temperatureButton addTarget:self action:@selector(onTemperatureButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [_temperatureButton setFrame:CGRectMake(_grayBG.width - 10 - 40, (_grayBG.height - 40) / 2, 40, 40)];
-        [_temperatureButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"TempNormal.png")] forState:UIControlStateNormal];
+        [_temperatureButton setImage:[UIImage imageNamed:(@"TempNormal.png")] forState:UIControlStateNormal];
         [_grayBG addSubview:_temperatureButton];
         
         _toiletButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_toiletButton addTarget:self action:@selector(onToiletButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [_toiletButton setFrame:CGRectMake(_temperatureButton.left - 5 - 40, (_grayBG.height - 40) / 2, 40, 40)];
-        [_toiletButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ToiletNo.png")] forState:UIControlStateNormal];
+        [_toiletButton setImage:[UIImage imageNamed:(@"ToiletNo.png")] forState:UIControlStateNormal];
         [_grayBG addSubview:_toiletButton];
         
         _emotionButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_emotionButton addTarget:self action:@selector(onEmotionButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [_emotionButton setFrame:CGRectMake(_toiletButton.left - 5 - 40, (_grayBG.height - 40) / 2, 40, 40)];
-        [_emotionButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ExpressionHappy.png")] forState:UIControlStateNormal];
+        [_emotionButton setImage:[UIImage imageNamed:(@"ExpressionHappy.png")] forState:UIControlStateNormal];
         [_grayBG addSubview:_emotionButton];
         
         
@@ -112,7 +112,7 @@
         [_sleepSlider setValue:2];
         spaceYStart += 15 + 15;
         
-        UIImageView *textBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        UIImageView *textBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [textBG setFrame:CGRectMake(15, spaceYStart, _bgImageView.width - 15 * 2, 60)];
         [textBG setUserInteractionEnabled:YES];
         [_bgImageView addSubview:textBG];
@@ -144,25 +144,25 @@
         [_genderLabel setText:@"小帅哥"];
     NSString *temp = [_modelItem temprature];
     if([temp isEqualToString:@"正常"])
-        [_temperatureButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"TempNormal.png")] forState:UIControlStateNormal];
+        [_temperatureButton setImage:[UIImage imageNamed:(@"TempNormal.png")] forState:UIControlStateNormal];
     else if([temp isEqualToString:@"发烧"])
-        [_temperatureButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"TempHigh.png")] forState:UIControlStateNormal];
+        [_temperatureButton setImage:[UIImage imageNamed:(@"TempHigh.png")] forState:UIControlStateNormal];
     
     NSInteger stoolNum = [_modelItem stoolNum];
     if(stoolNum == 0)
-        [_toiletButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ToiletNo.png")] forState:UIControlStateNormal];
+        [_toiletButton setImage:[UIImage imageNamed:(@"ToiletNo.png")] forState:UIControlStateNormal];
     else if(stoolNum == 1)
-        [_toiletButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ToiletOnce.png")] forState:UIControlStateNormal];
+        [_toiletButton setImage:[UIImage imageNamed:(@"ToiletOnce.png")] forState:UIControlStateNormal];
     else if(stoolNum == 2)
-        [_toiletButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ToiletTwice.png")] forState:UIControlStateNormal];
+        [_toiletButton setImage:[UIImage imageNamed:(@"ToiletTwice.png")] forState:UIControlStateNormal];
     
     NSString *emotion = [_modelItem emotion];
     if([emotion isEqualToString:@"高兴"])
-        [_emotionButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ExpressionHappy.png")] forState:UIControlStateNormal];
+        [_emotionButton setImage:[UIImage imageNamed:(@"ExpressionHappy.png")] forState:UIControlStateNormal];
     else if ([emotion isEqualToString:@"哭闹"])
-        [_emotionButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ExpressionCry.png")] forState:UIControlStateNormal];
+        [_emotionButton setImage:[UIImage imageNamed:(@"ExpressionCry.png")] forState:UIControlStateNormal];
     else
-        [_emotionButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ExpressionSimple.png")] forState:UIControlStateNormal];
+        [_emotionButton setImage:[UIImage imageNamed:(@"ExpressionSimple.png")] forState:UIControlStateNormal];
 
     [_waterSlider setValue:_modelItem.water];
     [_waterValueLabel setText:[NSString stringWithFormat:@"%ld杯",(long)_modelItem.water]];
@@ -179,12 +179,12 @@
     NSString *next = nil;
     if([temp isEqualToString:@"正常"])
     {
-        [_temperatureButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"TempHigh.png")] forState:UIControlStateNormal];
+        [_temperatureButton setImage:[UIImage imageNamed:(@"TempHigh.png")] forState:UIControlStateNormal];
         next = @"发烧";
     }
     else if([temp isEqualToString:@"发烧"])
     {
-        [_temperatureButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"TempNormal.png")] forState:UIControlStateNormal];
+        [_temperatureButton setImage:[UIImage imageNamed:(@"TempNormal.png")] forState:UIControlStateNormal];
         next = @"正常";
     }
     [timelineItem setTemprature:next];
@@ -198,17 +198,17 @@
     if(stoolNum == 0)
     {
         next = 1;
-        [_toiletButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ToiletOnce.png")] forState:UIControlStateNormal];
+        [_toiletButton setImage:[UIImage imageNamed:(@"ToiletOnce.png")] forState:UIControlStateNormal];
     }
     else if(stoolNum == 1)
     {
         next = 2;
-        [_toiletButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ToiletTwice.png")] forState:UIControlStateNormal];
+        [_toiletButton setImage:[UIImage imageNamed:(@"ToiletTwice.png")] forState:UIControlStateNormal];
     }
     else
     {
         next = 0;
-        [_toiletButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ToiletNo.png")] forState:UIControlStateNormal];
+        [_toiletButton setImage:[UIImage imageNamed:(@"ToiletNo.png")] forState:UIControlStateNormal];
     }
     [timelineItem setStoolNum:next];
 }
@@ -221,17 +221,17 @@
     if([emotion isEqualToString:@"高兴"])
     {
         next = @"哭闹";
-        [_emotionButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ExpressionCry.png")] forState:UIControlStateNormal];
+        [_emotionButton setImage:[UIImage imageNamed:(@"ExpressionCry.png")] forState:UIControlStateNormal];
     }
     else if ([emotion isEqualToString:@"哭闹"])
     {
         next = @"一般";
-        [_emotionButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ExpressionSimple.png")] forState:UIControlStateNormal];
+        [_emotionButton setImage:[UIImage imageNamed:(@"ExpressionSimple.png")] forState:UIControlStateNormal];
     }
     else
     {
         next = @"高兴";
-        [_emotionButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"ExpressionHappy.png")] forState:UIControlStateNormal];
+        [_emotionButton setImage:[UIImage imageNamed:(@"ExpressionHappy.png")] forState:UIControlStateNormal];
     }
     [timelineItem setEmotion:next];
 }

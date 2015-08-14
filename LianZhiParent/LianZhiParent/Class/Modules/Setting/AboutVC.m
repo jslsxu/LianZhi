@@ -86,7 +86,7 @@
     
     UIButton *checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [checkButton addTarget:self action:@selector(onCheckButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [checkButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [checkButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [checkButton setFrame:CGRectMake(10, self.view.height - 45 - 10, self.view.width - 10 * 2, 45)];
     [checkButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [checkButton.titleLabel setFont:[UIFont systemFontOfSize:18]];

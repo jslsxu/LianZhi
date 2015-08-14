@@ -17,7 +17,7 @@
     [super layoutSubviews];
     if(_redDot == nil)
     {
-        _redDot = [[UIImageView alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"RedDot.png")]];
+        _redDot = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"RedDot.png")]];
         [_redDot setHidden:YES];
         [self addSubview:_redDot];
     }
@@ -50,6 +50,7 @@ static NSArray *tabDatas = nil;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
+        self.title = [UserCenter sharedInstance].curSchool.schoolName;
         self.edgesForExtendedLayout = UIRectEdgeNone;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNewMsgNumChanged) name:kNewMsgNumNotification object:nil];
@@ -87,7 +88,7 @@ static NSArray *tabDatas = nil;
 
 - (void)onSchoolChanged
 {
-    
+    self.title = [UserCenter sharedInstance].curSchool.schoolName;
 }
 
 - (MessageVC *)messageVC
@@ -140,7 +141,7 @@ static NSArray *tabDatas = nil;
         
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_switchButton];
     }
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:MJRefreshSrcName(@"Setting.png")] style:UIBarButtonItemStylePlain target:self action:@selector(onSettingClicked)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:(@"Setting")] style:UIBarButtonItemStylePlain target:self action:@selector(onSettingClicked)];
     
     NSMutableArray *subVCs = [[NSMutableArray alloc] initWithCapacity:0];
     NSArray *subVCArray = @[@"MessageVC",@"ApplicationBoxVC",@"DiscoveryVC",@"MineVC"];

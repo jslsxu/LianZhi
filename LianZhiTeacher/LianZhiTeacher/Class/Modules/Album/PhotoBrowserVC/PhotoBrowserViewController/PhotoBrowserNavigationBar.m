@@ -40,7 +40,7 @@
         
         deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [deleteButton setFrame:CGRectMake(saveButton.left - 44 - 10,20, 44, 44)];
-        [deleteButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"Trash.png")] forState:UIControlStateNormal];
+        [deleteButton setImage:[UIImage imageNamed:(@"Trash.png")] forState:UIControlStateNormal];
         [deleteButton addTarget:self action:@selector(clickDeletePhoto) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:deleteButton];
     }

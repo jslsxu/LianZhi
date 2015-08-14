@@ -64,8 +64,8 @@
     [bottomView addSubview:_albumSelectedView];
     
     _confirmButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_confirmButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
-    [_confirmButton setBackgroundImage:[[UIImage imageNamed:MJRefreshSrcName(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateDisabled];
+    [_confirmButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_confirmButton setBackgroundImage:[[UIImage imageNamed:@"GrayBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateDisabled];
     [_confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_confirmButton setEnabled:NO];
     [_confirmButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
@@ -100,7 +100,7 @@
     [titleLabel sizeToFit];
     [_albumSelectedView addSubview:titleLabel];
 
-    _arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:_albumShown ? MJRefreshSrcName(@"DownArrow.png") : MJRefreshSrcName(@"UpArrow.png")]];
+    _arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:_albumShown ? @"DownArrow.png" : @"UpArrow.png"]];
     [_albumSelectedView addSubview:_arrow];
     
     CGFloat width = titleLabel.width + _arrow.width + 2;
@@ -156,7 +156,7 @@
 - (void)setAlbumShown:(BOOL)albumShown
 {
     _albumShown = albumShown;
-    [_arrow setImage:[UIImage imageNamed:_albumShown ? MJRefreshSrcName(@"DownArrow.png") : MJRefreshSrcName(@"UpArrow.png")]];
+    [_arrow setImage:[UIImage imageNamed:_albumShown ? @"DownArrow.png" : @"UpArrow.png"]];
     if(_albumShown)
     {
         [_groupView reloadData];

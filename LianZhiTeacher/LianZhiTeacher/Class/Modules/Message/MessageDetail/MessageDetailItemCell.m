@@ -24,7 +24,7 @@
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
         
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:MJRefreshSrcName(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
         [_bgImageView setUserInteractionEnabled:YES];
         [self addSubview:_bgImageView];
         
@@ -46,7 +46,7 @@
         
         _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_deleteButton addTarget:self action:@selector(onMessageDeleteButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_deleteButton setImage:[UIImage imageNamed:MJRefreshSrcName(@"MessageDetailTrash.png")] forState:UIControlStateNormal];
+        [_deleteButton setImage:[UIImage imageNamed:(@"MessageDetailTrash.png")] forState:UIControlStateNormal];
         [_bgImageView addSubview:_deleteButton];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
