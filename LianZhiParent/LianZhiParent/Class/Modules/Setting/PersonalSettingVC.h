@@ -10,24 +10,17 @@
 
 typedef void(^SwitchBlk)(BOOL on);
 
-@interface PersonalSettingCell : BGTableViewCell
+@interface PersonalSettingCell : UITableViewCell
 {
     UILabel*    _titleLabel;
-    UISwitch*   _switch;
+    UISwitch*   _switchCtl;
+    UILabel*    _extraLabel;
 }
 @property (nonatomic, readonly)UILabel* titleLabel;
+@property (nonatomic, readonly)UISwitch *switchCtl;
+@property (nonatomic, readonly)UILabel* extraLabel;
 @property (nonatomic, assign)BOOL isOn;
 @property (nonatomic, copy)SwitchBlk switchBlk;
-
-@end
-@interface NoDisturbingCell : BGTableViewCell
-{
-    UILabel*    _titleLabel;
-    UILabel*    _valueLabel;
-}
-@property (nonatomic, readonly)UILabel *titleLabel;
-@property (nonatomic, readonly)UILabel *valueLabel;
-
 @end
 
 @interface PersonalSettingVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>

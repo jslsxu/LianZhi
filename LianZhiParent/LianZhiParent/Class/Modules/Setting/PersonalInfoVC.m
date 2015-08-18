@@ -8,7 +8,7 @@
 
 #import "PersonalInfoVC.h"
 #import "ReportProblemVC.h"
-
+#import "CommonInputVC.h"
 NSString *const kAddRelationNotification = @"AddRelationNotification";
 
 @implementation PersonalInfoItem
@@ -33,82 +33,24 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
     if(self)
     {
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
-        _hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, 65, 16)];
-        [_hintLabel setBackgroundColor:[UIColor clearColor]];
-        [_hintLabel setFont:[UIFont systemFontOfSize:15]];
-        [_hintLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-        [self addSubview:_hintLabel];
+        [self.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [self.textLabel setFont:[UIFont systemFontOfSize:14]];
+        [self.detailTextLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
+        [self.detailTextLabel setFont:[UIFont systemFontOfSize:12]];
         
-        _textField = [[UITextField alloc] initWithFrame:CGRectMake(90, 20 - (24 - 16) / 2, 200, 24)];
-        [_textField setFont:[UIFont systemFontOfSize:14]];
-        [_textField setDelegate:self];
-        [_textField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
-        [_textField setTextColor:[UIColor colorWithHexString:@"666666"]];
-        [_textField setBackgroundColor:[UIColor clearColor]];
-        [self addSubview:_textField];
-        
-        _addButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_addButton setImage:[UIImage imageNamed:@"Add.png"] forState:UIControlStateNormal];
-        [_addButton addTarget:self action:@selector(onAddButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_addButton setFrame:CGRectMake(self.width - 30, (self.height - 40) / 2, 30, 40)];
-        [_addButton setHidden:YES];
-        [self addSubview:_addButton];
-        
-        _imageIcon = [[UIImageView alloc] initWithFrame:CGRectMake(90, 20, 16, 16)];
-        [self addSubview:_imageIcon];
-        
-        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(12, 44, self.width - 12 * 2, 1)];
-        [_sepLine setBackgroundColor:[UIColor colorWithHexString:@"d8d8d8"]];
+        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 50 - kLineHeight, self.width, kLineHeight)];
+        [_sepLine setBackgroundColor:kSepLineColor];
         [self addSubview:_sepLine];
     }
     return self;
 }
 
-- (void)setShowAdd:(BOOL)showAdd
-{
-    _showAdd = showAdd;
-    [_addButton setHidden:!_showAdd];
-}
-
-- (void)onAddButtonClicked
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAddRelationNotification object:nil userInfo:nil];
-}
-
 - (void)setInfoItem:(PersonalInfoItem *)infoItem
 {
     _infoItem = infoItem;
-    [_textField setKeyboardType:_infoItem.keyboardType];
-    [_hintLabel setText:_infoItem.key];
-    [_textField setText:_infoItem.value];
-    [_textField setEnabled:_infoItem.changeDirectly];
-    [_imageIcon setImage:infoItem.image];
+    [self.textLabel setText:[NSString stringWithFormat:@"%@:",infoItem.key]];
+    [self.detailTextLabel setText:infoItem.value];
 }
-
-- (void)textFieldEditingChanged:(UITextField *)textField
-{
-    NSString *text = textField.text;
-    //孩子昵称
-    if([_infoItem.requestKey isEqualToString:@"nick"])
-    {
-        if(text.length > 8 && textField.markedTextRange == nil)
-        {
-            text = [text substringWithRange:NSMakeRange(0, 8)];
-            [textField setText:text];
-        }
-    }
-    _infoItem.value = text;
-}
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    if([string isEqualToString:@"\n"])
-    {
-        [textField resignFirstResponder];
-        return NO;
-    }
-    return YES;
-}
-
 
 @end
 
@@ -143,17 +85,6 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
     [self setupHeaderView:_headerView];
     [self.tableView setTableHeaderView:_headerView];
     
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 80)];
-    UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [saveButton setFrame:CGRectMake(12, (footerView.height - 45) / 2, footerView.width - 12 * 2, 45)];
-    [saveButton addTarget:self action:@selector(onSaveButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [saveButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
-    [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [saveButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
-    [saveButton setTitle:@"保存个人信息修改" forState:UIControlStateNormal];
-    [footerView addSubview:saveButton];
-    [self.tableView setTableFooterView:footerView];
-    
     [self setupInfoArray];
     [self.tableView reloadData];
 }
@@ -161,72 +92,38 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
 - (void)setupHeaderView:(UIView *)viewParent
 {
 
-    _idLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [_idLabel setTextColor:kCommonParentTintColor];
-    [_idLabel setFont:[UIFont systemFontOfSize:14]];
-    [_idLabel setText:[NSString stringWithFormat:@"连枝号:%@",[UserCenter sharedInstance].userInfo.uid]];
-    [_idLabel sizeToFit];
-    [_idLabel setOrigin:CGPointMake(viewParent.width - _idLabel.width - 10, 5)];
-    [viewParent addSubview:_idLabel];
-    CGFloat spaceYStart = 20;
-    _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(24, 15 + spaceYStart, 60, 60)];
+    [viewParent.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    UIButton *coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [coverButton setFrame:viewParent.bounds];
+    [coverButton addTarget:self action:@selector(onAvatarModification) forControlEvents:UIControlEventTouchUpInside];
+    [viewParent addSubview:coverButton];
+    
+    UILabel* idLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, viewParent.width, 30)];
+    [idLabel setBackgroundColor:[UIColor colorWithHexString:@"04aa73"]];
+    [idLabel setTextColor:[UIColor whiteColor]];
+    [idLabel setTextAlignment:NSTextAlignmentCenter];
+    [idLabel setFont:[UIFont systemFontOfSize:12]];
+    [idLabel setText:[NSString stringWithFormat:@"连枝号:%@",[UserCenter sharedInstance].userInfo.uid]];
+    [viewParent addSubview:idLabel];
+    
+    _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(12, 40, 60, 60)];
     [_avatar setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
-    [_avatar setBorderWidth:2];
-    [_avatar setBorderColor:[UIColor colorWithWhite:0 alpha:0.2]];
     [viewParent addSubview:_avatar];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onAvatarTap)];
     [_avatar addGestureRecognizer:tapGesture];
     
-    _modifyButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_modifyButton setFrame:CGRectMake(24, _avatar.bottom + 2, _avatar.width, 30)];
-    [_modifyButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
-    [_modifyButton setTitleColor:kCommonParentTintColor forState:UIControlStateNormal];
-    [_modifyButton setTitle:@"编辑" forState:UIControlStateNormal];
-    [_modifyButton addTarget:self action:@selector(onAvatarModification) forControlEvents:UIControlEventTouchUpInside];
-    [viewParent addSubview:_modifyButton];
+    UILabel *avatarLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    [avatarLabel setTextColor:kCommonParentTintColor];
+    [avatarLabel setFont:[UIFont systemFontOfSize:14]];
+    [avatarLabel setText:@"编辑"];
+    [avatarLabel sizeToFit];
+    [avatarLabel setOrigin:CGPointMake(viewParent.width - 12 - avatarLabel.width, 30 + (88 - avatarLabel.height) / 2)];
+    [viewParent addSubview:avatarLabel];
     
-    for (NSInteger i = 0; i < 2; i++)
-    {
-        UILabel*    hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(118, 20 + spaceYStart, 65, 16)];
-        [hintLabel setBackgroundColor:[UIColor clearColor]];
-        [hintLabel setFont:[UIFont systemFontOfSize:15]];
-        [hintLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-        if(i == 0)
-            [hintLabel setText:@"姓名:"];
-        else
-            [hintLabel setText:@"出生日期:"];
-        [viewParent addSubview:hintLabel];
-        
-        if(i == 0)
-        {
-            UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(160, 20 + spaceYStart - (24 - 16) / 2, 140, 24)];
-            [textField setDelegate:self];
-            [textField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
-            [textField setFont:[UIFont systemFontOfSize:14]];
-            [textField setTextColor:[UIColor colorWithHexString:@"666666"]];
-            [textField setBackgroundColor:[UIColor clearColor]];
-            _nameField = textField;
-            [viewParent addSubview:textField];
-        }
-        else
-        {
-            _birthdayLabel = [[UILabel alloc] initWithFrame:CGRectMake(190, 20 + spaceYStart - (24 - 16) / 2, 110, 24)];
-            [_birthdayLabel setUserInteractionEnabled:YES];
-            [_birthdayLabel setFont:[UIFont systemFontOfSize:14]];
-            [_birthdayLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
-            [viewParent addSubview:_birthdayLabel];
-            
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
-            [_birthdayLabel addGestureRecognizer:tap];
-        }
-        
-        UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(108, 44 + spaceYStart, viewParent.width - 12 - 108, 1)];
-        [sepLine setBackgroundColor:[UIColor colorWithHexString:@"d8d8d8"]];
-        [viewParent addSubview:sepLine];
-        
-        spaceYStart += 45;
-    }
+    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, viewParent.height - kLineHeight, viewParent.width, kLineHeight)];
+    [bottomLine setBackgroundColor:kSepLineColor];
+    [viewParent addSubview:bottomLine];
 }
 
 //放大头像
@@ -262,22 +159,24 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
         [_infoArray removeAllObjects];
     else
         _infoArray = [[NSMutableArray alloc] init];
-    PersonalInfoItem *nameItem = [[PersonalInfoItem alloc] initWithKey:@"姓名:" value:[UserCenter sharedInstance].userInfo.name canEdit:YES];
+    PersonalInfoItem *nameItem = [[PersonalInfoItem alloc] initWithKey:@"姓名" value:[UserCenter sharedInstance].userInfo.name canEdit:YES];
     [nameItem setRequestKey:@"name"];
-    PersonalInfoItem *birthDayItem = [[PersonalInfoItem alloc] initWithKey:@"出生日期:" value:[UserCenter sharedInstance].userInfo.birthDay canEdit:NO];
+    PersonalInfoItem *nickNameItem = [[PersonalInfoItem alloc] initWithKey:@"昵称" value:nil canEdit:YES];
+    [nickNameItem setRequestKey:@"nick"];
+    PersonalInfoItem *birthDayItem = [[PersonalInfoItem alloc] initWithKey:@"出生日期" value:[UserCenter sharedInstance].userInfo.birthDay canEdit:NO];
     [birthDayItem setRequestKey:@"birthday"];
-    PersonalInfoItem *emailItem = [[PersonalInfoItem alloc] initWithKey:@"联系邮箱:" value:[UserCenter sharedInstance].userInfo.email canEdit:YES];
+    PersonalInfoItem *emailItem = [[PersonalInfoItem alloc] initWithKey:@"联系邮箱" value:[UserCenter sharedInstance].userInfo.email canEdit:YES];
     [emailItem setRequestKey:@"email"];
     [emailItem setKeyboardType:UIKeyboardTypeEmailAddress];
-    PersonalInfoItem *phoneItem = [[PersonalInfoItem alloc] initWithKey:@"登陆手机:" value:[UserCenter sharedInstance].userInfo.mobile canEdit:NO];
-    PersonalInfoItem *passwordItem = [[PersonalInfoItem alloc] initWithKey:@"登录密码:" value:@"******" canEdit:NO];
-    [_infoArray addObjectsFromArray:@[nameItem,birthDayItem,emailItem,phoneItem,passwordItem]];
+    PersonalInfoItem *phoneItem = [[PersonalInfoItem alloc] initWithKey:@"登陆手机" value:[UserCenter sharedInstance].userInfo.mobile canEdit:NO];
+    PersonalInfoItem *passwordItem = [[PersonalInfoItem alloc] initWithKey:@"登录密码" value:@"******" canEdit:NO];
+    [_infoArray addObjectsFromArray:@[nameItem,nickNameItem,birthDayItem,emailItem,phoneItem,passwordItem]];
     for (ChildInfo *child in [UserCenter sharedInstance].children) {
         NSArray *family = child.family;
         for (FamilyInfo *familyInfo in family) {
             if([familyInfo.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid])
             {
-                PersonalInfoItem *relationItem = [[PersonalInfoItem alloc] initWithKey:@"家长身份:" value:nil canEdit:NO];
+                PersonalInfoItem *relationItem = [[PersonalInfoItem alloc] initWithKey:@"家长身份" value:nil canEdit:NO];
                 NSString *curRelationID = nil;
                 for (NSDictionary *relationDic in _relationArray) {
                     NSString *relationID = relationDic[@"id"];
@@ -293,9 +192,6 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
             }
         }
     }
-    
-    [_nameField setText:nameItem.value];
-    [_birthdayLabel setText:birthDayItem.value];
 }
 
 - (void)onAvatarModification
@@ -386,7 +282,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return  _infoArray.count - 2;
+    return  _infoArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -395,26 +291,32 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
     PersonalInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
     if(nil == cell)
     {
-        cell = [[PersonalInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+        cell = [[PersonalInfoCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseID];
     }
-    [cell setInfoItem:[_infoArray objectAtIndex:indexPath.row + 2]];
+    [cell setInfoItem:[_infoArray objectAtIndex:indexPath.row]];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 45;
+    return 50;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.view endEditing:YES];
-    if(indexPath.row == 2)
+    NSInteger row = indexPath.row;
+    if(row == 2)//生日
     {
-        PasswordModifyVC *passwordModifyVC = [[PasswordModifyVC alloc] init];
-        [self.navigationController pushViewController:passwordModifyVC animated:YES];
+        SettingDatePickerView *datePicker = [[SettingDatePickerView alloc] initWithType:SettingDatePickerTypeDate];
+        [datePicker setBlk:^(NSString *dateStr){
+            PersonalInfoItem *birthdayItem = [_infoArray objectAtIndex:1];
+            [birthdayItem setValue:dateStr];
+            [self.tableView reloadData];
+        }];
+        [datePicker show];
     }
-    else if (indexPath.row == 1)
+    else if(row == 4)//守家
     {
         TNButtonItem *mofifyItem = [TNButtonItem itemWithTitle:@"前往客服中心上报" action:^{
             
@@ -428,52 +330,28 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
         TNActionSheet *actionSheet = [[TNActionSheet alloc] initWithTitle:@"修改登录手机可能造成数据丢失，请联系客服进行号码修改" descriptionView:nil destructiveButton:cancelItem cancelItem:nil otherItems:@[mofifyItem]];
         [actionSheet show];
     }
-    else if(indexPath.row >= 3 && indexPath.row < _infoArray.count - 3)//身份
+    else if(row == 5)//密码
     {
-        self.targetItem = [_infoArray objectAtIndex:indexPath.row + 2];
+        PasswordModifyVC *passwordModifyVC = [[PasswordModifyVC alloc] init];
+        [self.navigationController pushViewController:passwordModifyVC animated:YES];
+    }
+    else if(row > 5)
+    {
+        self.targetItem = [_infoArray objectAtIndex:row];
         ActionSelectView *selectView = [[ActionSelectView alloc] init];
         [selectView setDelegate:self];
         [selectView show];
     }
-    else if(indexPath.row == _infoArray.count - 3)
+    else
     {
-        QrCodeView *qrCodeView = [[QrCodeView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.bounds];
-        [qrCodeView showInView:[UIApplication sharedApplication].keyWindow];
+        PersonalInfoItem *infoItem = _infoArray[row];
+        CommonInputVC *commonInputVC = [[CommonInputVC alloc] initWithOriginal:infoItem.value forKey:infoItem.key completion:^(NSString *value) {
+            infoItem.value = value;
+            [self.tableView reloadData];
+        }];
+        [CurrentROOTNavigationVC pushViewController:commonInputVC animated:YES];
     }
-}
 
-- (void)textFieldEditingChanged:(UITextField *)textField
-{
-    PersonalInfoItem *nameItem = [_infoArray objectAtIndex:0];
-    NSString *text = textField.text;
-    if(text.length > 8 && textField.markedTextRange == nil)
-    {
-        text = [text substringToIndex:8];
-        [textField setText:text];
-    }
-    [nameItem setValue:text];
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    if([string isEqualToString:@"\n"])
-    {
-        [textField resignFirstResponder];
-        return NO;
-    }
-    return YES;
-}
-
-- (void)onTap
-{
-    [self.view endEditing:YES];
-    SettingDatePickerView *datePicker = [[SettingDatePickerView alloc] initWithType:SettingDatePickerTypeDate];
-    [datePicker setBlk:^(NSString *dateStr){
-        PersonalInfoItem *birthdayItem = [_infoArray objectAtIndex:1];
-        [birthdayItem setValue:dateStr];
-        [_birthdayLabel setText:birthdayItem.value];
-    }];
-    [datePicker show];
 }
 
 #pragma mark - UIImagePickerController

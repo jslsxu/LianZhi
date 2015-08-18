@@ -44,6 +44,7 @@
     [super viewDidLoad];
     
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    [_tableView setSeparatorColor:kSepLineColor];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];

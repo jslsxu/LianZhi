@@ -21,12 +21,13 @@
 #define kNormalTextColor                [UIColor colorWithRed:102 / 255.0 green:102 / 255.0 blue:102 / 255.0 alpha:1.f]
 #define kSubTextColor                   [UIColor colorWithRed:153 / 255.0 green:153 / 255.0 blue:153 / 255.0 alpha:1.f]
 #define kWarningTextColor               [UIColor colorWithRed:164 / 255.0 green:70 / 255.0 blue:73 / 255.0 alpha:1.f]
-#define kSepLineColor                   [UIColor colorWithRed:0xeb / 255.0 green:0xeb / 255.0 blue:0xeb / 255.0 alpha:1.f]
+#define kSepLineColor                   [UIColor colorWithRed:0xEE / 255.0 green:0xEE / 255.0 blue:0xEE / 255.0 alpha:1.f]
 
 #define kButtonTextFont                 [UIFont systemFontOfSize:17]
 #define kCommonTextFont                 [UIFont systemFontOfSize:14]
 #define kSubTextFont                    [UIFont systemFontOfSize:11]
 
+#define kLineHeight                     0.5f
 
 #ifdef DEBUG
 #define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);

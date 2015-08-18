@@ -131,7 +131,7 @@
 {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    NSString *cellID = [NSString stringWithFormat:@"PersoanlSettingCell%ld-%ld",(long)indexPath.section,(long)indexPath.row];
+    NSString *cellID = @"PersoanlSettingCell";
     PersonalSettingCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if(cell == nil)
     {

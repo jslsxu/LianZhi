@@ -26,26 +26,16 @@ extern NSString *const kAddRelationNotification;
 
 @interface PersonalInfoCell : UITableViewCell<UITextFieldDelegate>
 {
-    UILabel*        _hintLabel;
-    UITextField*    _textField;
-    UIButton*       _addButton;
-    UIImageView*    _imageIcon;
     UIView*         _sepLine;
 }
-@property (nonatomic, readonly)UITextField *textField;
 @property (nonatomic, strong)PersonalInfoItem *infoItem;
-@property (nonatomic, assign)BOOL showAdd;
 @end
 
 
 @interface PersonalInfoVC : UITableViewController<UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, AvatarPickerDelegate, ActionSelectViewDelegate,UIViewControllerTransitioningDelegate>
 {
     NSArray*                _relationArray;
-    UILabel*                _idLabel;
     AvatarView*             _avatar;
-    UIButton*               _modifyButton;
-    UITextField*            _nameField;
-    UILabel*                _birthdayLabel;
     NSMutableArray*         _infoArray;
     UIView *                _headerView;
 }

@@ -47,51 +47,8 @@
     [versionLabel sizeToFit];
     [versionLabel setOrigin:CGPointMake((self.view.width - versionLabel.width) / 2, preLabel.bottom + 10)];
     [self.view addSubview:versionLabel];
-    
-//    UILabel* companyLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-//    [companyLabel setTextColor:[UIColor lightGrayColor]];
-//    [companyLabel setFont:[UIFont systemFontOfSize:14]];
-//    [companyLabel setText:@"天津市世纪伟业科技发展有限公司"];
-//    [companyLabel sizeToFit];
-//    [self.view addSubview:companyLabel];
-//    [companyLabel setOrigin:CGPointMake((self.view.width - companyLabel.width) / 2, versionLabel.bottom + 40)];
-//    
-//    TTTAttributedLabel*    companyLinkLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectZero];
-//    [companyLinkLabel setNumberOfLines:0];
-//    [companyLinkLabel setDelegate:self];
-//    [companyLinkLabel setTextAlignment:NSTextAlignmentCenter];
-//    [companyLinkLabel setUserInteractionEnabled:YES];
-//    
-//    NSString *first = @"COPYRIGHT © 2015 ";
-//    NSString *second = @"SJWYCN.COM";
-//    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",first,second]];
-//    [attrStr setAttributes:@{NSForegroundColorAttributeName : [UIColor lightGrayColor], NSFontAttributeName : [UIFont systemFontOfSize:14]} range:NSMakeRange(0, attrStr.length)];
-//    [attrStr setAttributes:@{NSForegroundColorAttributeName : kCommonParentTintColor, NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle),NSFontAttributeName : [UIFont systemFontOfSize:14]} range:NSMakeRange(first.length, second.length)];
-//    [companyLinkLabel setAttributedText:attrStr];
-//    [companyLinkLabel sizeToFit];
-//    [self.view addSubview:companyLinkLabel];
-//    [companyLinkLabel setOrigin:CGPointMake((self.view.width - companyLinkLabel.width) / 2, companyLabel.bottom + 10)];
-//    [companyLinkLabel addLinkToURL:[NSURL URLWithString:[UserCenter sharedInstance].userData.config.aboutUrl] withRange:NSMakeRange(first.length, second.length)];
-//    
-//    UILabel *extraLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-//    [extraLabel setTextAlignment:NSTextAlignmentCenter];
-//    [extraLabel setTextColor:[UIColor lightGrayColor]];
-//    [extraLabel setFont:[UIFont systemFontOfSize:14]];
-//    [extraLabel setText:@"ALL RIGHTS RESERVED"];
-//    [extraLabel sizeToFit];
-//    [extraLabel setOrigin:CGPointMake((self.view.width - extraLabel.width) / 2, companyLinkLabel.bottom + 5)];
-//    [self.view addSubview:extraLabel];
 
-    
-    
-    UIButton *checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [checkButton addTarget:self action:@selector(onCheckButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [checkButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
-    [checkButton setFrame:CGRectMake(10, self.view.height - 45 - 10, self.view.width - 10 * 2, 45)];
-    [checkButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [checkButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
-    [checkButton setTitle:@"检查版本更新" forState:UIControlStateNormal];
-    [self.view addSubview:checkButton];
+
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url

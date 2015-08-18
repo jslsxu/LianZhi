@@ -7,30 +7,21 @@
 //
 
 #import "TNBaseViewController.h"
-
+#import "iCarousel.h"
 #import "PersonalInfoVC.h"
 
-@interface ChildInfoCell : UICollectionViewCell<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface ChildrenItemView : UIView
 {
-    UILabel*                _idLabel;
-    AvatarView*             _avatar;
-    UIButton*               _modifyButton;
-    UITextField*            _nameField;
-    UILabel*                _genderLabel;
-    NSMutableArray*         _infoArray;
-    UIView*                 _headerView;
-    UITableView *           _tableView;
+    AvatarView*     _avatar;
+    UILabel*        _nameLabel;
 }
-@property (nonatomic, strong)UIImage *avatarImage;
-@property (nonatomic, readonly)NSArray *infoArray;
-@property (nonatomic, strong)ChildInfo *childInfo;
-
+@property (nonatomic, weak)ChildInfo *childInfo;
 @end
-@interface ChildrenInfoVC : TNBaseViewController<UICollectionViewDataSource, UICollectionViewDelegate>
+
+@interface ChildrenInfoVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate>
 {
-    UICollectionView*               _collectionView;
-    UICollectionViewFlowLayout*     _flowLayout;
-    UIButton*                       _saveButton;
+    iCarousel*          _headerView;
+    UITableView*        _tableView;
 }
 @property (nonatomic, assign)NSInteger curIndex;
 @end

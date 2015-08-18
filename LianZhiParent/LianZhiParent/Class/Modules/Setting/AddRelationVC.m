@@ -241,10 +241,10 @@
     {
         cell = [[PersonalInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
-    if(indexPath.row == _infoArray.count - 1)
-        [cell setShowAdd:YES];
-    else
-        [cell setShowAdd:NO];
+//    if(indexPath.row == _infoArray.count - 1)
+//        [cell setShowAdd:YES];
+//    else
+//        [cell setShowAdd:NO];
     [cell setInfoItem:[_infoArray objectAtIndex:indexPath.row]];
     return cell;
 }

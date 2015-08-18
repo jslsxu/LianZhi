@@ -26,6 +26,7 @@ NSString *const kPersonalSettingKey = @"PersonalSettingKey";
     self = [super init];
     if(self)
     {
+        self.earPhone = [aDecoder decodeBoolForKey:@"ear_phone"];
         self.wifiSend = [aDecoder decodeBoolForKey:@"only_wifi_photo"];
         self.autoSave = [aDecoder decodeBoolForKey:@"auto_save"];
         self.soundOn = [aDecoder decodeBoolForKey:@"sound"];
@@ -39,6 +40,7 @@ NSString *const kPersonalSettingKey = @"PersonalSettingKey";
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
+    [aCoder encodeBool:self.earPhone forKey:@"ear_phone"];
     [aCoder encodeBool:self.wifiSend forKey:@"only_wifi_photo"];
     [aCoder encodeBool:self.autoSave forKey:@"auto_save"];
     [aCoder encodeBool:self.soundOn forKey:@"sound"];

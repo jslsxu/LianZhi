@@ -334,6 +334,8 @@
 		37E93FDD1A7E9CF200AD45A1 /* MJPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FD31A7E9CF200AD45A1 /* MJPhotoView.m */; };
 		37E93FDE1A7E9CF200AD45A1 /* PhotoBrowserInfoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FD61A7E9CF200AD45A1 /* PhotoBrowserInfoBar.m */; };
 		37E93FDF1A7E9CF200AD45A1 /* PhotoBrowserNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FD81A7E9CF200AD45A1 /* PhotoBrowserNavigationBar.m */; };
+		37EAC9ED1B82D165007BFBA1 /* CommonInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9EB1B82D165007BFBA1 /* CommonInputVC.m */; };
+		37EAC9F01B82DEE5007BFBA1 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -989,6 +991,10 @@
 		37E93FD61A7E9CF200AD45A1 /* PhotoBrowserInfoBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoBrowserInfoBar.m; sourceTree = "<group>"; };
 		37E93FD71A7E9CF200AD45A1 /* PhotoBrowserNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoBrowserNavigationBar.h; sourceTree = "<group>"; };
 		37E93FD81A7E9CF200AD45A1 /* PhotoBrowserNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoBrowserNavigationBar.m; sourceTree = "<group>"; };
+		37EAC9EB1B82D165007BFBA1 /* CommonInputVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonInputVC.m; sourceTree = "<group>"; };
+		37EAC9EC1B82D165007BFBA1 /* CommonInputVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonInputVC.h; sourceTree = "<group>"; };
+		37EAC9EE1B82DEE5007BFBA1 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
+		37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1127,6 +1133,8 @@
 				37CFA5371A49C64D0061D7B8 /* SettingItemCell.m */,
 				37B5D3E51A57B23A003CA877 /* PersonalInfoVC.h */,
 				37B5D3E61A57B23A003CA877 /* PersonalInfoVC.m */,
+				37EAC9EC1B82D165007BFBA1 /* CommonInputVC.h */,
+				37EAC9EB1B82D165007BFBA1 /* CommonInputVC.m */,
 				3725712F1A8099410087F178 /* AvatarPickerVC.h */,
 				372571301A8099410087F178 /* AvatarPickerVC.m */,
 				37CE01531A7FE47A005CD535 /* SettingDatePickerView.h */,
@@ -2514,6 +2522,8 @@
 				37CF74CE1A90D34600660604 /* PhotoPickerView.m */,
 				3719A7461AA2C47800FBDC2A /* NewEditionPreview.h */,
 				3719A7451AA2C47800FBDC2A /* NewEditionPreview.m */,
+				37EAC9EE1B82DEE5007BFBA1 /* iCarousel.h */,
+				37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */,
 			);
 			path = CommonViews;
 			sourceTree = "<group>";
@@ -2714,6 +2724,7 @@
 				3793F80C1B7CFFD900501F77 /* UIImageView+HighlightedWebCache.m in Sources */,
 				3793F8141B7CFFD900501F77 /* MJRefreshBaseView.m in Sources */,
 				37C316401A5636AC002E847D /* ClassZoneItemCell.m in Sources */,
+				37EAC9F01B82DEE5007BFBA1 /* iCarousel.m in Sources */,
 				3793F7811B7CFFD900501F77 /* RETableViewSection.m in Sources */,
 				3793F7931B7CFFD900501F77 /* split.c in Sources */,
 				37CA18831AB70BCC00B49B55 /* AlbumGroupView.m in Sources */,
@@ -2767,6 +2778,7 @@
 				37BC41101A43346D005038F9 /* ConfimInfoVC.m in Sources */,
 				3793F7D11B7CFFD900501F77 /* PhotoItem.m in Sources */,
 				3793F7DD1B7CFFD900501F77 /* UIImageView+URLWithAnimation.m in Sources */,
+				37EAC9ED1B82D165007BFBA1 /* CommonInputVC.m in Sources */,
 				376605A61B75F2B000204DFD /* MineVC.m in Sources */,
 				3793F80E1B7CFFD900501F77 /* UIView+WebCacheOperation.m in Sources */,
 				3793F7AB1B7CFFD900501F77 /* CTAssetItemViewController.m in Sources */,

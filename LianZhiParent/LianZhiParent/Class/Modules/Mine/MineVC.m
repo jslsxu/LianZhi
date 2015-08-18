@@ -70,6 +70,7 @@
     [super viewDidLoad];
     
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    [_tableView setSeparatorColor:kSepLineColor];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [self.view addSubview:_tableView];
@@ -123,6 +124,7 @@
         if(cell == nil)
         {
             cell = [[USerInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+            [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DatePickerNext"]]];
         }
         return cell;
     }
