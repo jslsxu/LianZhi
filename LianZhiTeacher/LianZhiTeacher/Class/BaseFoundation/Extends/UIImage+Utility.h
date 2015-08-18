@@ -26,5 +26,6 @@
 - (UIImage*)maskedImage:(UIImage*)maskImage;
 
 - (UIImage*)gaussBlur:(CGFloat)blurLevel;       //  {blurLevel | 0 ≤ t ≤ 1}
-
++ (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size;
++ (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size cornerRadius:(CGFloat)cornerRadius;
 @end

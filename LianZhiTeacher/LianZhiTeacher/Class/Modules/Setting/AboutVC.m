@@ -83,14 +83,14 @@
 //    [self.view addSubview:extraLabel];
     
     
-    UIButton *checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [checkButton addTarget:self action:@selector(onCheckButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [checkButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
-    [checkButton setFrame:CGRectMake(10, self.view.height - 45 - 10, self.view.width - 10 * 2, 45)];
-    [checkButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [checkButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
-    [checkButton setTitle:@"检查版本更新" forState:UIControlStateNormal];
-    [self.view addSubview:checkButton];
+//    UIButton *checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [checkButton addTarget:self action:@selector(onCheckButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+//    [checkButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+//    [checkButton setFrame:CGRectMake(10, self.view.height - 45 - 10, self.view.width - 10 * 2, 45)];
+//    [checkButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [checkButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
+//    [checkButton setTitle:@"检查版本更新" forState:UIControlStateNormal];
+//    [self.view addSubview:checkButton];
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url

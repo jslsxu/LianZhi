@@ -9,7 +9,8 @@
 #import "MineVC.h"
 #import "PersonalInfoVC.h"
 #import "ContactServiceVC.h"
-#import "ExchangeSchoolVC.h"
+#import "RelatedInfoVC.h"
+#import "SettingsVC.h"
 #define kUserInfoCellHeight                     75
 
 @implementation UserInfoCell
@@ -77,6 +78,7 @@
     [super viewDidLoad];
     
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    [_tableView setSeparatorColor:kCommonSeparatorColor];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
@@ -162,15 +164,21 @@
     {
         if(row == 0)
         {
-            ExchangeSchoolVC *exchangeSchoolVC = [[ExchangeSchoolVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:exchangeSchoolVC animated:YES];
+            RelatedInfoVC *relatedInfoVC = [[RelatedInfoVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:relatedInfoVC animated:YES];
+        }
+        else if(row == 1)
+        {
+            PersonalSettingVC *settingsVC = [[PersonalSettingVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:settingsVC animated:YES];
         }
     }
     else
     {
         if(row == 0)
         {
-            
+            AboutVC *aboutVC = [[AboutVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:aboutVC animated:YES];
         }
         else
         {

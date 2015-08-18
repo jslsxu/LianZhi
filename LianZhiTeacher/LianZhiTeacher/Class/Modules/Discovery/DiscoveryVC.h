@@ -7,7 +7,15 @@
 //
 
 #import "TNBaseViewController.h"
+@interface DiscoveryCell : UITableViewCell
+{
+    UIImageView*    _redDot;
+}
+@property (nonatomic, readonly)UIImageView *redDot;
+@end
 
-@interface DiscoveryVC : TNBaseWebViewController
-
+@interface DiscoveryVC : TNBaseViewController<UITableViewDelegate, UITableViewDataSource>
+{
+    UITableView*    _tableView;
+}
 @end

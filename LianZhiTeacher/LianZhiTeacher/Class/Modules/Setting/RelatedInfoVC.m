@@ -10,26 +10,38 @@
 #import "PersonalInfoVC.h"
 #import "ReportProblemVC.h"
 
+#define kSchoolCellHeight                       50
+#define kClassCellHeight                        35
+
 @implementation RelatedSchoolCell
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
+        self.width = kScreenWidth;
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
-        [self setBackgroundColor:[UIColor clearColor]];
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"CellBGFirst.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-        [_bgImageView setFrame:CGRectMake(15, 0, self.width - 15 * 2, 60)];
-        [self addSubview:_bgImageView];
+        [self setBackgroundColor:[UIColor whiteColor]];
         
-        _logoView = [[LogoView alloc] initWithFrame:CGRectMake(10, 10, 40, 40)];
-        [_bgImageView addSubview:_logoView];
+        _logoView = [[LogoView alloc] initWithFrame:CGRectMake(10, 9, 32, 32)];
+        [self addSubview:_logoView];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_nameLabel setFont:[UIFont systemFontOfSize:17]];
-        [_nameLabel setTextColor:[UIColor grayColor]];
-        [_bgImageView addSubview:_nameLabel];
+        _reportButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_reportButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"949494"] size:CGSizeMake(18, 18) cornerRadius:9] resizableImageWithCapInsets:UIEdgeInsetsMake(9, 9, 9, 9)] forState:UIControlStateNormal];
+        [_reportButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_reportButton.titleLabel setFont:[UIFont systemFontOfSize:11]];
+        [_reportButton setTitle:@"报错" forState:UIControlStateNormal];
+        [_reportButton setFrame:CGRectMake(self.width - 12 - 36, (kSchoolCellHeight - 18) / 2, 36, 18)];
+        [self addSubview:_reportButton];
         
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_logoView.right + 10, 0, _reportButton.left - 10 - (_logoView.right + 10), kSchoolCellHeight)];
+        [_nameLabel setFont:[UIFont systemFontOfSize:14]];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [self addSubview:_nameLabel];
+        
+        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, kSchoolCellHeight - kLineHeight, self.width, kLineHeight)];
+        [_sepLine setBackgroundColor:kCommonSeparatorColor];
+        [self addSubview:_sepLine];
     }
     return self;
 }
@@ -38,8 +50,7 @@
     _schoolInfo = schoolInfo;
     [_logoView setImageWithUrl:[NSURL URLWithString:schoolInfo.logoUrl]];
     [_nameLabel setText:_schoolInfo.schoolName];
-    [_nameLabel sizeToFit];
-    [_nameLabel setOrigin:CGPointMake(_logoView.right + 15, (_bgImageView.height - _nameLabel.height) / 2)];
+    
 }
 @end
 
@@ -50,38 +61,32 @@
     if(self)
     {
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
-        [self setBackgroundColor:[UIColor clearColor]];
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"CellBGFirst.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-        [_bgImageView setFrame:CGRectMake(15, 0, self.width - 15 * 2, 60)];
-        [self addSubview:_bgImageView];
+        [self setBackgroundColor:[UIColor whiteColor]];
         
-        _logoView = [[LogoView alloc] initWithFrame:CGRectMake(10, 10, 40, 40)];
-        [_bgImageView addSubview:_logoView];
+        _reportButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_reportButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"949494"] size:CGSizeMake(18, 18) cornerRadius:9] resizableImageWithCapInsets:UIEdgeInsetsMake(9, 9, 9, 9)] forState:UIControlStateNormal];
+        [_reportButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_reportButton.titleLabel setFont:[UIFont systemFontOfSize:11]];
+        [_reportButton setTitle:@"报错" forState:UIControlStateNormal];
+        [_reportButton setFrame:CGRectMake(self.width - 12 - 36, (kClassCellHeight - 18) / 2, 36, 18)];
+        [self addSubview:_reportButton];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_nameLabel setFont:[UIFont systemFontOfSize:15]];
-        [_nameLabel setTextColor:[UIColor grayColor]];
-        [_bgImageView addSubview:_nameLabel];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(55, 0, _reportButton.left - 10 - 55, kClassCellHeight)];
+        [_nameLabel setFont:[UIFont systemFontOfSize:12]];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
+        [self addSubview:_nameLabel];
 
+        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, kClassCellHeight - kLineHeight, self.width, kLineHeight)];
+        [_sepLine setBackgroundColor:kCommonSeparatorColor];
+        [self addSubview:_sepLine];
     }
     return self;
 }
 
-- (void)setCellType:(TableViewCellType)cellType
-{
-    _cellType = cellType;
-    if(cellType == TableViewCellTypeLast)
-        [_bgImageView setImage:[[UIImage imageNamed:(@"CellBGLast.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-    else
-        [_bgImageView setImage:[[UIImage imageNamed:(@"CellBGMiddle.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-}
 - (void)setClassInfo:(ClassInfo *)classInfo
 {
     _classInfo = classInfo;
-    [_logoView setImageWithUrl:[NSURL URLWithString:classInfo.logoUrl]];
     [_nameLabel setText:[NSString stringWithFormat:@"%@ (%@)",classInfo.className,_classInfo.course]];
-    [_nameLabel sizeToFit];
-    [_nameLabel setOrigin:CGPointMake(_logoView.right + 15, (_bgImageView.height - _nameLabel.height) / 2)];
 }
 @end
 @implementation RelatedInfoVC
@@ -95,7 +100,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"关联信息";
+    self.title = @"我的学校";
 }
 
 - (void)refreshData
@@ -106,7 +111,7 @@
 
 - (void)setupSubviews
 {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 70) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height) style:UITableViewStylePlain];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
     [_tableView setBackgroundColor:[UIColor clearColor]];
     [_tableView setDataSource:self];
@@ -114,64 +119,68 @@
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:_tableView];
     
-    _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 120)];
+    _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 95)];
     [self setupHeaderView:_headerView];
     [_tableView setTableHeaderView:_headerView];
-    
-    UIButton *reportButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [reportButton setFrame:CGRectMake(15, self.view.height - 60, self.view.width - 15 * 2, 45)];
-    [reportButton addTarget:self action:@selector(onReport) forControlEvents:UIControlEventTouchUpInside];
-    [reportButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
-    [reportButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [reportButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
-    [reportButton setTitle:@"报告关联错误" forState:UIControlStateNormal];
-    [self.view addSubview:reportButton];
 }
 
 - (void)setupHeaderView:(UIView *)viewParent
 {
     NSArray *subviews = [viewParent subviews];
     [subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [viewParent setBackgroundColor:[UIColor whiteColor]];
     CGFloat margin = 10;
-    UIImageView*    bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-    [bgImageView setFrame:CGRectInset(viewParent.bounds, 15, 15)];
-    [viewParent addSubview:bgImageView];
+    NSInteger infoHeight = viewParent.height - 20;
     
-    AvatarView *avatar = [[AvatarView alloc] initWithFrame:CGRectMake(15, margin, bgImageView.height - margin * 2, bgImageView.height - margin * 2)];
+    AvatarView *avatar = [[AvatarView alloc] initWithFrame:CGRectMake(20, 10, 55, 55)];
     [avatar setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
-    [bgImageView addSubview:avatar];
+    [viewParent addSubview:avatar];
     
     UILabel*    nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [nameLabel setFont:[UIFont systemFontOfSize:18]];
+    [nameLabel setFont:[UIFont systemFontOfSize:16]];
     [nameLabel setTextColor:[UIColor grayColor]];
     [nameLabel setText:[UserCenter sharedInstance].userInfo.name];
     [nameLabel sizeToFit];
-    [nameLabel setOrigin:CGPointMake(avatar.right + margin, bgImageView.height / 2 - 5 - nameLabel.height)];
-    [bgImageView addSubview:nameLabel];
+    [nameLabel setOrigin:CGPointMake(avatar.right + margin, infoHeight / 2 - 2 - nameLabel.height)];
+    [viewParent addSubview:nameLabel];
     
     GenderType gender = [UserCenter sharedInstance].userInfo.gender;
     NSString *imageStr = gender == GenderMale ? (@"GenderMale.png") : (@"GenderFemale.png");
     UIImageView *genderImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageStr]];
     [genderImage setOrigin:CGPointMake(nameLabel.right + 10, nameLabel.top + (nameLabel.height - genderImage.height) / 2)];
-    [bgImageView addSubview:genderImage];
+    [viewParent addSubview:genderImage];
     
     UILabel*    birthdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [birthdayLabel setFont:[UIFont systemFontOfSize:16]];
+    [birthdayLabel setFont:[UIFont systemFontOfSize:14]];
     [birthdayLabel setTextColor:[UIColor grayColor]];
     NSString *birthday = [NSString stringWithFormat:@"%@ (%@)",[UserCenter sharedInstance].userInfo.birthDay,[UserCenter sharedInstance].userInfo.constellation];
     [birthdayLabel setText:birthday];
     [birthdayLabel sizeToFit];
-    [birthdayLabel setOrigin:CGPointMake(avatar.right + 10, bgImageView.height / 2 + 5)];
-    [bgImageView addSubview:birthdayLabel];
+    [birthdayLabel setOrigin:CGPointMake(avatar.right + 10, infoHeight / 2 + 2)];
+    [viewParent addSubview:birthdayLabel];
 
-    UIImageView*    arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]];
-    [arrowImage setOrigin:CGPointMake(bgImageView.width - arrowImage.width - margin, (bgImageView.height - arrowImage.height) / 2)];
-    [bgImageView addSubview:arrowImage];
+    UIImageView*    arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DatePickerNext"]];
+    [arrowImage setOrigin:CGPointMake(viewParent.width - arrowImage.width - margin, (infoHeight - arrowImage.height) / 2)];
+    [viewParent addSubview:arrowImage];
+    
+    UIView* bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, viewParent.height - kLineHeight, viewParent.width, kLineHeight)];
+    [bottomLine setBackgroundColor:kCommonSeparatorColor];
+    [viewParent addSubview:bottomLine];
     
     UIButton *coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [coverButton setFrame:viewParent.bounds];
     [coverButton addTarget:self action:@selector(onCoverButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [viewParent addSubview:coverButton];
+    
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, viewParent.height - 20, viewParent.width, 20)];
+    [headerView setBackgroundColor:kCommonBackgroundColor];
+    [viewParent addSubview:headerView];
+    
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, headerView.width - 10 * 2, headerView.height)];
+    [headerLabel setFont:[UIFont systemFontOfSize:14]];
+    [headerLabel setTextColor:[UIColor colorWithHexString:@"8f8f8f"]];
+    [headerLabel setText:@"任职于"];
+    [headerView addSubview:headerLabel];
 }
 
 - (void)onCoverButtonClicked
@@ -207,7 +216,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60;
+    if(indexPath.row == 0)
+        return kSchoolCellHeight;
+    else
+        return kClassCellHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section

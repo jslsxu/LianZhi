@@ -21,6 +21,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
+        self.width = kScreenWidth;
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
         

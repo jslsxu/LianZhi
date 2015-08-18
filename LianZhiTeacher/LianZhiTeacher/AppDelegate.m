@@ -113,8 +113,8 @@ static SystemSoundID shake_sound_male_id = 0;
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    if(IS_IOS7_LATER)
-        [[UINavigationBar appearance] setBarTintColor:kCommonTeacherTintColor];
+    [[UINavigationBar appearance] setBarTintColor:kCommonTeacherTintColor];
+//    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:CGSizeMake(10, 10)] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont boldSystemFontOfSize:18]}];
 }

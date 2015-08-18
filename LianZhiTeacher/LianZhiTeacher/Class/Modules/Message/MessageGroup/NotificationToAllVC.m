@@ -100,7 +100,7 @@
 {
     [super viewDidLoad];
     
-    self.title = @"全体通知";
+    self.title = @"发布通知";
 }
 
 - (void)setupSubviews

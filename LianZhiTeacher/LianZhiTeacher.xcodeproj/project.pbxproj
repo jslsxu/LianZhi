@@ -22,6 +22,7 @@
 		3725715B1A80C0450087F178 /* SettingDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3725715A1A80C0450087F178 /* SettingDatePickerView.m */; };
 		372774E51A5D94A900464461 /* GrowthTimelinePublishVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372774E41A5D94A900464461 /* GrowthTimelinePublishVC.m */; };
 		372774EB1A5D94EC00464461 /* GrowthTimelinePublishCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 372774EA1A5D94EC00464461 /* GrowthTimelinePublishCell.m */; };
+		372ED8231B81795A00D07344 /* InterestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372ED8221B81795A00D07344 /* InterestVC.m */; };
 		373528771AD6557800C0F326 /* BaseInfoModifyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 373528751AD6557800C0F326 /* BaseInfoModifyVC.m */; };
 		376FC6B51B01EFB500289DC2 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B41B01EFB500289DC2 /* libiconv.dylib */; };
 		376FC6B71B01EFBF00289DC2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B61B01EFBF00289DC2 /* CoreGraphics.framework */; };
@@ -327,6 +328,7 @@
 		37E93FC51A7E9CC600AD45A1 /* MJPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FBB1A7E9CC600AD45A1 /* MJPhotoView.m */; };
 		37E93FC61A7E9CC600AD45A1 /* PhotoBrowserInfoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FBE1A7E9CC600AD45A1 /* PhotoBrowserInfoBar.m */; };
 		37E93FC71A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FC01A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m */; };
+		37EAC9EA1B82446F007BFBA1 /* CommonInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9E91B82446F007BFBA1 /* CommonInputVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -359,6 +361,8 @@
 		372774E41A5D94A900464461 /* GrowthTimelinePublishVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthTimelinePublishVC.m; sourceTree = "<group>"; };
 		372774E91A5D94EC00464461 /* GrowthTimelinePublishCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthTimelinePublishCell.h; sourceTree = "<group>"; };
 		372774EA1A5D94EC00464461 /* GrowthTimelinePublishCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthTimelinePublishCell.m; sourceTree = "<group>"; };
+		372ED8211B81795A00D07344 /* InterestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterestVC.h; sourceTree = "<group>"; };
+		372ED8221B81795A00D07344 /* InterestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterestVC.m; sourceTree = "<group>"; };
 		373528751AD6557800C0F326 /* BaseInfoModifyVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseInfoModifyVC.m; sourceTree = "<group>"; };
 		373528761AD6557800C0F326 /* BaseInfoModifyVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseInfoModifyVC.h; sourceTree = "<group>"; };
 		376FC6B41B01EFB500289DC2 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
@@ -958,6 +962,8 @@
 		37E93FBE1A7E9CC600AD45A1 /* PhotoBrowserInfoBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoBrowserInfoBar.m; sourceTree = "<group>"; };
 		37E93FBF1A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoBrowserNavigationBar.h; sourceTree = "<group>"; };
 		37E93FC01A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoBrowserNavigationBar.m; sourceTree = "<group>"; };
+		37EAC9E81B82446F007BFBA1 /* CommonInputVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonInputVC.h; sourceTree = "<group>"; };
+		37EAC9E91B82446F007BFBA1 /* CommonInputVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonInputVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2234,6 +2240,8 @@
 			children = (
 				37DEE4E61A57C21D009A8771 /* DiscoveryVC.h */,
 				37DEE4E71A57C21D009A8771 /* DiscoveryVC.m */,
+				372ED8211B81795A00D07344 /* InterestVC.h */,
+				372ED8221B81795A00D07344 /* InterestVC.m */,
 			);
 			path = Discovery;
 			sourceTree = "<group>";
@@ -2329,6 +2337,8 @@
 				376FC6C41B0332A300289DC2 /* Views */,
 				37DEE4EA1A57C24A009A8771 /* PersonalInfoVC.h */,
 				37DEE4EB1A57C24A009A8771 /* PersonalInfoVC.m */,
+				37EAC9E81B82446F007BFBA1 /* CommonInputVC.h */,
+				37EAC9E91B82446F007BFBA1 /* CommonInputVC.m */,
 				372571591A80C0450087F178 /* SettingDatePickerView.h */,
 				3725715A1A80C0450087F178 /* SettingDatePickerView.m */,
 				37DEE4EC1A57C24A009A8771 /* SettingItemCell.h */,
@@ -2640,6 +2650,7 @@
 				3793FA8E1B7CFFF000501F77 /* LimitedTextField.m in Sources */,
 				3793FA8D1B7CFFF000501F77 /* DAOverlayView.m in Sources */,
 				371C6DAC1A7015AF00FA4AEC /* PublishAudioVC.m in Sources */,
+				372ED8231B81795A00D07344 /* InterestVC.m in Sources */,
 				3793FA991B7CFFF000501F77 /* TGRImageZoomAnimationController.m in Sources */,
 				3793FA851B7CFFF000501F77 /* LZBadgeLabel.m in Sources */,
 				3793FAEA1B7CFFF000501F77 /* TNListModel.m in Sources */,
@@ -2751,6 +2762,7 @@
 				371C6DAF1A7015AF00FA4AEC /* PublishSelectionView.m in Sources */,
 				379947EB1A66B430008E4B4F /* PhotoFlowVC.m in Sources */,
 				37E93FC61A7E9CC600AD45A1 /* PhotoBrowserInfoBar.m in Sources */,
+				37EAC9EA1B82446F007BFBA1 /* CommonInputVC.m in Sources */,
 				37CA18731AB70A2F00B49B55 /* PhotoPickerModel.m in Sources */,
 				37DEE4DA1A57C1D8009A8771 /* ClassAppModel.m in Sources */,
 				3793FA4C1B7CFFF000501F77 /* RETableViewOptionsController.m in Sources */,

@@ -16,8 +16,9 @@
 #define IS_IOS7_LATER                   (RunTimeSysVersion >= 7.0f)
 
 #define kCommonParentTintColor          [UIColor colorWithRed:0 / 255.0 green:161 / 255.0 blue:117 / 255.0 alpha:1.f]
-#define kCommonTeacherTintColor         [UIColor colorWithRed:22 / 255.0 green:144 / 255.0 blue:149 / 255.0 alpha:1.f]
+#define kCommonTeacherTintColor         [UIColor colorWithRed:39 / 255.0 green:187 / 255.0 blue:205 / 255.0 alpha:1.f]
 #define kCommonBackgroundColor          [UIColor colorWithRed:233 / 255.0 green:233 / 255.0 blue:233 / 255.0 alpha:1.f]
+#define kCommonSeparatorColor           [UIColor colorWithRed:0xEE / 255.0 green:0xEE / 255.0 blue:0xEE / 255.0 alpha:1.0]
 #define kNormalTextColor                [UIColor colorWithRed:102 / 255.0 green:102 / 255.0 blue:102 / 255.0 alpha:1.f]
 #define kSubTextColor                   [UIColor colorWithRed:153 / 255.0 green:153 / 255.0 blue:153 / 255.0 alpha:1.f]
 #define kWarningTextColor               [UIColor colorWithRed:164 / 255.0 green:70 / 255.0 blue:73 / 255.0 alpha:1.f]
@@ -26,6 +27,8 @@
 #define kButtonTextFont                 [UIFont systemFontOfSize:17]
 #define kCommonTextFont                 [UIFont systemFontOfSize:14]
 #define kSubTextFont                    [UIFont systemFontOfSize:11]
+
+#define kLineHeight                     0.5f
 
 
 #ifdef DEBUG

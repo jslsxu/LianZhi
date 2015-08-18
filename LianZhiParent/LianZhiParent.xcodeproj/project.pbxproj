@@ -242,6 +242,7 @@
 		3793F8281B7CFFD900501F77 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F7501B7CFFD900501F77 /* Reachability.m */; };
 		3793F8291B7CFFD900501F77 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F7521B7CFFD900501F77 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		3793F82A1B7CFFD900501F77 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F7541B7CFFD900501F77 /* Utility.m */; };
+		3793FDA21B7DE03500501F77 /* ChatVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793FDA11B7DE03500501F77 /* ChatVC.m */; };
 		379947DF1A66B403008E4B4F /* PhotoFlowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 379947DA1A66B403008E4B4F /* PhotoFlowCell.m */; };
 		379947E01A66B403008E4B4F /* PhotoFlowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 379947DC1A66B403008E4B4F /* PhotoFlowModel.m */; };
 		379947E11A66B403008E4B4F /* PhotoFlowVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 379947DE1A66B403008E4B4F /* PhotoFlowVC.m */; };
@@ -820,6 +821,8 @@
 		3793F7521B7CFFD900501F77 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		3793F7531B7CFFD900501F77 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
 		3793F7541B7CFFD900501F77 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
+		3793FDA01B7DE03500501F77 /* ChatVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatVC.h; sourceTree = "<group>"; };
+		3793FDA11B7DE03500501F77 /* ChatVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatVC.m; sourceTree = "<group>"; };
 		379947D91A66B403008E4B4F /* PhotoFlowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoFlowCell.h; sourceTree = "<group>"; };
 		379947DA1A66B403008E4B4F /* PhotoFlowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFlowCell.m; sourceTree = "<group>"; };
 		379947DB1A66B403008E4B4F /* PhotoFlowModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoFlowModel.h; sourceTree = "<group>"; };
@@ -1022,6 +1025,7 @@
 		3720C0D91A4192DC000357A5 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				3793FD9F1B7DE00D00501F77 /* ChatVC */,
 				376605A31B75F29100204DFD /* Mine */,
 				37E93F1A1A795F8D00AD45A1 /* CommonViews */,
 				379947D81A66B3B8008E4B4F /* Album */,
@@ -2132,6 +2136,31 @@
 			path = Reachability;
 			sourceTree = "<group>";
 		};
+		3793FD9F1B7DE00D00501F77 /* ChatVC */ = {
+			isa = PBXGroup;
+			children = (
+				3793FDA01B7DE03500501F77 /* ChatVC.h */,
+				3793FDA11B7DE03500501F77 /* ChatVC.m */,
+				3793FDA31B7DE0DA00501F77 /* ChatModel */,
+				3793FDA41B7DE0DA00501F77 /* Input */,
+			);
+			path = ChatVC;
+			sourceTree = "<group>";
+		};
+		3793FDA31B7DE0DA00501F77 /* ChatModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ChatModel;
+			sourceTree = "<group>";
+		};
+		3793FDA41B7DE0DA00501F77 /* Input */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Input;
+			sourceTree = "<group>";
+		};
 		379947D81A66B3B8008E4B4F /* Album */ = {
 			isa = PBXGroup;
 			children = (
@@ -2864,6 +2893,7 @@
 				3793F7851B7CFFD900501F77 /* REValidation.m in Sources */,
 				3793F7BB1B7CFFD900501F77 /* UIActionSheet+Blocks.m in Sources */,
 				3793F8181B7CFFD900501F77 /* UIScrollView+MJExtension.m in Sources */,
+				3793FDA21B7DE03500501F77 /* ChatVC.m in Sources */,
 				3793F76E1B7CFFD900501F77 /* REInlineDatePickerItem.m in Sources */,
 				3793F7641B7CFFD900501F77 /* RETableViewLongTextCell.m in Sources */,
 				3793F7A61B7CFFD900501F77 /* UrlHandler.m in Sources */,

@@ -53,6 +53,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
+        self.width = kScreenWidth;
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
         _bgImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 0, self.width - 15 * 2, 60)];

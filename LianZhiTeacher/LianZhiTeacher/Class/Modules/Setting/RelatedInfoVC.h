@@ -10,9 +10,10 @@
 
 @interface RelatedSchoolCell : UITableViewCell
 {
-    UIImageView*    _bgImageView;
     LogoView*       _logoView;
     UILabel*        _nameLabel;
+    UIButton*       _reportButton;
+    UIView*         _sepLine;
 }
 @property (nonatomic, strong)SchoolInfo *schoolInfo;
 
@@ -20,9 +21,9 @@
 
 @interface RelatedClassCell : UITableViewCell
 {
-    UIImageView*    _bgImageView;
-    LogoView*       _logoView;
+    UIButton*       _reportButton;
     UILabel*        _nameLabel;
+    UIView*         _sepLine;
 }
 @property (nonatomic, assign)TableViewCellType cellType;
 @property (nonatomic, strong)ClassInfo *classInfo;
