@@ -9,6 +9,8 @@
 #import "ClassZoneItemCell.h"
 #import "CollectionImageCell.h"
 
+#define kInnerMargin                        8
+
 NSString *const kClassZoneItemDeleteNotification = @"ClassZoneItemDeleteNotification";
 NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
 @implementation ClassZoneItemCell
@@ -20,9 +22,13 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     {
         [self setBackgroundColor:[UIColor clearColor]];
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-        [_bgImageView setUserInteractionEnabled:YES];
-        [self addSubview:_bgImageView];
+        self.width = kScreenWidth;
+        _bgView = [[UIView alloc] initWithFrame:CGRectMake(12, 0, self.width - 12 * 2, 0)];
+        [_bgView setBackgroundColor:[UIColor whiteColor]];
+        [_bgView.layer setCornerRadius:10];
+        [_bgView.layer setMasksToBounds:YES];
+        [_bgView setUserInteractionEnabled:YES];
+        [self addSubview:_bgView];
         
         _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(0, 0, 45, 45)];
         [_avatar setBorderColor:[UIColor colorWithWhite:0 alpha:0.2]];
@@ -41,42 +47,44 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         [_contentLabel setNumberOfLines:0];
         [_contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
-        [_bgImageView addSubview:_contentLabel];
+        [_bgView addSubview:_contentLabel];
         
         _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(0, 0, self.width - 50, 45)];
         [_voiceButton addTarget:self action:@selector(onVoiceButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_bgImageView addSubview:_voiceButton];
+        [_bgView addSubview:_voiceButton];
         
+        NSInteger itemWidth = (_bgView.width - 20 * 2 - kInnerMargin * 2) / 3;
+        NSInteger innerMargin = (_bgView.width - 20 * 2 - itemWidth * 3) / 2;
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        [layout setItemSize:CGSizeMake(80, 80)];
-        [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-        [layout setMinimumInteritemSpacing:5];
+        [layout setItemSize:CGSizeMake(itemWidth, itemWidth)];
+        [layout setMinimumInteritemSpacing:innerMargin];
+        [layout setMinimumLineSpacing:innerMargin];
         
         _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
         [_collectionView setBackgroundColor:[UIColor clearColor]];
-        [_collectionView setAlwaysBounceHorizontal:YES];
         [_collectionView setShowsHorizontalScrollIndicator:NO];
+        [_collectionView setShowsVerticalScrollIndicator:NO];
         [_collectionView setScrollsToTop:NO];
         [_collectionView setDelegate:self];
         [_collectionView setDataSource:self];
         [_collectionView registerClass:[CollectionImageCell class] forCellWithReuseIdentifier:@"CollectionImageCell"];
-        [_bgImageView addSubview:_collectionView];
+        [_bgView addSubview:_collectionView];
         
         _sepLine = [[UIView alloc] initWithFrame:CGRectZero];
         [_sepLine setBackgroundColor:kSepLineColor];
-        [_bgImageView addSubview:_sepLine];
+        [_bgView addSubview:_sepLine];
         
         _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_deleteButton addTarget:self action:@selector(onDeleteButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [_deleteButton setImage:[UIImage imageNamed:(@"MessageDetailTrash.png")] forState:UIControlStateNormal];
         [_deleteButton setFrame:CGRectMake(5, _sepLine.bottom, 30, 30)];
-        [_bgImageView addSubview:_deleteButton];
+        [_bgView addSubview:_deleteButton];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_timeLabel setBackgroundColor:[UIColor clearColor]];
         [_timeLabel setFont:[UIFont systemFontOfSize:14]];
         [_timeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-        [_bgImageView addSubview:_timeLabel];
+        [_bgView addSubview:_timeLabel];
     }
     return self;
 }
@@ -127,17 +135,17 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
 {
     ClassZoneItem *item = (ClassZoneItem *)self.modelItem;
     
-    [_bgImageView setFrame:CGRectMake(12, 36, self.width - 12 * 2, 0)];
+    [_bgView setFrame:CGRectMake(12, 36, self.width - 12 * 2, 0)];
     [_avatar setImageWithUrl:[NSURL URLWithString:item.userInfo.avatar]];
-    [_avatar setCenter:CGPointMake(45, _bgImageView.top)];
+    [_avatar setCenter:CGPointMake(45, _bgView.top)];
     if(item.userInfo == [UserCenter sharedInstance].userInfo)
         [_nameLabel setText:@"我"];
     else
         [_nameLabel setText:item.userInfo.title];
     [_nameLabel sizeToFit];
-    [_nameLabel setOrigin:CGPointMake(_bgImageView.right - _nameLabel.width, _bgImageView.top - _nameLabel.height - 3)];
+    [_nameLabel setOrigin:CGPointMake(_bgView.right - _nameLabel.width, _bgView.top - _nameLabel.height - 3)];
     
-    CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(_bgImageView.width - 20 * 2, 0) andFont:_contentLabel.font];
+    CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(_bgView.width - 20 * 2, 0) andFont:_contentLabel.font];
     [_contentLabel setText:item.content];
     [_contentLabel setFrame:CGRectMake(20, 32, contentSize.width, contentSize.height)];
     
@@ -146,8 +154,11 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     _voiceButton.hidden = YES;
     if(item.photos.count > 0)
     {
-        _collectionView.hidden = NO;
-        [_collectionView setFrame:CGRectMake(20, spaceYStart+ 5, _bgImageView.width - 20 * 2, 80)];
+        NSInteger row = (item.photos.count + 2) / 3;
+        NSInteger itemWidth = (_bgView.width - 20 * 2 - kInnerMargin * 2) / 3;
+        NSInteger innerMargin = (_bgView.width - 20 * 2 - itemWidth * 3) / 2;
+        [_collectionView setHidden:NO];
+        [_collectionView setFrame:CGRectMake(20, spaceYStart, _bgView.width - 20 * 2, itemWidth * row + innerMargin * (row - 1))];
         [_collectionView reloadData];
         spaceYStart += _collectionView.height + 15;
     }
@@ -168,7 +179,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         }
     }
     
-    [_sepLine setFrame:CGRectMake(0, spaceYStart, _bgImageView.width, 1)];
+    [_sepLine setFrame:CGRectMake(0, spaceYStart, _bgView.width, 1)];
     
     if(item.canEdit)
     {
@@ -182,8 +193,8 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     
     [_timeLabel setText:item.formatTime];
     [_timeLabel sizeToFit];
-    [_timeLabel setOrigin:CGPointMake(_bgImageView.width - _timeLabel.width - 10, _sepLine.bottom + (30 - _timeLabel.height) / 2)];
-    [_bgImageView setHeight:_sepLine.bottom + 30];
+    [_timeLabel setOrigin:CGPointMake(_bgView.width - _timeLabel.width - 10, _sepLine.bottom + (30 - _timeLabel.height) / 2)];
+    [_bgView setHeight:_sepLine.bottom + 30];
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
@@ -193,7 +204,13 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(width - 20 * 2 - 12 * 2, 0) andFont:[UIFont systemFontOfSize:16]];
     height += contentSize.height + 1 + 30;
     if(item.photos.count > 0)
-        height += 80 + 10 + 5;
+    {
+        NSInteger bgWidth = width - 12 * 2 - 20 * 2;
+        NSInteger itemWidth = (bgWidth - kInnerMargin * 2) / 3;
+        NSInteger row = (item.photos.count + 2) / 3;
+        NSInteger innerMargin = (bgWidth - itemWidth * 3) / 2;
+        height += (itemWidth * row + innerMargin * (row - 1)) + 15;
+    }
     else
     {
         if(item.audioItem)

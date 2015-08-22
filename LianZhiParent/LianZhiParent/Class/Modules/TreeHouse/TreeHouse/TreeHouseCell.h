@@ -16,17 +16,18 @@ extern NSString *const kTreeHouseItemKey;
 
 @interface TreeHouseCell : TNTableViewCell<UICollectionViewDataSource, UICollectionViewDelegate>
 {
+    UILabel*            _authorLabel;
     UILabel*            _dateLabel;
+    UILabel*            _addressLabel;
+    UIButton*           _trashButton;
     UIImageView*        _icon;
-    UIImageView*        _bgImageView;
+    UIView*             _bgView;
     UILabel*            _infoLabel;
     UICollectionViewFlowLayout* _layout;
     UICollectionView*   _collectionView;//照片
     MessageVoiceButton* _voiceButton;
     UIView*             _sepLine;
     UILabel*            _timeLabel;
-    UILabel*            _authorLabel;
-    UIButton*           _trashButton;
     UILabel*            _tagLabel;
     UIButton*           _tagButton;
 }

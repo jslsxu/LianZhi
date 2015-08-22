@@ -7,7 +7,7 @@
 //
 
 #import "LoginVC.h"
-#import "PhoneLoginVC.h"
+#import "AuthCodeVC.h"
 #define kLoginUserNameKey               @"LoginUserNameKey"
 @interface LoginVC ()
 @property (nonatomic, copy)LoginCompletion completion;
@@ -25,65 +25,106 @@
     }];
 }
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self)
+    {
+        self.hideNavigationBar = YES;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"用户登录";
+    [self.view setBackgroundColor:kCommonTeacherTintColor];
     
-    _userNameField = [[LZTextField alloc] initWithFrame:CGRectMake(25, 20, self.view.width - 25 * 2, 45)];
-    [_userNameField setText:[[NSUserDefaults standardUserDefaults] objectForKey:kLoginUserNameKey]];
-    [_userNameField setFont:[UIFont systemFontOfSize:16]];
-    [_userNameField setTextColor:kCommonTeacherTintColor];
-    [_userNameField setReturnKeyType:UIReturnKeyDone];
-    [_userNameField setKeyboardType:UIKeyboardTypeDecimalPad];
-    [_userNameField setPlaceholder:@"请输入您注册的手机号"];
-    [_userNameField setDelegate:self];
-    [self.view addSubview:_userNameField];
+    UIView *inputView = [[UIView alloc] initWithFrame:CGRectMake(20, 100, self.view.width - 20 * 2, 90)];
+    [self setupInputView:inputView];
+    [self.view addSubview:inputView];
     
-    _passwordField = [[LZTextField alloc] initWithFrame:CGRectMake(25, _userNameField.bottom + 10, self.view.width - 25 * 2, 45)];
-//    [_passwordField addTarget:self action:@selector(checkPassword) forControlEvents:UIControlEventEditingChanged];
-    [_passwordField setSecureTextEntry:YES];
-    [_passwordField setFont:[UIFont systemFontOfSize:16]];
-    [_passwordField setTextColor:kCommonTeacherTintColor];
-    [_passwordField setReturnKeyType:UIReturnKeyDone];
-    [_passwordField setPlaceholder:@"请输入您的登录密码"];
-    [_passwordField setDelegate:self];
-    [self.view addSubview:_passwordField];
+    UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [loginButton setFrame:CGRectMake(20, inputView.bottom + 20, inputView.width, 40)];
+    [loginButton addTarget:self action:@selector(onLoginClicked) forControlEvents:UIControlEventTouchUpInside];
+    [loginButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"9cfc5e"] size:CGSizeMake(20, 20) cornerRadius:5] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [loginButton setTitleColor:kCommonTeacherTintColor forState:UIControlStateNormal];
+    [loginButton.titleLabel setFont:kButtonTextFont];
+    [loginButton setTitle:@"登录" forState:UIControlStateNormal];
+    [self.view addSubview:loginButton];
     
-    _registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_registerButton setFrame:CGRectMake(25, _passwordField.bottom + 20, (_passwordField.width - 25 * 2) * 0.6, 45)];
-    [_registerButton addTarget:self action:@selector(onPhoneLoginClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_registerButton setTitle:@"手机号登录" forState:UIControlStateNormal];
-    [_registerButton setTitleColor:kCommonTeacherTintColor forState:UIControlStateNormal];
-    [_registerButton.titleLabel setFont:kButtonTextFont];
-    [self.view addSubview:_registerButton];
+    UIButton *retriveButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [retriveButton setFrame:CGRectMake(20, loginButton.bottom + 10, 75, 20)];
+    [retriveButton addTarget:self action:@selector(onRetriveButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [retriveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [retriveButton setTitle:@"忘记密码?" forState:UIControlStateNormal];
+    [retriveButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [self.view addSubview:retriveButton];
     
-    _loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_loginButton setFrame:CGRectMake(_registerButton.right, _registerButton.y, _passwordField.right - _registerButton.right, 45)];
-    [_loginButton addTarget:self action:@selector(onLoginClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_loginButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
-    [_loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_loginButton.titleLabel setFont:kButtonTextFont];
-    [_loginButton setTitle:@"登录" forState:UIControlStateNormal];
-    [self.view addSubview:_loginButton];
-
-}
-
-- (void)setupSubviews
-{
+    UIButton *activateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [activateButton setFrame:CGRectMake(self.view.width - 20 - 75, loginButton.bottom + 10, 75, 20)];
+    [activateButton addTarget:self action:@selector(onActivateButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [activateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [activateButton setTitle:@"新用户激活" forState:UIControlStateNormal];
+    [activateButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [self.view addSubview:activateButton];
+    
     UILabel*    hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.height - 80, self.view.width, 80)];
     [hintLabel setFont:[UIFont systemFontOfSize:12]];
     [hintLabel setTextColor:[UIColor lightGrayColor]];
     [hintLabel setNumberOfLines:0];
     [hintLabel setTextAlignment:NSTextAlignmentCenter];
-    [hintLabel setText:@"请输入在学校预留的手机号码\n忘记密码可点击“手机号登录”"];
+    [hintLabel setText:@"账号首次登录请点击新用户激活"];
     [self.view addSubview:hintLabel];
 }
 
-- (void)onPhoneLoginClicked
+- (void)setupInputView:(UIView *)viewParent
 {
-    PhoneLoginVC *phoneLoginVC = [[PhoneLoginVC alloc] init];
-    [phoneLoginVC setLoginCallBack:self.completion];
-    [self.navigationController pushViewController:phoneLoginVC animated:YES];
+    [viewParent setBackgroundColor:[UIColor whiteColor]];
+    [viewParent.layer setCornerRadius:5];
+    [viewParent.layer setMasksToBounds:YES];
+    
+    UIImageView *userLeft = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UserFieldIcon"]];
+    [userLeft setOrigin:CGPointMake(10, (45 - userLeft.height) / 2)];
+    [viewParent addSubview:userLeft];
+    
+    _userNameField = [[UITextField alloc] initWithFrame:CGRectMake(5 + userLeft.right, 0, viewParent.width - 10 - 10 - (5 + userLeft.right), 45)];
+    [_userNameField setFont:[UIFont systemFontOfSize:15]];
+    [_userNameField setTextColor:kCommonTeacherTintColor];
+    [_userNameField setReturnKeyType:UIReturnKeyDone];
+    [_userNameField setKeyboardType:UIKeyboardTypeDecimalPad];
+    [_userNameField setPlaceholder:@"请输入您注册的手机号"];
+    [_userNameField setDelegate:self];
+    [viewParent addSubview:_userNameField];
+    
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 45, viewParent.width, kLineHeight)];
+    [sepLine setBackgroundColor:kSepLineColor];
+    [viewParent addSubview:sepLine];
+    
+    UIImageView *passwordleft = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PasswordFieldIcon"]];
+    [passwordleft setOrigin:CGPointMake(10, (45 - userLeft.height) / 2 + 45)];
+    [viewParent addSubview:passwordleft];
+    
+    _passwordField = [[UITextField alloc] initWithFrame:CGRectMake(5 + passwordleft.right, 45, viewParent.width - 10 * 2 - (5 + passwordleft.right), 45)];
+    [_passwordField setSecureTextEntry:YES];
+    [_passwordField setFont:[UIFont systemFontOfSize:15]];
+    [_passwordField setTextColor:kCommonTeacherTintColor];
+    [_passwordField setReturnKeyType:UIReturnKeyDone];
+    [_passwordField setPlaceholder:@"请输入您的登录密码"];
+    [_passwordField setDelegate:self];
+    [viewParent addSubview:_passwordField];
+}
+
+- (void)onRetriveButtonClicked
+{
+    AuthCodeVC *authCodeVC = [[AuthCodeVC alloc] init];
+    [self.navigationController pushViewController:authCodeVC animated:YES];
+}
+
+- (void)onActivateButtonClicked
+{
+    AuthCodeVC *authCodeVC = [[AuthCodeVC alloc] init];
+    [self.navigationController pushViewController:authCodeVC animated:YES];
 }
 
 - (void)onLoginClicked

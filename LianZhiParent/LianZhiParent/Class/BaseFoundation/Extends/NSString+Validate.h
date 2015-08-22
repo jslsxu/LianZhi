@@ -10,4 +10,5 @@
 
 @interface NSString (Validate)
 - (BOOL)isEmailAddress;
+- (BOOL)isPhoneNumberValidate;
 @end

@@ -302,6 +302,7 @@
 		37CBAF261A4725200063F395 /* TreeHouseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CBAF251A4725200063F395 /* TreeHouseModel.m */; };
 		37CBAF2D1A47B1E20063F395 /* TreeHouseHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CBAF2C1A47B1E20063F395 /* TreeHouseHeaderView.m */; };
 		37CBAF791A47CCD90063F395 /* LZTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CBAF781A47CCD90063F395 /* LZTabBarButton.m */; };
+		37CCE2451B886BCD007BFA4F /* ActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCE2441B886BCD007BFA4F /* ActionView.m */; };
 		37CE01551A7FE47A005CD535 /* SettingDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CE01541A7FE47A005CD535 /* SettingDatePickerView.m */; };
 		37CF74CF1A90D34600660604 /* PhotoPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CF74CE1A90D34600660604 /* PhotoPickerView.m */; };
 		37CFA50E1A4990EC0061D7B8 /* MessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CFA50D1A4990EC0061D7B8 /* MessageVC.m */; };
@@ -336,6 +337,7 @@
 		37E93FDF1A7E9CF200AD45A1 /* PhotoBrowserNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FD81A7E9CF200AD45A1 /* PhotoBrowserNavigationBar.m */; };
 		37EAC9ED1B82D165007BFBA1 /* CommonInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9EB1B82D165007BFBA1 /* CommonInputVC.m */; };
 		37EAC9F01B82DEE5007BFBA1 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */; };
+		37EAC9F31B8348EE007BFBA1 /* PasswordConfirmVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9F21B8348EE007BFBA1 /* PasswordConfirmVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -934,6 +936,8 @@
 		37CBAF2C1A47B1E20063F395 /* TreeHouseHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeHouseHeaderView.m; sourceTree = "<group>"; };
 		37CBAF771A47CCD90063F395 /* LZTabBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZTabBarButton.h; sourceTree = "<group>"; };
 		37CBAF781A47CCD90063F395 /* LZTabBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZTabBarButton.m; sourceTree = "<group>"; };
+		37CCE2431B886BCD007BFA4F /* ActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionView.h; sourceTree = "<group>"; };
+		37CCE2441B886BCD007BFA4F /* ActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionView.m; sourceTree = "<group>"; };
 		37CE01531A7FE47A005CD535 /* SettingDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingDatePickerView.h; sourceTree = "<group>"; };
 		37CE01541A7FE47A005CD535 /* SettingDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingDatePickerView.m; sourceTree = "<group>"; };
 		37CF74CD1A90D34600660604 /* PhotoPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoPickerView.h; sourceTree = "<group>"; };
@@ -995,6 +999,8 @@
 		37EAC9EC1B82D165007BFBA1 /* CommonInputVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonInputVC.h; sourceTree = "<group>"; };
 		37EAC9EE1B82DEE5007BFBA1 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
+		37EAC9F11B8348EE007BFBA1 /* PasswordConfirmVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordConfirmVC.h; sourceTree = "<group>"; };
+		37EAC9F21B8348EE007BFBA1 /* PasswordConfirmVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordConfirmVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1059,6 +1065,8 @@
 				3720C0FE1A419C4E000357A5 /* PhoneLoginVC.m */,
 				3720C1061A419EDC000357A5 /* AuthCodeVC.h */,
 				3720C1071A419EDC000357A5 /* AuthCodeVC.m */,
+				37EAC9F11B8348EE007BFBA1 /* PasswordConfirmVC.h */,
+				37EAC9F21B8348EE007BFBA1 /* PasswordConfirmVC.m */,
 				37BC410E1A43346D005038F9 /* ConfimInfoVC.h */,
 				37BC410F1A43346D005038F9 /* ConfimInfoVC.m */,
 				37B7044D1A4410CD0025D684 /* PasswordModificationVC.h */,
@@ -2435,6 +2443,8 @@
 				37CBAF2C1A47B1E20063F395 /* TreeHouseHeaderView.m */,
 				37CBAF211A4724F20063F395 /* TreeHouseCell.h */,
 				37CBAF221A4724F20063F395 /* TreeHouseCell.m */,
+				37CCE2431B886BCD007BFA4F /* ActionView.h */,
+				37CCE2441B886BCD007BFA4F /* ActionView.m */,
 				37CBAF241A4725200063F395 /* TreeHouseModel.h */,
 				37CBAF251A4725200063F395 /* TreeHouseModel.m */,
 				37E93F831A7A919C00AD45A1 /* TreeHouseAlbumVC.h */,
@@ -2803,6 +2813,7 @@
 				3793F79E1B7CFFD900501F77 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				3793F8111B7CFFD900501F77 /* LoadingView.m in Sources */,
 				37CBAF201A4724930063F395 /* TreeHouseVC.m in Sources */,
+				37EAC9F31B8348EE007BFBA1 /* PasswordConfirmVC.m in Sources */,
 				3793F76D1B7CFFD900501F77 /* REFloatItem.m in Sources */,
 				37B5D3E71A57B23A003CA877 /* PersonalInfoVC.m in Sources */,
 				3793F8041B7CFFD900501F77 /* SDWebImageDownloader.m in Sources */,
@@ -2890,6 +2901,7 @@
 				37CFA5B81A4AF2A70061D7B8 /* MessageDetailModel.m in Sources */,
 				373528741AD5556500C0F326 /* BaseInfoModifyVC.m in Sources */,
 				3793F8131B7CFFD900501F77 /* TNGetMoreCell.m in Sources */,
+				37CCE2451B886BCD007BFA4F /* ActionView.m in Sources */,
 				3793F7B61B7CFFD900501F77 /* NSDateFormatter+timeIntervalFormatter.m in Sources */,
 				3793F7DA1B7CFFD900501F77 /* UIColor+Addition.m in Sources */,
 				3793F7871B7CFFD900501F77 /* REEmailValidator.m in Sources */,

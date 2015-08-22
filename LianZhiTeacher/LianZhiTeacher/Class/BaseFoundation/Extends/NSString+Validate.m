@@ -16,4 +16,10 @@
     NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES%@",emailCheck];
     return [emailTest evaluateWithObject:self];
 }
+- (BOOL)isPhoneNumberValidate
+{
+    NSString *mobile = @"^1\\d{10}$";
+    NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", mobile];
+    return  [regextestmobile evaluateWithObject:self];
+}
 @end

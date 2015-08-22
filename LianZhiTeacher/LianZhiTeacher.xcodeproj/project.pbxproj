@@ -329,6 +329,7 @@
 		37E93FC61A7E9CC600AD45A1 /* PhotoBrowserInfoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FBE1A7E9CC600AD45A1 /* PhotoBrowserInfoBar.m */; };
 		37E93FC71A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FC01A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m */; };
 		37EAC9EA1B82446F007BFBA1 /* CommonInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9E91B82446F007BFBA1 /* CommonInputVC.m */; };
+		37EACA031B845B5F007BFBA1 /* PasswordConfirmVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EACA011B845B5F007BFBA1 /* PasswordConfirmVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -964,6 +965,8 @@
 		37E93FC01A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoBrowserNavigationBar.m; sourceTree = "<group>"; };
 		37EAC9E81B82446F007BFBA1 /* CommonInputVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonInputVC.h; sourceTree = "<group>"; };
 		37EAC9E91B82446F007BFBA1 /* CommonInputVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonInputVC.m; sourceTree = "<group>"; };
+		37EACA011B845B5F007BFBA1 /* PasswordConfirmVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordConfirmVC.m; sourceTree = "<group>"; };
+		37EACA021B845B5F007BFBA1 /* PasswordConfirmVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordConfirmVC.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2036,6 +2039,8 @@
 				37B484F31A65853C00C412D8 /* AuthCodeVC.m */,
 				37B484F61A65853C00C412D8 /* LoginVC.h */,
 				37B484F71A65853C00C412D8 /* LoginVC.m */,
+				37EACA021B845B5F007BFBA1 /* PasswordConfirmVC.h */,
+				37EACA011B845B5F007BFBA1 /* PasswordConfirmVC.m */,
 				37B484F81A65853C00C412D8 /* PasswordModificationVC.h */,
 				37B484F91A65853C00C412D8 /* PasswordModificationVC.m */,
 				37B484FA1A65853C00C412D8 /* PhoneLoginVC.h */,
@@ -2568,6 +2573,7 @@
 				3793FA351B7CFFF000501F77 /* RETableViewTextCell.m in Sources */,
 				3793FAE01B7CFFF000501F77 /* MJRefreshBaseView.m in Sources */,
 				3793FA311B7CFFF000501F77 /* RETableViewNumberCell.m in Sources */,
+				37EACA031B845B5F007BFBA1 /* PasswordConfirmVC.m in Sources */,
 				3793FA481B7CFFF000501F77 /* RETableViewCellStyle.m in Sources */,
 				3793FA7A1B7CFFF000501F77 /* CTAssetsGroupViewController.m in Sources */,
 				3793FAE11B7CFFF000501F77 /* MJRefreshConst.m in Sources */,

@@ -10,6 +10,19 @@
 #import "iCarousel.h"
 #import "PersonalInfoVC.h"
 
+@interface ChildrenExtraInfoCell : UITableViewCell
+{
+    LogoView*   _logoView;
+    UILabel*    _titleLabel;
+    UILabel*    _extraLabel;
+    UIButton*   _reportButton;
+    UIView*     _sepLine;
+}
+@property (nonatomic, readonly)LogoView *logoView;
+
+- (void)setText:(NSString *)text extra:(NSString *)extra;
+@end
+
 @interface ChildrenItemView : UIView
 {
     AvatarView*     _avatar;

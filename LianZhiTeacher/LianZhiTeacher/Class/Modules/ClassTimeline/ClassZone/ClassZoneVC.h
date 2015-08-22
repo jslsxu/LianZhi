@@ -29,7 +29,6 @@ extern NSString *const kPublishPhotoItemKey;
     UIImageView*            _imageView;
     UIImageView*            _newpaperImageView;
     UILabel*                _contentLabel;
-    UIButton*               _appButton;
     UIButton*               _albumButton;
     UIImageView*            _brashImage;
     UIView*                 _bottomView;
@@ -38,11 +37,11 @@ extern NSString *const kPublishPhotoItemKey;
 @property (nonatomic, weak)id<ClassZoneHeaderDelegate> delegate;
 @end
 
-@interface ClassZoneVC : TNBaseTableViewController<ClassZoneSwitchDelegate, ClassZoneHeaderDelegate, PublishZoneItemDelegate>
+@interface ClassZoneVC : TNBaseTableViewController<ClassZoneHeaderDelegate, PublishZoneItemDelegate>
 {
-    ClassZoneClassSwitchView*       _switchView;
     ClassZoneHeaderView*            _headerView;
-    UIButton*                       _publishButton;
+    UIToolbar*                      _publishToolBar;
+    NSMutableArray*                 _buttonItems;
 }
 @property (nonatomic, strong)ClassInfo *classInfo;
 @end

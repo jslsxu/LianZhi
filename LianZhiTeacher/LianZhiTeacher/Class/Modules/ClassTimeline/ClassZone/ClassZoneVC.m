@@ -27,21 +27,15 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         _albumButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_albumButton addTarget:self action:@selector(onAlbumButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [_albumButton setImage:[UIImage imageNamed:(@"ClassAlbum.png")] forState:UIControlStateNormal];
-        [_albumButton setFrame:CGRectMake(self.width - buttonWidth, self.height - 20 - buttonWidth, buttonWidth, buttonWidth)];
+        [_albumButton setFrame:CGRectMake(self.width - buttonWidth, self.height - 60 - buttonWidth, buttonWidth, buttonWidth)];
         [self addSubview:_albumButton];
         
-        _appButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_appButton addTarget:self action:@selector(onAppButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_appButton setImage:[UIImage imageNamed:(@"ZoneApp.png")] forState:UIControlStateNormal];
-        [_appButton setFrame:CGRectMake(self.width - buttonWidth, _albumButton.top - buttonWidth, buttonWidth, buttonWidth)];
-        [self addSubview:_appButton];
-        
         _newpaperImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"BlackboardText.png")]];
-        [_newpaperImageView setOrigin:CGPointMake(20, 40)];
+        [_newpaperImageView setOrigin:CGPointMake(20, 10)];
         [self addSubview:_newpaperImageView];
         
         
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 60, self.width - 30 - 40, self.height - 30 - 60)];
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 25, self.width - 30 - 40, self.height - 30 - 25)];
         [_contentLabel setUserInteractionEnabled:YES];
         [_contentLabel setTextColor:[UIColor whiteColor]];
         [_contentLabel setFont:[UIFont systemFontOfSize:16]];
@@ -248,6 +242,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
     
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"切换班级" style:UIBarButtonItemStylePlain target:self action:@selector(onExchangeClass)];
+    
 //    self.title = @"班空间";
     self.shouldShowEmptyHint = YES;
 
@@ -261,15 +257,16 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)setupSubviews
 {
+    _publishToolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.height - 49, self.view.width, 49)];
+    [self setupToolBar:_publishToolBar];
+    [self.view addSubview:_publishToolBar];
     
     ClassInfo *curClassInfo = [UserCenter sharedInstance].curSchool.classes[0];
     [self setClassInfo:curClassInfo];
-    _switchView = [[ClassZoneClassSwitchView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 30)];
-    [_switchView setDelegate:self];
-    [_switchView setClassInfo:curClassInfo];
-    [self.view addSubview:_switchView];
     
-    _headerView = [[ClassZoneHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 195)];
+    [self.tableView setHeight:self.view.height - 49];
+    
+    _headerView = [[ClassZoneHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 160)];
     [_headerView setDelegate:self];
     [self.tableView setTableHeaderView:_headerView];
     
@@ -281,48 +278,31 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
     ClassZoneModel *model = (ClassZoneModel *)self.tableViewModel;
     [model setClassID:self.classInfo.classID];
-    
-    CGFloat publishButtonWidth = 40;
-    _publishButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_publishButton setImage:[UIImage imageNamed:@"TeacherZoneEdit.png"] forState:UIControlStateNormal];
-    [_publishButton addTarget:self action:@selector(onPublishButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_publishButton];
-    [_publishButton setFrame:CGRectMake(self.view.width - publishButtonWidth - 15, self.view.height - publishButtonWidth - 15, publishButtonWidth, publishButtonWidth)];
-    
-    UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipe:)];
-    [leftSwipe setDirection:UISwipeGestureRecognizerDirectionLeft];
-    [self.view addGestureRecognizer:leftSwipe];
-    
-    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipe:)];
-    [rightSwipe setDirection:UISwipeGestureRecognizerDirectionRight];
-    [self.view addGestureRecognizer:rightSwipe];
+
 }
 
-- (void)onSwipe:(UISwipeGestureRecognizer *)swipe
+
+- (void)setupToolBar:(UIView *)viewParent
 {
-    NSArray *classArray = [UserCenter sharedInstance].curSchool.classes;
-    if(classArray.count == 1)
-        return;
-    NSInteger curIndex = [classArray indexOfObject:self.classInfo];
-    NSInteger nextIndex = curIndex;
-    ClassInfo *nextClass = nil;
-    if(swipe.direction == UISwipeGestureRecognizerDirectionLeft)
+    if(_buttonItems == nil)
+        _buttonItems = [NSMutableArray array];
+    else
+        [_buttonItems removeAllObjects];
+    NSArray *titleArray = @[@"发文字",@"发照片",@"发语音",@"编辑板报"];
+    NSArray *imageArray = @[@"PostText",@"PostPhoto",@"PostAudio",@"EditBlackBoard"];
+    CGFloat tabWidth = self.view.width / titleArray.count;
+    for (NSInteger i = 0; i < 4; i++)
     {
-        if(curIndex == classArray.count - 1)
-            nextIndex = 0;
-        else
-            nextIndex = curIndex + 1;
+        LZTabBarButton *barButton = [[LZTabBarButton alloc] initWithFrame:CGRectMake(tabWidth * i, 0, tabWidth, viewParent.height)];
+        [barButton setTitle:titleArray[i] forState:UIControlStateNormal];
+        [barButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [barButton setTitleColor:kCommonTeacherTintColor forState:UIControlStateHighlighted];
+        [barButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Normal",imageArray[i]]] forState:UIControlStateNormal];
+        [barButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Highlighted",imageArray[i]]] forState:UIControlStateHighlighted];
+        [barButton addTarget:self action:@selector(onToolBarButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [viewParent addSubview:barButton];
+        [_buttonItems addObject:barButton];
     }
-    else if(swipe.direction == UISwipeGestureRecognizerDirectionRight)
-    {
-        if(curIndex == 0)
-            nextIndex = classArray.count - 1;
-        else
-            nextIndex = curIndex - 1;
-    }
-    nextClass = [classArray objectAtIndex:nextIndex];
-    [self classZoneSwitch:nextClass];
-    [_switchView setClassInfo:self.classInfo];
 }
 
 - (void)addUserGuide
@@ -345,11 +325,56 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     
 }
 
+- (void)onExchangeClass
+{
+    
+}
+
+- (void)onToolBarButtonClicked:(UIButton *)button
+{
+    NSInteger index = [_buttonItems indexOfObject:button];
+    PublishBaseVC *publishVC = nil;
+    if(index == 0)
+    {
+        publishVC = [[PublishArticleVC alloc] init];
+    }
+    else if(index == 1)
+    {
+        publishVC = [[PublishPhotoVC alloc] init];
+    }
+    else if(index == 2)
+    {
+        publishVC = [[PublishAudioVC alloc] init];
+    }
+    else
+    {
+        ClassZoneModel *zoneModel = (ClassZoneModel *)self.tableViewModel;
+        if(zoneModel.canEdit)
+        {
+            PublishNewspaperVC *newspaperVC = [[PublishNewspaperVC alloc] init];
+            [newspaperVC setDelegate:self];
+            [newspaperVC setClassInfo:self.classInfo];
+            [newspaperVC setNewsPaper:zoneModel.newsPaper];
+            publishVC = newspaperVC;
+        }
+        else
+        {
+            [ProgressHUD showHintText:@"只有班主任才能修改黑板报"];
+            return;
+        }
+    }
+    [publishVC setDelegate:self];
+    [publishVC setClassInfo:self.classInfo];
+    TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:publishVC];
+    [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:^{
+        
+    }];
+}
+
 - (void)onCurSchoolChanged
 {
     ClassInfo *curClassInfo = [UserCenter sharedInstance].curSchool.classes[0];
     [self setClassInfo:curClassInfo];
-    [_switchView setClassInfo:curClassInfo];
     [self requestData:REQUEST_REFRESH];
 }
 
@@ -425,16 +450,6 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     }
 }
 
-- (void)onPublishButtonClicked
-{
-    [UIView animateWithDuration:0.3 animations:^{
-        [_publishButton setAlpha:0.f];
-    }];
-    PublishSelectionView *selectionView = [[PublishSelectionView alloc] initWithFrame:self.view.bounds];
-    [selectionView setDelegate:self];
-    [selectionView show];
-}
-
 #pragma mark TNBaseViewController
 - (BOOL)supportCache
 {
@@ -446,39 +461,6 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     return [NSString stringWithFormat:@"%@_%@_%@",NSStringFromClass([self class]),[UserCenter sharedInstance].curSchool.schoolID,self.classInfo.classID];
 }
 
-#pragma mark - PublishSelectDelegate
-- (void)publishContentDidSelectAtIndex:(NSInteger)index
-{
-    [UIView animateWithDuration:0.3 animations:^{
-        [_publishButton setAlpha:1.f];
-    }];
-    PublishBaseVC *publishVC = nil;
-    if(index == 0)
-    {
-        publishVC = [[PublishArticleVC alloc] init];
-    }
-    else if(index == 1)
-    {
-        publishVC = [[PublishPhotoVC alloc] init];
-    }
-    else
-    {
-        publishVC = [[PublishAudioVC alloc] init];
-    }
-    [publishVC setDelegate:self];
-    [publishVC setClassInfo:self.classInfo];
-    TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:publishVC];
-    [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:^{
-        
-    }];
-}
-
-- (void)publishContentDidCancel
-{
-    [UIView animateWithDuration:0.3 animations:^{
-        [_publishButton setAlpha:1.f];
-    }];
-}
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
 {
@@ -509,10 +491,10 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [_headerView setNewsPaper:newsPaper];
 }
 
-#pragma mark - ClassZoneSwitchDelegate
-- (void)classZoneSwitch:(ClassInfo *)classInfo
+- (void)setClassInfo:(ClassInfo *)classInfo
 {
-    self.classInfo = classInfo;
+    _classInfo = classInfo;
+    [self setTitle:_classInfo.className];
     ClassZoneModel *model = (ClassZoneModel *)self.tableViewModel;
     [model setClassID:self.classInfo.classID];
     [self loadCache];
@@ -520,40 +502,15 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 }
 
 #pragma mark - ClassZoneHeaderDelegate
-- (void)classZoneAppClicked
-{
-    ClassAppVC *appVC = [[ClassAppVC alloc] init];
-    [appVC setClassID:self.classInfo.classID];
-    [CurrentROOTNavigationVC pushViewController:appVC animated:YES];
-}
 
 - (void)classZoneAlbumClicked
 {
     PhotoFlowVC *photoVC = [[PhotoFlowVC alloc] init];
     [photoVC setShouldShowEmptyHint:YES];
-    [photoVC setClassID:_switchView.classInfo.classID];
+    [photoVC setClassID:self.classInfo.classID];
     [CurrentROOTNavigationVC pushViewController:photoVC animated:YES];
 }
 
-- (void)classNewspaperClicked
-{
-    ClassZoneModel *zoneModel = (ClassZoneModel *)self.tableViewModel;
-    if(zoneModel.canEdit)
-    {
-        PublishNewspaperVC *newspaperVC = [[PublishNewspaperVC alloc] init];
-        [newspaperVC setDelegate:self];
-        [newspaperVC setClassInfo:self.classInfo];
-        [newspaperVC setNewsPaper:zoneModel.newsPaper];
-        TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:newspaperVC];
-        [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:^{
-            
-        }];
-    }
-    else
-    {
-        [ProgressHUD showHintText:@"只有班主任才能修改黑板报"];
-    }
-}
 
 #pragma mark - PublishZoneItemDelegate
 - (void)publishZoneItemFinished:(ClassZoneItem *)zoneItem

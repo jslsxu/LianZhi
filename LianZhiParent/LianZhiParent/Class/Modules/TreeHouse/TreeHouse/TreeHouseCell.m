@@ -9,6 +9,8 @@
 #import "TreeHouseCell.h"
 #import "CollectionImageCell.h"
 
+#define kInnerMargin                        8
+
 NSString *const kTreeHouseItemDeleteNotification = @"TreeHouseItemDeleteNotification";
 NSString *const kTreeHouseItemTagDeleteNotification = @"TreeHouseItemTagDeleteNotification";
 NSString *const kTreeHouseItemTagSelectNotification = @"TreeHouseItemTagSelectNotification";
@@ -24,6 +26,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
+        self.width = kScreenWidth;
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
         _dateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -36,9 +39,10 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         _icon = [[UIImageView alloc] initWithFrame:CGRectZero];
         [self addSubview:_icon];
         
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-        [_bgImageView setUserInteractionEnabled:YES];
-        [self addSubview:_bgImageView];
+        _bgView = [[UIView alloc] initWithFrame:CGRectMake(72, 5, self.width - 72 - 12, 0)];
+        [_bgView setBackgroundColor:[UIColor whiteColor]];
+        [_bgView.layer setCornerRadius:10];
+        [self addSubview:_bgView];
         
         _infoLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_infoLabel setBackgroundColor:[UIColor clearColor]];
@@ -46,54 +50,57 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [_infoLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
         [_infoLabel setNumberOfLines:0];
         [_infoLabel setLineBreakMode:NSLineBreakByWordWrapping];
-        [_bgImageView addSubview:_infoLabel];
+        [_bgView addSubview:_infoLabel];
         
+        NSInteger itemWidth = (_bgView.width - 20 * 2 - kInnerMargin * 2) / 3;
+        NSInteger innerMargin = (_bgView.width - 20 * 2 - itemWidth * 3) / 2;
         _layout = [[UICollectionViewFlowLayout alloc] init];
-        [_layout setItemSize:CGSizeMake(60, 60)];
-        [_layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-        [_layout setMinimumInteritemSpacing:5];
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:_layout];
+        [_layout setItemSize:CGSizeMake(itemWidth, itemWidth)];
+        [_layout setMinimumInteritemSpacing:innerMargin];
+        [_layout setMinimumLineSpacing:innerMargin];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(20, 0, _bgView.width - 20 * 2, 0) collectionViewLayout:_layout];
         [_collectionView setShowsHorizontalScrollIndicator:NO];
+        [_collectionView setShowsVerticalScrollIndicator:NO];
         [_collectionView registerClass:[CollectionImageCell class] forCellWithReuseIdentifier:@"CollectionImageCell"];
         [_collectionView setBackgroundColor:[UIColor clearColor]];
         [_collectionView setScrollsToTop:NO];
         [_collectionView setDelegate:self];
         [_collectionView setDataSource:self];
-        [_bgImageView addSubview:_collectionView];
+        [_bgView addSubview:_collectionView];
         
         _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(0, 0, 215, 40)];
         [_voiceButton addTarget:self action:@selector(onVoiceButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_bgImageView addSubview:_voiceButton];
+        [_bgView addSubview:_voiceButton];
         
         _sepLine = [[UIView alloc] initWithFrame:CGRectZero];
         [_sepLine setBackgroundColor:kSepLineColor];
-        [_bgImageView addSubview:_sepLine];
+        [_bgView addSubview:_sepLine];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_timeLabel setBackgroundColor:[UIColor clearColor]];
         [_timeLabel setFont:[UIFont systemFontOfSize:13]];
         [_timeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-        [_bgImageView addSubview:_timeLabel];
+        [_bgView addSubview:_timeLabel];
         
         
         _authorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_authorLabel setBackgroundColor:[UIColor clearColor]];
         [_authorLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
         [_authorLabel setFont:[UIFont systemFontOfSize:13]];
-        [_bgImageView addSubview:_authorLabel];
+        [_bgView addSubview:_authorLabel];
         
         _trashButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_trashButton setImage:[UIImage imageNamed:@"TimelineGrayTrash.png"] forState:UIControlStateNormal];
+        [_trashButton setImage:[UIImage imageNamed:@"TimelineTrash.png"] forState:UIControlStateNormal];
         [_trashButton addTarget:self action:@selector(onTrashClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_bgImageView addSubview:_trashButton];
+        [_bgView addSubview:_trashButton];
         
         _tagLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_tagLabel setBackgroundColor:[UIColor clearColor]];
-        [_bgImageView addSubview:_tagLabel];
+        [_bgView addSubview:_tagLabel];
         
         _tagButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_tagButton addTarget:self action:@selector(onTagButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_bgImageView addSubview:_tagButton];
+        [_bgView addSubview:_tagButton];
         
     }
     return self;
@@ -116,7 +123,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     if([item.tag length] > 0)
     {
         [_icon setImage:[UIImage imageNamed:@"TimelineMedal.png"]];
-        [_icon setFrame:CGRectMake(50 - 22 / 2.0, 12, 22, 22)];
+        [_icon setFrame:CGRectMake(50 - 24 / 2.0, 12, 24, 30)];
     }
     else
     {
@@ -124,7 +131,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [_icon setFrame:CGRectMake(50 - 9 / 2.0, 12 + 11 - 4.5, 9, 9)];
     }
     
-    CGFloat bgWidth = self.width - 12 - 72 - 40;
+    NSInteger bgWidth = self.width - 12 - 72 - 40;
     CGSize detailSize = [item.detail boundingRectWithSize:CGSizeMake(bgWidth, 0) andFont:[UIFont systemFontOfSize:16]];
 
     [_infoLabel setText:item.detail];
@@ -138,11 +145,14 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     
     if(item.photos.count > 0)
     {
+        NSInteger row = (item.photos.count + 2) / 3;
+        NSInteger itemWidth = _layout.itemSize.width;
+         NSInteger innerMargin = (bgWidth - itemWidth * 3) / 2;
         [_collectionView setHidden:NO];
-        [_collectionView setFrame:CGRectMake(20, spaceYStart, bgWidth, 60)];
+        [_collectionView setFrame:CGRectMake(20, spaceYStart, bgWidth, itemWidth * row + innerMargin * (row - 1))];
         [_collectionView reloadData];
         
-        spaceYStart += 60 + 5;
+        spaceYStart += _collectionView.height + 5;
     }
     else
     {
@@ -161,7 +171,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     [_sepLine setFrame:CGRectMake(0, spaceYStart, self.width - 12 - 72, 1)];
     spaceYStart += 1;
     
-    [_bgImageView setFrame:CGRectMake(72, 5, self.width - 12 - 72, spaceYStart + 30)];
+    [_bgView setFrame:CGRectMake(72, 5, self.width - 12 - 72, spaceYStart + 30)];
     
     if(item.tag.length > 0)
     {
@@ -172,7 +182,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [attrTagStr setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],NSUnderlineColorAttributeName:[UIColor colorWithHexString:@"00a274"],NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),NSForegroundColorAttributeName: [UIColor colorWithHexString:@"00a274"]} range:NSMakeRange(3, item.tag.length)];
         [_tagLabel setAttributedText:attrTagStr];
         [_tagLabel sizeToFit];
-        [_tagLabel setOrigin:CGPointMake(_bgImageView.width - _tagLabel.width - 10, _sepLine.bottom + (30 - _tagLabel.height) / 2)];
+        [_tagLabel setOrigin:CGPointMake(_bgView.width - _tagLabel.width - 10, _sepLine.bottom + (30 - _tagLabel.height) / 2)];
 
     }
     else if(item.canEdit && !item.newSend)
@@ -182,7 +192,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [str setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14], NSForegroundColorAttributeName : [UIColor colorWithHexString:@"00a274"], NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)} range:NSMakeRange(0, str.length)];
         [_tagLabel setAttributedText:str];
         [_tagLabel sizeToFit];
-        [_tagLabel setOrigin:CGPointMake(_bgImageView.width - _tagLabel.width - 10, _sepLine.bottom + (30 - _tagLabel.height) / 2)];
+        [_tagLabel setOrigin:CGPointMake(_bgView.width - _tagLabel.width - 10, _sepLine.bottom + (30 - _tagLabel.height) / 2)];
     }
     else
         _tagLabel.hidden = YES;
@@ -202,7 +212,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     [_trashButton setFrame:CGRectMake(_authorLabel.right, _sepLine.bottom, 30, 30)];
     [_trashButton setHidden:!item.canEdit];
     
-    [_tagButton setFrame:CGRectMake(_trashButton.right, _sepLine.bottom, _bgImageView.width - _trashButton.right, _bgImageView.height - _sepLine.bottom)];
+    [_tagButton setFrame:CGRectMake(_trashButton.right, _sepLine.bottom, _bgView.width - _trashButton.right, _bgView.height - _sepLine.bottom)];
 }
 
 - (void)onVoiceButtonClicked
@@ -276,7 +286,12 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     CGSize detailSize = [item.detail boundingRectWithSize:CGSizeMake(bgWidth, 0) andFont:[UIFont systemFontOfSize:16]];
     CGFloat extraHeight = 0;
     if(item.photos.count > 0)
-        extraHeight = 60 + 5;
+    {
+        NSInteger itemWidth = (bgWidth - kInnerMargin * 2) / 3;
+        NSInteger row = (item.photos.count + 2) / 3;
+        NSInteger innerMargin = (bgWidth - itemWidth * 3) / 2;
+        extraHeight = (itemWidth * row + innerMargin * (row - 1)) + 5;
+    }
     else if(item.audioItem)
         extraHeight = 40 + 5;
     return @(detailSize.height + 12 * 2 + 5 + 1 + 30 + 5 + extraHeight);

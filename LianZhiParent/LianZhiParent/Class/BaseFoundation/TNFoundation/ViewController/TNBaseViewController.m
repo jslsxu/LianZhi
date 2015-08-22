@@ -30,8 +30,7 @@
     if(self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])
     {
         self.hideNavigationBar = NO;
-        if(IS_IOS7_LATER)
-            self.edgesForExtendedLayout = UIRectEdgeNone;
+        self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     return self;
 }

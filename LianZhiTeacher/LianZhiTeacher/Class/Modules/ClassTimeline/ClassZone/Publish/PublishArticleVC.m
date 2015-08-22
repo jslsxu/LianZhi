@@ -35,7 +35,7 @@
     _publishButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_publishButton setFrame:CGRectMake(kBorderMargin, _bgImageView.height - kBorderMargin - 45, _bgImageView.width - kBorderMargin * 2, 45)];
     [_publishButton addTarget:self action:@selector(onPublishClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_publishButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_publishButton setBackgroundImage:[[UIImage imageWithColor:kCommonTeacherTintColor size:CGSizeMake(20, 20) cornerRadius:5] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [_publishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_publishButton.titleLabel setFont:kButtonTextFont];
     [_publishButton setTitle:@"写好了，发送" forState:UIControlStateNormal];

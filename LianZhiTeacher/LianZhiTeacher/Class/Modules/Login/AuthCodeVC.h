@@ -10,10 +10,11 @@
 
 @interface AuthCodeVC : TNBaseViewController<UITextFieldDelegate>
 {
+    LZTextField*    _mobileField;
     LZTextField*    _authCodeField;
     LZTextField*    _nameField;
     UIButton*       _retrieveButton;
-    UIButton*       _authButton;
+    UIButton*       _nextButton;
     NSInteger       _defaultRemain;
 }
 @property (nonatomic, copy)NSString *mobile;

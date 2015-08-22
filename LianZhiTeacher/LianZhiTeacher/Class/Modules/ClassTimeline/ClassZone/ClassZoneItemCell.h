@@ -15,7 +15,7 @@ extern NSString *const kClassZoneItemDeleteKey;
 
 @interface ClassZoneItemCell : TNTableViewCell<UICollectionViewDataSource, UICollectionViewDelegate, PhotoBrowserDelegate>
 {
-    UIImageView*        _bgImageView;
+    UIView*             _bgView;
     AvatarView*         _avatar;
     UILabel*            _nameLabel;
     UILabel*            _contentLabel;

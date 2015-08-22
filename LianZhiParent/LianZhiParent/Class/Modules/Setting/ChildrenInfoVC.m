@@ -7,9 +7,56 @@
 //
 
 #import "ChildrenInfoVC.h"
-
+#import "AddRelationVC.h"
 #define kChildInfoCellAvatarNotificaton         @"kChildInfoCellAvatarNotificaton"
 #define kChildInfoCellKey                       @"ChildInfoCellKey"
+
+@implementation ChildrenExtraInfoCell
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if(self)
+    {
+        self.width = kScreenWidth;
+        [self setSelectionStyle:UITableViewCellSelectionStyleNone];
+        _logoView = [[LogoView alloc] initWithFrame:CGRectMake(12, 10, 35, 35)];
+        [self addSubview:_logoView];
+        
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_logoView.right + 10, 0, 0, 0)];
+        [_titleLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [_titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [self addSubview:_titleLabel];
+        
+        _extraLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_extraLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
+        [_extraLabel setFont:[UIFont systemFontOfSize:13]];
+        [self addSubview:_extraLabel];
+        
+        _reportButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_reportButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"949494"] size:CGSizeMake(18, 18) cornerRadius:9] resizableImageWithCapInsets:UIEdgeInsetsMake(9, 9, 9, 9)] forState:UIControlStateNormal];
+        [_reportButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_reportButton.titleLabel setFont:[UIFont systemFontOfSize:11]];
+        [_reportButton setTitle:@"报错" forState:UIControlStateNormal];
+        [_reportButton setFrame:CGRectMake(self.width - 12 - 36, (55 - 18) / 2, 36, 18)];
+        [self addSubview:_reportButton];
+        
+        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 55 - kLineHeight, self.width, kLineHeight)];
+        [_sepLine setBackgroundColor:kSepLineColor];
+        [self addSubview:_sepLine];
+    }
+    return self;
+}
+- (void)setText:(NSString *)text extra:(NSString *)extra
+{
+    [_titleLabel setText:text];
+    [_titleLabel sizeToFit];
+    [_titleLabel setOrigin:CGPointMake(_logoView.right + 10, (55 - _titleLabel.height) / 2)];
+    [_extraLabel setText:extra];
+    [_extraLabel sizeToFit];
+    [_extraLabel setOrigin:CGPointMake(_titleLabel.right + 10, (55 - _extraLabel.height) / 2)];
+}
+
+@end
 
 @implementation ChildrenItemView
 
@@ -50,7 +97,7 @@
     [super viewDidLoad];
     self.title = @"孩子档案";
     self.infoArray = [NSMutableArray array];
-    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStylePlain];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [_tableView setSeparatorColor:kSepLineColor];
@@ -99,6 +146,12 @@
     [_tableView reloadData];
 }
 
+- (void)onAdd
+{
+    AddRelationVC *addRelationVC = [[AddRelationVC alloc] init];
+    [CurrentROOTNavigationVC pushViewController:addRelationVC animated:YES];
+}
+
 #pragma mark - iCarouselDelegate
 - (NSInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
@@ -131,9 +184,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    ChildInfo *childInfo = [UserCenter sharedInstance].children[self.curIndex];
     if(section == 0)
         return self.infoArray.count;
-    return 2;
+    else if(section == 1)
+    {
+        return childInfo.classes.count;
+    }
+    else
+    {
+        return childInfo.family.count;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -143,7 +204,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50;
+    if(indexPath.section == 0)
+        return 50;
+    else
+        return 55;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -154,7 +218,24 @@
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, headerView.width - 10 * 2, headerView.height)];
     [headerLabel setFont:[UIFont systemFontOfSize:13]];
     [headerLabel setTextColor:[UIColor colorWithHexString:@"8f8f8f"]];
+    if(section == 0)
+        [headerLabel setText:@"孩子信息"];
+    else if(section == 1)
+        [headerLabel setText:@"学校信息"];
+    else
+        [headerLabel setText:@"家庭信息"];
     [headerView addSubview:headerLabel];
+    
+    if(section == 2)
+    {
+        UIButton *addButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [addButton setTitle:@"添加" forState:UIControlStateNormal];
+        [addButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
+        [addButton addTarget:self action:@selector(onAdd) forControlEvents:UIControlEventTouchUpInside];
+        [addButton setTitleColor:kCommonParentTintColor forState:UIControlStateNormal];
+        [addButton setFrame:CGRectMake(headerView.width - 50, 0, 50, headerView.height)];
+        [headerView addSubview:addButton];
+    }
     return headerView;
 }
 
@@ -162,17 +243,41 @@
 {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    static NSString *reuseID = @"InfoCell";
-    PersonalInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
-    if(nil == cell)
-    {
-        cell = [[PersonalInfoCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseID];
-    }
     if(section == 0)
     {
+        NSString *reuseID = @"InfoCell";
+        PersonalInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+        if(nil == cell)
+        {
+            cell = [[PersonalInfoCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseID];
+        }
         [cell setInfoItem:self.infoArray[row]];
+        return cell;
     }
-    return cell;
+    else
+    {
+        NSString *reuseID = @"ExtraInfoCell";
+        ChildrenExtraInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+        if(nil == cell)
+        {
+            cell = [[ChildrenExtraInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+        }
+        ChildInfo *childInfo = [UserCenter sharedInstance].children[self.curIndex];
+        if(section == 1)
+        {
+            ClassInfo *classInfo = childInfo.classes[row];
+            [cell.logoView setImageWithUrl:[NSURL URLWithString:classInfo.schoolInfo.logo]];
+            [cell.logoView setHidden:NO];
+            [cell setText:classInfo.schoolInfo.schoolName extra:classInfo.className];
+        }
+        else
+        {
+            FamilyInfo *familyInfo = childInfo.family[row];
+            [cell.logoView setHidden:YES];
+            [cell setText:[NSString stringWithFormat:@"%@(%@)",familyInfo.name,familyInfo.relation] extra:[NSString stringWithFormat:@"(%@)",familyInfo.mobile]];
+        }
+        return cell;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
