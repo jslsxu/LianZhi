@@ -16,8 +16,7 @@
 @interface ClassZoneClassSwitchView : UIView
 {
     UILabel*        _classNameLabel;
-    UIButton*       _arrowButton;
-    UIButton*       _coverButton;
+    UIButton*       _switchButton;
 }
 @property (nonatomic, strong)ClassInfo *classInfo;
 @property (nonatomic, assign)id<ClassZoneSwitchDelegate> delegate;

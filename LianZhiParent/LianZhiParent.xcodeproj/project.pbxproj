@@ -303,6 +303,10 @@
 		37CBAF2D1A47B1E20063F395 /* TreeHouseHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CBAF2C1A47B1E20063F395 /* TreeHouseHeaderView.m */; };
 		37CBAF791A47CCD90063F395 /* LZTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CBAF781A47CCD90063F395 /* LZTabBarButton.m */; };
 		37CCE2451B886BCD007BFA4F /* ActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCE2441B886BCD007BFA4F /* ActionView.m */; };
+		37CCE2491B888588007BFA4F /* NewMessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCE2481B888588007BFA4F /* NewMessageVC.m */; };
+		37CCE24C1B8885EA007BFA4F /* NewMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCE24B1B8885EA007BFA4F /* NewMessageCell.m */; };
+		37CCE24F1B888600007BFA4F /* NewMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCE24E1B888600007BFA4F /* NewMessageModel.m */; };
+		37CCE2521B88C40F007BFA4F /* ResponseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCE2511B88C40F007BFA4F /* ResponseView.m */; };
 		37CE01551A7FE47A005CD535 /* SettingDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CE01541A7FE47A005CD535 /* SettingDatePickerView.m */; };
 		37CF74CF1A90D34600660604 /* PhotoPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CF74CE1A90D34600660604 /* PhotoPickerView.m */; };
 		37CFA50E1A4990EC0061D7B8 /* MessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CFA50D1A4990EC0061D7B8 /* MessageVC.m */; };
@@ -938,6 +942,14 @@
 		37CBAF781A47CCD90063F395 /* LZTabBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZTabBarButton.m; sourceTree = "<group>"; };
 		37CCE2431B886BCD007BFA4F /* ActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionView.h; sourceTree = "<group>"; };
 		37CCE2441B886BCD007BFA4F /* ActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionView.m; sourceTree = "<group>"; };
+		37CCE2471B888588007BFA4F /* NewMessageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMessageVC.h; sourceTree = "<group>"; };
+		37CCE2481B888588007BFA4F /* NewMessageVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMessageVC.m; sourceTree = "<group>"; };
+		37CCE24A1B8885EA007BFA4F /* NewMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMessageCell.h; sourceTree = "<group>"; };
+		37CCE24B1B8885EA007BFA4F /* NewMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMessageCell.m; sourceTree = "<group>"; };
+		37CCE24D1B888600007BFA4F /* NewMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMessageModel.h; sourceTree = "<group>"; };
+		37CCE24E1B888600007BFA4F /* NewMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMessageModel.m; sourceTree = "<group>"; };
+		37CCE2501B88C40F007BFA4F /* ResponseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResponseView.h; sourceTree = "<group>"; };
+		37CCE2511B88C40F007BFA4F /* ResponseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResponseView.m; sourceTree = "<group>"; };
 		37CE01531A7FE47A005CD535 /* SettingDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingDatePickerView.h; sourceTree = "<group>"; };
 		37CE01541A7FE47A005CD535 /* SettingDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingDatePickerView.m; sourceTree = "<group>"; };
 		37CF74CD1A90D34600660604 /* PhotoPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoPickerView.h; sourceTree = "<group>"; };
@@ -1125,6 +1137,7 @@
 		3720C1051A419E76000357A5 /* TreeHouse */ = {
 			isa = PBXGroup;
 			children = (
+				37CCE2461B888575007BFA4F /* NewMessageVC */,
 				37CBAF0D1A4724930063F395 /* Publish */,
 				37CBAF181A4724930063F395 /* TreeHouse */,
 			);
@@ -2223,6 +2236,8 @@
 				37C316381A5636AC002E847D /* ClassZoneClassSwitchView.m */,
 				37C316391A5636AC002E847D /* ClassZoneItemCell.h */,
 				37C3163A1A5636AC002E847D /* ClassZoneItemCell.m */,
+				37CCE2501B88C40F007BFA4F /* ResponseView.h */,
+				37CCE2511B88C40F007BFA4F /* ResponseView.m */,
 				37C3163B1A5636AC002E847D /* ClassZoneModel.h */,
 				37C3163C1A5636AC002E847D /* ClassZoneModel.m */,
 				37C3163D1A5636AC002E847D /* ClassZoneVC.h */,
@@ -2460,6 +2475,19 @@
 				37CBAF781A47CCD90063F395 /* LZTabBarButton.m */,
 			);
 			path = HomeVC;
+			sourceTree = "<group>";
+		};
+		37CCE2461B888575007BFA4F /* NewMessageVC */ = {
+			isa = PBXGroup;
+			children = (
+				37CCE2471B888588007BFA4F /* NewMessageVC.h */,
+				37CCE2481B888588007BFA4F /* NewMessageVC.m */,
+				37CCE24A1B8885EA007BFA4F /* NewMessageCell.h */,
+				37CCE24B1B8885EA007BFA4F /* NewMessageCell.m */,
+				37CCE24D1B888600007BFA4F /* NewMessageModel.h */,
+				37CCE24E1B888600007BFA4F /* NewMessageModel.m */,
+			);
+			path = NewMessageVC;
 			sourceTree = "<group>";
 		};
 		37CFA50B1A4990EC0061D7B8 /* MessageGroup */ = {
@@ -2743,6 +2771,7 @@
 				3793F81C1B7CFFD900501F77 /* TNTableViewCell.m in Sources */,
 				37C316411A5636AC002E847D /* ClassZoneModel.m in Sources */,
 				3793F81F1B7CFFD900501F77 /* TNModelItem.m in Sources */,
+				37CCE2521B88C40F007BFA4F /* ResponseView.m in Sources */,
 				3793F7ED1B7CFFD900501F77 /* MLAudioRecorder.m in Sources */,
 				372775C81A60369900464461 /* UserCenter.m in Sources */,
 				37C53AB61B15891A00C3ED69 /* PractiseItemCell.m in Sources */,
@@ -2924,6 +2953,7 @@
 				3793F77A1B7CFFD900501F77 /* REPlaceholderTextView.m in Sources */,
 				3793F7BD1B7CFFD900501F77 /* CameraMaskView.m in Sources */,
 				3793F7B31B7CFFD900501F77 /* CTAssetsViewCell.m in Sources */,
+				37CCE24C1B8885EA007BFA4F /* NewMessageCell.m in Sources */,
 				3793F8171B7CFFD900501F77 /* MJRefreshHeaderView.m in Sources */,
 				3793F7C51B7CFFD900501F77 /* PoiInfoView.m in Sources */,
 				37CA18871AB70BCC00B49B55 /* PhotoPickerVC.m in Sources */,
@@ -2944,10 +2974,12 @@
 				3793F7EE1B7CFFD900501F77 /* MLAmrPlayer.m in Sources */,
 				376FC6CA1B03521F00289DC2 /* InterestVC.m in Sources */,
 				3793F7821B7CFFD900501F77 /* NSError+REValidation.m in Sources */,
+				37CCE24F1B888600007BFA4F /* NewMessageModel.m in Sources */,
 				3793F7D01B7CFFD900501F77 /* AudioItem.m in Sources */,
 				3793F76A1B7CFFD900501F77 /* REBoolItem.m in Sources */,
 				37C53AB31B1588EB00C3ED69 /* PractiseModel.m in Sources */,
 				37C316421A5636AC002E847D /* ClassZoneVC.m in Sources */,
+				37CCE2491B888588007BFA4F /* NewMessageVC.m in Sources */,
 				3793F8271B7CFFD900501F77 /* Reachability+.m in Sources */,
 				3719A7471AA2C47800FBDC2A /* NewEditionPreview.m in Sources */,
 				3793F79A1B7CFFD900501F77 /* AFHTTPRequestOperation+Associative.m in Sources */,

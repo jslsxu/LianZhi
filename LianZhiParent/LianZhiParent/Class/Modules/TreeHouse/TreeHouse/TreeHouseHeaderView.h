@@ -8,12 +8,23 @@
 
 #import <UIKit/UIKit.h>
 #import "TreeHouseAlbumVC.h"
+
+@interface NewMessageIndicator : UIView
+{
+    AvatarView* _avatarView;
+    UILabel*    _indicatorLabel;
+    UIButton*   _coverButton;
+}
+
+@end
+
 @interface TreeHouseHeaderView : UIView
 {
-    UIImageView*        _bannerImageView;
-    AvatarView*         _avatar;
-    UILabel*            _titleLabel;
-    UIButton*           _albumButton;
+    UIImageView*            _bannerImageView;
+    AvatarView*             _avatar;
+    UILabel*                _titleLabel;
+    UIButton*               _albumButton;
+    NewMessageIndicator*    _msgIndicator;
 }
 - (void)setupHeaderView;
 @end

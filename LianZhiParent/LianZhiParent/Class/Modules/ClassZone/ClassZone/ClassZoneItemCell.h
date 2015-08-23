@@ -9,16 +9,18 @@
 #import "TNTableViewCell.h"
 #import "ClassZoneModel.h"
 #import "MessageVoiceButton.h"
-
+#import "ResponseView.h"
 @interface ClassZoneItemCell : TNTableViewCell<UICollectionViewDataSource, UICollectionViewDelegate>
 {
-    UIImageView*        _bgImageView;
     AvatarView*         _avatar;
     UILabel*            _nameLabel;
+    UILabel*            _timeLabel;
     UILabel*            _contentLabel;
     UICollectionView*   _collectionView;
     MessageVoiceButton* _voiceButton;
+    UIButton*           _addressButton;
+    UIButton*           _actionButton;
+    ResponseView*       _responseView;
     UIView*             _sepLine;
-    UILabel*            _timeLabel;
 }
 @end

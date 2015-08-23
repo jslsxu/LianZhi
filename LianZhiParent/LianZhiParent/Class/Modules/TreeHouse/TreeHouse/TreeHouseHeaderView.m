@@ -7,9 +7,46 @@
 //
 
 #import "TreeHouseHeaderView.h"
-
-#define kTreeHouseHeaderHeight                  170
+#import "NewMessageVC.h"
+#define kTreeHouseHeaderHeight                  130
 #define kExtraInfoHeight                        36
+
+@implementation NewMessageIndicator
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if(self)
+    {
+        [self setBackgroundColor:[UIColor colorWithHexString:@"3e3e3e"]];
+        [self.layer setCornerRadius:3];
+        [self.layer setMasksToBounds:YES];
+        
+        
+        _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(5, (self.height - 20) / 2, 20, 20)];
+        [_avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
+        [self addSubview:_avatarView];
+        
+        _indicatorLabel = [[UILabel alloc] initWithFrame:CGRectMake(_avatarView.right + 15, 0, self.width - 10 - (_avatarView.right + 5), self.height)];
+        [_indicatorLabel setTextColor:[UIColor whiteColor]];
+        [_indicatorLabel setFont:[UIFont systemFontOfSize:14]];
+        [_indicatorLabel setText:@"1条新消息"];
+        [self addSubview:_indicatorLabel];
+        
+        _coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_coverButton addTarget:self action:@selector(onNewMessageClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_coverButton setFrame:self.bounds];
+        [self addSubview:_coverButton];
+    }
+    return self;
+}
+
+- (void)onNewMessageClicked
+{
+    NewMessageVC *newMessageVC = [[NewMessageVC alloc] init];
+    [CurrentROOTNavigationVC pushViewController:newMessageVC animated:YES];
+}
+
+@end
 
 @implementation TreeHouseHeaderView
 
@@ -23,11 +60,15 @@
     self = [super initWithFrame:frame];
     {
         self.height = kTreeHouseHeaderHeight;
-        _bannerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.width, self.height - kExtraInfoHeight)];
+        _bannerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.width, 75)];
         [_bannerImageView setImage:[UIImage imageNamed:@"TreeHouseBanner.png"]];
         [_bannerImageView setClipsToBounds:YES];
         [_bannerImageView setContentMode:UIViewContentModeScaleAspectFill];
         [self addSubview:_bannerImageView];
+        
+        UIView* nameView = [[UIView alloc] initWithFrame:CGRectMake(0, _bannerImageView.bottom - 24, _bannerImageView.width, 24)];
+        [nameView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.2]];
+        [self addSubview:nameView];
         
         _avatar = [[AvatarView alloc] initWithRadius:36];
         [_avatar setBorderWidth:3];
@@ -38,26 +79,22 @@
         NSString *title = @"相册";
         _albumButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_albumButton setTitle:title forState:UIControlStateNormal];
-        [_albumButton setTitleColor:[UIColor colorWithHexString:@"999999"] forState:UIControlStateNormal];
-        [_albumButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
-        [_albumButton setImage:[UIImage imageNamed:@"TreeHouseArrow.png"] forState:UIControlStateNormal];
-        CGSize titleSize = [title sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]}];
-        CGFloat buttonWidth = titleSize.width + 10 * 2 + 15;
-        [_albumButton setImageEdgeInsets:UIEdgeInsetsMake(0, buttonWidth - 10 - 15, 0, 10 - titleSize.width)];
-        CGFloat titleRightInset = buttonWidth - 10 - titleSize.width;
-        if (titleRightInset < 10 + 15)
-            titleRightInset = 10 + 15;
-
-        [_albumButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10 - 15, 0, titleRightInset)];
+        [_albumButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_albumButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [_albumButton setBackgroundImage:[[UIImage imageNamed:@"TreeHouseAlbum"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 15, 10, 15)] forState:UIControlStateNormal];
         [_albumButton addTarget:self action:@selector(onAlbumClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_albumButton setFrame:CGRectMake(self.width - buttonWidth, self.height - 30, buttonWidth, 25)];
-        [self addSubview:_albumButton];
+        [_albumButton setFrame:CGRectMake(nameView.width - 45 - 15, (nameView.height - 20) / 2, 45, 20)];
+        [nameView addSubview:_albumButton];
         
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_avatar.right + 5, _bannerImageView.bottom , _albumButton.left - 5 - (_avatar.right + 5), self.height - (_bannerImageView.bottom ))];
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(90, 0 , _albumButton.x - 10 - 90, nameView.height)];
+        [_titleLabel setTextColor:[UIColor whiteColor]];
         [_titleLabel setBackgroundColor:[UIColor clearColor]];
-        [self addSubview:_titleLabel];
+        [nameView addSubview:_titleLabel];
     
         [self setupHeaderView];
+        
+        _msgIndicator = [[NewMessageIndicator alloc] initWithFrame:CGRectMake((self.width - 140) / 2, nameView.bottom + 12, 140, 30)];
+        [self addSubview:_msgIndicator];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onChildInfoChanged) name:kChildInfoChangedNotification object:nil];
     }
@@ -68,14 +105,9 @@
 {
     [_avatar setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar]];
     NSString *nickName = [UserCenter sharedInstance].curChild.name;
-    NSString *title = [NSString stringWithFormat:@"%@ 的成长旅记",nickName];
-    NSMutableAttributedString *attributedStr = [[NSMutableAttributedString alloc] initWithString:title];
-    [attributedStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"666666"] range:NSMakeRange(0, nickName.length)];
-    [attributedStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"999999"] range:NSMakeRange(nickName.length, title.length - nickName.length)];
-    [attributedStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:17] range:NSMakeRange(0, nickName.length)];
-    [attributedStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:13] range:NSMakeRange(nickName.length, title.length - nickName.length)];
-    [_titleLabel setAttributedText:attributedStr];
-    
+    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:nickName attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:18]}];
+    [title appendAttributedString:[[NSAttributedString alloc] initWithString:@"的成长秀" attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14]}]];
+    [_titleLabel setAttributedText:title];
 }
 
 - (void)onAlbumClicked

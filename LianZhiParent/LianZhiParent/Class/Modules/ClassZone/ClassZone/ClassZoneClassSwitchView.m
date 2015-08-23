@@ -15,22 +15,20 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        [self setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.2]];
+        [self setBackgroundColor:[UIColor colorWithHexString:@"04aa73"]];
         _classNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, frame.size.width - 40, frame.size.height)];
-        [_classNameLabel setFont:[UIFont boldSystemFontOfSize:16]];
+        [_classNameLabel setFont:[UIFont boldSystemFontOfSize:14]];
         [_classNameLabel setTextColor:[UIColor whiteColor]];
         [self addSubview:_classNameLabel];
         
-        _arrowButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_arrowButton setImage:[UIImage imageNamed:@"WhiteRightArrow.png"] forState:UIControlStateNormal];
-        [_arrowButton setFrame:CGRectMake(frame.size.width - 40 ,0, 40, frame.size.height)];
-        [self addSubview:_arrowButton];
-        _arrowButton.hidden = ([UserCenter sharedInstance].curChild.classes.count == 1);
-        
-        _coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_coverButton addTarget:self action:@selector(onSwitchButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_coverButton setFrame:self.bounds];
-        [self addSubview:_coverButton];
+        _switchButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_switchButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_switchButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
+        [_switchButton setTitle:@"切换班级" forState:UIControlStateNormal];
+        [_switchButton setFrame:CGRectMake(self.width - 70 - 10, (self.height - 20) / 2, 70, 20)];
+        [_switchButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"fa9c3f"] size:CGSizeMake(70, 20) cornerRadius:10] forState:UIControlStateNormal];
+        [_switchButton addTarget:self action:@selector(onSwitchButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:_switchButton];
         
         if([UserCenter sharedInstance].curChild.classes.count > 0)
             [self setClassInfo:[UserCenter sharedInstance].curChild.classes[0]];
@@ -57,10 +55,8 @@
 
 - (void)setClassInfo:(ClassInfo *)classInfo
 {
-    _arrowButton.hidden = ([UserCenter sharedInstance].curChild.classes.count == 1);
-    
     _classInfo = classInfo;
-    _classNameLabel.text = _classInfo.className;
+    _classNameLabel.text = [NSString stringWithFormat:@"%@ %@",_classInfo.schoolInfo.schoolName,_classInfo.className];
     if([self.delegate respondsToSelector:@selector(classZoneSwitch:)])
         [self.delegate classZoneSwitch:_classInfo];
 }

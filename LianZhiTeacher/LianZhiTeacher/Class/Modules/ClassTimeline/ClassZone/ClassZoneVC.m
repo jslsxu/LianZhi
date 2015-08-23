@@ -284,14 +284,17 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)setupToolBar:(UIView *)viewParent
 {
+    [_buttonItems makeObjectsPerformSelector:@selector(removeFromSuperview)];
     if(_buttonItems == nil)
         _buttonItems = [NSMutableArray array];
     else
         [_buttonItems removeAllObjects];
     NSArray *titleArray = @[@"发文字",@"发照片",@"发语音",@"编辑板报"];
     NSArray *imageArray = @[@"PostText",@"PostPhoto",@"PostAudio",@"EditBlackBoard"];
-    CGFloat tabWidth = self.view.width / titleArray.count;
-    for (NSInteger i = 0; i < 4; i++)
+    ClassZoneModel *zoneModel = (ClassZoneModel *)self.tableViewModel;
+    NSInteger actionCount = zoneModel.canEdit ? 4 : 3;
+    CGFloat tabWidth = self.view.width / actionCount;
+    for (NSInteger i = 0; i < actionCount; i++)
     {
         LZTabBarButton *barButton = [[LZTabBarButton alloc] initWithFrame:CGRectMake(tabWidth * i, 0, tabWidth, viewParent.height)];
         [barButton setTitle:titleArray[i] forState:UIControlStateNormal];

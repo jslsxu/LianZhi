@@ -10,6 +10,14 @@
 #import "iCarousel.h"
 #import "PersonalInfoVC.h"
 
+@interface AvatarCell : UITableViewCell
+{
+    AvatarView* _avatarView;
+    UILabel*    _modifyLabel;
+}
+@property (nonatomic, strong)ChildInfo *childInfo;
+@end
+
 @interface ChildrenExtraInfoCell : UITableViewCell
 {
     LogoView*   _logoView;
@@ -31,7 +39,7 @@
 @property (nonatomic, weak)ChildInfo *childInfo;
 @end
 
-@interface ChildrenInfoVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate>
+@interface ChildrenInfoVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
     iCarousel*          _headerView;
     UITableView*        _tableView;

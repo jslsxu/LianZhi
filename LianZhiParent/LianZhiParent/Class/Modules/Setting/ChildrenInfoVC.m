@@ -11,6 +11,38 @@
 #define kChildInfoCellAvatarNotificaton         @"kChildInfoCellAvatarNotificaton"
 #define kChildInfoCellKey                       @"ChildInfoCellKey"
 
+#define kAvatarCellHeight                       64
+
+@implementation AvatarCell
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if(self)
+    {
+        [self setSelectionStyle:UITableViewCellSelectionStyleNone];
+        self.width = kScreenWidth;
+        _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(15, (kAvatarCellHeight - 46) / 2, 46, 46)];
+        [self addSubview:_avatarView];
+        
+        _modifyLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_modifyLabel setTextColor:kCommonParentTintColor];
+        [_modifyLabel setFont:[UIFont systemFontOfSize:14]];
+        [_modifyLabel setText:@"编辑"];
+        [_modifyLabel sizeToFit];
+        [_modifyLabel setOrigin:CGPointMake(self.width - 12 - _modifyLabel.width, (kAvatarCellHeight - _modifyLabel.height) / 2)];
+        [self addSubview:_modifyLabel];
+    }
+    return self;
+}
+
+- (void)setChildInfo:(ChildInfo *)childInfo
+{
+    _childInfo = childInfo;
+    [_avatarView setImageWithUrl:[NSURL URLWithString:_childInfo.avatar]];
+}
+
+@end
+
 @implementation ChildrenExtraInfoCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -87,6 +119,7 @@
 @end
 
 @interface ChildrenInfoVC ()
+@property (nonatomic, strong)UIImage *avatarImage;
 @property (nonatomic, strong)NSMutableArray *infoArray;
 @end
 
@@ -152,6 +185,118 @@
     [CurrentROOTNavigationVC pushViewController:addRelationVC animated:YES];
 }
 
+- (void)modifyAvatar
+{
+    TNButtonItem *destructiveItem = [TNButtonItem itemWithTitle:@"取消本次操作" action:^{
+        
+    }];
+    TNButtonItem *takePhotoItem = [TNButtonItem itemWithTitle:@"拍摄一张清晰头像" action:^{
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+        [imagePicker setAllowsEditing:YES];
+        [imagePicker setDelegate:self];
+        [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
+    }];
+    TNButtonItem *albumItem = [TNButtonItem itemWithTitle:@"从手机相册选择" action:^{
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [imagePicker setAllowsEditing:YES];
+        [imagePicker setDelegate:self];
+        [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
+    }];
+    TNActionSheet *actionSheet = [[TNActionSheet alloc] initWithTitle:@"头像是快捷身份识别标志\n请您务必上传真实照片" descriptionView:nil destructiveButton:destructiveItem cancelItem:nil otherItems:@[takePhotoItem,albumItem]];
+    [actionSheet show];
+}
+
+- (void)saveInfo
+{
+    NSArray *infoArray = self.infoArray;
+    ChildInfo *childInfo = [UserCenter sharedInstance].children[self.curIndex];
+    
+    PersonalInfoItem *nameItem = [infoArray objectAtIndex:0];
+    if([nameItem.value length] == 0)
+    {
+        [ProgressHUD showHintText:@"孩子姓名不能为空"];
+        return;
+    }
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    for (PersonalInfoItem *item in infoArray) {
+        [params setValue:item.value forKey:item.requestKey];
+        if([item.requestKey isEqualToString:@"nick"])
+        {
+            if(item.value.length > 8)
+            {
+                [ProgressHUD showHintText:@"孩子昵称不能超过8个字符"];
+                return;
+            }
+        }
+        else if ([item.requestKey isEqualToString:@"height"])
+        {
+            CGFloat height = item.value.floatValue;
+            if(height > 250 || height < 0)
+            {
+                [ProgressHUD showHintText:@"请输入正常的身高"];
+                return;
+            }
+        }
+        else if([item.requestKey isEqualToString:@"weight"])
+        {
+            CGFloat weight = item.value.floatValue;
+            if(weight > 150 || weight < 0)
+            {
+                [ProgressHUD showHintText:@"请输入正常的体重"];
+                return;
+            }
+        }
+        else if ([item.requestKey isEqualToString:@"name"])
+        {
+            if(item.value.length > 8)
+            {
+                [ProgressHUD showHintText:@"孩子名字不能超过8个字"];
+                return;
+            }
+        }
+    }
+    [params setValue:childInfo.uid forKey:@"child_id"];
+    __weak typeof(self) wself = self;
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在修改孩子信息" toView:self.view];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"setting/set_child_info" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        if(wself.avatarImage)
+            [formData appendPartWithFileData:UIImageJPEGRepresentation(wself.avatarImage, 0.8) name:@"head" fileName:@"head" mimeType:@"image/JPEG"];
+    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        wself.avatarImage = nil;
+        TNDataWrapper *childWrapper = [responseObject getDataWrapperForKey:@"child"];
+        if([childInfo.uid isEqualToString:[childWrapper getStringForKey:@"id"]])
+        {
+            [childInfo parseData:childWrapper];
+            [[UserCenter sharedInstance] save];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kChildInfoChangedNotification object:nil];
+        }
+        [_headerView reloadData];
+        [_tableView reloadData];
+        [hud hide:YES];
+        [ProgressHUD showHintText:@"修改信息成功"];
+    } fail:^(NSString *errMsg) {
+        [hud hide:YES];
+        [ProgressHUD showHintText:errMsg];
+    }];
+
+}
+
+#pragma mark - UIImagePickerController
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    self.avatarImage = [info objectForKey:UIImagePickerControllerEditedImage];
+    [picker dismissViewControllerAnimated:YES completion:^{
+        [self saveInfo];
+    }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - iCarouselDelegate
 - (NSInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
@@ -170,7 +315,8 @@
     return view;
 }
 
-- (void)carouselDidEndDecelerating:(iCarousel *)carousel
+
+- (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel
 {
     self.curIndex = carousel.currentItemIndex;
     [self refreshData];
@@ -186,7 +332,9 @@
 {
     ChildInfo *childInfo = [UserCenter sharedInstance].children[self.curIndex];
     if(section == 0)
-        return self.infoArray.count;
+    {
+        return self.infoArray.count + 1;
+    }
     else if(section == 1)
     {
         return childInfo.classes.count;
@@ -205,7 +353,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.section == 0)
+    {
+        if(indexPath.row == 0)
+            return kAvatarCellHeight;
         return 50;
+    }
     else
         return 55;
 }
@@ -245,14 +397,28 @@
     NSInteger row = indexPath.row;
     if(section == 0)
     {
-        NSString *reuseID = @"InfoCell";
-        PersonalInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
-        if(nil == cell)
+        if(row == 0)
         {
-            cell = [[PersonalInfoCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseID];
+            NSString *reuseID = @"AvatarCell";
+            AvatarCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+            if(cell == nil)
+            {
+                cell = [[AvatarCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+            }
+            [cell setChildInfo:[UserCenter sharedInstance].children[self.curIndex]];
+            return cell;
         }
-        [cell setInfoItem:self.infoArray[row]];
-        return cell;
+        else
+        {
+            NSString *reuseID = @"InfoCell";
+            PersonalInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+            if(nil == cell)
+            {
+                cell = [[PersonalInfoCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseID];
+            }
+            [cell setInfoItem:self.infoArray[row - 1]];
+            return cell;
+        }
     }
     else
     {
@@ -282,6 +448,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+    if(section == 0 && row == 0)
+    {
+        [self modifyAvatar];
+    }
 }
+
+
 @end

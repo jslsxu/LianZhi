@@ -21,22 +21,22 @@
         CGFloat buttonWidth = 40;
         _albumButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_albumButton addTarget:self action:@selector(onAlbumButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_albumButton setImage:[UIImage imageNamed:@"ClassAlbum.png"] forState:UIControlStateNormal];
-        [_albumButton setFrame:CGRectMake(self.width - buttonWidth, self.height - 20 - buttonWidth, buttonWidth, buttonWidth)];
+        [_albumButton setImage:[UIImage imageNamed:@"ZoneAlbum"] forState:UIControlStateNormal];
+        [_albumButton setFrame:CGRectMake(self.width - buttonWidth, self.height - 40 - buttonWidth, buttonWidth, buttonWidth)];
         [self addSubview:_albumButton];
         
         _appButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_appButton addTarget:self action:@selector(onAppButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_appButton setImage:[UIImage imageNamed:@"ZoneApp.png"] forState:UIControlStateNormal];
+        [_appButton setImage:[UIImage imageNamed:@"ZoneApp"] forState:UIControlStateNormal];
         [_appButton setFrame:CGRectMake(self.width - buttonWidth, _albumButton.top - buttonWidth, buttonWidth, buttonWidth)];
         [self addSubview:_appButton];
         
         _newpaperImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BlackboardText.png"]];
-        [_newpaperImageView setOrigin:CGPointMake(20, 40)];
+        [_newpaperImageView setOrigin:CGPointMake(20, 10)];
         [self addSubview:_newpaperImageView];
         
         
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 60, self.width - 30 - 40, self.height - 30 - 60)];
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 30, self.width - 30 - 40, self.height - 30 - 30)];
         [_contentLabel setUserInteractionEnabled:YES];
         [_contentLabel setTextColor:[UIColor whiteColor]];
         [_contentLabel setFont:[UIFont systemFontOfSize:16]];
@@ -103,16 +103,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
 //    self.title = @"班空间";
     self.shouldShowEmptyHint = YES;
     _switchView = [[ClassZoneClassSwitchView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 30)];
     [_switchView setDelegate:self];
     [self.view addSubview:_switchView];
-    
+    [self.tableView setFrame:CGRectMake(0, _switchView.bottom, self.view.width, self.view.height - _switchView.bottom)];
     [self onCurChildChanged];
     
-    _headerView = [[ClassZoneHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 195)];
+    _headerView = [[ClassZoneHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 160)];
     [_headerView setDelegate:self];
     [self.tableView setTableHeaderView:_headerView];
     

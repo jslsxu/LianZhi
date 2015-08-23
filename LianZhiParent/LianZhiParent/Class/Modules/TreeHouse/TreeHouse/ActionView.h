@@ -9,6 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface ActionView : UIView
+{
+    UIButton*   _praiseButton;
+    UIButton*   _commentButton;
+    UIButton*   _shareButton;
+}
 @property (nonatomic, assign)CGPoint point;
 - (instancetype)initWithPoint:(CGPoint)point;
 @end
