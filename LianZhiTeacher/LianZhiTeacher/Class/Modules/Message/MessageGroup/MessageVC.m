@@ -9,8 +9,8 @@
 #import "MessageVC.h"
 #import "MessageDetailVC.h"
 #import "NotificationToAllVC.h"
-#import "UserCenter.h"
-@interface MessageVC ()
+#import "ActionPopView.h"
+@interface MessageVC ()<ActionPopViewDelegate>
 
 @end
 
@@ -25,8 +25,17 @@
 {
     [super viewWillAppear:animated];
     [self requestData:REQUEST_REFRESH];
+    
+    [ApplicationDelegate homeVC].navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ActionAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddActionClicked)];
 }
-- (void)viewDidLoad {
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [ApplicationDelegate homeVC].navigationItem.rightBarButtonItem = nil;
+}
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
@@ -75,24 +84,16 @@
     [viewParent addSubview:_noticeButton];
 }
 
+- (void)onAddActionClicked
+{
+    ActionPopView *actionView = [[ActionPopView alloc] initWithFrame:CGRectMake(self.view.width - 140, 64, 140, 100)];
+    [actionView setDelegate:self];
+    [actionView show];
+}
+
 - (void)onPublishPhotoFinished:(NSNotification *)notification
 {
     [self requestData:REQUEST_REFRESH];
-//    MessageGroupItem *groupItem = [[MessageGroupItem alloc] init];
-//    [groupItem setMsgNum:1];
-//    MessageFromInfo *fromInfo = [[MessageFromInfo alloc] init];
-//    [fromInfo setName:@"发图片"];
-//    [fromInfo setLogoImage:[UIImage imageNamed:MJRefreshSrcName(@"PostPhoto.png")]];
-//    [groupItem setFromInfo:fromInfo];
-//    [groupItem setContent:@"照片发送成功"];
-//    [groupItem setSoundOn:YES];
-//    [self.messageModel.modelItemArray insertObject:groupItem atIndex:0];
-//    [self.tableView reloadData];
-//    
-//    if([UserCenter sharedInstance].personalSetting.soundOn)
-//        [ApplicationDelegate playSound];
-//    if([UserCenter sharedInstance].personalSetting.shakeOn)
-//        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 }
 
 - (void)onNoticeButtonClicked
@@ -228,6 +229,19 @@
         [groupItem setMsgNum:0];
         [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
+#pragma mark - ActionPopViewDelegate
+- (void)popActionViewDidSelectedAtIndex:(NSInteger)index
+{
+    if(index == 0)
+    {
+        
+    }
+    else
+    {
+        
     }
 }
 

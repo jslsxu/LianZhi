@@ -22,6 +22,7 @@
 		3725715B1A80C0450087F178 /* SettingDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3725715A1A80C0450087F178 /* SettingDatePickerView.m */; };
 		372774E51A5D94A900464461 /* GrowthTimelinePublishVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372774E41A5D94A900464461 /* GrowthTimelinePublishVC.m */; };
 		372774EB1A5D94EC00464461 /* GrowthTimelinePublishCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 372774EA1A5D94EC00464461 /* GrowthTimelinePublishCell.m */; };
+		3728A5DB1B8EF27F00310457 /* InputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A5DA1B8EF27F00310457 /* InputView.m */; };
 		372ED8231B81795A00D07344 /* InterestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372ED8221B81795A00D07344 /* InterestVC.m */; };
 		373528771AD6557800C0F326 /* BaseInfoModifyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 373528751AD6557800C0F326 /* BaseInfoModifyVC.m */; };
 		376FC6B51B01EFB500289DC2 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B41B01EFB500289DC2 /* libiconv.dylib */; };
@@ -288,6 +289,7 @@
 		37CA18711AB70A2F00B49B55 /* PhotoPickerItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA186A1AB70A2F00B49B55 /* PhotoPickerItem.m */; };
 		37CA18721AB70A2F00B49B55 /* PhotoPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA186B1AB70A2F00B49B55 /* PhotoPickerCell.m */; };
 		37CA18731AB70A2F00B49B55 /* PhotoPickerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA186E1AB70A2F00B49B55 /* PhotoPickerModel.m */; };
+		37CCE2561B8B0649007BFA4F /* ActionPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCE2551B8B0649007BFA4F /* ActionPopView.m */; };
 		37D8C7B41A59803D00E5E2E4 /* ClassOperationHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D8C7B31A59803D00E5E2E4 /* ClassOperationHeaderView.m */; };
 		37D8C7B71A5986D800E5E2E4 /* StudentGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D8C7B61A5986D800E5E2E4 /* StudentGridView.m */; };
 		37D8C7BA1A5986F000E5E2E4 /* ClassTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D8C7B91A5986F000E5E2E4 /* ClassTableCell.m */; };
@@ -362,6 +364,8 @@
 		372774E41A5D94A900464461 /* GrowthTimelinePublishVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthTimelinePublishVC.m; sourceTree = "<group>"; };
 		372774E91A5D94EC00464461 /* GrowthTimelinePublishCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthTimelinePublishCell.h; sourceTree = "<group>"; };
 		372774EA1A5D94EC00464461 /* GrowthTimelinePublishCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthTimelinePublishCell.m; sourceTree = "<group>"; };
+		3728A5D91B8EF27F00310457 /* InputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputView.h; sourceTree = "<group>"; };
+		3728A5DA1B8EF27F00310457 /* InputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputView.m; sourceTree = "<group>"; };
 		372ED8211B81795A00D07344 /* InterestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterestVC.h; sourceTree = "<group>"; };
 		372ED8221B81795A00D07344 /* InterestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterestVC.m; sourceTree = "<group>"; };
 		373528751AD6557800C0F326 /* BaseInfoModifyVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseInfoModifyVC.m; sourceTree = "<group>"; };
@@ -883,6 +887,8 @@
 		37CA186D1AB70A2F00B49B55 /* PhotoPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoPickerCell.h; sourceTree = "<group>"; };
 		37CA186E1AB70A2F00B49B55 /* PhotoPickerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoPickerModel.m; sourceTree = "<group>"; };
 		37CA186F1AB70A2F00B49B55 /* PhotoPickerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoPickerModel.h; sourceTree = "<group>"; };
+		37CCE2541B8B0649007BFA4F /* ActionPopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionPopView.h; sourceTree = "<group>"; };
+		37CCE2551B8B0649007BFA4F /* ActionPopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionPopView.m; sourceTree = "<group>"; };
 		37CF74ED1A92589500660604 /* TeacherDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherDefine.h; sourceTree = "<group>"; };
 		37D8C7B21A59803D00E5E2E4 /* ClassOperationHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassOperationHeaderView.h; sourceTree = "<group>"; };
 		37D8C7B31A59803D00E5E2E4 /* ClassOperationHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassOperationHeaderView.m; sourceTree = "<group>"; };
@@ -1054,6 +1060,15 @@
 				37C01B101A6C245500C8F454 /* DatePickerView.m */,
 			);
 			path = GrowthTimeline;
+			sourceTree = "<group>";
+		};
+		3728A5D81B8EF25600310457 /* ChatVC */ = {
+			isa = PBXGroup;
+			children = (
+				3728A5D91B8EF27F00310457 /* InputView.h */,
+				3728A5DA1B8EF27F00310457 /* InputView.m */,
+			);
+			path = ChatVC;
 			sourceTree = "<group>";
 		};
 		376FC6C41B0332A300289DC2 /* Views */ = {
@@ -2157,6 +2172,15 @@
 			path = WelcomeView;
 			sourceTree = "<group>";
 		};
+		37CCE2531B8B05A3007BFA4F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				37CCE2541B8B0649007BFA4F /* ActionPopView.h */,
+				37CCE2551B8B0649007BFA4F /* ActionPopView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		37CF74EC1A92588100660604 /* CommonDefine */ = {
 			isa = PBXGroup;
 			children = (
@@ -2175,6 +2199,7 @@
 		37DEE4A71A57BDEA009A8771 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				3728A5D81B8EF25600310457 /* ChatVC */,
 				3793F5111B7B2CE600501F77 /* ApplicationBox */,
 				3793F50D1B7B285700501F77 /* MineVC */,
 				37CF74EC1A92588100660604 /* CommonDefine */,
@@ -2278,6 +2303,7 @@
 		37DEE4B51A57C19C009A8771 /* MessageGroup */ = {
 			isa = PBXGroup;
 			children = (
+				37CCE2531B8B05A3007BFA4F /* View */,
 				37DEE4B61A57C19C009A8771 /* MessageGroupItemCell.h */,
 				37DEE4B71A57C19C009A8771 /* MessageGroupItemCell.m */,
 				37DEE4B81A57C19C009A8771 /* MessageGroupListModel.h */,
@@ -2570,6 +2596,7 @@
 				37C01B111A6C245500C8F454 /* DatePickerView.m in Sources */,
 				37C890271A8963BD008E44DB /* StatusManager.m in Sources */,
 				3793FA3C1B7CFFF000501F77 /* RELongTextItem.m in Sources */,
+				37CCE2561B8B0649007BFA4F /* ActionPopView.m in Sources */,
 				3793FA351B7CFFF000501F77 /* RETableViewTextCell.m in Sources */,
 				3793FAE01B7CFFF000501F77 /* MJRefreshBaseView.m in Sources */,
 				3793FA311B7CFFF000501F77 /* RETableViewNumberCell.m in Sources */,
@@ -2729,6 +2756,7 @@
 				3793FA531B7CFFF000501F77 /* REEmailValidator.m in Sources */,
 				3793FADC1B7CFFF000501F77 /* EGORefreshTableHeaderView.m in Sources */,
 				3793FA931B7CFFF000501F77 /* POIListModel.m in Sources */,
+				3728A5DB1B8EF27F00310457 /* InputView.m in Sources */,
 				3793FADD1B7CFFF000501F77 /* LoadingView.m in Sources */,
 				3793FAA01B7CFFF000501F77 /* NSObject+Associative.m in Sources */,
 				3793FAA91B7CFFF000501F77 /* UIImageView+URLWithAnimation.m in Sources */,

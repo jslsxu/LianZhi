@@ -11,30 +11,18 @@
 #import "PreviewMessageVC.h"
 @interface SchoolInfoCell : UITableViewCell
 {
-    UIImageView*    _bgImageView;
     LogoView*       _logoView;
     UILabel*        _nameLabel;
+    UILabel*        _statusLabel;
     UIImageView*    _arrowImage;
+    UIView*         _sepLine;
 }
 @property (nonatomic, strong)SchoolInfo *schoolInfo;
-@end
-
-@interface SchoolMessageCell : UITableViewCell
-{
-    UIImageView*    _bgImageView;
-    LogoView*       _logoView;
-    UILabel*        _nameLabel;
-    UILabel*        _messageLabel;
-    UILabel*        _timeLabel;
-}
-@property (nonatomic, strong)MessageGroupItem *messageGroup;
+@property (nonatomic, assign)BOOL isCurSchool;
 @end
 
 @interface ExchangeSchoolVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
-    NSMutableArray* _messages;
-    NSMutableArray* _schools;
     UITableView*    _tableView;
-    UIView*         _curSchoolView;
 }
 @end

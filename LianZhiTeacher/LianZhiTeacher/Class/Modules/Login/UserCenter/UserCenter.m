@@ -171,16 +171,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
 
 - (void)changeCurSchool:(SchoolInfo *)schoolInfo
 {
-    NSInteger preCount = self.curSchool.classes.count;
-    NSInteger curCount = schoolInfo.classes.count;
     NSInteger index = [self.userData.schools indexOfObject:schoolInfo];
     if(self.userData.curIndex != index)
     {
         self.userData.curIndex = index;
-        if(preCount * curCount == 0 && preCount + curCount > 0)//需要修改布局
-            [[NSNotificationCenter defaultCenter] postNotificationName:kUserCenterSchoolSchemeChangedNotification object:self userInfo:nil];
-        else
-            [[NSNotificationCenter defaultCenter] postNotificationName:kUserCenterChangedSchoolNotification object:self userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kUserCenterChangedSchoolNotification object:self userInfo:nil];
         [self save];
     }
 }

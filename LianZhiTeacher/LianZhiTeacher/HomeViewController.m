@@ -136,12 +136,11 @@ static NSArray *tabDatas = nil;
     if([UserCenter sharedInstance].userData.schools.count > 1)
     {
          _switchButton = [[SwitchSchoolButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
-        [_switchButton setImage:[UIImage imageNamed:@"SwitchSchool.png"] forState:UIControlStateNormal];
+        [_switchButton setImage:[UIImage imageNamed:@"SwitchSchool"] forState:UIControlStateNormal];
         [_switchButton addTarget:self action:@selector(switchSchool) forControlEvents:UIControlEventTouchUpInside];
         
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_switchButton];
     }
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:(@"Setting")] style:UIBarButtonItemStylePlain target:self action:@selector(onSettingClicked)];
     
     NSMutableArray *subVCs = [[NSMutableArray alloc] initWithCapacity:0];
     NSArray *subVCArray = @[@"MessageVC",@"ApplicationBoxVC",@"DiscoveryVC",@"MineVC"];
@@ -171,7 +170,7 @@ static NSArray *tabDatas = nil;
         LZTabBarButton *barButton = _tabbarButtons[i];
         BOOL selected = (i == self.selectedIndex);
         NSString *imageName = selected ? [NSString stringWithFormat:@"%@Highlighted",tabImageNameArray[i]] : [NSString stringWithFormat:@"%@Normal",tabImageNameArray[i]];
-        UIColor *titleColor = selected ? kCommonParentTintColor : [UIColor grayColor];
+        UIColor *titleColor = selected ? kCommonTeacherTintColor : [UIColor grayColor];
         [barButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
         [barButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateHighlighted];
         [barButton setTitleColor:titleColor forState:UIControlStateNormal];

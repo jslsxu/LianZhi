@@ -14,6 +14,22 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
+        _commentLabel = [[UILabel alloc] initWithFrame:self.bounds];
+        [_commentLabel setFont:[UIFont systemFontOfSize:14]];
+        [_commentLabel setNumberOfLines:0];
+        [self addSubview:_commentLabel];
+    }
+    return self;
+}
+
+@end
+
+@implementation PraiseView
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if(self)
+    {
         
     }
     return self;

@@ -10,9 +10,15 @@
 
 @interface CommentCell : TNTableViewCell
 {
-    
+    UILabel*    _commentLabel;
 }
 
+@end
+
+@interface PraiseView : UIView
+{
+    
+}
 @end
 
 @interface ResponseView : UIView
