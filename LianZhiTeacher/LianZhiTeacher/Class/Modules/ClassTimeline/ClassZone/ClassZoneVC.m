@@ -240,6 +240,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"切换班级" style:UIBarButtonItemStylePlain target:self action:@selector(onExchangeClass)];
@@ -253,6 +254,11 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNetworkStatusChanged) name:UIApplicationDidBecomeActiveNotification object:nil];
     //上传成功
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kTaskItemSuccessNotification object:nil];
+    
+    _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - REPLY_BOX_HEIGHT, self.view.width, REPLY_BOX_HEIGHT)];
+    [_replyBox setDelegate:self];
+    [self.view addSubview:_replyBox];
+    _replyBox.hidden = YES;
 }
 
 - (void)setupSubviews
@@ -494,6 +500,12 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [_headerView setNewsPaper:newsPaper];
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ClassZoneItemCell *itemCell = (ClassZoneItemCell *)cell;
+    [itemCell setDelegate:self];
+}
+
 - (void)setClassInfo:(ClassInfo *)classInfo
 {
     _classInfo = classInfo;
@@ -504,6 +516,36 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [self requestData:REQUEST_REFRESH];
 }
 
+#pragma mark - ClassZoneItemCellDelegate
+- (void)onResponseClickedAtTarget:(UserInfo *)targetUser
+{
+    _replyBox.hidden = NO;
+    [_replyBox assignFocus];
+}
+
+- (void)onActionClicked:(ClassZoneItemCell *)cell
+{
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    CGPoint point = [cell convertPoint:cell.actionButton.center toView:keyWindow];
+    ActionView *actionView = [[ActionView alloc] initWithPoint:point action:^(NSInteger index) {
+        if(index == 0)
+        {
+            
+        }
+        else if(index == 1)
+        {
+            _replyBox.hidden = NO;
+            [_replyBox assignFocus];
+        }
+        else
+        {
+            
+        }
+    }];
+    [actionView show];
+}
+
+
 #pragma mark - ClassZoneHeaderDelegate
 
 - (void)classZoneAlbumClicked
@@ -513,6 +555,22 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [photoVC setClassID:self.classInfo.classID];
     [CurrentROOTNavigationVC pushViewController:photoVC animated:YES];
 }
+
+#pragma mark - ReplyBoxDelegate
+- (void)onActionViewCommit:(NSString *)content
+{
+    _replyBox.hidden = YES;
+    [_replyBox setText:@""];
+    [_replyBox resignFocus];
+}
+
+- (void) onActionViewCancel
+{
+    [_replyBox setHidden:YES];
+    [_replyBox setText:@""];
+    [_replyBox resignFocus];
+}
+
 
 
 #pragma mark - PublishZoneItemDelegate

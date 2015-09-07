@@ -45,7 +45,7 @@
     _sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_sendButton setFrame:CGRectMake(kBorderMargin, _bgImageView.height - 45 - kBorderMargin, _bgImageView.width - kBorderMargin * 2, 45)];
     [_sendButton addTarget:self action:@selector(onSendButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_sendButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_sendButton setBackgroundImage:[[UIImage imageWithColor:kCommonTeacherTintColor size:CGSizeMake(10, 10) cornerRadius:5] resizableImageWithCapInsets:UIEdgeInsetsMake(5, 5, 5, 5)] forState:UIControlStateNormal];
     [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_sendButton.titleLabel setFont:kButtonTextFont];
     [_sendButton setTitle:@"录好了，发送" forState:UIControlStateNormal];

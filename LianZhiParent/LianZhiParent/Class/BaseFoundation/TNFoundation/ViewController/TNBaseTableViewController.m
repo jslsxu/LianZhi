@@ -25,8 +25,8 @@
     self = [super init];
     if(self)
     {
-        if(IS_IOS7_LATER)
-            self.edgesForExtendedLayout = UIRectEdgeNone;
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+        [self setAutomaticallyAdjustsScrollViewInsets:NO];
     }
     return self;
 }
@@ -36,8 +36,8 @@
     [super viewDidLoad];
     
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;;
     [_tableView setBackgroundColor:[UIColor clearColor]];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];

@@ -7,7 +7,7 @@
 //
 
 #import "ContactParentsVC.h"
-
+#import "JSMessagesViewController.h"
 @interface ContactParentsVC()
 @property (nonatomic, strong)NSArray *parents;
 
@@ -121,16 +121,20 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ContactGroup *group = [self.parents objectAtIndex:indexPath.section];
     FamilyInfo *userInfo = [[group contacts] objectAtIndex:indexPath.row];
-    if(userInfo.mobile.length > 0)
-    {
-        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-        TNButtonItem *item = [TNButtonItem itemWithTitle:@"拨打" action:^{
-            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",userInfo.mobile];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-        }];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",userInfo.mobile] buttonItems:@[cancelItem,item]];
-        [alertView show];
-    }
+//    if(userInfo.mobile.length > 0)
+//    {
+//        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+//        TNButtonItem *item = [TNButtonItem itemWithTitle:@"拨打" action:^{
+//            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",userInfo.mobile];
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+//        }];
+//        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",userInfo.mobile] buttonItems:@[cancelItem,item]];
+//        [alertView show];
+//    }
+    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+    [chatVC setName:userInfo.name];
+    [chatVC setUserID:userInfo.uid];
+    [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
 }
 
 

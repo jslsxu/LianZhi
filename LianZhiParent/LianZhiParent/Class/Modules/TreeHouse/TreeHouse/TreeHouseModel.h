@@ -14,6 +14,7 @@
 @property (nonatomic, copy)NSString *tag;
 @property (nonatomic, copy)NSString *detail;
 @property (nonatomic, copy)NSString *timeStr;//几小时前
+@property (nonatomic, copy)NSString *address;
 @property (nonatomic, strong)NSMutableArray *photos;
 @property (nonatomic, strong)UserInfo* user;
 @property (nonatomic, strong)AudioItem *audioItem;

@@ -29,6 +29,10 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         self.width = kScreenWidth;
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
+        
+        _icon = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [self addSubview:_icon];
+        
         _dateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_dateLabel setTextAlignment:NSTextAlignmentRight];
         [_dateLabel setBackgroundColor:[UIColor clearColor]];
@@ -36,13 +40,41 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [_dateLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [self addSubview:_dateLabel];
         
-        _icon = [[UIImageView alloc] initWithFrame:CGRectZero];
-        [self addSubview:_icon];
-        
         _bgView = [[UIView alloc] initWithFrame:CGRectMake(72, 5, self.width - 72 - 12, 0)];
         [_bgView setBackgroundColor:[UIColor whiteColor]];
         [_bgView.layer setCornerRadius:10];
         [self addSubview:_bgView];
+        
+        
+        _authorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_authorLabel setBackgroundColor:[UIColor clearColor]];
+        [_authorLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [_authorLabel setFont:[UIFont systemFontOfSize:14]];
+        [_bgView addSubview:_authorLabel];
+
+        _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_timeLabel setBackgroundColor:[UIColor clearColor]];
+        [_timeLabel setFont:[UIFont systemFontOfSize:13]];
+        [_timeLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
+        [_bgView addSubview:_timeLabel];
+        
+        _addressLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_addressLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
+        [_addressLabel setFont:[UIFont systemFontOfSize:12]];
+        [_bgView addSubview:_addressLabel];
+        
+        _trashButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_trashButton setImage:[UIImage imageNamed:@"TimelineTrash.png"] forState:UIControlStateNormal];
+        [_trashButton addTarget:self action:@selector(onTrashClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_bgView addSubview:_trashButton];
+        
+        _tagLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_tagLabel setBackgroundColor:[UIColor clearColor]];
+        [_bgView addSubview:_tagLabel];
+        
+        _tagButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_tagButton addTarget:self action:@selector(onTagButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_bgView addSubview:_tagButton];
         
         _infoLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_infoLabel setBackgroundColor:[UIColor clearColor]];
@@ -71,36 +103,6 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(0, 0, 215, 40)];
         [_voiceButton addTarget:self action:@selector(onVoiceButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [_bgView addSubview:_voiceButton];
-        
-        _sepLine = [[UIView alloc] initWithFrame:CGRectZero];
-        [_sepLine setBackgroundColor:kSepLineColor];
-        [_bgView addSubview:_sepLine];
-        
-        _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_timeLabel setBackgroundColor:[UIColor clearColor]];
-        [_timeLabel setFont:[UIFont systemFontOfSize:13]];
-        [_timeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-        [_bgView addSubview:_timeLabel];
-        
-        
-        _authorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_authorLabel setBackgroundColor:[UIColor clearColor]];
-        [_authorLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-        [_authorLabel setFont:[UIFont systemFontOfSize:13]];
-        [_bgView addSubview:_authorLabel];
-        
-        _trashButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_trashButton setImage:[UIImage imageNamed:@"TimelineTrash.png"] forState:UIControlStateNormal];
-        [_trashButton addTarget:self action:@selector(onTrashClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_bgView addSubview:_trashButton];
-        
-        _tagLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_tagLabel setBackgroundColor:[UIColor clearColor]];
-        [_bgView addSubview:_tagLabel];
-        
-        _tagButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_tagButton addTarget:self action:@selector(onTagButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_bgView addSubview:_tagButton];
         
     }
     return self;
@@ -131,15 +133,61 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [_icon setFrame:CGRectMake(50 - 9 / 2.0, 12 + 11 - 4.5, 9, 9)];
     }
     
+    if(item.newSend)
+        [_authorLabel setText:@"我"];
+    else
+        [_authorLabel setText:item.user.title];
+    [_authorLabel sizeToFit];
+    [_authorLabel setOrigin:CGPointMake(20, 10)];
+    
+    [_timeLabel setText:item.timeStr];
+    [_timeLabel sizeToFit];
+    [_timeLabel setOrigin:CGPointMake(_authorLabel.right + 5, _authorLabel.bottom - _timeLabel.height)];
+    
+    [_addressLabel setText:item.address];
+    [_addressLabel sizeToFit];
+    [_addressLabel setOrigin:CGPointMake(20, 25)];
+    
+    [_trashButton setFrame:CGRectMake(_bgView.width - 10 - 30, 10, 30, 30)];
+    [_trashButton setHidden:!item.canEdit];
+    
+    
     NSInteger bgWidth = self.width - 12 - 72 - 40;
     CGSize detailSize = [item.detail boundingRectWithSize:CGSizeMake(bgWidth, 0) andFont:[UIFont systemFontOfSize:16]];
 
     [_infoLabel setText:item.detail];
-    CGFloat spaceYStart = 12;
+    CGFloat spaceYStart = 45;
     [_infoLabel setFrame:CGRectMake(20, spaceYStart, detailSize.width, detailSize.height)];
     
     spaceYStart += detailSize.height + 5;
     
+    if(item.tag.length > 0)
+    {
+        _tagLabel.hidden = NO;
+        NSString *tagStr = [NSString stringWithFormat:@"标签:%@",item.tag];
+        NSMutableAttributedString *attrTagStr = [[NSMutableAttributedString alloc] initWithString:tagStr];
+        [attrTagStr setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14],NSForegroundColorAttributeName: [UIColor colorWithHexString:@"999999"]} range:NSMakeRange(0, 3)];
+        [attrTagStr setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],NSUnderlineColorAttributeName:[UIColor colorWithHexString:@"00a274"],NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),NSForegroundColorAttributeName: [UIColor colorWithHexString:@"00a274"]} range:NSMakeRange(3, item.tag.length)];
+        [_tagLabel setAttributedText:attrTagStr];
+        [_tagLabel sizeToFit];
+        [_tagLabel setOrigin:CGPointMake(20, _infoLabel.bottom + 10)];
+        
+    }
+    else if(item.canEdit && !item.newSend)
+    {
+        _tagLabel.hidden = NO;
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"添加标签"];
+        [str setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14], NSForegroundColorAttributeName : [UIColor colorWithHexString:@"00a274"], NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)} range:NSMakeRange(0, str.length)];
+        [_tagLabel setAttributedText:str];
+        [_tagLabel sizeToFit];
+        [_tagLabel setOrigin:CGPointMake(20, _infoLabel.bottom + 10)];
+    }
+    else
+        _tagLabel.hidden = YES;
+    
+    [_tagButton setFrame:_tagLabel.frame];
+    
+    spaceYStart += 20;
     [_collectionView setHidden:YES];
     [_voiceButton setHidden:YES];
     
@@ -168,51 +216,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     }
     spaceYStart += 5;
     
-    [_sepLine setFrame:CGRectMake(0, spaceYStart, self.width - 12 - 72, 1)];
-    spaceYStart += 1;
-    
     [_bgView setFrame:CGRectMake(72, 5, self.width - 12 - 72, spaceYStart + 30)];
-    
-    if(item.tag.length > 0)
-    {
-        _tagLabel.hidden = NO;
-        NSString *tagStr = [NSString stringWithFormat:@"标签:%@",item.tag];
-        NSMutableAttributedString *attrTagStr = [[NSMutableAttributedString alloc] initWithString:tagStr];
-        [attrTagStr setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:14],NSForegroundColorAttributeName: [UIColor colorWithHexString:@"999999"]} range:NSMakeRange(0, 3)];
-        [attrTagStr setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],NSUnderlineColorAttributeName:[UIColor colorWithHexString:@"00a274"],NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),NSForegroundColorAttributeName: [UIColor colorWithHexString:@"00a274"]} range:NSMakeRange(3, item.tag.length)];
-        [_tagLabel setAttributedText:attrTagStr];
-        [_tagLabel sizeToFit];
-        [_tagLabel setOrigin:CGPointMake(_bgView.width - _tagLabel.width - 10, _sepLine.bottom + (30 - _tagLabel.height) / 2)];
-
-    }
-    else if(item.canEdit && !item.newSend)
-    {
-        _tagLabel.hidden = NO;
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:@"添加标签"];
-        [str setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14], NSForegroundColorAttributeName : [UIColor colorWithHexString:@"00a274"], NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)} range:NSMakeRange(0, str.length)];
-        [_tagLabel setAttributedText:str];
-        [_tagLabel sizeToFit];
-        [_tagLabel setOrigin:CGPointMake(_bgView.width - _tagLabel.width - 10, _sepLine.bottom + (30 - _tagLabel.height) / 2)];
-    }
-    else
-        _tagLabel.hidden = YES;
-
-
-    [_timeLabel setText:item.timeStr];
-    [_timeLabel sizeToFit];
-    [_timeLabel setOrigin:CGPointMake(15, _sepLine.bottom + (30 - _timeLabel.height) / 2)];
-    
-    if(item.newSend)
-        [_authorLabel setText:@"我"];
-    else
-        [_authorLabel setText:item.user.title];
-    [_authorLabel sizeToFit];
-    [_authorLabel setOrigin:CGPointMake(_timeLabel.right + 5, _sepLine.bottom + (30 - _authorLabel.height) / 2)];
-
-    [_trashButton setFrame:CGRectMake(_authorLabel.right, _sepLine.bottom, 30, 30)];
-    [_trashButton setHidden:!item.canEdit];
-    
-    [_tagButton setFrame:CGRectMake(_trashButton.right, _sepLine.bottom, _bgView.width - _trashButton.right, _bgView.height - _sepLine.bottom)];
 }
 
 - (void)onVoiceButtonClicked
@@ -294,7 +298,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     }
     else if(item.audioItem)
         extraHeight = 40 + 5;
-    return @(detailSize.height + 12 * 2 + 5 + 1 + 30 + 5 + extraHeight);
+    return @(detailSize.height + 12 + 45 + 5 + 1 + 30 + 5 + extraHeight);
 }
 
 #pragma mark - PhotoBrowserDelegate

@@ -7,7 +7,7 @@
 //
 
 #import "ContactListVC.h"
-
+#import "JSMessagesViewController.h"
 @implementation ContactListHeaderView
 - (id)initWithFrame:(CGRect)frame
 {
@@ -153,8 +153,10 @@
     {
         TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
         TNButtonItem *item = [TNButtonItem itemWithTitle:@"拨打" action:^{
-            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",teacherInfo.mobile];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+//            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",teacherInfo.mobile];
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+            JSMessagesViewController *messageVC = [[JSMessagesViewController alloc] init];
+            [CurrentROOTNavigationVC pushViewController:messageVC animated:YES];
         }];
         TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",teacherInfo.mobile] buttonItems:@[cancelItem,item]];
         [alertView show];

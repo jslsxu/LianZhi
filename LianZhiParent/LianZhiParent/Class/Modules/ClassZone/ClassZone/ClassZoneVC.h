@@ -10,6 +10,7 @@
 #import "ClassZoneClassSwitchView.h"
 #import "ClassAppVC.h"
 #import "ClassZoneItemCell.h"
+#import "ReplyBox.h"
 
 @protocol ClassZoneHeaderDelegate <NSObject>
 @optional
@@ -32,9 +33,10 @@
 
 @end
 
-@interface ClassZoneVC : TNBaseTableViewController<ClassZoneSwitchDelegate, ClassZoneHeaderDelegate>
+@interface ClassZoneVC : TNBaseTableViewController<ClassZoneSwitchDelegate, ClassZoneHeaderDelegate, ReplyBoxDelegate>
 {
     ClassZoneClassSwitchView*       _switchView;
     ClassZoneHeaderView*            _headerView;
+    ReplyBox*                       _replyBox;
 }
 @end

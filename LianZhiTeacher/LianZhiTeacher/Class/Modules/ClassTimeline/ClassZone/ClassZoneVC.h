@@ -15,7 +15,8 @@
 #import "PublishPhotoVC.h"
 #import "PublishNewspaperVC.h"
 #import "ClassZoneManager.h"
-
+#import "ReplyBox.h"
+#import "ActionView.h"
 extern NSString *const kPublishPhotoItemFinishedNotification;
 extern NSString *const kPublishPhotoItemKey;
 
@@ -37,11 +38,12 @@ extern NSString *const kPublishPhotoItemKey;
 @property (nonatomic, weak)id<ClassZoneHeaderDelegate> delegate;
 @end
 
-@interface ClassZoneVC : TNBaseTableViewController<ClassZoneHeaderDelegate, PublishZoneItemDelegate>
+@interface ClassZoneVC : TNBaseTableViewController<ClassZoneHeaderDelegate, PublishZoneItemDelegate, ReplyBoxDelegate, ClassZoneItemCellDelegate>
 {
     ClassZoneHeaderView*            _headerView;
     UIToolbar*                      _publishToolBar;
     NSMutableArray*                 _buttonItems;
+    ReplyBox*                       _replyBox;
 }
 @property (nonatomic, strong)ClassInfo *classInfo;
 @end

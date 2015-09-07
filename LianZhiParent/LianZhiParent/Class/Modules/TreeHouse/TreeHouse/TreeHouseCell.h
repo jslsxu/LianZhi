@@ -19,6 +19,10 @@ extern NSString *const kTreeHouseItemKey;
     UILabel*            _authorLabel;
     UILabel*            _dateLabel;
     UILabel*            _addressLabel;
+    UILabel*            _timeLabel;
+    UILabel*            _tagLabel;
+    UIButton*           _tagButton;
+    UIButton*           _actionButton;
     UIButton*           _trashButton;
     UIImageView*        _icon;
     UIView*             _bgView;
@@ -26,9 +30,5 @@ extern NSString *const kTreeHouseItemKey;
     UICollectionViewFlowLayout* _layout;
     UICollectionView*   _collectionView;//照片
     MessageVoiceButton* _voiceButton;
-    UIView*             _sepLine;
-    UILabel*            _timeLabel;
-    UILabel*            _tagLabel;
-    UIButton*           _tagButton;
 }
 @end

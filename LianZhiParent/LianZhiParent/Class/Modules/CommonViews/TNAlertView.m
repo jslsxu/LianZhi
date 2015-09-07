@@ -8,10 +8,9 @@
 
 #import "TNAlertView.h"
 
-#define kAlertViewWidth             ([UIScreen mainScreen].bounds.size.width) * 3 / 4
+#define kAlertViewWidth             240
+#define kAlertViewHeight            120
 #define kButtonHeight               35
-#define kButtonHMargin              15
-#define kAlertViewVMargin           15
 
 @interface TNAlertView()
 
@@ -25,43 +24,54 @@
     if(self)
     {
         [self setBackgroundColor:[UIColor clearColor]];
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-        [_bgImageView setUserInteractionEnabled:YES];
-        [self addSubview:_bgImageView];
+        _bgView = [[UIView alloc] initWithFrame:CGRectMake((self.width - kAlertViewWidth) / 2, (self.height - kAlertViewHeight) / 2, kAlertViewWidth, kAlertViewHeight)];
+        [_bgView setBackgroundColor:kCommonParentTintColor];
+        [_bgView.layer setCornerRadius:15];
+        [_bgView.layer setMasksToBounds:YES];
+        [self addSubview:_bgView];
         
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_titleLabel setBackgroundColor:[UIColor clearColor]];
-        [_titleLabel setFont:[UIFont systemFontOfSize:17]];
-        [_titleLabel setTextColor:kWarningTextColor];
+        [_titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [_titleLabel setTextColor:[UIColor whiteColor]];
         [_titleLabel setTextAlignment:NSTextAlignmentCenter];
         [_titleLabel setNumberOfLines:0];
         [_titleLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [_titleLabel setText:title];
-        [_bgImageView addSubview:_titleLabel];
+        [_bgView addSubview:_titleLabel];
         
+        CGSize size = [title boundingRectWithSize:CGSizeMake(kAlertViewWidth - 30 * 2, 0) andFont:_titleLabel.font];
+        [_titleLabel setFrame:CGRectMake((_bgView.width - size.width) / 2, (kAlertViewHeight - kButtonHeight - size.height) / 2, size.width, size.height)];
         
-        CGSize size = [title boundingRectWithSize:CGSizeMake(kAlertViewWidth - kButtonHMargin * 2, 0) andFont:_titleLabel.font];
-        CGFloat height = kAlertViewVMargin * 3 + size.height + kButtonHeight;
-        [_bgImageView setFrame:CGRectMake((self.width - kAlertViewWidth) / 2, (self.height - height) / 2, kAlertViewWidth, height)];
-        [_titleLabel setFrame:CGRectMake((_bgImageView.width - size.width) / 2, kAlertViewVMargin, size.width, size.height)];
+        _buttonView = [[UIView alloc] initWithFrame:CGRectMake(0, kAlertViewHeight - kButtonHeight, kAlertViewWidth, kButtonHeight)];
+        [_buttonView setBackgroundColor:[UIColor whiteColor]];
+        [_bgView addSubview:_buttonView];
         
-        CGFloat buttonWidth = (kAlertViewWidth - kButtonHMargin * (1 + items.count)) / items.count;
-        CGFloat spaceXStart = kButtonHMargin;
-        for (NSInteger i = 0; i < items.count; i++) {
+        CGFloat buttonWidth = kAlertViewWidth / items.count;
+        for (NSInteger i = 0; i < items.count; i++)
+        {
             TNButtonItem *item = [items objectAtIndex:i];
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            [button setFrame:CGRectMake(buttonWidth * i, 0, buttonWidth, kButtonHeight)];
+            [button setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor] size:CGSizeMake(10, 10)] forState:UIControlStateNormal];
+            [button setBackgroundImage:[UIImage imageWithColor:kCommonParentTintColor size:CGSizeMake(10, 10)] forState:UIControlStateHighlighted];
             [button addTarget:self action:@selector(onButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-            [button setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [button.titleLabel setFont:[UIFont systemFontOfSize:16]];
+            [button setTitleColor:kCommonParentTintColor forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+            [button.titleLabel setFont:[UIFont systemFontOfSize:14]];
             [button setTitle:item.title forState:UIControlStateNormal];
             [button setActionItem:item];
-            [button setFrame:CGRectMake(spaceXStart, _titleLabel.bottom + kAlertViewVMargin, buttonWidth, kButtonHeight)];
-            [_bgImageView addSubview:button];
-            spaceXStart += buttonWidth + kButtonHMargin;
+            [_buttonView addSubview:button];
+            
+            if(i >= 1)
+            {
+                UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(buttonWidth * i, 0, 0.5, kButtonHeight)];
+                [sepLine setBackgroundColor:kCommonParentTintColor];
+                [_buttonView addSubview:sepLine];
+            }
         }
         
-        _bgImageView.layer.transform = CATransform3DMakeScale(1.3f, 1.3f, 1.0);
+        _bgView.layer.transform = CATransform3DMakeScale(1.3f, 1.3f, 1.0);
     }
     return self;
 }
@@ -80,11 +90,11 @@
 - (void)show
 {
     [[[[UIApplication sharedApplication] windows] firstObject] addSubview:self];
-    _bgImageView.layer.opacity = 0.f;
+    _bgView.layer.opacity = 0.f;
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5f];
-        _bgImageView.layer.opacity = 1.0f;
-        _bgImageView.layer.transform = CATransform3DMakeScale(1, 1, 1);
+        _bgView.layer.opacity = 1.0f;
+        _bgView.layer.transform = CATransform3DMakeScale(1, 1, 1);
     } completion:^(BOOL finished) {
         
     }];
@@ -92,19 +102,19 @@
 
 - (void)close
 {
-    CATransform3D currentTransform = _bgImageView.layer.transform;
+    CATransform3D currentTransform = _bgView.layer.transform;
     
-    CGFloat startRotation = [[_bgImageView valueForKeyPath:@"layer.transform.rotation.z"] floatValue];
+    CGFloat startRotation = [[_bgView valueForKeyPath:@"layer.transform.rotation.z"] floatValue];
     CATransform3D rotation = CATransform3DMakeRotation(-startRotation + M_PI * 270.0 / 180.0, 0.0f, 0.0f, 0.0f);
     
-    _bgImageView.layer.transform = CATransform3DConcat(rotation, CATransform3DMakeScale(1, 1, 1));
-    _bgImageView.layer.opacity = 1.0f;
+    _bgView.layer.transform = CATransform3DConcat(rotation, CATransform3DMakeScale(1, 1, 1));
+    _bgView.layer.opacity = 1.0f;
     
     [UIView animateWithDuration:0.2f delay:0.0 options:UIViewAnimationOptionTransitionNone
                      animations:^{
                          self.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.0f];
-                         _bgImageView.layer.transform = CATransform3DConcat(currentTransform, CATransform3DMakeScale(0.6f, 0.6f, 1.0));
-                         _bgImageView.layer.opacity = 0.0f;
+                         _bgView.layer.transform = CATransform3DConcat(currentTransform, CATransform3DMakeScale(0.6f, 0.6f, 1.0));
+                         _bgView.layer.opacity = 0.0f;
                      }
                      completion:^(BOOL finished) {
                          for (UIView *v in [self subviews]) {

@@ -8,6 +8,7 @@
 
 #import "ClassZoneVC.h"
 #import "ClassAlbumVC.h"
+#import "ActionView.h"
 #define kClassZoneShown                         @"ClassZoneShown"
 
 @implementation ClassZoneHeaderView
@@ -76,7 +77,7 @@
 
 @end
 
-@interface ClassZoneVC ()
+@interface ClassZoneVC ()<ClassZoneItemCellDelegate>
 @property (nonatomic, strong)ClassInfo *classInfo;
 @end
 
@@ -123,13 +124,10 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurChildChanged) name:kUserCenterChangedCurChildNotification object:nil];
     
-    UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipe:)];
-    [leftSwipe setDirection:UISwipeGestureRecognizerDirectionLeft];
-    [self.view addGestureRecognizer:leftSwipe];
-    
-    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onSwipe:)];
-    [rightSwipe setDirection:UISwipeGestureRecognizerDirectionRight];
-    [self.view addGestureRecognizer:rightSwipe];
+    _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - REPLY_BOX_HEIGHT, self.view.width, REPLY_BOX_HEIGHT)];
+    [_replyBox setDelegate:self];
+    [ApplicationDelegate.homeVC.view addSubview:_replyBox];
+    _replyBox.hidden = YES;
 }
 
 - (void)onSwipe:(UISwipeGestureRecognizer *)swipe
@@ -222,6 +220,35 @@
     return task;
 }
 
+#pragma mark - ClassZoneItemCellDelegate
+- (void)onResponseClickedAtTarget:(UserInfo *)targetUser
+{
+    _replyBox.hidden = NO;
+    [_replyBox assignFocus];
+}
+
+- (void)onActionClicked:(ClassZoneItemCell *)cell
+{
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    CGPoint point = [cell convertPoint:cell.actionButton.center toView:keyWindow];
+    ActionView *actionView = [[ActionView alloc] initWithPoint:point action:^(NSInteger index) {
+        if(index == 0)
+        {
+            
+        }
+        else if(index == 1)
+        {
+            _replyBox.hidden = NO;
+            [_replyBox assignFocus];
+        }
+        else
+        {
+            
+        }
+    }];
+    [actionView show];
+}
+
 #pragma mark TNBaseTableViewController
 - (BOOL)supportCache
 {
@@ -257,11 +284,32 @@
     [CurrentROOTNavigationVC pushViewController:appVC animated:YES];
 }
 
+#pragma mark - ReplyBoxDelegate
+- (void)onActionViewCommit:(NSString *)content
+{
+    _replyBox.hidden = YES;
+    [_replyBox setText:@""];
+    [_replyBox resignFocus];
+}
+
+- (void) onActionViewCancel
+{
+    [_replyBox setHidden:YES];
+    [_replyBox setText:@""];
+    [_replyBox resignFocus];
+}
+
 #pragma mark TNbaseViewControllerDelegate
 - (void)TNBaseTableViewControllerRequestSuccess
 {
     NSString *newsPaper = [(ClassZoneModel *)self.tableViewModel newsPaper];
     [_headerView setNewsPaper:newsPaper];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ClassZoneItemCell *itemCell = (ClassZoneItemCell *)cell;
+    [itemCell setDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning {

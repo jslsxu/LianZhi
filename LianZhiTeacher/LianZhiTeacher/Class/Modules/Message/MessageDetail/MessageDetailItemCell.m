@@ -79,8 +79,7 @@
     {
         height += 100;
         [_contentLabel setText:@"这是一条语音内容，点击播放:"];
-        [_contentLabel sizeToFit];
-        [_contentLabel setWidth:_bgView.width - kContentHMargin * 2];
+        [_contentLabel setFrame:CGRectMake(kContentHMargin, kOperationHeight + kContentHMargin, _bgView.width - kContentHMargin * 2, 20)];
         
         [_voiceButton setHidden:NO];
         [_voiceButton setAudioItem:item.audioItem];

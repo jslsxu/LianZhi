@@ -11,7 +11,8 @@
 
 @interface TNAlertView : UIView
 {
-    UIImageView*    _bgImageView;
+    UIView*         _bgView;
+    UIView*         _buttonView;
     UILabel*        _titleLabel;
 }
 
