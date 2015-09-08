@@ -15,6 +15,7 @@
 {
     UIButton *backButton;
     UIButton *deleteButton;
+    UILabel* _timeLabel;
     UIButton *saveButton;
 }
 @end
@@ -25,24 +26,34 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.6];
         backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [backButton setFrame:CGRectMake(10,20, 44, 44)];
+        [backButton setFrame:CGRectMake(0,0, 44, 44)];
         [backButton setImage:[UIImage imageNamed:@"PhotoBrowserBack.png"] forState:UIControlStateNormal];
         [backButton addTarget:self action:@selector(clickBack) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:backButton];
         
         saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [saveButton setFrame:CGRectMake(self.width - 56, 20, 46, 44)];
+        [saveButton setFrame:CGRectMake(self.width - 44 - 10, 0, 44, 44)];
         [saveButton setImage:[UIImage imageNamed:@"PhotoDownload.png"] forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(clickSavePhoto) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:saveButton];
         
-        deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [deleteButton setFrame:CGRectMake(saveButton.left - 44 - 10,20, 44, 44)];
-        [deleteButton setImage:[UIImage imageNamed:@"Trash.png"] forState:UIControlStateNormal];
-        [deleteButton addTarget:self action:@selector(clickDeletePhoto) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:deleteButton];
+        UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(45, 10, kLineHeight, self.height - 10 * 2)];
+        [sepLine setBackgroundColor:[UIColor blackColor]];
+        [self addSubview:sepLine];
+        
+        _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(sepLine.right + 10, 0, saveButton.x - 10 - (sepLine.right + 10), self.height)];
+        [_timeLabel setTextColor:[UIColor whiteColor]];
+        [_timeLabel setFont:[UIFont systemFontOfSize:16]];
+        [self addSubview:_timeLabel];
+    
+        
+//        deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [deleteButton setFrame:CGRectMake(saveButton.left - 44 - 10,20, 44, 44)];
+//        [deleteButton setImage:[UIImage imageNamed:@"Trash.png"] forState:UIControlStateNormal];
+//        [deleteButton addTarget:self action:@selector(clickDeletePhoto) forControlEvents:UIControlEventTouchUpInside];
+//        [self addSubview:deleteButton];
     }
     return self;
 }
@@ -64,6 +75,7 @@
 {
     _photo = photo;
     [deleteButton setHidden:!self.photo.canDelete];
+    [_timeLabel setText:_photo.formatTimeStr];
 }
 
 

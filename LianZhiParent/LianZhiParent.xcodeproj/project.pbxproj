@@ -1238,6 +1238,7 @@
 		3720C1011A419E76000357A5 /* ClassZone */ = {
 			isa = PBXGroup;
 			children = (
+				3728A7491B9EB13D00310457 /* ClassZoneDetail */,
 				37C3164C1A568F34002E847D /* GrowthTimeline */,
 				37C316351A5636AC002E847D /* ClassApp */,
 				37C316361A5636AC002E847D /* ClassZone */,
@@ -1488,6 +1489,13 @@
 				3728A6731B94205200310457 /* SendMessageButton@2x.png */,
 			);
 			path = InputView;
+			sourceTree = "<group>";
+		};
+		3728A7491B9EB13D00310457 /* ClassZoneDetail */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ClassZoneDetail;
 			sourceTree = "<group>";
 		};
 		376605A31B75F29100204DFD /* Mine */ = {
