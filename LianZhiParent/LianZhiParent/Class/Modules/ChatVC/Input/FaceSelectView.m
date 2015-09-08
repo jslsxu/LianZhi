@@ -119,6 +119,7 @@
     for (NSInteger i = 0; i < numOfPages; i++)
     {
         FaceCollectionView *collectionView = [[FaceCollectionView alloc] initWithFrame:CGRectMake(_scrollView.width * i, 0, _scrollView.width, _scrollView.height)];
+        [collectionView setDelegate:self];
         [collectionView setPage:i];
         [_scrollView addSubview:collectionView];
     }

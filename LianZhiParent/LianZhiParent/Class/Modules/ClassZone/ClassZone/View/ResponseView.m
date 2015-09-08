@@ -117,11 +117,11 @@
 
 @implementation ResponseView
 
-+ (CGFloat)responseHeightForResponse:(ClassZoneItem *)classZoneItem
++ (CGFloat)responseHeightForResponse:(ResponseModel *)responseModel forWidth:(CGFloat)width
 {
     NSInteger height = 0;
-    NSArray *praiseArray = classZoneItem.praiseArray;
-    NSArray *responseArray = classZoneItem.responseArray;
+    NSArray *praiseArray = responseModel.praiseArray;
+    NSArray *responseArray = responseModel.responseArray;
     if(praiseArray.count > 0)
     {
         height += kPraiseViewHeight;
@@ -132,7 +132,7 @@
     {
         for (ResponseItem *responseItem in responseArray)
         {
-            NSInteger itemHeight = [CommentCell cellHeight:responseItem cellWidth:kScreenWidth - 55 - 10].floatValue;
+            NSInteger itemHeight = [CommentCell cellHeight:responseItem cellWidth:width].floatValue;
             tableHeight += itemHeight;
         }
     }
@@ -166,12 +166,12 @@
     return self;
 }
 
-- (void)setClassZoneItem:(ClassZoneItem *)classZoneItem
+- (void)setResponseModel:(ResponseModel *)responseModel
 {
-    _classZoneItem = classZoneItem;
+    _responseModel = responseModel;
     NSInteger height = 0;
-    NSArray *praiseArray = classZoneItem.praiseArray;
-    NSArray *responseArray = classZoneItem.responseArray;
+    NSArray *praiseArray = _responseModel.praiseArray;
+    NSArray *responseArray = _responseModel.responseArray;
     if(praiseArray.count > 0)
     {
         [_praiseView setHidden:NO];
@@ -202,7 +202,7 @@
 #pragma mark - UITableVIewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.classZoneItem.responseArray.count;
+    return self.responseModel.responseArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -213,13 +213,13 @@
     {
         cell = [[CommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
-    [cell setResponseItem:self.classZoneItem.responseArray[indexPath.row]];
+    [cell setResponseItem:self.responseModel.responseArray[indexPath.row]];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [CommentCell cellHeight:self.classZoneItem.responseArray[indexPath.row] cellWidth:tableView.width].floatValue;
+    return [CommentCell cellHeight:self.responseModel.responseArray[indexPath.row] cellWidth:tableView.width].floatValue;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -227,7 +227,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if([self.delegate respondsToSelector:@selector(onResponseItemClicked:)])
     {
-        ResponseItem *item = self.classZoneItem.responseArray[indexPath.row];
+        ResponseItem *item = self.responseModel.responseArray[indexPath.row];
         [self.delegate onResponseItemClicked:item];
     }
 }

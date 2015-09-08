@@ -35,7 +35,10 @@
             self.voice = dict[@"voice"];
             self.strVoiceTime = dict[@"strVoiceTime"];
             break;
-            
+        case 3:
+            self.type = UUMessageTypeFace;
+            self.strContent = dict[@"strContent"];
+            break;
         default:
             break;
     }

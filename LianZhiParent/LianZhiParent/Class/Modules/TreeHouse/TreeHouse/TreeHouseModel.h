@@ -7,6 +7,7 @@
 //
 
 #import "TNListModel.h"
+#import "ResponseItem.h"
 
 @interface TreehouseItem : TNModelItem
 @property (nonatomic, copy)NSString *itemID;
@@ -26,6 +27,7 @@
 @property (nonatomic, assign)BOOL delay;
 @property (nonatomic, copy)NSString *savedPath;
 @property (nonatomic, weak)AFHTTPRequestOperation *uploadOperation;
+@property (nonatomic, strong)ResponseModel *responseModel;
 - (TagPrivilege)tagPrivilege;
 - (BOOL)canSendDirectly;    //如果全是photoID，则不管网络状态
 @end

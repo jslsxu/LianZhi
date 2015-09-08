@@ -17,8 +17,7 @@
 @property (nonatomic, copy)NSString *time;
 @property (nonatomic, copy)NSString *formatTime;
 @property (nonatomic, assign)BOOL canEdit;
-@property (nonatomic, strong)NSArray* praiseArray;      // 点赞的数组
-@property (nonatomic, strong)NSArray* responseArray;    // 回复的数组
+@property (nonatomic, strong)ResponseModel *responseModel;
 @end
 
 @interface ClassZoneModel : TNListModel

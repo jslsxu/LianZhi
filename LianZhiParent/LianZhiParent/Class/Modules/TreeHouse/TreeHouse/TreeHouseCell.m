@@ -84,13 +84,19 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [_infoLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [_bgView addSubview:_infoLabel];
         
-        NSInteger itemWidth = (_bgView.width - 20 * 2 - kInnerMargin * 2) / 3;
-        NSInteger innerMargin = (_bgView.width - 20 * 2 - itemWidth * 3) / 2;
+        _actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_actionButton setSize:CGSizeMake(40, 20)];
+        [_actionButton setImage:[UIImage imageNamed:@"TimelineAction"] forState:UIControlStateNormal];
+        [_actionButton addTarget:self action:@selector(onActionClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_bgView addSubview:_actionButton];
+        
+        NSInteger itemWidth = (_bgView.width - 10 * 2 - kInnerMargin * 2) / 3;
+        NSInteger innerMargin = (_bgView.width - 10 * 2 - itemWidth * 3) / 2;
         _layout = [[UICollectionViewFlowLayout alloc] init];
         [_layout setItemSize:CGSizeMake(itemWidth, itemWidth)];
         [_layout setMinimumInteritemSpacing:innerMargin];
         [_layout setMinimumLineSpacing:innerMargin];
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(20, 0, _bgView.width - 20 * 2, 0) collectionViewLayout:_layout];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 0, _bgView.width - 10 * 2, 0) collectionViewLayout:_layout];
         [_collectionView setShowsHorizontalScrollIndicator:NO];
         [_collectionView setShowsVerticalScrollIndicator:NO];
         [_collectionView registerClass:[CollectionImageCell class] forCellWithReuseIdentifier:@"CollectionImageCell"];
@@ -103,7 +109,10 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(0, 0, 215, 40)];
         [_voiceButton addTarget:self action:@selector(onVoiceButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [_bgView addSubview:_voiceButton];
-        
+    
+        _responseView = [[ResponseView alloc] initWithFrame:CGRectMake(10, 0, _bgView.width - 10 * 2, 0)];
+        [_responseView setDelegate:self];
+        [_bgView addSubview:_responseView];
     }
     return self;
 }
@@ -138,7 +147,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     else
         [_authorLabel setText:item.user.title];
     [_authorLabel sizeToFit];
-    [_authorLabel setOrigin:CGPointMake(20, 10)];
+    [_authorLabel setOrigin:CGPointMake(10, 10)];
     
     [_timeLabel setText:item.timeStr];
     [_timeLabel sizeToFit];
@@ -146,20 +155,20 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     
     [_addressLabel setText:item.address];
     [_addressLabel sizeToFit];
-    [_addressLabel setOrigin:CGPointMake(20, 25)];
+    [_addressLabel setOrigin:CGPointMake(10, 25)];
     
     [_trashButton setFrame:CGRectMake(_bgView.width - 10 - 30, 10, 30, 30)];
     [_trashButton setHidden:!item.canEdit];
     
     
-    NSInteger bgWidth = self.width - 12 - 72 - 40;
+    NSInteger bgWidth = self.width - 12 - 72 - 20;
     CGSize detailSize = [item.detail boundingRectWithSize:CGSizeMake(bgWidth, 0) andFont:[UIFont systemFontOfSize:16]];
 
     [_infoLabel setText:item.detail];
-    CGFloat spaceYStart = 45;
-    [_infoLabel setFrame:CGRectMake(20, spaceYStart, detailSize.width, detailSize.height)];
+    NSInteger spaceYStart = 45;
+    [_infoLabel setFrame:CGRectMake(10, spaceYStart, detailSize.width, detailSize.height)];
     
-    spaceYStart += detailSize.height + 5;
+    spaceYStart += detailSize.height;
     
     if(item.tag.length > 0)
     {
@@ -170,7 +179,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [attrTagStr setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],NSUnderlineColorAttributeName:[UIColor colorWithHexString:@"00a274"],NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),NSForegroundColorAttributeName: [UIColor colorWithHexString:@"00a274"]} range:NSMakeRange(3, item.tag.length)];
         [_tagLabel setAttributedText:attrTagStr];
         [_tagLabel sizeToFit];
-        [_tagLabel setOrigin:CGPointMake(20, _infoLabel.bottom + 10)];
+        [_tagLabel setFrame:CGRectMake(10, spaceYStart, _tagLabel.width, 30)];
         
     }
     else if(item.canEdit && !item.newSend)
@@ -180,14 +189,14 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [str setAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14], NSForegroundColorAttributeName : [UIColor colorWithHexString:@"00a274"], NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle)} range:NSMakeRange(0, str.length)];
         [_tagLabel setAttributedText:str];
         [_tagLabel sizeToFit];
-        [_tagLabel setOrigin:CGPointMake(20, _infoLabel.bottom + 10)];
+        [_tagLabel setFrame:CGRectMake(10, spaceYStart, _tagLabel.width, 30)];
     }
     else
         _tagLabel.hidden = YES;
     
     [_tagButton setFrame:_tagLabel.frame];
-    
-    spaceYStart += 20;
+    [_actionButton setOrigin:CGPointMake(_bgView.width - 10 - _actionButton.width, spaceYStart + (30 - 20) / 2)];
+    spaceYStart += 30;
     [_collectionView setHidden:YES];
     [_voiceButton setHidden:YES];
     
@@ -197,10 +206,10 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         NSInteger itemWidth = _layout.itemSize.width;
          NSInteger innerMargin = (bgWidth - itemWidth * 3) / 2;
         [_collectionView setHidden:NO];
-        [_collectionView setFrame:CGRectMake(20, spaceYStart, bgWidth, itemWidth * row + innerMargin * (row - 1))];
+        [_collectionView setFrame:CGRectMake(10, spaceYStart, bgWidth, itemWidth * row + innerMargin * (row - 1))];
         [_collectionView reloadData];
         
-        spaceYStart += _collectionView.height + 5;
+        spaceYStart += _collectionView.height + 10;
     }
     else
     {
@@ -209,14 +218,32 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
             [_voiceButton setHidden:NO];
             [_voiceButton setAudioItem:item.audioItem];
             [_voiceButton setOrigin:CGPointMake(10, spaceYStart)];
-            spaceYStart += _voiceButton.height + 5;
+            spaceYStart += _voiceButton.height + 10;
         }
         else
             [_voiceButton setHidden:YES];
     }
-    spaceYStart += 5;
     
-    [_bgView setFrame:CGRectMake(72, 5, self.width - 12 - 72, spaceYStart + 30)];
+    [_responseView setResponseModel:item.responseModel];
+    [_responseView setY:spaceYStart];
+    
+    spaceYStart += _responseView.height + 10;
+    [_bgView setHeight:spaceYStart];
+}
+
+- (void)onActionClicked
+{
+    if([self.delegate respondsToSelector:@selector(onActionClicked:)])
+    {
+        [self.delegate onActionClicked:self];
+    }
+}
+
+#pragma mark - ResponseViewDelegate
+- (void)onResponseItemClicked:(ResponseItem *)responseItem
+{
+    if([self.delegate respondsToSelector:@selector(onResponseClickedAtTarget:)])
+        [self.delegate onResponseClickedAtTarget:responseItem.sendUser];
 }
 
 - (void)onVoiceButtonClicked
@@ -286,7 +313,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
 {
     TreehouseItem *item = (TreehouseItem *)modelItem;
-    CGFloat bgWidth = width - 12 - 72 - 40;
+    CGFloat bgWidth = width - 12 - 72 - 20;
     CGSize detailSize = [item.detail boundingRectWithSize:CGSizeMake(bgWidth, 0) andFont:[UIFont systemFontOfSize:16]];
     CGFloat extraHeight = 0;
     if(item.photos.count > 0)
@@ -294,11 +321,12 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         NSInteger itemWidth = (bgWidth - kInnerMargin * 2) / 3;
         NSInteger row = (item.photos.count + 2) / 3;
         NSInteger innerMargin = (bgWidth - itemWidth * 3) / 2;
-        extraHeight = (itemWidth * row + innerMargin * (row - 1)) + 5;
+        extraHeight = (itemWidth * row + innerMargin * (row - 1)) + 10;
     }
     else if(item.audioItem)
-        extraHeight = 40 + 5;
-    return @(detailSize.height + 12 + 45 + 5 + 1 + 30 + 5 + extraHeight);
+        extraHeight = 40 + 10;
+    NSInteger resposeHeight = [ResponseView responseHeightForResponse:item.responseModel forWidth:bgWidth];
+    return @(5 + 45 + detailSize.height + 30 + extraHeight + resposeHeight + 10 + 10);
 }
 
 #pragma mark - PhotoBrowserDelegate

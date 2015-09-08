@@ -10,6 +10,7 @@
 #import "UUMessage.h"
 #import "UUMessageFrame.h"
 #import "UUImageAvatarBrowser.h"
+#import "MFWFace.h"
 @interface UUMessageCell ()
 {
 //    AVAudioPlayer *player;
@@ -48,6 +49,10 @@
         self.labelNum.textAlignment = NSTextAlignmentCenter;
         self.labelNum.font = ChatTimeFont;
         [self.contentView addSubview:self.labelNum];
+        
+        self.faceImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [self.faceImageView setContentMode:UIViewContentModeCenter];
+        [self.contentView addSubview:self.faceImageView];
         
         // 4、创建内容
         self.btnContent = [UUMessageContentButton buttonWithType:UIButtonTypeCustom];
@@ -175,17 +180,22 @@
     
     //背景气泡图
     UIImage *normal;
-    if (message.from == UUMessageFromMe) {
-        normal = [UIImage imageNamed:@"MessageSendedBG"];
-        normal = [normal resizableImageWithCapInsets:UIEdgeInsetsMake(35, 10, 10, 22)];
-    }
-    else{
-        normal = [UIImage imageNamed:@"MessageReceivedBG"];
-        normal = [normal resizableImageWithCapInsets:UIEdgeInsetsMake(35, 22, 10, 10)];
+//    if(message.type != UUMessageTypeFace)
+    {
+        if (message.from == UUMessageFromMe) {
+            normal = [UIImage imageNamed:@"MessageSendedBG"];
+            normal = [normal resizableImageWithCapInsets:UIEdgeInsetsMake(35, 10, 10, 22)];
+        }
+        else{
+            normal = [UIImage imageNamed:@"MessageReceivedBG"];
+            normal = [normal resizableImageWithCapInsets:UIEdgeInsetsMake(35, 22, 10, 10)];
+        }
     }
     [self.btnContent setBackgroundImage:normal forState:UIControlStateNormal];
     [self.btnContent setBackgroundImage:normal forState:UIControlStateHighlighted];
 
+    self.btnContent.hidden = (message.type == UUMessageTypeFace);
+    self.faceImageView.hidden = !(message.type == UUMessageTypeFace);
     switch (message.type) {
         case UUMessageTypeText:
             [self.btnContent setTitle:message.strContent forState:UIControlStateNormal];
@@ -206,7 +216,13 @@
 //            voiceURL = [NSString stringWithFormat:@"%@%@",RESOURCE_URL_HOST,message.strVoice];
         }
             break;
-            
+        case UUMessageTypeFace:
+        {
+            NSInteger faceIndex = [MFWFace indexForFace:message.strContent];
+            [self.faceImageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"biaoqing%ld",faceIndex + 1]]];
+            self.faceImageView.frame = self.btnContent.frame;
+        }
+            break;
         default:
             break;
     }

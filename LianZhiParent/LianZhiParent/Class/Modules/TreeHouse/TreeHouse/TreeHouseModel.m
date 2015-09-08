@@ -46,6 +46,8 @@
         [self setPhotos:photos];
     }
     
+    self.responseModel = [[ResponseModel alloc] init];
+    [self.responseModel parseData:nil];
     
 }
 

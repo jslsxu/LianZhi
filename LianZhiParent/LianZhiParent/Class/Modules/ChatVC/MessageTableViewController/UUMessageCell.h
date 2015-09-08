@@ -22,7 +22,7 @@
 
 @property (nonatomic, retain)UILabel *labelTime;
 @property (nonatomic, retain)UILabel *labelNum;
-
+@property (nonatomic, strong)UIImageView *faceImageView;
 @property (nonatomic, retain)UUMessageContentButton *btnContent;
 
 @property (nonatomic, retain)UUMessageFrame *messageFrame;

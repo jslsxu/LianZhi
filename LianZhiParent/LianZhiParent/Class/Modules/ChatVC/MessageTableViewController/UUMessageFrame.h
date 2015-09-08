@@ -11,6 +11,9 @@
 #define ChatPicWH 200       //图片宽高
 #define ChatContentW 180    //内容宽度
 
+#define FacePicWidth    50
+#define FacePicHeight   50
+
 #define ChatTimeMarginW 15  //时间文本与边框间隔宽度方向
 #define ChatTimeMarginH 10  //时间文本与边框间隔高度方向
 

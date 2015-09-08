@@ -273,18 +273,9 @@
     }
     if(self.allTeacherItem.selected)
         selected = YES;
-    if(selected)
-    {
-        MessageOperationVC *messageOperationVC = [[MessageOperationVC alloc] init];
-        [messageOperationVC setTargetDic:@{@"all_teachers":@(self.allTeacherItem.selected),@"grade_ids":ids}];
-        TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:messageOperationVC];
-        [self presentViewController:nav animated:YES completion:nil];
-    }
-    else
-    {
-        TNButtonItem *item = [TNButtonItem itemWithTitle:@"确定" action:nil];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"还没有选择通知对象" buttonItems:@[item]];
-        [alertView show];
-    }
+    MessageOperationVC *messageOperationVC = [[MessageOperationVC alloc] init];
+    [messageOperationVC setTargetDic:@{@"all_teachers":@(self.allTeacherItem.selected),@"grade_ids":ids}];
+    TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:messageOperationVC];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 @end

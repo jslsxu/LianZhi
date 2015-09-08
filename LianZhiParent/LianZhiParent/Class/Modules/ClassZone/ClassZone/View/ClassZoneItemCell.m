@@ -198,7 +198,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     spaceYStart += 20 + 10;
     
     [_responseView setFrame:CGRectMake(kImageLeftMargin, spaceYStart, self.width - kImageLeftMargin - 10, 100)];
-    [_responseView setClassZoneItem:item];
+    [_responseView setResponseModel:item.responseModel];
     spaceYStart += _responseView.height + 10;
     [_sepLine setFrame:CGRectMake(0, spaceYStart, self.width, kLineHeight)];
 }
@@ -227,7 +227,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
             height += 10;
     }
     height += 20 + 10;
-    NSInteger resposeHeight = [ResponseView responseHeightForResponse:item];
+    NSInteger resposeHeight = [ResponseView responseHeightForResponse:item.responseModel forWidth:width - 20 * 2 - 12 * 2];
     if(resposeHeight > 0)
         height += resposeHeight + 10;
     return @(height);

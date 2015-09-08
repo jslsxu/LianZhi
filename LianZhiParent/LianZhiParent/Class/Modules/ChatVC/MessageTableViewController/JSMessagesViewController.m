@@ -21,7 +21,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.title = self.name;
     _inputView = [[InputBarView alloc] init];
     [_inputView setInputDelegate:self];
     [_inputView setY:self.view.height - _inputView.height - 64];
@@ -32,6 +32,36 @@
     [_tableView setDataSource:self];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:_tableView];
+}
+
+//加载之前的
+- (void)loadPrevious
+{
+    if(!_isLoading)
+    {
+        _isLoading = YES;
+        UUMessageFrame *firstMessage = [_chatModel.dataSource firstObject];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/get" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid":self.userID,@"to_type":@"1",@"more_id":firstMessage.message.strId} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            _isLoading = NO;
+        } fail:^(NSString *errMsg) {
+            _isLoading = NO;
+        }];
+    }
+}
+
+//加载最新的
+- (void)loadLate
+{
+    if(!_isLoading)
+    {
+        _isLoading = YES;
+        UUMessageFrame *firstMessage = [_chatModel.dataSource firstObject];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/get" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid":self.userID,@"to_type":@"1",@"more_id":firstMessage.message.strId} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            _isLoading = NO;
+        } fail:^(NSString *errMsg) {
+            _isLoading = NO;
+        }];
+    }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -91,7 +121,9 @@
 
 - (void)inputBarViewDidFaceSelect:(NSString *)face
 {
-    
+    NSDictionary *dic = @{@"strContent": face,
+                          @"type": @(UUMessageTypeFace)};
+    [self dealTheFunctionData:dic];
 }
 
 - (void)inputBarViewDidSendPhoto:(UIImage *)image

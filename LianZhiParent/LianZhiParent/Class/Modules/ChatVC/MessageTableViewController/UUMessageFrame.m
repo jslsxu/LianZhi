@@ -56,6 +56,9 @@
         case UUMessageTypeVoice:
             contentSize = CGSizeMake(120, 20);
             break;
+        case UUMessageTypeFace:
+            contentSize = CGSizeMake(FacePicWidth, FacePicHeight);
+            break;
         default:
             break;
     }

@@ -85,10 +85,6 @@ static int dateNum = 10;
     [dictionary setObject:@(UUMessageFromOther) forKey:@"from"];
     [dictionary setObject:@(randomNum) forKey:@"type"];
     [dictionary setObject:[date description] forKey:@"strTime"];
-    // 这里判断是否是私人会话、群会话
-    int index = _isGroupChat ? arc4random()%6 : 0;
-    [dictionary setObject:[self getName:index] forKey:@"strName"];
-    [dictionary setObject:[self getImageStr:index] forKey:@"strIcon"];
     
     return dictionary;
 }

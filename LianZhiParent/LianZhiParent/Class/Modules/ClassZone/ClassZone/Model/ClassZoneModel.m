@@ -45,27 +45,8 @@
         [self setPhotos:photosArray];
     }
     
-    //test
-    NSMutableArray *praiseArray = [NSMutableArray array];
-    for (NSInteger i = 0; i < (arc4random() % 4 + 5); i++)
-    {
-        [praiseArray addObject:[UserCenter sharedInstance].userInfo.avatar];
-    }
-    self.praiseArray = praiseArray;
-    
-    NSString *sourceStr = @"照的相片不错，“简洁”并不等于一丝不挂，如果是去了红红绿绿的万千时装，则大千";
-    NSMutableArray *responseArray = [NSMutableArray array];
-    for (NSInteger i = 0; i < 4; i ++)
-    {
-        UserInfo *sendUser = [UserCenter sharedInstance].userInfo;
-        UserInfo *targetUser = [UserCenter sharedInstance].userInfo;
-        ResponseItem *responseItem = [[ResponseItem alloc] init];
-        responseItem.sendUser = sendUser;
-        responseItem.targetUser = targetUser;
-        responseItem.content = [sourceStr substringToIndex:arc4random() % sourceStr.length];
-        [responseArray addObject:responseItem];
-    }
-    self.responseArray = responseArray;
+    self.responseModel = [[ResponseModel alloc] init];
+    [self.responseModel parseData:nil];
 }
 
 @end

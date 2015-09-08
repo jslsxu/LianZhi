@@ -35,7 +35,7 @@
     PraiseView*         _praiseView;
     UITableView*        _tableView;
 }
-@property (nonatomic, strong)ClassZoneItem *classZoneItem;
+@property (nonatomic, strong)ResponseModel *responseModel;
 @property (nonatomic, weak)id<ResponseDelegate> delegate;
-+ (CGFloat)responseHeightForResponse:(ClassZoneItem *)classZoneItem;
++ (CGFloat)responseHeightForResponse:(ResponseModel *)responseModel forWidth:(CGFloat)width;
 @end

@@ -9,12 +9,21 @@
 #import "TNTableViewCell.h"
 #import "TreeHouseModel.h"
 #import "MessageVoiceButton.h"
+#import "ResponseView.h"
+#import "ActionView.h"
 extern NSString *const kTreeHouseItemDeleteNotification;
 extern NSString *const kTreeHouseItemTagDeleteNotification;
 extern NSString *const kTreeHouseItemTagSelectNotification;
 extern NSString *const kTreeHouseItemKey;
 
-@interface TreeHouseCell : TNTableViewCell<UICollectionViewDataSource, UICollectionViewDelegate>
+@class TreeHouseCell;
+@protocol TreeHouseCellDelegate <NSObject>
+
+- (void)onActionClicked:(TreeHouseCell *)cell;
+- (void)onResponseClickedAtTarget:(UserInfo *)targetUser;
+@end
+
+@interface TreeHouseCell : TNTableViewCell<UICollectionViewDataSource, UICollectionViewDelegate, ResponseDelegate>
 {
     UILabel*            _authorLabel;
     UILabel*            _dateLabel;
@@ -30,5 +39,9 @@ extern NSString *const kTreeHouseItemKey;
     UICollectionViewFlowLayout* _layout;
     UICollectionView*   _collectionView;//照片
     MessageVoiceButton* _voiceButton;
+    ActionView*         _actionView;
+    ResponseView*       _responseView;
 }
+@property (nonatomic, readonly)UIButton *actionButton;
+@property (nonatomic, weak)id<TreeHouseCellDelegate> delegate;
 @end

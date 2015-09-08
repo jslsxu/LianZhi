@@ -14,8 +14,6 @@
 
 @property (nonatomic, strong) NSMutableArray *dataSource;
 
-@property (nonatomic) BOOL isGroupChat;
-
 - (void)addSpecifiedItem:(NSDictionary *)dic;
 
 @end

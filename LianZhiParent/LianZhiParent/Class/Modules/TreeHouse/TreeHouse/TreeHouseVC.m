@@ -191,6 +191,11 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     
     _headerView = [[TreeHouseHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 0)];
     [self.tableView setTableHeaderView:_headerView];
+    
+    _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - REPLY_BOX_HEIGHT, self.view.width, REPLY_BOX_HEIGHT)];
+    [_replyBox setDelegate:self];
+    [ApplicationDelegate.homeVC.view addSubview:_replyBox];
+    _replyBox.hidden = YES;
 }
 
 - (void)onNetworkStatusChanged
@@ -254,6 +259,51 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [self requestData:REQUEST_REFRESH];
 }
 
+#pragma mark - ReplyBoxDelegate
+- (void)onActionViewCommit:(NSString *)content
+{
+    _replyBox.hidden = YES;
+    [_replyBox setText:@""];
+    [_replyBox resignFocus];
+}
+
+- (void) onActionViewCancel
+{
+    [_replyBox setHidden:YES];
+    [_replyBox setText:@""];
+    [_replyBox resignFocus];
+}
+
+#pragma mark - TreeHouseCelleDelegate
+- (void)onActionClicked:(TreeHouseCell *)cell
+{
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    CGPoint point = [cell convertPoint:cell.actionButton.center toView:keyWindow];
+    point.x = point.x + 72;
+    ActionView *actionView = [[ActionView alloc] initWithPoint:point action:^(NSInteger index) {
+        if(index == 0)
+        {
+            
+        }
+        else if(index == 1)
+        {
+            _replyBox.hidden = NO;
+            [_replyBox assignFocus];
+        }
+        else
+        {
+            
+        }
+    }];
+    [actionView show];
+}
+
+- (void)onResponseClickedAtTarget:(UserInfo *)targetUser
+{
+    _replyBox.hidden = NO;
+    [_replyBox assignFocus];
+}
+
 #pragma mark TNBaseTableViewController
 - (BOOL)supportCache
 {
@@ -263,6 +313,12 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (NSString *)cacheFileName
 {
     return [NSString stringWithFormat:@"%@_%@",NSStringFromClass([self class]),[UserCenter sharedInstance].curChild.uid];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TreeHouseCell *treehouseCell = (TreeHouseCell *)cell;
+    [treehouseCell setDelegate:self];
 }
 
 #pragma mark - PublishTreeItemDelegate
