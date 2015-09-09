@@ -45,6 +45,9 @@
 		3728A7441B9D376300310457 /* UUMessageContentButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A7321B9D376300310457 /* UUMessageContentButton.m */; };
 		3728A7451B9D376300310457 /* UUMessageFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A7341B9D376300310457 /* UUMessageFrame.m */; };
 		3728A7481B9D37AF00310457 /* NSDate+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A7471B9D37AF00310457 /* NSDate+Utils.m */; };
+		3728A74C1B9EE5C400310457 /* PublishGrowthTimelineVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A74B1B9EE5C400310457 /* PublishGrowthTimelineVC.m */; };
+		3728A74F1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A74E1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m */; };
+		3728A7521B9F524000310457 /* GrowthTimelineClassChangeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A7511B9F524000310457 /* GrowthTimelineClassChangeVC.m */; };
 		372ED8231B81795A00D07344 /* InterestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372ED8221B81795A00D07344 /* InterestVC.m */; };
 		373528771AD6557800C0F326 /* BaseInfoModifyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 373528751AD6557800C0F326 /* BaseInfoModifyVC.m */; };
 		376FC6B51B01EFB500289DC2 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B41B01EFB500289DC2 /* libiconv.dylib */; };
@@ -428,6 +431,12 @@
 		3728A7341B9D376300310457 /* UUMessageFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUMessageFrame.m; sourceTree = "<group>"; };
 		3728A7461B9D37AF00310457 /* NSDate+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Utils.h"; sourceTree = "<group>"; };
 		3728A7471B9D37AF00310457 /* NSDate+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Utils.m"; sourceTree = "<group>"; };
+		3728A74A1B9EE5C400310457 /* PublishGrowthTimelineVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishGrowthTimelineVC.h; sourceTree = "<group>"; };
+		3728A74B1B9EE5C400310457 /* PublishGrowthTimelineVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishGrowthTimelineVC.m; sourceTree = "<group>"; };
+		3728A74D1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthTimelineStudentsSelectVC.h; sourceTree = "<group>"; };
+		3728A74E1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthTimelineStudentsSelectVC.m; sourceTree = "<group>"; };
+		3728A7501B9F524000310457 /* GrowthTimelineClassChangeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthTimelineClassChangeVC.h; sourceTree = "<group>"; };
+		3728A7511B9F524000310457 /* GrowthTimelineClassChangeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthTimelineClassChangeVC.m; sourceTree = "<group>"; };
 		372ED8211B81795A00D07344 /* InterestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterestVC.h; sourceTree = "<group>"; };
 		372ED8221B81795A00D07344 /* InterestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterestVC.m; sourceTree = "<group>"; };
 		373528751AD6557800C0F326 /* BaseInfoModifyVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseInfoModifyVC.m; sourceTree = "<group>"; };
@@ -1114,6 +1123,12 @@
 				37C01B3D1A6CBAF600C8F454 /* GrowthTimelineModelItem.m */,
 				37C01B0F1A6C245500C8F454 /* DatePickerView.h */,
 				37C01B101A6C245500C8F454 /* DatePickerView.m */,
+				3728A74A1B9EE5C400310457 /* PublishGrowthTimelineVC.h */,
+				3728A74B1B9EE5C400310457 /* PublishGrowthTimelineVC.m */,
+				3728A74D1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.h */,
+				3728A74E1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m */,
+				3728A7501B9F524000310457 /* GrowthTimelineClassChangeVC.h */,
+				3728A7511B9F524000310457 /* GrowthTimelineClassChangeVC.m */,
 			);
 			path = GrowthTimeline;
 			sourceTree = "<group>";
@@ -2840,6 +2855,7 @@
 				37C355D61A3FD5CF00B948E6 /* main.m in Sources */,
 				37E93FC31A7E9CC600AD45A1 /* MJPhotoLoadingView.m in Sources */,
 				37C88F6E1A827AD2008E44DB /* LogConfig.m in Sources */,
+				3728A74C1B9EE5C400310457 /* PublishGrowthTimelineVC.m in Sources */,
 				3725715B1A80C0450087F178 /* SettingDatePickerView.m in Sources */,
 				3793FAE21B7CFFF000501F77 /* MJRefreshFooterView.m in Sources */,
 				3793FAF21B7CFFF000501F77 /* TaskUploadManager.m in Sources */,
@@ -2928,8 +2944,10 @@
 				3793FAA21B7CFFF000501F77 /* NSObject+UnifiedPerformSelector.m in Sources */,
 				3793FA5D1B7CFFF000501F77 /* qrspec.c in Sources */,
 				3793FA2C1B7CFFF000501F77 /* RETableViewDateTimeCell.m in Sources */,
+				3728A74F1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m in Sources */,
 				3793FAEC1B7CFFF000501F77 /* TNBaseCollectionViewController.m in Sources */,
 				3793FA7D1B7CFFF000501F77 /* CTAssetsPickerController.m in Sources */,
+				3728A7521B9F524000310457 /* GrowthTimelineClassChangeVC.m in Sources */,
 				37E93FC51A7E9CC600AD45A1 /* MJPhotoView.m in Sources */,
 				37D8C7BE1A59A1B700E5E2E4 /* ClassBatOperationView.m in Sources */,
 				3793FADA1B7CFFF000501F77 /* UIView+WebCacheOperation.m in Sources */,

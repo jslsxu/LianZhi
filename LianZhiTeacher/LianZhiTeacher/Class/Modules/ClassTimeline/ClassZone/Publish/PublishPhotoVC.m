@@ -159,7 +159,7 @@
     {
         UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [sendButton setFrame:CGRectMake(viewParent.width - kBorderMargin - 95, viewParent.height - 56 - kBorderMargin, 95, 56)];
-        [sendButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+        [sendButton setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:sendButton.size cornerRadius:5] forState:UIControlStateNormal];
         [sendButton addTarget:self action:@selector(onSendButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [viewParent addSubview:sendButton];
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectInset(sendButton.bounds, 5, 0)];

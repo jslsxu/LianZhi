@@ -8,7 +8,7 @@
 
 #import "ApplicationBoxVC.h"
 #import "NotificationToAllVC.h"
-#import "GrowthTimelineVC.h"
+#import "PublishGrowthTimelineVC.h"
 #import "ContactListVC.h"
 @implementation ApplicationItem
 
@@ -63,7 +63,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        self.actionArray = @[@"NotificationToAllVC",@"ContactListVC",@"ClassZoneVC",@"GrowthTimelineVC",@"TNBaseWebViewController"];
+        self.actionArray = @[@"NotificationToAllVC",@"ContactListVC",@"ClassZoneVC",@"PublishGrowthTimelineVC",@"TNBaseWebViewController"];
         self.titleArray = @[@"发布通知",@"聊天空间",@"班空间",@"家园手册",@"校主页"];
         self.imageArray = @[@"AppPublishNote",@"AppChat",@"AppClassZone",@"AppParent",@"AppSchoolHome"];
         self.appItems = [NSMutableArray array];
