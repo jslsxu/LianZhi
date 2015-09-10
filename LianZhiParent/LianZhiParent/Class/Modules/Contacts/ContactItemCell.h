@@ -14,6 +14,7 @@
     UILabel*            _nameLabel;
     UILabel*            _commentLabel;
     UIView*             _sepLine;
+    UIButton*           _chatButton;
 }
 @property (nonatomic, strong)TeacherInfo *teachInfo;
 @end

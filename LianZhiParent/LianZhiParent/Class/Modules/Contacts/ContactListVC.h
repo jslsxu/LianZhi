@@ -13,6 +13,8 @@
     UILabel*    _classLabel;
     UILabel*    _schoolLabel;
     UILabel*    _numLabel;
+    UIView*     _sepLine;
+    UIButton*   _chatButton;
 }
 @property (nonatomic, strong)ClassInfo *classInfo;
 

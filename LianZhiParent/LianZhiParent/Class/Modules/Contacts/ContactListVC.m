@@ -19,14 +19,13 @@
         
         _classLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_classLabel setBackgroundColor:[UIColor clearColor]];
-        [_classLabel setTextColor:[UIColor grayColor]];
-        [_classLabel setFont:[UIFont systemFontOfSize:16]];
+        [_classLabel setFont:[UIFont boldSystemFontOfSize:14]];
         [self addSubview:_classLabel];
         
         _schoolLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_schoolLabel setBackgroundColor:[UIColor clearColor]];
         [_schoolLabel setTextColor:[UIColor lightGrayColor]];
-        [_schoolLabel setFont:[UIFont systemFontOfSize:14]];
+        [_schoolLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_schoolLabel];
         
         _numLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -34,6 +33,17 @@
         [_numLabel setTextColor:[UIColor lightGrayColor]];
         [_numLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_numLabel];
+        
+        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
+        [_sepLine setBackgroundColor:kSepLineColor];
+        [self addSubview:_sepLine];
+        
+        _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
+        [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_chatButton setImage:[UIImage imageNamed:@"MassChatNormal"] forState:UIControlStateNormal];
+        [_chatButton setImage:[UIImage imageNamed:@"MassChatHighlighted"] forState:UIControlStateHighlighted];
+        [self addSubview:_chatButton];
     }
     return self;
 }
@@ -55,6 +65,11 @@
     [_numLabel setText:[NSString stringWithFormat:@"(共%ld位老师)",(long)_classInfo.teachers.count]];
     [_numLabel sizeToFit];
     [_numLabel setOrigin:CGPointMake(_classLabel.right + 10, 8)];
+}
+
+- (void)onChatClicked
+{
+    
 }
 
 @end
@@ -119,7 +134,6 @@
     if(headerView == nil)
     {
         headerView = [[ContactListHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 50)];
-        [headerView setBackgroundColor:[UIColor colorWithRed:240 / 255.0 green:240 / 255.0 blue:240 / 255.0 alpha:1.f]];
     }
     ClassInfo *class = [UserCenter sharedInstance].curChild.classes[section];
     [headerView setClassInfo:class];

@@ -23,18 +23,25 @@
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_nameLabel setBackgroundColor:[UIColor clearColor]];
         [_nameLabel setTextColor:[UIColor lightGrayColor]];
-        [_nameLabel setFont:[UIFont systemFontOfSize:16]];
+        [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [self addSubview:_nameLabel];
         
         _commentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_commentLabel setBackgroundColor:[UIColor clearColor]];
         [_commentLabel setTextColor:[UIColor colorWithRed:160 / 255.0 green:160 / 255.0 blue:160 / 255.0 alpha:1.f]];
-        [_commentLabel setFont:[UIFont systemFontOfSize:14]];
+        [_commentLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_commentLabel];
         
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 48 - 0.5, self.width, 0.5)];
         [_sepLine setBackgroundColor:[UIColor colorWithRed:240 / 255.0 green:240 / 255.0 blue:240 / 255.0 alpha:1.f]];
         [self addSubview:_sepLine];
+        
+        _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
+        [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_chatButton setImage:[UIImage imageNamed:@"SingleChatNormal"] forState:UIControlStateNormal];
+        [_chatButton setImage:[UIImage imageNamed:@"SignleChatHighlighted"] forState:UIControlStateHighlighted];
+        [self addSubview:_chatButton];
     }
     return self;
 }
@@ -51,6 +58,11 @@
     [_commentLabel setText:[NSString stringWithFormat:@"(%@)",teachInfo.course]];
     [_commentLabel sizeToFit];
     [_commentLabel setOrigin:CGPointMake(_nameLabel.right + 15, (self.height - _commentLabel.height) / 2)];
+}
+
+- (void)onChatClicked
+{
+    
 }
 
 @end
