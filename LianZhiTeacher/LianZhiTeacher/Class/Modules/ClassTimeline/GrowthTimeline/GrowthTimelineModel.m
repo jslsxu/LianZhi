@@ -43,10 +43,11 @@
         [self.modelItemArray removeAllObjects];
     
     TNDataWrapper *listWrapper = [data getDataWrapperForKey:@"list"];
-    if(listWrapper.count > 0)
+//    if(listWrapper.count > 0)
     {
         for (NSInteger i = 0; i < 10; i++) {
             GrowthTimelineItem *item = [[GrowthTimelineItem alloc] init];
+            item.content = @"2323fsdfjsdjisahghj";
             [self.modelItemArray addObject:item];
         }
     }

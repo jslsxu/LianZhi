@@ -15,7 +15,6 @@
 
 @interface GrowthTimelineHeaderView : UIView
 {
-    AvatarView* _avatar;
     UIButton*   _preButton;
     UILabel*    _curMonth;
     UIButton*   _nextButton;
@@ -27,7 +26,6 @@
 @interface GrowthTimelineVC : TNBaseTableViewController<GrowthDatePickerDelegate>
 {
     GrowthTimelineHeaderView *  _headerView;
-    UIView*                     _verLine;
 }
 @property (nonatomic, copy)NSString *classID;
 @end

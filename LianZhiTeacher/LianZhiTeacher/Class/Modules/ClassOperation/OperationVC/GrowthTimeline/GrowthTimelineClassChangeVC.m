@@ -24,7 +24,7 @@
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [self addSubview:_nameLabel];
         
-        [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DatePickerNext"]]];
+        [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }
     return self;
 }

@@ -14,30 +14,27 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(12, 12, 60, 60)];
-        [_avatar setBorderColor:[UIColor colorWithWhite:0 alpha:0.2]];
-        [_avatar setBorderWidth:2];
-        [self addSubview:_avatar];
+        _curMonth = [[UILabel alloc] initWithFrame:CGRectMake((self.width - 160) / 2, 0, 160, self.height)];
+        [_curMonth setTextAlignment:NSTextAlignmentCenter];
+        [_curMonth setBackgroundColor:[UIColor clearColor]];
+        [_curMonth setFont:[UIFont systemFontOfSize:14]];
+        [_curMonth setTextColor:kCommonTeacherTintColor];
+        [self addSubview:_curMonth];
         
         CGFloat width = 30;
         
         _nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_nextButton setFrame:CGRectMake(self.width - 10 - width, (self.height - width) / 2, width, width)];
-        [_nextButton setImage:[UIImage imageNamed:(@"BlueRightArrow.png")] forState:UIControlStateNormal];
+        [_nextButton setFrame:CGRectMake(_curMonth.right , (self.height - width) / 2, width, width)];
+        [_nextButton setImage:[UIImage imageNamed:@"NextArrowNormal"] forState:UIControlStateNormal];
+        [_nextButton setImage:[UIImage imageNamed:@"NextArrowDisabled"] forState:UIControlStateDisabled];
         [_nextButton addTarget:self action:@selector(onNext) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_nextButton];
-        
-        _curMonth = [[UILabel alloc] initWithFrame:CGRectMake(_nextButton.left - 90, 0, 90, self.height)];
-        [_curMonth setTextAlignment:NSTextAlignmentCenter];
-        [_curMonth setBackgroundColor:[UIColor clearColor]];
-        [_curMonth setFont:[UIFont systemFontOfSize:16]];
-        [_curMonth setText:@"2014年12月"];
-        [_curMonth setTextColor:kCommonTeacherTintColor];
-        [self addSubview:_curMonth];
+    
         
         _preButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_preButton setFrame:CGRectMake(_curMonth.left - width, (self.height - width) / 2, width, width)];
-        [_preButton setImage:[UIImage imageNamed:(@"BlueLeftArrow.png")] forState:UIControlStateNormal];
+        [_preButton setFrame:CGRectMake(_curMonth.x - width, (self.height - width) / 2, width, width)];
+        [_preButton setImage:[UIImage imageNamed:(@"PreArrowNormal")] forState:UIControlStateNormal];
+        [_preButton setImage:[UIImage imageNamed:(@"PreArrowDisabled")] forState:UIControlStateDisabled];
         [_preButton addTarget:self action:@selector(onPre) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_preButton];
         
@@ -51,9 +48,9 @@
 {
     _date = date;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy年MM月"];
-    [_curMonth setText:[formatter stringFromDate:self.date]];
-    [_nextButton setHidden:![self hasNext]];
+    [formatter setDateFormat:@"yyyy年MM月dd日"];
+    [_curMonth setText:[NSString stringWithFormat:@"%@ %@",[formatter stringFromDate:self.date], [self.date weekday]]];
+    [_nextButton setEnabled:[self hasNext]];
 }
 
 - (BOOL)hasNext
@@ -79,9 +76,9 @@
     
     [adcomps setYear:0];
     
-    [adcomps setMonth:-1];
+    [adcomps setMonth:0];
     
-    [adcomps setDay:0];
+    [adcomps setDay:-1];
     NSDate *newdate = [calendar dateByAddingComponents:adcomps toDate:self.date options:0];
     [self setDate:newdate];
     if([self.delegate respondsToSelector:@selector(growthDatePickerFinished:)])
@@ -100,9 +97,9 @@
     
     [adcomps setYear:0];
     
-    [adcomps setMonth:1];
+    [adcomps setMonth:0];
     
-    [adcomps setDay:0];
+    [adcomps setDay:1];
     NSDate *newdate = [calendar dateByAddingComponents:adcomps toDate:self.date options:0];
     if([newdate compare:[NSDate date]] == NSOrderedDescending)
         return;
@@ -134,13 +131,6 @@
     [self requestData:REQUEST_REFRESH];
 }
 
-- (void)setupSubviews
-{
-    _verLine = [[UIView alloc] initWithFrame:CGRectMake(55, _headerView.height, 2, self.view.height - _headerView.height)];
-    [_verLine setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:_verLine];
-}
-
 #pragma mark - GrowthDatePickerDelegate
 - (void)growthDatePickerFinished:(NSDate *)date
 {
@@ -166,15 +156,6 @@
     [task setObserver:self];
     return task;
 }
-
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    CGPoint offset = scrollView.contentOffset;
-    CGFloat y = _headerView.height - offset.y;
-    [_verLine setFrame:CGRectMake(55, y, 2, self.view.height - y)];
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

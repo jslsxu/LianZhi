@@ -159,7 +159,7 @@
     [birthdayLabel setOrigin:CGPointMake(avatar.right + 10, infoHeight / 2 + 2)];
     [viewParent addSubview:birthdayLabel];
 
-    UIImageView*    arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DatePickerNext"]];
+    UIImageView*    arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]];
     [arrowImage setOrigin:CGPointMake(viewParent.width - arrowImage.width - margin, (infoHeight - arrowImage.height) / 2)];
     [viewParent addSubview:arrowImage];
     

@@ -21,7 +21,7 @@
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(15, (kSchoolCellHeight - 36) / 2, 36, 36)];
         [self addSubview:_logoView];
         
-        _arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"DatePickerNext")]];
+        _arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"RightArrow")]];
         [_arrowImage setOrigin:CGPointMake(self.width - _arrowImage.width - 30, (60 - _arrowImage.height) / 2)];
         [self addSubview:_arrowImage];
         

@@ -10,17 +10,12 @@
 #import "GrowthTimelineModel.h"
 @interface GrowthTimelineCell : TNTableViewCell
 {
-    UILabel*        _dateLabel;
-    UIImageView*    _dot;
-    UIImageView*    _bgImageView;
-    UIImageView*    _feeling;
-    UIImageView*    _toilet;
-    UIImageView*    _temparature;
-    UILabel*        _waterLabel;
-    UILabel*        _sleepLabel;
-    UIImageView*    _contentBG;
+    UIView*         _bgView;
+    UIView*         _statusView;
+    AvatarView*     _avatarView;
+    UILabel*        _nickNameLabel;
+    UIView*         _contentView;
     UILabel*        _contentLabel;
-    UILabel*        _authorLabel;
-    UILabel*        _timeLabel;
+    NSMutableArray* _statusArray;
 }
 @end

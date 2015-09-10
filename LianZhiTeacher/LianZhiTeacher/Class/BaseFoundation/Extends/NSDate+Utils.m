@@ -107,9 +107,8 @@
     NSCalendar*calendar = [NSCalendar currentCalendar];
     NSDateComponents*comps;
     
-    NSDate *date = [NSDate date];
     comps =[calendar components:(NSWeekCalendarUnit | NSWeekdayCalendarUnit |NSWeekdayOrdinalCalendarUnit)
-                       fromDate:date];
+                       fromDate:self];
     NSInteger weekday = [comps weekday]; // 星期几（注意，周日是“1”，周一是“2”。。。。）
     NSString *week = @"";
     switch (weekday) {
