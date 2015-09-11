@@ -177,7 +177,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [MessageGroupItemCell cellHeightForItem:(MessageGroupItem *)[self.messageModel itemForIndexPath:indexPath] width:tableView.width];
+    return [MessageGroupItemCell cellHeight:(MessageGroupItem *)[self.messageModel itemForIndexPath:indexPath] cellWidth:tableView.width].floatValue;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

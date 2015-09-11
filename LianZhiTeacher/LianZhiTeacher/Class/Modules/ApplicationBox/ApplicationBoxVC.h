@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseViewController.h"
-
+#import "LZTabBarButton.h"
 @interface ApplicationItem : NSObject
 @property (nonatomic, copy)NSString *imageStr;
 @property (nonatomic, copy)NSString *title;
@@ -16,8 +16,7 @@
 @interface ApplicationItemCell : UICollectionViewCell
 {
     UIView*         _bgView;
-    UIImageView*    _imageView;
-    UILabel*        _titleLabel;
+    LZTabBarButton*       _coverButton;
 }
 @property (nonatomic, weak)ApplicationItem *appItem;
 @end

@@ -42,7 +42,7 @@
         [_cancelButton addTarget:self action:@selector(onCancel) forControlEvents:UIControlEventTouchUpInside];
         [_cancelButton setTitle:@"取消" forState:UIControlStateNormal];
         [_cancelButton setTitleColor:[UIColor colorWithHexString:@"666666"] forState:UIControlStateNormal];
-        [_cancelButton setTitleColor:kCommonTeacherTintColor forState:UIControlStateHighlighted];
+        [_cancelButton setTitleColor:kCommonParentTintColor forState:UIControlStateHighlighted];
         [_cancelButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
         [_cancelButton setFrame:CGRectMake(0, 0, 60, 36)];
         [_contentView addSubview:_cancelButton];
@@ -51,7 +51,7 @@
         [_confirmButton addTarget:self action:@selector(onConfirm) forControlEvents:UIControlEventTouchUpInside];
         [_confirmButton setTitle:@"确定" forState:UIControlStateNormal];
         [_confirmButton setTitleColor:[UIColor colorWithHexString:@"666666"] forState:UIControlStateNormal];
-        [_confirmButton setTitleColor:kCommonTeacherTintColor forState:UIControlStateHighlighted];
+        [_confirmButton setTitleColor:kCommonParentTintColor forState:UIControlStateHighlighted];
         [_confirmButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
         [_confirmButton setFrame:CGRectMake(self.width - 60, 0, 60, 36)];
         [_contentView addSubview:_confirmButton];

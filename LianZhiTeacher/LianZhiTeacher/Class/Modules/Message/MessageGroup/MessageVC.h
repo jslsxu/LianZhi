@@ -12,7 +12,6 @@
 @interface MessageVC : DAContextMenuTableViewController<EGORefreshTableHeaderDelegate>
 {
     UILabel*                    _emptyLabel;
-    UIView*                     _headerView;
     UIButton*                   _noticeButton;
     BOOL                        _isLoading;
     EGORefreshTableHeaderView*  _refreshHeaderView;

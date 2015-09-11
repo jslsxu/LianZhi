@@ -27,15 +27,20 @@
         [_bgView.layer setMasksToBounds:YES];
         [self addSubview:_bgView];
         
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.width, 70)];
-        [_imageView setContentMode:UIViewContentModeCenter];
-        [self addSubview:_imageView];
+        _coverButton = [LZTabBarButton buttonWithType:UIButtonTypeCustom];
+        [_coverButton setUserInteractionEnabled:NO];
+        [_coverButton setFrame:self.bounds];
+        [self addSubview:_coverButton];
         
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 70, self.width, 15)];
-        [_titleLabel setTextAlignment:NSTextAlignmentCenter];
-        [_titleLabel setFont:[UIFont systemFontOfSize:12]];
-        [_titleLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-        [self addSubview:_titleLabel];
+//        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.width, 70)];
+//        [_imageView setContentMode:UIViewContentModeCenter];
+//        [self addSubview:_imageView];
+//        
+//        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 70, self.width, 15)];
+//        [_titleLabel setTextAlignment:NSTextAlignmentCenter];
+//        [_titleLabel setFont:[UIFont systemFontOfSize:12]];
+//        [_titleLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+//        [self addSubview:_titleLabel];
     }
     return self;
 }
@@ -43,8 +48,8 @@
 - (void)setAppItem:(ApplicationItem *)appItem
 {
     _appItem = appItem;
-    [_imageView setImage:[UIImage imageNamed:_appItem.imageStr]];
-    [_titleLabel setText:_appItem.title];
+    [_coverButton setImage:[UIImage imageNamed:_appItem.imageStr] forState:UIControlStateNormal];
+    [_coverButton setTitle:_appItem.title forState:UIControlStateNormal];
 }
 
 @end
@@ -84,7 +89,9 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     _layout = [[UICollectionViewFlowLayout alloc] init];
     [_layout setSectionInset:UIEdgeInsetsMake(15, 15, 15, 15)];
-    [_layout setItemSize:CGSizeMake(90, 90)];
+    NSInteger itemSize = (self.view.width - 15 * 2 - 10 * 2) / 3;
+    [_layout setItemSize:CGSizeMake(itemSize, itemSize)];
+    [_layout setMinimumLineSpacing:10];
     
     _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:_layout];
     [_collectionView setBackgroundColor:[UIColor clearColor]];

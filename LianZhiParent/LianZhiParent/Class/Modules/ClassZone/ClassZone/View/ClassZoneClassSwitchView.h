@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ChildInfo.h"
 @protocol ClassZoneSwitchDelegate <NSObject>
-- (void)classZoneSwitch:(ClassInfo *)classInfo;
+- (void)classZoneSwitch;
 
 @end
 

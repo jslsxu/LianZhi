@@ -105,7 +105,7 @@
         _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, _scrollView.bottom, self.width, PageControlHeight)];
         [_pageControl setHidesForSinglePage:YES];
         [_pageControl setPageIndicatorTintColor:[UIColor whiteColor]];
-        [_pageControl setCurrentPageIndicatorTintColor:kCommonParentTintColor];
+        [_pageControl setCurrentPageIndicatorTintColor:kCommonTeacherTintColor];
         [self addSubview:_pageControl];
         
         [self setupScrollView];

@@ -17,29 +17,24 @@
     if(self)
     {
         self.width = kScreenWidth;
+        [self setBackgroundColor:[UIColor whiteColor]];
         [self.moreOptionsButton setBackgroundColor:kCommonTeacherTintColor];
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(10, 8, 44, 44)];
         [_logoView setBorderWidth:2];
         [_logoView setBorderColor:[UIColor colorWithHexString:@"C0C0C0"]];
         [self.actualContentView addSubview:_logoView];
         
-        _redDot = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"MsgNumBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 7.5, 0, 7.5)]];
-        [self.actualContentView addSubview:_redDot];
-        
-        _numLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_numLabel setFont:[UIFont systemFontOfSize:12]];
-        [_numLabel setTextColor:[UIColor whiteColor]];
-        [_redDot addSubview:_numLabel];
+        _numIndicator = [[NumIndicator alloc] initWithFrame:CGRectZero];
+        [self.actualContentView addSubview:_numIndicator];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 18)];
         [_nameLabel setFont:[UIFont systemFontOfSize:16]];
         [_nameLabel setTextColor:[UIColor colorWithRed:86 / 255.0 green:86 / 255.0 blue:86 / 255.0 alpha:1.0]];
         [self.actualContentView addSubview:_nameLabel];
         
-        _courseLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_courseLabel setFont:[UIFont systemFontOfSize:14]];
-        [_courseLabel setTextColor:[UIColor lightGrayColor]];
-        [self.actualContentView addSubview:_courseLabel];
+        _massChatIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MassChatIndicator"]];
+        [_massChatIndicator setHidden:YES];
+        [self.actualContentView addSubview:_massChatIndicator];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.right + 10, 10, self.width - 10 - (_nameLabel.right + 10), 18)];
         [_timeLabel setFont:[UIFont systemFontOfSize:13]];
@@ -55,6 +50,10 @@
         [_soundOff setHidden:YES];
         [self.actualContentView addSubview:_soundOff];
         
+        _notificationIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NotificationIndicator"]];
+        [_notificationIndicator setHidden:YES];
+        [self.actualContentView addSubview:_notificationIndicator];
+        
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 32, _soundOff.left - 5 - 60, 20)];
         [_contentLabel setFont:[UIFont systemFontOfSize:13]];
         [_contentLabel setTextColor:[UIColor colorWithRed:164 / 255.0 green:164 / 255.0  blue:164 / 255.0  alpha:1.0]];
@@ -63,9 +62,9 @@
     return self;
 }
 
-- (void)setData:(MessageGroupItem *)messageItem
+- (void)setMessageItem:(MessageGroupItem *)messageItem
 {
-    [self setMessageItem:messageItem];
+    _messageItem = messageItem;
     if(_messageItem.soundOn)
         [self.moreOptionsButton setTitle:@"设为静音" forState:UIControlStateNormal];
     else
@@ -92,19 +91,15 @@
         name = [NSString stringWithFormat:@"%@(%@)",name,_messageItem.fromInfo.label];
     _nameLabel.text = name;
     [_nameLabel setWidth:_timeLabel.left - 10 - _nameLabel.left];
-    
+    [_messageItem setMsgNum:12];
     if(_messageItem.msgNum > 0)
     {
-        _redDot.hidden = NO;
-        [_numLabel setText:kStringFromValue(_messageItem.msgNum)];
-        [_numLabel sizeToFit];
-        
-        [_redDot setSize:CGSizeMake(MAX(_numLabel.width + 6, 15), 15)];
-        [_redDot setCenter:CGPointMake(_logoView.right - _redDot.width / 2, _logoView.y + _redDot.height / 2)];
-        [_numLabel setCenter:CGPointMake(_redDot.width / 2, _redDot.height / 2)];
+        [_numIndicator setHidden:NO];
+        [_numIndicator setNum:_messageItem.msgNum];
+        [_numIndicator setCenter:CGPointMake(_logoView.right - _numIndicator.width / 2, _logoView.y + _numIndicator.height / 2)];
     }
     else
-        _redDot.hidden = YES;
+        _numIndicator.hidden = YES;
     NSString *content = _messageItem.content;
     if(content.length == 0 && _messageItem.audioItem)
         content = @"这是一条语音消息，点击播放收听";

@@ -14,6 +14,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
+        [self setBackgroundColor:[UIColor whiteColor]];
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
         [_logoView setBorderColor:[UIColor whiteColor]];
         [_logoView setBorderWidth:2];

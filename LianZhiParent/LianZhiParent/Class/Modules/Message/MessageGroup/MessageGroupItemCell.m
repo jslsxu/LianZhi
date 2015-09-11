@@ -17,24 +17,24 @@
     if(self)
     {
         self.width = kScreenWidth;
+        [self setBackgroundColor:[UIColor whiteColor]];
         [self.moreOptionsButton setBackgroundColor:kCommonParentTintColor];
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(10, 8, 44, 44)];
         [_logoView setBorderWidth:2];
         [_logoView setBorderColor:[UIColor colorWithHexString:@"C0C0C0"]];
         [self.actualContentView addSubview:_logoView];
         
-        _redDot = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"MsgNumBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 7.5, 0, 7.5)]];
-        [self.actualContentView addSubview:_redDot];
-        
-        _numLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_numLabel setFont:[UIFont systemFontOfSize:12]];
-        [_numLabel setTextColor:[UIColor whiteColor]];
-        [_redDot addSubview:_numLabel];
+        _numIndicator = [[NumIndicator alloc] initWithFrame:CGRectZero];
+        [self.actualContentView addSubview:_numIndicator];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 18)];
         [_nameLabel setFont:[UIFont systemFontOfSize:16]];
         [_nameLabel setTextColor:[UIColor colorWithRed:86 / 255.0 green:86 / 255.0 blue:86 / 255.0 alpha:1.0]];
         [self.actualContentView addSubview:_nameLabel];
+        
+        _massChatIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MassChatIndicator"]];
+        [_massChatIndicator setHidden:YES];
+        [self.actualContentView addSubview:_massChatIndicator];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.right + 10, 10, self.width - 10 - (_nameLabel.right + 10), 18)];
         [_timeLabel setFont:[UIFont systemFontOfSize:13]];
@@ -45,15 +45,17 @@
         [_sepLine setBackgroundColor:[UIColor colorWithHexString:@"d8d8d8"]];
         [self.actualContentView addSubview:_sepLine];
         
-        _soundOff = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Nobell.png"]];
+        _soundOff = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"Nobell.png")]];
         [_soundOff setCenter:CGPointMake(self.width - _soundOff.width, 0)];
         [_soundOff setHidden:YES];
         [self.actualContentView addSubview:_soundOff];
         
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 32, _soundOff.left - 5  - 60, 20)];
+        _notificationIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NotificationIndicator"]];
+        [_notificationIndicator setHidden:YES];
+        [self.actualContentView addSubview:_notificationIndicator];
+        
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 32, _soundOff.left - 5 - 60, 20)];
         [_contentLabel setFont:[UIFont systemFontOfSize:13]];
-        //        [_contentLabel setNumberOfLines:1];
-        //        [_contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [_contentLabel setTextColor:[UIColor colorWithRed:164 / 255.0 green:164 / 255.0  blue:164 / 255.0  alpha:1.0]];
         [self.actualContentView addSubview:_contentLabel];
     }
@@ -67,42 +69,37 @@
         [self.moreOptionsButton setTitle:@"设为静音" forState:UIControlStateNormal];
     else
         [self.moreOptionsButton setTitle:@"取消静音" forState:UIControlStateNormal];
-    [self.actualContentView setHeight:[self.class cellHeightForItem:messageItem width:self.width]];
-    NSString *logoUrl = _messageItem.fromInfo.logoUrl;
+    [self.actualContentView setHeight:[self.class cellHeight:messageItem cellWidth:self.width].floatValue];
     if(_messageItem.fromInfo.logoImage)
         [_logoView setImage:_messageItem.fromInfo.logoImage];
     else
     {
         NSString *imageStr = nil;
         if(_messageItem.fromInfo.type == 13)
-            imageStr = @"NoAvatarDefault.png";
+            imageStr = (@"NoAvatarDefault.png");
         else
-            imageStr = @"NoLogoDefault.png";
-        [_logoView setImageWithUrl:[NSURL URLWithString:logoUrl] placeHolder:[UIImage imageNamed:imageStr]];
+            imageStr = (@"NoLogoDefault.png");
+        [_logoView setImageWithUrl:[NSURL URLWithString:_messageItem.fromInfo.logoUrl] placeHolder:[UIImage imageNamed:imageStr]];
     }
     
     _timeLabel.text = _messageItem.formatTime;
     [_timeLabel sizeToFit];
     [_timeLabel setRight:self.width - 10];
+    
     NSString *name = _messageItem.fromInfo.name;
     if([_messageItem.fromInfo.label length] > 0)
         name = [NSString stringWithFormat:@"%@(%@)",name,_messageItem.fromInfo.label];
     _nameLabel.text = name;
     [_nameLabel setWidth:_timeLabel.left - 10 - _nameLabel.left];
+    [_messageItem setMsgNum:12];
     if(_messageItem.msgNum > 0)
     {
-        _redDot.hidden = NO;
-        [_numLabel setText:kStringFromValue(_messageItem.msgNum)];
-        [_numLabel sizeToFit];
-        
-        [_redDot setSize:CGSizeMake(MAX(_numLabel.width + 6, 15), 15)];
-        [_redDot setCenter:CGPointMake(_logoView.right - _redDot.width / 2, _logoView.y + _redDot.height / 2)];
-        [_numLabel setCenter:CGPointMake(_redDot.width / 2, _redDot.height / 2)];
+        [_numIndicator setHidden:NO];
+        [_numIndicator setNum:_messageItem.msgNum];
+        [_numIndicator setCenter:CGPointMake(_logoView.right - _numIndicator.width / 2, _logoView.y + _numIndicator.height / 2)];
     }
     else
-        _redDot.hidden = YES;
-    
-    
+        _numIndicator.hidden = YES;
     NSString *content = _messageItem.content;
     if(content.length == 0 && _messageItem.audioItem)
         content = @"这是一条语音消息，点击播放收听";
@@ -112,11 +109,11 @@
     _soundOff.hidden = _messageItem.soundOn;
     _soundOff.y = _sepLine.y - 10 - _soundOff.height;
 }
-+ (CGFloat)cellHeightForItem:(MessageGroupItem *)messageItem width:(CGFloat)width
++ (NSNumber *)cellHeight:(MessageGroupItem *)messageItem cellWidth:(NSInteger)width;
 {
-//    CGSize contentSize = [messageItem.content boundingRectWithSize:CGSizeMake(width - 10 - 60, 0) andFont:[UIFont systemFontOfSize:13]];
-//    return contentSize.height + 32 + 10;
-    return 32 + 10 + 20;
+    //    CGSize contentSize = [messageItem.content boundingRectWithSize:CGSizeMake(width - 10 - 60, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:13]];
+    //    return contentSize.height + 32 + 10;
+    return @(32 + 10 + 20);
 }
 
 @end

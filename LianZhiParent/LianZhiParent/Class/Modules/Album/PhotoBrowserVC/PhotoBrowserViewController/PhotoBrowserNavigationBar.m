@@ -29,13 +29,13 @@
         self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.6];
         backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [backButton setFrame:CGRectMake(0,0, 44, 44)];
-        [backButton setImage:[UIImage imageNamed:@"PhotoBrowserBack.png"] forState:UIControlStateNormal];
+        [backButton setImage:[UIImage imageNamed:@"PhotoBrowserBack"] forState:UIControlStateNormal];
         [backButton addTarget:self action:@selector(clickBack) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:backButton];
         
         saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [saveButton setFrame:CGRectMake(self.width - 44 - 10, 0, 44, 44)];
-        [saveButton setImage:[UIImage imageNamed:@"PhotoDownload.png"] forState:UIControlStateNormal];
+        [saveButton setImage:[UIImage imageNamed:@"PhotoDownload"] forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(clickSavePhoto) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:saveButton];
         
@@ -63,11 +63,11 @@
     _browserType = browserType;
     if(_browserType == PhotoBrowserTypeZone)//下载到树屋
     {
-        [saveButton setImage:[UIImage imageNamed:@"PhotoDownload.png"] forState:UIControlStateNormal];
+        [saveButton setImage:[UIImage imageNamed:@"PhotoDownload"] forState:UIControlStateNormal];
     }
     else //bendi 
     {
-        [saveButton setImage:[UIImage imageNamed:@"DownloadToAlbum.png"] forState:UIControlStateNormal];
+        [saveButton setImage:[UIImage imageNamed:@"PhotoDownload"] forState:UIControlStateNormal];
     }
 }
 

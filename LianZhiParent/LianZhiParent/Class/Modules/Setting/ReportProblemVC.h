@@ -15,6 +15,7 @@
     UTPlaceholderTextView*     _textView;
     UILabel*        _numLabel;
     UIButton*       _contactButton;
+    UILabel*        _hintLabel;
     UIButton*       _sendButton;
 }
 @property (nonatomic, assign)BOOL contactMe;

@@ -170,7 +170,7 @@
     [self.commitButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
     [self.commitButton addTarget:self action:@selector(onClickCommitButton) forControlEvents:UIControlEventTouchUpInside];
     [self.commitButton setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin];
-    [self.commitButton setBackgroundImage:[UIImage imageWithColor:kCommonParentTintColor size:CGSizeMake(55, 35) cornerRadius:2] forState:UIControlStateNormal];
+    [self.commitButton setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:CGSizeMake(55, 35) cornerRadius:2] forState:UIControlStateNormal];
     [self.commitButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"007bbe"] size:CGSizeMake(55, 35) cornerRadius:2] forState:UIControlStateHighlighted];
     [self.commitButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"e5e5e5"] size:CGSizeMake(55, 35) cornerRadius:2] forState:UIControlStateDisabled];
     [self.commitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

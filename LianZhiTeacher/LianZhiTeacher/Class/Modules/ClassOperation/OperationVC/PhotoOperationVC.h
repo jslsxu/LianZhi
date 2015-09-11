@@ -6,7 +6,7 @@
 //  Copyright (c) 2015年 jslsxu. All rights reserved.
 //
 
-#import "TNBaseViewController.h"
+#import "MessageSendVC.h"
 #import "PhotoPickerVC.h"
 
 #define kPostUrlKey                     @"PostUrlKey"
@@ -18,18 +18,14 @@
 
 @end
 
-@interface PhotoOperationVC : TNBaseViewController<PhotoPickerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,  PhotoPickerVCDelegate>
+@interface PhotoOperationVC : MessageSendVC<PhotoPickerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,  PhotoPickerVCDelegate>
 {
     NSMutableArray*     _imageArray;
     UIScrollView*       _scrollView;
     PhotoPickerView*    _pickerView;
-    UIImageView*        _imageBGImageView;
+    UIView*             _bgView;
     NSMutableArray*     _imageItemViewArray;
-    UIImageView*        _operationView;
-    UTPlaceholderTextView*         _textView;
-    UILabel*            _numLabel;
-    UIButton*           _sendToClassAlbumBtn;
-    UILabel*            _titleLabel;
+    UITextField*        _textField;
 }
 @property (nonatomic, assign)BOOL sendToClass;
 @property (nonatomic, strong)ClassInfo *classInfo;

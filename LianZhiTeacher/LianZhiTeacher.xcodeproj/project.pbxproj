@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3705FF851BA16C1700F0C6F6 /* AudioMessageSendVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3705FF841BA16C1700F0C6F6 /* AudioMessageSendVC.m */; };
+		3705FF881BA16C8F00F0C6F6 /* NotificationToAllVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3705FF861BA16C8F00F0C6F6 /* NotificationToAllVC.m */; };
+		3705FF8B1BA1954400F0C6F6 /* NotificationTargetSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3705FF8A1BA1954400F0C6F6 /* NotificationTargetSelectVC.m */; };
+		3705FF8E1BA1974500F0C6F6 /* MessageSendVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3705FF8D1BA1974500F0C6F6 /* MessageSendVC.m */; };
+		3705FF911BA2A1F800F0C6F6 /* NotificationClassStudentsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3705FF901BA2A1F800F0C6F6 /* NotificationClassStudentsVC.m */; };
+		3705FF941BA2BE7200F0C6F6 /* NumIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3705FF931BA2BE7200F0C6F6 /* NumIndicator.m */; };
 		370F33D71A78795000FED3C2 /* AboutVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33D21A78795000FED3C2 /* AboutVC.m */; };
 		370F33D81A78795000FED3C2 /* ContactServiceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33D41A78795000FED3C2 /* ContactServiceVC.m */; };
 		370F33D91A78795000FED3C2 /* PersonalSettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33D61A78795000FED3C2 /* PersonalSettingVC.m */; };
@@ -274,7 +280,7 @@
 		379947EA1A66B430008E4B4F /* PhotoFlowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 379947E61A66B430008E4B4F /* PhotoFlowModel.m */; };
 		379947EB1A66B430008E4B4F /* PhotoFlowVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 379947E81A66B430008E4B4F /* PhotoFlowVC.m */; };
 		37A46F661A5AEB4300A5FB63 /* IndividualOperationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37A46F651A5AEB4300A5FB63 /* IndividualOperationView.m */; };
-		37A46F6E1A5B017D00A5FB63 /* MessageOperationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37A46F6D1A5B017D00A5FB63 /* MessageOperationVC.m */; };
+		37A46F6E1A5B017D00A5FB63 /* TextMessageSendVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37A46F6D1A5B017D00A5FB63 /* TextMessageSendVC.m */; };
 		37B485011A65853C00C412D8 /* AuthCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B484F31A65853C00C412D8 /* AuthCodeVC.m */; };
 		37B485031A65853C00C412D8 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B484F71A65853C00C412D8 /* LoginVC.m */; };
 		37B485041A65853C00C412D8 /* PasswordModificationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B484F91A65853C00C412D8 /* PasswordModificationVC.m */; };
@@ -342,7 +348,6 @@
 		37DEE4FD1A57C2C0009A8771 /* ContactItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4F81A57C2C0009A8771 /* ContactItemCell.m */; };
 		37DEE4FE1A57C2C0009A8771 /* ContactListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4FA1A57C2C0009A8771 /* ContactListVC.m */; };
 		37E038E81A7386D3003A3A7F /* PublishNewspaperVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E038E71A7386D3003A3A7F /* PublishNewspaperVC.m */; };
-		37E93F8D1A7AA1A500AD45A1 /* NotificationToAllVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93F8C1A7AA1A500AD45A1 /* NotificationToAllVC.m */; };
 		37E93F991A7DC48200AD45A1 /* TNActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93F961A7DC48200AD45A1 /* TNActionSheet.m */; };
 		37E93F9A1A7DC48200AD45A1 /* TNAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93F981A7DC48200AD45A1 /* TNAlertView.m */; };
 		37E93FC11A7E9CC600AD45A1 /* CHTCollectionViewWaterfallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FB21A7E9CC600AD45A1 /* CHTCollectionViewWaterfallLayout.m */; };
@@ -357,6 +362,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3705FF831BA16C1700F0C6F6 /* AudioMessageSendVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioMessageSendVC.h; sourceTree = "<group>"; };
+		3705FF841BA16C1700F0C6F6 /* AudioMessageSendVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioMessageSendVC.m; sourceTree = "<group>"; };
+		3705FF861BA16C8F00F0C6F6 /* NotificationToAllVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationToAllVC.m; sourceTree = "<group>"; };
+		3705FF871BA16C8F00F0C6F6 /* NotificationToAllVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationToAllVC.h; sourceTree = "<group>"; };
+		3705FF891BA1954400F0C6F6 /* NotificationTargetSelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationTargetSelectVC.h; sourceTree = "<group>"; };
+		3705FF8A1BA1954400F0C6F6 /* NotificationTargetSelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationTargetSelectVC.m; sourceTree = "<group>"; };
+		3705FF8C1BA1974500F0C6F6 /* MessageSendVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageSendVC.h; sourceTree = "<group>"; };
+		3705FF8D1BA1974500F0C6F6 /* MessageSendVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageSendVC.m; sourceTree = "<group>"; };
+		3705FF8F1BA2A1F800F0C6F6 /* NotificationClassStudentsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationClassStudentsVC.h; sourceTree = "<group>"; };
+		3705FF901BA2A1F800F0C6F6 /* NotificationClassStudentsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationClassStudentsVC.m; sourceTree = "<group>"; };
+		3705FF921BA2BE7200F0C6F6 /* NumIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumIndicator.h; sourceTree = "<group>"; };
+		3705FF931BA2BE7200F0C6F6 /* NumIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumIndicator.m; sourceTree = "<group>"; };
 		370F33D11A78795000FED3C2 /* AboutVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutVC.h; sourceTree = "<group>"; };
 		370F33D21A78795000FED3C2 /* AboutVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutVC.m; sourceTree = "<group>"; };
 		370F33D31A78795000FED3C2 /* ContactServiceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactServiceVC.h; sourceTree = "<group>"; };
@@ -888,8 +905,8 @@
 		379947E81A66B430008E4B4F /* PhotoFlowVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFlowVC.m; sourceTree = "<group>"; };
 		37A46F641A5AEB4300A5FB63 /* IndividualOperationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndividualOperationView.h; sourceTree = "<group>"; };
 		37A46F651A5AEB4300A5FB63 /* IndividualOperationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndividualOperationView.m; sourceTree = "<group>"; };
-		37A46F6C1A5B017D00A5FB63 /* MessageOperationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageOperationVC.h; sourceTree = "<group>"; };
-		37A46F6D1A5B017D00A5FB63 /* MessageOperationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageOperationVC.m; sourceTree = "<group>"; };
+		37A46F6C1A5B017D00A5FB63 /* TextMessageSendVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextMessageSendVC.h; sourceTree = "<group>"; };
+		37A46F6D1A5B017D00A5FB63 /* TextMessageSendVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextMessageSendVC.m; sourceTree = "<group>"; };
 		37B484F21A65853C00C412D8 /* AuthCodeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthCodeVC.h; sourceTree = "<group>"; };
 		37B484F31A65853C00C412D8 /* AuthCodeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthCodeVC.m; sourceTree = "<group>"; };
 		37B484F61A65853C00C412D8 /* LoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginVC.h; sourceTree = "<group>"; };
@@ -1014,8 +1031,6 @@
 		37DEE4FA1A57C2C0009A8771 /* ContactListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactListVC.m; sourceTree = "<group>"; };
 		37E038E61A7386D3003A3A7F /* PublishNewspaperVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishNewspaperVC.h; sourceTree = "<group>"; };
 		37E038E71A7386D3003A3A7F /* PublishNewspaperVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishNewspaperVC.m; sourceTree = "<group>"; };
-		37E93F8B1A7AA1A500AD45A1 /* NotificationToAllVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationToAllVC.h; sourceTree = "<group>"; };
-		37E93F8C1A7AA1A500AD45A1 /* NotificationToAllVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationToAllVC.m; sourceTree = "<group>"; };
 		37E93F951A7DC48200AD45A1 /* TNActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNActionSheet.h; sourceTree = "<group>"; };
 		37E93F961A7DC48200AD45A1 /* TNActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNActionSheet.m; sourceTree = "<group>"; };
 		37E93F971A7DC48200AD45A1 /* TNAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNAlertView.h; sourceTree = "<group>"; };
@@ -2182,10 +2197,20 @@
 		37A46F6B1A5B016B00A5FB63 /* OperationVC */ = {
 			isa = PBXGroup;
 			children = (
-				37A46F6C1A5B017D00A5FB63 /* MessageOperationVC.h */,
-				37A46F6D1A5B017D00A5FB63 /* MessageOperationVC.m */,
+				37A46F6C1A5B017D00A5FB63 /* TextMessageSendVC.h */,
+				37A46F6D1A5B017D00A5FB63 /* TextMessageSendVC.m */,
 				37C01B0C1A6C210300C8F454 /* PhotoOperationVC.h */,
 				37C01B0D1A6C210300C8F454 /* PhotoOperationVC.m */,
+				3705FF831BA16C1700F0C6F6 /* AudioMessageSendVC.h */,
+				3705FF841BA16C1700F0C6F6 /* AudioMessageSendVC.m */,
+				3705FF8C1BA1974500F0C6F6 /* MessageSendVC.h */,
+				3705FF8D1BA1974500F0C6F6 /* MessageSendVC.m */,
+				3705FF871BA16C8F00F0C6F6 /* NotificationToAllVC.h */,
+				3705FF861BA16C8F00F0C6F6 /* NotificationToAllVC.m */,
+				3705FF891BA1954400F0C6F6 /* NotificationTargetSelectVC.h */,
+				3705FF8A1BA1954400F0C6F6 /* NotificationTargetSelectVC.m */,
+				3705FF8F1BA2A1F800F0C6F6 /* NotificationClassStudentsVC.h */,
+				3705FF901BA2A1F800F0C6F6 /* NotificationClassStudentsVC.m */,
 				372774E21A5D94A900464461 /* GrowthTimeline */,
 			);
 			path = OperationVC;
@@ -2454,8 +2479,6 @@
 				37DEE4B91A57C19C009A8771 /* MessageGroupListModel.m */,
 				37DEE4BA1A57C19C009A8771 /* MessageVC.h */,
 				37DEE4BB1A57C19C009A8771 /* MessageVC.m */,
-				37E93F8B1A7AA1A500AD45A1 /* NotificationToAllVC.h */,
-				37E93F8C1A7AA1A500AD45A1 /* NotificationToAllVC.m */,
 				378C78411AA43D6C00E171E2 /* PreviewMessageVC.h */,
 				378C78421AA43D6C00E171E2 /* PreviewMessageVC.m */,
 			);
@@ -2554,6 +2577,8 @@
 				3719A7431AA2319000FBDC2A /* NewEditionPreview.m */,
 				3793FAF71B7D081900501F77 /* PhotoPickerView.m */,
 				3793FAF81B7D081900501F77 /* PhotoPickerView.h */,
+				3705FF921BA2BE7200F0C6F6 /* NumIndicator.h */,
+				3705FF931BA2BE7200F0C6F6 /* NumIndicator.m */,
 			);
 			path = Commonviews;
 			sourceTree = "<group>";
@@ -2720,6 +2745,7 @@
 				37C890161A88FA73008E44DB /* PhotoPickerVC.m in Sources */,
 				37B485071A65853C00C412D8 /* UserCenter.m in Sources */,
 				3793FA4F1B7CFFF000501F77 /* NSString+RENumberFormat.m in Sources */,
+				3705FF941BA2BE7200F0C6F6 /* NumIndicator.m in Sources */,
 				3793FA3F1B7CFFF000501F77 /* REPickerItem.m in Sources */,
 				37E93FC11A7E9CC600AD45A1 /* CHTCollectionViewWaterfallLayout.m in Sources */,
 				3793FA801B7CFFF000501F77 /* CTAssetsViewController.m in Sources */,
@@ -2754,6 +2780,7 @@
 				3793FA5E1B7CFFF000501F77 /* rscode.c in Sources */,
 				37DEE4F11A57C24A009A8771 /* SettingItemCell.m in Sources */,
 				3793FA5C1B7CFFF000501F77 /* qrinput.c in Sources */,
+				3705FF881BA16C8F00F0C6F6 /* NotificationToAllVC.m in Sources */,
 				37C355DC1A3FD5CF00B948E6 /* HomeViewController.m in Sources */,
 				3793FA9F1B7CFFF000501F77 /* UserInfo.m in Sources */,
 				3728A6AB1B98B22700310457 /* ResponseItem.m in Sources */,
@@ -2841,10 +2868,12 @@
 				3793FAEA1B7CFFF000501F77 /* TNListModel.m in Sources */,
 				3793FAA41B7CFFF000501F77 /* NSString+StringSize.m in Sources */,
 				37C296E61A6ACF2F00C2ACDD /* ContactStudentsVC.m in Sources */,
+				3705FF8E1BA1974500F0C6F6 /* MessageSendVC.m in Sources */,
 				3793FAF91B7D081900501F77 /* PhotoPickerView.m in Sources */,
 				37E93F991A7DC48200AD45A1 /* TNActionSheet.m in Sources */,
 				3793FA671B7CFFF000501F77 /* AFHTTPRequestOperation.m in Sources */,
 				3728A7481B9D37AF00310457 /* NSDate+Utils.m in Sources */,
+				3705FF851BA16C1700F0C6F6 /* AudioMessageSendVC.m in Sources */,
 				372774E51A5D94A900464461 /* GrowthTimelinePublishVC.m in Sources */,
 				3793FABA1B7CFFF000501F77 /* MLAmrPlayer.m in Sources */,
 				37DEE4FD1A57C2C0009A8771 /* ContactItemCell.m in Sources */,
@@ -2864,6 +2893,7 @@
 				37DEE4BC1A57C19C009A8771 /* MessageDetailItemCell.m in Sources */,
 				3793FAE41B7CFFF000501F77 /* UIScrollView+MJExtension.m in Sources */,
 				3793FA431B7CFFF000501F77 /* NSString+RETableViewManagerAdditions.m in Sources */,
+				3705FF911BA2A1F800F0C6F6 /* NotificationClassStudentsVC.m in Sources */,
 				37DEE4F01A57C24A009A8771 /* PersonalInfoVC.m in Sources */,
 				3728A73B1B9D376300310457 /* MFWFace.m in Sources */,
 				3793FA3D1B7CFFF000501F77 /* REMultipleChoiceItem.m in Sources */,
@@ -2883,7 +2913,6 @@
 				3793FA7F1B7CFFF000501F77 /* CTAssetsViewCell.m in Sources */,
 				3728A6A71B98B20700310457 /* ResponseView.m in Sources */,
 				3793FAF51B7CFFF000501F77 /* SFHFKeychainUtils.m in Sources */,
-				37E93F8D1A7AA1A500AD45A1 /* NotificationToAllVC.m in Sources */,
 				3793FA591B7CFFF000501F77 /* mask.c in Sources */,
 				3793FA361B7CFFF000501F77 /* REBoolItem.m in Sources */,
 				37C88F771A8357E9008E44DB /* ExchangeSchoolVC.m in Sources */,
@@ -2933,6 +2962,7 @@
 				3793FAEF1B7CFFF000501F77 /* TNBaseViewController.m in Sources */,
 				3793FA241B7CFFF000501F77 /* YLGIFImage.m in Sources */,
 				3793FA8F1B7CFFF000501F77 /* LZTextField.m in Sources */,
+				3705FF8B1BA1954400F0C6F6 /* NotificationTargetSelectVC.m in Sources */,
 				3793FACC1B7CFFF000501F77 /* NSData+ImageContentType.m in Sources */,
 				3793FA491B7CFFF000501F77 /* RETableViewItem.m in Sources */,
 				3793FA4E1B7CFFF000501F77 /* NSError+REValidation.m in Sources */,
@@ -2973,7 +3003,7 @@
 				3793FAF61B7CFFF000501F77 /* Utility.m in Sources */,
 				371C6DAD1A7015AF00FA4AEC /* PublishBaseVC.m in Sources */,
 				3793FA861B7CFFF000501F77 /* RIButtonItem.m in Sources */,
-				37A46F6E1A5B017D00A5FB63 /* MessageOperationVC.m in Sources */,
+				37A46F6E1A5B017D00A5FB63 /* TextMessageSendVC.m in Sources */,
 				376FC6C71B0332A300289DC2 /* QrCodeView.m in Sources */,
 				37E93F9A1A7DC48200AD45A1 /* TNAlertView.m in Sources */,
 				3793FA681B7CFFF000501F77 /* AFHTTPRequestOperationManager.m in Sources */,

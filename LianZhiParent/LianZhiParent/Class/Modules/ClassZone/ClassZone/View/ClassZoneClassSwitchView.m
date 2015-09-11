@@ -38,27 +38,17 @@
     return self;
 }
 
-- (void)onSwitchButtonClicked
-{
-    NSArray *classArray = [UserCenter sharedInstance].curChild.classes;
-    if(classArray.count <= 1)
-        return;
-    NSInteger index = [classArray indexOfObject:self.classInfo];
-    if(index == [classArray count] - 1)
-        index = 0;
-    else
-        index ++;
-    ClassInfo *nextClass = [classArray objectAtIndex:index];
-    [self setClassInfo:nextClass];
-    
-}
-
 - (void)setClassInfo:(ClassInfo *)classInfo
 {
     _classInfo = classInfo;
-    _classNameLabel.text = [NSString stringWithFormat:@"%@ %@",_classInfo.schoolInfo.schoolName,_classInfo.className];
-    if([self.delegate respondsToSelector:@selector(classZoneSwitch:)])
-        [self.delegate classZoneSwitch:_classInfo];
+    [_classNameLabel setText:_classInfo.className];
+}
+
+- (void)onSwitchButtonClicked
+{
+    if([self.delegate respondsToSelector:@selector(classZoneSwitch)])
+        [self.delegate classZoneSwitch];
+    
 }
 
 

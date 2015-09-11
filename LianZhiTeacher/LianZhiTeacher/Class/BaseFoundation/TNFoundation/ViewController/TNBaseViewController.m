@@ -30,8 +30,7 @@
     if(self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])
     {
         self.hideNavigationBar = NO;
-        if(IS_IOS7_LATER)
-            self.edgesForExtendedLayout = UIRectEdgeNone;
+        self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     return self;
 }
@@ -51,6 +50,7 @@
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:kCommonBackgroundColor];
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
     _loadingView = [[LoadingView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
     [_loadingView setUserInteractionEnabled:NO];
     [_loadingView setCenter:CGPointMake(self.view.width / 2, self.view.height / 2 - 30)];

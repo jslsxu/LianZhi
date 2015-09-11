@@ -15,9 +15,9 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        [self setBackgroundColor:[UIColor whiteColor]];
+        [self setBackgroundColor:[UIColor colorWithHexString:@"E6E6E6"]];
         _hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 15, self.width, 15)];
-        [_hintLabel setTextColor:[UINavigationBar appearance].barTintColor];
+        [_hintLabel setTextColor:kCommonTeacherTintColor];
         [_hintLabel setTextAlignment:NSTextAlignmentCenter];
         [_hintLabel setFont:[UIFont systemFontOfSize:14]];
         [_hintLabel setText:@"添加一张"];
@@ -36,6 +36,12 @@
         [self addSubview:_albumBtn];
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [_hintLabel setWidth:self.width];
+    
 }
 
 - (void)onCameraButtonClicked

@@ -8,19 +8,20 @@
 
 #import "TNTableViewCell.h"
 #import "MessageGroupListModel.h"
+#import "NumIndicator.h"
 @interface MessageGroupItemCell : DAContextMenuCell
 {
     LogoView*       _logoView;
-    UIImageView*    _redDot;
+    NumIndicator*   _numIndicator;
     UILabel*        _numLabel;
     UIImageView*    _soundOff;
     UILabel*        _nameLabel;
-    UILabel*        _courseLabel;
     UILabel*        _timeLabel;
+    UIImageView*    _notificationIndicator;
+    UIImageView*    _massChatIndicator;
     UILabel*        _contentLabel;
     UIView*         _sepLine;
 }
 @property (nonatomic, strong)MessageGroupItem *messageItem;
-- (void)setData:(MessageGroupItem *)messageItem;
 + (NSNumber *)cellHeight:(MessageGroupItem *)messageItem cellWidth:(NSInteger)width;
 @end

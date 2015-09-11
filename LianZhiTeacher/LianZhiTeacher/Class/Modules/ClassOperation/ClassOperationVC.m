@@ -536,7 +536,7 @@
 {
     if([self checkSelectedItems])
     {
-        MessageOperationVC *messageOperationVC = [[MessageOperationVC alloc] init];
+        TextMessageSendVC *messageOperationVC = [[TextMessageSendVC alloc] init];
         [messageOperationVC setTargetDic:[self targetDictionary]];
         TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:messageOperationVC];
         [self presentViewController:nav animated:YES completion:nil];

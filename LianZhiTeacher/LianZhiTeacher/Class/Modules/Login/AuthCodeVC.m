@@ -29,7 +29,7 @@
     
     _mobileField = [[LZTextField alloc] initWithFrame:CGRectMake(10, 20, self.view.width - 10 * 2, 45)];
     [_mobileField setFont:[UIFont systemFontOfSize:16]];
-    [_mobileField setTextColor:kCommonParentTintColor];
+    [_mobileField setTextColor:kCommonTeacherTintColor];
     [_mobileField setReturnKeyType:UIReturnKeyDone];
     [_mobileField setKeyboardType:UIKeyboardTypeDecimalPad];
     [_mobileField setPlaceholder:@"请输入注册的手机号"];
@@ -38,7 +38,7 @@
     
     _authCodeField = [[LZTextField alloc] initWithFrame:CGRectMake(10, _mobileField.bottom + 15, self.view.width - 10 *2 - 10 - 90, 45)];
     [_authCodeField setFont:[UIFont systemFontOfSize:16]];
-    [_authCodeField setTextColor:kCommonParentTintColor];
+    [_authCodeField setTextColor:kCommonTeacherTintColor];
     [_authCodeField setReturnKeyType:UIReturnKeyDone];
     [_authCodeField setKeyboardType:UIKeyboardTypeDecimalPad];
     [_authCodeField setPlaceholder:@"请输入收到的验证码"];
@@ -51,12 +51,12 @@
     [_retrieveButton setFrame:CGRectMake(self.view.width - 10 - 90, _authCodeField.y, 90, 45)];
     [_retrieveButton addTarget:self action:@selector(requestAuthCode) forControlEvents:UIControlEventTouchUpInside];
     [_retrieveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_retrieveButton setBackgroundImage:[[UIImage imageWithColor:kCommonParentTintColor size:CGSizeMake(30, 30) cornerRadius:5] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_retrieveButton setBackgroundImage:[[UIImage imageWithColor:kCommonTeacherTintColor size:CGSizeMake(30, 30) cornerRadius:5] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [self.view addSubview:_retrieveButton];
     
     _nameField = [[LZTextField alloc] initWithFrame:CGRectMake(10, _authCodeField.bottom + 15, self.view.width - 10 * 2, 45)];
     [_nameField setFont:[UIFont systemFontOfSize:16]];
-    [_nameField setTextColor:kCommonParentTintColor];
+    [_nameField setTextColor:kCommonTeacherTintColor];
     [_nameField setReturnKeyType:UIReturnKeyDone];
     [_nameField setPlaceholder:@"请输入您的姓名"];
     [_nameField setDelegate:self];
@@ -65,7 +65,7 @@
     _nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_nextButton setFrame:CGRectMake(10, _nameField.bottom + 15, self.view.width - 10 * 2, 45)];
     [_nextButton addTarget:self action:@selector(onNextClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_nextButton setBackgroundImage:[[UIImage imageWithColor:kCommonParentTintColor size:CGSizeMake(30, 30) cornerRadius:5] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_nextButton setBackgroundImage:[[UIImage imageWithColor:kCommonTeacherTintColor size:CGSizeMake(30, 30) cornerRadius:5] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [_nextButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [_nextButton setTitle:@"下一步" forState:UIControlStateNormal];
     [_nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

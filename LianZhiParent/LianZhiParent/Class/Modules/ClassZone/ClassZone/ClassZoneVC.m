@@ -9,6 +9,7 @@
 #import "ClassZoneVC.h"
 #import "ClassAlbumVC.h"
 #import "ActionView.h"
+#import "SwitchClassVC.h"
 #define kClassZoneShown                         @"ClassZoneShown"
 
 @implementation ClassZoneHeaderView
@@ -130,33 +131,6 @@
     _replyBox.hidden = YES;
 }
 
-- (void)onSwipe:(UISwipeGestureRecognizer *)swipe
-{
-    NSArray *classArray = [UserCenter sharedInstance].curChild.classes;
-    if(classArray.count == 1)
-        return;
-    NSInteger curIndex = [classArray indexOfObject:self.classInfo];
-    NSInteger nextIndex = curIndex;
-    ClassInfo *nextClass = nil;
-    if(swipe.direction == UISwipeGestureRecognizerDirectionLeft)
-    {
-        if(curIndex == classArray.count - 1)
-            nextIndex = 0;
-        else
-            nextIndex = curIndex + 1;
-    }
-    else if(swipe.direction == UISwipeGestureRecognizerDirectionRight)
-    {
-        if(curIndex == 0)
-            nextIndex = classArray.count - 1;
-        else
-            nextIndex = curIndex - 1;
-    }
-    nextClass = [classArray objectAtIndex:nextIndex];
-    [self classZoneSwitch:nextClass];
-    [_switchView setClassInfo:self.classInfo];
-}
-
 - (void)addUserGuide
 {
     UIView *parentView = [UIApplication sharedApplication].keyWindow;
@@ -262,11 +236,17 @@
 
 
 #pragma mark - ClassZoneSwitchDelegate
-- (void)classZoneSwitch:(ClassInfo *)classInfo
+- (void)classZoneSwitch
 {
-    self.classInfo = classInfo;
-    [self loadCache];
-    [self requestData:REQUEST_REFRESH];
+    __weak typeof(self) wself = self;
+    SwitchClassVC *switchClassVC = [[SwitchClassVC alloc] init];
+    [switchClassVC setClassInfo:self.classInfo];
+    [switchClassVC setCompletion:^(ClassInfo *classInfo) {
+        wself.classInfo = classInfo;
+        [_switchView setClassInfo:wself.classInfo];
+        [wself requestData:REQUEST_REFRESH];
+    }];
+    [self.navigationController pushViewController:switchClassVC animated:YES];
 }
 #pragma mark - ClassZoneHeaderDelegate
 - (void)classZoneAlbumClicked

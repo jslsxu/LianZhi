@@ -1,0 +1,49 @@
+//
+//  MessageSendVC.m
+//  LianZhiTeacher
+//
+//  Created by jslsxu on 15/9/10.
+//  Copyright (c) 2015年 jslsxu. All rights reserved.
+//
+
+#import "MessageSendVC.h"
+#import "NotificationTargetSelectVC.h"
+@interface MessageSendVC ()
+
+@end
+
+@implementation MessageSendVC
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:(@"WhiteLeftArrow.png")] style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStylePlain target:self action:@selector(onNext)];
+}
+
+- (void)cancel
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)onNext
+{
+    NotificationTargetSelectVC *targetSelectVC = [[NotificationTargetSelectVC alloc] init];
+    [self.navigationController pushViewController:targetSelectVC animated:YES];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3705FF971BA2CCEF00F0C6F6 /* NumIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3705FF951BA2CCEF00F0C6F6 /* NumIndicator.m */; };
+		3705FF9A1BA2D65600F0C6F6 /* SwitchClassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3705FF991BA2D65600F0C6F6 /* SwitchClassVC.m */; };
 		370F33C81A780E8900FED3C2 /* ContactServiceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33C71A780E8900FED3C2 /* ContactServiceVC.m */; };
 		370F33D01A78140B00FED3C2 /* AboutVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33CF1A78140B00FED3C2 /* AboutVC.m */; };
 		3719A7471AA2C47800FBDC2A /* NewEditionPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = 3719A7451AA2C47800FBDC2A /* NewEditionPreview.m */; };
@@ -423,6 +425,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3705FF951BA2CCEF00F0C6F6 /* NumIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumIndicator.m; sourceTree = "<group>"; };
+		3705FF961BA2CCEF00F0C6F6 /* NumIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumIndicator.h; sourceTree = "<group>"; };
+		3705FF981BA2D65600F0C6F6 /* SwitchClassVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchClassVC.h; sourceTree = "<group>"; };
+		3705FF991BA2D65600F0C6F6 /* SwitchClassVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchClassVC.m; sourceTree = "<group>"; };
 		370F33C61A780E8900FED3C2 /* ContactServiceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactServiceVC.h; sourceTree = "<group>"; };
 		370F33C71A780E8900FED3C2 /* ContactServiceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactServiceVC.m; sourceTree = "<group>"; };
 		370F33CE1A78140B00FED3C2 /* AboutVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutVC.h; sourceTree = "<group>"; };
@@ -2486,6 +2492,8 @@
 				3728A5E31B9332FE00310457 /* Model */,
 				37C3163D1A5636AC002E847D /* ClassZoneVC.h */,
 				37C3163E1A5636AC002E847D /* ClassZoneVC.m */,
+				3705FF981BA2D65600F0C6F6 /* SwitchClassVC.h */,
+				3705FF991BA2D65600F0C6F6 /* SwitchClassVC.m */,
 			);
 			path = ClassZone;
 			sourceTree = "<group>";
@@ -2797,6 +2805,8 @@
 				3719A7451AA2C47800FBDC2A /* NewEditionPreview.m */,
 				37EAC9EE1B82DEE5007BFBA1 /* iCarousel.h */,
 				37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */,
+				3705FF951BA2CCEF00F0C6F6 /* NumIndicator.m */,
+				3705FF961BA2CCEF00F0C6F6 /* NumIndicator.h */,
 			);
 			path = CommonViews;
 			sourceTree = "<group>";
@@ -3082,6 +3092,7 @@
 				3720C13A1A41BBD5000357A5 /* ContactListVC.m in Sources */,
 				3793F8191B7CFFD900501F77 /* UIScrollView+MJRefresh.m in Sources */,
 				37C53AA41B14D5FF00C3ED69 /* VacationDatePickerView.m in Sources */,
+				3705FF9A1BA2D65600F0C6F6 /* SwitchClassVC.m in Sources */,
 				3793F7A71B7CFFD900501F77 /* ALAsset+accessibilityLabel.m in Sources */,
 				3793F79D1B7CFFD900501F77 /* AFHTTPSessionManager.m in Sources */,
 				379947DF1A66B403008E4B4F /* PhotoFlowCell.m in Sources */,
@@ -3129,6 +3140,7 @@
 				3793F79E1B7CFFD900501F77 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				3793F8111B7CFFD900501F77 /* LoadingView.m in Sources */,
 				37CBAF201A4724930063F395 /* TreeHouseVC.m in Sources */,
+				3705FF971BA2CCEF00F0C6F6 /* NumIndicator.m in Sources */,
 				37EAC9F31B8348EE007BFBA1 /* PasswordConfirmVC.m in Sources */,
 				3793F76D1B7CFFD900501F77 /* REFloatItem.m in Sources */,
 				37B5D3E71A57B23A003CA877 /* PersonalInfoVC.m in Sources */,

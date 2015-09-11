@@ -8,15 +8,6 @@
 
 #import "TNBaseViewController.h"
 
-@interface ContactServiceItemCell : BGTableViewCell
-{
-    UILabel*        _titleLabel;
-    UIImageView*    _arrow;
-}
-
-@property (nonatomic, copy)NSString *title;
-@end
-
 @interface ContactServiceVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
     NSArray*        _titleArray;

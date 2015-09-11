@@ -238,7 +238,7 @@
     if (!_moreOptionsButton) {
         CGRect frame = CGRectMake(0., 0., 80, CGRectGetHeight(self.actualContentView.frame));
         _moreOptionsButton = [[UIButton alloc] initWithFrame:frame];
-        _moreOptionsButton.backgroundColor = kCommonTeacherTintColor;
+        _moreOptionsButton.backgroundColor = kCommonParentTintColor;
         [self.contextMenuView addSubview:_moreOptionsButton];
         [_moreOptionsButton addTarget:self action:@selector(moreButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     }

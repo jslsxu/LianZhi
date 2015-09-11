@@ -15,11 +15,12 @@ extern NSString *const kMessageDeleteModelItemKey;
 
 @interface MessageDetailItemCell : TNTableViewCell
 {
-    UIImageView*            _bgImageView;
+    UIView*                 _bgView;
+    LogoView*               _logoView;
+    UILabel*                _nameLabel;
+    UILabel*                _timeLabel;
+    UIView*                 _sepLine;
     UILabel*                _contentLabel;
     MessageVoiceButton*     _voiceButton;
-    UIView*                 _sepLine;
-    UIButton*               _deleteButton;
-    UILabel*                _timeLabel;
 }
 @end

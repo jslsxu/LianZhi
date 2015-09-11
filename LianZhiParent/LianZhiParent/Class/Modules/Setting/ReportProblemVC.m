@@ -14,50 +14,42 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if(self.type == 1)
-        self.title = @"信息修改";
-    else if(self.type == 2)
-        self.title = @"关联报错";
-    else if(self.type == 3)
-        self.title = @"产品升级";
-    else
-        self.title = @"软件错误报告";
 }
 
 - (void)setupSubviews
 {
     CGFloat margin = 15;
-    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"GrayBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-    [bgImageView setUserInteractionEnabled:YES];
-    [bgImageView setFrame:CGRectMake(margin, margin, self.view.width - margin * 2, 240 + (self.type == 2 ? 40 + margin : 0))];
-    [self.view addSubview:bgImageView];
+    NSInteger vMargin = 8;
     
-    _contactField = [[LZTextField alloc] initWithFrame:CGRectMake(margin, margin, bgImageView.width - margin * 2, 40)];
+    _contactField = [[LZTextField alloc] initWithFrame:CGRectMake(margin, margin, self.view.width - margin * 2, 40)];
     [_contactField setPlaceholder:@"请留下您的电话"];
     [_contactField setTextColor:[UIColor colorWithHexString:@"666666"]];
     [_contactField setReturnKeyType:UIReturnKeyDone];
     [_contactField setDelegate:self];
     [_contactField setFont:[UIFont systemFontOfSize:15]];
     [_contactField setText:[UserCenter sharedInstance].userInfo.mobile];
-    [bgImageView addSubview:_contactField];
+    [self.view addSubview:_contactField];
     
-    CGFloat spaceYStart = _contactField.bottom + margin;
+    CGFloat spaceYStart = _contactField.bottom + vMargin;
     if(self.type == 2)
     {
-        _groupField = [[LZTextField alloc] initWithFrame:CGRectMake(margin, spaceYStart, bgImageView.width - margin * 2, 40)];
+        _groupField = [[LZTextField alloc] initWithFrame:CGRectMake(margin, spaceYStart, self.view.width - margin * 2, 40)];
         [_groupField setPlaceholder:@"请选择关联错误的组织"];
         [_groupField setTextColor:[UIColor colorWithHexString:@"666666"]];
         [_groupField setReturnKeyType:UIReturnKeyDone];
         [_groupField setDelegate:self];
         [_groupField setFont:[UIFont systemFontOfSize:15]];
-        [bgImageView addSubview:_groupField];
-        spaceYStart += 40 + margin;
+        [self.view addSubview:_groupField];
+        spaceYStart += 40 + vMargin;
     }
     
-    UIImageView *textViewBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-    [textViewBG setUserInteractionEnabled:YES];
-    [textViewBG setFrame:CGRectMake(margin, spaceYStart, bgImageView.width - margin * 2, 100)];
-    [bgImageView addSubview:textViewBG];
+    UIView *textViewBG = [[UIView alloc] initWithFrame:CGRectZero];
+    [textViewBG setBackgroundColor:[UIColor whiteColor]];
+    [textViewBG.layer setCornerRadius:4];
+    [textViewBG.layer setBorderWidth:0.5];
+    [textViewBG.layer setBorderColor:[UIColor colorWithHexString:@"D8D8D8"].CGColor];
+    [textViewBG setFrame:CGRectMake(margin, spaceYStart, self.view.width - margin * 2, 100)];
+    [self.view addSubview:textViewBG];
     
     _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(5, 5, textViewBG.width - 5 * 2, textViewBG.height - 5 - 20)];
     [_textView setPlaceholder:@"请输入要上报的内容"];
@@ -77,27 +69,31 @@
     
     _contactButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_contactButton addTarget:self action:@selector(onContactButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_contactButton setFrame:CGRectMake(margin, textViewBG.bottom + margin, (bgImageView.width - margin * 4) / 3, 30)];
-    [bgImageView addSubview:_contactButton];
-    [self setContactMe:YES];
+    [_contactButton setImage:[UIImage imageNamed:@"ControlDefault"] forState:UIControlStateNormal];
+    [_contactButton setImage:[UIImage imageNamed:@"ControlSelected"] forState:UIControlStateSelected];
+    [_contactButton setFrame:CGRectMake(margin - 4, textViewBG.bottom + 5, 20, 20)];
+    [self.view addSubview:_contactButton];
+    
+    _hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(_contactButton.right + 5, _contactButton.y, 120, 20)];
+    [_hintLabel setFont:[UIFont systemFontOfSize:12]];
+    [_hintLabel setTextColor:[UIColor colorWithHexString:@"8f8f8f"]];
+    [_hintLabel setText:@"需要客服与您联系"];
+    [self.view addSubview:_hintLabel];
     
     _sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_sendButton addTarget:self action:@selector(onSend) forControlEvents:UIControlEventTouchUpInside];
-    [_sendButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
-    [_sendButton setFrame:CGRectMake(margin * 2 + _contactButton.right, textViewBG.bottom + margin, _contactButton.width * 2, 45)];
+    [_sendButton setFrame:CGRectMake(margin, self.view.height - 35 - 55, self.view.width - margin * 2, 36)];
+    [_sendButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"E82550"] size:_sendButton.size cornerRadius:18] forState:UIControlStateNormal];
     [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_sendButton setTitle:@"提交给客服处理" forState:UIControlStateNormal];
     [_sendButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
-    [bgImageView addSubview:_sendButton];
+    [self.view addSubview:_sendButton];
 }
 
 - (void)setContactMe:(BOOL)contactMe
 {
     _contactMe = contactMe;
-    if(_contactMe)
-        [_contactButton setImage:[UIImage imageNamed:@"ContactMe.png"] forState:UIControlStateNormal];
-    else
-        [_contactButton setImage:[UIImage imageNamed:@"NoContactMe.png"] forState:UIControlStateNormal];
+    [_contactButton setSelected:_contactMe];
 }
 
 - (void)onContactButtonClicked

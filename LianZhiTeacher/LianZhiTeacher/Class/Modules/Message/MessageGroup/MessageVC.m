@@ -39,10 +39,6 @@
     [super viewDidLoad];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
-    _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 40)];
-    [self setupHeaderView:_headerView];
-    [self.tableView setTableHeaderView:_headerView];
-
     
     _refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.height, self.tableView.width, self.tableView.height)];
     _refreshHeaderView.delegate = self;
@@ -66,24 +62,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onPublishPhotoFinished:) name:kPublishPhotoItemFinishedNotification object:nil];
 }
 
-- (void)setupHeaderView:(UIView *)viewParent
-{
-    [viewParent setBackgroundColor:[UIColor colorWithRed:211 / 255.0 green:211 / 255.0 blue:211 / 255.0 alpha:1.f]];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 100, viewParent.height)];
-    [label setBackgroundColor:[UIColor clearColor]];
-    [label setText:@"通知提醒"];
-    [label setTextColor:kCommonTeacherTintColor];
-    [label setFont:[UIFont systemFontOfSize:16]];
-    [viewParent addSubview:label];
-    
-    _noticeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_noticeButton setHidden:YES];
-    [_noticeButton setImage:[UIImage imageNamed:@"NotificationPlus.png"] forState:UIControlStateNormal];
-    [_noticeButton setFrame:CGRectMake(viewParent.width - viewParent.height, 0, viewParent.height, viewParent.height)];
-    [_noticeButton addTarget:self action:@selector(onNoticeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [viewParent addSubview:_noticeButton];
-}
-
 - (void)onAddActionClicked
 {
     ActionPopView *actionView = [[ActionPopView alloc] initWithFrame:CGRectMake(self.view.width - 140, 64, 140, 100)];
@@ -94,12 +72,6 @@
 - (void)onPublishPhotoFinished:(NSNotification *)notification
 {
     [self requestData:REQUEST_REFRESH];
-}
-
-- (void)onNoticeButtonClicked
-{
-    NotificationToAllVC *toAllVC = [[NotificationToAllVC alloc] init];
-    [self.navigationController pushViewController:toAllVC animated:YES];
 }
 
 
@@ -202,7 +174,7 @@
         if(cell == nil)
             cell = [[MessageGroupItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.delegate = self;
-        [cell setData:(MessageGroupItem *)[self.messageModel itemForIndexPath:indexPath]];
+        [cell setMessageItem:(MessageGroupItem *)[self.messageModel itemForIndexPath:indexPath]];
         return cell;
     }
 }

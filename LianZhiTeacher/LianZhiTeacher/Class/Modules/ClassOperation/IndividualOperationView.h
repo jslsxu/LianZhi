@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MessageOperationVC.h"
+#import "TextMessageSendVC.h"
 
 @interface IndividualOperationView : UIView
 {
