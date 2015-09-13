@@ -7,6 +7,8 @@
 //
 
 #import "ContactItemCell.h"
+#import "JSMessagesViewController.h"
+
 @implementation ContactItemCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -63,7 +65,8 @@
 
 - (void)onChatClicked
 {
-    
+    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+    [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
 }
 
 @end

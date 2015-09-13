@@ -11,9 +11,52 @@
 #define kReportContentMaxNum                500
 @implementation ReportProblemVC
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self)
+    {
+        
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if(self.type == 1 || self.type == 2)
+    {
+        _sourceArray = @[
+                         @{@"function":@"登录",@"component":@[@"忘记密码",@"手机号登陆",@"连枝号登录",@"新用户激活"]},
+                         @{@"function":@"消息",@"component":@[@"消息通知",@"聊天"]},
+                         @{@"function":@"联系人",@"component":@[@"家长沟通",@"班级群聊",@"家长之间沟通"]},
+                         @{@"function":@"树屋",@"component":@[@"发布日志",@"评论点赞",@"增加标签",@"书屋相册"]},
+                         @{@"function":@"班空间",@"component":@[@"空间相册",@"班应用",@"作业练习",@"家园手册",@"考勤记录"]},
+                         @{@"function":@"发现",@"component":@[@"身边事",@"兴趣",@"常见问题",@"操作指南"]},
+                         @{@"function":@"我",@"component":@[@"个人资料",@"孩子档案",@"家庭成员",@"个性设置"]},
+                         @{@"function":@"其他",@"component":@[@"其他"]}];
+    }
+    else if(self.type == 3)
+    {
+        NSMutableArray *childrenArray = [NSMutableArray array];
+        for (ChildInfo *childInfo in [UserCenter sharedInstance].children)
+        {
+            NSMutableDictionary *childParentDic = [NSMutableDictionary dictionary];
+            [childParentDic setValue:childInfo.name forKey:@"function"];
+            NSMutableArray *familyArray = [NSMutableArray array];
+            for (FamilyInfo *familyInfo in childInfo.family)
+            {
+                if([[UserCenter sharedInstance].userInfo.uid isEqualToString:familyInfo.uid])
+                    [familyArray addObject:@"本人"];
+                else
+                    [familyArray addObject:familyInfo.name];
+            }
+            [childParentDic setValue:familyArray forKey:@"component"];
+            [childrenArray addObject:childParentDic];
+        }
+        _sourceArray = childrenArray;
+    }
 }
 
 - (void)setupSubviews
@@ -21,8 +64,9 @@
     CGFloat margin = 15;
     NSInteger vMargin = 8;
     
+    NSArray *functionArray = @[@"请选择功能类型",@"请选择功能类型",@"请选择关联错误的成员"];
     _contactField = [[LZTextField alloc] initWithFrame:CGRectMake(margin, margin, self.view.width - margin * 2, 40)];
-    [_contactField setPlaceholder:@"请留下您的电话"];
+    [_contactField setPlaceholder:@"请留下您的联系方式"];
     [_contactField setTextColor:[UIColor colorWithHexString:@"666666"]];
     [_contactField setReturnKeyType:UIReturnKeyDone];
     [_contactField setDelegate:self];
@@ -31,17 +75,22 @@
     [self.view addSubview:_contactField];
     
     CGFloat spaceYStart = _contactField.bottom + vMargin;
-    if(self.type == 2)
-    {
-        _groupField = [[LZTextField alloc] initWithFrame:CGRectMake(margin, spaceYStart, self.view.width - margin * 2, 40)];
-        [_groupField setPlaceholder:@"请选择关联错误的组织"];
-        [_groupField setTextColor:[UIColor colorWithHexString:@"666666"]];
-        [_groupField setReturnKeyType:UIReturnKeyDone];
-        [_groupField setDelegate:self];
-        [_groupField setFont:[UIFont systemFontOfSize:15]];
-        [self.view addSubview:_groupField];
-        spaceYStart += 40 + vMargin;
-    }
+    _groupField = [[LZTextField alloc] initWithFrame:CGRectMake(margin, spaceYStart, self.view.width - margin * 2, 40)];
+    [_groupField setPlaceholder:functionArray[self.type - 1]];
+    [_groupField setTextColor:[UIColor colorWithHexString:@"666666"]];
+    [_groupField setReturnKeyType:UIReturnKeyDone];
+    [_groupField setDelegate:self];
+    [_groupField setFont:[UIFont systemFontOfSize:15]];
+    UIImageView *rightView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]];
+    [rightView setOrigin:CGPointMake(_groupField.width - rightView.width - 10, (_groupField.height - rightView.height) / 2)];
+    [_groupField addSubview:rightView];
+    
+    UIButton *coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [coverButton setFrame:_groupField.bounds];
+    [coverButton addTarget:self action:@selector(onCoverButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [_groupField addSubview:coverButton];
+    [self.view addSubview:_groupField];
+    spaceYStart += 40 + vMargin;
     
     UIView *textViewBG = [[UIView alloc] initWithFrame:CGRectZero];
     [textViewBG setBackgroundColor:[UIColor whiteColor]];
@@ -88,6 +137,13 @@
     [_sendButton setTitle:@"提交给客服处理" forState:UIControlStateNormal];
     [_sendButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [self.view addSubview:_sendButton];
+}
+
+- (void)onCoverButtonClicked
+{
+    ActionSelectView *actionSelectView = [[ActionSelectView alloc] init];
+    [actionSelectView setDelegate:self];
+    [actionSelectView show];
 }
 
 - (void)setContactMe:(BOOL)contactMe
@@ -162,5 +218,52 @@
     if(num > kReportContentMaxNum)
         [textView setText:[text substringToIndex:kReportContentMaxNum]];
     [_numLabel setText:kStringFromValue(kReportContentMaxNum - [textView.text length])];
+}
+
+#pragma mark - ActionSelectDelegate
+- (NSInteger)numberOfComponentsInPickerView:(ActionSelectView *)pickerView
+{
+    return 2;
+}
+
+- (NSInteger)pickerView:(ActionSelectView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if(component == 0)
+    {
+        return _sourceArray.count;
+    }
+    else
+    {
+        NSInteger firstColomnRow = [pickerView.pickerView selectedRowInComponent:0];
+        NSArray *secondArray = _sourceArray[firstColomnRow][@"component"];
+        return secondArray.count;
+    }
+}
+
+- (NSString *)pickerView:(ActionSelectView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSString *str = nil;
+    if(component == 0)
+    {
+        str =  _sourceArray[row][@"function"];
+    }
+    else
+    {
+        NSInteger firstColomnRow = [pickerView.pickerView selectedRowInComponent:0];
+        NSArray *secondArray = _sourceArray[firstColomnRow][@"component"];
+        str =  secondArray[row];
+    }
+    return str;
+}
+
+- (void)pickerView:(ActionSelectView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if(component == 0)
+        [pickerView.pickerView reloadComponent:1];
+}
+
+- (void)pickerViewFinished:(ActionSelectView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    
 }
 @end

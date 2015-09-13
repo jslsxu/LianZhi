@@ -8,8 +8,9 @@
 
 #import "TNBaseViewController.h"
 
-@interface ReportProblemVC : TNBaseViewController<UITextFieldDelegate,UITextViewDelegate>
+@interface ReportProblemVC : TNBaseViewController<UITextFieldDelegate,UITextViewDelegate, ActionSelectViewDelegate>
 {
+    NSArray*        _sourceArray;
     LZTextField*    _contactField;
     LZTextField*    _groupField;
     UTPlaceholderTextView*     _textView;

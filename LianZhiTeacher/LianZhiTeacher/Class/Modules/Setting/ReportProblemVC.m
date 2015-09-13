@@ -8,44 +8,96 @@
 
 #import "ReportProblemVC.h"
 
-#define kReportContentMaxNum        500
+#define kReportContentMaxNum                500
 @implementation ReportProblemVC
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self)
+    {
+        
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    if(self.type == 1)
-        self.title = @"信息修改";
-    else if(self.type == 2)
-        self.title = @"关联报错";
+    if(self.type == 1 || self.type == 2)
+    {
+        _sourceArray = @[
+                         @{@"function":@"登录",@"component":@[@"忘记密码",@"手机号登陆",@"连枝号登录",@"新用户激活"]},
+                         @{@"function":@"消息",@"component":@[@"消息通知",@"聊天"]},
+                         @{@"function":@"应用盒",@"component":@[@"发布通知",@"聊天空间",@"作业练习",@"我的考勤",@"学生考勤",@"家园手册",@"班空间",@"空间相册"]},
+                         @{@"function":@"发现",@"component":@[@"身边事",@"兴趣",@"常见问题",@"操作指南"]},
+                         @{@"function":@"我",@"component":@[@"个人资料",@"我的学校",@"个性设置"]},
+                         @{@"function":@"其他",@"component":@[@"其他"]}];
+    }
     else if(self.type == 3)
-        self.title = @"产品升级";
-    else
-        self.title = @"软件错误报告";
+    {
+        NSMutableArray *sourceArray = [NSMutableArray array];
+        for (SchoolInfo *schoolInfo in [UserCenter sharedInstance].schools)
+        {
+                
+            NSMutableDictionary *schoolDic = [NSMutableDictionary dictionary];
+            if([[UserCenter sharedInstance].curSchool.schoolID isEqualToString:schoolInfo.schoolID])
+                [schoolDic setValue:@"本校" forKey:@"function"];
+            else
+                [schoolDic setValue:schoolInfo.schoolName forKey:@"function"];
+            NSMutableArray *classArray = [NSMutableArray array];
+            for (ClassInfo *classInfo in schoolInfo.classes)
+            {
+                [classArray addObject:classInfo.className];
+            }
+            [schoolDic setValue:classArray forKey:@"component"];
+            [sourceArray addObject:schoolDic];
+        }
+        _sourceArray = sourceArray;
+    }
 }
 
 - (void)setupSubviews
 {
     CGFloat margin = 15;
-    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-    [bgImageView setUserInteractionEnabled:YES];
-    [bgImageView setFrame:CGRectMake(margin, margin, self.view.width - margin * 2, 240)];
-    [self.view addSubview:bgImageView];
+    NSInteger vMargin = 8;
     
-    _contactField = [[LZTextField alloc] initWithFrame:CGRectMake(margin, margin, bgImageView.width - margin * 2, 40)];
-    [_contactField setPlaceholder:@"请留下您的电话"];
+    NSArray *functionArray = @[@"请选择功能类型",@"请选择功能类型",@"请选择关联错误的成员"];
+    _contactField = [[LZTextField alloc] initWithFrame:CGRectMake(margin, margin, self.view.width - margin * 2, 40)];
+    [_contactField setPlaceholder:@"请留下您的联系方式"];
     [_contactField setTextColor:[UIColor colorWithHexString:@"666666"]];
     [_contactField setReturnKeyType:UIReturnKeyDone];
     [_contactField setDelegate:self];
     [_contactField setFont:[UIFont systemFontOfSize:15]];
     [_contactField setText:[UserCenter sharedInstance].userInfo.mobile];
-    [bgImageView addSubview:_contactField];
+    [self.view addSubview:_contactField];
     
-    UIImageView *textViewBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-    [textViewBG setUserInteractionEnabled:YES];
-    [textViewBG setFrame:CGRectMake(margin, _contactField.bottom + margin, bgImageView.width - margin * 2, 100)];
-    [bgImageView addSubview:textViewBG];
+    CGFloat spaceYStart = _contactField.bottom + vMargin;
+    _groupField = [[LZTextField alloc] initWithFrame:CGRectMake(margin, spaceYStart, self.view.width - margin * 2, 40)];
+    [_groupField setPlaceholder:functionArray[self.type - 1]];
+    [_groupField setTextColor:[UIColor colorWithHexString:@"666666"]];
+    [_groupField setReturnKeyType:UIReturnKeyDone];
+    [_groupField setDelegate:self];
+    [_groupField setFont:[UIFont systemFontOfSize:15]];
+    UIImageView *rightView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]];
+    [rightView setOrigin:CGPointMake(_groupField.width - rightView.width - 10, (_groupField.height - rightView.height) / 2)];
+    [_groupField addSubview:rightView];
+    
+    UIButton *coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [coverButton setFrame:_groupField.bounds];
+    [coverButton addTarget:self action:@selector(onCoverButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [_groupField addSubview:coverButton];
+    [self.view addSubview:_groupField];
+    spaceYStart += 40 + vMargin;
+    
+    UIView *textViewBG = [[UIView alloc] initWithFrame:CGRectZero];
+    [textViewBG setBackgroundColor:[UIColor whiteColor]];
+    [textViewBG.layer setCornerRadius:4];
+    [textViewBG.layer setBorderWidth:0.5];
+    [textViewBG.layer setBorderColor:[UIColor colorWithHexString:@"D8D8D8"].CGColor];
+    [textViewBG setFrame:CGRectMake(margin, spaceYStart, self.view.width - margin * 2, 100)];
+    [self.view addSubview:textViewBG];
     
     _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(5, 5, textViewBG.width - 5 * 2, textViewBG.height - 5 - 20)];
     [_textView setPlaceholder:@"请输入要上报的内容"];
@@ -65,27 +117,38 @@
     
     _contactButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_contactButton addTarget:self action:@selector(onContactButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_contactButton setFrame:CGRectMake(margin, textViewBG.bottom + margin, (bgImageView.width - margin * 4) / 3, bgImageView.height - textViewBG.bottom - margin * 2)];
-    [bgImageView addSubview:_contactButton];
-    [self setContactMe:YES];
+    [_contactButton setImage:[UIImage imageNamed:@"ControlDefault"] forState:UIControlStateNormal];
+    [_contactButton setImage:[UIImage imageNamed:@"ControlSelected"] forState:UIControlStateSelected];
+    [_contactButton setFrame:CGRectMake(margin - 4, textViewBG.bottom + 5, 20, 20)];
+    [self.view addSubview:_contactButton];
+    
+    _hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(_contactButton.right + 5, _contactButton.y, 120, 20)];
+    [_hintLabel setFont:[UIFont systemFontOfSize:12]];
+    [_hintLabel setTextColor:[UIColor colorWithHexString:@"8f8f8f"]];
+    [_hintLabel setText:@"需要客服与您联系"];
+    [self.view addSubview:_hintLabel];
     
     _sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_sendButton addTarget:self action:@selector(onSend) forControlEvents:UIControlEventTouchUpInside];
-    [_sendButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
-    [_sendButton setFrame:CGRectMake(margin * 2 + _contactButton.right, textViewBG.bottom + margin, _contactButton.width * 2, 45)];
+    [_sendButton setFrame:CGRectMake(margin, self.view.height - 35 - 55, self.view.width - margin * 2, 36)];
+    [_sendButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"E82550"] size:_sendButton.size cornerRadius:18] forState:UIControlStateNormal];
     [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_sendButton setTitle:@"提交给客服处理" forState:UIControlStateNormal];
     [_sendButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
-    [bgImageView addSubview:_sendButton];
+    [self.view addSubview:_sendButton];
+}
+
+- (void)onCoverButtonClicked
+{
+    ActionSelectView *actionSelectView = [[ActionSelectView alloc] init];
+    [actionSelectView setDelegate:self];
+    [actionSelectView show];
 }
 
 - (void)setContactMe:(BOOL)contactMe
 {
     _contactMe = contactMe;
-    if(_contactMe)
-        [_contactButton setImage:[UIImage imageNamed:(@"ContactMe.png")] forState:UIControlStateNormal];
-    else
-        [_contactButton setImage:[UIImage imageNamed:(@"NoContactMe.png")] forState:UIControlStateNormal];
+    [_contactButton setSelected:_contactMe];
 }
 
 - (void)onContactButtonClicked
@@ -100,7 +163,7 @@
     if([content length] == 0)
     {
         TNButtonItem *confirmItem = [TNButtonItem itemWithTitle:@"确定" action:nil];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"写点您要上报的信息吧" buttonItems:@[confirmItem]];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"写点要提交的信息吧" buttonItems:@[confirmItem]];
         [alertView show];
         return;
     }
@@ -150,9 +213,56 @@
 - (void)textViewDidChange:(UITextView *)textView
 {
     NSString *text = textView.text;
-    NSInteger num = text.length;
+    NSInteger num = [text length];
     if(num > kReportContentMaxNum)
         [textView setText:[text substringToIndex:kReportContentMaxNum]];
-    [_numLabel setText:kStringFromValue(kReportContentMaxNum - textView.text.length)];
+    [_numLabel setText:kStringFromValue(kReportContentMaxNum - [textView.text length])];
+}
+
+#pragma mark - ActionSelectDelegate
+- (NSInteger)numberOfComponentsInPickerView:(ActionSelectView *)pickerView
+{
+    return 2;
+}
+
+- (NSInteger)pickerView:(ActionSelectView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if(component == 0)
+    {
+        return _sourceArray.count;
+    }
+    else
+    {
+        NSInteger firstColomnRow = [pickerView.pickerView selectedRowInComponent:0];
+        NSArray *secondArray = _sourceArray[firstColomnRow][@"component"];
+        return secondArray.count;
+    }
+}
+
+- (NSString *)pickerView:(ActionSelectView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSString *str = nil;
+    if(component == 0)
+    {
+        str =  _sourceArray[row][@"function"];
+    }
+    else
+    {
+        NSInteger firstColomnRow = [pickerView.pickerView selectedRowInComponent:0];
+        NSArray *secondArray = _sourceArray[firstColomnRow][@"component"];
+        str =  secondArray[row];
+    }
+    return str;
+}
+
+- (void)pickerView:(ActionSelectView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    if(component == 0)
+        [pickerView.pickerView reloadComponent:1];
+}
+
+- (void)pickerViewFinished:(ActionSelectView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    
 }
 @end

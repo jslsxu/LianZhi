@@ -14,6 +14,7 @@
     self = [super initWithFrame:frame];
     if(self)
     {
+        [self setBackgroundColor:[UIColor whiteColor]];
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(10, 3, (self.height - 3 * 2),self.height - 3 * 2)];
         [self addSubview:_logoView];
         
@@ -69,7 +70,8 @@
 
 - (void)onChatClicked
 {
-    
+    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+    [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
 }
 
 @end
