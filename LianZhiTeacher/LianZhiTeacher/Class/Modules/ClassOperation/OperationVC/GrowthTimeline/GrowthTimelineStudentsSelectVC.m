@@ -60,20 +60,11 @@
 
 @implementation GrowthTimelineStudentsSelectVC
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if(self)
-    {
-        _selectedArray = [NSMutableArray array];
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"切换" style:UIBarButtonItemStylePlain target:self action:@selector(onClassChanged)];
+    _selectedArray = [NSMutableArray arrayWithArray:self.originalStudentArray];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(onConfirm)];
     NSInteger itemWith = (self.view.width + 3) / 4;
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     [layout setItemSize:CGSizeMake(itemWith, itemWith)];
@@ -83,12 +74,13 @@
     
     _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake((self.view.width - itemWith * 4) / 2, 0, itemWith * 4, self.view.height - 64) collectionViewLayout:layout];
     [_collectionView setBackgroundColor:[UIColor clearColor]];
+    [_collectionView setBounces:NO];
     [_collectionView setDelegate:self];
     [_collectionView setDataSource:self];
     [_collectionView registerClass:[GrowthStudentItemCell class] forCellWithReuseIdentifier:@"GrowthStudentItemCell"];
     [self.view addSubview:_collectionView];
     
-    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 64 - 40, self.view.width, 35)];
+    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 64 - 40, self.view.width, 40)];
     [bottomView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7]];
     [self setupBottomView:bottomView];
     [self.view addSubview:bottomView];
@@ -105,14 +97,21 @@
     [_selectAllButton setFrame:CGRectMake(0, 0, 50, viewParent.height)];
     [viewParent addSubview:_selectAllButton];
     
-    _sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_sendButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
-    [_sendButton setTitle:@"发送" forState:UIControlStateNormal];
-    [_sendButton addTarget:self action:@selector(onSendButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_sendButton setFrame:CGRectMake(viewParent.width - 50, 0, 50, viewParent.height)];
-    [viewParent addSubview:_sendButton];
+//    _sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [_sendButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
+//    [_sendButton setTitle:@"发送" forState:UIControlStateNormal];
+//    [_sendButton addTarget:self action:@selector(onSendButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+//    [_sendButton setFrame:CGRectMake(viewParent.width - 50, 0, 50, viewParent.height)];
+//    [viewParent addSubview:_sendButton];
     
+}
+
+- (void)onConfirm
+{
+    if(self.completion)
+        self.completion(_selectedArray);
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)onSelectAllClicked
@@ -129,14 +128,6 @@
     
 }
 
-- (void)onClassChanged
-{
-    GrowthTimelineClassChangeVC *classChangeVC = [[GrowthTimelineClassChangeVC alloc] init];
-    [classChangeVC setCompletion:^(ClassInfo *classInfo) {
-        self.classInfo = classInfo;
-    }];
-    [CurrentROOTNavigationVC pushViewController:classChangeVC animated:YES];
-}
 
 #pragma mark - UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
@@ -156,7 +147,12 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     GrowthStudentItemCell *studentCell = (GrowthStudentItemCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    StudentInfo *studentInfo = studentCell.studentInfo;
     [studentCell setHasBeenSelected:!studentCell.hasBeenSelected];
+    if(studentCell.hasBeenSelected)
+        [_selectedArray addObject:studentInfo];
+    else
+        [_selectedArray removeObject:studentInfo];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -24,7 +24,7 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @end
 
 @interface TeacherInfo : UserInfo
-@property (nonatomic, copy)NSString *title;
+//@property (nonatomic, copy)NSString *title;
 @property (nonatomic, copy)NSString *course;
 
 @end
@@ -35,7 +35,7 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @end
 
 @interface StudentInfo : UserInfo
-@property (nonatomic, assign)GenderType gender;
+//@property (nonatomic, assign)GenderType gender;
 @property (nonatomic, strong)NSArray *family;
 @property (nonatomic, assign)BOOL selected;             //在班级操作中有用
 @property (nonatomic, assign)NSInteger attention;       //关注度

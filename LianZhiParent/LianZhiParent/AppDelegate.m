@@ -274,6 +274,17 @@ static SystemSoundID shake_sound_male_id = 0;
 //    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);   //让手机震动
 }
 
+- (void)popAndPush:(UIViewController *)vc
+{
+    NSArray *vcArray = [self.rootNavigation viewControllers];
+    if(vcArray.count > 1)
+    {
+        [self.rootNavigation popToRootViewControllerAnimated:NO];
+        [self.homeVC selectAtIndex:0];
+    }
+    [self.rootNavigation pushViewController:vc animated:YES];
+}
+
 #pragma mark - Reachability
 - (void)startReachability
 {

@@ -184,11 +184,11 @@
     {
         if (message.from == UUMessageFromMe) {
             normal = [UIImage imageNamed:@"MessageSendedBG"];
-            normal = [normal resizableImageWithCapInsets:UIEdgeInsetsMake(35, 10, 10, 22)];
+            normal = [normal resizableImageWithCapInsets:UIEdgeInsetsMake(40, 20, 12, 20)];
         }
         else{
             normal = [UIImage imageNamed:@"MessageReceivedBG"];
-            normal = [normal resizableImageWithCapInsets:UIEdgeInsetsMake(35, 22, 10, 10)];
+            normal = [normal resizableImageWithCapInsets:UIEdgeInsetsMake(40, 20, 12, 20)];
         }
     }
     [self.btnContent setBackgroundImage:normal forState:UIControlStateNormal];

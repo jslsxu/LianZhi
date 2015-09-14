@@ -35,7 +35,7 @@
         
         saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [saveButton setFrame:CGRectMake(self.width - 44 - 10, 0, 44, 44)];
-        [saveButton setImage:[UIImage imageNamed:@"PhotoDownload"] forState:UIControlStateNormal];
+        [saveButton setImage:[UIImage imageNamed:@"DownloadToAlbum"] forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(clickSavePhoto) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:saveButton];
         
@@ -58,18 +58,18 @@
     return self;
 }
 
-- (void)setBrowserType:(PhotoBrowserType)browserType
-{
-    _browserType = browserType;
-    if(_browserType == PhotoBrowserTypeZone)//下载到树屋
-    {
-        [saveButton setImage:[UIImage imageNamed:@"PhotoDownload"] forState:UIControlStateNormal];
-    }
-    else //bendi 
-    {
-        [saveButton setImage:[UIImage imageNamed:@"PhotoDownload"] forState:UIControlStateNormal];
-    }
-}
+//- (void)setBrowserType:(PhotoBrowserType)browserType
+//{
+//    _browserType = browserType;
+//    if(_browserType == PhotoBrowserTypeZone)//下载到树屋
+//    {
+//        [saveButton setImage:[UIImage imageNamed:@"DownloadToAlbum"] forState:UIControlStateNormal];
+//    }
+//    else //bendi 
+//    {
+//        [saveButton setImage:[UIImage imageNamed:@"DownloadToAlbum"] forState:UIControlStateNormal];
+//    }
+//}
 
 - (void)setPhoto:(PhotoItem *)photo
 {

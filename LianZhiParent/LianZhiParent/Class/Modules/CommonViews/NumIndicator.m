@@ -28,10 +28,10 @@
     return self;
 }
 
-- (void)setNum:(NSInteger)num
+- (void)setIndicator:(NSString *)indicator
 {
-    _num = num;
-    [self setText:kStringFromValue(_num)];
+    _indicator = indicator;
+    [self setText:_indicator];
     [self sizeToFit];
     [self setSize:CGSizeMake(MAX(kIndicatorHeight, self.width + 6), kIndicatorHeight)];
 }

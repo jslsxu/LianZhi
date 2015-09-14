@@ -134,7 +134,7 @@
     JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
     [chatVC setName:userInfo.name];
     [chatVC setUserID:userInfo.uid];
-    [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
+    [ApplicationDelegate popAndPush:chatVC];
 }
 
 

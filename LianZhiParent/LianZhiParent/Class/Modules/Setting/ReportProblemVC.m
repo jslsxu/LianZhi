@@ -251,7 +251,8 @@
     {
         NSInteger firstColomnRow = [pickerView.pickerView selectedRowInComponent:0];
         NSArray *secondArray = _sourceArray[firstColomnRow][@"component"];
-        str =  secondArray[row];
+        if(row < secondArray.count)
+            str =  secondArray[row];
     }
     return str;
 }
@@ -264,6 +265,12 @@
 
 - (void)pickerViewFinished:(ActionSelectView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    
+    NSInteger firstSelectRow = [pickerView.pickerView selectedRowInComponent:0];
+    NSInteger secondiSelectRow = [pickerView.pickerView selectedRowInComponent:1];
+    NSArray *secondArray = _sourceArray[firstSelectRow][@"component"];
+    NSString *secondStr = nil;
+    if(secondiSelectRow < secondArray.count)
+        secondStr = secondArray[secondiSelectRow];
+    [_groupField setText:[NSString stringWithFormat:@"%@ %@",_sourceArray[firstSelectRow][@"function"],secondStr]];
 }
 @end

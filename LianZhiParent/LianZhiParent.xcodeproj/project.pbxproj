@@ -94,6 +94,7 @@
 		3728A6FF1B9C6E4F00310457 /* NSDate+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A6FE1B9C6E4F00310457 /* NSDate+Utils.m */; };
 		3728A7021B9C711D00310457 /* UUImageAvatarBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A7011B9C711D00310457 /* UUImageAvatarBrowser.m */; };
 		3728A7051B9C76A900310457 /* ChatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A7041B9C76A900310457 /* ChatModel.m */; };
+		372BFC441BA6B343006DBCCC /* ClassMemberVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372BFC431BA6B343006DBCCC /* ClassMemberVC.m */; };
 		3732A4611AFC6B24006DE05C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3732A4601AFC6B24006DE05C /* UIKit.framework */; };
 		3732A4631AFC6B30006DE05C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3732A4621AFC6B2F006DE05C /* QuartzCore.framework */; };
 		3732A4651AFC6B35006DE05C /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3732A4641AFC6B35006DE05C /* CoreVideo.framework */; };
@@ -550,6 +551,8 @@
 		3728A7011B9C711D00310457 /* UUImageAvatarBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUImageAvatarBrowser.m; sourceTree = "<group>"; };
 		3728A7031B9C76A900310457 /* ChatModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatModel.h; sourceTree = "<group>"; };
 		3728A7041B9C76A900310457 /* ChatModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatModel.m; sourceTree = "<group>"; };
+		372BFC421BA6B343006DBCCC /* ClassMemberVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassMemberVC.h; sourceTree = "<group>"; };
+		372BFC431BA6B343006DBCCC /* ClassMemberVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassMemberVC.m; sourceTree = "<group>"; };
 		3732A4601AFC6B24006DE05C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3732A4621AFC6B2F006DE05C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3732A4641AFC6B35006DE05C /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -1504,6 +1507,15 @@
 			path = ClassZoneDetail;
 			sourceTree = "<group>";
 		};
+		372BFC411BA6B2E8006DBCCC /* ExtraInfoVC */ = {
+			isa = PBXGroup;
+			children = (
+				372BFC421BA6B343006DBCCC /* ClassMemberVC.h */,
+				372BFC431BA6B343006DBCCC /* ClassMemberVC.m */,
+			);
+			path = ExtraInfoVC;
+			sourceTree = "<group>";
+		};
 		376605A31B75F29100204DFD /* Mine */ = {
 			isa = PBXGroup;
 			children = (
@@ -2447,6 +2459,7 @@
 		3793FD9F1B7DE00D00501F77 /* ChatVC */ = {
 			isa = PBXGroup;
 			children = (
+				372BFC411BA6B2E8006DBCCC /* ExtraInfoVC */,
 				3728A60E1B93F36B00310457 /* Input */,
 				3728A5EE1B93EB8D00310457 /* MessageTableViewController */,
 			);
@@ -3090,6 +3103,7 @@
 				37CBAF1C1A4724930063F395 /* PublishAudioVC.m in Sources */,
 				3793F8251B7CFFD900501F77 /* TaskItem.m in Sources */,
 				3720C13A1A41BBD5000357A5 /* ContactListVC.m in Sources */,
+				372BFC441BA6B343006DBCCC /* ClassMemberVC.m in Sources */,
 				3793F8191B7CFFD900501F77 /* UIScrollView+MJRefresh.m in Sources */,
 				37C53AA41B14D5FF00C3ED69 /* VacationDatePickerView.m in Sources */,
 				3705FF9A1BA2D65600F0C6F6 /* SwitchClassVC.m in Sources */,

@@ -66,7 +66,7 @@
 - (void)onChatClicked
 {
     JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-    [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
+    [ApplicationDelegate popAndPush:chatVC];
 }
 
 @end

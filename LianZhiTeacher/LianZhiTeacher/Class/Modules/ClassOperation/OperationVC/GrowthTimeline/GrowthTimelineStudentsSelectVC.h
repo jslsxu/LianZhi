@@ -27,4 +27,6 @@
     UIButton*           _sendButton;
 }
 @property (nonatomic, strong)ClassInfo *classInfo;
+@property (nonatomic, strong)NSArray *originalStudentArray;
+@property (nonatomic, copy)void (^completion)(NSArray *studentArray);
 @end

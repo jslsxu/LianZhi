@@ -8,6 +8,12 @@
 
 #import "TNBaseViewController.h"
 
+typedef NS_ENUM(NSInteger, SelectType)
+{
+    SelectTypeNone = 0,         //没有选择
+    SelectTypePart,             //部分选择
+    SelectTypeAll,              //全部选择
+};
 @interface GrowthClassCell : UITableViewCell
 {
     LogoView*   _logoView;
@@ -15,11 +21,14 @@
     
 }
 @property (nonatomic, strong)ClassInfo *classInfo;
+@property (nonatomic, assign)SelectType selectType;
 @end
 
 @interface GrowthTimelineClassChangeVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
-    UITableView*    _tableView;
+    NSMutableDictionary *   _paramsDic;
+    UITableView*            _tableView;
 }
-@property (nonatomic, copy)void (^completion)(ClassInfo *classInfo);
+@property (nonatomic, strong)NSDictionary *originalparams;
+@property (nonatomic, copy)void (^completion)(NSDictionary *params);
 @end

@@ -95,7 +95,7 @@
     if(_messageItem.msgNum > 0)
     {
         [_numIndicator setHidden:NO];
-        [_numIndicator setNum:_messageItem.msgNum];
+        [_numIndicator setIndicator:kStringFromValue(_messageItem.msgNum)];
         [_numIndicator setCenter:CGPointMake(_logoView.right - _numIndicator.width / 2, _logoView.y + _numIndicator.height / 2)];
     }
     else

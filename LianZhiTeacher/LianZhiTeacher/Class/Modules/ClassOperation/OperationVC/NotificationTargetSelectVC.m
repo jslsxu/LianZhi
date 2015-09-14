@@ -18,8 +18,8 @@
         _checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_checkButton setFrame:CGRectMake(30, 0, 20, self.height)];
         [_checkButton setUserInteractionEnabled:NO];
-        [_checkButton setImage:[UIImage imageNamed:@"ControlSelected"] forState:UIControlStateNormal];
-        [_checkButton setImage:[UIImage imageNamed:@"ControlHighlighted"] forState:UIControlStateSelected];
+        [_checkButton setImage:[UIImage imageNamed:@"ControlSelectPart"] forState:UIControlStateNormal];
+        [_checkButton setImage:[UIImage imageNamed:@"ControlSelectAll"] forState:UIControlStateSelected];
         [self addSubview:_checkButton];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_checkButton.right + 10, 0, 200, self.height)];
@@ -49,8 +49,8 @@
         _checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_checkButton setFrame:CGRectMake(20, 0, 20, self.height)];
         [_checkButton setUserInteractionEnabled:NO];
-        [_checkButton setImage:[UIImage imageNamed:@"ControlSelected"] forState:UIControlStateNormal];
-        [_checkButton setImage:[UIImage imageNamed:@"ControlHighlighted"] forState:UIControlStateSelected];
+        [_checkButton setImage:[UIImage imageNamed:@"ControlSelectPart"] forState:UIControlStateNormal];
+        [_checkButton setImage:[UIImage imageNamed:@"ControlSelectAll"] forState:UIControlStateSelected];
         [self addSubview:_checkButton];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_checkButton.right + 10, 0, 200, 50)];

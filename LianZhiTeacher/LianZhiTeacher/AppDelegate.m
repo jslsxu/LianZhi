@@ -285,6 +285,17 @@ static SystemSoundID shake_sound_male_id = 0;
     
 }
 
+- (void)popAndPush:(UIViewController *)viewController
+{
+    NSArray *vcArray = [self.rootNavigation viewControllers];
+    if(vcArray.count > 1)
+    {
+        [self.rootNavigation popToRootViewControllerAnimated:NO];
+        [self.homeVC selectAtIndex:0];
+    }
+    [self.rootNavigation pushViewController:viewController animated:YES];
+}
+
 
 #pragma mark - Reachability
 - (void)startReachability

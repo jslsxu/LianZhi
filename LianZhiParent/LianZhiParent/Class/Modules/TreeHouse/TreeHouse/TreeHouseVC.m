@@ -318,7 +318,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TreeHouseCell *treehouseCell = (TreeHouseCell *)cell;
-    [treehouseCell setDelegate:self];
+    if([treehouseCell respondsToSelector:@selector(setDelegate:)])
+        [treehouseCell setDelegate:self];
 }
 
 #pragma mark - PublishTreeItemDelegate

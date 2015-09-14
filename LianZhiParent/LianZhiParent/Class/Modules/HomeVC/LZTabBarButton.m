@@ -9,6 +9,7 @@
 #import "LZTabBarButton.h"
 
 @implementation LZTabBarButton
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -17,7 +18,7 @@
         self.titleLabel.font = [UIFont systemFontOfSize:self.presenting ? 13 : 11];
         self.imageView.contentMode = UIViewContentModeCenter;
         
-        CGFloat spacing = self.presenting ? 6.0 : 4.0;
+        CGFloat spacing = 2;
         
         // lower the text and push it left so it appears centered
         //  below the image
@@ -33,19 +34,22 @@
         self.imageEdgeInsets = UIEdgeInsetsZero;
     }
     
-    if(_redDot == nil)
+    if(_numIndicator == nil)
     {
-        _redDot = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RedDot.png"]];
-        [_redDot setHidden:YES];
-        [self addSubview:_redDot];
+        _numIndicator = [[NumIndicator alloc] init];
+        [self addSubview:_numIndicator];
     }
-    [_redDot setCenter:CGPointMake(self.width - 20, 5)];
-
+    [self setBadgeValue:self.badgeValue];
 }
 
-- (void)setHasNew:(BOOL)hasNew
+- (void)setBadgeValue:(NSString *)badgeValue
 {
-    _hasNew = hasNew;
-    [_redDot setHidden:!_hasNew];
+    _badgeValue = badgeValue;
+    if(_badgeValue)
+        [_numIndicator setHidden:NO];
+    else
+        [_numIndicator setHidden:YES];
+    [_numIndicator setIndicator:_badgeValue];
+    [_numIndicator setCenter:CGPointMake(self.centerX + 15, _numIndicator.height / 2)];
 }
 @end

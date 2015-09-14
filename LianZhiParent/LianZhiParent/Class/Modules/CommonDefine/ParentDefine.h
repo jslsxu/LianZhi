@@ -10,7 +10,6 @@
 #define LianZhiParent_ParentDefine_h
 
 #define kParentUmengAppKey          @"55110007fd98c533b2000356"
-#define kRootRequestUrl             @"http://p.lb.5tree.cn/"
-//#define kRootRequestUrl                     @"http://p.test.lb.5tree.cn"
-#define kAppendUrl(url)             [NSString stringWithFormat:@"%@%@",kRootRequestUrl,url]
+//#define kRootRequestUrl             @"http://p.lb.5tree.cn/"
+#define kRootRequestUrl             @"http://p.mapi.wangyichuan.cn"
 #endif

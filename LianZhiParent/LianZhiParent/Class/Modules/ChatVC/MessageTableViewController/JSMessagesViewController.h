@@ -3,6 +3,7 @@
 #import <UIKit/UIKit.h>
 #import "ChatModel.h"
 #import "InputBarView.h"
+#import "ClassMemberVC.h"
 @interface JSMessagesViewController : TNBaseViewController <InputBarViewDelegate, UITableViewDataSource, UITableViewDelegate>
 {
     BOOL                    _isLoading;

@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "NumIndicator.h"
 @interface LZTabBarButton : UIButton
 {
-    UIImageView*    _redDot;
+    NumIndicator*   _numIndicator;
 }
-@property (nonatomic, assign)BOOL hasNew;
+@property (nonatomic, copy)NSString *badgeValue;
 @property (nonatomic, assign)BOOL presenting;
 @end

@@ -289,7 +289,8 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ClassZoneItemCell *itemCell = (ClassZoneItemCell *)cell;
-    [itemCell setDelegate:self];
+    if([itemCell respondsToSelector:@selector(setDelegate:)])
+        [itemCell setDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning {

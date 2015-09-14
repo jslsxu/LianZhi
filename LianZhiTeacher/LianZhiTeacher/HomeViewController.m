@@ -76,14 +76,14 @@ static NSArray *tabDatas = nil;
 {
     NSInteger newMsg = [UserCenter sharedInstance].statusManager.msgNum;
     LZTabBarButton *msgButton = (LZTabBarButton *)_tabbarButtons[0];
-    [msgButton setHasNew:newMsg > 0];
+    [msgButton setBadgeValue:(newMsg > 0 ? kStringFromValue(newMsg) : nil)];
 }
 
 - (void)onFoundChanged
 {
     BOOL foundNew = [UserCenter sharedInstance].statusManager.found;
     LZTabBarButton *msgButton = [_tabbarButtons lastObject];
-    [msgButton setHasNew:foundNew];
+    [msgButton setBadgeValue:(foundNew > 0 ? kStringFromValue(foundNew) : nil)];
 }
 
 - (void)onSchoolChanged
@@ -117,7 +117,6 @@ static NSArray *tabDatas = nil;
     {
         CGFloat spaceX = tabWidth * i;
         LZTabBarButton *barButton = [[LZTabBarButton alloc] initWithFrame:CGRectMake(spaceX, 0, tabWidth, self.tabBar.height)];
-        
         [barButton setTitle:tabItemTitleArray[i] forState:UIControlStateNormal];
         [barButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [barButton addTarget:self action:@selector(onTabButtonClicked:) forControlEvents:UIControlEventTouchUpInside];

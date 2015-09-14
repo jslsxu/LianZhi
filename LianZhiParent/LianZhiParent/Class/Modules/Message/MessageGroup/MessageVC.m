@@ -27,6 +27,9 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setAutomaticallyAdjustsScrollViewInsets:NO];
+    [self setEdgesForExtendedLayout:UIRectEdgeNone];
+    [self.tableView setFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
     _refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.height, self.tableView.width, self.tableView.height)];

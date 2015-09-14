@@ -118,7 +118,7 @@
     _contactButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_contactButton addTarget:self action:@selector(onContactButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [_contactButton setImage:[UIImage imageNamed:@"ControlDefault"] forState:UIControlStateNormal];
-    [_contactButton setImage:[UIImage imageNamed:@"ControlSelected"] forState:UIControlStateSelected];
+    [_contactButton setImage:[UIImage imageNamed:@"ControlSelectPart"] forState:UIControlStateSelected];
     [_contactButton setFrame:CGRectMake(margin - 4, textViewBG.bottom + 5, 20, 20)];
     [self.view addSubview:_contactButton];
     
@@ -250,7 +250,8 @@
     {
         NSInteger firstColomnRow = [pickerView.pickerView selectedRowInComponent:0];
         NSArray *secondArray = _sourceArray[firstColomnRow][@"component"];
-        str =  secondArray[row];
+        if(row < secondArray.count)
+            str =  secondArray[row];
     }
     return str;
 }
@@ -263,6 +264,13 @@
 
 - (void)pickerViewFinished:(ActionSelectView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    
+    NSInteger firstSelectRow = [pickerView.pickerView selectedRowInComponent:0];
+    NSInteger secondiSelectRow = [pickerView.pickerView selectedRowInComponent:1];
+    NSArray *secondArray = _sourceArray[firstSelectRow][@"component"];
+    NSString *secondStr = nil;
+    if(secondiSelectRow < secondArray.count)
+        secondStr = secondArray[secondiSelectRow];
+    [_groupField setText:[NSString stringWithFormat:@"%@ %@",_sourceArray[firstSelectRow][@"function"],secondStr]];
 }
+
 @end

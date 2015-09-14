@@ -2,7 +2,6 @@
 
 #import "JSMessagesViewController.h"
 #import "UUMessageCell.h"
-
 @implementation JSMessagesViewController
 
 
@@ -21,6 +20,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"成员" style:UIBarButtonItemStylePlain target:self action:@selector(onShowMember)];
     self.title = self.name;
     _inputView = [[InputBarView alloc] init];
     [_inputView setInputDelegate:self];
@@ -32,6 +32,12 @@
     [_tableView setDataSource:self];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:_tableView];
+}
+
+- (void)onShowMember
+{
+    ClassMemberVC *memberVC = [[ClassMemberVC alloc] init];
+    [CurrentROOTNavigationVC pushViewController:memberVC animated:YES];
 }
 
 //加载之前的

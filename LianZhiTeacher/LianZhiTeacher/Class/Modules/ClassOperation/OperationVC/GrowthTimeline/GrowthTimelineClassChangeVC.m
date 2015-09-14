@@ -7,7 +7,7 @@
 //
 
 #import "GrowthTimelineClassChangeVC.h"
-
+#import "GrowthTimelineStudentsSelectVC.h"
 @implementation GrowthClassCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -20,11 +20,11 @@
         [self addSubview:_logoView];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_logoView.right + 10, 0, self.width - 50 - (_logoView.right + 10), self.height)];
-        [_nameLabel setFont:[UIFont systemFontOfSize:16]];
+        [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [self addSubview:_nameLabel];
         
-        [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+        [self setSelectType:SelectTypeNone];
     }
     return self;
 }
@@ -36,6 +36,19 @@
     [_nameLabel setText:_classInfo.className];
 }
 
+- (void)setSelectType:(SelectType)selectType
+{
+    _selectType = selectType;
+    UIImage *image = nil;
+    if(_selectType == SelectTypeAll)
+        image = [UIImage imageNamed:@"ControlSelectAll"];
+    else if(_selectType == SelectTypePart)
+        image = [UIImage imageNamed:@"ControlSelectPart"];
+    else
+        image = [UIImage imageNamed:@"ControlDefault"];
+    [self setAccessoryView:[[UIImageView alloc] initWithImage:image]];
+}
+
 @end
 
 @interface GrowthTimelineClassChangeVC ()
@@ -44,14 +57,38 @@
 
 @implementation GrowthTimelineClassChangeVC
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self)
+    {
+        _paramsDic = [NSMutableDictionary dictionary];
+        for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
+        {
+            NSMutableArray *selectedArray = [NSMutableArray array];
+            [_paramsDic setValue:selectedArray forKey:classInfo.classID];
+        }
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"所有的班";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(onConfirm)];
     
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [_tableView setSeparatorColor:kSepLineColor];
     [self.view addSubview:_tableView];
+}
+
+- (void)onConfirm
+{
+    if(self.completion)
+        self.completion(_paramsDic);
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UITableViewDelegate
@@ -62,13 +99,23 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *reuseID = @"";
+    static NSString *reuseID = @"GrowthClassCell";
     GrowthClassCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
     if(nil == cell)
     {
         cell = [[GrowthClassCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
-    [cell setClassInfo:[UserCenter sharedInstance].curSchool.classes[indexPath.row]];
+    ClassInfo *classInfo = [UserCenter sharedInstance].curSchool.classes[indexPath.row];
+    [cell setClassInfo:classInfo];
+    SelectType selectType = SelectTypeNone;
+    NSArray *studentArray = [_paramsDic valueForKey:classInfo.classID];
+    if(studentArray.count == 0)
+        selectType = SelectTypeNone;
+    else if(studentArray.count == classInfo.students.count)
+        selectType = SelectTypeAll;
+    else
+        selectType = SelectTypePart;
+    [cell setSelectType:selectType];
     return cell;
 }
 
@@ -76,10 +123,17 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ClassInfo *classInfo = [UserCenter sharedInstance].curSchool.classes[indexPath.row];
-    if(self.completion)
-        self.completion(classInfo);
-    [self.navigationController popViewControllerAnimated:YES];
+    GrowthTimelineStudentsSelectVC *studentVC = [[GrowthTimelineStudentsSelectVC alloc] init];
+    [studentVC setClassInfo:classInfo];
+    [studentVC setOriginalStudentArray:_paramsDic[classInfo.classID]];
+    [studentVC setTitle:classInfo.className];
+    [studentVC setCompletion:^(NSArray *studentArray) {
+        [_paramsDic setValue:studentArray forKey:classInfo.classID];
+        [_tableView reloadData];
+    }];
+    [self.navigationController pushViewController:studentVC animated:YES];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

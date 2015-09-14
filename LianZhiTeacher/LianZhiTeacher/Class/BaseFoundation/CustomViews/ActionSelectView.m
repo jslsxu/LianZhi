@@ -37,31 +37,32 @@
         [sepLine setBackgroundColor:[UIColor colorWithHexString:@"666666"]];
         [_contentView addSubview:sepLine];
         
-        
         _cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_cancelButton addTarget:self action:@selector(onCancel) forControlEvents:UIControlEventTouchUpInside];
         [_cancelButton setTitle:@"取消" forState:UIControlStateNormal];
-        [_cancelButton setTitleColor:[UIColor colorWithHexString:@"666666"] forState:UIControlStateNormal];
+        [_cancelButton setTitleColor:[UIColor colorWithHexString:@"fc6e82"] forState:UIControlStateNormal];
         [_cancelButton setTitleColor:kCommonTeacherTintColor forState:UIControlStateHighlighted];
-        [_cancelButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
+        [_cancelButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
         [_cancelButton setFrame:CGRectMake(0, 0, 60, 36)];
         [_contentView addSubview:_cancelButton];
         
         _confirmButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_confirmButton setFrame:CGRectMake(self.width - 60, (36 - 20) / 2, 50, 20)];
         [_confirmButton addTarget:self action:@selector(onConfirm) forControlEvents:UIControlEventTouchUpInside];
+        [_confirmButton setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:_confirmButton.size cornerRadius:10] forState:UIControlStateNormal];
         [_confirmButton setTitle:@"确定" forState:UIControlStateNormal];
-        [_confirmButton setTitleColor:[UIColor colorWithHexString:@"666666"] forState:UIControlStateNormal];
+        [_confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_confirmButton setTitleColor:kCommonTeacherTintColor forState:UIControlStateHighlighted];
-        [_confirmButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
-        [_confirmButton setFrame:CGRectMake(self.width - 60, 0, 60, 36)];
+        [_confirmButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
         [_contentView addSubview:_confirmButton];
         
-        _pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 40, self.width, 0)];
-        [_pickerView setShowsSelectionIndicator:YES];
+        _pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 36, self.width, 0)];
+        [_pickerView setShowsSelectionIndicator:NO];
+        [_pickerView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
         [_pickerView setDelegate:self];
         [_pickerView setDataSource:self];
         [_contentView addSubview:_pickerView];
-        [_contentView setHeight:40 + _pickerView.height];
+        [_contentView setHeight:36 + _pickerView.height];
     }
     return self;
 }

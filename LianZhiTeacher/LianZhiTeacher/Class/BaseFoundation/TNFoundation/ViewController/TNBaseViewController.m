@@ -117,6 +117,23 @@
     [_emptyLabel setCenter:CGPointMake(self.view.width / 2, self.view.height / 2)];
 }
 
+- (void)addKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)onKeyboardWillShow:(NSNotification *)note
+{
+    
+}
+
+- (void)onKeyboardWillHide:(NSNotification *)note
+{
+    
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

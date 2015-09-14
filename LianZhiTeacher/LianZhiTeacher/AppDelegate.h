@@ -17,5 +17,6 @@
 @property (nonatomic, weak)HomeViewController *homeVC;
 - (void)playSound;
 - (void)logout;
+- (void)popAndPush:(UIViewController *)viewController;
 @end
 

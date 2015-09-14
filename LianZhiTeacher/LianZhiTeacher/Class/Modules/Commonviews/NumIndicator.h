@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface NumIndicator : UILabel
-@property (nonatomic, assign)NSInteger num;
+@property (nonatomic, copy)NSString* indicator;
 @end

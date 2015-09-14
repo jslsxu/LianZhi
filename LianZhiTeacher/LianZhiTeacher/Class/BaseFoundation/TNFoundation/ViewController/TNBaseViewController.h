@@ -31,4 +31,7 @@
 - (void)endLoading;
 - (void)showEmptyLabel:(BOOL)show;
 - (void)showError;
+- (void)addKeyboardNotifications;
+- (void)onKeyboardWillShow:(NSNotification *)note;
+- (void)onKeyboardWillHide:(NSNotification *)note;
 @end

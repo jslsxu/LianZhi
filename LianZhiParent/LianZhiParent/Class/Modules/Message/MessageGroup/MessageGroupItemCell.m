@@ -91,11 +91,10 @@
         name = [NSString stringWithFormat:@"%@(%@)",name,_messageItem.fromInfo.label];
     _nameLabel.text = name;
     [_nameLabel setWidth:_timeLabel.left - 10 - _nameLabel.left];
-    [_messageItem setMsgNum:12];
     if(_messageItem.msgNum > 0)
     {
         [_numIndicator setHidden:NO];
-        [_numIndicator setNum:_messageItem.msgNum];
+        [_numIndicator setIndicator:kStringFromValue(_messageItem.msgNum)];
         [_numIndicator setCenter:CGPointMake(_logoView.right - _numIndicator.width / 2, _logoView.y + _numIndicator.height / 2)];
     }
     else

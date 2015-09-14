@@ -10,7 +10,8 @@
 
 @interface PublishGrowthTimelineVC : TNBaseViewController
 {
-    NSMutableArray* _healthArray;
-    UTPlaceholderTextView*  _textView;
+    NSMutableArray*             _healthArray;
+    UIScrollView*               _scrollView;
+    UTPlaceholderTextView*      _textView;
 }
 @end

@@ -71,7 +71,7 @@
 - (void)onChatClicked
 {
     JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-    [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
+    [ApplicationDelegate popAndPush:chatVC];
 }
 
 @end
@@ -172,7 +172,7 @@
 //            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",teacherInfo.mobile];
 //            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
             JSMessagesViewController *messageVC = [[JSMessagesViewController alloc] init];
-            [CurrentROOTNavigationVC pushViewController:messageVC animated:YES];
+            [ApplicationDelegate popAndPush:messageVC];
         }];
         TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",teacherInfo.mobile] buttonItems:@[cancelItem,item]];
         [alertView show];
