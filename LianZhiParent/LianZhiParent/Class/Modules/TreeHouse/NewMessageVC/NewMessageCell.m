@@ -40,4 +40,12 @@
     return @(kNewMessageCellHeight);
 }
 
+- (void)onReloadData:(TNModelItem *)modelItem
+{
+    NewMessageItem *messageItem = (NewMessageItem *)modelItem;
+    UserInfo *userInfo = messageItem.userInfo;
+    [_avatarView setImageWithUrl:[NSURL URLWithString:userInfo.avatar]];
+    [_authorLabel setText:userInfo.nickName];
+}
+
 @end

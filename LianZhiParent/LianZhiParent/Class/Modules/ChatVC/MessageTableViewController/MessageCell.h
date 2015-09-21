@@ -1,0 +1,24 @@
+//
+//  MessageCell.h
+//  LianZhiParent
+//
+//  Created by jslsxu on 15/9/20.
+//  Copyright (c) 2015年 jslsxu. All rights reserved.
+//
+
+#import "TNTableViewCell.h"
+#import "UUMessageContentButton.h"
+#import "MessageItem.h"
+
+#define kAvatarHMargin              8
+#define kMessageCellVMargin         10
+#define kFaceWith                   80
+@interface MessageCell : TNTableViewCell
+{
+    UILabel*                    _nameLabel;
+    AvatarView*                 _avatarView;
+    UUMessageContentButton*     _contentButton;
+    UILabel*                    _audioTimeLabel;
+    MLPlayVoiceButton*          _playButton;
+}
+@end

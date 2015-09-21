@@ -8,6 +8,7 @@
 
 #import "ChildrenInfoVC.h"
 #import "AddRelationVC.h"
+#import "ReportProblemVC.h"
 #define kChildInfoCellAvatarNotificaton         @"kChildInfoCellAvatarNotificaton"
 #define kChildInfoCellKey                       @"ChildInfoCellKey"
 
@@ -31,6 +32,10 @@
         [_modifyLabel sizeToFit];
         [_modifyLabel setOrigin:CGPointMake(self.width - 12 - _modifyLabel.width, (kAvatarCellHeight - _modifyLabel.height) / 2)];
         [self addSubview:_modifyLabel];
+        
+        _sepLien = [[UIView alloc] initWithFrame:CGRectMake(0, kAvatarCellHeight - kLineHeight, self.width, kLineHeight)];
+        [_sepLien setBackgroundColor:kSepLineColor];
+        [self addSubview:_sepLien];
     }
     return self;
 }
@@ -65,6 +70,7 @@
         [self addSubview:_extraLabel];
         
         _reportButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_reportButton addTarget:self action:@selector(onReportError) forControlEvents:UIControlEventTouchUpInside];
         [_reportButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"949494"] size:CGSizeMake(18, 18) cornerRadius:9] resizableImageWithCapInsets:UIEdgeInsetsMake(9, 9, 9, 9)] forState:UIControlStateNormal];
         [_reportButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_reportButton.titleLabel setFont:[UIFont systemFontOfSize:11]];
@@ -86,6 +92,13 @@
     [_extraLabel setText:extra];
     [_extraLabel sizeToFit];
     [_extraLabel setOrigin:CGPointMake(_titleLabel.right + 10, (55 - _extraLabel.height) / 2)];
+}
+
+- (void)onReportError
+{
+    ReportProblemVC *reportProblemVC = [[ReportProblemVC alloc] init];
+    [reportProblemVC setType:3];
+    [CurrentROOTNavigationVC pushViewController:reportProblemVC animated:YES];
 }
 
 @end
@@ -133,7 +146,7 @@
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStylePlain];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
-    [_tableView setSeparatorColor:kSepLineColor];
+    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:_tableView];
     
     UIImageView *headerView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, _tableView.width, 100)];

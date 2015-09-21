@@ -52,6 +52,7 @@
         
         _notificationIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NotificationIndicator"]];
         [_notificationIndicator setHidden:YES];
+        [_notificationIndicator setOrigin:CGPointMake(60, 32 + (20 - _notificationIndicator.height) / 2)];
         [self.actualContentView addSubview:_notificationIndicator];
         
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 32, _soundOff.left - 5 - 60, 20)];
@@ -76,9 +77,9 @@
     {
         NSString *imageStr = nil;
         if(_messageItem.fromInfo.type == 13)
-            imageStr = (@"NoAvatarDefault.png");
+            imageStr = (@"NoAvatarDefault");
         else
-            imageStr = (@"NoLogoDefault.png");
+            imageStr = (@"NoLogoDefault");
         [_logoView setImageWithUrl:[NSURL URLWithString:_messageItem.fromInfo.logoUrl] placeHolder:[UIImage imageNamed:imageStr]];
     }
     
@@ -90,7 +91,31 @@
     if([_messageItem.fromInfo.label length] > 0)
         name = [NSString stringWithFormat:@"%@(%@)",name,_messageItem.fromInfo.label];
     _nameLabel.text = name;
-    [_nameLabel setWidth:_timeLabel.left - 10 - _nameLabel.left];
+    CGSize nameSize = [name boundingRectWithSize:CGSizeMake(_timeLabel.left - _nameLabel.left - 40, CGFLOAT_MAX) andFont:_nameLabel.font];
+    [_nameLabel setWidth:MIN(_timeLabel.left - _nameLabel.left - 40, nameSize.width)];
+    
+    MessageFromType fromType = _messageItem.fromInfo.type;
+    //群聊图标
+    if(fromType == MessageFromTypeFromClass)
+    {
+        [_massChatIndicator setHidden:NO];
+        [_massChatIndicator setOrigin:CGPointMake(_nameLabel.right + 10, _nameLabel.y + (_nameLabel.height - _massChatIndicator.height) / 2)];
+    }
+    else
+        [_massChatIndicator setHidden:YES];
+    
+    //通知图标
+    if([_messageItem.fromInfo isNotification])
+    {
+        [_notificationIndicator setHidden:NO];
+        [_contentLabel setFrame:CGRectMake(_notificationIndicator.right + 5, 32, _soundOff.left - 5 - (_notificationIndicator.right + 5), 20)];
+    }
+    else
+    {
+        [_notificationIndicator setHidden:YES];
+        [_contentLabel setFrame:CGRectMake(60, 32, _soundOff.left - 5 - 60, 20)];
+    }
+    
     if(_messageItem.msgNum > 0)
     {
         [_numIndicator setHidden:NO];
@@ -100,8 +125,6 @@
     else
         _numIndicator.hidden = YES;
     NSString *content = _messageItem.content;
-    if(content.length == 0 && _messageItem.audioItem)
-        content = @"这是一条语音消息，点击播放收听";
     _contentLabel.text = content;
     [_sepLine setY:_contentLabel.bottom + 10 - 0.5];
     

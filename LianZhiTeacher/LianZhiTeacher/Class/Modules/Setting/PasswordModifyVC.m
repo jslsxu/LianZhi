@@ -53,7 +53,7 @@
     UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveButton setFrame:CGRectMake(15, _confirmPasswordField.bottom + 15, self.view.width - 15 * 2, 45)];
     [saveButton addTarget:self action:@selector(onSaveClicked) forControlEvents:UIControlEventTouchUpInside];
-    [saveButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [saveButton setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:saveButton.size cornerRadius:3] forState:UIControlStateNormal];
     [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [saveButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [saveButton setTitle:@"确定保存新密码" forState:UIControlStateNormal];

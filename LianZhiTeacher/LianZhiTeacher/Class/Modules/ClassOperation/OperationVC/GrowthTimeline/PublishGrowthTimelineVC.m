@@ -11,6 +11,8 @@
 #import "GrowthTimelineClassChangeVC.h"
 @interface PublishGrowthTimelineVC ()<UITextViewDelegate>
 @property (nonatomic, strong)ClassInfo *classInfo;
+@property (nonatomic, strong)NSArray *imageArray;
+@property (nonatomic, strong)NSArray *keyArray;
 @end
 
 @implementation PublishGrowthTimelineVC
@@ -22,6 +24,8 @@
     {
         _healthArray = [NSMutableArray array];
         self.classInfo = [UserCenter sharedInstance].curSchool.classes[0];
+        self.imageArray = @[@"Mood",@"Toilet",@"Temperature",@"Drink",@"Sleep"];
+        self.keyArray = @[@"mood",@"stool_num",@"temperature",@"water",@"sleep"];
     }
     return self;
 }
@@ -47,7 +51,7 @@
     
     NSDate *date = [NSDate date];
     NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
-    [formmater setDateFormat:@"yyyy年MM月DD日"];
+    [formmater setDateFormat:@"yyyy年MM月dd日"];
     
     [hintLabel setText:[NSString stringWithFormat:@"今天是%@ %@",[formmater stringFromDate:date],[[NSDate date] weekday]]];
     [hintLabel setTextAlignment:NSTextAlignmentCenter];
@@ -82,7 +86,6 @@
 
 - (void)setupBGView:(UIView *)viewParent
 {
-    NSArray *imageArray = @[@"Mood",@"Toilet",@"Temperature",@"Drink",@"Sleep"];
     NSInteger hMargin = 10;
     NSInteger vMargin = 20;
     NSInteger itemWIdth = 50;
@@ -91,8 +94,8 @@
     {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setFrame:CGRectMake(hMargin + (innerMargin + itemWIdth) * i, vMargin, itemWIdth, itemWIdth)];
-        [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Normal",imageArray[i]]] forState:UIControlStateNormal];
-        [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Abnormal",imageArray[i]]] forState:UIControlStateSelected];
+        [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Normal",self.imageArray[i]]] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Abnormal",self.imageArray[i]]] forState:UIControlStateSelected];
         [button addTarget:self action:@selector(onHealthButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [viewParent addSubview:button];
         [_healthArray addObject:button];
@@ -120,7 +123,16 @@
 
 - (void)onSendButtonClicked
 {
+    NSMutableDictionary *record = [NSMutableDictionary dictionary];
+    for (NSInteger i = 0; i < self.keyArray.count; i++)
+    {
+        NSString *key = self.keyArray[i];
+        UIButton *healthButton = _healthArray[i];
+        [record setValue:kStringFromValue(!healthButton.selected) forKey:key];
+    }
+    [record setValue:_textView.text forKey:@"words"];
     GrowthTimelineClassChangeVC *classSelectVC = [[GrowthTimelineClassChangeVC alloc] init];
+    [classSelectVC setRecord:record];
     [CurrentROOTNavigationVC pushViewController:classSelectVC animated:YES];
 }
 
@@ -166,15 +178,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

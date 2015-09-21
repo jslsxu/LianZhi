@@ -1,38 +1,116 @@
 
 
 #import "JSMessagesViewController.h"
-#import "UUMessageCell.h"
-
 @implementation JSMessagesViewController
 
 
 #pragma mark - View lifecycle
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (void)viewDidDisappear:(BOOL)animated
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if(self)
-    {
-        _chatModel = [[ChatModel alloc] init];
-    }
-    return self;
+    [super viewDidDisappear:animated];
+    [_timer invalidate];
+    _timer = nil;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(getMessage) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     self.title = self.name;
     _inputView = [[InputBarView alloc] init];
     [_inputView setInputDelegate:self];
     [_inputView setY:self.view.height - _inputView.height - 64];
     [self.view addSubview:_inputView];
+    [self setSupportPullDown:YES];
+    [self.tableView setHeight:self.view.height - _inputView.height];
+    [self bindTableCell:@"MessageCell" tableModel:@"ChatMessageModel"];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, _inputView.y) style:UITableViewStylePlain];
-    [_tableView setDelegate:self];
-    [_tableView setDataSource:self];
-    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    [self.view addSubview:_tableView];
+    [self requestData:REQUEST_GETMORE];
+}
+
+- (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
+{
+    HttpRequestTask *task = [[HttpRequestTask alloc] init];
+    [task setRequestUrl:@"sms/get"];
+    [task setRequestMethod:REQUEST_GET];
+    [task setRequestType:requestType];
+    [task setObserver:self];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.targetID forKey:@"to_id"];
+    [params setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
+    
+    ChatMessageModel *messageModel = (ChatMessageModel *)[self tableViewModel];
+    if(REQUEST_GETMORE == requestType)
+    {
+        [params setValue:messageModel.latestId forKey:@"more_id"];
+        [params setValue:kStringFromValue(1) forKey:@"more_new"];
+    }
+    else
+    {
+        [params setValue:messageModel.oldId forKey:@"more_id"];
+        [params setValue:kStringFromValue(0) forKey:@"more_new"];
+    }
+    [task setParams:params];
+    return task;
+}
+
+- (void)getMessage
+{
+    [self requestData:REQUEST_GETMORE];
+}
+
+
+- (void)appendNewMessage:(TNDataWrapper *)response
+{
+    if(response.count > 0)
+    {
+        ChatMessageModel *model = (ChatMessageModel *)self.tableViewModel;
+        for (NSInteger i = 0; i < response.count; i++)
+        {
+            TNDataWrapper *messageItemWrapper = [response getDataWrapperForIndex:i];
+            MessageItem *mesageItem = [[MessageItem alloc] init];
+            [mesageItem parseData:messageItemWrapper];
+            if([model canInsert:mesageItem])
+                [model.modelItemArray addObject:mesageItem];
+        }
+        [self.tableView reloadData];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.tableViewModel.modelItemArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+}
+
+- (void)sendMessage:(NSDictionary *)dic
+{
+    NSMutableDictionary *messageParam = [NSMutableDictionary dictionary];
+    [messageParam setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"objid"];
+    [messageParam setValue:self.to_objid forKey:@"to_objid"];
+    [messageParam setValue:self.targetID forKey:@"to_id"];
+    [messageParam setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
+    [messageParam setValue:dic[@"type"] forKey:@"content_type"];
+    [messageParam setValue:dic[@"strContent"] forKey:@"content"];
+    [messageParam setValue:dic[@"strVoiceTime"] forKey:@"voice_time"];
+    
+    MessageType messageType = [dic[@"type"] integerValue];
+    UIImage *image = dic[@"picture"];
+    NSData *voiceData = dic[@"voice"];
+    __weak typeof(self) wself = self;
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/send" withParams:messageParam constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        if(messageType == UUMessageTypeVoice)
+            [formData appendPartWithFileData:voiceData name:@"file" fileName:@"file" mimeType:@"audio/AMR"];
+        else if(messageType == UUMessageTypePicture)
+            [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.8) name:@"file" fileName:@"file" mimeType:@"image/jpeg"];
+    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [wself appendNewMessage:responseObject];
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -43,33 +121,9 @@
 
 - (void)scrollToBottom
 {
-    if(_chatModel.dataSource.count == 0)
-        return;
-    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_chatModel.dataSource.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-}
-
-#pragma mark - UITableViewDelegate
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return _chatModel.dataSource.count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [_chatModel.dataSource[indexPath.row] cellHeight];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *reuseID = @"UUMessageCell";
-    UUMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
-    if(cell == nil)
-    {
-        cell = [[UUMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
-    }
-    UUMessageFrame *messageInfo = _chatModel.dataSource[indexPath.row];
-    [cell setMessageFrame:messageInfo];
-    return cell;
+    NSArray *modelArray = self.tableViewModel.modelItemArray;
+    if(modelArray.count > 0)
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:modelArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 #pragma mark - InputDelegate
@@ -92,7 +146,9 @@
 
 - (void)inputBarViewDidFaceSelect:(NSString *)face
 {
-    
+    NSDictionary *dic = @{@"strContent": face,
+                          @"type": @(UUMessageTypeFace)};
+    [self dealTheFunctionData:dic];
 }
 
 - (void)inputBarViewDidSendPhoto:(UIImage *)image
@@ -102,17 +158,17 @@
     [self dealTheFunctionData:dic];
 }
 
-- (void)inputBarViewDidSendVoice:(NSData *)amrData
+- (void)inputBarViewDidSendVoice:(NSData *)amrData time:(NSInteger)time
 {
     NSDictionary *dic = @{@"voice": amrData,
-                          @"strVoiceTime": [NSString stringWithFormat:@"%d",(int)2],
+                          @"strVoiceTime": kStringFromValue(time),
                           @"type": @(UUMessageTypeVoice)};
     [self dealTheFunctionData:dic];
 }
 
 - (void)dealTheFunctionData:(NSDictionary *)dic
 {
-    [_chatModel addSpecifiedItem:dic];
+    [self sendMessage:dic];
     [_tableView reloadData];
     [self scrollToBottom];
 }

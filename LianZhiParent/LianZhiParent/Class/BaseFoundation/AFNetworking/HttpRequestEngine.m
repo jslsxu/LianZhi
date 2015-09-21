@@ -47,6 +47,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
     AFHTTPRequestOperation *operation = nil;
     NSDictionary *valueParams = [self addPublicParams:params];
     if(method == REQUEST_GET)
+    {
         operation = [_manager GET:urlStr parameters:valueParams success:^(AFHTTPRequestOperation *operation, id responseObject) {
             TNDataWrapper *responseWrapper = [TNDataWrapper dataWrapperWithObject:responseObject];
             BOOL handleNormal = YES;
@@ -82,6 +83,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
             if(fail)
                 fail(@"网络请求错误");
         }];
+    }
     else
     {
         operation = [_manager POST:urlStr parameters:valueParams success:^(AFHTTPRequestOperation *operation, id responseObject) {

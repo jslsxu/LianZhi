@@ -86,9 +86,40 @@
 
 - (void)onConfirm
 {
-    if(self.completion)
-        self.completion(_paramsDic);
-    [self.navigationController popViewControllerAnimated:YES];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:[NSString stringWithJSONObject:self.record] forKey:@"records"];
+    
+    NSMutableArray *classArray = [NSMutableArray array];
+    NSArray *keys = _paramsDic.allKeys;
+    for (NSString *key in keys)
+    {
+        NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
+        [classDic setValue:key forKey:@"classid"];
+        NSMutableArray *studentArray = [NSMutableArray array];
+        for (StudentInfo *student in _paramsDic[key])
+        {
+            [studentArray addObject:student.uid];
+        }
+        [classDic setValue:studentArray forKey:@"students"];
+        if(studentArray.count > 0)
+            [classArray addObject:classDic];
+    }
+    if(classArray.count > 0)
+        [params setValue:[NSString stringWithJSONObject:classArray] forKey:@"classes"];
+    else
+        [ProgressHUD showHintText:@"没有选择班级"];
+    //转换
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在提交" toView:self.view];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/record" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [hud hide:NO];
+        [ProgressHUD showHintText:@"发送成功"];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.navigationController popViewControllerAnimated:YES];
+        });
+    } fail:^(NSString *errMsg) {
+        [hud hide:NO];
+        [ProgressHUD showHintText:errMsg];
+    }];
 }
 
 #pragma mark - UITableViewDelegate

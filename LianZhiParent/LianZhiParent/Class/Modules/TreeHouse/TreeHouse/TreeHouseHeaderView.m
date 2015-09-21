@@ -42,8 +42,8 @@
 
 - (void)onNewMessageClicked
 {
-    NewMessageVC *newMessageVC = [[NewMessageVC alloc] init];
-    [CurrentROOTNavigationVC pushViewController:newMessageVC animated:YES];
+    if(self.clickAction)
+        self.clickAction();
 }
 
 @end
@@ -93,7 +93,11 @@
     
         [self setupHeaderView];
         
+        __weak typeof(self) wself = self;
         _msgIndicator = [[NewMessageIndicator alloc] initWithFrame:CGRectMake((self.width - 140) / 2, nameView.bottom + 12, 140, 30)];
+        [_msgIndicator setClickAction:^{
+            [wself onNewMessageClicked];
+        }];
         [self addSubview:_msgIndicator];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onChildInfoChanged) name:kChildInfoChangedNotification object:nil];
@@ -108,6 +112,15 @@
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:nickName attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:18]}];
     [title appendAttributedString:[[NSAttributedString alloc] initWithString:@"的成长秀" attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14]}]];
     [_titleLabel setAttributedText:title];
+}
+
+- (void)onNewMessageClicked
+{
+
+    NewMessageVC *newMessageVC = [[NewMessageVC alloc] init];
+    [newMessageVC setTypes:NewMessageTypeTreeHouse];
+    [newMessageVC setPkID:[UserCenter sharedInstance].curChild.uid];
+    [CurrentROOTNavigationVC pushViewController:newMessageVC animated:YES];
 }
 
 - (void)onAlbumClicked

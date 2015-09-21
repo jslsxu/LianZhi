@@ -14,12 +14,12 @@
     self = [super initWithFrame:frame];
     if (self) {
         //图片
-        self.backImageView = [[UIImageView alloc]init];
+        self.backImageView = [[UIImageView alloc]initWithFrame:self.bounds];
         self.backImageView.userInteractionEnabled = YES;
         self.backImageView.layer.cornerRadius = 5;
         self.backImageView.layer.masksToBounds  = YES;
         self.backImageView.contentMode = UIViewContentModeScaleAspectFill;
-        self.backImageView.backgroundColor = [UIColor yellowColor];
+        [self.backImageView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
         [self addSubview:self.backImageView];
         
         //语音

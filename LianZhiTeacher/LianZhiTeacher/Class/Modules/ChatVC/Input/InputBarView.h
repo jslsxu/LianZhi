@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, InputType)
 - (void)inputBarViewDidCommit:(NSString *)text;
 - (void)inputBarViewDidFaceSelect:(NSString *)face;
 - (void)inputBarViewDidSendPhoto:(UIImage *)image;
-- (void)inputBarViewDidSendVoice:(NSData *)amrData;
+- (void)inputBarViewDidSendVoice:(NSData *)amrData time:(NSInteger)time;
 @end
 
 @interface InputBarView : UIView<HPGrowingTextViewDelegate, FaceSelectViewDelegate, FunctionViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>

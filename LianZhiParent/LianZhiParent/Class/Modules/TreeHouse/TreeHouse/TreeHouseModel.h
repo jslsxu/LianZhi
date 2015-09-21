@@ -28,6 +28,7 @@
 @property (nonatomic, copy)NSString *savedPath;
 @property (nonatomic, weak)AFHTTPRequestOperation *uploadOperation;
 @property (nonatomic, strong)ResponseModel *responseModel;
+@property (nonatomic, assign)BOOL hasMore;
 - (TagPrivilege)tagPrivilege;
 - (BOOL)canSendDirectly;    //如果全是photoID，则不管网络状态
 @end

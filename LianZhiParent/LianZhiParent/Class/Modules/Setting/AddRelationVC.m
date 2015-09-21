@@ -7,6 +7,8 @@
 //
 
 #import "AddRelationVC.h"
+#import "ChildrenInfoVC.h"
+#import "CommonInputVC.h"
 @interface AddRelationVC()
 @property (nonatomic, strong)UIImage *avatarImage;
 @property (nonatomic, strong)PersonalInfoItem *targetItem;
@@ -58,73 +60,15 @@
 - (void)setupFooterView:(UIView *)viewParent
 {
     UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [saveButton setFrame:CGRectMake(12, (viewParent.height - 45) / 2, viewParent.width - 12 * 2, 45)];
+    [saveButton setFrame:CGRectMake(12, (viewParent.height - 36) / 2, viewParent.width - 12 * 2, 36)];
     [saveButton addTarget:self action:@selector(onSaveButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [saveButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [saveButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"E82551"] size:saveButton.size cornerRadius:18] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 18, 0, 18)] forState:UIControlStateNormal];
     [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [saveButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [saveButton setTitle:@"申请添加家庭成员" forState:UIControlStateNormal];
     [viewParent addSubview:saveButton];
 }
 
-//- (void)setupHeaderView:(UIView *)viewParent
-//{
-//    CGFloat spaceYStart = 20;
-//    _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(24, 15 + spaceYStart, 60, 60)];
-//    [_avatar setBorderWidth:2];
-//    [_avatar setBorderColor:[UIColor colorWithWhite:0 alpha:0.2]];
-//    [viewParent addSubview:_avatar];
-//    
-//    _modifyButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [_modifyButton setFrame:CGRectMake(24, _avatar.bottom + 2, _avatar.width, 30)];
-//    [_modifyButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
-//    [_modifyButton setTitleColor:kCommonParentTintColor forState:UIControlStateNormal];
-//    [_modifyButton setTitle:@"编辑" forState:UIControlStateNormal];
-//    [_modifyButton addTarget:self action:@selector(onAvatarModification) forControlEvents:UIControlEventTouchUpInside];
-//    [viewParent addSubview:_modifyButton];
-//    
-//    for (NSInteger i = 0; i < 2; i++)
-//    {
-//        UILabel*    hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(118, 20 + spaceYStart, 65, 16)];
-//        [hintLabel setBackgroundColor:[UIColor clearColor]];
-//        [hintLabel setFont:[UIFont systemFontOfSize:15]];
-//        [hintLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-//        if(i == 0)
-//            [hintLabel setText:@"姓名:"];
-//        else
-//            [hintLabel setText:@"性别:"];
-//        [viewParent addSubview:hintLabel];
-//        
-//        if(i == 0)
-//        {
-//            UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(160, 20 + spaceYStart - (24 - 16) / 2, 140, 24)];
-//            [textField setDelegate:self];
-//            [textField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
-//            [textField setFont:[UIFont systemFontOfSize:14]];
-//            [textField setTextColor:[UIColor colorWithHexString:@"666666"]];
-//            [textField setBackgroundColor:[UIColor clearColor]];
-//            _nameField = textField;
-//            [viewParent addSubview:textField];
-//        }
-//        else
-//        {
-//            _genderLabel = [[UILabel alloc] initWithFrame:CGRectMake(160, 20 + spaceYStart - (24 - 16) / 2, 140, 24)];
-//            [_genderLabel setUserInteractionEnabled:YES];
-//            [_genderLabel setFont:[UIFont systemFontOfSize:14]];
-//            [_genderLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
-//            [viewParent addSubview:_genderLabel];
-//            
-//            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
-//            [_genderLabel addGestureRecognizer:tap];
-//        }
-//        
-//        UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(108, 44 + spaceYStart, viewParent.width - 12 - 108, 1)];
-//        [sepLine setBackgroundColor:[UIColor colorWithHexString:@"d8d8d8"]];
-//        [viewParent addSubview:sepLine];
-//        
-//        spaceYStart += 45;
-//    }
-//}
 
 - (void)setupInfoArray
 {
@@ -132,14 +76,23 @@
         [_infoArray removeAllObjects];
     else
         _infoArray = [[NSMutableArray alloc] init];
-    PersonalInfoItem *nameItem = [[PersonalInfoItem alloc] initWithKey:@"姓名:" value:nil canEdit:YES];
+    PersonalInfoItem *nameItem = [[PersonalInfoItem alloc] initWithKey:@"姓名" value:nil canEdit:YES];
     [nameItem setRequestKey:@"name"];
-    PersonalInfoItem *phoneItem = [[PersonalInfoItem alloc] initWithKey:@"登陆手机:" value:nil canEdit:YES];
-    [phoneItem setRequestKey:@"mobile"];
+    PersonalInfoItem *nickItem = [[PersonalInfoItem alloc] initWithKey:@"昵称" value:nil canEdit:YES];
+    [nickItem setRequestKey:@"nick"];
+    PersonalInfoItem *birthdayItem = [[PersonalInfoItem alloc] initWithKey:@"出生日期" value:nil canEdit:YES];
+    [birthdayItem setRequestKey:@"birthday"];
+    PersonalInfoItem *mailItem = [[PersonalInfoItem alloc] initWithKey:@"联系邮箱" value:nil canEdit:YES];
+    [mailItem setRequestKey:@"mail"];
+    PersonalInfoItem *phoneItem = [[PersonalInfoItem alloc] initWithKey:@"登录手机" value:nil canEdit:YES];
     [phoneItem setKeyboardType:UIKeyboardTypePhonePad];
-    PersonalInfoItem *relationShipItem = [[PersonalInfoItem alloc] initWithKey:@"家长身份:" value:nil canEdit:NO];
+    [phoneItem setRequestKey:@"phone"];
+    PersonalInfoItem *accountItem = [[PersonalInfoItem alloc] initWithKey:@"连枝账号" value:nil canEdit:YES];
+    [accountItem setKeyboardType:UIKeyboardTypeNumberPad];
+    [accountItem setRequestKey:@"account"];
+    PersonalInfoItem *relationShipItem = [[PersonalInfoItem alloc] initWithKey:@"家长身份" value:nil canEdit:NO];
     [relationShipItem setRequestKey:@"relations"];
-    [_infoArray addObjectsFromArray:@[nameItem,phoneItem,relationShipItem]];
+    [_infoArray addObjectsFromArray:@[nameItem,nickItem,birthdayItem,mailItem,phoneItem,accountItem,relationShipItem]];
 }
 
 //- (void)onAvatarModification
@@ -228,54 +181,119 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)modifyAvatar
+{
+    TNButtonItem *destructiveItem = [TNButtonItem itemWithTitle:@"取消本次操作" action:^{
+        
+    }];
+    TNButtonItem *takePhotoItem = [TNButtonItem itemWithTitle:@"拍摄一张清晰头像" action:^{
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+        [imagePicker setAllowsEditing:YES];
+        [imagePicker setDelegate:self];
+        [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
+    }];
+    TNButtonItem *albumItem = [TNButtonItem itemWithTitle:@"从手机相册选择" action:^{
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [imagePicker setAllowsEditing:YES];
+        [imagePicker setDelegate:self];
+        [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
+    }];
+    TNActionSheet *actionSheet = [[TNActionSheet alloc] initWithTitle:@"头像是快捷身份识别标志\n请您务必上传真实照片" descriptionView:nil destructiveButton:destructiveItem cancelItem:nil otherItems:@[takePhotoItem,albumItem]];
+    [actionSheet show];
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    self.avatarImage = [info objectForKey:UIImagePickerControllerEditedImage];
+    [picker dismissViewControllerAnimated:YES completion:^{
+        [self.tableView reloadData];
+    }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+#pragma mark - UITableViewDelegate
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return  _infoArray.count;
+    return  _infoArray.count + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *reuseID = [NSString stringWithFormat:@"PersonalInfoCell%ld",(long)indexPath.row];
-    PersonalInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
-    if(nil == cell)
+    NSInteger row = indexPath.row;
+    if(row == 0)
     {
-        cell = [[PersonalInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+        NSString *reuseID = @"AvatarCell";
+        AvatarCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+        if(cell == nil)
+        {
+            cell = [[AvatarCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+        }
+        return cell;
     }
-//    if(indexPath.row == _infoArray.count - 1)
-//        [cell setShowAdd:YES];
-//    else
-//        [cell setShowAdd:NO];
-    [cell setInfoItem:[_infoArray objectAtIndex:indexPath.row]];
-    return cell;
+    else
+    {
+        NSString *reuseID = @"InfoCell";
+        PersonalInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+        if(nil == cell)
+        {
+            cell = [[PersonalInfoCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseID];
+        }
+        [cell setInfoItem:_infoArray[row - 1]];
+        return cell;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 45;
+    if(indexPath.row == 0)
+        return 64;
+    return 50;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if(indexPath.row >= 2 && _infoArray.count > 3)
-        return YES;
-    return NO;
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [_infoArray removeObjectAtIndex:indexPath.row];
-    [self.tableView reloadData];
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.view endEditing:YES];
-    if(indexPath.row >= 2)
+    NSInteger row = indexPath.row;
+    PersonalInfoItem *item = nil;
+    if(row > 0)
+        item = _infoArray[row - 1];
+    if(row == 0)
+    {
+        [self modifyAvatar];
+    }
+    else if(row == 1 || row == 2 || row == 4 || row == 5 || row == 6)
+    {
+        CommonInputVC *inputVC = [[CommonInputVC alloc] initWithOriginal:item.value forKey:item.key completion:^(NSString *value) {
+            item.value = value;
+            [self.tableView reloadData];
+        }];
+        [self.navigationController pushViewController:inputVC animated:YES];
+    }
+    else if(row == 3)
+    {
+        [self.view endEditing:YES];
+        SettingDatePickerView*  datePicker = [[SettingDatePickerView alloc] initWithType:SettingDatePickerTypeDate];
+        [datePicker setBlk:^(NSString *dateStr){
+            [item setValue:dateStr];
+            [self.tableView reloadData];
+        }];
+        [datePicker show];
+    }
+    else if(row == 7)
     {
         [self.view endEditing:YES];
         //家长身份
-        PersonalInfoItem *personanInfoItem = [_infoArray objectAtIndex:indexPath.row];
-        [self setTargetItem:personanInfoItem];
+        [self setTargetItem:item];
         ActionSelectView *selectView = [[ActionSelectView alloc] init];
         [selectView setDelegate:self];
         [selectView show];
@@ -324,8 +342,7 @@
     {
         [self.targetItem setRelation:@{@"name":child.name, @"child_id":child.uid,@"relationName":relation[@"name"],@"relationID":relation[@"id"]}];
         [self.targetItem setValue:[NSString stringWithFormat:@"%@的%@",child.name,relation[@"name"]]];
-        NSInteger index = [_infoArray indexOfObject:self.targetItem];
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView reloadData];
     }
 }
 

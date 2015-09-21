@@ -13,7 +13,7 @@
 @class ClassZoneItemCell;
 @protocol ClassZoneItemCellDelegate <NSObject>
 - (void)onActionClicked:(ClassZoneItemCell *)cell;
-- (void)onResponseClickedAtTarget:(UserInfo *)targetUser;
+- (void)onResponseClickedAtTarget:(ResponseItem *)responseItem cell:(ClassZoneItemCell *)cell;
 
 @end
 

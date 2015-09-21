@@ -8,16 +8,30 @@
 
 #import "ResponseItem.h"
 
+@implementation CommentItem
+
+- (void)parseData:(TNDataWrapper *)dataWrapper
+{
+    self.commentId = [dataWrapper getStringForKey:@"id"];
+    self.content = [dataWrapper getStringForKey:@"content"];
+    self.toUser = [dataWrapper getStringForKey:@"to_user"];
+    self.ctime = [dataWrapper getStringForKey:@"ctime"];
+}
+
+@end
+
 @implementation ResponseItem
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    UserInfo *sendUser = [[UserInfo alloc] init];
-    self.sendUser = sendUser;
+    TNDataWrapper *userWrapper = [dataWrapper getDataWrapperForKey:@"user"];
+    UserInfo *userInfo = [[UserInfo alloc] init];
+    [userInfo parseData:userWrapper];
+    self.sendUser = userInfo;
     
-//    UserInfo *targetUser = [[UserInfo alloc] init];
-//    self.targetUser = targetUser;
-    
-    self.content = @"照的相片不错，“简洁”并不等于一丝不挂，如果是去了红红绿绿的万千时装，则大千";
+    TNDataWrapper *commentWrapper = [dataWrapper getDataWrapperForKey:@"comment"];
+    CommentItem *commentItem = [[CommentItem alloc] init];
+    [commentItem parseData:commentWrapper];
+    self.commentItem = commentItem;
 }
 @end
 
@@ -25,27 +39,34 @@
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    //test
-    NSMutableArray *praiseArray = [NSMutableArray array];
-    for (NSInteger i = 0; i < (arc4random() % 4 + 5); i++)
+    TNDataWrapper *praiseWrapper = [dataWrapper getDataWrapperForKey:@"favor_list"];
+    if(praiseWrapper.count > 0)
     {
-        [praiseArray addObject:[UserCenter sharedInstance].userInfo.avatar];
+        NSMutableArray *praiseArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < praiseWrapper.count; i++)
+        {
+            TNDataWrapper *praiseUserWrapper = [praiseWrapper getDataWrapperForIndex:i];
+            UserInfo *userInfo = [[UserInfo alloc] init];
+            [userInfo parseData:praiseUserWrapper];
+            [praiseArray addObject:userInfo];
+        }
+        self.praiseArray = praiseArray;
     }
-    self.praiseArray = praiseArray;
     
-    NSString *sourceStr = @"照的相片不错，“简洁”并不等于一丝不挂，如果是去了红红绿绿的万千时装，则大千";
-    NSMutableArray *responseArray = [NSMutableArray array];
-    for (NSInteger i = 0; i < 4; i ++)
+    TNDataWrapper *responseWrapper = [dataWrapper getDataWrapperForKey:@"comment_list"];
+    if(responseWrapper.count > 0)
     {
-        UserInfo *sendUser = [UserCenter sharedInstance].userInfo;
-        UserInfo *targetUser = [UserCenter sharedInstance].userInfo;
-        ResponseItem *responseItem = [[ResponseItem alloc] init];
-        responseItem.sendUser = sendUser;
-        responseItem.targetUser = targetUser;
-        responseItem.content = [sourceStr substringToIndex:arc4random() % sourceStr.length];
-        [responseArray addObject:responseItem];
+        NSMutableArray *responseArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < responseWrapper.count; i++)
+        {
+            TNDataWrapper *responseItemWrapper = [responseWrapper getDataWrapperForIndex:i];
+            ResponseItem *responseItem = [[ResponseItem alloc] init];
+            [responseItem parseData:responseItemWrapper];
+            [responseArray addObject:responseItem];
+        }
+        self.responseArray = responseArray;
     }
-    self.responseArray = responseArray;
+    
 }
 
 @end

@@ -8,6 +8,12 @@
 
 #import "TNBaseTableViewController.h"
 
-@interface NewMessageVC : TNBaseTableViewController
+typedef NS_ENUM(NSInteger, NewMessageType){
+    NewMessageTypeClassZone = 0,
+    NewMessageTypeTreeHouse
+};
 
+@interface NewMessageVC : TNBaseTableViewController
+@property (nonatomic, assign)NewMessageType types;
+@property (nonatomic, copy)NSString *pkID;
 @end

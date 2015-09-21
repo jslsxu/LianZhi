@@ -8,6 +8,7 @@
 
 #import "ClassMemberVC.h"
 #import "JSMessagesViewController.h"
+#import "StudentParentsVC.h"
 @implementation MemberCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -89,7 +90,27 @@
     {
         cell = [[MemberCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
+    if(indexPath.section == 0)
+    {
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [cell.chatButton setHidden:NO];
+    }
+    else
+    {
+        [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
+        [cell.chatButton setHidden:YES];
+    }
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if(indexPath.section == 1)
+    {
+        StudentParentsVC *studentParentsVC = [[StudentParentsVC alloc] init];
+        [CurrentROOTNavigationVC pushViewController:studentParentsVC animated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

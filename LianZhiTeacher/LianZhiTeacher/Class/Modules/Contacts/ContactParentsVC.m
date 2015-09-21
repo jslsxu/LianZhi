@@ -132,8 +132,8 @@
 //        [alertView show];
 //    }
     JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-    [chatVC setName:userInfo.name];
-    [chatVC setUserID:userInfo.uid];
+    [chatVC setTargetID:userInfo.uid];
+    [chatVC setChatType:ChatTypeParents];
     [ApplicationDelegate popAndPush:chatVC];
 }
 

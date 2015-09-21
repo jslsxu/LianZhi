@@ -80,6 +80,8 @@
 
 @interface ClassZoneVC ()<ClassZoneItemCellDelegate>
 @property (nonatomic, strong)ClassInfo *classInfo;
+@property (nonatomic, strong)ClassZoneItem *targetClassZoneItem;
+@property (nonatomic, strong)ResponseItem *targetResponseItem;
 @end
 
 @implementation ClassZoneVC
@@ -195,20 +197,31 @@
 }
 
 #pragma mark - ClassZoneItemCellDelegate
-- (void)onResponseClickedAtTarget:(UserInfo *)targetUser
+- (void)onResponseClickedAtTarget:(ResponseItem *)responseItem cell:(ClassZoneItemCell *)cell
 {
     _replyBox.hidden = NO;
     [_replyBox assignFocus];
+    
+    self.targetClassZoneItem = (ClassZoneItem *)cell.modelItem;
+    self.targetResponseItem = responseItem;
 }
 
 - (void)onActionClicked:(ClassZoneItemCell *)cell
 {
+    self.targetClassZoneItem = (ClassZoneItem *)cell.modelItem;
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     CGPoint point = [cell convertPoint:cell.actionButton.center toView:keyWindow];
     ActionView *actionView = [[ActionView alloc] initWithPoint:point action:^(NSInteger index) {
         if(index == 0)
         {
-            
+            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+            [params setValue:self.targetClassZoneItem.itemID forKey:@"feed_id"];
+            [params setValue:@"0" forKey:@"types"];
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"fav/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                
+            } fail:^(NSString *errMsg) {
+                
+            }];
         }
         else if(index == 1)
         {
@@ -267,6 +280,22 @@
 #pragma mark - ReplyBoxDelegate
 - (void)onActionViewCommit:(NSString *)content
 {
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.targetClassZoneItem.itemID forKey:@"feed_id"];
+    [params setValue:@"0" forKey:@"types"];
+    if(self.targetResponseItem)
+    {
+        [params setValue:self.targetResponseItem.sendUser.uid forKey:@"to_uid"];
+        [params setValue:self.targetResponseItem.commentItem.commentId forKey:@"comment_id"];
+    }
+    [params setValue:content forKey:@"content"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        
+    } fail:^(NSString *errMsg) {
+        
+    }];
+    self.targetClassZoneItem = nil;
+    self.targetResponseItem = nil;
     _replyBox.hidden = YES;
     [_replyBox setText:@""];
     [_replyBox resignFocus];

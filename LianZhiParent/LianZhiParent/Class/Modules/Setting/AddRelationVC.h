@@ -8,13 +8,8 @@
 
 #import "TNBaseViewController.h"
 #import "PersonalInfoVC.h"
-@interface AddRelationVC : UITableViewController<ActionSelectViewDelegate>
+@interface AddRelationVC : UITableViewController<ActionSelectViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
-//    AvatarView*             _avatar;
-//    UITextField*            _nameField;
-//    UILabel*                _genderLabel;
-//    UIView *                _headerView;
-//    UIButton*               _modifyButton;
     NSMutableArray*         _infoArray;
     NSArray*                _relationArray;
 

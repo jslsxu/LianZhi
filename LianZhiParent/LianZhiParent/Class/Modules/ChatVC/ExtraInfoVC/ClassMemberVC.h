@@ -15,7 +15,7 @@
     UIButton*   _chatButton;
     UIView*     _sepLine;
 }
-
+@property(nonatomic, readonly)UIButton* chatButton;
 @end
 
 @interface ClassMemberVC : TNBaseViewController

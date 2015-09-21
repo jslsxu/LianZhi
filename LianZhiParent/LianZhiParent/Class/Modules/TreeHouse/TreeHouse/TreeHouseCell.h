@@ -20,7 +20,7 @@ extern NSString *const kTreeHouseItemKey;
 @protocol TreeHouseCellDelegate <NSObject>
 
 - (void)onActionClicked:(TreeHouseCell *)cell;
-- (void)onResponseClickedAtTarget:(UserInfo *)targetUser;
+- (void)onResponseClickedAtTarget:(ResponseItem *)responseItem cell:(TreeHouseCell *)cell;
 @end
 
 @interface TreeHouseCell : TNTableViewCell<UICollectionViewDataSource, UICollectionViewDelegate, ResponseDelegate>

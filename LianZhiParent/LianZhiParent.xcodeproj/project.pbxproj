@@ -87,14 +87,11 @@
 		3728A69A1B98A67800310457 /* ReplyBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A6981B98A67800310457 /* ReplyBox.m */; };
 		3728A6ED1B9B40C900310457 /* FunctionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A6EC1B9B40C900310457 /* FunctionView.m */; };
 		3728A6F01B9C2A0100310457 /* UUProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A6EF1B9C2A0100310457 /* UUProgressHUD.m */; };
-		3728A6F91B9C6E0A00310457 /* UUMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A6F21B9C6E0A00310457 /* UUMessage.m */; };
-		3728A6FA1B9C6E0A00310457 /* UUMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A6F41B9C6E0A00310457 /* UUMessageCell.m */; };
 		3728A6FB1B9C6E0A00310457 /* UUMessageContentButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A6F61B9C6E0A00310457 /* UUMessageContentButton.m */; };
-		3728A6FC1B9C6E0A00310457 /* UUMessageFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A6F81B9C6E0A00310457 /* UUMessageFrame.m */; };
 		3728A6FF1B9C6E4F00310457 /* NSDate+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A6FE1B9C6E4F00310457 /* NSDate+Utils.m */; };
 		3728A7021B9C711D00310457 /* UUImageAvatarBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A7011B9C711D00310457 /* UUImageAvatarBrowser.m */; };
-		3728A7051B9C76A900310457 /* ChatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A7041B9C76A900310457 /* ChatModel.m */; };
 		372BFC441BA6B343006DBCCC /* ClassMemberVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372BFC431BA6B343006DBCCC /* ClassMemberVC.m */; };
+		372BFC471BA70E00006DBCCC /* StudentParentsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372BFC461BA70E00006DBCCC /* StudentParentsVC.m */; };
 		3732A4611AFC6B24006DE05C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3732A4601AFC6B24006DE05C /* UIKit.framework */; };
 		3732A4631AFC6B30006DE05C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3732A4621AFC6B2F006DE05C /* QuartzCore.framework */; };
 		3732A4651AFC6B35006DE05C /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3732A4641AFC6B35006DE05C /* CoreVideo.framework */; };
@@ -410,6 +407,9 @@
 		37EAC9ED1B82D165007BFBA1 /* CommonInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9EB1B82D165007BFBA1 /* CommonInputVC.m */; };
 		37EAC9F01B82DEE5007BFBA1 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */; };
 		37EAC9F31B8348EE007BFBA1 /* PasswordConfirmVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9F21B8348EE007BFBA1 /* PasswordConfirmVC.m */; };
+		37FD6DC11BAE7C5F00C83AB4 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DC01BAE7C5F00C83AB4 /* MessageCell.m */; };
+		37FD6DC41BAE7C7F00C83AB4 /* MessageItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DC31BAE7C7F00C83AB4 /* MessageItem.m */; };
+		37FD6DC71BAE800600C83AB4 /* ChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DC61BAE800600C83AB4 /* ChatMessageModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -537,22 +537,16 @@
 		3728A6EC1B9B40C900310457 /* FunctionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FunctionView.m; sourceTree = "<group>"; };
 		3728A6EE1B9C2A0100310457 /* UUProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUProgressHUD.h; sourceTree = "<group>"; };
 		3728A6EF1B9C2A0100310457 /* UUProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUProgressHUD.m; sourceTree = "<group>"; };
-		3728A6F11B9C6E0A00310457 /* UUMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUMessage.h; sourceTree = "<group>"; };
-		3728A6F21B9C6E0A00310457 /* UUMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUMessage.m; sourceTree = "<group>"; };
-		3728A6F31B9C6E0A00310457 /* UUMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUMessageCell.h; sourceTree = "<group>"; };
-		3728A6F41B9C6E0A00310457 /* UUMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUMessageCell.m; sourceTree = "<group>"; };
 		3728A6F51B9C6E0A00310457 /* UUMessageContentButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUMessageContentButton.h; sourceTree = "<group>"; };
 		3728A6F61B9C6E0A00310457 /* UUMessageContentButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUMessageContentButton.m; sourceTree = "<group>"; };
-		3728A6F71B9C6E0A00310457 /* UUMessageFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUMessageFrame.h; sourceTree = "<group>"; };
-		3728A6F81B9C6E0A00310457 /* UUMessageFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUMessageFrame.m; sourceTree = "<group>"; };
 		3728A6FD1B9C6E4F00310457 /* NSDate+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Utils.h"; sourceTree = "<group>"; };
 		3728A6FE1B9C6E4F00310457 /* NSDate+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Utils.m"; sourceTree = "<group>"; };
 		3728A7001B9C711D00310457 /* UUImageAvatarBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUImageAvatarBrowser.h; sourceTree = "<group>"; };
 		3728A7011B9C711D00310457 /* UUImageAvatarBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUImageAvatarBrowser.m; sourceTree = "<group>"; };
-		3728A7031B9C76A900310457 /* ChatModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatModel.h; sourceTree = "<group>"; };
-		3728A7041B9C76A900310457 /* ChatModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatModel.m; sourceTree = "<group>"; };
 		372BFC421BA6B343006DBCCC /* ClassMemberVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassMemberVC.h; sourceTree = "<group>"; };
 		372BFC431BA6B343006DBCCC /* ClassMemberVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassMemberVC.m; sourceTree = "<group>"; };
+		372BFC451BA70E00006DBCCC /* StudentParentsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentParentsVC.h; sourceTree = "<group>"; };
+		372BFC461BA70E00006DBCCC /* StudentParentsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentParentsVC.m; sourceTree = "<group>"; };
 		3732A4601AFC6B24006DE05C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3732A4621AFC6B2F006DE05C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3732A4641AFC6B35006DE05C /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -1168,6 +1162,12 @@
 		37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		37EAC9F11B8348EE007BFBA1 /* PasswordConfirmVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordConfirmVC.h; sourceTree = "<group>"; };
 		37EAC9F21B8348EE007BFBA1 /* PasswordConfirmVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordConfirmVC.m; sourceTree = "<group>"; };
+		37FD6DBF1BAE7C5F00C83AB4 /* MessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
+		37FD6DC01BAE7C5F00C83AB4 /* MessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
+		37FD6DC21BAE7C7F00C83AB4 /* MessageItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageItem.h; sourceTree = "<group>"; };
+		37FD6DC31BAE7C7F00C83AB4 /* MessageItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageItem.m; sourceTree = "<group>"; };
+		37FD6DC51BAE800600C83AB4 /* ChatMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessageModel.h; sourceTree = "<group>"; };
+		37FD6DC61BAE800600C83AB4 /* ChatMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1398,18 +1398,16 @@
 			children = (
 				3728A5F31B93EB8D00310457 /* JSMessagesViewController.h */,
 				3728A5F41B93EB8D00310457 /* JSMessagesViewController.m */,
-				3728A7031B9C76A900310457 /* ChatModel.h */,
-				3728A7041B9C76A900310457 /* ChatModel.m */,
-				3728A6F11B9C6E0A00310457 /* UUMessage.h */,
-				3728A6F21B9C6E0A00310457 /* UUMessage.m */,
-				3728A6F31B9C6E0A00310457 /* UUMessageCell.h */,
-				3728A6F41B9C6E0A00310457 /* UUMessageCell.m */,
 				3728A6F51B9C6E0A00310457 /* UUMessageContentButton.h */,
 				3728A6F61B9C6E0A00310457 /* UUMessageContentButton.m */,
-				3728A6F71B9C6E0A00310457 /* UUMessageFrame.h */,
-				3728A6F81B9C6E0A00310457 /* UUMessageFrame.m */,
 				3728A7001B9C711D00310457 /* UUImageAvatarBrowser.h */,
 				3728A7011B9C711D00310457 /* UUImageAvatarBrowser.m */,
+				37FD6DBF1BAE7C5F00C83AB4 /* MessageCell.h */,
+				37FD6DC01BAE7C5F00C83AB4 /* MessageCell.m */,
+				37FD6DC21BAE7C7F00C83AB4 /* MessageItem.h */,
+				37FD6DC31BAE7C7F00C83AB4 /* MessageItem.m */,
+				37FD6DC51BAE800600C83AB4 /* ChatMessageModel.h */,
+				37FD6DC61BAE800600C83AB4 /* ChatMessageModel.m */,
 			);
 			path = MessageTableViewController;
 			sourceTree = "<group>";
@@ -1512,6 +1510,8 @@
 			children = (
 				372BFC421BA6B343006DBCCC /* ClassMemberVC.h */,
 				372BFC431BA6B343006DBCCC /* ClassMemberVC.m */,
+				372BFC451BA70E00006DBCCC /* StudentParentsVC.h */,
+				372BFC461BA70E00006DBCCC /* StudentParentsVC.m */,
 			);
 			path = ExtraInfoVC;
 			sourceTree = "<group>";
@@ -3023,6 +3023,7 @@
 				3793F7CC1B7CFFD900501F77 /* TGRImageViewController.m in Sources */,
 				3793F7D51B7CFFD900501F77 /* NSObject+Print.m in Sources */,
 				3793F8021B7CFFD900501F77 /* SDWebImageCompat.m in Sources */,
+				37FD6DC11BAE7C5F00C83AB4 /* MessageCell.m in Sources */,
 				3793F8001B7CFFD900501F77 /* NSData+ImageContentType.m in Sources */,
 				37E93FDD1A7E9CF200AD45A1 /* MJPhotoView.m in Sources */,
 				3793F81D1B7CFFD900501F77 /* TNDataWrapper.m in Sources */,
@@ -3131,6 +3132,7 @@
 				3793F80E1B7CFFD900501F77 /* UIView+WebCacheOperation.m in Sources */,
 				3793F7AB1B7CFFD900501F77 /* CTAssetItemViewController.m in Sources */,
 				3728A5EC1B93333D00310457 /* ResponseItem.m in Sources */,
+				372BFC471BA70E00006DBCCC /* StudentParentsVC.m in Sources */,
 				3793F7C21B7CFFD900501F77 /* LimitedTextField.m in Sources */,
 				37CFA5B51A4AF2920061D7B8 /* MessageDetailItemCell.m in Sources */,
 				37C3164F1A568F4A002E847D /* GrowthTimelineVC.m in Sources */,
@@ -3147,7 +3149,6 @@
 				37BB0BB11B05BD2800734EAA /* SearchUserVC.m in Sources */,
 				3793F75E1B7CFFD900501F77 /* RETableViewBoolCell.m in Sources */,
 				3793F81A1B7CFFD900501F77 /* UIView+MJExtension.m in Sources */,
-				3728A6F91B9C6E0A00310457 /* UUMessage.m in Sources */,
 				37C53AA31B14D5FF00C3ED69 /* RequestVacationVC.m in Sources */,
 				3793F7591B7CFFD900501F77 /* YLImageView.m in Sources */,
 				3793F7D71B7CFFD900501F77 /* NSString+JSONObject.m in Sources */,
@@ -3191,7 +3192,6 @@
 				3759001B1A635FC9008AFFF1 /* PasswordModifyVC.m in Sources */,
 				3793F7BF1B7CFFD900501F77 /* DAContextMenuCell.m in Sources */,
 				37D5536F1A7EAE6F00D77F89 /* ClassAlbumVC.m in Sources */,
-				3728A6FC1B9C6E0A00310457 /* UUMessageFrame.m in Sources */,
 				37E93F931A7DC43500AD45A1 /* TNAlertView.m in Sources */,
 				3793F7C71B7CFFD900501F77 /* POIListModel.m in Sources */,
 				3793F7B91B7CFFD900501F77 /* LZBadgeLabel.m in Sources */,
@@ -3205,6 +3205,7 @@
 				37C88FF11A889A05008E44DB /* PersonalSetting.m in Sources */,
 				3793F7A31B7CFFD900501F77 /* AFURLResponseSerialization.m in Sources */,
 				3793F7AA1B7CFFD900501F77 /* ALAssetsGroup+isEqual.m in Sources */,
+				37FD6DC71BAE800600C83AB4 /* ChatMessageModel.m in Sources */,
 				3793F78A1B7CFFD900501F77 /* REURLValidator.m in Sources */,
 				37CA18851AB70BCC00B49B55 /* PhotoPickerItem.m in Sources */,
 				379947E11A66B403008E4B4F /* PhotoFlowVC.m in Sources */,
@@ -3223,7 +3224,6 @@
 				37E93FDC1A7E9CF200AD45A1 /* MJPhotoProgressView.m in Sources */,
 				3793F7881B7CFFD900501F77 /* RELengthValidator.m in Sources */,
 				3793F7CE1B7CFFD900501F77 /* UIImage+AspectFit.m in Sources */,
-				3728A7051B9C76A900310457 /* ChatModel.m in Sources */,
 				37CBAF2D1A47B1E20063F395 /* TreeHouseHeaderView.m in Sources */,
 				3793F7EC1B7CFFD900501F77 /* MLAudioMeterObserver.m in Sources */,
 				3728A5E81B9332FE00310457 /* ResponseView.m in Sources */,
@@ -3231,7 +3231,6 @@
 				3728A6FF1B9C6E4F00310457 /* NSDate+Utils.m in Sources */,
 				3793F8151B7CFFD900501F77 /* MJRefreshConst.m in Sources */,
 				3793F7A91B7CFFD900501F77 /* ALAsset+isEqual.m in Sources */,
-				3728A6FA1B9C6E0A00310457 /* UUMessageCell.m in Sources */,
 				37E7C9151B1613EC005D653F /* SurroundingVC.m in Sources */,
 				3793F7781B7CFFD900501F77 /* REActionBar.m in Sources */,
 				3728A61C1B93F36B00310457 /* HPGrowingTextView.m in Sources */,
@@ -3292,6 +3291,7 @@
 				37CFA5B21A4AF27C0061D7B8 /* MessageDetailVC.m in Sources */,
 				3793F8081B7CFFD900501F77 /* UIButton+WebCache.m in Sources */,
 				3793F7A11B7CFFD900501F77 /* AFURLConnectionOperation.m in Sources */,
+				37FD6DC41BAE7C7F00C83AB4 /* MessageItem.m in Sources */,
 				37E7C91B1B161418005D653F /* SurroundingItem.m in Sources */,
 				3793F7631B7CFFD900501F77 /* RETableViewInlinePickerCell.m in Sources */,
 				372775CB1A6036AC00464461 /* ChildInfo.m in Sources */,

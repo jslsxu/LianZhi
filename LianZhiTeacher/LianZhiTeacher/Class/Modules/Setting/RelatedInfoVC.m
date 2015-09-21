@@ -27,6 +27,7 @@
         [self addSubview:_logoView];
         
         _reportButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_reportButton addTarget:self action:@selector(onReportError) forControlEvents:UIControlEventTouchUpInside];
         [_reportButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"949494"] size:CGSizeMake(18, 18) cornerRadius:9] resizableImageWithCapInsets:UIEdgeInsetsMake(9, 9, 9, 9)] forState:UIControlStateNormal];
         [_reportButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_reportButton.titleLabel setFont:[UIFont systemFontOfSize:11]];
@@ -52,6 +53,13 @@
     [_nameLabel setText:_schoolInfo.schoolName];
     
 }
+
+- (void)onReportError
+{
+    ReportProblemVC *reportVC = [[ReportProblemVC alloc] init];
+    [reportVC setType:3];
+    [CurrentROOTNavigationVC pushViewController:reportVC animated:YES];
+}
 @end
 
 @implementation RelatedClassCell
@@ -64,6 +72,7 @@
         [self setBackgroundColor:[UIColor whiteColor]];
         
         _reportButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_reportButton addTarget:self action:@selector(onReportError) forControlEvents:UIControlEventTouchUpInside];
         [_reportButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"949494"] size:CGSizeMake(18, 18) cornerRadius:9] resizableImageWithCapInsets:UIEdgeInsetsMake(9, 9, 9, 9)] forState:UIControlStateNormal];
         [_reportButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_reportButton.titleLabel setFont:[UIFont systemFontOfSize:11]];
@@ -88,6 +97,14 @@
     _classInfo = classInfo;
     [_nameLabel setText:[NSString stringWithFormat:@"%@ (%@)",classInfo.className,_classInfo.course]];
 }
+
+- (void)onReportError
+{
+    ReportProblemVC *reportVC = [[ReportProblemVC alloc] init];
+    [reportVC setType:3];
+    [CurrentROOTNavigationVC pushViewController:reportVC animated:YES];
+}
+
 @end
 @implementation RelatedInfoVC
 
@@ -194,11 +211,6 @@
     ReportProblemVC *reportVC = [[ReportProblemVC alloc] init];
     [reportVC setType:2];
     [self.navigationController pushViewController:reportVC animated:YES];
-//    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"setting/feedback" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"type":@"2",@"content":@"1"} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-//        [ProgressHUD showHintText:@"报告关联错误成功"];
-//    } fail:^(NSString *errMsg) {
-//        
-//    }];
 }
 
 #pragma mark - UITableViewDelegate

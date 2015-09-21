@@ -15,11 +15,8 @@
     if(self)
     {
         self.type = MLPlayVoiceButtonTypeRight;
-        [self setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
         
-//        _audioIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MicrophoneWhite.png")]];
-//        [_audioIcon setCenter:CGPointMake(25, frame.size.height / 2)];
-//        [self addSubview:_audioIcon];
+        [self setBackgroundImage:[UIImage imageWithColor:kCommonParentTintColor size:self.size cornerRadius:5] forState:UIControlStateNormal];
         
         _spanLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, 100, frame.size.height)];
         [_spanLabel setBackgroundColor:[UIColor clearColor]];

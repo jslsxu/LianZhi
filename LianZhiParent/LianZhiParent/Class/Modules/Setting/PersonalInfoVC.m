@@ -222,9 +222,9 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
 {
     [self.view endEditing:YES];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    for (NSInteger i = 0; i< 3; i++) {
+    for (NSInteger i = 0; i< 4; i++) {
         PersonalInfoItem *item = [_infoArray objectAtIndex:i];
-        if(i == 2 && [item.value length] > 0)//邮箱
+        if(i == 3 && [item.value length] > 0)//邮箱
         {
             if(![item.value isEmailAddress])
             {
@@ -235,7 +235,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
         [params setValue:item.value forKey:item.requestKey];
     }
     NSMutableArray *relationArray = [[NSMutableArray alloc] initWithCapacity:0];
-    for (NSInteger i = 5; i< _infoArray.count; i++) {
+    for (NSInteger i = 6; i< _infoArray.count; i++) {
         PersonalInfoItem *infoItem = [_infoArray objectAtIndex:i];
         if(infoItem.relation)
         {
@@ -312,6 +312,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
         [datePicker setBlk:^(NSString *dateStr){
             PersonalInfoItem *birthdayItem = [_infoArray objectAtIndex:1];
             [birthdayItem setValue:dateStr];
+            [self onSaveButtonClicked];
             [self.tableView reloadData];
         }];
         [datePicker show];
@@ -347,6 +348,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
         PersonalInfoItem *infoItem = _infoArray[row];
         CommonInputVC *commonInputVC = [[CommonInputVC alloc] initWithOriginal:infoItem.value forKey:infoItem.key completion:^(NSString *value) {
             infoItem.value = value;
+            [self onSaveButtonClicked];
             [self.tableView reloadData];
         }];
         [CurrentROOTNavigationVC pushViewController:commonInputVC animated:YES];
@@ -360,6 +362,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
     self.avatarImage = [info objectForKey:UIImagePickerControllerEditedImage];
     [picker dismissViewControllerAnimated:YES completion:^{
         [_avatar setImage:self.avatarImage];
+        [self onSaveButtonClicked];
     }];
 }
 
@@ -407,6 +410,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
 //    {
 //        [ProgressHUD showHintText:@"您不能选择和之前不同的性别"];
 //    }
+    [self onSaveButtonClicked];
 }
 
 - (void)didReceiveMemoryWarning {

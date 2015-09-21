@@ -13,6 +13,7 @@
 @property (nonatomic, copy)NSString *author;
 @property (nonatomic, copy)NSString *content;
 @property (nonatomic, strong)AudioItem *audioItem;
+@property (nonatomic, strong)NSArray*   pictureArray;
 @property (nonatomic, copy)NSString *time;
 @property (nonatomic, copy)NSString *timeStr;
 @end

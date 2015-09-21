@@ -40,12 +40,12 @@
     NSDictionary *contentDic = @{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"2c2c2c"]};
     NSMutableAttributedString *commentStr = [[NSMutableAttributedString alloc] init];
     [commentStr appendAttributedString:[[NSAttributedString alloc] initWithString:responseItem.sendUser.name attributes:userDic]];
-    if(responseItem.targetUser)
+    if(responseItem.commentItem.toUser.length > 0)
     {
         [commentStr appendAttributedString:[[NSAttributedString alloc] initWithString:@" 回复 " attributes:contentDic]];
-        [commentStr appendAttributedString:[[NSAttributedString alloc] initWithString:responseItem.targetUser.name attributes:userDic]];
+        [commentStr appendAttributedString:[[NSAttributedString alloc] initWithString:responseItem.commentItem.toUser attributes:userDic]];
     }
-    [commentStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@":%@",responseItem.content] attributes:contentDic]];
+    [commentStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@":%@",responseItem.commentItem.content] attributes:contentDic]];
     [_commentLabel setAttributedText:commentStr];
     CGSize size = [commentStr.string boundingRectWithSize:CGSizeMake(self.width - 10 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:12]];
     [_commentLabel setFrame:CGRectMake(10, 3, size.width, size.height)];
@@ -55,9 +55,9 @@
 {
     ResponseItem *responseItem = (ResponseItem *)modelItem;
     NSMutableString *comment = [[NSMutableString alloc] initWithString:responseItem.sendUser.name];
-    if(responseItem.targetUser)
-        [comment appendFormat:@" 回复 %@",responseItem.targetUser.name];
-    [comment appendFormat:@":%@",responseItem.content];
+    if(responseItem.commentItem.toUser.length > 0)
+        [comment appendFormat:@" 回复 %@",responseItem.commentItem.toUser];
+    [comment appendFormat:@":%@",responseItem.commentItem.content];
     CGSize size = [comment boundingRectWithSize:CGSizeMake(width - 10 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:12]];
     return @(size.height + 6);
 }
@@ -96,8 +96,9 @@
     NSInteger spaceXStart = 0;
     for (NSInteger i = 0; i < num; i++)
     {
+        UserInfo *userInfo = _praiseArray[i];
         AvatarView *avatar = [[AvatarView alloc] initWithFrame:CGRectMake(spaceXStart, (_praiseListView.height - itemWIdth) / 2, itemWIdth, itemWIdth)];
-        [avatar setImageWithUrl:[NSURL URLWithString:_praiseArray[i]]];
+        [avatar setImageWithUrl:[NSURL URLWithString:userInfo.avatar]];
         [_praiseListView addSubview:avatar];
         spaceXStart += (itemWIdth + innerMargin);
     }

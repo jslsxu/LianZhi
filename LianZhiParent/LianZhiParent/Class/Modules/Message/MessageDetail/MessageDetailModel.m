@@ -22,6 +22,19 @@
         [audioItem parseData:audioWrapper];
         [self setAudioItem:audioItem];
     }
+    
+    TNDataWrapper *pictureArrayWrapper = [dataWrapper getDataWrapperForKey:@"pictures"];
+    if(pictureArrayWrapper.count > 0)
+    {
+        NSMutableArray *pictures = [NSMutableArray array];
+        for (NSInteger i = 0; i < pictureArrayWrapper.count; i++)
+        {
+            TNDataWrapper *pictureItemWrapper = [pictureArrayWrapper getDataWrapperForIndex:i];
+            PhotoItem *photoItem = [[PhotoItem alloc] initWithDataWrapper:pictureItemWrapper];
+            [pictures addObject:photoItem];
+        }
+        self.pictureArray = pictures;
+    }
 }
 
 @end

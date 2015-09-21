@@ -107,6 +107,11 @@
     
 }
 
+- (void)requestData
+{
+    
+}
+
 - (void)onConfirm
 {
     if(self.completion)

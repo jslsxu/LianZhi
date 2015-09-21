@@ -109,8 +109,8 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
 #pragma mark -ResponseDelegate
 - (void)onResponseItemClicked:(ResponseItem *)responseItem
 {
-    if([self.delegate respondsToSelector:@selector(onResponseClickedAtTarget:)])
-        [self.delegate onResponseClickedAtTarget:responseItem.sendUser];
+    if([self.delegate respondsToSelector:@selector(onResponseClickedAtTarget: cell:)])
+        [self.delegate onResponseClickedAtTarget:responseItem cell:self];
 }
 
 

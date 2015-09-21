@@ -15,7 +15,7 @@
     UILabel*    _indicatorLabel;
     UIButton*   _coverButton;
 }
-
+@property (nonatomic, copy)void (^clickAction)();
 @end
 
 @interface TreeHouseHeaderView : UIView

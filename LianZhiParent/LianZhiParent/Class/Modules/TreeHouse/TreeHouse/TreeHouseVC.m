@@ -13,6 +13,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 @interface TreeHouseVC ()<PublishSelectDelegate, ActionSelectViewDelegate>
 @property (nonatomic, weak)TreehouseItem *itemForTag;
 @property (nonatomic, strong)NSArray *tagSourceArray;
+@property (nonatomic, strong)TreehouseItem *responseItem;
+@property (nonatomic, strong)ResponseItem *commentItem;
 @end
 
 @implementation TreeHouseVC
@@ -262,6 +264,22 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 #pragma mark - ReplyBoxDelegate
 - (void)onActionViewCommit:(NSString *)content
 {
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.responseItem.itemID forKey:@"feed_id"];
+    [params setValue:@"1" forKey:@"types"];
+    if(self.commentItem)
+    {
+        [params setValue:self.commentItem.sendUser.uid forKey:@"to_uid"];
+        [params setValue:self.commentItem.commentItem.commentId forKey:@"comment_id"];
+    }
+    [params setValue:content forKey:@"content"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        
+    } fail:^(NSString *errMsg) {
+        
+    }];
+    self.responseItem = nil;
+    self.commentItem = nil;
     _replyBox.hidden = YES;
     [_replyBox setText:@""];
     [_replyBox resignFocus];
@@ -277,13 +295,21 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 #pragma mark - TreeHouseCelleDelegate
 - (void)onActionClicked:(TreeHouseCell *)cell
 {
+    self.responseItem = (TreehouseItem *)cell.modelItem;
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     CGPoint point = [cell convertPoint:cell.actionButton.center toView:keyWindow];
     point.x = point.x + 72;
     ActionView *actionView = [[ActionView alloc] initWithPoint:point action:^(NSInteger index) {
         if(index == 0)
         {
-            
+            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+            [params setValue:self.responseItem.itemID forKey:@"feed_id"];
+            [params setValue:@"1" forKey:@"types"];
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"fav/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                
+            } fail:^(NSString *errMsg) {
+                
+            }];
         }
         else if(index == 1)
         {
@@ -298,10 +324,13 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [actionView show];
 }
 
-- (void)onResponseClickedAtTarget:(UserInfo *)targetUser
+- (void)onResponseClickedAtTarget:(ResponseItem *)responseItem cell:(ClassZoneItemCell *)cell
 {
     _replyBox.hidden = NO;
     [_replyBox assignFocus];
+    self.responseItem = (TreehouseItem *)cell.modelItem;
+    self.commentItem = responseItem;
+    
 }
 
 #pragma mark TNBaseTableViewController

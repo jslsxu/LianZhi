@@ -39,31 +39,31 @@
     [_numLabel setText:kStringFromValue(kReportContentMaxNum)];
     [_bgView addSubview:_numLabel];
     
-    _checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_checkButton setFrame:CGRectMake(0, _bgView.bottom, 30, 30)];
-    [_checkButton setImage:[UIImage imageNamed:@"StudentUnselected"] forState:UIControlStateNormal];
-    [_checkButton setImage:[UIImage imageNamed:@"StudentSelected"] forState:UIControlStateSelected];
-    [_checkButton addTarget:self action:@selector(onCheckClicked) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_checkButton];
-    
-    _hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(_checkButton.right, _bgView.bottom, self.view.width - 10 - _checkButton.right, 30)];
-    [_hintLabel setFont:[UIFont systemFontOfSize:16]];
-    [_hintLabel setTextColor:[UIColor colorWithHexString:@"8f8f8f"]];
-    [_hintLabel setText:@"以短信的形式发送"];
-    [self.view addSubview:_hintLabel];
-    
-    UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(_checkButton.right, _hintLabel.bottom, _hintLabel.width, 60)];
-    [detailLabel setNumberOfLines:0];
-    [detailLabel setFont:[UIFont systemFontOfSize:13]];
-    [detailLabel setTextColor:[UIColor colorWithHexString:@"8f8f8f"]];
-    [detailLabel setText:@"开启短信模式后，未开通炼制的用户也将以短信的形式受到通知，请将文字内容控制在120字以内"];
-    [self.view addSubview:detailLabel];
+//    _checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [_checkButton setFrame:CGRectMake(0, _bgView.bottom, 30, 30)];
+//    [_checkButton setImage:[UIImage imageNamed:@"StudentUnselected"] forState:UIControlStateNormal];
+//    [_checkButton setImage:[UIImage imageNamed:@"StudentSelected"] forState:UIControlStateSelected];
+//    [_checkButton addTarget:self action:@selector(onCheckClicked) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:_checkButton];
+//    
+//    _hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(_checkButton.right, _bgView.bottom, self.view.width - 10 - _checkButton.right, 30)];
+//    [_hintLabel setFont:[UIFont systemFontOfSize:16]];
+//    [_hintLabel setTextColor:[UIColor colorWithHexString:@"8f8f8f"]];
+//    [_hintLabel setText:@"以短信的形式发送"];
+//    [self.view addSubview:_hintLabel];
+//    
+//    UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(_checkButton.right, _hintLabel.bottom, _hintLabel.width, 60)];
+//    [detailLabel setNumberOfLines:0];
+//    [detailLabel setFont:[UIFont systemFontOfSize:13]];
+//    [detailLabel setTextColor:[UIColor colorWithHexString:@"8f8f8f"]];
+//    [detailLabel setText:@"开启短信模式后，未开通炼制的用户也将以短信的形式受到通知，请将文字内容控制在120字以内"];
+//    [self.view addSubview:detailLabel];
 }
 
-- (void)onCheckClicked
-{
-    _checkButton.selected = !_checkButton.selected;
-}
+//- (void)onCheckClicked
+//{
+//    _checkButton.selected = !_checkButton.selected;
+//}
 
 #pragma mark - UITextViewDelegate
 - (void)textViewDidChange:(UITextView *)textView

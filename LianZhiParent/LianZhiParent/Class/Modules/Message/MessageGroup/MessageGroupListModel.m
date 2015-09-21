@@ -19,6 +19,13 @@
     self.type = [dataWrapper getIntegerForKey:@"type"];
     self.label = [dataWrapper getStringForKey:@"label"];
 }
+
+- (BOOL)isNotification
+{
+    if(self.type == MessageFromTypeFromClass || self.type == MessageFromTypeFromParents||self.type == MessageFromTypeFromTeacher)
+        return NO;
+    return YES;
+}
 @end
 
 @implementation MessageGroupItem
@@ -32,14 +39,6 @@
     self.formatTime = [dataWrapper getStringForKey:@"time_str"];
     self.content = [dataWrapper getStringForKey:@"words"];
     self.msgNum = [dataWrapper getIntegerForKey:@"unread"];
-    TNDataWrapper *voiceWrapper = [dataWrapper getDataWrapperForKey:@"voice"];
-    if(voiceWrapper.count > 0)
-    {
-        AudioItem *audioItem = [[AudioItem alloc] init];
-        [audioItem parseData:voiceWrapper];
-        [self setAudioItem:audioItem];
-        self.content = @"发来一条语音通知，点击收听";
-    }
 //    self.soundOn = ![[DataCenter sharedInstance] checkFromIDSilence:self.fromInfo.uid];
     NSString *sound = [dataWrapper getStringForKey:@"sound"];
     self.soundOn = ([sound isEqualToString:@"open"]);

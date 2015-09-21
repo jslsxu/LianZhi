@@ -7,7 +7,7 @@
 //
 
 #import "TNTableViewCell.h"
-
+#import "NewMessageModel.h"
 @interface NewMessageCell : TNTableViewCell
 {
     AvatarView*     _avatarView;

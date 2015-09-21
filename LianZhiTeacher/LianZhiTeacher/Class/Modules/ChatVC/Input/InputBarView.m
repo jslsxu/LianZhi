@@ -21,12 +21,20 @@
 
 @interface InputBarView ()
 @property (nonatomic,assign)NSInteger targetHeight;
+@property (nonatomic, strong)NSTimer* timer;
+@property (nonatomic, assign)NSInteger playTime;
+@property (nonatomic, strong)MLAudioRecorder*   recorder;
+@property (nonatomic, strong)AmrRecordWriter*   amrWriter;
+@property (nonatomic, strong)MLAudioPlayer*     player;
+@property (nonatomic, strong)AmrPlayerReader*   amrReader;
 @end
 
 @implementation InputBarView
 
 - (void)dealloc
 {
+    [self.player stopPlaying];
+    [self.recorder stopRecording];
     [self removeNotifications];
 }
 
@@ -108,8 +116,10 @@
         _functionView = [[FunctionView alloc] initWithFrame:CGRectMake(0, _contentView.height, self.width, 180)];
         [_functionView setDelegate:self];
         [self addSubview:_functionView];
-
+        
         [self addNotifications];
+        
+        [self setupRecorder];
     }
     return self;
 }
@@ -190,25 +200,77 @@
 
 - (void)onKeyboardWillHide:(NSNotification *)notification
 {
-//    self.targetHeight = _contentView.height;
+    //    self.targetHeight = _contentView.height;
 }
 
 #pragma mark - Actions
 #pragma mark - 录音touch事件
+
+- (void)setupRecorder
+{
+    NSString *filePath = [[AudioRecordView class] tempFilePath];
+    [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
+    AmrRecordWriter *amrWriter = [[AmrRecordWriter alloc]init];
+    amrWriter.filePath = filePath;
+    amrWriter.maxSecondCount = 119;
+    amrWriter.maxFileSize = 1024*256;
+    self.amrWriter = amrWriter;
+    
+    MLAudioRecorder *recorder = [[MLAudioRecorder alloc]init];
+    //amr
+    recorder.bufferDurationSeconds = 0.5;
+    recorder.fileWriterDelegate = self.amrWriter;
+    self.recorder = recorder;
+    
+    MLAudioPlayer *player = [[MLAudioPlayer alloc]init];
+    AmrPlayerReader *amrReader = [[AmrPlayerReader alloc]init];
+    
+    player.fileReaderDelegate = amrReader;
+    player.receiveErrorBlock = ^(NSError *error){
+        [[[UIAlertView alloc]initWithTitle:@"错误" message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"知道了", nil]show];
+    };
+    player.receiveStoppedBlock = ^{
+    };
+    self.player = player;
+    self.amrReader = amrReader;
+}
+
+- (void)countVoiceTime
+{
+    self.playTime ++;
+    if (self.playTime >= 119)
+        [self endRecordVoice:nil];
+}
+
 - (void)beginRecordVoice:(UIButton *)button
 {
-   
+    self.playTime = 0;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countVoiceTime) userInfo:nil repeats:YES];
+    [self.recorder startRecording];
 }
 
 - (void)endRecordVoice:(UIButton *)button
 {
-    
+    if (self.timer)
+    {
+        [self.recorder stopRecording];
+        [self.timer invalidate];
+        self.timer = nil;
+    }
+    NSInteger time = self.playTime;
+    NSData *audioData = [NSData dataWithContentsOfFile:self.amrWriter.filePath];
+    if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendVoice: time:)])
+        [self.inputDelegate inputBarViewDidSendVoice:audioData time:time];
 }
 
 - (void)cancelRecordVoice:(UIButton *)button
 {
-
-    [UUProgressHUD dismissWithError:@"Cancel"];
+    if (self.timer)
+    {
+        [self.recorder stopRecording];
+        [self.timer invalidate];
+        self.timer = nil;
+    }
 }
 
 - (void)RemindDragExit:(UIButton *)button
@@ -236,7 +298,7 @@
             self.inputType = InputTypeFace;
         else
             self.inputType = InputTypeNormal;
-            
+        
     }
     else if (button == _addButton)
     {
@@ -294,7 +356,6 @@
 {
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     [imagePicker setDelegate:self];
-    [imagePicker setAllowsEditing:YES];
     [imagePicker setSourceType:index == 0 ? UIImagePickerControllerSourceTypePhotoLibrary : UIImagePickerControllerSourceTypeCamera];
     [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
 }
@@ -302,9 +363,17 @@
 #pragma mark - UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
-    if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendPhoto:)])
-        [self.inputDelegate inputBarViewDidSendPhoto:image];
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:[UIApplication sharedApplication].keyWindow];
+    __weak typeof(self) wself = self;
+    __block UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        image = [image formatImage];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hide:NO];
+            if([wself.inputDelegate respondsToSelector:@selector(inputBarViewDidSendPhoto:)])
+                [wself.inputDelegate inputBarViewDidSendPhoto:image];
+        });
+    });
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 

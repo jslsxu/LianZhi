@@ -17,4 +17,5 @@
     UIButton*           _chatButton;
 }
 @property (nonatomic, strong)TeacherInfo *teachInfo;
+@property (nonatomic, strong)SchoolInfo *schoolInfo;
 @end

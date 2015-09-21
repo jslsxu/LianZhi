@@ -29,6 +29,5 @@ typedef NS_ENUM(NSInteger, SelectType)
     NSMutableDictionary *   _paramsDic;
     UITableView*            _tableView;
 }
-@property (nonatomic, strong)NSDictionary *originalparams;
-@property (nonatomic, copy)void (^completion)(NSDictionary *params);
+@property (nonatomic, strong)NSMutableDictionary *record;
 @end

@@ -157,6 +157,7 @@
     }
     ClassInfo *class = [UserCenter sharedInstance].curChild.classes[indexPath.section];
     [cell setTeachInfo:[[class teachers] objectAtIndex:indexPath.row]];
+    [cell setSchoolInfo:class.schoolInfo];
     return cell;
 }
 

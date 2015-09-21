@@ -35,8 +35,10 @@
 }
 - (TNModelItem *)itemForIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row <= _modelItemArray.count - 1)
+    if(_modelItemArray.count > 0 && indexPath.row <= _modelItemArray.count - 1)
+    {
         return [_modelItemArray objectAtIndex:indexPath.row];
+    }
     else
         return nil;
 }

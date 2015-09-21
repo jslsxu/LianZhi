@@ -46,9 +46,11 @@
         [self setPhotos:photos];
     }
     
-    self.responseModel = [[ResponseModel alloc] init];
-    [self.responseModel parseData:nil];
     
+    self.responseModel = [[ResponseModel alloc] init];
+    [self.responseModel parseData:dataWrapper];
+    
+    self.hasMore = [dataWrapper getBoolForKey:@"comment_more"];
 }
 
 - (TagPrivilege)tagPrivilege
