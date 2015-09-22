@@ -39,34 +39,50 @@
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
+    self.praiseArray = [NSMutableArray array];
     TNDataWrapper *praiseWrapper = [dataWrapper getDataWrapperForKey:@"favor_list"];
     if(praiseWrapper.count > 0)
     {
-        NSMutableArray *praiseArray = [NSMutableArray array];
         for (NSInteger i = 0; i < praiseWrapper.count; i++)
         {
             TNDataWrapper *praiseUserWrapper = [praiseWrapper getDataWrapperForIndex:i];
             UserInfo *userInfo = [[UserInfo alloc] init];
             [userInfo parseData:praiseUserWrapper];
-            [praiseArray addObject:userInfo];
+            [self.praiseArray addObject:userInfo];
         }
-        self.praiseArray = praiseArray;
     }
     
+    self.responseArray = [NSMutableArray array];
     TNDataWrapper *responseWrapper = [dataWrapper getDataWrapperForKey:@"comment_list"];
     if(responseWrapper.count > 0)
     {
-        NSMutableArray *responseArray = [NSMutableArray array];
         for (NSInteger i = 0; i < responseWrapper.count; i++)
         {
             TNDataWrapper *responseItemWrapper = [responseWrapper getDataWrapperForIndex:i];
             ResponseItem *responseItem = [[ResponseItem alloc] init];
             [responseItem parseData:responseItemWrapper];
-            [responseArray addObject:responseItem];
+            [self.responseArray addObject:responseItem];
         }
-        self.responseArray = responseArray;
     }
     
 }
+
+- (void)addResponse:(ResponseItem *)newResponse
+{
+    [self.responseArray insertObject:newResponse atIndex:0];
+}
+
+- (void)addPraiseUser:(UserInfo *)praiseUser
+{
+    BOOL contains = NO;
+    for (UserInfo *userInfo in self.praiseArray)
+    {
+        if([userInfo.uid isEqualToString:praiseUser.uid])
+            contains = YES;
+    }
+    if(!contains)
+        [self.praiseArray insertObject:praiseUser atIndex:0];
+}
+
 
 @end

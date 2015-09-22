@@ -29,7 +29,7 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
         
-        _bgView = [[UIImageView alloc] initWithFrame:CGRectMake(kBGViewHMargin, kBGTopMargin, self.width - kBGViewHMargin * 2, 0)];
+        _bgView = [[UIView alloc] initWithFrame:CGRectMake(kBGViewHMargin, kBGTopMargin, self.width - kBGViewHMargin * 2, 0)];
         [_bgView setBackgroundColor:[UIColor whiteColor]];
         [_bgView.layer setCornerRadius:15];
         [_bgView.layer setMasksToBounds:YES];

@@ -113,8 +113,8 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
 #pragma mark -ResponseDelegate
 - (void)onResponseItemClicked:(ResponseItem *)responseItem
 {
-    if([self.delegate respondsToSelector:@selector(onResponseClickedAtTarget:)])
-        [self.delegate onResponseClickedAtTarget:responseItem.sendUser];
+    if([self.delegate respondsToSelector:@selector(onResponseClickedAtTarget:cell:)])
+        [self.delegate onResponseClickedAtTarget:responseItem cell:self];
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -187,7 +187,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         {
             _voiceButton.hidden = NO;
             [_voiceButton setOrigin:CGPointMake(12, spaceYStart + 5)];
-            spaceYStart += _voiceButton.height + 15;
+            spaceYStart += 45 + 15;
         }
         else
         {
@@ -201,8 +201,9 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     spaceYStart += 20 + 10;
     
     [_responseView setFrame:CGRectMake(kImageLeftMargin, spaceYStart, self.width - kImageLeftMargin - 10, 100)];
-    [_responseView setClassZoneItem:item];
-    spaceYStart += _responseView.height + 10;
+    [_responseView setResponseModel:item.responseModel];
+    if(_responseView.height > 0)
+        spaceYStart += _responseView.height + 10;
     [_sepLine setFrame:CGRectMake(0, spaceYStart, self.width, kLineHeight)];
 }
 
@@ -230,7 +231,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
             height += 10;
     }
     height += 20 + 10;
-    NSInteger resposeHeight = [ResponseView responseHeightForResponse:item];
+    NSInteger resposeHeight = [ResponseView responseHeightForResponse:item.responseModel forWidth:width - kImageLeftMargin - 10];
     if(resposeHeight > 0)
         height += resposeHeight + 10;
     return @(height);

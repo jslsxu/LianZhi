@@ -23,7 +23,6 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     {
         [self setBackgroundColor:[UIColor clearColor]];
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
-        
         _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(10, 10, 35, 35)];
         [self addSubview:_avatar];
         
@@ -47,7 +46,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [self addSubview:_contentLabel];
         
-        _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(0, 0, self.width - 50, 45)];
+        _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(kImageLeftMargin, 0, self.width - kImageLeftMargin - 30, 45)];
         [_voiceButton addTarget:self action:@selector(onVoiceButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_voiceButton];
         
@@ -183,7 +182,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         if(item.audioItem)
         {
             _voiceButton.hidden = NO;
-            [_voiceButton setOrigin:CGPointMake(12, spaceYStart + 5)];
+            [_voiceButton setY:spaceYStart + 5];
             spaceYStart += _voiceButton.height + 15;
         }
         else
@@ -199,7 +198,8 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     
     [_responseView setFrame:CGRectMake(kImageLeftMargin, spaceYStart, self.width - kImageLeftMargin - 10, 100)];
     [_responseView setResponseModel:item.responseModel];
-    spaceYStart += _responseView.height + 10;
+    if(_responseView.height > 0)
+        spaceYStart += _responseView.height + 10;
     [_sepLine setFrame:CGRectMake(0, spaceYStart, self.width, kLineHeight)];
 }
 
@@ -207,7 +207,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
 {
     CGFloat height = 30;
     ClassZoneItem *item = (ClassZoneItem *)modelItem;
-    CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(width - 20 * 2 - 12 * 2, 0) andFont:[UIFont systemFontOfSize:16]];
+    CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(width - kImageLeftMargin - kImageRightMargin, 0) andFont:[UIFont systemFontOfSize:14]];
     height += contentSize.height + 5;
     if(item.photos.count > 0)
     {

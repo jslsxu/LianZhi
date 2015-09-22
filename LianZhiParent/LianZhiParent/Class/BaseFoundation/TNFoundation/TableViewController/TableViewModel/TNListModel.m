@@ -20,6 +20,11 @@
     return self;
 }
 
+- (BOOL)shouldReload
+{
+    return YES;
+}
+
 - (BOOL)hasMoreData
 {
     return NO;

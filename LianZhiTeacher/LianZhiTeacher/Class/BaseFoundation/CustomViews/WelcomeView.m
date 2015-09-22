@@ -34,11 +34,9 @@ static __strong UIWindow *welcomeWindow = nil;
         [_scrollView setShowsHorizontalScrollIndicator:NO];
         [self addSubview:_scrollView];
         
-        NSString *screenSize = (self.height == 480) ? @"960" :@"1136";
-        
         for (NSInteger i = 0; i < kWelcomePhotoNum; i++) {
             UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * _scrollView.width, 0, _scrollView.width, _scrollView.height)];
-            NSString *imageStr = [NSString stringWithFormat:@"Guide%@_%ld.jpg",screenSize,(long)(i + 1)];
+            NSString *imageStr = [NSString stringWithFormat:@"guide%ld.jpg",(long)(i + 1)];
             NSString *path = [[NSBundle mainBundle] pathForResource:imageStr ofType:nil];
             [imageView setImage:[UIImage imageWithContentsOfFile:path]];
             [_scrollView addSubview:imageView];

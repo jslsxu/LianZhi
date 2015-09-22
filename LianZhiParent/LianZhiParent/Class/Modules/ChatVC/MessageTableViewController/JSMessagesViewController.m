@@ -164,10 +164,17 @@
 
 - (void)inputBarViewDidSendVoice:(NSData *)amrData time:(NSInteger)time
 {
-    NSDictionary *dic = @{@"voice": amrData,
-                          @"strVoiceTime": [NSString stringWithFormat:@"%ld",(long)time],
-                          @"type": @(UUMessageTypeVoice)};
-    [self dealTheFunctionData:dic];
+    if(time < 2)
+    {
+        [ProgressHUD showHintText:@"录入语音时间过短，请重新录制"];
+    }
+    else
+    {
+        NSDictionary *dic = @{@"voice": amrData,
+                              @"strVoiceTime": [NSString stringWithFormat:@"%ld",(long)time],
+                              @"type": @(UUMessageTypeVoice)};
+        [self dealTheFunctionData:dic];
+    }
 }
 
 - (void)dealTheFunctionData:(NSDictionary *)dic

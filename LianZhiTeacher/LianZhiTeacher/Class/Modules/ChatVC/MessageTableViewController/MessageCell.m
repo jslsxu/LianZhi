@@ -39,7 +39,7 @@
         [_audioTimeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
         [self addSubview:_audioTimeLabel];
         
-        _playButton = [[MLPlayVoiceButton alloc] init];
+        _playButton = [[ChatVoiceButton alloc] init];
         [_playButton addTarget:self action:@selector(onAudioCLicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_playButton];
     }

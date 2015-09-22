@@ -17,10 +17,6 @@
 
 @property (nonatomic, strong) NSURL *voiceURL;
 
-@property (nonatomic, assign) BOOL isVoicePlaying;
-
-@property (nonatomic, strong) UIImageView *playingSignImageView;
-
 @property (nonatomic, strong) NSURL *filePath;
 
 @property (nonatomic, strong) UIActivityIndicatorView *indicator;

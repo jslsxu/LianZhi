@@ -46,7 +46,7 @@
     }
     
     self.responseModel = [[ResponseModel alloc] init];
-    [self.responseModel parseData:nil];
+    [self.responseModel parseData:dataWrapper];
 }
 
 @end

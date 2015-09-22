@@ -7,7 +7,7 @@
 //
 
 #import "TNListModel.h"
-#import "ResponseItem.h"
+#import "ResponseModel.h"
 @interface ClassZoneItem : TNModelItem
 @property (nonatomic, strong)UserInfo *userInfo;
 @property (nonatomic, copy)NSString *itemID;
@@ -23,8 +23,7 @@
 @property (nonatomic, assign)BOOL delay;
 @property (nonatomic, copy)NSString *savedPath;
 @property (nonatomic, weak)AFHTTPRequestOperation *operation;
-@property (nonatomic, strong)NSArray* praiseArray;      // 点赞的数组
-@property (nonatomic, strong)NSArray* responseArray;    // 回复的数组
+@property (nonatomic, strong)ResponseModel *responseModel;
 - (BOOL)canSendDirectly;
 @end
 

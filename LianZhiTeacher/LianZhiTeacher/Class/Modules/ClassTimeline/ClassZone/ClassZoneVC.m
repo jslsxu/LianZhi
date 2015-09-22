@@ -85,6 +85,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 @end
 
 @interface ClassZoneVC ()<PublishSelectDelegate>
+@property (nonatomic, strong)ClassZoneItem *targetZoneItem;
+@property (nonatomic, strong)ResponseItem* targetResponseItem;
 @end
 
 @implementation ClassZoneVC
@@ -503,7 +505,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ClassZoneItemCell *itemCell = (ClassZoneItemCell *)cell;
-    [itemCell setDelegate:self];
+    if([itemCell isKindOfClass:[ClassZoneItemCell class]])
+        [itemCell setDelegate:self];
 }
 
 - (void)setClassInfo:(ClassInfo *)classInfo
@@ -517,20 +520,40 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 }
 
 #pragma mark - ClassZoneItemCellDelegate
-- (void)onResponseClickedAtTarget:(UserInfo *)targetUser
+- (void)onResponseClickedAtTarget:(ResponseItem *)responseItem cell:(ClassZoneItemCell *)cell
 {
+    self.targetZoneItem = (ClassZoneItem *)cell.modelItem;
+    self.targetResponseItem = responseItem;
     _replyBox.hidden = NO;
     [_replyBox assignFocus];
 }
 
 - (void)onActionClicked:(ClassZoneItemCell *)cell
 {
+    self.targetResponseItem = nil;
+    self.targetZoneItem = (ClassZoneItem *)cell.modelItem;
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     CGPoint point = [cell convertPoint:cell.actionButton.center toView:keyWindow];
+    __weak typeof(self) wself = self;
     ActionView *actionView = [[ActionView alloc] initWithPoint:point action:^(NSInteger index) {
         if(index == 0)
         {
-            
+            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+            [params setValue:self.targetZoneItem.itemID forKey:@"feed_id"];
+            [params setValue:@"0" forKey:@"types"];
+            [params setValue:self.classInfo.classID forKey:@"objid"];
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"fav/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                if(responseObject.count > 0)
+                {
+                    UserInfo *userInfo = [[UserInfo alloc] init];
+                    TNDataWrapper *userWrapper = [responseObject getDataWrapperForIndex:0];
+                    [userInfo parseData:userWrapper];
+                    [wself.targetZoneItem.responseModel addPraiseUser:userInfo];
+                    [wself.tableView reloadData];
+                }
+            } fail:^(NSString *errMsg) {
+                
+            }];
         }
         else if(index == 1)
         {
@@ -559,6 +582,29 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 #pragma mark - ReplyBoxDelegate
 - (void)onActionViewCommit:(NSString *)content
 {
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.targetZoneItem.itemID forKey:@"feed_id"];
+    [params setValue:@"0" forKey:@"types"];
+    [params setValue:self.classInfo.classID forKey:@"objid"];
+    if(self.targetResponseItem)
+    {
+        [params setValue:self.targetResponseItem.sendUser.uid forKey:@"to_uid"];
+        [params setValue:self.targetResponseItem.commentItem.commentId forKey:@"comment_id"];
+    }
+    [params setValue:content forKey:@"content"];
+    __weak typeof(self) wself = self;
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        if(responseObject.count > 0)
+        {
+            TNDataWrapper *commentWrapper  =[responseObject getDataWrapperForIndex:0];
+            ResponseItem *responseItem = [[ResponseItem alloc] init];
+            [responseItem parseData:commentWrapper];
+            [wself.targetZoneItem.responseModel addResponse:responseItem];
+            [wself.tableView reloadData];
+        }
+    } fail:^(NSString *errMsg) {
+        
+    }];
     _replyBox.hidden = YES;
     [_replyBox setText:@""];
     [_replyBox resignFocus];
@@ -566,6 +612,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void) onActionViewCancel
 {
+    self.targetZoneItem = nil;
     [_replyBox setHidden:YES];
     [_replyBox setText:@""];
     [_replyBox resignFocus];

@@ -101,7 +101,7 @@ static NSArray *tabDatas = nil;
     [childrenView setDelegate:self];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:childrenView];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Setting.png"] style:UIBarButtonItemStylePlain target:self action:@selector(onSettingClicked)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MineProfile"] style:UIBarButtonItemStylePlain target:self action:@selector(onSettingClicked)];
     
     NSMutableArray *subVCs = [[NSMutableArray alloc] initWithCapacity:0];
     NSArray *subVCArray = @[@"MessageVC",@"ContactListVC",@"TreeHouseVC",@"ClassZoneVC",@"DiscoveryVC"];

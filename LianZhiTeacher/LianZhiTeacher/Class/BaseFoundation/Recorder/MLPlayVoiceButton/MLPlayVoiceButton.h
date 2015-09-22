@@ -37,7 +37,9 @@ typedef NS_OPTIONS(NSUInteger, MLPlayVoiceButtonState) {
 @property (nonatomic, assign) MLPlayVoiceButtonType type;
 @property (nonatomic, assign,readonly) MLPlayVoiceButtonState voiceState;
 @property (nonatomic, assign) NSTimeInterval duration;
+@property (nonatomic, assign) BOOL isVoicePlaying;
 
+@property (nonatomic, strong) UIImageView *playingSignImageView;
 - (CGFloat)preferredWidth;
 
 @property (nonatomic, copy) void(^preferredWidthChangedBlock)(MLPlayVoiceButton *voiceButton,BOOL isShouldBeAnimated);

@@ -209,16 +209,26 @@
 - (void)onActionClicked:(ClassZoneItemCell *)cell
 {
     self.targetClassZoneItem = (ClassZoneItem *)cell.modelItem;
+    self.targetResponseItem = nil;
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     CGPoint point = [cell convertPoint:cell.actionButton.center toView:keyWindow];
+    __weak typeof(self) wself = self;
     ActionView *actionView = [[ActionView alloc] initWithPoint:point action:^(NSInteger index) {
         if(index == 0)
         {
             NSMutableDictionary *params = [NSMutableDictionary dictionary];
             [params setValue:self.targetClassZoneItem.itemID forKey:@"feed_id"];
             [params setValue:@"0" forKey:@"types"];
+            [params setValue:[UserCenter sharedInstance].curChild.uid forKey:@"objid"];
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"fav/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                
+                if(responseObject.count > 0)
+                {
+                    UserInfo *userInfo = [[UserInfo alloc] init];
+                    TNDataWrapper *userWrapper = [responseObject getDataWrapperForIndex:0];
+                    [userInfo parseData:userWrapper];
+                    [wself.targetClassZoneItem.responseModel addPraiseUser:userInfo];
+                    [wself.tableView reloadData];
+                }
             } fail:^(NSString *errMsg) {
                 
             }];
@@ -283,19 +293,26 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.targetClassZoneItem.itemID forKey:@"feed_id"];
     [params setValue:@"0" forKey:@"types"];
+    [params setValue:[UserCenter sharedInstance].curChild.uid forKey:@"objid"];
     if(self.targetResponseItem)
     {
         [params setValue:self.targetResponseItem.sendUser.uid forKey:@"to_uid"];
         [params setValue:self.targetResponseItem.commentItem.commentId forKey:@"comment_id"];
     }
     [params setValue:content forKey:@"content"];
+    __weak typeof(self) wself = self;
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        
+        if(responseObject.count > 0)
+        {
+            TNDataWrapper *commentWrapper  =[responseObject getDataWrapperForIndex:0];
+            ResponseItem *responseItem = [[ResponseItem alloc] init];
+            [responseItem parseData:commentWrapper];
+            [wself.targetClassZoneItem.responseModel addResponse:responseItem];
+            [wself.tableView reloadData];
+        }
     } fail:^(NSString *errMsg) {
         
     }];
-    self.targetClassZoneItem = nil;
-    self.targetResponseItem = nil;
     _replyBox.hidden = YES;
     [_replyBox setText:@""];
     [_replyBox resignFocus];

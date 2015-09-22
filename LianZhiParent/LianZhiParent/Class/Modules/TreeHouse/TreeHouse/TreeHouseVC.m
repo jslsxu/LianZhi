@@ -13,8 +13,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 @interface TreeHouseVC ()<PublishSelectDelegate, ActionSelectViewDelegate>
 @property (nonatomic, weak)TreehouseItem *itemForTag;
 @property (nonatomic, strong)NSArray *tagSourceArray;
-@property (nonatomic, strong)TreehouseItem *responseItem;
-@property (nonatomic, strong)ResponseItem *commentItem;
+@property (nonatomic, strong)TreehouseItem *targetTreeHouseItem;
+@property (nonatomic, strong)ResponseItem *targetResponseItem;
 @end
 
 @implementation TreeHouseVC
@@ -265,21 +265,28 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (void)onActionViewCommit:(NSString *)content
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:self.responseItem.itemID forKey:@"feed_id"];
+    [params setValue:self.targetTreeHouseItem.itemID forKey:@"feed_id"];
     [params setValue:@"1" forKey:@"types"];
-    if(self.commentItem)
+    [params setValue:[UserCenter sharedInstance].curChild.uid forKey:@"objid"];
+    if(self.targetResponseItem)
     {
-        [params setValue:self.commentItem.sendUser.uid forKey:@"to_uid"];
-        [params setValue:self.commentItem.commentItem.commentId forKey:@"comment_id"];
+        [params setValue:self.targetResponseItem.sendUser.uid forKey:@"to_uid"];
+        [params setValue:self.targetResponseItem.commentItem.commentId forKey:@"comment_id"];
     }
     [params setValue:content forKey:@"content"];
+    __weak typeof(self) wself = self;
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        
+        if(responseObject.count > 0)
+        {
+            TNDataWrapper *commentWrapper  =[responseObject getDataWrapperForIndex:0];
+            ResponseItem *responseItem = [[ResponseItem alloc] init];
+            [responseItem parseData:commentWrapper];
+            [wself.targetTreeHouseItem.responseModel addResponse:responseItem];
+            [wself.tableView reloadData];
+        }
     } fail:^(NSString *errMsg) {
         
     }];
-    self.responseItem = nil;
-    self.commentItem = nil;
     _replyBox.hidden = YES;
     [_replyBox setText:@""];
     [_replyBox resignFocus];
@@ -295,7 +302,9 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 #pragma mark - TreeHouseCelleDelegate
 - (void)onActionClicked:(TreeHouseCell *)cell
 {
-    self.responseItem = (TreehouseItem *)cell.modelItem;
+    self.targetTreeHouseItem = (TreehouseItem *)cell.modelItem;
+    self.targetResponseItem = nil;
+    __weak typeof(self) wself = self;
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     CGPoint point = [cell convertPoint:cell.actionButton.center toView:keyWindow];
     point.x = point.x + 72;
@@ -303,10 +312,18 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         if(index == 0)
         {
             NSMutableDictionary *params = [NSMutableDictionary dictionary];
-            [params setValue:self.responseItem.itemID forKey:@"feed_id"];
+            [params setValue:self.targetTreeHouseItem.itemID forKey:@"feed_id"];
             [params setValue:@"1" forKey:@"types"];
+            [params setValue:[UserCenter sharedInstance].curChild.uid forKey:@"objid"];
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"fav/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                
+                if(responseObject.count > 0)
+                {
+                    UserInfo *userInfo = [[UserInfo alloc] init];
+                    TNDataWrapper *userWrapper = [responseObject getDataWrapperForIndex:0];
+                    [userInfo parseData:userWrapper];
+                    [wself.targetTreeHouseItem.responseModel addPraiseUser:userInfo];
+                    [wself.tableView reloadData];
+                }
             } fail:^(NSString *errMsg) {
                 
             }];
@@ -328,8 +345,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 {
     _replyBox.hidden = NO;
     [_replyBox assignFocus];
-    self.responseItem = (TreehouseItem *)cell.modelItem;
-    self.commentItem = responseItem;
+    self.targetTreeHouseItem = (TreehouseItem *)cell.modelItem;
+    self.targetResponseItem = responseItem;
     
 }
 

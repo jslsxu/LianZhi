@@ -37,6 +37,7 @@ typedef NS_OPTIONS(NSUInteger, MLPlayVoiceButtonState) {
 @property (nonatomic, assign) MLPlayVoiceButtonType type;
 @property (nonatomic, assign,readonly) MLPlayVoiceButtonState voiceState;
 @property (nonatomic, assign) NSTimeInterval duration;
+@property (nonatomic, strong) UIImageView *playingSignImageView;
 
 - (CGFloat)preferredWidth;
 
@@ -49,7 +50,7 @@ typedef NS_OPTIONS(NSUInteger, MLPlayVoiceButtonState) {
 
 #pragma mark - cancel
 - (void)cancelVoiceRequestOperation;
-
+- (BOOL)isVoicePlaying;
 #pragma mark - set voice
 - (void)setVoiceWithURL:(NSURL*)url;
 - (void)setVoiceWithURL:(NSURL*)url withAutoPlay:(BOOL)autoPlay;

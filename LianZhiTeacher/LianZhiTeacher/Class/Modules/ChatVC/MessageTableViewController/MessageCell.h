@@ -9,7 +9,7 @@
 #import "TNTableViewCell.h"
 #import "UUMessageContentButton.h"
 #import "MessageItem.h"
-
+#import "ChatVoiceButton.h"
 #define kAvatarHMargin              8
 #define kMessageCellVMargin         10
 #define kFaceWith                   80
@@ -19,6 +19,6 @@
     AvatarView*                 _avatarView;
     UUMessageContentButton*     _contentButton;
     UILabel*                    _audioTimeLabel;
-    MLPlayVoiceButton*          _playButton;
+    ChatVoiceButton*            _playButton;
 }
 @end

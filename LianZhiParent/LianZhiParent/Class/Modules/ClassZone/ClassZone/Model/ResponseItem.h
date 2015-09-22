@@ -22,7 +22,10 @@
 @end
 
 @interface ResponseModel : TNModelItem
-@property (nonatomic, strong)NSArray* praiseArray;      // 点赞的数组
-@property (nonatomic, strong)NSArray* responseArray;    // 回复的数组
+@property (nonatomic, strong)NSMutableArray* praiseArray;      // 点赞的数组
+@property (nonatomic, strong)NSMutableArray* responseArray;    // 回复的数组
+
+- (void)addResponse:(ResponseItem *)newResponse;
+- (void)addPraiseUser:(UserInfo *)praiseUser;
 
 @end

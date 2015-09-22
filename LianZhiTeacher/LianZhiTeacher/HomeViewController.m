@@ -163,7 +163,7 @@ static NSArray *tabDatas = nil;
 - (void)selectAtIndex:(NSInteger)index
 {
     self.selectedIndex = index;
-    NSArray *tabImageNameArray = @[@"HomeTabMessage",@"HomeTabContacts",@"HomeTabHome",@"HomeTabDiscovery"];
+    NSArray *tabImageNameArray = @[@"HomeTabMessage",@"HomeTabApplications",@"HomeTabDiscovery",@"HomeTabMine"];
     for (NSInteger i = 0; i < _tabbarButtons.count; i++)
     {
         LZTabBarButton *barButton = _tabbarButtons[i];

@@ -161,7 +161,8 @@
             [responseData.data writeToFile:[self cacheFilePath] atomically:YES];
         });
     }
-    [self.tableView reloadData];
+    if([_tableViewModel shouldReload])
+        [self.tableView reloadData];
     _isLoading = NO;
 }
 

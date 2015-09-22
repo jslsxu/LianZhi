@@ -35,21 +35,30 @@
         
         if(type == REQUEST_REFRESH)//下拉
         {
+            BOOL hasNew = NO;
             for (NSInteger i = newArray.count - 1; i >=0; i--)
             {
                 MessageItem *item = newArray[i];
                 if([self canInsert:item])
+                {
                     [self.modelItemArray insertObject:item atIndex:0];
+                    hasNew = YES;
+                }
             }
-
+            self.shouldReload = hasNew;
         }
         else//加载最新
         {
+            BOOL hasNew = NO;
             for (MessageItem *item in newArray)
             {
                 if([self canInsert:item])
+                {
                     [self.modelItemArray addObject:item];
+                    hasNew = YES;
+                }
             }
+            self.shouldReload = hasNew;
         }
         [self.modelItemArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             MessageItem *item1 = (MessageItem *)obj1;

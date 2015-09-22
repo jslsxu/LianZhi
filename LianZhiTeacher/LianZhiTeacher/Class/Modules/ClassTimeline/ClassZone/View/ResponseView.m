@@ -11,6 +11,8 @@
 #define kPraiseViewHeight                   35
 #define kHMargin                            10
 
+#define kMaxResponseNum                     5
+
 @implementation CommentCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -25,7 +27,7 @@
         [_commentLabel setNumberOfLines:0];
         [_commentLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [self addSubview:_commentLabel];
-    
+        
         UIView *selectedView = [[UIView alloc] initWithFrame:CGRectZero];
         [selectedView setBackgroundColor:[UIColor colorWithHexString:@"D0D0D0"]];
         [self setSelectedBackgroundView:selectedView];
@@ -40,12 +42,12 @@
     NSDictionary *contentDic = @{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"2c2c2c"]};
     NSMutableAttributedString *commentStr = [[NSMutableAttributedString alloc] init];
     [commentStr appendAttributedString:[[NSAttributedString alloc] initWithString:responseItem.sendUser.name attributes:userDic]];
-    if(responseItem.targetUser)
+    if(responseItem.commentItem.toUser.length > 0)
     {
         [commentStr appendAttributedString:[[NSAttributedString alloc] initWithString:@" 回复 " attributes:contentDic]];
-        [commentStr appendAttributedString:[[NSAttributedString alloc] initWithString:responseItem.targetUser.name attributes:userDic]];
+        [commentStr appendAttributedString:[[NSAttributedString alloc] initWithString:responseItem.commentItem.toUser attributes:userDic]];
     }
-    [commentStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@":%@",responseItem.content] attributes:contentDic]];
+    [commentStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@":%@",responseItem.commentItem.content] attributes:contentDic]];
     [_commentLabel setAttributedText:commentStr];
     CGSize size = [commentStr.string boundingRectWithSize:CGSizeMake(self.width - 10 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:12]];
     [_commentLabel setFrame:CGRectMake(10, 3, size.width, size.height)];
@@ -55,9 +57,9 @@
 {
     ResponseItem *responseItem = (ResponseItem *)modelItem;
     NSMutableString *comment = [[NSMutableString alloc] initWithString:responseItem.sendUser.name];
-    if(responseItem.targetUser)
-        [comment appendFormat:@" 回复 %@",responseItem.targetUser.name];
-    [comment appendFormat:@":%@",responseItem.content];
+    if(responseItem.commentItem.toUser.length > 0)
+        [comment appendFormat:@" 回复 %@",responseItem.commentItem.toUser];
+    [comment appendFormat:@":%@",responseItem.commentItem.content];
     CGSize size = [comment boundingRectWithSize:CGSizeMake(width - 10 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:12]];
     return @(size.height + 6);
 }
@@ -75,7 +77,7 @@
         _praiseImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ActionPraiseHighlighted"]];
         [_praiseImageView setOrigin:CGPointMake(10, (self.height - _praiseImageView.height) / 2)];
         [self addSubview:_praiseImageView];
-
+        
         _praiseListView = [[UIView alloc] initWithFrame:CGRectMake(_praiseImageView.right + 5, 0, self.width - 10 - (_praiseImageView.right + 5), kPraiseViewHeight)];
         [self addSubview:_praiseListView];
         
@@ -96,8 +98,9 @@
     NSInteger spaceXStart = 0;
     for (NSInteger i = 0; i < num; i++)
     {
+        UserInfo *userInfo = _praiseArray[i];
         AvatarView *avatar = [[AvatarView alloc] initWithFrame:CGRectMake(spaceXStart, (_praiseListView.height - itemWIdth) / 2, itemWIdth, itemWIdth)];
-        [avatar setImageWithUrl:[NSURL URLWithString:_praiseArray[i]]];
+        [avatar setImageWithUrl:[NSURL URLWithString:userInfo.avatar]];
         [_praiseListView addSubview:avatar];
         spaceXStart += (itemWIdth + innerMargin);
     }
@@ -117,11 +120,11 @@
 
 @implementation ResponseView
 
-+ (CGFloat)responseHeightForResponse:(ClassZoneItem *)classZoneItem
++ (CGFloat)responseHeightForResponse:(ResponseModel *)responseModel forWidth:(CGFloat)width
 {
     NSInteger height = 0;
-    NSArray *praiseArray = classZoneItem.praiseArray;
-    NSArray *responseArray = classZoneItem.responseArray;
+    NSArray *praiseArray = responseModel.praiseArray;
+    NSArray *responseArray = responseModel.responseArray;
     if(praiseArray.count > 0)
     {
         height += kPraiseViewHeight;
@@ -130,9 +133,11 @@
     NSInteger tableHeight = 0;
     if(responseArray.count > 0)
     {
-        for (ResponseItem *responseItem in responseArray)
+        NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
+        for (NSInteger i = 0; i < responseNum; i++)
         {
-            NSInteger itemHeight = [CommentCell cellHeight:responseItem cellWidth:kScreenWidth - 55 - 10].floatValue;
+            ResponseItem *responseItem = responseArray[i];
+            NSInteger itemHeight = [CommentCell cellHeight:responseItem cellWidth:width].floatValue;
             tableHeight += itemHeight;
         }
     }
@@ -166,12 +171,12 @@
     return self;
 }
 
-- (void)setClassZoneItem:(ClassZoneItem *)classZoneItem
+- (void)setResponseModel:(ResponseModel *)responseModel
 {
-    _classZoneItem = classZoneItem;
+    _responseModel = responseModel;
     NSInteger height = 0;
-    NSArray *praiseArray = classZoneItem.praiseArray;
-    NSArray *responseArray = classZoneItem.responseArray;
+    NSArray *praiseArray = _responseModel.praiseArray;
+    NSArray *responseArray = _responseModel.responseArray;
     if(praiseArray.count > 0)
     {
         [_praiseView setHidden:NO];
@@ -184,8 +189,10 @@
     NSInteger tableHeight = 0;
     if(responseArray.count > 0)
     {
-        for (ResponseItem *responseItem in responseArray)
+        NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
+        for (NSInteger i = 0; i < responseNum; i++)
         {
+            ResponseItem *responseItem = responseArray[i];
             NSInteger itemHeight = [CommentCell cellHeight:responseItem cellWidth:_tableView.width].floatValue;
             tableHeight += itemHeight;
         }
@@ -202,7 +209,7 @@
 #pragma mark - UITableVIewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.classZoneItem.responseArray.count;
+    return self.responseModel.responseArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -213,13 +220,13 @@
     {
         cell = [[CommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
-    [cell setResponseItem:self.classZoneItem.responseArray[indexPath.row]];
+    [cell setResponseItem:self.responseModel.responseArray[indexPath.row]];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [CommentCell cellHeight:self.classZoneItem.responseArray[indexPath.row] cellWidth:tableView.width].floatValue;
+    return [CommentCell cellHeight:self.responseModel.responseArray[indexPath.row] cellWidth:tableView.width].floatValue;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -227,7 +234,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if([self.delegate respondsToSelector:@selector(onResponseItemClicked:)])
     {
-        ResponseItem *item = self.classZoneItem.responseArray[indexPath.row];
+        ResponseItem *item = self.responseModel.responseArray[indexPath.row];
         [self.delegate onResponseItemClicked:item];
     }
 }
