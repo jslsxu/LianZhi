@@ -39,7 +39,7 @@
     if(requestType == REQUEST_GETMORE)
         [params setValue:model.lastID forKey:@"more_id"];
     [params setValue:kStringFromValue(self.types) forKey:@"types"];
-    [params setValue:self.pkID forKey:@"pk_id"];
+    [params setValue:self.objid forKey:@"objid"];
     [task setParams:params];
     return task;
 }

@@ -111,7 +111,7 @@
         
         _faceSelectView = [[FaceSelectView alloc] initWithFrame:CGRectMake(0, _contentView.height, kScreenWidth, FaceSelectHeight)];
         [self addSubview:_faceSelectView];
-        _faceSelectView.delegate = self;
+        [_faceSelectView setDelegate:self];
         
         _functionView = [[FunctionView alloc] initWithFrame:CGRectMake(0, _contentView.height, self.width, 180)];
         [_functionView setDelegate:self];

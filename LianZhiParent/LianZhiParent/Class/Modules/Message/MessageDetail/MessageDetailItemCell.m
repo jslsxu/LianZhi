@@ -7,16 +7,17 @@
 //
 
 #import "MessageDetailItemCell.h"
-
+#import "CollectionImageCell.h"
 NSString *const  kMessageDeleteNotitication = @"MessageDeleteNotitication";
 NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
 #define kContentFont            [UIFont systemFontOfSize:14]
 
 #define kBGTopMargin            20
-#define kBGBottomMargin         10
+#define kBGBottomMargin         20
 #define kOperationHeight        32
 #define kBGViewHMargin          10
 #define kContentHMargin         10
+#define kInnerMargin            8
 
 @implementation MessageDetailItemCell
 
@@ -55,7 +56,7 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
         [_sepLine setBackgroundColor:kSepLineColor];
         [_bgView addSubview:_sepLine];
         
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(kContentHMargin, kOperationHeight + kContentHMargin, _bgView.width - kContentHMargin * 2, 0)];
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(kContentHMargin, kOperationHeight + 10, _bgView.width - kContentHMargin * 2, 0)];
         [_contentLabel setBackgroundColor:[UIColor clearColor]];
         [_contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [_contentLabel setNumberOfLines:0];
@@ -67,15 +68,22 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
         [_voiceButton addTarget:self action:@selector(onVoiceButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [_bgView addSubview:_voiceButton];
         
-        UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
-        [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-        [flowLayout setItemSize:CGSizeMake(60, 60)];
-        [flowLayout setMinimumInteritemSpacing:5];
+        NSInteger collectionWidth = _bgView.width - 10 * 2;
+        NSInteger itemWidth = (collectionWidth - kInnerMargin * 2) / 3;
+        NSInteger innerMargin = (collectionWidth - itemWidth * 3) / 2;
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        [layout setItemSize:CGSizeMake(itemWidth, itemWidth)];
+        [layout setMinimumInteritemSpacing:innerMargin];
+        [layout setMinimumLineSpacing:innerMargin];
         
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, _sepLine.bottom + 10, _bgView.width - 10 * 2, 60) collectionViewLayout:flowLayout];
-        [_collectionView registerClass:[CollectionImageCell class] forCellWithReuseIdentifier:@"CollectionImageCell"];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+        [_collectionView setBackgroundColor:[UIColor clearColor]];
+        [_collectionView setShowsHorizontalScrollIndicator:NO];
+        [_collectionView setShowsVerticalScrollIndicator:NO];
+        [_collectionView setScrollsToTop:NO];
         [_collectionView setDelegate:self];
         [_collectionView setDataSource:self];
+        [_collectionView registerClass:[CollectionImageCell class] forCellWithReuseIdentifier:@"CollectionImageCell"];
         [_bgView addSubview:_collectionView];
     }
     return self;
@@ -85,42 +93,48 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
 {
     MessageDetailItem *item = (MessageDetailItem *)modelItem;
     [_nameLabel setText:item.author];
-    CGFloat height = kContentHMargin + kOperationHeight;
-    [_voiceButton setHidden:YES];
-    [_collectionView setHidden:YES];
+    [_timeLabel setText:item.timeStr];
+    [_timeLabel sizeToFit];
+    [_timeLabel setFrame:CGRectMake(_bgView.width - kContentHMargin - _timeLabel.width, (kOperationHeight - _timeLabel.height) / 2, _timeLabel.width, _timeLabel.height)];
+    CGFloat height = kOperationHeight + 10;
     NSString *content = item.content;
-    if(content.length == 0 && item.audioItem)
-    {
-        content = @"这是一条语音内容，点击播放:";
-    }
-    if(content.length > 0)
-    {
-        [_contentLabel setHidden:NO];
-        [_contentLabel setText:content];
-        CGSize contentSize = [content boundingRectWithSize:CGSizeMake(_contentLabel.width, CGFLOAT_MAX) andFont:_contentLabel.font];
-        [_contentLabel setHeight:contentSize.height];
-        height += contentSize.height + kContentHMargin;
-    }
-    else
-        [_contentLabel setHidden:YES];
-    
     if(item.audioItem)
+        content = @"这是一条语音内容，点击播放:";
+    if(item.content.length > 0)
+    {
+        [_contentLabel setText:item.content];
+        CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(_contentLabel.width, CGFLOAT_MAX) andFont:_contentLabel.font];
+        [_contentLabel setHeight:contentSize.height];
+        height += contentSize.height + 10;
+    }
+    [_collectionView setHidden:YES];
+    [_voiceButton setHidden:YES];
+    if(item.pictureArray.count > 0)
+    {
+        [_collectionView setHidden:NO];
+        NSInteger imageCount = item.pictureArray.count;
+        NSInteger contentWidth = _bgView.width - 10 * 2;
+        NSInteger row = (item.pictureArray.count + 2) / 3;
+        NSInteger itemWidth = (contentWidth - kInnerMargin * 2) / 3;
+        NSInteger innerMargin = (contentWidth - itemWidth * 3) / 2;
+        NSInteger imageWidth = (row > 1) ? contentWidth : (itemWidth * imageCount + innerMargin * (imageCount - 1));
+        [_collectionView setFrame:CGRectMake(10, height, imageWidth, itemWidth * row + innerMargin * (row - 1))];
+        [_collectionView reloadData];
+        height += _collectionView.height + 10;
+    }
+    else if(item.audioItem)
     {
         [_voiceButton setHidden:NO];
         [_voiceButton setAudioItem:item.audioItem];
         [_voiceButton setOrigin:CGPointMake(kContentHMargin, height)];
         height += _voiceButton.height + kContentHMargin;
     }
-    else if(item.pictureArray)//图片
+    else
     {
-        [_collectionView setHidden:NO];
-        [_collectionView reloadData];
-        height += _collectionView.height + kContentHMargin;
+        height += kContentHMargin;
     }
     [_bgView setHeight:height];
-    [_timeLabel setText:item.timeStr];
-    [_timeLabel sizeToFit];
-    [_timeLabel setFrame:CGRectMake(_bgView.width - kContentHMargin - _timeLabel.width, (kOperationHeight - _timeLabel.height) / 2, _timeLabel.width, _timeLabel.height)];
+    height += kBGBottomMargin + kBGTopMargin;
     
 }
 
@@ -135,47 +149,18 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
     [[NSNotificationCenter defaultCenter] postNotificationName:kMessageDeleteNotitication object:nil userInfo:@{kMessageDeleteModelItemKey : self.modelItem}];
 }
 
-+ (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
-{
-    NSInteger height = kBGTopMargin + kOperationHeight + kContentHMargin;
-    MessageDetailItem *item = (MessageDetailItem *)modelItem;
-    NSString *content = item.content;
-    if(content.length == 0 && item.audioItem)
-    {
-        content = @"这是一条语音内容，点击播放:";
-    }
-    if(content.length > 0)
-    {
-        CGSize contentSize = [content boundingRectWithSize:CGSizeMake(width - kContentHMargin * 4, CGFLOAT_MAX) andFont:kContentFont];
-        height += contentSize.height + kContentHMargin;
-    }
-    if(item.audioItem)
-    {
-        height += 45 + kContentHMargin;
-    }
-    else if(item.pictureArray)
-    {
-        height += 60 + kContentHMargin;
-    }
-    
-    height += kBGBottomMargin;
-    
-    return @(height);
-}
-
 #pragma mark - UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    MessageDetailItem *item = (MessageDetailItem *)self.modelItem;
-    return item.pictureArray.count;
+    MessageDetailItem *messageItem = (MessageDetailItem *)self.modelItem;
+    return messageItem.pictureArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    MessageDetailItem *item = (MessageDetailItem *)self.modelItem;
-    PhotoItem *photoItem = item.pictureArray[indexPath.row];
+    MessageDetailItem *messageItem = (MessageDetailItem *)self.modelItem;
     CollectionImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CollectionImageCell" forIndexPath:indexPath];
-    [cell setItem:photoItem];
+    [cell setItem:messageItem.pictureArray[indexPath.row]];
     return cell;
 }
 
@@ -188,4 +173,36 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
     [CurrentROOTNavigationVC pushViewController:photoBrowser animated:YES];
 }
 
++ (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
+{
+    MessageDetailItem *item = (MessageDetailItem *)modelItem;
+    NSInteger height = kBGTopMargin + kBGBottomMargin + kOperationHeight + 10;
+    NSString *content = item.content;
+    if(item.audioItem)
+        content = @"这是一条语音内容，点击播放:";
+    if(item.content.length > 0)
+    {
+        CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(width - kBGViewHMargin * 4, CGFLOAT_MAX) andFont:kContentFont];
+        height += contentSize.height + 10;
+    }
+    
+    if(item.pictureArray.count > 0)
+    {
+        NSInteger imageCount = item.pictureArray.count;
+        NSInteger contentWidth = width - kBGViewHMargin * 4;
+        NSInteger row = (imageCount + 2) / 3;
+        NSInteger itemWidth = (contentWidth - kInnerMargin * 2) / 3;
+        NSInteger innerMargin = (contentWidth - itemWidth * 3) / 2;
+        height += itemWidth * row + innerMargin * (row - 1) + 10;
+    }
+    else if(item.audioItem)
+    {
+        height += 45 + 10;
+    }
+    else
+    {
+        height += 10;
+    }
+    return @(height);
+}
 @end

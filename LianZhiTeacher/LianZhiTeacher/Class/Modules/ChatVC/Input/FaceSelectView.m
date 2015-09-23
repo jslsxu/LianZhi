@@ -47,6 +47,7 @@
         [_layout setMinimumLineSpacing:0];
         
         _collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:_layout];
+        [_collectionView setScrollsToTop:NO];
         [_collectionView setBackgroundColor:[UIColor clearColor]];
         [_collectionView setDelegate:self];
         [_collectionView setDataSource:self];
@@ -98,6 +99,7 @@
         [_scrollView setBackgroundColor:[UIColor clearColor]];
         [_scrollView setDelegate:self];
         [_scrollView setPagingEnabled:YES];
+        [_scrollView setScrollsToTop:NO];
         [_scrollView setShowsHorizontalScrollIndicator:NO];
         [_scrollView setShowsVerticalScrollIndicator:NO];
         [self addSubview:_scrollView];
@@ -119,6 +121,7 @@
     for (NSInteger i = 0; i < numOfPages; i++)
     {
         FaceCollectionView *collectionView = [[FaceCollectionView alloc] initWithFrame:CGRectMake(_scrollView.width * i, 0, _scrollView.width, _scrollView.height)];
+        [collectionView setDelegate:self];
         [collectionView setPage:i];
         [_scrollView addSubview:collectionView];
     }

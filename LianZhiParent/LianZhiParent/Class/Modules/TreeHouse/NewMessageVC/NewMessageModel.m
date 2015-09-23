@@ -49,7 +49,7 @@
 
 - (BOOL)hasMoreData
 {
-    return YES;
+    return NO;
 }
 
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type

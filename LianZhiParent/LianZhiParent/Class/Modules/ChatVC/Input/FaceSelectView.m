@@ -48,6 +48,7 @@
         
         _collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:_layout];
         [_collectionView setBackgroundColor:[UIColor clearColor]];
+        [_collectionView setScrollsToTop:NO];
         [_collectionView setDelegate:self];
         [_collectionView setDataSource:self];
         [_collectionView registerClass:[FaceItemCell class] forCellWithReuseIdentifier:@"FaceItemCell"];
@@ -97,6 +98,7 @@
         _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.width, self.height - PageControlHeight)];
         [_scrollView setBackgroundColor:[UIColor clearColor]];
         [_scrollView setDelegate:self];
+        [_scrollView setScrollsToTop:NO];
         [_scrollView setPagingEnabled:YES];
         [_scrollView setShowsHorizontalScrollIndicator:NO];
         [_scrollView setShowsVerticalScrollIndicator:NO];

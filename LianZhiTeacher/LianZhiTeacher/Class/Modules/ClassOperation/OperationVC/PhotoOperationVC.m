@@ -262,7 +262,7 @@
         PublishImageItem *imageItem = [[PublishImageItem alloc] init];
         [imageItem setImage:image];
         [_imageArray addObject:imageItem];
-        [self setupSubviews];
+        [self setupScrollView];
     }
     [self.navigationController popToRootViewControllerAnimated:NO];
     [picker dismissViewControllerAnimated:YES completion:nil];

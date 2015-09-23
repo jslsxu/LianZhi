@@ -15,6 +15,44 @@
 NSString *const kPublishPhotoItemFinishedNotification = @"PublishPhotoItemFinishedNotification";
 NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
+@implementation NewMessageIndicator
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if(self)
+    {
+        [self setBackgroundColor:[UIColor colorWithHexString:@"3e3e3e"]];
+        [self.layer setCornerRadius:3];
+        [self.layer setMasksToBounds:YES];
+        
+        
+        _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(5, (self.height - 20) / 2, 20, 20)];
+        [_avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
+        [self addSubview:_avatarView];
+        
+        _indicatorLabel = [[UILabel alloc] initWithFrame:CGRectMake(_avatarView.right + 15, 0, self.width - 10 - (_avatarView.right + 5), self.height)];
+        [_indicatorLabel setTextColor:[UIColor whiteColor]];
+        [_indicatorLabel setFont:[UIFont systemFontOfSize:14]];
+        [_indicatorLabel setText:@"1条新消息"];
+        [self addSubview:_indicatorLabel];
+        
+        _coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_coverButton addTarget:self action:@selector(onNewMessageClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_coverButton setFrame:self.bounds];
+        [self addSubview:_coverButton];
+    }
+    return self;
+}
+
+- (void)onNewMessageClicked
+{
+    if(self.clickAction)
+        self.clickAction();
+}
+
+@end
+
+
 @implementation ClassZoneHeaderView
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -54,6 +92,13 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, frame.size.height - 12, self.width, 12)];
         [_bottomView setBackgroundColor:[UIColor colorWithRed:158 / 255.0 green:158 / 255.0 blue:158 / 255.0 alpha:1.f]];
         [self addSubview:_bottomView];
+        
+        __weak typeof(self) wself = self;
+        _msgIndicator = [[NewMessageIndicator alloc] initWithFrame:CGRectMake((self.width - 140) / 2, _bottomView.bottom + 12, 140, 30)];
+        [_msgIndicator setClickAction:^{
+            [wself onNewMessageClicked];
+        }];
+        [self addSubview:_msgIndicator];
     }
     return self;
 }
@@ -62,6 +107,11 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 {
     _newsPaper = newsPaper;
     [_contentLabel setText:_newsPaper];
+}
+
+- (void)onNewMessageClicked
+{
+    
 }
 
 - (void)onContentTap:(UITapGestureRecognizer *)tapGesture

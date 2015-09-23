@@ -15,5 +15,5 @@ typedef NS_ENUM(NSInteger, NewMessageType){
 
 @interface NewMessageVC : TNBaseTableViewController
 @property (nonatomic, assign)NewMessageType types;
-@property (nonatomic, copy)NSString *pkID;
+@property (nonatomic, copy)NSString *objid;
 @end

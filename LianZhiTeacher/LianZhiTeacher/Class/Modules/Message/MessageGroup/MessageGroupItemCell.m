@@ -91,7 +91,6 @@
         name = [NSString stringWithFormat:@"%@(%@)",name,_messageItem.fromInfo.label];
     _nameLabel.text = name;
     [_nameLabel setWidth:_timeLabel.left - 10 - _nameLabel.left];
-    [_messageItem setMsgNum:12];
     if(_messageItem.msgNum > 0)
     {
         [_numIndicator setHidden:NO];

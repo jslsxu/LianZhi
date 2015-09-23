@@ -13,7 +13,7 @@ extern NSString *const kMessageDeleteNotitication;
 extern NSString *const kMessageDeleteModelItemKey;
 
 
-@interface MessageDetailItemCell : TNTableViewCell
+@interface MessageDetailItemCell : TNTableViewCell<UICollectionViewDelegate, UICollectionViewDataSource>
 {
     UIView*                 _bgView;
     LogoView*               _logoView;
@@ -22,5 +22,6 @@ extern NSString *const kMessageDeleteModelItemKey;
     UIView*                 _sepLine;
     UILabel*                _contentLabel;
     MessageVoiceButton*     _voiceButton;
+    UICollectionView*       _collectionView;
 }
 @end

@@ -119,7 +119,7 @@
 
     NewMessageVC *newMessageVC = [[NewMessageVC alloc] init];
     [newMessageVC setTypes:NewMessageTypeTreeHouse];
-    [newMessageVC setPkID:[UserCenter sharedInstance].curChild.uid];
+    [newMessageVC setObjid:[UserCenter sharedInstance].curChild.uid];
     [CurrentROOTNavigationVC pushViewController:newMessageVC animated:YES];
 }
 

@@ -26,6 +26,12 @@
     AudioItem *audioItem = [[AudioItem alloc] init];
     [audioItem parseData:audioWrapper];
     self.audioItem = audioItem;
+    
+    NSInteger timeInterval = [dataWrapper getIntegerForKey:@"ctime"];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MM月dd日 HH:mm:ss"];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+    self.ctime = [formatter stringFromDate:date];
 }
 
 @end
@@ -71,6 +77,6 @@
     {
         height = kFaceWith;
     }
-    return height + 10 * 2 + 5;
+    return height + 10 * 2 + 5 + kTimeLabelHeight;
 }
 @end

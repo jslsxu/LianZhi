@@ -19,12 +19,21 @@
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(kAvatarHMargin, 5, kScreenWidth - kAvatarHMargin * 2, 10)];
+        _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.width - 120) / 2, 5, 120, 15)];
+        [_timeLabel setTextAlignment:NSTextAlignmentCenter];
+        [_timeLabel setFont:[UIFont systemFontOfSize:12]];
+        [_timeLabel setTextColor:[UIColor whiteColor]];
+        [_timeLabel setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.2]];
+        [_timeLabel.layer setCornerRadius:2];
+        [_timeLabel.layer setMasksToBounds:YES];
+        [self addSubview:_timeLabel];
+        
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(kAvatarHMargin, 5 + kTimeLabelHeight, kScreenWidth - kAvatarHMargin * 2, 10)];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"8f8f8f"]];
         [_nameLabel setFont:[UIFont systemFontOfSize:10]];
         [self addSubview:_nameLabel];
         
-        _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(0, 15, 32, 32)];
+        _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(0, _nameLabel.bottom, 32, 32)];
         [self addSubview:_avatarView];
         
         _contentButton = [UUMessageContentButton buttonWithType:UIButtonTypeCustom];
@@ -53,7 +62,7 @@
     if(messageItem.from == UUMessageFromMe)
     {
         [_nameLabel setTextAlignment:NSTextAlignmentRight];
-        [_avatarView setOrigin:CGPointMake(self.width - kAvatarHMargin - _avatarView.width, kMessageCellVMargin + 5)];
+        [_avatarView setX:self.width - kAvatarHMargin - _avatarView.width];
         [_contentButton setBackgroundImage:[[UIImage imageNamed:@"MessageSendedBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)] forState:UIControlStateNormal];
         [_contentButton setBackgroundImage:[[UIImage imageNamed:@"MessageSendedBGHighlighted"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)] forState:UIControlStateHighlighted];
         [_contentButton setContentEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 15)];
@@ -65,7 +74,7 @@
     else
     {
         [_nameLabel setTextAlignment:NSTextAlignmentLeft];
-        [_avatarView setOrigin:CGPointMake(kAvatarHMargin, kMessageCellVMargin + 5)];
+        [_avatarView setX:kAvatarHMargin];
         [_contentButton setBackgroundImage:[[UIImage imageNamed:@"MessageReceivedBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)] forState:UIControlStateNormal];
         [_contentButton setBackgroundImage:[[UIImage imageNamed:@"MessageReceivedBGHighlighted"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)] forState:UIControlStateHighlighted];
         [_contentButton setContentEdgeInsets:UIEdgeInsetsMake(10, 15, 10, 10)];
@@ -74,6 +83,9 @@
         UserInfo *userInfo = messageItem.userInfo;
         [_nameLabel setText:userInfo.name];
     }
+    
+    [_timeLabel setText:messageItem.messageContent.ctime];
+    
     [_contentButton setImage:nil forState:UIControlStateNormal];
     [_contentButton setTitle:nil forState:UIControlStateNormal];
     [_contentButton.backImageView setImage:nil];
@@ -116,12 +128,12 @@
         {
             
             _playButton.type = MLPlayVoiceButtonTypeRight;
-            [_playButton setOrigin:CGPointMake(kScreenWidth - 50 - _contentButton.width, kMessageCellVMargin + 5)];
+            [_playButton setOrigin:CGPointMake(kScreenWidth - 50 - _contentButton.width, _avatarView.y)];
         }
         else
         {
             _playButton.type = MLPlayVoiceButtonTypeLeft;
-            [_playButton setOrigin:CGPointMake(50, kMessageCellVMargin + 5)];
+            [_playButton setOrigin:CGPointMake(50, _avatarView.y)];
         }
     }
     else//表情
@@ -135,11 +147,11 @@
     }
     if(UUMessageFromMe == messageItem.from)
     {
-        [_contentButton setOrigin:CGPointMake(kScreenWidth - 50 - _contentButton.width, kMessageCellVMargin + 5)];
+        [_contentButton setOrigin:CGPointMake(kScreenWidth - 50 - _contentButton.width, _avatarView.y)];
     }
     else
     {
-        [_contentButton setOrigin:CGPointMake(50, kMessageCellVMargin + 5)];
+        [_contentButton setOrigin:CGPointMake(50, _avatarView.y)];
     }
 }
 

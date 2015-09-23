@@ -10,11 +10,13 @@
 #import "UUMessageContentButton.h"
 #import "MessageItem.h"
 #import "ChatVoiceButton.h"
+#define kTimeLabelHeight            20
 #define kAvatarHMargin              8
 #define kMessageCellVMargin         10
 #define kFaceWith                   80
 @interface MessageCell : TNTableViewCell
 {
+    UILabel*                    _timeLabel;
     UILabel*                    _nameLabel;
     AvatarView*                 _avatarView;
     UUMessageContentButton*     _contentButton;

@@ -1,6 +1,7 @@
 
 
 #import "JSMessagesViewController.h"
+#import "ClassMemberVC.h"
 @implementation JSMessagesViewController
 
 
@@ -25,6 +26,11 @@
 {
     [super viewDidLoad];
     self.title = self.name;
+    if(self.chatType == ChatTypeClass)
+    {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MineProfile"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickClassMember)];
+    }
+    
     _inputView = [[InputBarView alloc] init];
     [_inputView setInputDelegate:self];
     [_inputView setY:self.view.height - _inputView.height - 64];
@@ -34,6 +40,13 @@
     [self bindTableCell:@"MessageCell" tableModel:@"ChatMessageModel"];
     
     [self requestData:REQUEST_GETMORE];
+}
+
+- (void)onClickClassMember
+{
+    ClassMemberVC *classMemberVC = [[ClassMemberVC alloc] init];
+    [classMemberVC setClassID:self.targetID];
+    [self.navigationController pushViewController:classMemberVC animated:YES];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType

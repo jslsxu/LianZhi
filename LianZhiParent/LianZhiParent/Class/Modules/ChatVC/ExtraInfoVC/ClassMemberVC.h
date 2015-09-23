@@ -22,5 +22,5 @@
 {
     UITableView*    _tableView;
 }
-@property (nonatomic, strong)ClassInfo *classInfo;
+@property (nonatomic, copy)NSString *classID;
 @end

@@ -15,6 +15,7 @@
 @property (nonatomic, strong)AudioItem *audioItem;
 @property (nonatomic, copy)NSString *time;
 @property (nonatomic, copy)NSString *timeStr;
+@property (nonatomic, strong)NSArray *photos;
 @end
 
 @interface MessageDetailModel : TNListModel

@@ -20,6 +20,15 @@
 extern NSString *const kPublishPhotoItemFinishedNotification;
 extern NSString *const kPublishPhotoItemKey;
 
+@interface NewMessageIndicator : UIView
+{
+    AvatarView* _avatarView;
+    UILabel*    _indicatorLabel;
+    UIButton*   _coverButton;
+}
+@property (nonatomic, copy)void (^clickAction)();
+@end
+
 @protocol ClassZoneHeaderDelegate <NSObject>
 - (void)classZoneAppClicked;
 - (void)classZoneAlbumClicked;
@@ -33,6 +42,7 @@ extern NSString *const kPublishPhotoItemKey;
     UIButton*               _albumButton;
     UIImageView*            _brashImage;
     UIView*                 _bottomView;
+     NewMessageIndicator*    _msgIndicator;
 }
 @property (nonatomic, copy)NSString *newsPaper;
 @property (nonatomic, weak)id<ClassZoneHeaderDelegate> delegate;
