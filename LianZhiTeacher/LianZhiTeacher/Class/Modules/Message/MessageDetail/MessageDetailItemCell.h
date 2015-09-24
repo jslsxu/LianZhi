@@ -22,6 +22,7 @@ extern NSString *const kMessageDeleteModelItemKey;
     UIView*                 _sepLine;
     UILabel*                _contentLabel;
     MessageVoiceButton*     _voiceButton;
+    UILabel*                _voiceSpanLabel;
     UICollectionView*       _collectionView;
 }
 @end

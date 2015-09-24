@@ -96,6 +96,7 @@
     {
         cell = [[ContactItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
+    [cell setDelegate:self];
     ContactGroup *group = [self.parents objectAtIndex:indexPath.section];
     FamilyInfo *userInfo = [[group contacts] objectAtIndex:indexPath.row];
     [cell setUserInfo:userInfo];
@@ -121,21 +122,27 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ContactGroup *group = [self.parents objectAtIndex:indexPath.section];
     FamilyInfo *userInfo = [[group contacts] objectAtIndex:indexPath.row];
-//    if(userInfo.mobile.length > 0)
-//    {
-//        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-//        TNButtonItem *item = [TNButtonItem itemWithTitle:@"拨打" action:^{
-//            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",userInfo.mobile];
-//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-//        }];
-//        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",userInfo.mobile] buttonItems:@[cancelItem,item]];
-//        [alertView show];
-//    }
+    if(userInfo.mobile.length > 0)
+    {
+        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+        TNButtonItem *item = [TNButtonItem itemWithTitle:@"拨打" action:^{
+            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",userInfo.mobile];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+        }];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",userInfo.mobile] buttonItems:@[cancelItem,item]];
+        [alertView show];
+    }
+}
+
+
+#pragma mark - ContactDelegate
+- (void)contactItemChatClicked:(UserInfo *)userInfo
+{
     JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
     [chatVC setTargetID:userInfo.uid];
     [chatVC setChatType:ChatTypeParents];
+    [chatVC setTitle:[NSString stringWithFormat:@"%@的%@",self.studentInfo.name,[(FamilyInfo *)userInfo relation]]];
     [ApplicationDelegate popAndPush:chatVC];
 }
-
 
 @end

@@ -21,6 +21,27 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
 
 @end
 
+@implementation TimelineCommentAlertInfo
+
+- (void)parseData:(TNDataWrapper *)dataWrapper
+{
+    self.uid = [dataWrapper getStringForKey:@"uid"];
+    self.avatar = [dataWrapper getStringForKey:@"head"];
+    self.num = [dataWrapper getIntegerForKey:@"num"];
+}
+
+@end
+
+@implementation TimelineCommentItem
+
+- (void)parseData:(TNDataWrapper *)dataWrapper
+{
+    self.classID = [dataWrapper getStringForKey:@"class_id"];
+    TNDataWrapper *commentWrapper = [dataWrapper getDataWrapperForKey:@""];
+}
+
+@end
+
 @implementation StatusManager
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
@@ -38,6 +59,12 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
             [newFeedsArray addObject:classID];
         }
         self.feedClassesNew = newFeedsArray;
+    }
+    
+    TNDataWrapper *newClassFC = [dataWrapper getDataWrapperForKey:@"new_class_fc"];
+    if(newClassFC.count > 0)
+    {
+        
     }
     
     TNDataWrapper *noticeWrapper = [dataWrapper getDataWrapperForKey:@"notice"];

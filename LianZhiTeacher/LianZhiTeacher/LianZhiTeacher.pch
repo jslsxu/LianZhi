@@ -17,5 +17,6 @@
 #import "UserCenter.h"
 #import "LoginVC.h"
 #import "PhotoFlowVC.h"
+#import "JSMessagesViewController.h"
 #endif
 #endif

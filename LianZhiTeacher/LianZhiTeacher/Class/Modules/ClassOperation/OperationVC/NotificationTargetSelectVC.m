@@ -25,7 +25,6 @@
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_checkButton.right + 10, 0, 200, self.height)];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"767676"]];
         [_nameLabel setFont:[UIFont systemFontOfSize:12]];
-        [_nameLabel setText:@"我教授的半"];
         [self addSubview:_nameLabel];
         
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
@@ -37,6 +36,11 @@
     return self;
 }
 
+- (void)setClassInfo:(ClassInfo *)classInfo
+{
+    _classInfo = classInfo;
+    [_nameLabel setText:_classInfo.className];
+}
 @end
 
 @implementation NotificationGroupHeaderView
@@ -56,7 +60,6 @@
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_checkButton.right + 10, 0, 200, 50)];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"767676"]];
         [_nameLabel setFont:[UIFont systemFontOfSize:12]];
-        [_nameLabel setText:@"三年一班"];
         [self addSubview:_nameLabel];
 
     }
@@ -66,7 +69,8 @@
 @end
 
 @interface NotificationTargetSelectVC ()<UITableViewDataSource, UITableViewDelegate>
-
+@property (nonatomic, strong)NSArray *groupArray;
+@property (nonatomic, strong)NSArray *classesArray;
 @end
 
 @implementation NotificationTargetSelectVC
@@ -91,11 +95,13 @@
     [self.view addSubview:_tableView];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(onSendClicked)];
+    
+    [self requestData];
 }
 
 - (void)onSegmentChanged
 {
-    
+    [_tableView reloadData];
 }
 
 - (void)onSendClicked
@@ -104,20 +110,74 @@
         self.completion(nil);
 }
 
+- (void)requestData
+{
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/get_publish_scope" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        TNDataWrapper *groupsWrapper = [responseObject getDataWrapperForKey:@"groups"];
+        if(groupsWrapper.count > 0)
+        {
+            NSMutableArray *groupArray = [NSMutableArray array];
+            for (NSInteger i = 0; i < groupsWrapper.count; i++)
+            {
+                TNDataWrapper *classWrapper = [groupsWrapper getDataWrapperForIndex:i];
+                ClassInfo *classInfo = [[ClassInfo alloc] init];
+                [classInfo parseData:classWrapper];
+                [groupArray addObject:classInfo];
+            }
+            self.groupArray = groupArray;
+        }
+        
+        TNDataWrapper *classesWrapper = [responseObject getDataWrapperForKey:@"classes"];
+        if(classesWrapper.count > 0)
+        {
+            NSMutableArray *groupArray = [NSMutableArray array];
+            for (NSInteger i = 0; i < classesWrapper.count; i++)
+            {
+                TNDataWrapper *classWrapper = [classesWrapper getDataWrapperForIndex:i];
+                ClassInfo *classInfo = [[ClassInfo alloc] init];
+                [classInfo parseData:classWrapper];
+                [groupArray addObject:classInfo];
+            }
+            self.classesArray = groupArray;
+        }
+        [_tableView reloadData];
+    } fail:^(NSString *errMsg) {
+        
+    }];
+}
+
 #pragma mark = UITableViewDelegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    if(_segmentControl.selectedSegmentIndex == 0)
+    {
+        return 2;
+    }
+    else
+        return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    if(_segmentControl.selectedSegmentIndex == 0)
+    {
+        if(section == 0)
+            return self.groupArray.count;
+        else
+            return self.classesArray.count;
+    }
+    else
+    {
+        return [UserCenter sharedInstance].curSchool.teachers.count;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 50;
+    if(_segmentControl.selectedSegmentIndex == 0)
+        return 50;
+    else
+        return 0.1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -127,8 +187,17 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    NotificationGroupHeaderView *headerView = [[NotificationGroupHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 50)];
-    return headerView;
+    if(_segmentControl.selectedSegmentIndex == 0)
+    {
+        NotificationGroupHeaderView *headerView = [[NotificationGroupHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 50)];
+        if(section == 0)
+            [headerView.nameLabel setText:@"我教授的班"];
+        else
+            [headerView.nameLabel setText:@"我管理的班"];
+        return headerView;
+    }
+    else
+        return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -139,15 +208,44 @@
     {
         cell = [[NotificationTargetCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
+    if(_segmentControl.selectedSegmentIndex == 0)
+    {
+        if(indexPath.section == 0)
+            [cell setClassInfo:self.groupArray[indexPath.row]];
+        else
+            [cell setClassInfo:self.classesArray[indexPath.row]];
+        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+    }
+    else
+    {
+        NSArray *teachers = [UserCenter sharedInstance].curSchool.teachers;
+        TeacherInfo *teacherInfo = teachers[indexPath.row];
+        [cell.nameLabel setText:teacherInfo.name];
+        [cell setAccessoryView:nil];
+    }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NotificationClassStudentsVC *studentVC = [[NotificationClassStudentsVC alloc] init];
-    [studentVC setTitle:@"三年级二班"];
-    [self.navigationController pushViewController:studentVC animated:YES];
+    if(_segmentControl.selectedSegmentIndex == 0)
+    {
+        NSInteger section = indexPath.section;
+        NSInteger row = indexPath.row;
+        ClassInfo *classInfo = nil;
+        if(section == 0)
+            classInfo = self.groupArray[row];
+        else
+            classInfo = self.classesArray[row];
+        NotificationClassStudentsVC *studentVC = [[NotificationClassStudentsVC alloc] init];
+        [studentVC setClassID:classInfo.classID];
+        [self.navigationController pushViewController:studentVC animated:YES];
+    }
+    else
+    {
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning {

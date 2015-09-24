@@ -31,11 +31,11 @@
         [_contentView.layer setMasksToBounds:YES];
         [self addSubview:_contentView];
         
-        NSArray *titleArray = @[@"赞",@"评论",@"分享"];
+        NSArray *titleArray = @[@"赞",@"评论"];
         NSArray *imageArray = @[@"ActionPraise",@"ActionComment",@"ActionShare"];
         NSArray *actionArray = @[@"onActionPraise",@"onActionComment",@"onActionShare"];
-        NSInteger itemWidth = _contentView.width / 3;
-        for (NSInteger i = 0; i < 3; i++)
+        NSInteger itemWidth = _contentView.width / titleArray.count;
+        for (NSInteger i = 0; i < titleArray.count; i++)
         {
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             [button setFrame:CGRectMake(itemWidth * i, 0, itemWidth, _contentView.height)];

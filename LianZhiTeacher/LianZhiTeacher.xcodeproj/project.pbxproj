@@ -354,6 +354,10 @@
 		37FD6E081BB054D100C83AB4 /* guide4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 37FD6E031BB054D100C83AB4 /* guide4.jpg */; };
 		37FD6E091BB054D100C83AB4 /* guide5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 37FD6E041BB054D100C83AB4 /* guide5.jpg */; };
 		37FD6E161BB0584400C83AB4 /* ChatVoiceButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E141BB0584400C83AB4 /* ChatVoiceButton.m */; };
+		37FD6E281BB444FB00C83AB4 /* ClassSelectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E271BB444FB00C83AB4 /* ClassSelectionVC.m */; };
+		37FD6E301BB4817900C83AB4 /* NewMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E2B1BB4817900C83AB4 /* NewMessageCell.m */; };
+		37FD6E311BB4817900C83AB4 /* NewMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E2D1BB4817900C83AB4 /* NewMessageModel.m */; };
+		37FD6E321BB4817900C83AB4 /* NewMessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E2F1BB4817900C83AB4 /* NewMessageVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1043,6 +1047,14 @@
 		37FD6E041BB054D100C83AB4 /* guide5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = guide5.jpg; sourceTree = "<group>"; };
 		37FD6E141BB0584400C83AB4 /* ChatVoiceButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatVoiceButton.m; sourceTree = "<group>"; };
 		37FD6E151BB0584400C83AB4 /* ChatVoiceButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatVoiceButton.h; sourceTree = "<group>"; };
+		37FD6E261BB444FB00C83AB4 /* ClassSelectionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassSelectionVC.h; sourceTree = "<group>"; };
+		37FD6E271BB444FB00C83AB4 /* ClassSelectionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassSelectionVC.m; sourceTree = "<group>"; };
+		37FD6E2A1BB4817900C83AB4 /* NewMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMessageCell.h; sourceTree = "<group>"; };
+		37FD6E2B1BB4817900C83AB4 /* NewMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMessageCell.m; sourceTree = "<group>"; };
+		37FD6E2C1BB4817900C83AB4 /* NewMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMessageModel.h; sourceTree = "<group>"; };
+		37FD6E2D1BB4817900C83AB4 /* NewMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMessageModel.m; sourceTree = "<group>"; };
+		37FD6E2E1BB4817900C83AB4 /* NewMessageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMessageVC.h; sourceTree = "<group>"; };
+		37FD6E2F1BB4817900C83AB4 /* NewMessageVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMessageVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2362,6 +2374,7 @@
 		37DEE4A91A57BE65009A8771 /* ClassTimeline */ = {
 			isa = PBXGroup;
 			children = (
+				37FD6E291BB4817900C83AB4 /* NewMessageVC */,
 				37DEE4C21A57C1D8009A8771 /* ClassApp */,
 				37DEE4C91A57C1D8009A8771 /* ClassZone */,
 				37DEE4D21A57C1D8009A8771 /* GrowthTimeline */,
@@ -2473,6 +2486,8 @@
 				37DEE4D61A57C1D8009A8771 /* GrowthTimelineModel.m */,
 				37DEE4D71A57C1D8009A8771 /* GrowthTimelineVC.h */,
 				37DEE4D81A57C1D8009A8771 /* GrowthTimelineVC.m */,
+				37FD6E261BB444FB00C83AB4 /* ClassSelectionVC.h */,
+				37FD6E271BB444FB00C83AB4 /* ClassSelectionVC.m */,
 			);
 			path = GrowthTimeline;
 			sourceTree = "<group>";
@@ -2603,6 +2618,19 @@
 				37FD6E041BB054D100C83AB4 /* guide5.jpg */,
 			);
 			path = WelcomeView;
+			sourceTree = "<group>";
+		};
+		37FD6E291BB4817900C83AB4 /* NewMessageVC */ = {
+			isa = PBXGroup;
+			children = (
+				37FD6E2A1BB4817900C83AB4 /* NewMessageCell.h */,
+				37FD6E2B1BB4817900C83AB4 /* NewMessageCell.m */,
+				37FD6E2C1BB4817900C83AB4 /* NewMessageModel.h */,
+				37FD6E2D1BB4817900C83AB4 /* NewMessageModel.m */,
+				37FD6E2E1BB4817900C83AB4 /* NewMessageVC.h */,
+				37FD6E2F1BB4817900C83AB4 /* NewMessageVC.m */,
+			);
+			path = NewMessageVC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2792,6 +2820,7 @@
 				3793FA4D1B7CFFF000501F77 /* RETableViewSection.m in Sources */,
 				3793FA451B7CFFF000501F77 /* RECommonFunctions.m in Sources */,
 				379947E91A66B430008E4B4F /* PhotoFlowCell.m in Sources */,
+				37FD6E321BB4817900C83AB4 /* NewMessageVC.m in Sources */,
 				3793FA841B7CFFF000501F77 /* AudioRecordView.m in Sources */,
 				3793FA9D1B7CFFF000501F77 /* PhotoItem.m in Sources */,
 				37DEE4BF1A57C19C009A8771 /* MessageGroupItemCell.m in Sources */,
@@ -2807,6 +2836,7 @@
 				3793FAF01B7CFFF000501F77 /* TNBaseWebViewController.m in Sources */,
 				3793FA501B7CFFF000501F77 /* REFormattedNumberField.m in Sources */,
 				3793FA441B7CFFF000501F77 /* REActionBar.m in Sources */,
+				37FD6E301BB4817900C83AB4 /* NewMessageCell.m in Sources */,
 				3728A6A81B98B20700310457 /* ClassZoneModel.m in Sources */,
 				3793FAF11B7CFFF000501F77 /* TaskItem.m in Sources */,
 				3793FA251B7CFFF000501F77 /* YLImageView.m in Sources */,
@@ -2881,6 +2911,7 @@
 				3793FA811B7CFFF000501F77 /* CTAssetsViewControllerTransition.m in Sources */,
 				378C78431AA43D6C00E171E2 /* PreviewMessageVC.m in Sources */,
 				3793FAB91B7CFFF000501F77 /* MLAudioRecorder.m in Sources */,
+				37FD6E281BB444FB00C83AB4 /* ClassSelectionVC.m in Sources */,
 				3793FA291B7CFFF000501F77 /* OpenUDID.m in Sources */,
 				3793FA261B7CFFF000501F77 /* MBProgressHUD+Add.m in Sources */,
 				3793FA2B1B7CFFF000501F77 /* RETableViewCreditCardCell.m in Sources */,
@@ -2979,6 +3010,7 @@
 				3793FA3A1B7CFFF000501F77 /* REInlineDatePickerItem.m in Sources */,
 				3793FA9A1B7CFFF000501F77 /* UIImage+AspectFit.m in Sources */,
 				3793FACE1B7CFFF000501F77 /* SDWebImageCompat.m in Sources */,
+				37FD6E311BB4817900C83AB4 /* NewMessageModel.m in Sources */,
 				3728A7361B9D376300310457 /* FaceSelectView.m in Sources */,
 				3793FA921B7CFFF000501F77 /* POIItemCell.m in Sources */,
 				3793FAF61B7CFFF000501F77 /* Utility.m in Sources */,

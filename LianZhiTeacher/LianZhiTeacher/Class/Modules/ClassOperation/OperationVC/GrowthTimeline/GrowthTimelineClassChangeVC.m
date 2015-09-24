@@ -87,7 +87,7 @@
 - (void)onConfirm
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:[NSString stringWithJSONObject:self.record] forKey:@"records"];
+    [params setValue:[NSString stringWithJSONObject:self.record] forKey:@"record"];
     
     NSMutableArray *classArray = [NSMutableArray array];
     NSArray *keys = _paramsDic.allKeys;

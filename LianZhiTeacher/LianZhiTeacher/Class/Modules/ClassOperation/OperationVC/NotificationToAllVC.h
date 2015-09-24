@@ -9,12 +9,13 @@
 #import "TNBaseViewController.h"
 
 @interface NotificationItem : TNModelItem
-@property (nonatomic, copy)NSString *groupID;
-@property (nonatomic, copy)NSString *groupName;
-@property (nonatomic, strong)NSArray *subItems;
-@property (nonatomic, copy)NSString *comment;
-@property (nonatomic, assign)BOOL selected;
-@property (nonatomic, assign)BOOL canSelected;
+@property (nonatomic, copy)NSString *notificationID;
+@property (nonatomic, copy)NSString *words;
+@property (nonatomic, assign)NSInteger notificationType;
+@end
+
+@interface NotificationModel : TNListModel
+@property (nonatomic, assign)NSInteger total;
 @end
 
 @interface NotificationCell : TNTableViewCell
@@ -24,9 +25,8 @@
 @property (nonatomic, strong)NotificationItem *notificationItem;
 @end
 
-@interface NotificationToAllVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
+@interface NotificationToAllVC : TNBaseTableViewController
 {
-    UITableView* _tableView;
-    NSMutableArray* _latestArray;
+    
 }
 @end

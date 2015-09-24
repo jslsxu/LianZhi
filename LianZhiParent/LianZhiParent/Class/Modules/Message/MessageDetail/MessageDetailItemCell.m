@@ -18,6 +18,7 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
 #define kBGViewHMargin          10
 #define kContentHMargin         10
 #define kInnerMargin            8
+#define kVoiceButtonHeight      40
 
 @implementation MessageDetailItemCell
 
@@ -64,9 +65,15 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_bgView addSubview:_contentLabel];
         
-        _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(10, 0, _bgView.width - 10 * 2, 45)];
+        _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(10, 0, _bgView.width - 10 * 2 - 60, kVoiceButtonHeight)];
         [_voiceButton addTarget:self action:@selector(onVoiceButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [_bgView addSubview:_voiceButton];
+        
+        _voiceSpanLabel = [[UILabel alloc] initWithFrame:CGRectMake(_voiceButton.right, _voiceButton.y, 60, _voiceButton.height)];
+        [_voiceSpanLabel setTextAlignment:NSTextAlignmentCenter];
+        [_voiceSpanLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
+        [_voiceSpanLabel setFont:[UIFont systemFontOfSize:14]];
+        [_bgView addSubview:_voiceSpanLabel];
         
         NSInteger collectionWidth = _bgView.width - 10 * 2;
         NSInteger itemWidth = (collectionWidth - kInnerMargin * 2) / 3;
@@ -109,6 +116,7 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
     }
     [_collectionView setHidden:YES];
     [_voiceButton setHidden:YES];
+    [_voiceSpanLabel setHidden:YES];
     if(item.pictureArray.count > 0)
     {
         [_collectionView setHidden:NO];
@@ -125,8 +133,11 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
     else if(item.audioItem)
     {
         [_voiceButton setHidden:NO];
+        [_voiceSpanLabel setHidden:NO];
         [_voiceButton setAudioItem:item.audioItem];
         [_voiceButton setOrigin:CGPointMake(kContentHMargin, height)];
+        [_voiceSpanLabel setText:[Utility formatStringForTime:item.audioItem.timeSpan]];
+        [_voiceSpanLabel setY:_voiceButton.y];
         height += _voiceButton.height + kContentHMargin;
     }
     else
@@ -197,7 +208,7 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
     }
     else if(item.audioItem)
     {
-        height += 45 + 10;
+        height += kVoiceButtonHeight + 10;
     }
     else
     {

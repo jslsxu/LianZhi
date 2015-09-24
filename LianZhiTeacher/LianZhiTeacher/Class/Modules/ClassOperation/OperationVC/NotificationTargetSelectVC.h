@@ -15,6 +15,7 @@
     UIView*     _sepLine;
 }
 @property (nonatomic, strong)ClassInfo *classInfo;
+@property (nonatomic, readonly)UILabel *nameLabel;
 @end
 
 @interface NotificationGroupHeaderView : UIView
@@ -22,6 +23,7 @@
     UIButton*   _checkButton;
     UILabel*    _nameLabel;
 }
+@property (nonatomic, readonly)UILabel *nameLabel;
 @end
 
 typedef void(^Completion)(NSString *targetJson);

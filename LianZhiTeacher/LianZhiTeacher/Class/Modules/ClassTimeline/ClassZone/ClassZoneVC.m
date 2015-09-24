@@ -9,6 +9,8 @@
 #import "ClassZoneVC.h"
 #import "PublishSelectionView.h"
 #import "ClassZoneModel.h"
+#import "ClassSelectionVC.h"
+#import "NewMessageVC.h"
 
 #define kClassZoneShown         @"ClassZoneShown"
 
@@ -59,7 +61,11 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     self = [super initWithFrame:frame];
     if(self)
     {
-        [self setBackgroundColor:[UIColor colorWithRed:19 / 255.0 green:48 / 255.0 blue:43 / 255.0 alpha:1.f]];
+        [self setBackgroundColor:[UIColor whiteColor]];
+        
+        UIView *contentView = [[UIView alloc] initWithFrame:self.bounds];
+        [contentView setBackgroundColor:[UIColor colorWithRed:19 / 255.0 green:48 / 255.0 blue:43 / 255.0 alpha:1.f]];
+        [self addSubview:contentView];
         
         CGFloat buttonWidth = 40;
         _albumButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -93,12 +99,17 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         [_bottomView setBackgroundColor:[UIColor colorWithRed:158 / 255.0 green:158 / 255.0 blue:158 / 255.0 alpha:1.f]];
         [self addSubview:_bottomView];
         
-        __weak typeof(self) wself = self;
-        _msgIndicator = [[NewMessageIndicator alloc] initWithFrame:CGRectMake((self.width - 140) / 2, _bottomView.bottom + 12, 140, 30)];
-        [_msgIndicator setClickAction:^{
-            [wself onNewMessageClicked];
-        }];
-        [self addSubview:_msgIndicator];
+//        if()//有新消息
+        {
+            __weak typeof(self) wself = self;
+            _msgIndicator = [[NewMessageIndicator alloc] initWithFrame:CGRectMake((self.width - 140) / 2, _bottomView.bottom + 6, 140, 30)];
+            [_msgIndicator setClickAction:^{
+                [wself onNewMessageClicked];
+            }];
+            [self addSubview:_msgIndicator];
+            
+            self.height += 30 + 12;
+        }
     }
     return self;
 }
@@ -111,7 +122,9 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)onNewMessageClicked
 {
-    
+    NewMessageVC *newmessageVC = [[NewMessageVC alloc] init];
+    [newmessageVC setObjid:self.classInfo.classID];
+    [CurrentROOTNavigationVC pushViewController:newmessageVC animated:YES];
 }
 
 - (void)onContentTap:(UITapGestureRecognizer *)tapGesture
@@ -388,7 +401,13 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)onExchangeClass
 {
-    
+    __weak typeof(self) wself = self;
+    ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
+    [classSelectionVC setOriginalClassID:self.classInfo.classID];
+    [classSelectionVC setSelection:^(ClassInfo *classInfo) {
+        [wself setClassInfo:classInfo];
+    }];
+    [self.navigationController pushViewController:classSelectionVC animated:YES];
 }
 
 - (void)onToolBarButtonClicked:(UIButton *)button
@@ -562,6 +581,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (void)setClassInfo:(ClassInfo *)classInfo
 {
     _classInfo = classInfo;
+    [_headerView setClassInfo:_classInfo];
     [self setTitle:_classInfo.className];
     ClassZoneModel *model = (ClassZoneModel *)self.tableViewModel;
     [model setClassID:self.classInfo.classID];

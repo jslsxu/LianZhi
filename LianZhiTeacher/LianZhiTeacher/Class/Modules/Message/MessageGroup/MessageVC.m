@@ -64,9 +64,16 @@
 
 - (void)onAddActionClicked
 {
-    ActionPopView *actionView = [[ActionPopView alloc] initWithFrame:CGRectMake(self.view.width - 140, 64, 140, 100)];
-    [actionView setDelegate:self];
-    [actionView show];
+    if(self.messageModel.canPublish)
+    {
+        ActionPopView *actionView = [[ActionPopView alloc] initWithFrame:CGRectMake(self.view.width - 140, 64, 140, 100)];
+        [actionView setDelegate:self];
+        [actionView show];
+    }
+    else
+    {
+        [self onNewChat];
+    }
 }
 
 - (void)onPublishPhotoFinished:(NSNotification *)notification
@@ -133,6 +140,12 @@
     }
     return msgNum;
 }
+
+- (void)onNewChat
+{
+    
+}
+#pragma mark - UITableViewDelegate
 
 - (void)setShowEmptyLabel:(BOOL)showEmpty
 {
@@ -209,11 +222,12 @@
 {
     if(index == 0)
     {
-        
+        NotificationToAllVC *notificationToAllVC = [[NotificationToAllVC alloc] init];
+        [self.navigationController pushViewController:notificationToAllVC animated:YES];
     }
     else
     {
-        
+        [self onNewChat];
     }
 }
 

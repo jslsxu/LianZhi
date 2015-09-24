@@ -8,6 +8,7 @@
 
 #import "GrowthTimelineVC.h"
 #import "PublishSelectionView.h"
+#import "ClassSelectionVC.h"
 @implementation GrowthTimelineHeaderView
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -117,9 +118,21 @@
 
 @implementation GrowthTimelineVC
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self)
+    {
+        ClassInfo *classInfo = [UserCenter sharedInstance].curSchool.classes[0];
+        self.classID = classInfo.classID;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"成长手册";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"切换" style:UIBarButtonItemStylePlain target:self action:@selector(onSwitchClass)];
     self.date = [NSDate date];
     _headerView = [[GrowthTimelineHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 80)];
     [_headerView setDelegate:self];
@@ -129,6 +142,18 @@
     [self setSupportPullUp:YES];
     [self setShouldShowEmptyHint:YES];
     [self requestData:REQUEST_REFRESH];
+}
+
+- (void)onSwitchClass
+{
+    __weak typeof(self) wself = self;
+    ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
+    [classSelectionVC setOriginalClassID:self.classID];
+    [classSelectionVC setSelection:^(ClassInfo *classInfo) {
+        wself.classID = classInfo.classID;
+        [wself requestData:REQUEST_REFRESH];
+    }];
+    [self.navigationController pushViewController:classSelectionVC animated:YES];
 }
 
 #pragma mark - GrowthDatePickerDelegate

@@ -22,13 +22,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.title = @"通知提醒";
-    
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
-    [self setupHeaderView:headerView];
-    [self.view addSubview:headerView];
-    [self.tableView setFrame:CGRectMake(0, headerView.bottom, self.view.width, self.view.height - headerView.bottom)];
+    NSMutableString *text = [NSMutableString stringWithString:self.fromInfo.name];
+    if(self.fromInfo.label.length > 0)
+        [text appendString:[NSString stringWithFormat:@"(%@)",self.fromInfo.label]];
+    self.title = text;
     
     [self bindTableCell:@"MessageDetailItemCell" tableModel:@"MessageDetailModel"];
     [self setSupportPullDown:YES];
@@ -36,20 +33,6 @@
     [self requestData:REQUEST_REFRESH];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMessageItemDeleteNotification:) name:kMessageDeleteNotitication object:nil];
-}
-
-- (void)setupHeaderView:(UIView *)viewParent
-{
-    [viewParent setBackgroundColor:[UIColor colorWithRed:211 / 255.0 green:211 / 255.0 blue:211 / 255.0 alpha:1.f]];
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, viewParent.width - 10 * 2, viewParent.height)];
-    [nameLabel setBackgroundColor:[UIColor clearColor]];
-    [nameLabel setFont:[UIFont systemFontOfSize:16]];
-    [nameLabel setTextColor:kCommonParentTintColor];
-    NSMutableString *text = [NSMutableString stringWithString:self.fromInfo.name];
-    if(self.fromInfo.label.length > 0)
-        [text appendString:[NSString stringWithFormat:@"(%@)",self.fromInfo.label]];
-    [nameLabel setText:text];
-    [viewParent addSubview:nameLabel];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType

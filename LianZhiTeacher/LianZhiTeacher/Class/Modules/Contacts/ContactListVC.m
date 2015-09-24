@@ -78,21 +78,12 @@
 
 - (void)setupHeaderView:(UIView *)viewParent
 {
-    UILabel* hintLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [hintLabel setBackgroundColor:[UIColor clearColor]];
-    [hintLabel setText:@"联系人"];
-    [hintLabel setTextColor:kCommonTeacherTintColor];
-    [hintLabel setFont:[UIFont systemFontOfSize:16]];
-    [hintLabel sizeToFit];
-    [hintLabel setOrigin:CGPointMake(10, (viewParent.height - hintLabel.height) / 2)];
-    [viewParent addSubview:hintLabel];
-    
     if([[UserCenter sharedInstance] teachAtCurSchool])
     {
         _segCtrl = [[UISegmentedControl alloc] initWithItems:@[@"家长",@"同事"]];
         [_segCtrl setTintColor:kCommonTeacherTintColor];
-        [_segCtrl setWidth:100];
-        [_segCtrl setOrigin:CGPointMake(viewParent.width - 12 - _segCtrl.width, (viewParent.height - _segCtrl.height) / 2)];
+        [_segCtrl setWidth:160];
+        [_segCtrl setOrigin:CGPointMake((viewParent.width - _segCtrl.width) / 2, (viewParent.height - _segCtrl.height) / 2)];
         [_segCtrl addTarget:self action:@selector(onSegmentValueChanged:) forControlEvents:UIControlEventValueChanged];
         [_segCtrl setSelectedSegmentIndex:0];
         [viewParent addSubview:_segCtrl];
@@ -196,6 +187,7 @@
         {
             cell = [[ContactItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         }
+        [cell setDelegate:self];
         ContactGroup *group = nil;
         if(tableView == _studentsTableView)
             group = [_contactModel.students objectAtIndex:indexPath.section];
@@ -281,8 +273,17 @@
             TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",teacher.mobile] buttonItems:@[cancelItem,item]];
             [alertView show];
         }
-
     }
+}
+
+#pragma mark - ContactDelegate
+- (void)contactItemChatClicked:(UserInfo *)userInfo
+{
+    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+    [chatVC setTargetID:userInfo.uid];
+    [chatVC setChatType:ChatTypeTeacher];
+    [chatVC setTitle:userInfo.name];
+    [ApplicationDelegate popAndPush:chatVC];
 }
 
 - (void)didReceiveMemoryWarning {

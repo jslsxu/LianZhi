@@ -209,7 +209,7 @@
         return;
     }
     
-    NSString *prefix = self.type==MLPlayVoiceButtonTypeRight?@"ReceiverVoiceNodePlaying00":@"SenderVoiceNodePlaying00";
+    NSString *prefix = self.type==MLPlayVoiceButtonTypeRight ? @"AudioPlayMe":@"AudioPlayOther";
     if ([self isVoicePlaying]) {
         self.playingSignImageView.image = [UIImage animatedImageNamed:prefix duration:1.0f];
     }else{
@@ -227,7 +227,7 @@
     if (self.type == MLPlayVoiceButtonTypeRight) {
         self.playingSignImageView.frame = CGRectMake(self.frame.size.width-kVoicePlaySignSideLength-20.0f, (self.frame.size.height-kVoicePlaySignSideLength)/2, kVoicePlaySignSideLength, kVoicePlaySignSideLength);
     }else{
-        self.playingSignImageView.frame = CGRectMake(5.0f, (self.frame.size.height-kVoicePlaySignSideLength)/2, kVoicePlaySignSideLength, kVoicePlaySignSideLength);
+        self.playingSignImageView.frame = CGRectMake(20, (self.frame.size.height-kVoicePlaySignSideLength)/2, kVoicePlaySignSideLength, kVoicePlaySignSideLength);
     }
     
     self.indicator.frame = self.playingSignImageView.frame;

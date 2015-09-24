@@ -54,7 +54,7 @@
         [self.modelItemArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             MessageItem *item1 = (MessageItem *)obj1;
             MessageItem *item2 = (MessageItem *)obj2;
-            return [item1.messageContent.mid compare:item2.messageContent.mid];
+            return [item1.messageContent.ctime compare:item2.messageContent.ctime];
         }];
     }
     if(type == REQUEST_REFRESH)

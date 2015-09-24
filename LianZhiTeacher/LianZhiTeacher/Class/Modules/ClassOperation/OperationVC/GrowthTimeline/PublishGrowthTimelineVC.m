@@ -128,7 +128,7 @@
     {
         NSString *key = self.keyArray[i];
         UIButton *healthButton = _healthArray[i];
-        [record setValue:kStringFromValue(!healthButton.selected) forKey:key];
+        [record setValue:kStringFromValue(healthButton.selected) forKey:key];
     }
     [record setValue:_textView.text forKey:@"words"];
     GrowthTimelineClassChangeVC *classSelectVC = [[GrowthTimelineClassChangeVC alloc] init];

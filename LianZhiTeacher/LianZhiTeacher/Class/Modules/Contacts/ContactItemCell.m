@@ -26,6 +26,13 @@
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 44 - 0.5, self.width, 0.5)];
         [_sepLine setBackgroundColor:[UIColor colorWithRed:240 / 255.0 green:240 / 255.0 blue:240 / 255.0 alpha:1.f]];
         [self addSubview:_sepLine];
+        
+        _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
+        [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonNormal"] forState:UIControlStateNormal];
+        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonHighlighted"] forState:UIControlStateHighlighted];
+        [self addSubview:_chatButton];
     }
     return self;
 }
@@ -35,6 +42,14 @@
     _classInfo = classInfo;
     [_logoView setImageWithUrl:[NSURL URLWithString:_classInfo.logoUrl]];
     [_nameLabel setText:_classInfo.className];
+}
+
+- (void)onChatClicked
+{
+    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+    [chatVC setTargetID:self.classInfo.classID];
+    [chatVC setChatType:ChatTypeClass];
+    [ApplicationDelegate popAndPush:chatVC];
 }
 
 @end
@@ -67,6 +82,13 @@
         _genderImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         [self addSubview:_genderImageView];
         
+        _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
+        [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonNormal"] forState:UIControlStateNormal];
+        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonHighlighted"] forState:UIControlStateHighlighted];
+        [self addSubview:_chatButton];
+        
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 44 - 0.5, self.width, 0.5)];
         [_sepLine setBackgroundColor:[UIColor colorWithRed:240 / 255.0 green:240 / 255.0 blue:240 / 255.0 alpha:1.f]];
         [self addSubview:_sepLine];
@@ -82,7 +104,7 @@
     
     [_nameLabel setText:userInfo.name];
     [_nameLabel sizeToFit];
-    [_nameLabel setFrame:CGRectMake(_avatar.right + 15, (self.height - _nameLabel.height) / 2, _nameLabel.width, _nameLabel.height)];
+    [_nameLabel setFrame:CGRectMake(_avatar.right + 15, (self.height - _nameLabel.height) / 2, MAX(_nameLabel.width, _chatButton.left - _nameLabel.left - 10), _nameLabel.height)];
     
     if([userInfo isKindOfClass:[TeacherInfo class]])
     {
@@ -91,6 +113,12 @@
         [_commentLabel sizeToFit];
         [_commentLabel setOrigin:CGPointMake(_nameLabel.right + 15, (self.height - _commentLabel.height) / 2)];
     }
+}
+
+- (void)onChatClicked
+{
+    if([self.delegate respondsToSelector:@selector(contactItemChatClicked:)])
+        [self.delegate contactItemChatClicked:self.userInfo];
 }
 
 @end

@@ -15,12 +15,13 @@
     UILabel*    _infoLabel;
     UIButton*   _checkButton;
 }
-@property (nonatomic, strong)StudentInfo *studentInfo;
 @property (nonatomic, assign)BOOL checked;
 @end
 
-@interface NotificationClassStudentsVC : TNBaseViewController
-{
-    UITableView*    _tableView;
-}
+@interface StudentsModel : TNListModel
+
+@end
+
+@interface NotificationClassStudentsVC : TNBaseTableViewController
+@property (nonatomic, copy)NSString *classID;
 @end

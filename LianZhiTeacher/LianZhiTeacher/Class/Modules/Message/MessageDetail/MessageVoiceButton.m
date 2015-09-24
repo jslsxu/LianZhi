@@ -15,8 +15,8 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        self.type = MLPlayVoiceButtonTypeRight;
-        [self setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"f0f0f0"] size:CGSizeMake(20, 20) cornerRadius:10] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+        self.type = MLPlayVoiceButtonTypeLeft;
+        [self setBackgroundImage:[[UIImage imageNamed:@"MessageReceivedBGHighlighted"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)] forState:UIControlStateNormal];
         
         _spanLabel = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, 100, frame.size.height)];
         [_spanLabel setBackgroundColor:[UIColor clearColor]];
@@ -30,7 +30,7 @@
 - (void)setAudioItem:(AudioItem *)audioItem
 {
     _audioItem = audioItem;
-    [_spanLabel setText:[Utility formatStringForTime:_audioItem.timeSpan]];
+//    [_spanLabel setText:[Utility formatStringForTime:_audioItem.timeSpan]];
 }
 
 @end

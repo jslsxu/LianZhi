@@ -14,8 +14,14 @@
     LogoView*   _logoView;
     UILabel*    _nameLabel;
     UIView*     _sepLine;
+    UIButton*   _chatButton;
 }
 @property (nonatomic, strong)ClassInfo *classInfo;
+
+@end
+
+@protocol ContactDelegate <NSObject>
+- (void)contactItemChatClicked:(UserInfo *)userInfo;
 
 @end
 
@@ -26,6 +32,8 @@
     UILabel*            _commentLabel;
     UIImageView*        _genderImageView;
     UIView*             _sepLine;
+    UIButton*           _chatButton;
 }
 @property (nonatomic, strong)UserInfo *userInfo;
+@property (nonatomic, weak)id<ContactDelegate> delegate;
 @end

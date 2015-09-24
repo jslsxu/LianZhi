@@ -44,6 +44,7 @@ extern NSString *const kPublishPhotoItemKey;
     UIView*                 _bottomView;
      NewMessageIndicator*    _msgIndicator;
 }
+@property (nonatomic, strong)ClassInfo *classInfo;
 @property (nonatomic, copy)NSString *newsPaper;
 @property (nonatomic, weak)id<ClassZoneHeaderDelegate> delegate;
 @end
@@ -55,5 +56,5 @@ extern NSString *const kPublishPhotoItemKey;
     NSMutableArray*                 _buttonItems;
     ReplyBox*                       _replyBox;
 }
-@property (nonatomic, strong)ClassInfo *classInfo;
+@property (nonatomic, copy)ClassInfo *classInfo;
 @end

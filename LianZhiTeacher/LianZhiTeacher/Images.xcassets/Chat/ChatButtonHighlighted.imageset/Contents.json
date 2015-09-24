@@ -7,12 +7,12 @@
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "bg-pressed-wdhk@2x.png"
+      "filename" : "button-pressed-lt@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "bg-pressed-wdhk@3x.png"
+      "filename" : "button-pressed-lt@3x.png"
     }
   ],
   "info" : {

@@ -9,7 +9,7 @@
 #import "TNBaseViewController.h"
 #import "ContactModel.h"
 #import "ContactItemCell.h"
-@interface ContactParentsVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
+@interface ContactParentsVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate, ContactDelegate>
 {
     UITableView*    _tableView;
 }

@@ -13,11 +13,42 @@
 @implementation NotificationItem
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    self.groupID = [dataWrapper getStringForKey:@"id"];
-    self.groupName = [dataWrapper getStringForKey:@"name"];
-    self.comment = [dataWrapper getStringForKey:@"year"];
-    self.selected = NO;
-    self.canSelected = YES;
+    self.notificationID = [dataWrapper getStringForKey:@"id"];
+    self.words = [dataWrapper getStringForKey:@"words"];
+    self.notificationType = 1;
+    TNDataWrapper *audioWrapper = [dataWrapper getDataWrapperForKey:@"voice"];
+    if(audioWrapper.count > 0)
+        self.notificationType = 2;
+    
+    TNDataWrapper *photoWrapper = [dataWrapper getDataWrapperForKey:@"pictures"];
+    if(photoWrapper.count > 0)
+        self.notificationType = 3;
+}
+
+@end
+
+@implementation NotificationModel
+- (BOOL)hasMoreData
+{
+    return self.total > self.modelItemArray.count;
+}
+
+- (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
+{
+    if(type == REQUEST_REFRESH)
+        [self.modelItemArray removeAllObjects];
+    TNDataWrapper *listWrapper = [data getDataWrapperForKey:@"list"];
+    if(listWrapper.count > 0)
+    {
+        for (NSInteger i = 0; i < listWrapper.count; i++)
+        {
+            NotificationItem *item = [[NotificationItem alloc] init];
+            TNDataWrapper *itemWrapper = [listWrapper getDataWrapperForIndex:i];
+            [item parseData:itemWrapper];
+            [self.modelItemArray addObject:item];
+        }
+    }
+    return YES;
 }
 
 @end
@@ -41,9 +72,15 @@
 - (void)setNotificationItem:(NotificationItem *)notificationItem
 {
     _notificationItem = notificationItem;
-    [self.imageView setImage:[UIImage imageNamed:@"NotiRecordAudioIcon"]];
-    [self.textLabel setText:@"发送了三张照片"];
-    [self.detailTextLabel setText:@"wifi下自动发送"];
+    NSString *imageStr = nil;
+    if(_notificationItem.notificationType == 1)//文字
+        imageStr = @"NotiRecordTextIcon";
+    else if(_notificationItem.notificationType == 2)//语音
+        imageStr = @"NotiRecordAudioIcon";
+    else
+        imageStr = @"NotiRecordPhotoIcon";
+    [self.imageView setImage:[UIImage imageNamed:imageStr]];
+    [self.textLabel setText:_notificationItem.words];
 }
 
 @end
@@ -53,16 +90,6 @@
 @end
 
 @implementation NotificationToAllVC
-
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if(self)
-    {
-        _latestArray = [NSMutableArray array];
-    }
-    return self;
-}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -73,12 +100,8 @@
     [self setupHeaderView:operationView];
     [self.view addSubview:operationView];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, operationView.bottom, self.view.width, self.view.height - operationView.bottom - 64) style:UITableViewStyleGrouped];
-    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    [_tableView setDelegate:self];
-    [_tableView setDataSource:self];
-    [self.view addSubview:_tableView];
-    
+    [_tableView setFrame:CGRectMake(0, operationView.bottom, self.view.width, self.view.height - operationView.bottom - 64)];
+
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _tableView.width, 30)];
     [headerView setBackgroundColor:[UIColor colorWithHexString:@"E6E6E6"]];
     
@@ -88,6 +111,25 @@
     [titleLabel setText:@"近期发送记录"];
     [headerView addSubview:titleLabel];
     [_tableView setTableHeaderView:headerView];
+    [self bindTableCell:@"NotificationCell" tableModel:@"NotificationModel"];
+    [self setSupportPullDown:YES];
+    [self setSupportPullUp:YES];
+    [self requestData:REQUEST_REFRESH];
+}
+
+- (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
+{
+    
+    HttpRequestTask *task = [[HttpRequestTask alloc] init];
+    [task setRequestUrl:@"notice/my_send_list"];
+    [task setRequestMethod:REQUEST_GET];
+    [task setRequestType:requestType];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    if(requestType == REQUEST_GETMORE)
+        [params setValue:kStringFromValue(self.tableViewModel.modelItemArray.count) forKey:@"from"];
+    [task setParams:params];
+    [task setObserver:self];
+    return task;
 }
 
 - (void)setupHeaderView:(UIView *)viewParent
@@ -132,23 +174,4 @@
     [self presentViewController:nav animated:YES completion:nil];
 }
 
-#pragma mark - UItableviewDelegate
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 5;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *cellID = @"NotificationGroupCell";
-    NotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    if(cell == nil)
-    {
-        cell = [[NotificationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    }
-    [cell setNotificationItem:nil];
-    return cell;
-}
 @end
