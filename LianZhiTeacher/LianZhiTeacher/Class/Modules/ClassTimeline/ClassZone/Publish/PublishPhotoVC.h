@@ -14,11 +14,8 @@
     NSMutableArray*     _imageArray;
     UIScrollView*       _scrollView;
     PhotoPickerView*    _pickerView;
-    UIImageView*        _imageBGImageView;
+    UIView*             _bgView;
     NSMutableArray*     _imageItemViewArray;
-    UIImageView*        _operationView;
-    UTPlaceholderTextView*         _textView;
-    UILabel*            _numLabel;
-    UILabel*            _titleLabel;
+    UITextField*        _textField;
 }
 @end

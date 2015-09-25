@@ -106,9 +106,15 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [_collectionView setDataSource:self];
         [_bgView addSubview:_collectionView];
         
-        _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(0, 0, 215, 40)];
+        _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(10, 0, _bgView.width - 10 * 2 - 60, 40)];
         [_voiceButton addTarget:self action:@selector(onVoiceButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [_bgView addSubview:_voiceButton];
+        
+        _spanLabel = [[UILabel alloc] initWithFrame:CGRectMake(_voiceButton.right, 0, 60, 40)];
+        [_spanLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
+        [_spanLabel setFont:[UIFont systemFontOfSize:14]];
+        [_spanLabel setTextAlignment:NSTextAlignmentCenter];
+        [_bgView addSubview:_spanLabel];
     
         _responseView = [[ResponseView alloc] initWithFrame:CGRectMake(10, 0, _bgView.width - 10 * 2, 0)];
         [_responseView setDelegate:self];
@@ -199,7 +205,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     spaceYStart += 30;
     [_collectionView setHidden:YES];
     [_voiceButton setHidden:YES];
-    
+    [_spanLabel setHidden:YES];
     if(item.photos.count > 0)
     {
         NSInteger row = (item.photos.count + 2) / 3;
@@ -216,8 +222,11 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         if(item.audioItem)
         {
             [_voiceButton setHidden:NO];
+            [_spanLabel setHidden:NO];
             [_voiceButton setAudioItem:item.audioItem];
             [_voiceButton setOrigin:CGPointMake(10, spaceYStart)];
+            [_spanLabel setText:[Utility formatStringForTime:item.audioItem.timeSpan]];
+            [_spanLabel setY:_voiceButton.y];
             spaceYStart += _voiceButton.height + 10;
         }
         else

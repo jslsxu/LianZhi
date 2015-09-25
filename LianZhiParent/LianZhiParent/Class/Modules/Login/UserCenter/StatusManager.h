@@ -26,10 +26,25 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 
 @end
 
+@interface TimelineCommentAlertInfo : TNModelItem
+@property (nonatomic, copy)NSString *uid;
+@property (nonatomic, copy)NSString *avatar;
+@property (nonatomic, assign)NSInteger num;
+
+@end
+
+@interface TimelineCommentItem : TNModelItem
+@property (nonatomic, copy)NSString *objid;
+@property (nonatomic, strong)TimelineCommentAlertInfo *alertInfo;
+
+@end
+
 @interface StatusManager : TNModelItem
 @property (nonatomic, assign)ChangedType changed;
 @property (nonatomic, assign)BOOL found;
 @property (nonatomic, strong)NSArray *notice;
 @property (nonatomic, strong)NSArray *feedClassesNew;
+@property (nonatomic, strong)NSArray *classNewCommentArray;
+@property (nonatomic, strong)NSArray *treeNewCommentArray;
 @property (nonatomic, assign)NSInteger msgNum;
 @end

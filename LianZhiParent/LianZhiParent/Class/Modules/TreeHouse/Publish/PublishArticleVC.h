@@ -10,11 +10,8 @@
 
 @interface PublishArticleVC : PublishBaseVC
 {
-    UIImageView*    _bgImageView;
-    UIImageView*    _textBG;
-    UTPlaceholderTextView *    _textView;
-    UILabel*        _placeHolder;
-    PoiInfoView*    _poiInfoView;
-    UIButton*       _publishButton;
+    UIView*                 _bgView;
+    UTPlaceholderTextView*  _textView;
+    UILabel*                _numLabel;
 }
 @end

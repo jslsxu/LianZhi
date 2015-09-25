@@ -72,6 +72,7 @@
 {
     JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
     [chatVC setTargetID:self.classInfo.classID];
+    [chatVC setTitle:self.classInfo.className];
     [chatVC setChatType:ChatTypeClass];
     [ApplicationDelegate popAndPush:chatVC];
 }

@@ -15,6 +15,7 @@
     UILabel*    _indicatorLabel;
     UIButton*   _coverButton;
 }
+@property (nonatomic, strong)TimelineCommentItem *commentItem;
 @property (nonatomic, copy)void (^clickAction)();
 @end
 
@@ -26,5 +27,6 @@
     UIButton*               _albumButton;
     NewMessageIndicator*    _msgIndicator;
 }
+@property (nonatomic, strong)TimelineCommentItem *commentItem;
 - (void)setupHeaderView;
 @end

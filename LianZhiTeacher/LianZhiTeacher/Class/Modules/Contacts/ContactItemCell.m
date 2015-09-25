@@ -104,7 +104,7 @@
     
     [_nameLabel setText:userInfo.name];
     [_nameLabel sizeToFit];
-    [_nameLabel setFrame:CGRectMake(_avatar.right + 15, (self.height - _nameLabel.height) / 2, MAX(_nameLabel.width, _chatButton.left - _nameLabel.left - 10), _nameLabel.height)];
+    [_nameLabel setFrame:CGRectMake(_avatar.right + 15, (self.height - _nameLabel.height) / 2, MIN(_nameLabel.width, _chatButton.left - _nameLabel.left - 10), _nameLabel.height)];
     
     if([userInfo isKindOfClass:[TeacherInfo class]])
     {

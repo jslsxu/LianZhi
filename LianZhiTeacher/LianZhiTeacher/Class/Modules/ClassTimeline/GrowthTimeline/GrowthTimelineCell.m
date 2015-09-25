@@ -79,7 +79,16 @@
     for (NSInteger i = 0; i < 5; i++)
     {
         UIButton *button = _statusArray[i];
-        [button setSelected:arc4random() % 2];
+        if(i== 0)
+            [button setSelected:timelineItem.emotion];
+        if(i == 1)
+            [button setSelected:timelineItem.stool];
+        if(i == 2)
+            [button setSelected:timelineItem.temparature];
+        if(i == 3)
+            [button setSelected:timelineItem.water];
+        if(i == 4)
+            [button setSelected:timelineItem.sleep];
     }
     
     NSString *content = timelineItem.content;

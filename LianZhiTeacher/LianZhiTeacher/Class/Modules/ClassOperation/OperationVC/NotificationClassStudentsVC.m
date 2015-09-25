@@ -152,7 +152,9 @@
 
 - (void)onConfirm
 {
-    
+    if(self.selectedCompletion)
+        self.selectedCompletion(self.seletedArray);
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

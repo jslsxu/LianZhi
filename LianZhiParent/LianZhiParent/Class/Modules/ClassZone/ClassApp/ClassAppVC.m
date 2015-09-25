@@ -118,16 +118,16 @@
                     [self.navigationController pushViewController:contactVC animated:YES];
                 }
                 else if([host isEqualToString:@"record"])
-//                {
-//                    GrowthTimelineVC *recordVC = [[GrowthTimelineVC alloc] init];
-//                    [recordVC setClassInfo:self.classInfo];
-//                    [self.navigationController pushViewController:recordVC animated:YES];
-//                }
-//                else if ([host isEqualToString:@"vacation"])
                 {
-                    RequestVacationVC *vacationVC = [[RequestVacationVC alloc] init];
-                    [self.navigationController pushViewController:vacationVC animated:YES];
+                    GrowthTimelineVC *recordVC = [[GrowthTimelineVC alloc] init];
+                    [recordVC setClassInfo:self.classInfo];
+                    [self.navigationController pushViewController:recordVC animated:YES];
                 }
+//                else if ([host isEqualToString:@"vacation"])
+//                {
+//                    RequestVacationVC *vacationVC = [[RequestVacationVC alloc] init];
+//                    [self.navigationController pushViewController:vacationVC animated:YES];
+//                }
             }
         }
     }

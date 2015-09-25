@@ -11,6 +11,7 @@ extern NSString *const kNewMsgNumNotification;
 extern NSString *const kFoundNotification;
 extern NSString *const kUserInfoVCNeedRefreshNotificaiotn;
 extern NSString *const kStatusChangedNotification;
+extern NSString *const kTimelineNewCommentNotification;
 
 typedef NS_ENUM(NSInteger, ChangedType) {
     ChangedTypeNone = 0,
@@ -46,6 +47,7 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 @property (nonatomic, strong)NSArray *notice;
 @property (nonatomic, strong)NSArray *feedClassesNew;
 //新动态
-@property (nonatomic, strong)NSArray *timelineCommentArray;
+@property (nonatomic, strong)NSArray *classNewCommentArray;
+
 @property (nonatomic, assign)NSInteger msgNum;
 @end

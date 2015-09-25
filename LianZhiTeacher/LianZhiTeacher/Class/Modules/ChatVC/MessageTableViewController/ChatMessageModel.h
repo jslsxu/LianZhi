@@ -12,5 +12,6 @@
 @property (nonatomic,assign)BOOL more;
 @property (nonatomic, copy)NSString *oldId;
 @property (nonatomic, copy)NSString *latestId;
+@property (nonatomic, assign)BOOL hasNew;
 - (BOOL)canInsert:(MessageItem *)messageItem;
 @end

@@ -7,14 +7,11 @@
 //
 
 #import "PublishBaseVC.h"
-
+#import "PoiInfoView.h"
 @interface PublishArticleVC : PublishBaseVC
 {
-    UIImageView*    _bgImageView;
-    UIImageView*    _textBG;
-    UTPlaceholderTextView *    _textView;
-    UILabel*        _placeHolder;
-    UILabel*        _numLabel;
-    UIButton*       _publishButton;
+    UIView*                 _bgView;
+    UTPlaceholderTextView*  _textView;
+    UILabel*                _numLabel;
 }
 @end

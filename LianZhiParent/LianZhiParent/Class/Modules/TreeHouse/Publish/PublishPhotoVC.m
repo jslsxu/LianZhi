@@ -11,15 +11,15 @@
 #define kBorderMargin                   16
 
 #define kBaseTag                        1000
-@interface PublishPhotoVC ()
+@interface PublishPhotoVC ()<UITextFieldDelegate>
 
 @end
 
 @implementation PublishPhotoVC
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)dealloc
 {
-    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -37,10 +37,9 @@
     [super viewDidLoad];
     self.title = @"发照片";
     
-    _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
     [_scrollView setBounces:YES];
     [_scrollView setAlwaysBounceVertical:YES];
-    [_scrollView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
     [_scrollView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:_scrollView];
     
@@ -51,30 +50,58 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
 
+    [self setupScrollView];
 }
 
-- (void)setupSubviews
+#pragma mark KeyboardNotification
+- (void)onKeyboardShow:(NSNotification *)notification
 {
-    if(_imageBGImageView == nil)
-    {
-        _imageBGImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-        [_imageBGImageView setFrame:CGRectMake(kBorderMargin, kBorderMargin, _scrollView.width - kBorderMargin * 2, 240)];
-        [_imageBGImageView setUserInteractionEnabled:YES];
-        [_scrollView addSubview:_imageBGImageView];
-    }
+    NSDictionary *userInfo = [notification userInfo];
+    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    [UIView animateWithDuration:animationDuration animations:^{
+        [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, keyboardRect.size.height, 0)];
+    }];
+}
+
+- (void)onKeyboardHide:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    [UIView animateWithDuration:animationDuration animations:^{
+        [_scrollView setContentInset:UIEdgeInsetsZero];
+    }];
+}
+
+- (void)setupScrollView
+{
+    [_scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    NSInteger width = _scrollView.width - kBorderMargin * 2;
+    _bgView = [[UIView alloc] initWithFrame:CGRectMake(kBorderMargin, kBorderMargin, width, width)];
+    [_scrollView addSubview:_bgView];
     
     [self setupImageView];
     
-    if(_operationView == nil)
-    {
-        _operationView = [[UIImageView alloc] initWithFrame:CGRectMake(kBorderMargin, _imageBGImageView.bottom + kBorderMargin, _scrollView.width - kBorderMargin * 2, 120)];
-        [_operationView setImage:[[UIImage imageNamed:@"GrayBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-        [_operationView setUserInteractionEnabled:YES];
-        [_scrollView addSubview:_operationView];
-    }
-    [self setupOperationView:_operationView];
-    [_operationView setY:_imageBGImageView.bottom + kBorderMargin];
-    [_scrollView setContentSize:CGSizeMake(_scrollView.width, _operationView.bottom + kBorderMargin)];
+    _textField = [[UITextField alloc] initWithFrame:CGRectMake(10, _bgView.bottom + 20, _bgView.width, 30)];
+    [_textField setFont:[UIFont systemFontOfSize:16]];
+    [_textField setDelegate:self];
+    [_textField setPlaceholder:@"我发了一堆图片，快来看看吧"];
+    [_scrollView addSubview:_textField];
+    
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textField.bottom, _textField.width, 1)];
+    [sepLine setBackgroundColor:kCommonParentTintColor];
+    [_scrollView addSubview:sepLine];
+    
+    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(10, sepLine.bottom, _bgView.width, 40)];
+    [_poiInfoView setParentVC:self];
+    [_scrollView addSubview:_poiInfoView];
+    
+    [_scrollView setContentSize:CGSizeMake(_scrollView.width, MAX(self.view.height - 64, _poiInfoView.bottom))];
 }
 
 - (void)setupImageView
@@ -82,29 +109,26 @@
     [_pickerView removeFromSuperview];
     [_imageItemViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [_imageItemViewArray removeAllObjects];
-    CGFloat width = (_imageBGImageView.width - kBorderMargin * 2 - 5 * 2) / 3;
+    NSInteger innerMargin = 6;
+    CGFloat width = (_bgView.width - innerMargin * 2) / 3;
     NSInteger num = 9;
     NSInteger row = MAX((num + 2) / 3, 1);
-    CGFloat bgHeight = kBorderMargin * 2 + row * width + (row - 1) * 5 + 40;
-    [_imageBGImageView setHeight:bgHeight];
-    [_operationView setY:_imageBGImageView.bottom + kBorderMargin];
-    for (NSInteger i = 0; i < 9;i++)
+    for (NSInteger i = 0; i < num;i++)
     {
         NSInteger column = i % 3;
         row = i / 3;
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(kBorderMargin + column * (width + 5) , kBorderMargin + (width + 5) * row, width, width)];
-        [imageView setBackgroundColor:[UIColor colorWithHexString:@"a4a4a4"]];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake( column * (width + innerMargin) ,(width + innerMargin) * row, width, width)];
         [imageView setTag:kBaseTag + i];
         [imageView setUserInteractionEnabled:YES];
         [imageView setContentMode:UIViewContentModeScaleAspectFill];
         [imageView setClipsToBounds:YES];
-        [_imageBGImageView addSubview:imageView];
-        if(i < _imageArray.count)
+        [imageView setBackgroundColor:[UIColor colorWithHexString:@"E6E6E6"]];
+        [_bgView addSubview:imageView];
+        [_imageItemViewArray addObject:imageView];
+        if(i < [_imageArray count])
         {
             PublishImageItem *imageItem = [_imageArray objectAtIndex:i];
             [imageView sd_setImageWithURL:[NSURL URLWithString:imageItem.thumbnailUrl] placeholderImage:imageItem.image];
-            [_imageItemViewArray addObject:imageView];
-            
             UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPressGesture:)];
             [longPressGesture setMinimumPressDuration:1];
             [imageView addGestureRecognizer:longPressGesture];
@@ -112,20 +136,15 @@
             UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
             [imageView addGestureRecognizer:tapGesture];
         }
-
     }
     if(_imageArray.count < 9)
     {
         NSInteger num = _imageArray.count;
         row = num / 3;
         NSInteger column = num % 3;
-        [_pickerView setFrame:CGRectMake(kBorderMargin + column * (width + 5), kBorderMargin + (width + 5) * row, width, width)];
-        [_imageBGImageView addSubview:_pickerView];
+        [_pickerView setFrame:CGRectMake( column * (width + innerMargin),(width + innerMargin) * row, width, width)];
+        [_bgView addSubview:_pickerView];
     }
-    
-    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(0, _imageBGImageView.height - 40, _imageBGImageView.width, 40)];
-    [_poiInfoView setParentVC:self];
-    [_imageBGImageView addSubview:_poiInfoView];
 }
 
 - (void)onLongPressGesture:(UILongPressGestureRecognizer *)longGesture
@@ -155,93 +174,8 @@
     [scanView showFromTargetFrame:[targetView convertRect:targetView.bounds toView:rootView]];
 }
 
-- (void)setupOperationView:(UIView *)viewParent
-{
-    
-    
-    if(_titleLabel == nil)
-    {
-        UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [sendButton setFrame:CGRectMake(viewParent.width - kBorderMargin - 95, viewParent.height - 56 - kBorderMargin, 95, 56)];
-        [sendButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
-        [sendButton addTarget:self action:@selector(onSendButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [viewParent addSubview:sendButton];
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectInset(sendButton.bounds, 5, 0)];
-        [_titleLabel setTextAlignment:NSTextAlignmentCenter];
-        [_titleLabel setNumberOfLines:0];
-        [_titleLabel setLineBreakMode:NSLineBreakByWordWrapping];
-        [sendButton addSubview:_titleLabel];
-    }
-    
-    NSMutableString *mutableStr = [[NSMutableString alloc] init];
-    [mutableStr appendFormat:@"您已选择%li/9",(long)_imageArray.count];
-    NSInteger firstLength = mutableStr.length;
-    [mutableStr appendString:@"\n发到树屋"];
-    
-    NSMutableAttributedString *attributeStr = [[NSMutableAttributedString alloc] initWithString:mutableStr];
-    [attributeStr addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:NSMakeRange(0, firstLength)];
-    [attributeStr addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(firstLength, mutableStr.length - firstLength)];
-    [attributeStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:14] range:NSMakeRange(0, firstLength)];
-    [attributeStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:16] range:NSMakeRange(firstLength, mutableStr.length - firstLength)];
 
-    [_titleLabel setAttributedText:attributeStr];
-    
-    if(_textView == nil)
-    {
-        UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-        [bgImageView setUserInteractionEnabled:YES];
-        [bgImageView setFrame:CGRectMake(kBorderMargin, kBorderMargin, viewParent.width - 95 - kBorderMargin - kBorderMargin - kBorderMargin, viewParent.height - kBorderMargin * 2)];
-        [viewParent addSubview:bgImageView];
-        
-        _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(5, 5, bgImageView.width - 5 * 2, bgImageView.height - 5 - 20)];
-        [_textView setBackgroundColor:[UIColor clearColor]];
-        [_textView setFont:[UIFont systemFontOfSize:15]];
-        [_textView setTextColor:[UIColor colorWithHexString:@"666666"]];
-        [_textView setReturnKeyType:UIReturnKeyDone];
-        [_textView setPlaceholder:@"配点文字"];
-        [_textView setDelegate:self];
-        
-        [bgImageView addSubview:_textView];
-        
-        _numLabel = [[UILabel alloc] initWithFrame:CGRectMake(_textView.left, _textView.bottom, _textView.width, 20)];
-        [_numLabel setTextColor:[UIColor lightGrayColor]];
-        [_numLabel setFont:[UIFont systemFontOfSize:14]];
-        [_numLabel setTextAlignment:NSTextAlignmentRight];
-        [_numLabel setText:kStringFromValue(kCommonMaxNum - _textView.text.length)];
-        [bgImageView addSubview:_numLabel];
-
-    }
-
-}
-
-#pragma mark KeyboardNotification
-- (void)onKeyboardShow:(NSNotification *)notification
-{
-    NSDictionary *userInfo = [notification userInfo];
-    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGRect keyboardRect = [aValue CGRectValue];
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
-    [UIView animateWithDuration:animationDuration animations:^{
-        [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, keyboardRect.size.height, 0)];
-        [_scrollView setContentOffset:CGPointMake(0, keyboardRect.size.height - _scrollView.height + [_textView convertPoint:CGPointMake(0, _textView.bottom) toView:_scrollView].y)];
-    }];
-}
-
-- (void)onKeyboardHide:(NSNotification *)notification
-{
-    NSDictionary *userInfo = [notification userInfo];
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
-    [UIView animateWithDuration:animationDuration animations:^{
-        [_scrollView setContentInset:UIEdgeInsetsZero];
-    }];
-}
-
-
-- (void)onSendButtonClicked
+- (void)onSendClicked
 {
     [self.view endEditing:YES];
     
@@ -269,10 +203,14 @@
     NSDate *date = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd"];
-    
+    POIItem *poiItem = _poiInfoView.poiItem;
+    if(!poiItem.clearLocation)
+    {
+        [item setAddress:poiItem.poiInfo.name];
+    }
     [item setTime:[formatter stringFromDate:date]];
     [item setPhotos:photos];
-    [item setDetail:_textView.text];
+    [item setDetail:_textField.text];
     [item setUser:[UserCenter sharedInstance].userInfo];
     [item setNewSend:YES];
     if([self.delegate respondsToSelector:@selector(publishTreeHouseSuccess:)])
@@ -321,11 +259,10 @@
 - (void)photoPickerDidSelectAlbum:(PhotoPickerView *)picker
 {
     [self.view endEditing:YES];
-    PhotoPickerVC *photoPickerVC = [[PhotoPickerVC alloc] init];
-    [photoPickerVC setMaxToSelected:9 - _imageArray.count];
-    [photoPickerVC setDelegate:self];
-    UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:photoPickerVC];
-    [self presentViewController:navigationVC animated:YES completion:nil];
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    [imagePicker setDelegate:self];
+    [self presentViewController:imagePicker animated:YES completion:nil];
 }
 
 - (void)photoPickerDidSelectCamera:(PhotoPickerView *)picker
@@ -369,7 +306,7 @@
         PublishImageItem *imageItem = [[PublishImageItem alloc] init];
         [imageItem setImage:image];
         [_imageArray addObject:imageItem];
-        [self setupSubviews];
+        [self setupScrollView];
     }
     [self.navigationController popToRootViewControllerAnimated:NO];
     [picker dismissViewControllerAnimated:YES completion:^{
@@ -397,24 +334,18 @@
 }
 
 #pragma mark - UItextViewDelegate
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if([text isEqualToString:@"\n"])
+    if([string isEqualToString:@"\n"])
     {
-        [textView resignFirstResponder];
+        [textField resignFirstResponder];
         return NO;
     }
     return YES;
 }
 
-- (void)textViewDidChange:(UITextView *)textView
-{
-    NSString *text = [textView text];
-    
-    if(text.length > kCommonMaxNum)
-        [textView setText:[text substringToIndex:kCommonMaxNum]];
-    [_numLabel setText:kStringFromValue(kCommonMaxNum - textView.text.length)];
-}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

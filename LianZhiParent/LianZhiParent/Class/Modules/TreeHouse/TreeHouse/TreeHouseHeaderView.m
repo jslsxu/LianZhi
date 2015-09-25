@@ -29,7 +29,6 @@
         _indicatorLabel = [[UILabel alloc] initWithFrame:CGRectMake(_avatarView.right + 15, 0, self.width - 10 - (_avatarView.right + 5), self.height)];
         [_indicatorLabel setTextColor:[UIColor whiteColor]];
         [_indicatorLabel setFont:[UIFont systemFontOfSize:14]];
-        [_indicatorLabel setText:@"1条新消息"];
         [self addSubview:_indicatorLabel];
         
         _coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -38,6 +37,13 @@
         [self addSubview:_coverButton];
     }
     return self;
+}
+
+- (void)setCommentItem:(TimelineCommentItem *)commentItem
+{
+    _commentItem = commentItem;
+    [_avatarView setImageWithUrl:[NSURL URLWithString:_commentItem.alertInfo.avatar]];
+    [_indicatorLabel setText:[NSString stringWithFormat:@"%ld条新消息",(long)_commentItem.alertInfo.num]];
 }
 
 - (void)onNewMessageClicked
@@ -103,6 +109,13 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onChildInfoChanged) name:kChildInfoChangedNotification object:nil];
     }
     return self;
+}
+
+- (void)setCommentItem:(TimelineCommentItem *)commentItem
+{
+    _commentItem = commentItem;
+    [_msgIndicator setHidden:_commentItem == nil];
+    [_msgIndicator setCommentItem:_commentItem];
 }
 
 - (void)setupHeaderView

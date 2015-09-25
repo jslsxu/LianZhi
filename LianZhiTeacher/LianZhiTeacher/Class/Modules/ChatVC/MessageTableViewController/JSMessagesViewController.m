@@ -125,6 +125,13 @@
     [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:modelArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
+- (void)TNBaseTableViewControllerRequestSuccess
+{
+    ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
+    if(messageModel.hasNew)
+        [self scrollToBottom];
+}
+
 #pragma mark - InputDelegate
 - (void)inputBarViewDidCommit:(NSString *)text
 {
@@ -159,10 +166,14 @@
 
 - (void)inputBarViewDidSendVoice:(NSData *)amrData time:(NSInteger)time
 {
-    NSDictionary *dic = @{@"voice": amrData,
-                          @"strVoiceTime": kStringFromValue(time),
-                          @"type": @(UUMessageTypeVoice)};
-    [self dealTheFunctionData:dic];
+    if(time < 2)
+    {
+        NSDictionary *dic = @{@"voice": amrData,
+                              @"strVoiceTime": kStringFromValue(time),
+                              @"type": @(UUMessageTypeVoice)};
+        [self dealTheFunctionData:dic];
+    }
+    [ProgressHUD showHintText:@"录音时间太短，请重新录制"];
 }
 
 - (void)dealTheFunctionData:(NSDictionary *)dic

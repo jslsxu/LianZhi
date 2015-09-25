@@ -35,7 +35,6 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         _indicatorLabel = [[UILabel alloc] initWithFrame:CGRectMake(_avatarView.right + 15, 0, self.width - 10 - (_avatarView.right + 5), self.height)];
         [_indicatorLabel setTextColor:[UIColor whiteColor]];
         [_indicatorLabel setFont:[UIFont systemFontOfSize:14]];
-        [_indicatorLabel setText:@"1条新消息"];
         [self addSubview:_indicatorLabel];
         
         _coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -44,6 +43,13 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         [self addSubview:_coverButton];
     }
     return self;
+}
+
+- (void)setCommentItem:(TimelineCommentItem *)commentItem
+{
+    _commentItem = commentItem;
+    [_avatarView setImageWithUrl:[NSURL URLWithString:_commentItem.alertInfo.avatar]];
+    [_indicatorLabel setText:[NSString stringWithFormat:@"%ld条新消息",(long)_commentItem.alertInfo.num]];
 }
 
 - (void)onNewMessageClicked
@@ -106,12 +112,26 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             [_msgIndicator setClickAction:^{
                 [wself onNewMessageClicked];
             }];
+            [_msgIndicator setHidden:YES];
             [self addSubview:_msgIndicator];
             
             self.height += 30 + 12;
         }
     }
     return self;
+}
+
+- (void)setCommentItem:(TimelineCommentItem *)commentItem
+{
+    _commentItem = commentItem;
+    [_msgIndicator setHidden:_commentItem == nil];
+    if(_commentItem)
+    {
+        [_msgIndicator setCommentItem:_commentItem];
+        self.height = 160 + 42;
+    }
+    else
+        self.height = 160;
 }
 
 - (void)setNewsPaper:(NSString *)newsPaper
@@ -123,6 +143,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (void)onNewMessageClicked
 {
     NewMessageVC *newmessageVC = [[NewMessageVC alloc] init];
+    [newmessageVC setTypes:NewMessageTypeClassZone];
     [newmessageVC setObjid:self.classInfo.classID];
     [CurrentROOTNavigationVC pushViewController:newmessageVC animated:YES];
 }
@@ -319,6 +340,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNetworkStatusChanged) name:UIApplicationDidBecomeActiveNotification object:nil];
     //上传成功
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kTaskItemSuccessNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
     
     _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - REPLY_BOX_HEIGHT, self.view.width, REPLY_BOX_HEIGHT)];
     [_replyBox setDelegate:self];
@@ -351,7 +373,6 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [model setClassID:self.classInfo.classID];
 
 }
-
 
 - (void)setupToolBar:(UIView *)viewParent
 {
@@ -449,6 +470,21 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:^{
         
     }];
+}
+
+- (void)onStatusChanged
+{
+    NSArray *commentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+    TimelineCommentItem *curAlert = nil;
+    for (TimelineCommentItem *alertInfo in commentArray)
+    {
+        if([alertInfo.classID isEqualToString:self.classInfo.classID])
+        {
+            curAlert = alertInfo;
+        }
+    }
+    [_headerView setCommentItem:curAlert];
+    [_tableView setTableHeaderView:_headerView];
 }
 
 - (void)onCurSchoolChanged

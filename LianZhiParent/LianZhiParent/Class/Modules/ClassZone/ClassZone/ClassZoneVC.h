@@ -11,12 +11,13 @@
 #import "ClassAppVC.h"
 #import "ClassZoneItemCell.h"
 #import "ReplyBox.h"
-
+#import "StatusManager.h"
+#import "TreeHouseHeaderView.h"
 @protocol ClassZoneHeaderDelegate <NSObject>
 @optional
 - (void)classZoneAppClicked;
 - (void)classZoneAlbumClicked;
-
+- (void)classNewCommentClicked;
 @end
 @interface ClassZoneHeaderView : UIView
 {
@@ -27,9 +28,11 @@
     UIButton*               _albumButton;
     UIImageView*            _brashImage;
     UIView*                 _bottomView;
+    NewMessageIndicator*    _msgIndicator;
 }
 @property (nonatomic, copy)NSString *newsPaper;
 @property (nonatomic, weak)id<ClassZoneHeaderDelegate> delegate;
+@property (nonatomic, strong)TimelineCommentItem *commentItem;
 
 @end
 

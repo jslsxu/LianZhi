@@ -11,6 +11,8 @@
 #define kPraiseViewHeight                   35
 #define kHMargin                            10
 
+#define kMaxResponseNum                     5
+
 @implementation CommentCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -131,8 +133,10 @@
     NSInteger tableHeight = 0;
     if(responseArray.count > 0)
     {
-        for (ResponseItem *responseItem in responseArray)
+        NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
+        for (NSInteger i = 0; i < responseNum; i++)
         {
+            ResponseItem *responseItem = responseArray[i];
             NSInteger itemHeight = [CommentCell cellHeight:responseItem cellWidth:width].floatValue;
             tableHeight += itemHeight;
         }
@@ -185,8 +189,10 @@
     NSInteger tableHeight = 0;
     if(responseArray.count > 0)
     {
-        for (ResponseItem *responseItem in responseArray)
+        NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
+        for (NSInteger i = 0; i < responseNum; i++)
         {
+            ResponseItem *responseItem = responseArray[i];
             NSInteger itemHeight = [CommentCell cellHeight:responseItem cellWidth:_tableView.width].floatValue;
             tableHeight += itemHeight;
         }

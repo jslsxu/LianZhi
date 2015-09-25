@@ -14,11 +14,11 @@
 @property (nonatomic, copy)NSString *content;
 @property (nonatomic, copy)NSString *time;
 @property (nonatomic, copy)NSString *formatTime;
-@property (nonatomic, copy)NSString *emotion;
-@property (nonatomic, assign)NSInteger stoolNum;
-@property (nonatomic, copy)NSString *temparature;
-@property (nonatomic, assign)NSInteger water;
-@property (nonatomic, assign)CGFloat sleep;
+@property (nonatomic, assign)BOOL emotion;
+@property (nonatomic, assign)BOOL stool;
+@property (nonatomic, assign)BOOL temparature;
+@property (nonatomic, assign)BOOL water;
+@property (nonatomic, assign)BOOL sleep;
 @property (nonatomic, strong)TeacherInfo *teacherInfo;
 
 @end

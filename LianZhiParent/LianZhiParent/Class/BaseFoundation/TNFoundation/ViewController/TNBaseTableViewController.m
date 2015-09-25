@@ -153,8 +153,6 @@
     [_tableViewModel parseData:responseData type:operation.requestType];
     if(self.shouldShowEmptyHint)
         [self showEmptyLabel:_tableViewModel.modelItemArray.count == 0];
-    if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
-        [self TNBaseTableViewControllerRequestSuccess];
     if([self supportCache] && operation.requestType == REQUEST_REFRESH)
     {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -164,6 +162,8 @@
     if([_tableViewModel shouldReload])
         [self.tableView reloadData];
     _isLoading = NO;
+    if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
+        [self TNBaseTableViewControllerRequestSuccess];
 }
 
 - (void)onRequestFail:(NSString *)errMsg

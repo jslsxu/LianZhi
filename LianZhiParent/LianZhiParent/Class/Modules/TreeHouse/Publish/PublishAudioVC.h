@@ -10,12 +10,7 @@
 
 @interface PublishAudioVC : PublishBaseVC<AudioRecordViewDelegate>
 {
-    UIImageView*    _bgImageView;
-    UIImageView*    _whiteBG;
-    UIView*         _titleView;
-    UITextField*    _textField;
-    PoiInfoView*    _poiInfoView;
-    UIButton*       _sendButton;
     AudioRecordView*    _recordView;
+    UITextField*        _textField;
 }
 @end

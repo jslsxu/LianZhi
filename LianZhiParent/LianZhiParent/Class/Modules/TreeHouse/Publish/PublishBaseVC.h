@@ -14,6 +14,9 @@
 @end
 
 @interface PublishBaseVC : TNBaseViewController<POISelectVCDelegate>
+{
+    PoiInfoView*    _poiInfoView;
+}
 @property (nonatomic, weak)id<PublishTreeHouseDelegate> delegate;
 - (void)onBack;
 @end

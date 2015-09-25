@@ -10,6 +10,7 @@
 #import "MessageDetailVC.h"
 #import "NotificationToAllVC.h"
 #import "ActionPopView.h"
+#import "ContactListVC.h"
 @interface MessageVC ()<ActionPopViewDelegate>
 
 @end
@@ -143,7 +144,8 @@
 
 - (void)onNewChat
 {
-    
+    ContactListVC *contactListVC = [[ContactListVC alloc] init];
+    [CurrentROOTNavigationVC pushViewController:contactListVC animated:YES];
 }
 #pragma mark - UITableViewDelegate
 

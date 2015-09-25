@@ -9,5 +9,7 @@
 #import "TNBaseViewController.h"
 
 @interface MessageSendVC : TNBaseViewController
-
+- (NSDictionary *)params;
+- (NSArray *)imageArray;
+- (NSData *)audioData;
 @end

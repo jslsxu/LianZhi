@@ -39,6 +39,7 @@ extern NSString *const kTreeHouseItemKey;
     UICollectionViewFlowLayout* _layout;
     UICollectionView*   _collectionView;//照片
     MessageVoiceButton* _voiceButton;
+    UILabel*            _spanLabel;
     ActionView*         _actionView;
     ResponseView*       _responseView;
 }

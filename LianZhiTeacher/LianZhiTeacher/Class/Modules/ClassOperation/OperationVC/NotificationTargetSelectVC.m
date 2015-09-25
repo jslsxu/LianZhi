@@ -18,7 +18,7 @@
         _checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_checkButton setFrame:CGRectMake(30, 0, 20, self.height)];
         [_checkButton setUserInteractionEnabled:NO];
-        [_checkButton setImage:[UIImage imageNamed:@"ControlSelectPart"] forState:UIControlStateNormal];
+        [_checkButton setImage:[UIImage imageNamed:@"ControlDefault"] forState:UIControlStateNormal];
         [_checkButton setImage:[UIImage imageNamed:@"ControlSelectAll"] forState:UIControlStateSelected];
         [self addSubview:_checkButton];
         
@@ -75,8 +75,12 @@
 
 @implementation NotificationTargetSelectVC
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _selectedMateArray = [NSMutableArray array];
+    _selectedStudentDic = [NSMutableDictionary dictionary];
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
     [headerView setBackgroundColor:kCommonTeacherTintColor];
     [self.view addSubview:headerView];
@@ -106,8 +110,57 @@
 
 - (void)onSendClicked
 {
-    if(self.completion)
-        self.completion(nil);
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.params];
+    NSMutableString *targetStr = [[NSMutableString alloc] init];
+    if(_segmentControl.selectedSegmentIndex == 0)
+    {
+        NSArray *allKeys = [_selectedStudentDic allKeys];
+        if(allKeys.count > 0)
+        {
+            NSMutableArray *classArray = [[NSMutableArray alloc] init];
+            for (NSString *key in allKeys)
+            {
+                NSArray *studentArray = _selectedStudentDic[key];
+                NSDictionary *itemDic = @{@"classid" : key,@"students":studentArray};
+                [classArray addObject:itemDic];
+            }
+            [targetStr appendString:[NSString stringWithJSONObject:classArray]];
+            [params setValue:targetStr forKey:@"classes"];
+        }
+    }
+    else
+    {
+        for (TeacherInfo *teacherInfo in _selectedMateArray)
+        {
+            [targetStr appendFormat:@"%@,",teacherInfo.uid];
+        }
+        [params setValue:targetStr forKey:@"groups"];
+    }
+    if(targetStr.length == 0)
+    {
+        [ProgressHUD showHintText:@"还没有选择发送对象"];
+        return;
+    }
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:self.view];
+    [[HttpRequestEngine sharedInstance] makeSessionRequestFromUrl:@"notice/send" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        for (NSInteger i = 0; i < self.imageArray.count; i++)
+        {
+            NSString *filename = [NSString stringWithFormat:@"picture_%d",i];
+            [formData appendPartWithFileData:UIImageJPEGRepresentation(self.imageArray[i], 0.8) name:filename fileName:filename mimeType:@"image/jpeg"];
+        }
+        if(self.audioData)
+            [formData appendPartWithFileData:self.audioData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
+    } completion:^(NSURLSessionDataTask *task, TNDataWrapper *responseObject) {
+        [hud hide:NO];
+        [ProgressHUD showHintText:@"发送成功"];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self dismissViewControllerAnimated:YES completion:nil];
+        });
+    } fail:^(NSString *errMsg) {
+         [hud hide:NO];
+        [ProgressHUD showHintText:errMsg];
+    }];
+
 }
 
 - (void)requestData
@@ -221,6 +274,7 @@
         NSArray *teachers = [UserCenter sharedInstance].curSchool.teachers;
         TeacherInfo *teacherInfo = teachers[indexPath.row];
         [cell.nameLabel setText:teacherInfo.name];
+        [cell.checkButton setSelected:[_selectedMateArray containsObject:teacherInfo]];
         [cell setAccessoryView:nil];
     }
     return cell;
@@ -240,11 +294,21 @@
             classInfo = self.classesArray[row];
         NotificationClassStudentsVC *studentVC = [[NotificationClassStudentsVC alloc] init];
         [studentVC setClassID:classInfo.classID];
+        [studentVC setSelectedCompletion:^(NSArray *studentArray)
+         {
+             [_selectedStudentDic setValue:studentArray forKey:classInfo.classID];
+        }];
         [self.navigationController pushViewController:studentVC animated:YES];
     }
     else
     {
-        
+        NSArray *teachers = [UserCenter sharedInstance].curSchool.teachers;
+        TeacherInfo *teacherInfo = teachers[indexPath.row];
+        if([_selectedMateArray containsObject:teacherInfo])
+            [_selectedMateArray removeObject:teacherInfo];
+        else
+            [_selectedMateArray addObject:teacherInfo];
+        [_tableView reloadData];
     }
 }
 

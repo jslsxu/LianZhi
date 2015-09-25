@@ -9,17 +9,13 @@
 #import "PublishBaseVC.h"
 #import "PhotoPickerVC.h"
 
-@interface PublishPhotoVC : PublishBaseVC<PhotoPickerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,  PhotoPickerVCDelegate, UITextViewDelegate>
+@interface PublishPhotoVC : PublishBaseVC<PhotoPickerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,  PhotoPickerVCDelegate>
 {
     NSMutableArray*     _imageArray;
     UIScrollView*       _scrollView;
     PhotoPickerView*    _pickerView;
-    UIImageView*        _imageBGImageView;
+    UIView*             _bgView;
     NSMutableArray*     _imageItemViewArray;
-    PoiInfoView*        _poiInfoView;
-    UIImageView*        _operationView;
-    UILabel*            _titleLabel;
-    UTPlaceholderTextView*         _textView;
-    UILabel*            _numLabel;
+    UITextField*        _textField;
 }
 @end

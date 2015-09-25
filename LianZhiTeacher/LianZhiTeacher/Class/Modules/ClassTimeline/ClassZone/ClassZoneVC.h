@@ -17,6 +17,7 @@
 #import "ClassZoneManager.h"
 #import "ReplyBox.h"
 #import "ActionView.h"
+#import "StatusManager.h"
 extern NSString *const kPublishPhotoItemFinishedNotification;
 extern NSString *const kPublishPhotoItemKey;
 
@@ -26,6 +27,7 @@ extern NSString *const kPublishPhotoItemKey;
     UILabel*    _indicatorLabel;
     UIButton*   _coverButton;
 }
+@property (nonatomic, strong)TimelineCommentItem *commentItem;
 @property (nonatomic, copy)void (^clickAction)();
 @end
 
@@ -47,6 +49,7 @@ extern NSString *const kPublishPhotoItemKey;
 @property (nonatomic, strong)ClassInfo *classInfo;
 @property (nonatomic, copy)NSString *newsPaper;
 @property (nonatomic, weak)id<ClassZoneHeaderDelegate> delegate;
+@property (nonatomic, strong)TimelineCommentItem *commentItem;
 @end
 
 @interface ClassZoneVC : TNBaseTableViewController<ClassZoneHeaderDelegate, PublishZoneItemDelegate, ReplyBoxDelegate, ClassZoneItemCellDelegate>

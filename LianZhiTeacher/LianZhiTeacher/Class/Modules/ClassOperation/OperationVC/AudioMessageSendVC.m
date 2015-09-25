@@ -32,20 +32,22 @@
     [self.view addSubview:sepLine];
 }
 
+- (NSDictionary *)params
+{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic setValue:[_textField text] forKey:@"words"];
+    [dic setValue:kStringFromValue(_recordView.tmpAmrDuration) forKey:@"voice_time"];
+    return dic;
+}
+
+- (NSData *)audioData
+{
+    return _recordView.tmpAmrData;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

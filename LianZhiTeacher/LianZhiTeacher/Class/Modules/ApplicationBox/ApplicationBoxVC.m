@@ -69,7 +69,7 @@
     if(self)
     {
         self.actionArray = @[@"NotificationToAllVC",@"ContactListVC",@"ClassZoneVC",@"PublishGrowthTimelineVC",@"TNBaseWebViewController"];
-        self.titleArray = @[@"发布通知",@"聊天空间",@"班空间",@"家园手册",@"校主页"];
+        self.titleArray = @[@"发布通知",@"聊天空间",@"班博客",@"家园手册",@"校主页"];
         self.imageArray = @[@"AppPublishNote",@"AppChat",@"AppClassZone",@"AppParent",@"AppSchoolHome"];
         self.appItems = [NSMutableArray array];
         for (NSInteger i = 0; i < self.titleArray.count; i++)

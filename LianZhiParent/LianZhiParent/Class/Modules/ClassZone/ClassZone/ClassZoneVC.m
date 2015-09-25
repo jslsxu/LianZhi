@@ -10,6 +10,7 @@
 #import "ClassAlbumVC.h"
 #import "ActionView.h"
 #import "SwitchClassVC.h"
+#import "NewMessageVC.h"
 #define kClassZoneShown                         @"ClassZoneShown"
 
 @implementation ClassZoneHeaderView
@@ -53,10 +54,34 @@
         _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, frame.size.height - 12, self.width, 12)];
         [_bottomView setBackgroundColor:[UIColor colorWithRed:158 / 255.0 green:158 / 255.0 blue:158 / 255.0 alpha:1.f]];
         [self addSubview:_bottomView];
+        
+        {
+            __weak typeof(self) wself = self;
+            _msgIndicator = [[NewMessageIndicator alloc] initWithFrame:CGRectMake((self.width - 140) / 2, _bottomView.bottom + 6, 140, 30)];
+            [_msgIndicator setClickAction:^{
+                [wself onNewMessageClicked];
+            }];
+            [_msgIndicator setHidden:YES];
+            [self addSubview:_msgIndicator];
+            
+            self.height += 30 + 12;
+        }
     }
     return self;
 }
 
+- (void)setCommentItem:(TimelineCommentItem *)commentItem
+{
+    _commentItem = commentItem;
+    [_msgIndicator setHidden:_commentItem == nil];
+    if(_commentItem)
+    {
+        [_msgIndicator setCommentItem:_commentItem];
+        self.height = 160 + 42;
+    }
+    else
+        self.height = 160;
+}
 - (void)setNewsPaper:(NSString *)newsPaper
 {
     _newsPaper = newsPaper;
@@ -74,6 +99,13 @@
 {
     if([self.delegate respondsToSelector:@selector(classZoneAppClicked)])
         [self.delegate classZoneAppClicked];
+}
+
+- (void)onNewMessageClicked
+{
+    _msgIndicator.hidden = YES;
+    if([self.delegate respondsToSelector:@selector(classNewCommentClicked)])
+        [self.delegate classNewCommentClicked];
 }
 
 @end
@@ -126,6 +158,7 @@
     [self requestData:REQUEST_REFRESH];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurChildChanged) name:kUserCenterChangedCurChildNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
     
     _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - REPLY_BOX_HEIGHT, self.view.width, REPLY_BOX_HEIGHT)];
     [_replyBox setDelegate:self];
@@ -156,6 +189,21 @@
 {
     UIButton *button = (UIButton *)sender;
     [button removeFromSuperview];
+}
+
+- (void)onStatusChanged
+{
+    NSArray *commentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+    TimelineCommentItem *curAlert = nil;
+    for (TimelineCommentItem *alertInfo in commentArray)
+    {
+        if([alertInfo.objid isEqualToString:self.classInfo.classID])
+        {
+            curAlert = alertInfo;
+        }
+    }
+    [_headerView setCommentItem:curAlert];
+    [_tableView setTableHeaderView:_headerView];
 }
 
 - (void)onCurChildChanged
@@ -285,6 +333,14 @@
     ClassAppVC *appVC = [[ClassAppVC alloc] init];
     [appVC setClassInfo:self.classInfo];
     [CurrentROOTNavigationVC pushViewController:appVC animated:YES];
+}
+
+- (void)classNewCommentClicked
+{
+    NewMessageVC *newMessageVC = [[NewMessageVC alloc] init];
+    [newMessageVC setTypes:NewMessageTypeClassZone];
+    [newMessageVC setObjid:self.classInfo.classID];
+    [CurrentROOTNavigationVC pushViewController:newMessageVC animated:YES];
 }
 
 #pragma mark - ReplyBoxDelegate

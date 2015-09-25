@@ -13,14 +13,11 @@
 {
     UILabel*        _dateLabel;
     UIImageView*    _dot;
-    UIImageView*    _bgImageView;
-    UIImageView*    _feeling;
-    UIImageView*    _toilet;
-    UIImageView*    _temparature;
-    UILabel*        _waterLabel;
-    UILabel*        _sleepLabel;
-    UIImageView*    _contentBG;
+    UIView*         _bgView;
+    UIView*         _statusView;
     UILabel*        _contentLabel;
+    NSMutableArray* _statusArray;
+    UIView*         _sepLine;
     UILabel*        _authorLabel;
     UILabel*        _timeLabel;
 }

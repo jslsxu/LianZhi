@@ -24,7 +24,8 @@
         
         _nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_nextButton setFrame:CGRectMake(self.width - 10 - width, (self.height - width) / 2, width, width)];
-        [_nextButton setImage:[UIImage imageNamed:@"DatePickerNext.png"] forState:UIControlStateNormal];
+        [_nextButton setImage:[UIImage imageNamed:@"DatePickerNextNormal"] forState:UIControlStateNormal];
+        [_nextButton setImage:[UIImage imageNamed:@"DatePickerNextDisabled"] forState:UIControlStateDisabled];
         [_nextButton addTarget:self action:@selector(onNext) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_nextButton];
         
@@ -37,7 +38,8 @@
         
         _preButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_preButton setFrame:CGRectMake(_curMonth.left - width, (self.height - width) / 2, width, width)];
-        [_preButton setImage:[UIImage imageNamed:@"DatePickerPre.png"] forState:UIControlStateNormal];
+        [_preButton setImage:[UIImage imageNamed:@"DatePickerPreNormal"] forState:UIControlStateNormal];
+        [_preButton setImage:[UIImage imageNamed:@"DatePickerPreDisabled"] forState:UIControlStateDisabled];
         [_preButton addTarget:self action:@selector(onPre) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_preButton];
         
@@ -53,7 +55,7 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy年MM月"];
     [_curMonth setText:[formatter stringFromDate:self.date]];
-    [_nextButton setHidden:![self hasNext]];
+    [_nextButton setEnabled:[self hasNext]];
 }
 
 - (BOOL)hasNext

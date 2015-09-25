@@ -15,7 +15,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self.view setBackgroundColor:kCommonBackgroundColor];
     self.title = @"消息通知";
     
     _bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 140)];
@@ -65,6 +65,12 @@
 //    _checkButton.selected = !_checkButton.selected;
 //}
 
+- (NSDictionary *)params
+{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic setValue:[_textView text] forKey:@"words"];
+    return dic;
+}
 #pragma mark - UITextViewDelegate
 - (void)textViewDidChange:(UITextView *)textView
 {

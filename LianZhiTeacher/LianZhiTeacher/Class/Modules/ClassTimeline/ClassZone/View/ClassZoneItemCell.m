@@ -47,9 +47,15 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [self addSubview:_contentLabel];
         
-        _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(0, 0, self.width - 50, 45)];
+        _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(50, 0, self.width - 10 - 50 - 60, 45)];
         [_voiceButton addTarget:self action:@selector(onVoiceButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_voiceButton];
+        
+        _spanLabel = [[UILabel alloc] initWithFrame:CGRectMake(_voiceButton.right, _voiceButton.y, 60, _voiceButton.height)];
+        [_spanLabel setTextAlignment:NSTextAlignmentCenter];
+        [_spanLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
+        [_spanLabel setFont:[UIFont systemFontOfSize:14]];
+        [self addSubview:_spanLabel];
         
         NSInteger collectionWidth = self.width - kImageLeftMargin - kImageRightMargin;
         NSInteger itemWidth = (collectionWidth - kInnerMargin * 2) / 3;
@@ -167,6 +173,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     CGFloat spaceYStart = _contentLabel.bottom + 5;
     _collectionView.hidden = YES;
     _voiceButton.hidden = YES;
+    _spanLabel.hidden = YES;
     NSInteger imageCount = item.photos.count;
     if(imageCount > 0)
     {
@@ -186,7 +193,10 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         if(item.audioItem)
         {
             _voiceButton.hidden = NO;
-            [_voiceButton setOrigin:CGPointMake(12, spaceYStart + 5)];
+            _spanLabel.hidden = NO;
+            [_voiceButton setOrigin:CGPointMake(50, spaceYStart + 5)];
+            [_spanLabel setY:_voiceButton.y];
+            [_spanLabel setText:[Utility formatStringForTime:item.audioItem.timeSpan]];
             spaceYStart += 45 + 15;
         }
         else
@@ -211,7 +221,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
 {
     CGFloat height = 30;
     ClassZoneItem *item = (ClassZoneItem *)modelItem;
-    CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(width - 20 * 2 - 12 * 2, 0) andFont:[UIFont systemFontOfSize:16]];
+    CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(width - kImageLeftMargin - kImageRightMargin, 0) andFont:[UIFont systemFontOfSize:14]];
     height += contentSize.height + 5;
     if(item.photos.count > 0)
     {

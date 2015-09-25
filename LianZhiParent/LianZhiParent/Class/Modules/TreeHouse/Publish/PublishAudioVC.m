@@ -15,21 +15,6 @@
 @end
 
 @implementation PublishAudioVC
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -38,36 +23,23 @@
 
 - (void)setupSubviews
 {
-    _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"GrayBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-    [_bgImageView setUserInteractionEnabled:YES];
-    [_bgImageView setFrame:CGRectInset(self.view.bounds, kBorderMargin, kBorderMargin)];
-    [self.view addSubview:_bgImageView];
-    
-    _sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_sendButton setFrame:CGRectMake(kBorderMargin, _bgImageView.height - 45 - kBorderMargin, _bgImageView.width - kBorderMargin * 2, 45)];
-    [_sendButton addTarget:self action:@selector(onSendButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_sendButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
-    [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_sendButton.titleLabel setFont:kButtonTextFont];
-    [_sendButton setTitle:@"录好了，发送" forState:UIControlStateNormal];
-    [_bgImageView addSubview:_sendButton];
-    
-    _whiteBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-    [_whiteBG setFrame:CGRectMake(kBorderMargin, kBorderMargin, _bgImageView.width - kBorderMargin * 2, _sendButton.y - kBorderMargin * 2)];
-    [_whiteBG setUserInteractionEnabled:YES];
-    [_bgImageView addSubview:_whiteBG];
-    
-    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(0, _whiteBG.height - 40, _whiteBG.width, 40)];
-    [_poiInfoView setParentVC:self];
-    [_whiteBG addSubview:_poiInfoView];
-    
-    _titleView = [[UIView alloc] initWithFrame:CGRectMake(0, _whiteBG.height - 40 * 2, _whiteBG.width, 40)];
-    [self setupTitleView:_titleView];
-    [_whiteBG addSubview:_titleView];
-    
-    _recordView = [[AudioRecordView alloc] initWithFrame:CGRectMake(0, 0, _whiteBG.width, _whiteBG.height - 40 * 2)];
+    _recordView = [[AudioRecordView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, (self.view.height - 64) / 2)];
     [_recordView setDelegate:self];
-    [_whiteBG addSubview:_recordView];
+    [self.view addSubview:_recordView];
+    
+    _textField = [[UITextField alloc] initWithFrame:CGRectMake(15, _recordView.bottom, self.view.width - 15 * 2, 40)];
+    [_textField setPlaceholder:@"给录音起个标题吧"];
+    [_textField setFont:[UIFont systemFontOfSize:16]];
+    [_textField setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+    [self.view addSubview:_textField];
+    
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(15, _textField.bottom, _textField.width, 1)];
+    [sepLine setBackgroundColor:kCommonParentTintColor];
+    [self.view addSubview:sepLine];
+    
+    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(20, sepLine.bottom, self.view.width - 20 * 2, 40)];
+    [_poiInfoView setParentVC:self];
+    [self.view addSubview:_poiInfoView];
 
 }
 
@@ -90,14 +62,21 @@
     
 }
 
-- (void)onSendButtonClicked{
+- (void)onSendClicked
+{
     NSData *amrData = [_recordView tmpAmrData];
     if(amrData.length > 0)
     {
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         [params setValue:_textField.text forKey:@"words"];
         [params setValue:kStringFromValue([_recordView tmpAmrDuration]) forKey:@"voice_time"];
-        
+        POIItem *poiItem = _poiInfoView.poiItem;
+        if(!poiItem.clearLocation)
+        {
+            [params setValue:poiItem.poiInfo.name forKey:@"position"];
+            [params setValue:kStringFromValue(poiItem.poiInfo.location.latitude) forKey:@"latitude"];
+            [params setValue:kStringFromValue(poiItem.poiInfo.location.longitude) forKey:@"longitude"];
+        }
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"tree/post_content" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
             [formData appendPartWithFileData:amrData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
         } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
@@ -148,31 +127,31 @@
         [textField setText:[text substringToIndex:200]];
 }
 
-#pragma mark KeyboardNotification
-- (void)onKeyboardShow:(NSNotification *)notification
-{
-    NSDictionary *userInfo = [notification userInfo];
-    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGRect keyboardRect = [aValue CGRectValue];
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
-    [UIView animateWithDuration:animationDuration animations:^{
-        _bgImageView.bottom = self.view.height - keyboardRect.size.height;
-    }];
-}
-
-- (void)onKeyboardHide:(NSNotification *)notification
-{
-    NSDictionary *userInfo = [notification userInfo];
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
-    [UIView animateWithDuration:animationDuration animations:^{
-        _bgImageView.y = kBorderMargin;
-    }];
-}
-
+//#pragma mark KeyboardNotification
+//- (void)onKeyboardShow:(NSNotification *)notification
+//{
+//    NSDictionary *userInfo = [notification userInfo];
+//    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+//    CGRect keyboardRect = [aValue CGRectValue];
+//    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+//    NSTimeInterval animationDuration;
+//    [animationDurationValue getValue:&animationDuration];
+//    [UIView animateWithDuration:animationDuration animations:^{
+//        _bgImageView.bottom = self.view.height - keyboardRect.size.height;
+//    }];
+//}
+//
+//- (void)onKeyboardHide:(NSNotification *)notification
+//{
+//    NSDictionary *userInfo = [notification userInfo];
+//    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+//    NSTimeInterval animationDuration;
+//    [animationDurationValue getValue:&animationDuration];
+//    [UIView animateWithDuration:animationDuration animations:^{
+//        _bgImageView.y = kBorderMargin;
+//    }];
+//}
+//
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

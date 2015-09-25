@@ -41,7 +41,8 @@
 - (void)layoutSubviews
 {
     [_hintLabel setWidth:self.width];
-    
+    [_cameraBtn setFrame:CGRectMake(self.width / 4 - 36 / 2, _hintLabel.bottom + 5, 36, 36)];
+    [_albumBtn setFrame:CGRectMake(self.width * 3 / 4 - 36 / 2, _hintLabel.bottom + 5, 36, 36)];
 }
 
 - (void)onCameraButtonClicked

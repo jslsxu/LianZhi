@@ -165,7 +165,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTreeHouseItemDelete:) name:kTreeHouseItemDeleteNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTreeHouseItemTagDelete:) name:kTreeHouseItemTagDeleteNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTreeHouseItemTagSelect:) name:kTreeHouseItemTagSelectNotification object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
     //监听当前孩子变化
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurChildChanged) name:kUserCenterChangedCurChildNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNetworkStatusChanged) name:kReachabilityChangedNotification object:nil];
@@ -259,6 +259,20 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [_headerView setupHeaderView];
     [self loadCache];
     [self requestData:REQUEST_REFRESH];
+}
+
+- (void)onStatusChanged
+{
+    NSArray *commentArray = [UserCenter sharedInstance].statusManager.treeNewCommentArray;
+    TimelineCommentItem *curAlert = nil;
+    for (TimelineCommentItem *alertInfo in commentArray)
+    {
+        if([alertInfo.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
+        {
+            curAlert = alertInfo;
+        }
+    }
+    [_headerView setCommentItem:curAlert];
 }
 
 #pragma mark - ReplyBoxDelegate

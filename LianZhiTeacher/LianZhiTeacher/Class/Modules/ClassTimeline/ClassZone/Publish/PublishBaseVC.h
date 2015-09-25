@@ -15,6 +15,9 @@
 @end
 
 @interface PublishBaseVC : TNBaseViewController
+{
+    PoiInfoView*    _poiInfoView;
+}
 @property (nonatomic, strong)ClassInfo *classInfo;
 @property (nonatomic, weak)id<PublishZoneItemDelegate> delegate;
 - (void)onBack;

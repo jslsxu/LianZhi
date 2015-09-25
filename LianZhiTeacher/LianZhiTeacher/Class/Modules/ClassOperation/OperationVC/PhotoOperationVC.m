@@ -55,6 +55,24 @@
     [self setupScrollView];
 }
 
+- (NSDictionary *)params
+{
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic setValue:[_textField text] forKey:@"words"];
+    return dic;
+}
+
+- (NSArray *)imageArray
+{
+    NSMutableArray *array = [NSMutableArray array];
+    for (PublishImageItem *item in _imageArray)
+    {
+        [array addObject:item.image];
+    }
+    return array;
+}
+
+
 #pragma mark KeyboardNotification
 - (void)onKeyboardShow:(NSNotification *)notification
 {
@@ -82,12 +100,10 @@
 
 - (void)setupScrollView
 {
-    if(_bgView == nil)
-    {
-        NSInteger width = _scrollView.width - kBorderMargin * 2;
-        _bgView = [[UIView alloc] initWithFrame:CGRectMake(kBorderMargin, kBorderMargin, width, width)];
-        [_scrollView addSubview:_bgView];
-    }
+    [_scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    NSInteger width = _scrollView.width - kBorderMargin * 2;
+    _bgView = [[UIView alloc] initWithFrame:CGRectMake(kBorderMargin, kBorderMargin, width, width)];
+    [_scrollView addSubview:_bgView];
     
     [self setupImageView];
     
@@ -101,7 +117,7 @@
     [sepLine setBackgroundColor:kCommonTeacherTintColor];
     [_scrollView addSubview:sepLine];
     
-    [_scrollView setContentSize:CGSizeMake(_scrollView.width, MAX(self.view.height - 64, _scrollView.bottom))];
+    [_scrollView setContentSize:CGSizeMake(_scrollView.width, MAX(self.view.height - 64, sepLine.bottom))];
 }
 
 - (void)setupImageView
@@ -192,33 +208,11 @@
 - (void)photoPickerDidSelectAlbum:(PhotoPickerView *)picker
 {
     [self.view endEditing:YES];
-    NSString *classID = nil;
-    if([self.classInfo.classID isEqualToString:@"-1"])
-    {
-        if(self.targetArray.count == 1)
-        {
-            ClassInfo *classInfo = [self.targetArray objectAtIndex:0];
-            classID = classInfo.classID;
-        }
-    }
-    else
-        classID = self.classInfo.classID;
-    if(classID)
-    {
-        PhotoPickerVC *photoPickerVC = [[PhotoPickerVC alloc] init];
-        [photoPickerVC setMaxToSelected:9 - _imageArray.count];
-        [photoPickerVC setClassID:classID];
-        [photoPickerVC setDelegate:self];
-        UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:photoPickerVC];
-        [self presentViewController:navigationVC animated:YES completion:nil];
-    }
-    else
-    {
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        [imagePicker setDelegate:self];
-        [self presentViewController:imagePicker animated:YES completion:nil];
-    }
+
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    [imagePicker setDelegate:self];
+    [self presentViewController:imagePicker animated:YES completion:nil];
 }
 
 - (void)photoPickerDidSelectCamera:(PhotoPickerView *)picker
@@ -235,7 +229,7 @@
 {
     [self dismissViewControllerAnimated:YES completion:nil];
     [_imageArray addObjectsFromArray:selectedArray];
-    [self setupSubviews];
+    [self setupScrollView];
 }
 
 - (void)photoPickerVCDidCancel:(PhotoPickerVC *)photoPickerVC

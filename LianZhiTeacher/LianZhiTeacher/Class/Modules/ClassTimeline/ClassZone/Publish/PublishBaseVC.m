@@ -12,8 +12,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:(@"WhiteLeftArrow.png")] style:UIBarButtonItemStylePlain target:self action:@selector(onBack)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(onSendClicked)];
 }
 
 - (void)onBack
@@ -21,5 +22,10 @@
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];
+}
+
+- (void)onSendClicked
+{
+    
 }
 @end

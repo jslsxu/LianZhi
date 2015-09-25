@@ -16,18 +16,38 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:(@"WhiteLeftArrow.png")] style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStylePlain target:self action:@selector(onNext)];
 }
+
 
 - (void)cancel
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (NSDictionary *)params
+{
+    return nil;
+}
+
+- (NSArray *)imageArray
+{
+    return nil;
+}
+
+- (NSData *)audioData
+{
+    return nil;
+}
+
 - (void)onNext
 {
     NotificationTargetSelectVC *targetSelectVC = [[NotificationTargetSelectVC alloc] init];
+    [targetSelectVC setImageArray:[self imageArray]];
+    [targetSelectVC setAudioData:[self audioData]];
+    [targetSelectVC setParams:[self params]];
     [self.navigationController pushViewController:targetSelectVC animated:YES];
 }
 

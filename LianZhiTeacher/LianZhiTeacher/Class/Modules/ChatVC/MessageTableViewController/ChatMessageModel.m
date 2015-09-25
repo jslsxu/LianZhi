@@ -9,13 +9,11 @@
 #import "ChatMessageModel.h"
 @implementation ChatMessageModel
 
-- (BOOL)hasMoreData
-{
-    return YES;
-}
 
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
 {
+    self.hasNew = NO;
+    NSInteger originalNum = self.modelItemArray.count;
     TNDataWrapper *moreWrapper  =[data getDataWrapperForKey:@"more"];
     if(type == REQUEST_REFRESH)
     {
@@ -41,7 +39,8 @@
                 if([self canInsert:item])
                     [self.modelItemArray insertObject:item atIndex:0];
             }
-
+            if(originalNum == 0)
+                self.hasNew = YES;
         }
         else//加载最新
         {
@@ -50,6 +49,8 @@
                 if([self canInsert:item])
                     [self.modelItemArray addObject:item];
             }
+            if(self.modelItemArray.count > originalNum)
+                self.hasNew = YES;
         }
         [self.modelItemArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             MessageItem *item1 = (MessageItem *)obj1;
@@ -79,4 +80,5 @@
     }
     return YES;
 }
+
 @end

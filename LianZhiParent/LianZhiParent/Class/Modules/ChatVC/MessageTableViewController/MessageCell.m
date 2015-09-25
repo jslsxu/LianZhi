@@ -92,6 +92,7 @@
     [_contentButton.backImageView setHidden:YES];
     [_contentButton setHidden:NO];
     [_playButton setHidden:YES];
+    [_audioTimeLabel setHidden:YES];
     MessageType type = messageItem.messageContent.messageType;
     if(type == UUMessageTypeText)
     {
@@ -123,17 +124,22 @@
         [_contentButton setSize:CGSizeMake(width, 32)];
         [_contentButton setHidden:YES];
         [_playButton setHidden:NO];
+        [_audioTimeLabel setHidden:NO];
         [_playButton setSize:_contentButton.size];
+        [_audioTimeLabel setText:[Utility formatStringForTime:messageItem.messageContent.audioItem.timeSpan]];
+        [_audioTimeLabel sizeToFit];
         if(messageItem.from == UUMessageFromMe)
         {
             
             _playButton.type = MLPlayVoiceButtonTypeRight;
             [_playButton setOrigin:CGPointMake(kScreenWidth - 50 - _contentButton.width, _avatarView.y)];
+            [_audioTimeLabel setOrigin:CGPointMake(_playButton.x - _audioTimeLabel.width - 10, _playButton.y + (_playButton.height - _audioTimeLabel.height) / 2)];
         }
         else
         {
             _playButton.type = MLPlayVoiceButtonTypeLeft;
             [_playButton setOrigin:CGPointMake(50, _avatarView.y)];
+            [_audioTimeLabel setOrigin:CGPointMake(_playButton.right + 10, _playButton.y + (_playButton.height - _audioTimeLabel.height) / 2)];
         }
     }
     else//表情

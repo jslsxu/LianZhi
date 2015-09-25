@@ -16,6 +16,8 @@
 
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
 {
+    self.hasNew = NO;
+    NSInteger originalNum = self.modelItemArray.count;
     TNDataWrapper *moreWrapper  =[data getDataWrapperForKey:@"more"];
     if(type == REQUEST_REFRESH)
     {
@@ -46,6 +48,8 @@
                 }
             }
             self.shouldReload = hasNew;
+            if(originalNum == 0)
+                self.hasNew = YES;
         }
         else//加载最新
         {
@@ -59,11 +63,13 @@
                 }
             }
             self.shouldReload = hasNew;
+            if(self.modelItemArray.count > originalNum)
+                self.hasNew = YES;
         }
         [self.modelItemArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             MessageItem *item1 = (MessageItem *)obj1;
             MessageItem *item2 = (MessageItem *)obj2;
-            return [item1.messageContent.mid compare:item2.messageContent.mid];
+            return [item1.messageContent.ctime compare:item2.messageContent.ctime];
         }];
     }
     if(type == REQUEST_REFRESH)

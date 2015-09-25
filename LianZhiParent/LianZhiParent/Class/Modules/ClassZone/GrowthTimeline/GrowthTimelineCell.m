@@ -16,6 +16,7 @@
     {
         [self setBackgroundColor:[UIColor clearColor]];
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
+        
         _dateLabel  =[[UILabel alloc] initWithFrame:CGRectMake(10, 10, 40, 20)];
         [_dateLabel setTextAlignment:NSTextAlignmentRight];
         [_dateLabel setBackgroundColor:[UIColor clearColor]];
@@ -29,50 +30,55 @@
         [_dot setCenter:CGPointMake(56, _dateLabel.centerY)];
         [self addSubview:_dot];
         
-        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-        [self addSubview:_bgImageView];
+        _statusArray = [NSMutableArray array];
+        self.width = kScreenWidth;
+        _bgView = [[UIView alloc] initWithFrame:CGRectMake(65, 0, self.width - 15 - 65, 0)];
+        [_bgView setBackgroundColor:[UIColor whiteColor]];
+        [_bgView.layer setCornerRadius:10];
+        [_bgView.layer setMasksToBounds:YES];
+        [self addSubview:_bgView];
         
-        CGFloat width = 36;
-        _feeling = [[UIImageView alloc] initWithFrame:CGRectMake(12, 20, width, width)];
-        [_bgImageView addSubview:_feeling];
+        _statusView = [[UIView alloc] initWithFrame:CGRectMake(10, 10, _bgView.width - 10 * 2, 40)];
+        [_bgView addSubview:_statusView];
         
-        _toilet = [[UIImageView alloc] initWithFrame:CGRectMake(_feeling.right + 8, 20, width, width)];
-        [_bgImageView addSubview:_toilet];
+        NSArray *imageArray = @[@"Mood",@"Toilet",@"Temperature",@"Drink",@"Sleep"];
+        NSInteger itemWidth = 38;
+        NSInteger innerMargin = (_statusView.width - itemWidth * 5) / 4;
+        for (NSInteger i = 0; i < 5; i++)
+        {
+            UIButton *statusButton =  [UIButton buttonWithType:UIButtonTypeCustom];
+            [statusButton setFrame:CGRectMake((itemWidth + innerMargin) * i, 1, itemWidth, itemWidth)];
+            [statusButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Normal",imageArray[i]]] forState:UIControlStateNormal];
+            [statusButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Abnormal",imageArray[i]]] forState:UIControlStateSelected];
+            [_statusView addSubview:statusButton];
+            [_statusArray addObject:statusButton];
+        }
         
-        _temparature = [[UIImageView alloc] initWithFrame:CGRectMake(_toilet.right + 8, 20, width, width)];
-        [_bgImageView addSubview:_temparature];
-        
-        CGFloat labelStart = _temparature.right  +10;
-        _waterLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelStart, _temparature.top, _bgImageView.width - labelStart, 15)];
-        [_waterLabel setBackgroundColor:[UIColor clearColor]];
-        [_bgImageView addSubview:_waterLabel];
-        
-        _sleepLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelStart, _temparature.bottom - 15, _bgImageView.width - labelStart, 15)];
-        [_sleepLabel setBackgroundColor:[UIColor clearColor]];
-        [_bgImageView addSubview:_sleepLabel];
-        
-        _contentBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"GrayBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-        [_bgImageView addSubview:_contentBG];
-        
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 60, _bgView.width - 10 * 2, 0)];
+        [_contentLabel setFont:[UIFont systemFontOfSize:14]];
+        [_contentLabel setBackgroundColor:[UIColor colorWithHexString:@"f1f1f1"]];
+        [_contentLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
         [_contentLabel setNumberOfLines:0];
         [_contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
-        [_contentLabel setFont:[UIFont systemFontOfSize:15]];
-        [_contentLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
-        [_contentLabel setBackgroundColor:[UIColor clearColor]];
-        [_contentBG addSubview:_contentLabel];
+        [_contentLabel.layer setCornerRadius:10];
+        [_contentLabel.layer setMasksToBounds:YES];
+        [_bgView addSubview:_contentLabel];
+        
+        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _bgView.width, kLineHeight)];
+        [_sepLine setBackgroundColor:kSepLineColor];
+        [_bgView addSubview:_sepLine];
         
         _authorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_authorLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
         [_authorLabel setFont:[UIFont systemFontOfSize:14]];
         [_authorLabel setBackgroundColor:[UIColor clearColor]];
-        [_bgImageView addSubview:_authorLabel];
+        [_bgView addSubview:_authorLabel];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_timeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
         [_timeLabel setFont:[UIFont systemFontOfSize:14]];
         [_timeLabel setBackgroundColor:[UIColor clearColor]];
-        [_bgImageView addSubview:_timeLabel];
+        [_bgView addSubview:_timeLabel];
         
     }
     return self;
@@ -137,93 +143,60 @@
     }
     else
         [_dateLabel setHidden:YES];
-
     
-    
-    [_bgImageView setFrame:CGRectMake(80, 0, self.width - 80 - 10, 100)];
-
-    
-    NSString *temp = timelineItem.temparature;
-    if([temp isEqualToString:@"正常"])
-        [_temparature setImage:[UIImage imageNamed:@"TempNormal.png"]];
-    else if([temp isEqualToString:@"发烧"])
-        [_temparature setImage:[UIImage imageNamed:@"TempHigh.png"]];
-    
-    NSInteger stoolNum = timelineItem.stoolNum;
-    if(stoolNum == 0)
-        [_toilet setImage:[UIImage imageNamed:@"ToiletNo.png"]];
-    else if(stoolNum == 1)
-        [_toilet setImage:[UIImage imageNamed:@"ToiletOnce.png"]];
-    else if (stoolNum == 2)
-        [_toilet setImage:[UIImage imageNamed:@"ToiletTwice.png"]];
-    
-    NSString *emotion = timelineItem.emotion;
-    if([emotion isEqualToString:@"高兴"])
-        [_feeling setImage:[UIImage imageNamed:@"ExpressionHappy.png"]];
-    else if ([emotion isEqualToString:@"哭闹"])
-        [_feeling setImage:[UIImage imageNamed:@"ExpressionCry.png"]];
-    else
-        [_feeling setImage:[UIImage imageNamed:@"ExpressionSimple.png"]];
-    
-    NSInteger water = timelineItem.water;
-    CGFloat sleep = timelineItem.sleep;
-    NSString *drinkStr = [NSString stringWithFormat:@"喝了%ld杯水",(long)water];
-    NSString *sleepStr = [NSString stringWithFormat:@"睡了%.1fhr",sleep];
-    NSMutableAttributedString *drinkAttrStr = [[NSMutableAttributedString alloc] initWithString:drinkStr];
-    [drinkAttrStr setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14], NSForegroundColorAttributeName:[UIColor colorWithHexString:@"666666"]} range:NSMakeRange(0, 2)];
-    [drinkAttrStr setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:15], NSForegroundColorAttributeName: [UIColor colorWithHexString:@"59b6e2"]} range:NSMakeRange(2, drinkStr.length - 2)];
-    NSMutableAttributedString *sleepAttrStr = [[NSMutableAttributedString alloc] initWithString:sleepStr];
-    [sleepAttrStr setAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"666666"],NSFontAttributeName:[UIFont systemFontOfSize:14]} range:NSMakeRange(0, 2)];
-    [sleepAttrStr setAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15],NSForegroundColorAttributeName:[UIColor colorWithHexString:@"c5927d"]} range:NSMakeRange(2, sleepStr.length - 2)];
-    [_waterLabel setAttributedText:drinkAttrStr];
-    [_waterLabel sizeToFit];
-    [_sleepLabel setAttributedText:sleepAttrStr];
-    [_sleepLabel sizeToFit];
-    
-    [_waterLabel setOrigin:CGPointMake(_bgImageView.width - 12 - _waterLabel.width, 20)];
-    [_sleepLabel setOrigin:CGPointMake(_bgImageView.width - 12 - _sleepLabel.width, _temparature.bottom - 20)];
-    
-    
+    for (NSInteger i = 0; i < 5; i++)
+    {
+        UIButton *button = _statusArray[i];
+        if(i== 0)
+            [button setSelected:timelineItem.emotion];
+        if(i == 1)
+            [button setSelected:timelineItem.stool];
+        if(i == 2)
+            [button setSelected:timelineItem.temparature];
+        if(i == 3)
+            [button setSelected:timelineItem.water];
+        if(i == 4)
+            [button setSelected:timelineItem.sleep];
+    }
+    NSInteger spaceYStart = 60;
     NSString *content = timelineItem.content;
-    if([content length] > 0)
+    if(content.length > 0)
     {
-        _contentBG.hidden = NO;
-        _contentLabel.hidden = NO;
+        CGSize contentSize = [content boundingRectWithSize:CGSizeMake(kScreenWidth - 15 - 65 - 15 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
+        contentSize.height = contentSize.height + 20;
+        contentSize.width = kScreenWidth - 15 - 65 - 10 * 2;
         [_contentLabel setText:content];
-        CGSize contentSize = [_contentLabel.text boundingRectWithSize:CGSizeMake(_bgImageView.width - (12 + 10) * 2, 0) andFont:[UIFont systemFontOfSize:15]];
-        [_contentBG setFrame:CGRectMake(12, _temparature.bottom + 12, _bgImageView.width - 12 * 2, contentSize.height + 24)];
-        [_contentLabel setFrame:CGRectMake(10,10, contentSize.width, contentSize.height)];
+        [_contentLabel setSize:contentSize];
+        spaceYStart += _contentLabel.height + 10;
     }
     else
     {
-        _contentLabel.hidden = YES;
-        _contentBG.hidden = YES;
-        [_contentBG setFrame:CGRectMake(12, _temparature.bottom, _bgImageView.width - 12 * 2, 0)];
+        _contentLabel.height = 0;
     }
+    _sepLine.y = spaceYStart;
     
     NSString *author = [NSString stringWithFormat:@"来自%@老师",timelineItem.teacherInfo.teacherName];
     [_authorLabel setText:author];
     [_authorLabel sizeToFit];
-    [_authorLabel setOrigin:CGPointMake(12, _contentBG.bottom + (30 - _authorLabel.height) / 2)];
+    [_authorLabel setOrigin:CGPointMake(12, _sepLine.bottom + (30 - _authorLabel.height) / 2)];
     
     [_timeLabel setText:timelineItem.formatTime];
     [_timeLabel sizeToFit];
-    [_timeLabel setOrigin:CGPointMake(_contentBG.right - _timeLabel.width, _contentBG.bottom + (30 - _authorLabel.height) / 2)];
-    [_bgImageView setHeight:_contentBG.bottom + 30];
+    [_timeLabel setOrigin:CGPointMake(_bgView.right - _timeLabel.width, _sepLine.bottom + (30 - _authorLabel.height) / 2)];
+    [_bgView setHeight:spaceYStart + 30];
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
 {
     GrowthTimelineItem *item = (GrowthTimelineItem *)modelItem;
     NSString *content = item.content;
+    NSInteger contentHeight = 60;
     if([content length] > 0)
     {
-        CGSize contentSize = [content boundingRectWithSize:CGSizeMake(width - 80 - 10 - (12 + 10) * 2, 0) andFont:[UIFont systemFontOfSize:15]];
-        return @(20 + 36 + (12 + 12 + contentSize.height + 12) + 30 + 15);
+        CGSize contentSize = [content boundingRectWithSize:CGSizeMake(width - 15 - 65 - 15 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
+        contentHeight += contentSize.height + 20 + 10;
     }
-    else
-    {
-        return @(20 + 36 + 30 + 15);
-    }
+    contentHeight += 30 + 20;
+    return @(contentHeight);
 }
 @end

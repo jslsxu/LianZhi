@@ -15,6 +15,7 @@
     UIView*     _sepLine;
 }
 @property (nonatomic, strong)ClassInfo *classInfo;
+@property (nonatomic, readonly)UIButton *checkButton;
 @property (nonatomic, readonly)UILabel *nameLabel;
 @end
 
@@ -26,12 +27,14 @@
 @property (nonatomic, readonly)UILabel *nameLabel;
 @end
 
-typedef void(^Completion)(NSString *targetJson);
-
 @interface NotificationTargetSelectVC : TNBaseViewController
 {
+    NSMutableDictionary*     _selectedStudentDic;
+    NSMutableArray*     _selectedMateArray;
     UISegmentedControl* _segmentControl;
     UITableView*        _tableView;
 }
-@property (nonatomic, copy)Completion completion;
+@property (nonatomic, strong)NSArray *imageArray;
+@property (nonatomic, strong)NSData *audioData;
+@property (nonatomic, strong)NSDictionary *params;
 @end

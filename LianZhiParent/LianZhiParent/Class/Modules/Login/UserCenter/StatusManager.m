@@ -20,6 +20,33 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
 
 @end
 
+@implementation TimelineCommentAlertInfo
+
+- (void)parseData:(TNDataWrapper *)dataWrapper
+{
+    self.uid = [dataWrapper getStringForKey:@"uid"];
+    self.avatar = [dataWrapper getStringForKey:@"head"];
+    self.num = [dataWrapper getIntegerForKey:@"num"];
+}
+
+@end
+
+@implementation TimelineCommentItem
+
+- (void)parseData:(TNDataWrapper *)dataWrapper
+{
+    self.objid = [dataWrapper getStringForKey:@"class_id"];
+    TNDataWrapper *commentWrapper = [dataWrapper getDataWrapperForKey:@"badge"];
+    if(commentWrapper.count > 0)
+    {
+        TimelineCommentAlertInfo *alertInfo = [[TimelineCommentAlertInfo alloc] init];
+        [alertInfo parseData:commentWrapper];
+        self.alertInfo = alertInfo;
+    }
+}
+
+@end
+
 @implementation StatusManager
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
@@ -38,6 +65,40 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
         }
         self.feedClassesNew = newFeedsArray;
     }
+    
+    TNDataWrapper *commentArray = [dataWrapper getDataWrapperForKey:@"new_tree_fc"];
+    TNDataWrapper *classCommentWrapper = [commentArray getDataWrapperForKey:@"class"];
+    if(classCommentWrapper.count > 0)
+    {
+        NSMutableArray *classNewCommentArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < classCommentWrapper.count; i++)
+        {
+            TNDataWrapper *itemWrapper = [classCommentWrapper getDataWrapperForIndex:i];
+            TimelineCommentItem *commentItem = [[TimelineCommentItem alloc] init];
+            [commentItem parseData:itemWrapper];
+            [commentItem setObjid:[itemWrapper getStringForKey:@"class_id"]];
+            [classNewCommentArray addObject:commentItem];
+        }
+        self.classNewCommentArray = classNewCommentArray;
+    }
+    else
+        self.classNewCommentArray = nil;
+    TNDataWrapper *treeCommentWrapper = [commentArray getDataWrapperForKey:@"tree"];
+    if(treeCommentWrapper.count > 0)
+    {
+        NSMutableArray *treeNewCommentArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < treeCommentWrapper.count; i++)
+        {
+            TNDataWrapper *itemWrapper = [treeCommentWrapper getDataWrapperForIndex:i];
+            TimelineCommentItem *commentItem = [[TimelineCommentItem alloc] init];
+            [commentItem parseData:itemWrapper];
+            [commentItem setObjid:[itemWrapper getStringForKey:@"child_id"]];
+            [treeNewCommentArray addObject:commentItem];
+        }
+        self.treeNewCommentArray = treeNewCommentArray;
+    }
+    else
+        self.treeNewCommentArray = nil;
     
     TNDataWrapper *noticeWrapper = [dataWrapper getDataWrapperForKey:@"notice"];
     if(noticeWrapper.count == 0)

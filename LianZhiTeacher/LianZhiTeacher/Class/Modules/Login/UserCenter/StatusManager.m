@@ -11,6 +11,8 @@ NSString *const kNewMsgNumNotification = @"NewMsgNumNotification";
 NSString *const kFoundNotification = @"NewMsgNumNotification";
 NSString *const kStatusChangedNotification = @"StatusChangedNotification";
 NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNotificaiotn";
+NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotification";
+
 @implementation NoticeItem
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
@@ -37,7 +39,13 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
     self.classID = [dataWrapper getStringForKey:@"class_id"];
-    TNDataWrapper *commentWrapper = [dataWrapper getDataWrapperForKey:@""];
+    TNDataWrapper *commentWrapper = [dataWrapper getDataWrapperForKey:@"badge"];
+    if(commentWrapper.count > 0)
+    {
+        TimelineCommentAlertInfo *alertInfo = [[TimelineCommentAlertInfo alloc] init];
+        [alertInfo parseData:commentWrapper];
+        self.alertInfo = alertInfo;
+    }
 }
 
 @end
@@ -64,7 +72,25 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
     TNDataWrapper *newClassFC = [dataWrapper getDataWrapperForKey:@"new_class_fc"];
     if(newClassFC.count > 0)
     {
-        
+        TNDataWrapper *classWrapper = [newClassFC getDataWrapperForKey:@"class"];
+        if(classWrapper.count > 0)
+        {
+            NSMutableArray *timelineCommentArray = [NSMutableArray array];
+            for (NSInteger i = 0; i < classWrapper.count; i++)
+            {
+                TNDataWrapper *commentWrapper = [classWrapper getDataWrapperForIndex:i];
+                TimelineCommentItem *commentItem = [[TimelineCommentItem alloc] init];
+                [commentItem parseData:commentWrapper];
+                [timelineCommentArray addObject:commentItem];
+            }
+            self.classNewCommentArray = timelineCommentArray;
+        }
+        else
+            self.classNewCommentArray = nil;
+    }
+    else
+    {
+        self.classNewCommentArray = nil;
     }
     
     TNDataWrapper *noticeWrapper = [dataWrapper getDataWrapperForKey:@"notice"];

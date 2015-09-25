@@ -137,9 +137,16 @@
 {
     NSArray *modelArray = self.tableViewModel.modelItemArray;
     if(modelArray.count > 0 && modelArray.count <= [_tableView numberOfRowsInSection:0])
-    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:modelArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:modelArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
+
+- (void)TNBaseTableViewControllerRequestSuccess
+{
+    ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
+    if(messageModel.hasNew)
+        [self scrollToBottom];
+}
 
 
 #pragma mark - InputDelegate
