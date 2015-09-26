@@ -19,4 +19,5 @@
 }
 @property (nonatomic, strong)MessageGroupListModel *messageModel;
 - (void)refreshData;
+- (void)invalidate;
 @end

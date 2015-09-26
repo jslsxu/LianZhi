@@ -12,7 +12,7 @@
 #import "ActionPopView.h"
 #import "ContactListVC.h"
 @interface MessageVC ()<ActionPopViewDelegate>
-
+@property (nonatomic, strong)NSTimer *timer;
 @end
 
 @implementation MessageVC
@@ -35,6 +35,26 @@
     [super viewDidDisappear:animated];
     [ApplicationDelegate homeVC].navigationItem.rightBarButtonItem = nil;
 }
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self)
+    {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(refresh) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    }
+    return self;
+}
+
+- (void)invalidate
+{
+    if(self.timer)
+    {
+        [self.timer invalidate];
+        self.timer = nil;
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -62,6 +82,11 @@
 //    [self requestData:REQUEST_REFRESH];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onPublishPhotoFinished:) name:kPublishPhotoItemFinishedNotification object:nil];
+}
+
+- (void)refresh
+{
+    [self requestData:REQUEST_REFRESH];
 }
 
 - (void)onAddActionClicked
