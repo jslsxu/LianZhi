@@ -84,6 +84,7 @@
             [self startTimer];
         } fail:^(NSString *errMsg) {
             [hud hide:YES];
+            [ProgressHUD showHintText:errMsg];
         }];
     }
 }
@@ -91,6 +92,21 @@
 - (void)onNextClicked
 {
     [self.view endEditing:YES];
+    NSString *mobile = _mobileField.text;
+    NSString *authCode = _authCodeField.text;
+    NSString *name = _nameField.text;
+    NSString *errMsg = nil;
+    if(mobile.length == 0)
+        errMsg = @"手机号不能为空";
+    else if(authCode.length == 0)
+        errMsg = @"请输入验证码";
+    else if (name.length == 0)
+        errMsg = @"请输入您的姓名";
+    if(errMsg)
+    {
+        [ProgressHUD showHintText:errMsg];
+        return;
+    }
     PasswordConfirmVC *passwordConfirmVC = [[PasswordConfirmVC alloc] init];
     [self.navigationController pushViewController:passwordConfirmVC animated:YES];
     //    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在登录" toView:self.view];

@@ -189,6 +189,7 @@ static SystemSoundID shake_sound_male_id = 0;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[TaskUploadManager sharedInstance] cleanTask];
     });
+    [self.homeVC.messageVC invalidate];
     self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:nil];
     [self.window setRootViewController:self.rootNavigation];
     [[UserCenter sharedInstance] logout];

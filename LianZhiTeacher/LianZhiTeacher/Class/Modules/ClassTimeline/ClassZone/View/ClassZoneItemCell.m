@@ -78,7 +78,6 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         _addressButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_addressButton setTitleColor:[UIColor colorWithHexString:@"a0a0a0"] forState:UIControlStateNormal];
         [_addressButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
-        [_addressButton setTitle:@"北京市首开智慧社" forState:UIControlStateNormal];
         [self addSubview:_addressButton];
         
         _actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -205,6 +204,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
             spaceYStart += 10;
         }
     }
+    [_addressButton setTitle:item.position forState:UIControlStateNormal];
     CGSize titleSize = [[_addressButton titleForState:UIControlStateNormal] sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12]}];
     [_addressButton setFrame:CGRectMake(kImageLeftMargin, spaceYStart, titleSize.width, 20)];
     [_actionButton setFrame:CGRectMake(self.width - 40, spaceYStart, 40, 20)];

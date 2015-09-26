@@ -48,6 +48,7 @@
             [self.modelItemArray addObject:item];
         }
     }
+    self.total = [data getIntegerForKey:@"total"];
     return YES;
 }
 
@@ -68,19 +69,23 @@
     }
     return self;
 }
-
-- (void)setNotificationItem:(NotificationItem *)notificationItem
+- (void)onReloadData:(TNModelItem *)modelItem
 {
-    _notificationItem = notificationItem;
+    NotificationItem *item = (NotificationItem *)modelItem;
     NSString *imageStr = nil;
-    if(_notificationItem.notificationType == 1)//文字
+    if(item.notificationType == 1)//文字
         imageStr = @"NotiRecordTextIcon";
-    else if(_notificationItem.notificationType == 2)//语音
+    else if(item.notificationType == 2)//语音
         imageStr = @"NotiRecordAudioIcon";
     else
         imageStr = @"NotiRecordPhotoIcon";
     [self.imageView setImage:[UIImage imageNamed:imageStr]];
-    [self.textLabel setText:_notificationItem.words];
+    [self.textLabel setText:item.words];
+}
+
++ (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
+{
+    return @(44);
 }
 
 @end
@@ -100,7 +105,7 @@
     [self setupHeaderView:operationView];
     [self.view addSubview:operationView];
     
-    [_tableView setFrame:CGRectMake(0, operationView.bottom, self.view.width, self.view.height - operationView.bottom - 64)];
+    [_tableView setFrame:CGRectMake(0, operationView.bottom, self.view.width, self.view.height - operationView.bottom)];
 
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _tableView.width, 30)];
     [headerView setBackgroundColor:[UIColor colorWithHexString:@"E6E6E6"]];

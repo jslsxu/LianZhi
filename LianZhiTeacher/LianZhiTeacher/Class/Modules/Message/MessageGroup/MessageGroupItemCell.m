@@ -52,6 +52,7 @@
         
         _notificationIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NotificationIndicator"]];
         [_notificationIndicator setHidden:YES];
+        [_notificationIndicator setOrigin:CGPointMake(60, 32 + (20 - _notificationIndicator.height) / 2)];
         [self.actualContentView addSubview:_notificationIndicator];
         
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 32, _soundOff.left - 5 - 60, 20)];
@@ -91,7 +92,7 @@
         name = [NSString stringWithFormat:@"%@(%@)",name,_messageItem.fromInfo.label];
     _nameLabel.text = name;
     [_nameLabel sizeToFit];
-    [_nameLabel setWidth:MIN(_timeLabel.left - 10 - _nameLabel.left, _nameLabel.width)];
+    [_nameLabel setWidth:MIN(_timeLabel.left - 10 - _nameLabel.left - 30, _nameLabel.width)];
     
     MessageFromType fromType = _messageItem.fromInfo.type;
     //群聊图标

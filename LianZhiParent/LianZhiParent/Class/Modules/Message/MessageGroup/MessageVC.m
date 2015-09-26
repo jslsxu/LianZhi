@@ -25,6 +25,7 @@
     [super viewWillAppear:animated];
     [self requestData:REQUEST_REFRESH];
 }
+
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -235,6 +236,7 @@
             [chatVC setChatType:(ChatType)groupItem.fromInfo.type];
             [chatVC setTargetID:groupItem.fromInfo.uid];
             [chatVC setTo_objid:groupItem.fromInfo.from_obj_id];
+            [chatVC setTitle:groupItem.fromInfo.name];
             [self.navigationController pushViewController:chatVC animated:YES];
         }
     }

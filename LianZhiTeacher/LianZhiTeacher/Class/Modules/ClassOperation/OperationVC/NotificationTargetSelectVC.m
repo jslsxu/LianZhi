@@ -141,11 +141,22 @@
         [ProgressHUD showHintText:@"还没有选择发送对象"];
         return;
     }
+    
+    if(self.imageArray.count > 0)
+    {
+        NSMutableString *picSeq = [[NSMutableString alloc] init];
+        for (NSInteger i = 0; i < self.imageArray.count; i++)
+        {
+            [picSeq appendFormat:@"picture_%ld",(long)i];
+        }
+        [params setValue:picSeq forKey:@"pic_seq"];
+    }
+    
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:self.view];
     [[HttpRequestEngine sharedInstance] makeSessionRequestFromUrl:@"notice/send" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         for (NSInteger i = 0; i < self.imageArray.count; i++)
         {
-            NSString *filename = [NSString stringWithFormat:@"picture_%d",i];
+            NSString *filename = [NSString stringWithFormat:@"picture_%ld",(long)i];
             [formData appendPartWithFileData:UIImageJPEGRepresentation(self.imageArray[i], 0.8) name:filename fileName:filename mimeType:@"image/jpeg"];
         }
         if(self.audioData)

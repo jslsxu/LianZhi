@@ -8,7 +8,7 @@
 
 #import "AudioMessageSendVC.h"
 
-@interface AudioMessageSendVC ()
+@interface AudioMessageSendVC ()<UITextFieldDelegate>
 
 @end
 
@@ -22,6 +22,7 @@
     [self.view addSubview:_recordView];
     
     _textField = [[UITextField alloc] initWithFrame:CGRectMake(10, _recordView.bottom, _recordView.width, 40)];
+    [_textField setDelegate:self];
     [_textField setPlaceholder:@"给录音起个标题吧"];
     [_textField setFont:[UIFont systemFontOfSize:16]];
     [_textField setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
@@ -45,6 +46,16 @@
     return _recordView.tmpAmrData;
 }
 
+#pragma mark 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if([string isEqualToString:@"\n"])
+    {
+        [textField resignFirstResponder];
+        return NO;
+    }
+    return YES;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

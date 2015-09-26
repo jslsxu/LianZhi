@@ -80,8 +80,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
             }
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            if(fail)
-                fail(@"网络请求错误");
         }];
     }
     else
@@ -118,8 +116,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
             }
 
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            if(fail)
-                fail(@"网络请求错误");
         }];
     }
     
@@ -168,8 +164,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
         }
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if(fail)
-            fail(@"网络请求错误");
     }];
     return operation;
 }
@@ -213,8 +207,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
         }
 
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        if(fail)
-            fail(@"网络请求错误");
     }];
     return task;
 }

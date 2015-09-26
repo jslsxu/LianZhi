@@ -40,9 +40,9 @@
     [self.view addSubview:_tableView];
     
     _mapView = [[MAMapView alloc] init];
+    [_mapView setDelegate:self];
     [self.view addSubview:_mapView];
     [_mapView setShowsUserLocation:YES];
-    [_mapView setDelegate:self];
 }
 
 - (void)onCancel
@@ -148,6 +148,11 @@
     
     //发起逆地理编码
     [_poiSearcher AMapReGoecodeSearch: regeoRequest];
+}
+
+- (void)mapView:(MAMapView *)mapView didFailToLocateUserWithError:(NSError *)error
+{
+    
 }
 
 #pragma mark - AMapViewDelegate

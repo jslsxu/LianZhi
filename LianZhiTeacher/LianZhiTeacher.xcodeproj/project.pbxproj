@@ -358,6 +358,7 @@
 		37FD6E311BB4817900C83AB4 /* NewMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E2D1BB4817900C83AB4 /* NewMessageModel.m */; };
 		37FD6E321BB4817900C83AB4 /* NewMessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E2F1BB4817900C83AB4 /* NewMessageVC.m */; };
 		37FD6E351BB69AFE00C83AB4 /* RegisterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E341BB69AFE00C83AB4 /* RegisterVC.m */; };
+		37FD6E381BB6F53800C83AB4 /* RegisterAuthVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E371BB6F53800C83AB4 /* RegisterAuthVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1055,6 +1056,8 @@
 		37FD6E2F1BB4817900C83AB4 /* NewMessageVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMessageVC.m; sourceTree = "<group>"; };
 		37FD6E331BB69AFE00C83AB4 /* RegisterVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterVC.h; sourceTree = "<group>"; };
 		37FD6E341BB69AFE00C83AB4 /* RegisterVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterVC.m; sourceTree = "<group>"; };
+		37FD6E361BB6F53800C83AB4 /* RegisterAuthVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterAuthVC.h; sourceTree = "<group>"; };
+		37FD6E371BB6F53800C83AB4 /* RegisterAuthVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterAuthVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2202,6 +2205,8 @@
 			children = (
 				37B484F21A65853C00C412D8 /* AuthCodeVC.h */,
 				37B484F31A65853C00C412D8 /* AuthCodeVC.m */,
+				37FD6E361BB6F53800C83AB4 /* RegisterAuthVC.h */,
+				37FD6E371BB6F53800C83AB4 /* RegisterAuthVC.m */,
 				37B484F61A65853C00C412D8 /* LoginVC.h */,
 				37B484F71A65853C00C412D8 /* LoginVC.m */,
 				37FD6E331BB69AFE00C83AB4 /* RegisterVC.h */,
@@ -2881,6 +2886,7 @@
 				3793FAF91B7D081900501F77 /* PhotoPickerView.m in Sources */,
 				37E93F991A7DC48200AD45A1 /* TNActionSheet.m in Sources */,
 				3793FA671B7CFFF000501F77 /* AFHTTPRequestOperation.m in Sources */,
+				37FD6E381BB6F53800C83AB4 /* RegisterAuthVC.m in Sources */,
 				3728A7481B9D37AF00310457 /* NSDate+Utils.m in Sources */,
 				3705FF851BA16C1700F0C6F6 /* AudioMessageSendVC.m in Sources */,
 				372774E51A5D94A900464461 /* GrowthTimelinePublishVC.m in Sources */,

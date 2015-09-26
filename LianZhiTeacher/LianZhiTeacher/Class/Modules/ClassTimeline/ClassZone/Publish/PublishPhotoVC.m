@@ -223,7 +223,7 @@
 {
     [self.view endEditing:YES];
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary
     [imagePicker setDelegate:self];
     [self presentViewController:imagePicker animated:YES completion:nil];
 }

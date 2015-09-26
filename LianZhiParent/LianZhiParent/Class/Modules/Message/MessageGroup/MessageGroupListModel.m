@@ -64,7 +64,8 @@
     if(listWrapper.count > 0)
     {
         BOOL hasNew = NO;//是否有新消息
-        for (NSInteger i = 0; i < listWrapper.count; i++) {
+        for (NSInteger i = 0; i < listWrapper.count; i++)
+        {
             MessageGroupItem *item = [[MessageGroupItem alloc] init];
             TNDataWrapper *itemWrapper = [listWrapper getDataWrapperForIndex:i];
             [item parseData:itemWrapper];
@@ -73,16 +74,7 @@
             if(item.msgNum > 0 && item.soundOn)
                 hasNew = YES;
         }
-//        if(hasNew)
-//        {
-//            //有新消息，播放声音
-//            if([UserCenter sharedInstance].personalSetting.soundOn)
-//                [ApplicationDelegate playSound];
-//            if([UserCenter sharedInstance].personalSetting.shakeOn)
-//                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-//        }
     }
-    
     return parse;
 }
 @end

@@ -22,7 +22,6 @@
 {
     UIView* _sepLine;
 }
-@property (nonatomic, strong)NotificationItem *notificationItem;
 @end
 
 @interface NotificationToAllVC : TNBaseTableViewController
