@@ -38,6 +38,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setEdgesForExtendedLayout:UIRectEdgeNone];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
     
@@ -211,12 +212,23 @@
     else
     {
         MessageGroupItem *groupItem = [self.messageModel.modelItemArray objectAtIndex:indexPath.row];
-        MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];
-        [detailVC setFromInfo:groupItem.fromInfo];
-        [self.navigationController pushViewController:detailVC animated:YES];
-        [groupItem setMsgNum:0];
-        [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        if([groupItem.fromInfo isNotification])
+        {
+            MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];
+            [detailVC setFromInfo:groupItem.fromInfo];
+            [self.navigationController pushViewController:detailVC animated:YES];
+            [groupItem setMsgNum:0];
+            [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }
+        else
+        {
+            JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+            [chatVC setChatType:(ChatType)groupItem.fromInfo.type];
+            [chatVC setTargetID:groupItem.fromInfo.uid];
+            [chatVC setTo_objid:groupItem.fromInfo.from_obj_id];
+            [self.navigationController pushViewController:chatVC animated:YES];
+        }
     }
 }
 

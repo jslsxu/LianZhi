@@ -35,9 +35,9 @@
     [_tableView setTableHeaderView:_headerView];
     
     _reportButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_reportButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
-    [_reportButton addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
     [_reportButton setFrame:CGRectMake(15, self.view.height - 45 - 15, self.view.width - 15 * 2, 45)];
+    [_reportButton setBackgroundImage:[UIImage imageWithColor:kCommonParentTintColor size:_reportButton.size cornerRadius:5] forState:UIControlStateNormal];
+    [_reportButton addTarget:self action:@selector(report) forControlEvents:UIControlEventTouchUpInside];
     [_reportButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_reportButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [_reportButton setTitle:@"报告关联错误" forState:UIControlStateNormal];

@@ -10,7 +10,8 @@
 #import "PersonalInfoVC.h"
 #import "ContactServiceVC.h"
 #import "RelatedInfoVC.h"
-#import "SettingsVC.h"
+#import "PersonalSettingVC.h"
+#import "AboutVC.h"
 #define kUserInfoCellHeight                     75
 
 @implementation UserInfoCell

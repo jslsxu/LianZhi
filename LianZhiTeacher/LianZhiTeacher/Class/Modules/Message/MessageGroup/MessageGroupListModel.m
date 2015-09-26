@@ -19,6 +19,14 @@
     self.type = [dataWrapper getIntegerForKey:@"type"];
     self.label = [dataWrapper getStringForKey:@"label"];
     self.typeName = [dataWrapper getStringForKey:@"type_name"];
+    self.from_obj_id = [dataWrapper getStringForKey:@"from_obj_id"];
+}
+
+- (BOOL)isNotification
+{
+    if(self.type == MessageFromTypeFromClass || self.type == MessageFromTypeFromParents||self.type == MessageFromTypeFromTeacher)
+        return NO;
+    return YES;
 }
 @end
 

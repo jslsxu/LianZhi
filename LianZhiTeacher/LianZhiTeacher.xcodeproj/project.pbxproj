@@ -326,7 +326,6 @@
 		37DEE4E81A57C21D009A8771 /* DiscoveryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4E71A57C21D009A8771 /* DiscoveryVC.m */; };
 		37DEE4F01A57C24A009A8771 /* PersonalInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4EB1A57C24A009A8771 /* PersonalInfoVC.m */; };
 		37DEE4F11A57C24A009A8771 /* SettingItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4ED1A57C24A009A8771 /* SettingItemCell.m */; };
-		37DEE4F21A57C24A009A8771 /* SettingsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4EF1A57C24A009A8771 /* SettingsVC.m */; };
 		37DEE4F61A57C289009A8771 /* LZTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4F51A57C289009A8771 /* LZTabBarButton.m */; };
 		37DEE4FD1A57C2C0009A8771 /* ContactItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4F81A57C2C0009A8771 /* ContactItemCell.m */; };
 		37DEE4FE1A57C2C0009A8771 /* ContactListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4FA1A57C2C0009A8771 /* ContactListVC.m */; };
@@ -358,6 +357,7 @@
 		37FD6E301BB4817900C83AB4 /* NewMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E2B1BB4817900C83AB4 /* NewMessageCell.m */; };
 		37FD6E311BB4817900C83AB4 /* NewMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E2D1BB4817900C83AB4 /* NewMessageModel.m */; };
 		37FD6E321BB4817900C83AB4 /* NewMessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E2F1BB4817900C83AB4 /* NewMessageVC.m */; };
+		37FD6E351BB69AFE00C83AB4 /* RegisterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E341BB69AFE00C83AB4 /* RegisterVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -996,8 +996,6 @@
 		37DEE4EB1A57C24A009A8771 /* PersonalInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalInfoVC.m; sourceTree = "<group>"; };
 		37DEE4EC1A57C24A009A8771 /* SettingItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingItemCell.h; sourceTree = "<group>"; };
 		37DEE4ED1A57C24A009A8771 /* SettingItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingItemCell.m; sourceTree = "<group>"; };
-		37DEE4EE1A57C24A009A8771 /* SettingsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsVC.h; sourceTree = "<group>"; };
-		37DEE4EF1A57C24A009A8771 /* SettingsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsVC.m; sourceTree = "<group>"; };
 		37DEE4F41A57C289009A8771 /* LZTabBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZTabBarButton.h; sourceTree = "<group>"; };
 		37DEE4F51A57C289009A8771 /* LZTabBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZTabBarButton.m; sourceTree = "<group>"; };
 		37DEE4F71A57C2C0009A8771 /* ContactItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactItemCell.h; sourceTree = "<group>"; };
@@ -1055,6 +1053,8 @@
 		37FD6E2D1BB4817900C83AB4 /* NewMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMessageModel.m; sourceTree = "<group>"; };
 		37FD6E2E1BB4817900C83AB4 /* NewMessageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMessageVC.h; sourceTree = "<group>"; };
 		37FD6E2F1BB4817900C83AB4 /* NewMessageVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMessageVC.m; sourceTree = "<group>"; };
+		37FD6E331BB69AFE00C83AB4 /* RegisterVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterVC.h; sourceTree = "<group>"; };
+		37FD6E341BB69AFE00C83AB4 /* RegisterVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2204,6 +2204,8 @@
 				37B484F31A65853C00C412D8 /* AuthCodeVC.m */,
 				37B484F61A65853C00C412D8 /* LoginVC.h */,
 				37B484F71A65853C00C412D8 /* LoginVC.m */,
+				37FD6E331BB69AFE00C83AB4 /* RegisterVC.h */,
+				37FD6E341BB69AFE00C83AB4 /* RegisterVC.m */,
 				37EACA021B845B5F007BFBA1 /* PasswordConfirmVC.h */,
 				37EACA011B845B5F007BFBA1 /* PasswordConfirmVC.m */,
 				37B484F81A65853C00C412D8 /* PasswordModificationVC.h */,
@@ -2504,8 +2506,6 @@
 				3725715A1A80C0450087F178 /* SettingDatePickerView.m */,
 				37DEE4EC1A57C24A009A8771 /* SettingItemCell.h */,
 				37DEE4ED1A57C24A009A8771 /* SettingItemCell.m */,
-				37DEE4EE1A57C24A009A8771 /* SettingsVC.h */,
-				37DEE4EF1A57C24A009A8771 /* SettingsVC.m */,
 				370F33D11A78795000FED3C2 /* AboutVC.h */,
 				370F33D21A78795000FED3C2 /* AboutVC.m */,
 				37C88F7A1A83BE57008E44DB /* RelatedInfoVC.h */,
@@ -2780,8 +2780,8 @@
 				3793FA481B7CFFF000501F77 /* RETableViewCellStyle.m in Sources */,
 				3793FA7A1B7CFFF000501F77 /* CTAssetsGroupViewController.m in Sources */,
 				3793FAE11B7CFFF000501F77 /* MJRefreshConst.m in Sources */,
+				37FD6E351BB69AFE00C83AB4 /* RegisterVC.m in Sources */,
 				3793FA751B7CFFF000501F77 /* ALAsset+isEqual.m in Sources */,
-				37DEE4F21A57C24A009A8771 /* SettingsVC.m in Sources */,
 				3793FAD21B7CFFF000501F77 /* SDWebImageManager.m in Sources */,
 				37FD6DEA1BAEE01C00C83AB4 /* MessageItem.m in Sources */,
 				3793FAE51B7CFFF000501F77 /* UIScrollView+MJRefresh.m in Sources */,

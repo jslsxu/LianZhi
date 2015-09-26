@@ -10,7 +10,7 @@
 #import "MessageDetailVC.h"
 
 @interface MessageVC ()
-
+@property (nonatomic, strong)NSTimer *timer;
 @end
 
 @implementation MessageVC
@@ -25,6 +25,26 @@
     [super viewWillAppear:animated];
     [self requestData:REQUEST_REFRESH];
 }
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self)
+    {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(refresh) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    }
+    return self;
+}
+
+- (void)invalidate
+{
+    if(self.timer)
+    {
+        [self.timer invalidate];
+        self.timer = nil;
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setAutomaticallyAdjustsScrollViewInsets:NO];
@@ -53,6 +73,11 @@
 //    [self requestData:REQUEST_REFRESH];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onPublishPhotoFinished:) name:kPublishPhotoItemFinishedNotification object:nil];
+}
+
+- (void)refresh
+{
+    [self requestData:REQUEST_REFRESH];
 }
 
 - (void)onPublishPhotoFinished:(NSNotification *)notification
@@ -209,6 +234,7 @@
             JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
             [chatVC setChatType:(ChatType)groupItem.fromInfo.type];
             [chatVC setTargetID:groupItem.fromInfo.uid];
+            [chatVC setTo_objid:groupItem.fromInfo.from_obj_id];
             [self.navigationController pushViewController:chatVC animated:YES];
         }
     }

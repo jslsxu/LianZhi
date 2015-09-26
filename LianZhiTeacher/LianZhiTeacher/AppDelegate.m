@@ -15,6 +15,7 @@
 #import "MessageDetailVC.h"
 #import "PasswordModificationVC.h"
 #include "BaseInfoModifyVC.h"
+#import "RelatedInfoVC.h"
 static SystemSoundID shake_sound_male_id = 0;
 @interface AppDelegate ()<WelComeViewDelegate>
 

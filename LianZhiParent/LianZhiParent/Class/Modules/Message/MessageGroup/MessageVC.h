@@ -19,4 +19,5 @@
 @property (nonatomic, strong)MessageGroupListModel *messageModel;
 - (NSInteger)newMessageNum;
 - (void)refreshData;
+- (void)invalidate;
 @end

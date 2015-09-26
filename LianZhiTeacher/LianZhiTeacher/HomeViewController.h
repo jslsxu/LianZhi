@@ -11,7 +11,6 @@
 #import "DiscoveryVC.h"
 #import "MessageVC.h"
 #import "MineVC.h"
-#import "SettingsVC.h"
 #import "LZTabBarButton.h"
 
 @interface SwitchSchoolButton : UIButton

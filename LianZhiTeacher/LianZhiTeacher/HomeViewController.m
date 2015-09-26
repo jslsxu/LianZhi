@@ -185,10 +185,5 @@ static NSArray *tabDatas = nil;
     ExchangeSchoolVC *exchangeSchoolVC = [[ExchangeSchoolVC alloc] init];
     [self.navigationController pushViewController:exchangeSchoolVC animated:YES];
 }
-- (void)onSettingClicked
-{
-    SettingsVC *settingVC = [[SettingsVC alloc] init];
-    [self.navigationController pushViewController:settingVC animated:YES];
-}
 
 @end

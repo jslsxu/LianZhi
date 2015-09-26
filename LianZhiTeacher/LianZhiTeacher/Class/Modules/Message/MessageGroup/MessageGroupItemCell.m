@@ -90,7 +90,31 @@
     if([_messageItem.fromInfo.label length] > 0)
         name = [NSString stringWithFormat:@"%@(%@)",name,_messageItem.fromInfo.label];
     _nameLabel.text = name;
-    [_nameLabel setWidth:_timeLabel.left - 10 - _nameLabel.left];
+    [_nameLabel sizeToFit];
+    [_nameLabel setWidth:MIN(_timeLabel.left - 10 - _nameLabel.left, _nameLabel.width)];
+    
+    MessageFromType fromType = _messageItem.fromInfo.type;
+    //群聊图标
+    if(fromType == MessageFromTypeFromClass)
+    {
+        [_massChatIndicator setHidden:NO];
+        [_massChatIndicator setOrigin:CGPointMake(_nameLabel.right + 10, _nameLabel.y + (_nameLabel.height - _massChatIndicator.height) / 2)];
+    }
+    else
+        [_massChatIndicator setHidden:YES];
+    
+    //通知图标
+    if([_messageItem.fromInfo isNotification])
+    {
+        [_notificationIndicator setHidden:NO];
+        [_contentLabel setFrame:CGRectMake(_notificationIndicator.right + 5, 32, _soundOff.left - 5 - (_notificationIndicator.right + 5), 20)];
+    }
+    else
+    {
+        [_notificationIndicator setHidden:YES];
+        [_contentLabel setFrame:CGRectMake(60, 32, _soundOff.left - 5 - 60, 20)];
+    }
+    
     if(_messageItem.msgNum > 0)
     {
         [_numIndicator setHidden:NO];

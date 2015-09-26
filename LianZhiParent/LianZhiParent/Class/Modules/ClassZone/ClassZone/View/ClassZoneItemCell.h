@@ -25,6 +25,7 @@
     UILabel*            _contentLabel;
     UICollectionView*   _collectionView;
     MessageVoiceButton* _voiceButton;
+    UILabel*            _spanLabel;
     UIButton*           _addressButton;
     UIButton*           _actionButton;
     ResponseView*       _responseView;

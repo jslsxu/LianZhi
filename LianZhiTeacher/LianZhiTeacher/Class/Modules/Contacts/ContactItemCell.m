@@ -106,13 +106,16 @@
     [_nameLabel sizeToFit];
     [_nameLabel setFrame:CGRectMake(_avatar.right + 15, (self.height - _nameLabel.height) / 2, MIN(_nameLabel.width, _chatButton.left - _nameLabel.left - 10), _nameLabel.height)];
     
-    if([userInfo isKindOfClass:[TeacherInfo class]])
+    if([userInfo isKindOfClass:[TeacherInfo class]] || [userInfo isKindOfClass:[FamilyInfo class]])
     {
+        [_chatButton setHidden:NO];
         TeacherInfo *teacher = (TeacherInfo *)userInfo;
         [_commentLabel setText:teacher.title];
         [_commentLabel sizeToFit];
         [_commentLabel setOrigin:CGPointMake(_nameLabel.right + 15, (self.height - _commentLabel.height) / 2)];
     }
+    else
+        [_chatButton setHidden:YES];
 }
 
 - (void)onChatClicked

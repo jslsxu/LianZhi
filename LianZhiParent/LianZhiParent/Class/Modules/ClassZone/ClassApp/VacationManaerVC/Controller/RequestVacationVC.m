@@ -109,7 +109,7 @@
     [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [sendButton setTitle:@"发送给班主任" forState:UIControlStateNormal];
     [sendButton addTarget:self action:@selector(onSend) forControlEvents:UIControlEventTouchUpInside];
-    [sendButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(kMargin, kMargin, kMargin, kMargin)] forState:UIControlStateNormal];
+    [sendButton setBackgroundImage:[UIImage imageWithColor:kCommonParentTintColor size:sendButton.size cornerRadius:5] forState:UIControlStateNormal];
     [viewParent addSubview:sendButton];
 }
 

@@ -46,9 +46,15 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [self addSubview:_contentLabel];
         
-        _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(kImageLeftMargin, 0, self.width - kImageLeftMargin - 30, 45)];
+        _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(kImageLeftMargin, 0, self.width - kImageLeftMargin - 10 - 60, 40)];
         [_voiceButton addTarget:self action:@selector(onVoiceButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_voiceButton];
+        
+        _spanLabel = [[UILabel alloc] initWithFrame:CGRectMake(_voiceButton.right, _voiceButton.y, 60, 40)];
+        [_spanLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
+        [_spanLabel setFont:[UIFont systemFontOfSize:14]];
+        [_spanLabel setTextAlignment:NSTextAlignmentCenter];
+        [self addSubview:_spanLabel];
         
         NSInteger collectionWidth = self.width - kImageLeftMargin - kImageRightMargin;
         NSInteger itemWidth = (collectionWidth - kInnerMargin * 2) / 3;
@@ -162,6 +168,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     CGFloat spaceYStart = _contentLabel.bottom + 5;
     _collectionView.hidden = YES;
     _voiceButton.hidden = YES;
+    _spanLabel.hidden = YES;
     NSInteger imageCount = item.photos.count;
     if(imageCount > 0)
     {
@@ -181,12 +188,14 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         if(item.audioItem)
         {
             _voiceButton.hidden = NO;
+            _spanLabel.hidden = NO;
             [_voiceButton setY:spaceYStart + 5];
+            [_spanLabel setText:[Utility formatStringForTime:item.audioItem.timeSpan]];
+            [_spanLabel setY:_voiceButton.y];
             spaceYStart += _voiceButton.height + 15;
         }
         else
         {
-            _voiceButton.hidden = YES;
             spaceYStart += 10;
         }
     }
@@ -221,7 +230,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     {
         if(item.audioItem)
         {
-            height += 15 + 45;
+            height += 15 + 40;
         }
         else
             height += 10;

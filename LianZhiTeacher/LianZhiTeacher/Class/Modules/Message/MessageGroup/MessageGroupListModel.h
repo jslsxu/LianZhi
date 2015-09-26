@@ -7,15 +7,21 @@
 //
 
 #import "TNListModel.h"
-
+typedef NS_ENUM(NSInteger, MessageFromType){
+    MessageFromTypeFromTeacher = 21,
+    MessageFromTypeFromParents = 22,
+    MessageFromTypeFromClass = 23,
+};
 @interface MessageFromInfo : TNModelItem
 @property (nonatomic, copy)NSString *uid;
 @property (nonatomic, copy)NSString *name;
 @property (nonatomic, copy)NSString *label;
 @property (nonatomic, copy)NSString *logoUrl;
-@property (nonatomic, assign)NSInteger type;
+@property (nonatomic, assign)MessageFromType type;
 @property (nonatomic, strong)UIImage *logoImage;
 @property (nonatomic, copy)NSString *typeName;
+@property (nonatomic, copy)NSString *from_obj_id;
+- (BOOL)isNotification;
 @end
 
 @interface MessageGroupItem : TNModelItem

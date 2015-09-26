@@ -36,7 +36,7 @@
     _publishButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_publishButton setFrame:CGRectMake(_notificationButton.right + kBorderMargin, _notificationButton.y, width * 2 / 3, 45)];
     [_publishButton addTarget:self action:@selector(onPublishClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_publishButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [_publishButton setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:_publishButton.size cornerRadius:5] forState:UIControlStateNormal];
     [_publishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_publishButton.titleLabel setFont:kButtonTextFont];
     [_publishButton setTitle:@"写好了，公布" forState:UIControlStateNormal];

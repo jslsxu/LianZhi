@@ -35,11 +35,11 @@ static NSString *versionInfo = @"为了更好的方便您的使用，也为了�
         [_contentView addSubview:_rootView];
         
         _confirmButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_confirmButton setBackgroundImage:[[UIImage imageNamed:(@"BlueBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+        [_confirmButton setFrame:CGRectMake(kMargin, _rootView.height - kMargin - 36, _rootView.width - kMargin * 2, 36)];
+        [_confirmButton setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:_confirmButton.size cornerRadius:5] forState:UIControlStateNormal];
         [_confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_confirmButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
         [_confirmButton setTitle:@"立即使用" forState:UIControlStateNormal];
-        [_confirmButton setFrame:CGRectMake(kMargin, _rootView.height - kMargin - 36, _rootView.width - kMargin * 2, 36)];
         [_confirmButton addTarget:self action:@selector(onConfirmButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [_rootView addSubview:_confirmButton];
         

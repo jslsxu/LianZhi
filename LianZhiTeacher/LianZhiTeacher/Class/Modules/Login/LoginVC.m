@@ -8,6 +8,7 @@
 
 #import "LoginVC.h"
 #import "AuthCodeVC.h"
+#import "RegisterVC.h"
 #define kLoginUserNameKey               @"LoginUserNameKey"
 @interface LoginVC ()
 @property (nonatomic, copy)LoginCompletion completion;
@@ -69,13 +70,14 @@
     [activateButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [self.view addSubview:activateButton];
     
-    UILabel*    hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.height - 80, self.view.width, 80)];
-    [hintLabel setFont:[UIFont systemFontOfSize:12]];
-    [hintLabel setTextColor:[UIColor lightGrayColor]];
-    [hintLabel setNumberOfLines:0];
-    [hintLabel setTextAlignment:NSTextAlignmentCenter];
-    [hintLabel setText:@"账号首次登录请点击新用户激活"];
-    [self.view addSubview:hintLabel];
+    
+    UIButton *registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [registerButton addTarget:self action:@selector(onRegisterClicked) forControlEvents:UIControlEventTouchUpInside];
+    [registerButton setTitle:@"没有开通连枝的学校请点我" forState:UIControlStateNormal];
+    [registerButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
+    [registerButton setTitleColor:[UIColor colorWithHexString:@"03717f"] forState:UIControlStateNormal];
+    [registerButton setFrame:CGRectMake(0, self.view.height - 80, self.view.width, 80)];
+    [self.view addSubview:registerButton];
 }
 
 - (void)setupInputView:(UIView *)viewParent
@@ -113,6 +115,13 @@
     [_passwordField setPlaceholder:@"请输入您的登录密码"];
     [_passwordField setDelegate:self];
     [viewParent addSubview:_passwordField];
+}
+
+- (void)onRegisterClicked
+{
+    RegisterVC *registerVC = [[RegisterVC alloc] init];
+    [registerVC setLoginCompletion:self.completion];
+    [self.navigationController pushViewController:registerVC animated:YES];
 }
 
 - (void)onRetriveButtonClicked
