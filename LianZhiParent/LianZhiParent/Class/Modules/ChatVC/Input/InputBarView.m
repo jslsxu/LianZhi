@@ -21,20 +21,12 @@
 
 @interface InputBarView ()
 @property (nonatomic,assign)NSInteger targetHeight;
-@property (nonatomic, strong)NSTimer* timer;
-@property (nonatomic, assign)NSInteger playTime;
-@property (nonatomic, strong)MLAudioRecorder*   recorder;
-@property (nonatomic, strong)AmrRecordWriter*   amrWriter;
-@property (nonatomic, strong)MLAudioPlayer*     player;
-@property (nonatomic, strong)AmrPlayerReader*   amrReader;
 @end
 
 @implementation InputBarView
 
 - (void)dealloc
 {
-    [self.player stopPlaying];
-    [self.recorder stopRecording];
     [self removeNotifications];
 }
 
@@ -118,8 +110,6 @@
         [self addSubview:_functionView];
 
         [self addNotifications];
-        
-        [self setupRecorder];
     }
     return self;
 }
@@ -205,82 +195,35 @@
 
 #pragma mark - Actions
 #pragma mark - 录音touch事件
-
-- (void)setupRecorder
-{
-    NSString *filePath = [[AudioRecordView class] tempFilePath];
-    [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
-    AmrRecordWriter *amrWriter = [[AmrRecordWriter alloc]init];
-    amrWriter.filePath = filePath;
-    amrWriter.maxSecondCount = 119;
-    amrWriter.maxFileSize = 1024*256;
-    self.amrWriter = amrWriter;
-    
-    MLAudioRecorder *recorder = [[MLAudioRecorder alloc]init];
-    //amr
-    recorder.bufferDurationSeconds = 0.5;
-    recorder.fileWriterDelegate = self.amrWriter;
-    self.recorder = recorder;
-    
-    MLAudioPlayer *player = [[MLAudioPlayer alloc]init];
-    AmrPlayerReader *amrReader = [[AmrPlayerReader alloc]init];
-    
-    player.fileReaderDelegate = amrReader;
-    player.receiveErrorBlock = ^(NSError *error){
-        [[[UIAlertView alloc]initWithTitle:@"错误" message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"知道了", nil]show];
-    };
-    player.receiveStoppedBlock = ^{
-    };
-    self.player = player;
-    self.amrReader = amrReader;
-}
-
-- (void)countVoiceTime
-{
-    self.playTime ++;
-    if (self.playTime >= 119)
-        [self endRecordVoice:nil];
-}
-
 - (void)beginRecordVoice:(UIButton *)button
 {
-    self.playTime = 0;
-   self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countVoiceTime) userInfo:nil repeats:YES];
-    [self.recorder startRecording];
+    [[UUProgressHUD sharedInstance] show];
+    [[UUProgressHUD sharedInstance] setRecordCallBack:^(NSData *data, NSInteger time)
+     {
+         if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendVoice: time:)])
+             [self.inputDelegate inputBarViewDidSendVoice:data time:time];
+    }];
+    [[UUProgressHUD sharedInstance] startRecording];
 }
 
 - (void)endRecordVoice:(UIButton *)button
 {
-    if (self.timer)
-    {
-        [self.recorder stopRecording];
-        [self.timer invalidate];
-        self.timer = nil;
-    }
-    NSInteger time = self.playTime;
-    NSData *audioData = [NSData dataWithContentsOfFile:self.amrWriter.filePath];
-    if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendVoice: time:)])
-        [self.inputDelegate inputBarViewDidSendVoice:audioData time:time];
+    [[UUProgressHUD sharedInstance] endRecording];
 }
 
 - (void)cancelRecordVoice:(UIButton *)button
 {
-    if (self.timer)
-    {
-        [self.recorder stopRecording];
-        [self.timer invalidate];
-        self.timer = nil;
-    }
+    [[UUProgressHUD sharedInstance] cancelRecording];
 }
 
 - (void)RemindDragExit:(UIButton *)button
 {
-    [UUProgressHUD changeSubTitle:@"Release to cancel"];
+    [[UUProgressHUD sharedInstance] remindDragExit];
 }
 
 - (void)RemindDragEnter:(UIButton *)button
 {
-    [UUProgressHUD changeSubTitle:@"Slide up to cancel"];
+    [[UUProgressHUD sharedInstance] remindDragEnter];
 }
 
 - (void)onKeyboardTypeChanged:(UIButton *)button

@@ -8,194 +8,199 @@
 
 #import "UUProgressHUD.h"
 
-@interface UUProgressHUD ()
-{
-    NSTimer *myTimer;
-    int angle;
-    
-    UILabel *centerLabel;
-    UIImageView *edgeImageView;
-    
-}
-@property (nonatomic, strong, readonly) UIWindow *overlayWindow;
+#define kContentViewWidth           160
+#define kContentViewHeight          160
 
+#define kMaxRecordTime              119
+
+@interface UUProgressHUD ()<MLAudioRecorderDelegate>
+@property (nonatomic, assign)RecordStatus recordStatus;
+@property (nonatomic, strong)NSTimer* timer;
+@property (nonatomic, assign)NSInteger playTime;
+@property (nonatomic, strong)MLAudioMeterObserver *meterObserver;
+@property (nonatomic, strong)MLAudioRecorder*   recorder;
+@property (nonatomic, strong)AmrRecordWriter*   amrWriter;
 @end
 
 @implementation UUProgressHUD
+SYNTHESIZE_SINGLETON_FOR_CLASS(UUProgressHUD)
 
-@synthesize overlayWindow;
-
-+ (UUProgressHUD*)sharedView {
-    static dispatch_once_t once;
-    static UUProgressHUD *sharedView;
-    dispatch_once(&once, ^ {
-        sharedView = [[UUProgressHUD alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-        sharedView.backgroundColor = [[UIColor blackColor]colorWithAlphaComponent:0.5];
-    });
-    return sharedView;
-}
-
-+ (void)show {
-    [[UUProgressHUD sharedView] show];
-}
-
-- (void)show {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if(!self.superview)
-            [self.overlayWindow addSubview:self];
-        
-        if (!centerLabel){
-            centerLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 150, 40)];
-            centerLabel.backgroundColor = [UIColor clearColor];
-        }
-        
-        if (!self.subTitleLabel){
-            self.subTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 150, 20)];
-            self.subTitleLabel.backgroundColor = [UIColor clearColor];
-        }
-        if (!self.titleLabel){
-            self.titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 150, 20)];
-            self.titleLabel.backgroundColor = [UIColor clearColor];
-        }
-        if (!edgeImageView)
-            edgeImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Chat_record_circle"]];
-        
-        self.subTitleLabel.center = CGPointMake([[UIScreen mainScreen] bounds].size.width/2,[[UIScreen mainScreen] bounds].size.height/2 + 30);
-        self.subTitleLabel.text = @"Slide up to cancel";
-        self.subTitleLabel.textAlignment = NSTextAlignmentCenter;
-        self.subTitleLabel.font = [UIFont boldSystemFontOfSize:14];
-        self.subTitleLabel.textColor = [UIColor whiteColor];
-        
-        self.titleLabel.center = CGPointMake([[UIScreen mainScreen] bounds].size.width/2,[[UIScreen mainScreen] bounds].size.height/2 - 30);
-        self.titleLabel.text = @"Time Limit";
-        self.titleLabel.textAlignment = NSTextAlignmentCenter;
-        self.titleLabel.font = [UIFont boldSystemFontOfSize:18];
-        self.titleLabel.textColor = [UIColor whiteColor];
-        
-        centerLabel.center = CGPointMake([[UIScreen mainScreen] bounds].size.width/2,[[UIScreen mainScreen] bounds].size.height/2);
-        centerLabel.text = @"60";
-        centerLabel.textAlignment = NSTextAlignmentCenter;
-        centerLabel.font = [UIFont systemFontOfSize:30];
-        centerLabel.textColor = [UIColor yellowColor];
-
-        
-        edgeImageView.frame = CGRectMake(0, 0, 154, 154);
-        edgeImageView.center = centerLabel.center;
-        [self addSubview:edgeImageView];
-        [self addSubview:centerLabel];
-        [self addSubview:self.subTitleLabel];
-        [self addSubview:self.titleLabel];
-
-        if (myTimer)
-            [myTimer invalidate];
-        myTimer = nil;
-        myTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                                   target:self
-                                                 selector:@selector(startAnimation)
-                                                 userInfo:nil
-                                                  repeats:YES];
-        
-        [UIView animateWithDuration:0.5
-                              delay:0
-                            options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState
-                         animations:^{
-                             self.alpha = 1;
-                         }
-                         completion:^(BOOL finished){
-                         }];
-        [self setNeedsDisplay];
-    });
-}
--(void) startAnimation
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    angle -= 3;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.09];
-    UIView.AnimationRepeatAutoreverses = YES;
-    edgeImageView.transform = CGAffineTransformMakeRotation(angle * (M_PI / 180.0f));
-    float second = [centerLabel.text floatValue];
-    if (second <= 10.0f) {
-        centerLabel.textColor = [UIColor redColor];
-    }else{
-        centerLabel.textColor = [UIColor yellowColor];
+    self = [super initWithFrame:[UIScreen mainScreen].bounds];
+    if(self)
+    {
+        [self setBackgroundColor:[UIColor clearColor]];
+        
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake((self.width - kContentViewWidth) / 2, (self.height - kContentViewHeight) / 2, kContentViewWidth, kContentViewHeight)];
+        [_contentView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.4]];
+        [_contentView.layer setCornerRadius:10];
+        [_contentView.layer setMasksToBounds:YES];
+        [self addSubview:_contentView];
+        
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(30, 20, _contentView.width - 30 * 2, _contentView.height - 30 * 2)];
+        [_imageView setContentMode:UIViewContentModeCenter];
+        [_contentView addSubview:_imageView];
+        
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _imageView.bottom, _contentView.width, 40)];
+        [_titleLabel setTextAlignment:NSTextAlignmentCenter];
+        [_titleLabel setFont:[UIFont systemFontOfSize:16]];
+        [_titleLabel setTextColor:[UIColor whiteColor]];
+        [_contentView addSubview:_titleLabel];
+        
+        [self setupRecorder];
     }
-    centerLabel.text = [NSString stringWithFormat:@"%.1f",second-0.1];
-    [UIView commitAnimations];
+    return self;
 }
 
-+ (void)changeSubTitle:(NSString *)str
+- (void)performCallback
 {
-    [[UUProgressHUD sharedView] setState:str];
+    NSData *amrData = [NSData dataWithContentsOfFile:[[AudioRecordView class] tempFilePath]];
+    if(self.recordCallBack)
+        self.recordCallBack(amrData,self.playTime);
 }
 
-- (void)setState:(NSString *)str
+- (void)setupRecorder
 {
-    self.subTitleLabel.text = str;
-}
-
-+ (void)dismissWithSuccess:(NSString *)str {
-	[[UUProgressHUD sharedView] dismiss:str];
-}
-
-+ (void)dismissWithError:(NSString *)str {
-	[[UUProgressHUD sharedView] dismiss:str];
-}
-
-- (void)dismiss:(NSString *)state {
-    dispatch_async(dispatch_get_main_queue(), ^{
+    //    [[MLAmrPlayer shareInstance] stopPlaying];
+    NSString *filePath = [[AudioRecordView class] tempFilePath];
+    [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
+    AmrRecordWriter *amrWriter = [[AmrRecordWriter alloc]init];
+    amrWriter.filePath = filePath;
+    amrWriter.maxSecondCount = kMaxRecordTime;
+    amrWriter.maxFileSize = 1024*256;
+    self.amrWriter = amrWriter;
+    
+    MLAudioMeterObserver *meterObserver = [[MLAudioMeterObserver alloc]init];
+    [meterObserver setRefreshInterval:0.1];
+    meterObserver.actionBlock = ^(NSArray *levelMeterStates,MLAudioMeterObserver *meterObserver){
+        NSInteger index = [MLAudioMeterObserver volumeForLevelMeterStates:levelMeterStates] * 10 + 1;
+        NSString *imageStr = [NSString stringWithFormat:@"ChatRecord%ld",(long)index];
+        if(self.recordStatus == RecordStatusNormal)
+            [_imageView setImage:[UIImage imageNamed:(imageStr)]];
+    };
+    
+    self.meterObserver = meterObserver;
+    
+    MLAudioRecorder *recorder = [[MLAudioRecorder alloc]init];
+    [recorder setDelegate:self];
+    __weak __typeof(self)weakSelf = self;
+    recorder.receiveStoppedBlock = ^{
+        weakSelf.meterObserver.audioQueue = nil;
         
-        [myTimer invalidate];
-        myTimer = nil;
-        self.subTitleLabel.text = nil;
-        self.titleLabel.text = nil;
-        centerLabel.text = state;
-        centerLabel.textColor = [UIColor whiteColor];
-        
-        CGFloat timeLonger;
-        if ([state isEqualToString:@"TooShort"]) {
-            timeLonger = 1;
-        }else{
-            timeLonger = 0.6;
-        }
-        [UIView animateWithDuration:timeLonger
-                              delay:0
-                            options:UIViewAnimationCurveEaseIn | UIViewAnimationOptionAllowUserInteraction
-                         animations:^{
-                             self.alpha = 0;
-                         }
-                         completion:^(BOOL finished){
-                             if(self.alpha == 0) {
-                                 [centerLabel removeFromSuperview];
-                                 centerLabel = nil;
-                                 [edgeImageView removeFromSuperview];
-                                 edgeImageView = nil;
-                                 [self.subTitleLabel removeFromSuperview];
-                                 self.subTitleLabel = nil;
-
-                                 NSMutableArray *windows = [[NSMutableArray alloc] initWithArray:[UIApplication sharedApplication].windows];
-                                 [windows removeObject:overlayWindow];
-                                 overlayWindow = nil;
-                                 
-                                 [windows enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(UIWindow *window, NSUInteger idx, BOOL *stop) {
-                                     if([window isKindOfClass:[UIWindow class]] && window.windowLevel == UIWindowLevelNormal) {
-                                         [window makeKeyWindow];
-                                         *stop = YES;
-                                     }
-                                 }];
-                             }
-                         }];
-    });
+    };
+    recorder.receiveErrorBlock = ^(NSError *error){
+        weakSelf.meterObserver.audioQueue = nil;
+    };
+    
+    //amr
+    recorder.bufferDurationSeconds = 0.5;
+    recorder.fileWriterDelegate = self.amrWriter;
+    self.recorder = recorder;
+    
 }
 
-- (UIWindow *)overlayWindow {
-    if(!overlayWindow) {
-        overlayWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        overlayWindow.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        overlayWindow.userInteractionEnabled = NO;
-        [overlayWindow makeKeyAndVisible];
+- (void)setRecordStatus:(RecordStatus)recordStatus
+{
+    _recordStatus = recordStatus;
+    NSString *imageStr = nil;
+    NSString *title = nil;
+    if(_recordStatus == RecordStatusNormal)
+    {
+        imageStr = @"ChatRecord1";
+        title = @"手指上滑，取消发送";
     }
-    return overlayWindow;
+    else if(_recordStatus == RecordStatusDradOut)
+    {
+        imageStr = @"ChatRecordCancel";
+        title = @"松开手指，取消发送";
+    }
+    else if(_recordStatus == RecordStatusNearEnd)
+    {
+        imageStr = @"ChatRecord1";
+        title = [NSString stringWithFormat:@"还可以说%ld秒",(long)kMaxRecordTime - self.playTime];
+    }
+    else
+    {
+        imageStr = @"ChatRecordTooShort";
+        title = @"录音时间太短";
+    }
+    [_imageView setImage:[UIImage imageNamed:imageStr]];
+    [_titleLabel setText:title];
 }
 
+- (void)countVoiceTime
+{
+    self.playTime ++;
+    //    [_titleLabel setText:[NSString stringWithFormat:@"还可以说%ld秒",(long)kMaxRecordTime - self.playTime]];
+    if (self.playTime >= kMaxRecordTime)
+        [self endRecording];
+}
+
+- (void)startRecording
+{
+    self.playTime = 0;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countVoiceTime) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    [self.recorder startRecording];
+    self.meterObserver.audioQueue = self.recorder->_audioQueue;
+}
+
+- (void)endRecording
+{
+    if (self.timer)
+    {
+        [self.recorder stopRecording];
+        [self.timer invalidate];
+        self.timer = nil;
+    }
+    if(self.playTime < 2)
+        self.recordStatus = RecordStatusTooShort;
+    else
+        [self performCallback];
+    [self dismiss];
+}
+
+- (void)cancelRecording
+{
+    if (self.timer)
+    {
+        [self.recorder stopRecording];
+        [self.timer invalidate];
+        self.timer = nil;
+    }
+    [self dismiss];
+}
+
+- (void)remindDragEnter
+{
+    self.recordStatus = RecordStatusNormal;
+}
+
+- (void)remindDragExit
+{
+    self.recordStatus = RecordStatusDradOut;
+}
+
+- (void)show
+{
+    self.alpha = 1.f;
+    [[UIApplication sharedApplication].keyWindow addSubview:self];
+    self.recordStatus = RecordStatusNormal;
+}
+
+- (void)dismiss
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        self.alpha = 0.f;
+    }completion:^(BOOL finished) {
+        [self removeFromSuperview];
+    }];
+}
+
+- (void)audioRecorder:(MLAudioRecorder *)recorder recordTime:(NSInteger)timeInterval
+{
+    
+}
 
 @end

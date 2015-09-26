@@ -127,7 +127,7 @@
         };
         self.player = player;
         self.amrReader = amrReader;
-
+        
     }
     return self;
 }
