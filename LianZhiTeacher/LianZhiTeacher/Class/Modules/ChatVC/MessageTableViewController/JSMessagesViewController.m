@@ -168,12 +168,15 @@
 {
     if(time < 2)
     {
+        [ProgressHUD showHintText:@"录音时间太短，请重新录制"];
+    }
+    else
+    {
         NSDictionary *dic = @{@"voice": amrData,
                               @"strVoiceTime": kStringFromValue(time),
                               @"type": @(UUMessageTypeVoice)};
         [self dealTheFunctionData:dic];
     }
-    [ProgressHUD showHintText:@"录音时间太短，请重新录制"];
 }
 
 - (void)dealTheFunctionData:(NSDictionary *)dic

@@ -10,6 +10,7 @@
 #import "ResponseItem.h"
 @interface ClassZoneItem : TNModelItem
 @property (nonatomic, strong)UserInfo *userInfo;
+@property (nonatomic, copy)NSString *position;
 @property (nonatomic, copy)NSString *itemID;
 @property (nonatomic, copy)NSString *content;
 @property (nonatomic, strong)NSArray *photos;

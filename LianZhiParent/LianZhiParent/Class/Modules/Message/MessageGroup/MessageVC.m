@@ -122,6 +122,7 @@
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     [_getMoreCell stopLoading];
     _isLoading = NO;
+    [ProgressHUD showHintText:errMsg];
 }
 
 - (NSInteger)newMessageNum
@@ -194,12 +195,22 @@
     else
     {
         MessageGroupItem *groupItem = [self.messageModel.modelItemArray objectAtIndex:indexPath.row];
-        MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];
-        [detailVC setFromInfo:groupItem.fromInfo];
-        [self.navigationController pushViewController:detailVC animated:YES];
-        [groupItem setMsgNum:0];
-        [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        if([groupItem.fromInfo isNotification])
+        {
+            MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];
+            [detailVC setFromInfo:groupItem.fromInfo];
+            [self.navigationController pushViewController:detailVC animated:YES];
+            [groupItem setMsgNum:0];
+            [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }
+        else
+        {
+            JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+            [chatVC setChatType:(ChatType)groupItem.fromInfo.type];
+            [chatVC setTargetID:groupItem.fromInfo.uid];
+            [self.navigationController pushViewController:chatVC animated:YES];
+        }
     }
 }
 

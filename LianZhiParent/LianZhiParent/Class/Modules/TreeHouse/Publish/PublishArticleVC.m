@@ -19,6 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"发文章";
+    [self.view setBackgroundColor:kCommonBackgroundColor];
 }
 
 - (void)setupSubviews

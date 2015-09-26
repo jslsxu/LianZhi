@@ -8,6 +8,7 @@
 
 #import "MessageDetailItemCell.h"
 #import "CollectionImageCell.h"
+#import "PublishPhotoVC.h"
 NSString *const  kMessageDeleteNotitication = @"MessageDeleteNotitication";
 NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
 #define kContentFont            [UIFont systemFontOfSize:14]
@@ -92,6 +93,13 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
         [_collectionView setDataSource:self];
         [_collectionView registerClass:[CollectionImageCell class] forCellWithReuseIdentifier:@"CollectionImageCell"];
         [_bgView addSubview:_collectionView];
+        
+        _shareToTreeHouseButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_shareToTreeHouseButton setImage:[UIImage imageNamed:@"ShareToTreeHouse"] forState:UIControlStateNormal];
+        [_shareToTreeHouseButton addTarget:self action:@selector(onShareToTreeHouse) forControlEvents:UIControlEventTouchUpInside];
+        [_shareToTreeHouseButton setSize:CGSizeMake(72, 20)];
+        [_bgView addSubview:_shareToTreeHouseButton];
+        
     }
     return self;
 }
@@ -117,9 +125,11 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
     [_collectionView setHidden:YES];
     [_voiceButton setHidden:YES];
     [_voiceSpanLabel setHidden:YES];
+    [_shareToTreeHouseButton setHidden:YES];
     if(item.pictureArray.count > 0)
     {
         [_collectionView setHidden:NO];
+        [_shareToTreeHouseButton setHidden:NO];
         NSInteger imageCount = item.pictureArray.count;
         NSInteger contentWidth = _bgView.width - 10 * 2;
         NSInteger row = (item.pictureArray.count + 2) / 3;
@@ -128,7 +138,7 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
         NSInteger imageWidth = (row > 1) ? contentWidth : (itemWidth * imageCount + innerMargin * (imageCount - 1));
         [_collectionView setFrame:CGRectMake(10, height, imageWidth, itemWidth * row + innerMargin * (row - 1))];
         [_collectionView reloadData];
-        height += _collectionView.height + 10;
+        height += _collectionView.height + 10 + 20 + 10;
     }
     else if(item.audioItem)
     {
@@ -158,6 +168,24 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
 - (void)onMessageDeleteButtonClicked
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:kMessageDeleteNotitication object:nil userInfo:@{kMessageDeleteModelItemKey : self.modelItem}];
+}
+
+- (void)onShareToTreeHouse
+{
+    MessageDetailItem *item = (MessageDetailItem *)self.modelItem;
+    PublishPhotoVC *publishPhotoVC = [[PublishPhotoVC alloc] init];
+    [publishPhotoVC setWords:item.content];
+    NSMutableArray *photoArray = [NSMutableArray array];
+    for (PhotoItem *photoItem in item.pictureArray)
+    {
+        PublishImageItem *publishImageItem = [[PublishImageItem alloc] init];
+        [publishImageItem setThumbnailUrl:photoItem.thumbnailUrl];
+        [publishImageItem setOriginalUrl:photoItem.originalUrl];
+        [photoArray addObject:publishImageItem];
+    }
+    [publishPhotoVC setOriginalImageArray:photoArray];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:publishPhotoVC];
+    [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
 }
 
 #pragma mark - UICollectionViewDelegate
@@ -205,6 +233,7 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
         NSInteger itemWidth = (contentWidth - kInnerMargin * 2) / 3;
         NSInteger innerMargin = (contentWidth - itemWidth * 3) / 2;
         height += itemWidth * row + innerMargin * (row - 1) + 10;
+        height += 20 + 10;
     }
     else if(item.audioItem)
     {

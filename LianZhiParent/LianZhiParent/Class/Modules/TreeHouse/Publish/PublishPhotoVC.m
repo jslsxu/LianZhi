@@ -37,6 +37,7 @@
     [super viewDidLoad];
     self.title = @"发照片";
     
+    [_imageArray addObjectsFromArray:self.originalImageArray];
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
     [_scrollView setBounces:YES];
     [_scrollView setAlwaysBounceVertical:YES];
@@ -91,6 +92,7 @@
     [_textField setFont:[UIFont systemFontOfSize:16]];
     [_textField setDelegate:self];
     [_textField setPlaceholder:@"我发了一堆图片，快来看看吧"];
+    [_textField setText:self.words];
     [_scrollView addSubview:_textField];
     
     UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textField.bottom, _textField.width, 1)];
@@ -206,7 +208,7 @@
     POIItem *poiItem = _poiInfoView.poiItem;
     if(!poiItem.clearLocation)
     {
-        [item setAddress:poiItem.poiInfo.name];
+        [item setPosition:poiItem.poiInfo.name];
     }
     [item setTime:[formatter stringFromDate:date]];
     [item setPhotos:photos];

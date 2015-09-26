@@ -9,7 +9,7 @@
 #import "TNListModel.h"
 #import "ResponseModel.h"
 @interface ClassZoneItem : TNModelItem
-@property (nonatomic, copy)NSString *address;
+@property (nonatomic, copy)NSString *position;
 @property (nonatomic, strong)UserInfo *userInfo;
 @property (nonatomic, copy)NSString *itemID;
 @property (nonatomic, copy)NSString *content;

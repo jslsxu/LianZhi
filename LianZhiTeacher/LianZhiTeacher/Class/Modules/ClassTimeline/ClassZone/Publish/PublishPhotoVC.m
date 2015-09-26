@@ -202,7 +202,7 @@
     POIItem *poiItem = _poiInfoView.poiItem;
     if(!poiItem.clearLocation)
     {
-        [item setAddress:poiItem.poiInfo.name];
+        [item setPosition:poiItem.poiInfo.name];
     }
     [item setTime:[formatter stringFromDate:date]];
     [item setPhotos:photos];

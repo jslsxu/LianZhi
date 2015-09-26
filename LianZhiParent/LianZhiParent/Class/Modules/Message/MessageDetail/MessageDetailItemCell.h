@@ -24,5 +24,6 @@ extern NSString *const kMessageDeleteModelItemKey;
     MessageVoiceButton*     _voiceButton;
     UILabel*                _voiceSpanLabel;
     UICollectionView*       _collectionView;
+    UIButton*               _shareToTreeHouseButton;
 }
 @end

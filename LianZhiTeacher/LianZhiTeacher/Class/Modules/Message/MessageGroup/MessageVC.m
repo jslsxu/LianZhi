@@ -131,6 +131,7 @@
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     [_getMoreCell stopLoading];
     _isLoading = NO;
+    [ProgressHUD showHintText:errMsg];
 }
 
 - (NSInteger)newMessageNum

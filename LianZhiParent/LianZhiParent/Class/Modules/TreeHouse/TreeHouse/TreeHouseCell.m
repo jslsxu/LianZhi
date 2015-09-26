@@ -159,7 +159,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(_authorLabel.right + 5, _authorLabel.bottom - _timeLabel.height)];
     
-    [_addressLabel setText:item.address];
+    [_addressLabel setText:item.position];
     [_addressLabel sizeToFit];
     [_addressLabel setOrigin:CGPointMake(10, 25)];
     

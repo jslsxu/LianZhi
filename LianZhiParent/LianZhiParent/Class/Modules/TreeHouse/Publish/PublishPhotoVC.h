@@ -18,4 +18,6 @@
     NSMutableArray*     _imageItemViewArray;
     UITextField*        _textField;
 }
+@property (nonatomic, strong)NSArray *originalImageArray;
+@property (nonatomic, copy)NSString *words;
 @end

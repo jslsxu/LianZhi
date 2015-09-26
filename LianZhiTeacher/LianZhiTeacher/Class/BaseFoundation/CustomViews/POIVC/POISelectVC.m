@@ -110,7 +110,7 @@
     request.keywords            = searchText;
     if(self.geoCode)
         request.city                = @[self.geoCode.addressComponent.citycode];
-
+    
     request.page                    = 0;
     request.offset                  = 100;
     [_poiSearcher AMapPlaceSearch:request];
@@ -123,7 +123,7 @@
     self.location = userLocation.location;
     if(_poiSearcher == nil)
     {
-        _poiSearcher = [[AMapSearchAPI alloc] initWithSearchKey:@"b3ddcca903cd26035f8f210f9b88e09e" Delegate:self];
+        _poiSearcher = [[AMapSearchAPI alloc] initWithSearchKey:kAutoNaviApiKey Delegate:self];
     }
     AMapPlaceSearchRequest *request = [[AMapPlaceSearchRequest alloc] init];
     
@@ -136,7 +136,7 @@
     request.requireExtension    = YES;
     request.offset              = 100;
     [_poiSearcher AMapPlaceSearch:request];
-
+    
     
     //反向地理编码
     //构造AMapReGeocodeSearchRequest对象，location为必选项，radius为可选项
@@ -180,7 +180,7 @@
         self.searchResult = poiArray;
         [_displayController.searchResultsTableView reloadData];
     }
-
+    
 }
 
 //实现逆地理编码的回调函数

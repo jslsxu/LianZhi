@@ -68,7 +68,7 @@ static SystemSoundID shake_sound_male_id = 0;
 
 - (void)registerThirdParty
 {
-    [MAMapServices sharedServices].apiKey = @"a9e57a78a98c9f0fbb2bfb7ac390b96e";
+    [MAMapServices sharedServices].apiKey = kAutoNaviApiKey;
 }
 
 - (void)setupCommonHandler

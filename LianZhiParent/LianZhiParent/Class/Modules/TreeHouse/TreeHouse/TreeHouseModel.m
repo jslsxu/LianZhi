@@ -18,6 +18,7 @@
     self.detail = [dataWrapper getStringForKey:@"words"];
     self.timeStr = [dataWrapper getStringForKey:@"time_str"];
     self.canEdit = [dataWrapper getBoolForKey:@"can_edit"];
+    self.position = [dataWrapper getStringForKey:@"position"];
     TNDataWrapper *audioWrapper = [dataWrapper getDataWrapperForKey:@"voice"];
     if([audioWrapper count] > 0)
     {

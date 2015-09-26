@@ -123,7 +123,7 @@
     self.location = userLocation.location;
     if(_poiSearcher == nil)
     {
-        _poiSearcher = [[AMapSearchAPI alloc] initWithSearchKey:@"a9e57a78a98c9f0fbb2bfb7ac390b96e" Delegate:self];
+        _poiSearcher = [[AMapSearchAPI alloc] initWithSearchKey:kAutoNaviApiKey Delegate:self];
     }
     AMapPlaceSearchRequest *request = [[AMapPlaceSearchRequest alloc] init];
     
