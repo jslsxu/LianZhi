@@ -95,6 +95,12 @@
 @end
 
 @implementation NotificationToAllVC
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self requestData:REQUEST_REFRESH];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -119,7 +125,7 @@
     [self bindTableCell:@"NotificationCell" tableModel:@"NotificationModel"];
     [self setSupportPullDown:YES];
     [self setSupportPullUp:YES];
-    [self requestData:REQUEST_REFRESH];
+
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
