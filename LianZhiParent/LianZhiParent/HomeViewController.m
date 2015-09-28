@@ -36,9 +36,23 @@ static NSArray *tabDatas = nil;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNewMsgNumChanged) name:kNewMsgNumNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFoundChanged) name:kFoundNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onChildInfoChanged) name:kChildInfoChangedNotification object:nil];
+        
+        NSMutableArray *subVCs = [[NSMutableArray alloc] initWithCapacity:0];
+        NSArray *subVCArray = @[@"MessageVC",@"ContactListVC",@"TreeHouseVC",@"ClassZoneVC",@"DiscoveryVC"];
+        
+        for (NSInteger i = 0; i < subVCArray.count; i++)
+        {
+            NSString *className = subVCArray[i];
+            TNBaseViewController *vc = [[NSClassFromString(className) alloc] init];
+            [subVCs addObject:vc];
+        }
+        [self setViewControllers:subVCs];
+        self.treeHouseVC = subVCs[2];
+        self.messageVC = subVCs[0];
     }
     return self;
 }
+
 
 - (void)onNewMsgNumChanged
 {
@@ -102,17 +116,6 @@ static NSArray *tabDatas = nil;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:childrenView];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MineProfile"] style:UIBarButtonItemStylePlain target:self action:@selector(onSettingClicked)];
-    
-    NSMutableArray *subVCs = [[NSMutableArray alloc] initWithCapacity:0];
-    NSArray *subVCArray = @[@"MessageVC",@"ContactListVC",@"TreeHouseVC",@"ClassZoneVC",@"DiscoveryVC"];
-    
-    for (NSInteger i = 0; i < subVCArray.count; i++)
-    {
-        NSString *className = subVCArray[i];
-        TNBaseViewController *vc = [[NSClassFromString(className) alloc] init];
-        [subVCs addObject:vc];
-    }
-    [self setViewControllers:subVCs];
     [self initialViewControllers];
     
 }

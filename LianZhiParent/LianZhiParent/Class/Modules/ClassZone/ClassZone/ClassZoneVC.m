@@ -252,6 +252,7 @@
     
     self.targetClassZoneItem = (ClassZoneItem *)cell.modelItem;
     self.targetResponseItem = responseItem;
+    [_replyBox setPlaceHolder:[NSString stringWithFormat:@"回复:%@",self.targetResponseItem.sendUser.name]];
 }
 
 - (void)onActionClicked:(ClassZoneItemCell *)cell

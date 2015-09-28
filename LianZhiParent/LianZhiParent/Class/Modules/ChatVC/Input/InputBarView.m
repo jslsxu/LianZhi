@@ -324,4 +324,9 @@
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+}
 @end

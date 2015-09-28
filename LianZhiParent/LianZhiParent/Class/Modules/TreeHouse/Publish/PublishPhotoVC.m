@@ -194,7 +194,12 @@
         [imageItem setPhotoKey:[NSString stringWithFormat:@"picture_%ld",(long)i]];
         
         PhotoItem *photoItem = [[PhotoItem alloc] init];
-        [photoItem setImage:imageItem.image];
+        UIImage *sourceImage = imageItem.image;
+        if(sourceImage == nil)
+        {
+            sourceImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageItem.thumbnailUrl];
+        }
+        [photoItem setImage:sourceImage];
         [photoItem setThumbnailUrl:imageItem.thumbnailUrl];
         [photoItem setOriginalUrl:imageItem.originalUrl];
         [photoItem setPublishImageItem:imageItem];

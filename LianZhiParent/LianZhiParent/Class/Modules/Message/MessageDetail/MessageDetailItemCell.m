@@ -138,6 +138,7 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
         NSInteger imageWidth = (row > 1) ? contentWidth : (itemWidth * imageCount + innerMargin * (imageCount - 1));
         [_collectionView setFrame:CGRectMake(10, height, imageWidth, itemWidth * row + innerMargin * (row - 1))];
         [_collectionView reloadData];
+        [_shareToTreeHouseButton setOrigin:CGPointMake(_bgView.width - _shareToTreeHouseButton.width - 10, _collectionView.bottom + 10)];
         height += _collectionView.height + 10 + 20 + 10;
     }
     else if(item.audioItem)
@@ -176,14 +177,17 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
     PublishPhotoVC *publishPhotoVC = [[PublishPhotoVC alloc] init];
     [publishPhotoVC setWords:item.content];
     NSMutableArray *photoArray = [NSMutableArray array];
-    for (PhotoItem *photoItem in item.pictureArray)
+    for (NSInteger i = 0; i < item.pictureArray.count; i++)
     {
+        PhotoItem *photoItem = item.pictureArray[i];
         PublishImageItem *publishImageItem = [[PublishImageItem alloc] init];
+        [publishImageItem setPhotoID:photoItem.photoID];
         [publishImageItem setThumbnailUrl:photoItem.thumbnailUrl];
         [publishImageItem setOriginalUrl:photoItem.originalUrl];
         [photoArray addObject:publishImageItem];
     }
     [publishPhotoVC setOriginalImageArray:photoArray];
+    [publishPhotoVC setDelegate:ApplicationDelegate.homeVC.treeHouseVC];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:publishPhotoVC];
     [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
 }

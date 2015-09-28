@@ -99,6 +99,7 @@
     if(indexPath.section == 0)
     {
         InterestVC *interestVC = [[InterestVC alloc] init];
+        [interestVC setTitle:@"兴趣"];
         [CurrentROOTNavigationVC pushViewController:interestVC animated:YES];
     }
     else
@@ -106,11 +107,15 @@
         if(indexPath.row == 0)
         {
             TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+            [webVC setUrl:[UserCenter sharedInstance].userData.config.aboutUrl];
+            [webVC setTitle:@"常见问题"];
             [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
         }
         else
         {
             TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+             [webVC setUrl:[UserCenter sharedInstance].userData.config.introUrl];
+            [webVC setTitle:@"操作指南"];
             [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
         }
     }

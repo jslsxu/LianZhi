@@ -62,6 +62,7 @@
 
 - (void) resignFocus
 {
+    [self.hPGrowingTextView setPlaceholder:nil];
     if(self.cancelButton.superview) {
         [self.cancelButton removeFromSuperview];
     }

@@ -373,6 +373,8 @@
 		37FD6E111BB0552F00C83AB4 /* guide3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 37FD6E0C1BB0552F00C83AB4 /* guide3.jpg */; };
 		37FD6E121BB0552F00C83AB4 /* guide4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 37FD6E0D1BB0552F00C83AB4 /* guide4.jpg */; };
 		37FD6E131BB0552F00C83AB4 /* guide5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 37FD6E0E1BB0552F00C83AB4 /* guide5.jpg */; };
+		37FD6E3C1BB7EC1600C83AB4 /* TreeHouseDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E3B1BB7EC1600C83AB4 /* TreeHouseDetailVC.m */; };
+		37FD6E3F1BB7EC3300C83AB4 /* TreeHouseDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E3E1BB7EC3300C83AB4 /* TreeHouseDetailModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1095,6 +1097,10 @@
 		37FD6E0C1BB0552F00C83AB4 /* guide3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = guide3.jpg; sourceTree = "<group>"; };
 		37FD6E0D1BB0552F00C83AB4 /* guide4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = guide4.jpg; sourceTree = "<group>"; };
 		37FD6E0E1BB0552F00C83AB4 /* guide5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = guide5.jpg; sourceTree = "<group>"; };
+		37FD6E3A1BB7EC1600C83AB4 /* TreeHouseDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreeHouseDetailVC.h; sourceTree = "<group>"; };
+		37FD6E3B1BB7EC1600C83AB4 /* TreeHouseDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeHouseDetailVC.m; sourceTree = "<group>"; };
+		37FD6E3D1BB7EC3300C83AB4 /* TreeHouseDetailModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreeHouseDetailModel.h; sourceTree = "<group>"; };
+		37FD6E3E1BB7EC3300C83AB4 /* TreeHouseDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeHouseDetailModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2610,6 +2616,7 @@
 				37CBAF251A4725200063F395 /* TreeHouseModel.m */,
 				37E93F831A7A919C00AD45A1 /* TreeHouseAlbumVC.h */,
 				37E93F841A7A919C00AD45A1 /* TreeHouseAlbumVC.m */,
+				37FD6E391BB7EBF900C83AB4 /* TreeHouseDetail */,
 			);
 			path = TreeHouse;
 			sourceTree = "<group>";
@@ -2742,6 +2749,17 @@
 				37E93FD81A7E9CF200AD45A1 /* PhotoBrowserNavigationBar.m */,
 			);
 			path = PhotoBrowserViewController;
+			sourceTree = "<group>";
+		};
+		37FD6E391BB7EBF900C83AB4 /* TreeHouseDetail */ = {
+			isa = PBXGroup;
+			children = (
+				37FD6E3A1BB7EC1600C83AB4 /* TreeHouseDetailVC.h */,
+				37FD6E3B1BB7EC1600C83AB4 /* TreeHouseDetailVC.m */,
+				37FD6E3D1BB7EC3300C83AB4 /* TreeHouseDetailModel.h */,
+				37FD6E3E1BB7EC3300C83AB4 /* TreeHouseDetailModel.m */,
+			);
+			path = TreeHouseDetail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2943,6 +2961,7 @@
 				37C3560B1A3FD67300B948E6 /* AppDelegate.m in Sources */,
 				3793F7CD1B7CFFD900501F77 /* TGRImageZoomAnimationController.m in Sources */,
 				3793F78F1B7CFFD900501F77 /* qrencode.c in Sources */,
+				37FD6E3F1BB7EC3300C83AB4 /* TreeHouseDetailModel.m in Sources */,
 				3793F7DC1B7CFFD900501F77 /* UIImageView+Animation.m in Sources */,
 				3793F7E61B7CFFD900501F77 /* ProgressHUD.m in Sources */,
 				3793F76C1B7CFFD900501F77 /* REDateTimeItem.m in Sources */,
@@ -3093,6 +3112,7 @@
 				3793F7D81B7CFFD900501F77 /* NSString+StringSize.m in Sources */,
 				37C356081A3FD67300B948E6 /* main.m in Sources */,
 				3793F80B1B7CFFD900501F77 /* UIImage+WebP.m in Sources */,
+				37FD6E3C1BB7EC1600C83AB4 /* TreeHouseDetailVC.m in Sources */,
 				37E93FDF1A7E9CF200AD45A1 /* PhotoBrowserNavigationBar.m in Sources */,
 				37CFA5B81A4AF2A70061D7B8 /* MessageDetailModel.m in Sources */,
 				373528741AD5556500C0F326 /* BaseInfoModifyVC.m in Sources */,
@@ -3247,7 +3267,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3266,7 +3286,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b0a45cd0-d146-4e14-8edc-7cccff49897d";
+				PROVISIONING_PROFILE = "7978f522-3d07-4c8c-844e-0e19b4151403";
 			};
 			name = Debug;
 		};
@@ -3277,7 +3297,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3296,7 +3316,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b0a45cd0-d146-4e14-8edc-7cccff49897d";
+				PROVISIONING_PROFILE = "7978f522-3d07-4c8c-844e-0e19b4151403";
 			};
 			name = Release;
 		};

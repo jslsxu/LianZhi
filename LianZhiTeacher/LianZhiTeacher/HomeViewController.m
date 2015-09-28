@@ -58,6 +58,19 @@ static NSArray *tabDatas = nil;
         //监听学校变化
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initialViewControllers) name:kUserCenterSchoolSchemeChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
+        
+        NSMutableArray *subVCs = [[NSMutableArray alloc] initWithCapacity:0];
+        NSArray *subVCArray = @[@"MessageVC",@"ApplicationBoxVC",@"DiscoveryVC",@"MineVC"];
+        
+        for (NSInteger i = 0; i < subVCArray.count; i++)
+        {
+            NSString *className = subVCArray[i];
+            TNBaseViewController *vc = [[NSClassFromString(className) alloc] init];
+            [subVCs addObject:vc];
+        }
+        [self setViewControllers:subVCs];
+        [self initialViewControllers];
+        self.messageVC = subVCs[0];
     }
     return self;
 }
@@ -140,18 +153,6 @@ static NSArray *tabDatas = nil;
         
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_switchButton];
     }
-    
-    NSMutableArray *subVCs = [[NSMutableArray alloc] initWithCapacity:0];
-    NSArray *subVCArray = @[@"MessageVC",@"ApplicationBoxVC",@"DiscoveryVC",@"MineVC"];
-    
-    for (NSInteger i = 0; i < subVCArray.count; i++)
-    {
-        NSString *className = subVCArray[i];
-        TNBaseViewController *vc = [[NSClassFromString(className) alloc] init];
-        [subVCs addObject:vc];
-    }
-    [self setViewControllers:subVCs];
-    [self initialViewControllers];
 }
 
 - (void)onTabButtonClicked:(UIButton *)button

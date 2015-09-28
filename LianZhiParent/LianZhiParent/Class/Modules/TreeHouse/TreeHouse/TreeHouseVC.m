@@ -35,10 +35,13 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         }
         else
             curKey = imageItem.photoKey;
-        if(picSeq.length == 0)
-            [picSeq appendString:curKey];
-        else
-            [picSeq appendFormat:@",%@",curKey];
+        if(curKey)
+        {
+            if(picSeq.length == 0)
+                [picSeq appendString:curKey];
+            else
+                [picSeq appendFormat:@",%@",curKey];
+        }
     }
     [params setValue:picSeq forKey:@"pic_seqs"];
     [params setValue:[UserCenter sharedInstance].curChild.uid forKey:@"child_id"];
@@ -86,10 +89,13 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             }
             else
                 curKey = imageItem.photoKey;
-            if(picSeq.length == 0)
-                [picSeq appendString:curKey];
-            else
-                [picSeq appendFormat:@",%@",curKey];
+            if(curKey)
+            {
+                if(picSeq.length == 0)
+                    [picSeq appendString:curKey];
+                else
+                    [picSeq appendFormat:@",%@",curKey];
+            }
         }
         [params setValue:picSeq forKey:@"pic_seqs"];
         [params setValue:[UserCenter sharedInstance].curChild.uid forKey:@"child_id"];
@@ -361,7 +367,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [_replyBox assignFocus];
     self.targetTreeHouseItem = (TreehouseItem *)cell.modelItem;
     self.targetResponseItem = responseItem;
-    
+    [_replyBox setPlaceHolder:[NSString stringWithFormat:@"回复:%@",self.targetResponseItem.sendUser.name]];
 }
 
 #pragma mark TNBaseTableViewController

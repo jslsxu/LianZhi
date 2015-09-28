@@ -147,13 +147,13 @@
         NSMutableString *picSeq = [[NSMutableString alloc] init];
         for (NSInteger i = 0; i < self.imageArray.count; i++)
         {
-            [picSeq appendFormat:@"picture_%ld",(long)i];
+            [picSeq appendFormat:@"picture_%ld,",(long)i];
         }
-        [params setValue:picSeq forKey:@"pic_seq"];
+        [params setValue:picSeq forKey:@"pic_seqs"];
     }
     
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:self.view];
-    [[HttpRequestEngine sharedInstance] makeSessionRequestFromUrl:@"notice/send" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/send" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         for (NSInteger i = 0; i < self.imageArray.count; i++)
         {
             NSString *filename = [NSString stringWithFormat:@"picture_%ld",(long)i];
@@ -161,16 +161,36 @@
         }
         if(self.audioData)
             [formData appendPartWithFileData:self.audioData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
-    } completion:^(NSURLSessionDataTask *task, TNDataWrapper *responseObject) {
+    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:NO];
         [ProgressHUD showHintText:@"发送成功"];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self dismissViewControllerAnimated:YES completion:nil];
         });
     } fail:^(NSString *errMsg) {
-         [hud hide:NO];
+        [hud hide:NO];
         [ProgressHUD showHintText:errMsg];
     }];
+//    
+//    
+//    [[HttpRequestEngine sharedInstance] makeSessionRequestFromUrl:@"notice/send" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+//        for (NSInteger i = 0; i < self.imageArray.count; i++)
+//        {
+//            NSString *filename = [NSString stringWithFormat:@"picture_%ld",(long)i];
+//            [formData appendPartWithFileData:UIImageJPEGRepresentation(self.imageArray[i], 0.8) name:filename fileName:filename mimeType:@"image/jpeg"];
+//        }
+//        if(self.audioData)
+//            [formData appendPartWithFileData:self.audioData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
+//    } completion:^(NSURLSessionDataTask *task, TNDataWrapper *responseObject) {
+//        [hud hide:NO];
+//        [ProgressHUD showHintText:@"发送成功"];
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            [self dismissViewControllerAnimated:YES completion:nil];
+//        });
+//    } fail:^(NSString *errMsg) {
+//         [hud hide:NO];
+//        [ProgressHUD showHintText:errMsg];
+//    }];
 
 }
 
