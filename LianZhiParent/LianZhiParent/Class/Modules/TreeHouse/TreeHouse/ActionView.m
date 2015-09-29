@@ -17,7 +17,7 @@
 
 @implementation ActionView
 
-- (instancetype)initWithPoint:(CGPoint)point action:(Action)action
+- (instancetype)initWithPoint:(CGPoint)point praised:(BOOL)praised action:(Action)action;
 {
     self = [super initWithFrame:[UIScreen mainScreen].bounds];
     if(self)
@@ -34,7 +34,7 @@
         [_contentView.layer setMasksToBounds:YES];
         [self addSubview:_contentView];
         
-        NSArray *titleArray = @[@"赞",@"评论"];
+        NSArray *titleArray = @[praised ? @"取消" : @"赞",@"评论"];
         NSArray *imageArray = @[@"ActionPraise",@"ActionComment",@"ActionShare"];
         NSArray *actionArray = @[@"onActionPraise",@"onActionComment",@"onActionShare"];
         NSInteger itemWidth = _contentView.width / titleArray.count;

@@ -85,10 +85,33 @@
         [self.praiseArray insertObject:praiseUser atIndex:0];
 }
 
+- (void)removePraise
+{
+    NSMutableArray *delArray = [NSMutableArray array];
+    for (UserInfo *userInfo in self.praiseArray)
+    {
+        if([userInfo.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid])
+        {
+            [delArray addObject:userInfo];
+        }
+    }
+    [self.praiseArray removeObjectsInArray:delArray];
+}
+
 - (void)removeResponse:(ResponseItem *)delResponse
 {
     if([self.responseArray containsObject:delResponse])
         [self.responseArray removeObject:delResponse];
+}
+
+- (BOOL)praised
+{
+    for (UserInfo *userInfo in self.praiseArray)
+    {
+        if([[UserCenter sharedInstance].userInfo.uid isEqualToString:userInfo.uid])
+            return YES;
+    }
+    return NO;
 }
 
 @end

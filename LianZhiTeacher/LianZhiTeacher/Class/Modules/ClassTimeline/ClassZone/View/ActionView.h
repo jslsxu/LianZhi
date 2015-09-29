@@ -19,6 +19,6 @@ typedef void(^Action)(NSInteger index);
     UIButton*   _shareButton;
 }
 @property (nonatomic, assign)CGPoint point;
-- (instancetype)initWithPoint:(CGPoint)point action:(Action)action;
+- (instancetype)initWithPoint:(CGPoint)point praised:(BOOL)praised action:(Action)action;
 - (void)show;
 @end

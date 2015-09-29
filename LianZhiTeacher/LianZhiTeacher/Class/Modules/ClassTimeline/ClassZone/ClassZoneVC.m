@@ -670,25 +670,38 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     CGPoint point = [cell convertPoint:cell.actionButton.center toView:keyWindow];
     __weak typeof(self) wself = self;
-    ActionView *actionView = [[ActionView alloc] initWithPoint:point action:^(NSInteger index) {
+    BOOL praised = self.targetZoneItem.responseModel.praised;
+    ActionView *actionView = [[ActionView alloc] initWithPoint:point praised:praised action:^(NSInteger index) {
         if(index == 0)
         {
             NSMutableDictionary *params = [NSMutableDictionary dictionary];
             [params setValue:self.targetZoneItem.itemID forKey:@"feed_id"];
             [params setValue:@"0" forKey:@"types"];
             [params setValue:self.classInfo.classID forKey:@"objid"];
-            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"fav/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                if(responseObject.count > 0)
-                {
-                    UserInfo *userInfo = [[UserInfo alloc] init];
-                    TNDataWrapper *userWrapper = [responseObject getDataWrapperForIndex:0];
-                    [userInfo parseData:userWrapper];
-                    [wself.targetZoneItem.responseModel addPraiseUser:userInfo];
+            if(!praised)
+            {
+                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"fav/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                    if(responseObject.count > 0)
+                    {
+                        UserInfo *userInfo = [[UserInfo alloc] init];
+                        TNDataWrapper *userWrapper = [responseObject getDataWrapperForIndex:0];
+                        [userInfo parseData:userWrapper];
+                        [wself.targetZoneItem.responseModel addPraiseUser:userInfo];
+                        [wself.tableView reloadData];
+                    }
+                } fail:^(NSString *errMsg) {
+                    
+                }];
+            }
+            else
+            {
+                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"fav/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                    [wself.targetZoneItem.responseModel removePraise];
                     [wself.tableView reloadData];
-                }
-            } fail:^(NSString *errMsg) {
-                
-            }];
+                } fail:^(NSString *errMsg) {
+                    
+                }];
+            }
         }
         else if(index == 1)
         {
