@@ -56,10 +56,6 @@
         [_titleLabel setText:[_group valueForProperty:ALAssetsGroupPropertyName]];
         [_numLabel setText:[NSString stringWithFormat:@"%ld张",(long)_group.numberOfAssets]];
     }
-    else
-    {
-        [_titleLabel setText:@"树屋相册"];
-    }
 }
 
 - (void)setTotal:(NSInteger)total
@@ -126,6 +122,8 @@
         else
         {
             [_tableView reloadData];
+            if([self.delegate respondsToSelector:@selector(albumGroupViewSelectedSystemAlbum:)])
+                [self.delegate albumGroupViewSelectedSystemAlbum:_albumGroups[0]];
         }
     };
     
@@ -142,37 +140,20 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _albumGroups.count + 1;
+    return _albumGroups.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.row == 0)
+    static NSString *cellID = @"AlbumItemCell";
+    AlbumItemCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if(nil == cell)
     {
-        static NSString *cellID = @"AlbumCellID";
-        AlbumItemCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-        if(nil == cell)
-        {
-            cell = [[AlbumItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-        }
-        [cell setTotal:self.total];
-        [cell setIconUrl:self.iconUrl];
-        [cell setAlbumSelected:self.selectedIndex == indexPath.row];
-        return cell;
+        cell = [[AlbumItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
-    else
-    {
-        static NSString *cellID = @"AlbumItemCell";
-        AlbumItemCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-        if(nil == cell)
-        {
-            cell = [[AlbumItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-        }
-        if(indexPath.row > 0)
-            [cell setGroup:_albumGroups[indexPath.row - 1]];
-        [cell setAlbumSelected:self.selectedIndex == indexPath.row];
-        return cell;
-    }
+    [cell setGroup:_albumGroups[indexPath.row]];
+    [cell setAlbumSelected:self.selectedIndex == indexPath.row];
+    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -183,20 +164,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if(indexPath.row == 0)
-    {
-        self.selectedIndex = 0;
-        if([self.delegate respondsToSelector:@selector(albumGroupViewSelectedHostAlbum)])
-        {
-            [self.delegate albumGroupViewSelectedHostAlbum];
-        }
-    }
-    else
-    {
-        self.selectedIndex = indexPath.row;
-        if([self.delegate respondsToSelector:@selector(albumGroupViewSelectedSystemAlbum:)])
-            [self.delegate albumGroupViewSelectedSystemAlbum:_albumGroups[indexPath.row - 1]];
-    }
+    self.selectedIndex = indexPath.row;
+    [_tableView reloadData];
+    if([self.delegate respondsToSelector:@selector(albumGroupViewSelectedSystemAlbum:)])
+        [self.delegate albumGroupViewSelectedSystemAlbum:_albumGroups[indexPath.row]];
 }
 
 @end

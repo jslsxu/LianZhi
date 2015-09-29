@@ -58,6 +58,7 @@
     [task setObserver:self];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.targetID forKey:@"to_id"];
+    [params setValue:[UserCenter sharedInstance].curChild.uid forKey:@"objid"];
     [params setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
     
     ChatMessageModel *messageModel = (ChatMessageModel *)[self tableViewModel];

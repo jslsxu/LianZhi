@@ -29,7 +29,6 @@
     UIButton*           _coverButton;
     AlbumGroupView*     _groupView;
 }
-@property (nonatomic, copy)NSString *classID;
 @property (nonatomic, assign)NSInteger maxToSelected;
 @property (nonatomic, weak)id<PhotoPickerVCDelegate> delegate;
 @end

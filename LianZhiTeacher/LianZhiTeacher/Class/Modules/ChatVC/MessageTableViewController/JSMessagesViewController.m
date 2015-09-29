@@ -45,6 +45,7 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.targetID forKey:@"to_id"];
     [params setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
+    [params setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"objid"];
     
     ChatMessageModel *messageModel = (ChatMessageModel *)[self tableViewModel];
     if(REQUEST_GETMORE == requestType)

@@ -47,12 +47,13 @@ static NSArray *tabDatas = nil;
             [subVCs addObject:vc];
         }
         [self setViewControllers:subVCs];
-        self.treeHouseVC = subVCs[2];
+        [self initialViewControllers];
+        
         self.messageVC = subVCs[0];
+        self.treeHouseVC = subVCs[2];
     }
     return self;
 }
-
 
 - (void)onNewMsgNumChanged
 {
@@ -90,7 +91,7 @@ static NSArray *tabDatas = nil;
             view.hidden = YES;
         }
     }];
-    NSArray *tabItemTitleArray = @[@"消息",@"联系人",@"树屋",@"班博客",@"发现"];
+    NSArray *tabItemTitleArray = @[@"消息",@"联系人",@"树屋",@"班空间",@"发现"];
     CGFloat tabWidth = self.view.width / tabItemTitleArray.count;
     for (NSInteger i = 0; i < tabItemTitleArray.count; i++)
     {
@@ -116,8 +117,6 @@ static NSArray *tabDatas = nil;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:childrenView];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MineProfile"] style:UIBarButtonItemStylePlain target:self action:@selector(onSettingClicked)];
-    [self initialViewControllers];
-    
 }
 
 

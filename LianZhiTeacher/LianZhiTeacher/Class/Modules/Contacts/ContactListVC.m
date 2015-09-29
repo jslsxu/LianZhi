@@ -263,28 +263,23 @@
     {
         ContactGroup *group = [_contactModel.teachers objectAtIndex:indexPath.section];
         TeacherInfo *teacher = [group.contacts objectAtIndex:indexPath.row];
-        if(teacher.mobile.length > 0)
-        {
-            TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-            TNButtonItem *item = [TNButtonItem itemWithTitle:@"拨打" action:^{
-                NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",teacher.mobile];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-            }];
-            TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",teacher.mobile] buttonItems:@[cancelItem,item]];
-            [alertView show];
-        }
+        JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+        [chatVC setTargetID:teacher.uid];
+        [chatVC setChatType:ChatTypeTeacher];
+        [chatVC setTitle:teacher.name];
+        [ApplicationDelegate popAndPush:chatVC];
     }
 }
 
-#pragma mark - ContactDelegate
-- (void)contactItemChatClicked:(UserInfo *)userInfo
-{
-    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-    [chatVC setTargetID:userInfo.uid];
-    [chatVC setChatType:ChatTypeTeacher];
-    [chatVC setTitle:userInfo.name];
-    [ApplicationDelegate popAndPush:chatVC];
-}
+//#pragma mark - ContactDelegate
+//- (void)contactItemChatClicked:(UserInfo *)userInfo
+//{
+//    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+//    [chatVC setTargetID:userInfo.uid];
+//    [chatVC setChatType:ChatTypeTeacher];
+//    [chatVC setTitle:userInfo.name];
+//    [ApplicationDelegate popAndPush:chatVC];
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

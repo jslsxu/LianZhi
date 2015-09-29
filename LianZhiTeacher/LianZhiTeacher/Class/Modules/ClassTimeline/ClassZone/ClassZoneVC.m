@@ -11,6 +11,7 @@
 #import "ClassZoneModel.h"
 #import "ClassSelectionVC.h"
 #import "NewMessageVC.h"
+#import "FeedItemDetailVC.h"
 
 #define kClassZoneShown         @"ClassZoneShown"
 
@@ -351,7 +352,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (void)setupSubviews
 {
     _publishToolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.height - 49, self.view.width, 49)];
-    [self setupToolBar:_publishToolBar];
+//    [self setupToolBar:_publishToolBar];
     [self.view addSubview:_publishToolBar];
     
     ClassInfo *curClassInfo = [UserCenter sharedInstance].curSchool.classes[0];
@@ -605,6 +606,14 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     if(newsPaper.length == 0)
         newsPaper = [NSString stringWithFormat:@"热烈庆祝我们班率先引用连枝APP智能客户端这里是我们 %@ 的掌上根据地。就让我们一起努力经营好这个大家庭吧",self.classInfo.className];
     [_headerView setNewsPaper:newsPaper];
+    
+    [self setupToolBar:_publishToolBar];
+}
+
+- (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
+{
+    FeedItemDetailVC *feedItemDetailVC = [[FeedItemDetailVC alloc] init];
+    [self.navigationController pushViewController:feedItemDetailVC animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

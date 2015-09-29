@@ -96,20 +96,27 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
     if(indexPath.section == 0)
     {
         InterestVC *interestVC = [[InterestVC alloc] init];
+        [interestVC setTitle:self.titleArray[section][row]];
         [CurrentROOTNavigationVC pushViewController:interestVC animated:YES];
     }
     else
     {
         if(indexPath.row == 0)
         {
-            
+            TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+            [webVC setTitle:self.titleArray[section][row]];
+            [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
         }
         else
         {
-            
+            TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+            [webVC setTitle:self.titleArray[section][row]];
+            [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
         }
     }
 }

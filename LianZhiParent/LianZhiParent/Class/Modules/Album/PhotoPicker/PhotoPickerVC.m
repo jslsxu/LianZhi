@@ -48,9 +48,9 @@
     if(_selectedArray == nil)
         _selectedArray = [[NSMutableArray alloc] initWithCapacity:0];
     
-    [self setSupportPullDown:YES];
-    [self setSupportPullUp:YES];
-    [self requestData:REQUEST_REFRESH];
+//    [self setSupportPullDown:YES];
+//    [self setSupportPullUp:YES];
+//    [self requestData:REQUEST_REFRESH];
 }
 
 - (void)setupSubviews
@@ -60,18 +60,17 @@
     [self.view addSubview:bottomView];
     
     _albumSelectedView = [[UIView alloc] initWithFrame:CGRectMake(10, (bottomView.height - 40) / 2, 120, 40)];
-    [self setupAlbumButtonWithTitle:@"树屋相册"];
     [bottomView addSubview:_albumSelectedView];
     
     _confirmButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_confirmButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
-    [_confirmButton setBackgroundImage:[[UIImage imageNamed:@"GrayBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateDisabled];
+    [_confirmButton setFrame:CGRectMake(bottomView.width - 100 - 15, (bottomView.height - 40) / 2, 100, 40)];
+    [_confirmButton setBackgroundImage:[UIImage imageWithColor:kCommonParentTintColor size:_confirmButton.size cornerRadius:5] forState:UIControlStateNormal];
+    [_confirmButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"E0E0E0"] size:_confirmButton.size cornerRadius:5] forState:UIControlStateDisabled];
     [_confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_confirmButton setEnabled:NO];
     [_confirmButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [_confirmButton setTitle:@"完成" forState:UIControlStateNormal];
     [_confirmButton addTarget:self action:@selector(onConfirm) forControlEvents:UIControlEventTouchUpInside];
-    [_confirmButton setFrame:CGRectMake(bottomView.width - 100 - 15, (bottomView.height - 40) / 2, 100, 40)];
     [bottomView addSubview:_confirmButton];
     
     _coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -113,29 +112,29 @@
     [_albumSelectedView addSubview:coverButton];
 }
 
-- (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
-{
-    HttpRequestTask *task = [[HttpRequestTask alloc] init];
-    [task setRequestUrl:@"tree/album"];
-    [task setRequestMethod:REQUEST_GET];
-    [task setRequestType:requestType];
-    [task setObserver:self];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:@(20) forKey:@"num"];
-    [params setValue:@(requestType == REQUEST_REFRESH ? 0 : self.collectionViewModel.modelItemArray.count) forKey:@"start"];
-    [task setParams:params];
-    return task;
-}
-
-- (BOOL)supportCache
-{
-    return YES;
-}
-
-- (NSString *)cacheFileName
-{
-    return [NSString stringWithFormat:@"%@_%@",NSStringFromClass([self class]),[UserCenter sharedInstance].curChild.uid];
-}
+//- (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
+//{
+//    HttpRequestTask *task = [[HttpRequestTask alloc] init];
+//    [task setRequestUrl:@"tree/album"];
+//    [task setRequestMethod:REQUEST_GET];
+//    [task setRequestType:requestType];
+//    [task setObserver:self];
+//    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+//    [params setValue:@(20) forKey:@"num"];
+//    [params setValue:@(requestType == REQUEST_REFRESH ? 0 : self.collectionViewModel.modelItemArray.count) forKey:@"start"];
+//    [task setParams:params];
+//    return task;
+//}
+//
+//- (BOOL)supportCache
+//{
+//    return YES;
+//}
+//
+//- (NSString *)cacheFileName
+//{
+//    return [NSString stringWithFormat:@"%@_%@",NSStringFromClass([self class]),[UserCenter sharedInstance].curChild.uid];
+//}
 
 - (void)onCancel
 {
@@ -159,7 +158,7 @@
     [_arrow setImage:[UIImage imageNamed:_albumShown ? @"DownArrow.png" : @"UpArrow.png"]];
     if(_albumShown)
     {
-        [_groupView reloadData];
+//        [_groupView reloadData];
         [UIView animateWithDuration:0.3 animations:^{
             [_coverButton setAlpha:1.f];
             [_groupView setY:_coverButton.height - _groupView.height];
@@ -235,21 +234,11 @@
         }
         else
         {
-            [self reloadData];
+            [_collectionView reloadData];
         }
     };
     
     [group enumerateAssetsUsingBlock:resultsBlock];
-}
-
-- (void)albumGroupViewSelectedHostAlbum
-{
-    [self setupAlbumButtonWithTitle:@"树屋相册"];
-    [self setSupportPullDown:YES];
-    [self setSupportPullUp:YES];
-    [self.collectionViewModel.modelItemArray removeAllObjects];
-    [self setAlbumShown:NO];
-    [self requestData:REQUEST_REFRESH];
 }
 
 #pragma mark - CHTCollectionViewDelegateWaterfallLayout

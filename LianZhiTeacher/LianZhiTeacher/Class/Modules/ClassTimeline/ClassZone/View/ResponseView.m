@@ -12,6 +12,7 @@
 #define kHMargin                            10
 
 #define kMaxResponseNum                     5
+#define kResponseItemCellMargin             3
 
 @implementation CommentCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -140,6 +141,7 @@
             NSInteger itemHeight = [CommentCell cellHeight:responseItem cellWidth:width].floatValue;
             tableHeight += itemHeight;
         }
+        tableHeight += kResponseItemCellMargin;
     }
     height += tableHeight;
     return height;
@@ -196,6 +198,7 @@
             NSInteger itemHeight = [CommentCell cellHeight:responseItem cellWidth:_tableView.width].floatValue;
             tableHeight += itemHeight;
         }
+        tableHeight += kResponseItemCellMargin;
         [_tableView setHidden:NO];
         [_tableView setFrame:CGRectMake(0, height, self.width, tableHeight)];
         [_tableView reloadData];

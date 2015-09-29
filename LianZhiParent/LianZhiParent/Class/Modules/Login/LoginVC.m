@@ -74,10 +74,10 @@
     
     UILabel*    hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.height - 80, self.view.width, 80)];
     [hintLabel setFont:[UIFont systemFontOfSize:12]];
-    [hintLabel setTextColor:[UIColor lightGrayColor]];
+    [hintLabel setTextColor:[UIColor colorWithHexString:@"047758"]];
     [hintLabel setNumberOfLines:0];
     [hintLabel setTextAlignment:NSTextAlignmentCenter];
-    [hintLabel setText:@"没有开通炼制的学校请点击我"];
+    [hintLabel setText:@"账号首次登录请点击新用户激活"];
     [self.view addSubview:hintLabel];
 }
 
@@ -210,11 +210,6 @@
     if(username.length ==0 || password.length == 0)
     {
         [ProgressHUD showHintText:@"手机号或密码不能为空"];
-        return NO;
-    }
-    if(![self checkPhoneNumber:username])
-    {
-        [ProgressHUD showHintText:@"请输入正确的手机号"];
         return NO;
     }
     return YES;

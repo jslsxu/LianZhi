@@ -25,9 +25,9 @@
         [_coverButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventAllEvents];
         [self addSubview:_coverButton];
         
-        _contentView = [[UIView alloc] initWithFrame:CGRectMake(point.x - 210 - 10, point.y - 18, 210, 36)];
-        [_contentView setBackgroundColor:[UIColor grayColor]];
-        [_contentView.layer setCornerRadius:4];
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake(point.x - 180 - 10, point.y - 18, 180, 26)];
+        [_contentView setBackgroundColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [_contentView.layer setCornerRadius:2];
         [_contentView.layer setMasksToBounds:YES];
         [self addSubview:_contentView];
         
@@ -45,6 +45,7 @@
             [button setTitle:titleArray[i] forState:UIControlStateNormal];
             [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Normal",imageArray[i]]] forState:UIControlStateNormal];
             [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Highlighted",imageArray[i]]] forState:UIControlStateHighlighted];
+            [button setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"0c0c0c"] size:button.size] forState:UIControlStateHighlighted];
             [button addTarget:self action:NSSelectorFromString(actionArray[i]) forControlEvents:UIControlEventTouchUpInside];
             [_contentView addSubview:button];
             if(i == 0)
@@ -53,6 +54,13 @@
                 _commentButton = button;
             else
                 _shareButton = button;
+            
+            if(i > 0)
+            {
+                UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(button.x, 3, kLineHeight, _contentView.height - 3 * 2)];
+                [sepLine setBackgroundColor:[UIColor colorWithHexString:@"0c0c0c"]];
+                [_contentView addSubview:sepLine];
+            }
         }
     }
     return self;

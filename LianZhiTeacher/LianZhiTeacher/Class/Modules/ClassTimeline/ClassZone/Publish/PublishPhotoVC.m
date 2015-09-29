@@ -7,7 +7,7 @@
 //
 
 #import "PublishPhotoVC.h"
-
+#import "PoiInfoView.h"
 #define kBorderMargin                   16
 
 #define kBaseTag                        1000
@@ -208,6 +208,10 @@
     [item setPhotos:photos];
     [item setUserInfo:[UserCenter sharedInstance].userInfo];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if(!poiItem.clearLocation)
+    {
+        [params setValue:poiItem.poiInfo.name forKey:@"position"];
+    }
     [params setValue:self.classInfo.classID forKey:@"class_id"];
     [params setValue:kStringFromValue([[NSDate date] timeIntervalSince1970]) forKey:@"onlywifi_time"];
     [item setParams:params];
@@ -222,10 +226,11 @@
 - (void)photoPickerDidSelectAlbum:(PhotoPickerView *)picker
 {
     [self.view endEditing:YES];
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    [imagePicker setDelegate:self];
-    [self presentViewController:imagePicker animated:YES completion:nil];
+    PhotoPickerVC *photoPickerVC = [[PhotoPickerVC alloc] init];
+    [photoPickerVC setMaxToSelected:9 - _imageArray.count];
+    [photoPickerVC setDelegate:self];
+    UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:photoPickerVC];
+    [self presentViewController:navigationVC animated:YES completion:nil];
 }
 
 - (void)photoPickerDidSelectCamera:(PhotoPickerView *)picker

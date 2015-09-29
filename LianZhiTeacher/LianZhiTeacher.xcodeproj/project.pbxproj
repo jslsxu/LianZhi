@@ -359,6 +359,7 @@
 		37FD6E321BB4817900C83AB4 /* NewMessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E2F1BB4817900C83AB4 /* NewMessageVC.m */; };
 		37FD6E351BB69AFE00C83AB4 /* RegisterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E341BB69AFE00C83AB4 /* RegisterVC.m */; };
 		37FD6E381BB6F53800C83AB4 /* RegisterAuthVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E371BB6F53800C83AB4 /* RegisterAuthVC.m */; };
+		37FD6E471BBA698D00C83AB4 /* FeedItemDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E461BBA698D00C83AB4 /* FeedItemDetailVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1058,6 +1059,8 @@
 		37FD6E341BB69AFE00C83AB4 /* RegisterVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterVC.m; sourceTree = "<group>"; };
 		37FD6E361BB6F53800C83AB4 /* RegisterAuthVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterAuthVC.h; sourceTree = "<group>"; };
 		37FD6E371BB6F53800C83AB4 /* RegisterAuthVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterAuthVC.m; sourceTree = "<group>"; };
+		37FD6E451BBA698D00C83AB4 /* FeedItemDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedItemDetailVC.h; sourceTree = "<group>"; };
+		37FD6E461BBA698D00C83AB4 /* FeedItemDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedItemDetailVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2473,6 +2476,7 @@
 		37DEE4C91A57C1D8009A8771 /* ClassZone */ = {
 			isa = PBXGroup;
 			children = (
+				37FD6E441BBA698500C83AB4 /* FeedItemDetail */,
 				3728A69B1B98B20700310457 /* View */,
 				3728A6A21B98B20700310457 /* Model */,
 				37DEE4D01A57C1D8009A8771 /* ClassZoneVC.h */,
@@ -2636,6 +2640,15 @@
 				37FD6E2F1BB4817900C83AB4 /* NewMessageVC.m */,
 			);
 			path = NewMessageVC;
+			sourceTree = "<group>";
+		};
+		37FD6E441BBA698500C83AB4 /* FeedItemDetail */ = {
+			isa = PBXGroup;
+			children = (
+				37FD6E451BBA698D00C83AB4 /* FeedItemDetailVC.h */,
+				37FD6E461BBA698D00C83AB4 /* FeedItemDetailVC.m */,
+			);
+			path = FeedItemDetail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2910,6 +2923,7 @@
 				3793FA431B7CFFF000501F77 /* NSString+RETableViewManagerAdditions.m in Sources */,
 				3705FF911BA2A1F800F0C6F6 /* NotificationClassStudentsVC.m in Sources */,
 				37FD6DE81BAEE01C00C83AB4 /* JSMessagesViewController.m in Sources */,
+				37FD6E471BBA698D00C83AB4 /* FeedItemDetailVC.m in Sources */,
 				37DEE4F01A57C24A009A8771 /* PersonalInfoVC.m in Sources */,
 				3728A73B1B9D376300310457 /* MFWFace.m in Sources */,
 				3793FA3D1B7CFFF000501F77 /* REMultipleChoiceItem.m in Sources */,

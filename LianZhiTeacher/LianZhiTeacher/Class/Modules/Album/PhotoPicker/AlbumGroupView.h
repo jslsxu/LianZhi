@@ -23,8 +23,7 @@
 @end
 
 @protocol AlbumGroupDelegate <NSObject>
-- (void)albumGroupViewSelectedSystemAlbum:(ALAssetsGroup *)group;   //本地相册
-- (void)albumGroupViewSelectedHostAlbum;                        //云相册
+- (void)albumGroupViewSelectedSystemAlbum:(ALAssetsGroup *)group;   //本地相册                      //云相册
 
 @end
 

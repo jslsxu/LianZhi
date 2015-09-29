@@ -209,10 +209,11 @@
 {
     [self.view endEditing:YES];
 
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    [imagePicker setDelegate:self];
-    [self presentViewController:imagePicker animated:YES completion:nil];
+    PhotoPickerVC *photoPickerVC = [[PhotoPickerVC alloc] init];
+    [photoPickerVC setMaxToSelected:9 - _imageArray.count];
+    [photoPickerVC setDelegate:self];
+    UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:photoPickerVC];
+    [self presentViewController:navigationVC animated:YES completion:nil];
 }
 
 - (void)photoPickerDidSelectCamera:(PhotoPickerView *)picker

@@ -18,7 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"发文章";
+    self.title = @"发文字";
     [self.view setBackgroundColor:kCommonBackgroundColor];
 }
 

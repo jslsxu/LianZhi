@@ -205,12 +205,17 @@
         [photoItem setPublishImageItem:imageItem];
         [photos addObject:photoItem];
     }
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    POIItem *poiItem = _poiInfoView.poiItem;
+    if(!poiItem.clearLocation)
+    {
+        [params setValue:poiItem.poiInfo.name forKey:@"position"];
+    }
     [item setParams:@{@"onlywifi_time":kStringFromValue([[NSDate date] timeIntervalSince1970])}];
     
     NSDate *date = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd"];
-    POIItem *poiItem = _poiInfoView.poiItem;
     if(!poiItem.clearLocation)
     {
         [item setPosition:poiItem.poiInfo.name];
@@ -266,10 +271,11 @@
 - (void)photoPickerDidSelectAlbum:(PhotoPickerView *)picker
 {
     [self.view endEditing:YES];
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    [imagePicker setDelegate:self];
-    [self presentViewController:imagePicker animated:YES completion:nil];
+    PhotoPickerVC *photoPickerVC = [[PhotoPickerVC alloc] init];
+    [photoPickerVC setMaxToSelected:9 - _imageArray.count];
+    [photoPickerVC setDelegate:self];
+    UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:photoPickerVC];
+    [self presentViewController:navigationVC animated:YES completion:nil];
 }
 
 - (void)photoPickerDidSelectCamera:(PhotoPickerView *)picker
@@ -286,7 +292,7 @@
 {
     [self dismissViewControllerAnimated:YES completion:nil];
     [_imageArray addObjectsFromArray:selectedArray];
-    [self setupSubviews];
+    [self setupScrollView];
 }
 
 - (void)photoPickerVCDidCancel:(PhotoPickerVC *)photoPickerVC

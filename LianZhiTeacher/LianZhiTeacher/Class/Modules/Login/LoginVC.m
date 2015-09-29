@@ -209,11 +209,6 @@
         [ProgressHUD showHintText:@"手机号或密码不能为空"];
         return NO;
     }
-    if(![self checkPhoneNumber:username])
-    {
-        [ProgressHUD showHintText:@"请输入正确的手机号"];
-        return NO;
-    }
     return YES;
 }
 

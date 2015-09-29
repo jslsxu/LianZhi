@@ -182,7 +182,7 @@
     
     [_timeLabel setText:timelineItem.formatTime];
     [_timeLabel sizeToFit];
-    [_timeLabel setOrigin:CGPointMake(_bgView.right - _timeLabel.width, _sepLine.bottom + (30 - _authorLabel.height) / 2)];
+    [_timeLabel setOrigin:CGPointMake(_bgView.width - _timeLabel.width, _sepLine.bottom + (30 - _authorLabel.height) / 2)];
     [_bgView setHeight:spaceYStart + 30];
 }
 
