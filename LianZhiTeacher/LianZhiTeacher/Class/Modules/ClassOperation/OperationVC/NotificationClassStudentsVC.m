@@ -100,7 +100,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.seletedArray = [NSMutableArray array];
+    self.seletedArray = [NSMutableArray arrayWithArray:self.originalArray];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(onConfirm)];
     [self bindTableCell:@"NotificationStudentCell" tableModel:@"StudentsModel"];
     [self requestData:REQUEST_REFRESH];

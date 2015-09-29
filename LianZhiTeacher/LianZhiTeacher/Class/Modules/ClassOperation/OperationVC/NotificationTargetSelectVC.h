@@ -8,6 +8,12 @@
 
 #import "TNBaseViewController.h"
 
+typedef NS_ENUM(NSInteger, SelectType){
+    SelectTypeNone = 0,
+    SelectTypePart,
+    SelectTypeAll
+};
+
 @interface NotificationTeacherGroup : TNModelItem
 @property (nonatomic, copy)NSString *groupId;
 @property (nonatomic, copy)NSString *groupName;
@@ -33,6 +39,7 @@
     UILabel*    _nameLabel;
 }
 @property (nonatomic, readonly)UILabel *nameLabel;
+@property (nonatomic, assign)NSInteger selectType;
 @end
 
 @interface NotificationTargetSelectVC : TNBaseViewController

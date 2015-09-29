@@ -24,6 +24,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup)//群组或者班级
+    {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MineProfile"] style:UIBarButtonItemStylePlain target:self action:@selector(onShowClassMembers)];
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(onTelephoneClicked)];
+    }
+    
     _inputView = [[InputBarView alloc] init];
     [_inputView setInputDelegate:self];
     [_inputView setY:self.view.height - _inputView.height - 64];
@@ -35,6 +45,16 @@
     [self requestData:REQUEST_GETMORE];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
     [_tableView addGestureRecognizer:tapGesture];
+}
+
+- (void)onShowClassMembers
+{
+    
+}
+
+- (void)onTelephoneClicked
+{
+    
 }
 
 - (void)onTap

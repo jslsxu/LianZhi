@@ -52,5 +52,6 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @property (nonatomic, assign)BOOL recordEnabled;//是否开通成长记录
 @property (nonatomic, assign)BOOL canSelected;
 @property (nonatomic, assign)BOOL selected;             //在班级操作中有用
+@property (nonatomic, assign)NSInteger num;
 @end
 

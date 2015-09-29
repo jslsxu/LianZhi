@@ -137,6 +137,7 @@
     self.grade = [dataWrapper getStringForKey:@"grade"];
     self.logoUrl = [dataWrapper getStringForKey:@"logo"];
     self.course = [dataWrapper getStringForKey:@"course"];
+    self.num = [dataWrapper getIntegerForKey:@"num"];
     
     TNDataWrapper *studentsDataWrapper = [dataWrapper getDataWrapperForKey:@"students"];
     if(studentsDataWrapper.count > 0)

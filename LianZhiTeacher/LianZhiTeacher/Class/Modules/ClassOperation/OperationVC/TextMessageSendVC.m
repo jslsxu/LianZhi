@@ -7,7 +7,7 @@
 //
 
 #import "TextMessageSendVC.h"
-#define kReportContentMaxNum                    120
+#define kReportContentMaxNum                    500
 #define kBorderMargin                           15
 @implementation TextMessageSendVC
 

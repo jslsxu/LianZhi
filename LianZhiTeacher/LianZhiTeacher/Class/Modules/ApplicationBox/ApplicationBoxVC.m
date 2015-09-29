@@ -30,6 +30,7 @@
         _coverButton = [LZTabBarButton buttonWithType:UIButtonTypeCustom];
         [_coverButton setUserInteractionEnabled:NO];
         [_coverButton setFrame:self.bounds];
+        [_coverButton setTitleColor:[UIColor colorWithHexString:@"2c2c2c"] forState:UIControlStateNormal];
         [self addSubview:_coverButton];
         
 //        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.width, 70)];

@@ -23,6 +23,7 @@
 @end
 
 @interface NotificationClassStudentsVC : TNBaseTableViewController
+@property (nonatomic, strong)NSArray *originalArray;
 @property (nonatomic, copy)NSString *classID;
 @property (nonatomic, copy)void (^selectedCompletion)(NSArray *studentArray);
 @end
