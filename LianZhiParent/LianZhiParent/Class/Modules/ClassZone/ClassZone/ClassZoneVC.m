@@ -247,12 +247,31 @@
 #pragma mark - ClassZoneItemCellDelegate
 - (void)onResponseClickedAtTarget:(ResponseItem *)responseItem cell:(ClassZoneItemCell *)cell
 {
-    _replyBox.hidden = NO;
-    [_replyBox assignFocus];
-    
-    self.targetClassZoneItem = (ClassZoneItem *)cell.modelItem;
-    self.targetResponseItem = responseItem;
-    [_replyBox setPlaceHolder:[NSString stringWithFormat:@"回复:%@",self.targetResponseItem.sendUser.name]];
+    if([[UserCenter sharedInstance].userInfo.uid isEqualToString:responseItem.sendUser.uid])
+    {
+        ClassZoneItem *zoneItem = (ClassZoneItem *)cell.modelItem;
+        TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除" action:^{
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : zoneItem.itemID, @"types" : @"0"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                [ProgressHUD showHintText:@"删除成功"];
+                [zoneItem.responseModel removeResponse:responseItem];
+                [self.tableView reloadData];
+            } fail:^(NSString *errMsg) {
+                [ProgressHUD showHintText:errMsg];
+            }];
+        }];
+        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+        TNActionSheet *actionSheet = [[TNActionSheet alloc] initWithTitle:nil descriptionView:nil destructiveButton:deleteItem cancelItem:cancelItem otherItems:nil];
+        [actionSheet show];
+    }
+    else
+    {
+        _replyBox.hidden = NO;
+        [_replyBox assignFocus];
+        
+        self.targetClassZoneItem = (ClassZoneItem *)cell.modelItem;
+        self.targetResponseItem = responseItem;
+        [_replyBox setPlaceHolder:[NSString stringWithFormat:@"回复:%@",self.targetResponseItem.sendUser.name]];
+    }
 }
 
 - (void)onActionClicked:(ClassZoneItemCell *)cell

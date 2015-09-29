@@ -47,7 +47,36 @@
 
 - (void)onFinishClicked
 {
-    
+    [self.view endEditing:YES];
+    NSString *first = [_passwordField text];
+    NSString *second = [_confirmField text];
+    if(![first isEqualToString:second])
+    {
+        [ProgressHUD showHintText:@"两次密码输入不一致"];
+        return;
+    }
+    else if(first.length < 6 || first.length > 15)
+    {
+        [ProgressHUD showHintText:@"密码位数在6-15位"];
+        return;
+    }
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在设置密码" toView:self.view];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"setting/set_password" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"password":first} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        NSString *token =[responseObject getStringForKey:@"verify"];
+        [[UserCenter sharedInstance].userData setAccessToken:token];
+        [[UserCenter sharedInstance] save];
+        [hud hide:NO];
+        
+        TNButtonItem *item = [TNButtonItem itemWithTitle:@"确定" action:^{
+            [ApplicationDelegate logout];
+        }];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"重置密码成功，点击确认后重新登录" buttonItems:@[item]];
+        [alertView show];
+    } fail:^(NSString *errMsg) {
+        [hud hide:NO];
+        [ProgressHUD showHintText:errMsg];
+    }];
+
 }
 
 - (void)didReceiveMemoryWarning {

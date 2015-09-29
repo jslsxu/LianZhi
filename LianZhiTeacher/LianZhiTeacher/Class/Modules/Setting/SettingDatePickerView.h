@@ -16,6 +16,9 @@ typedef void(^DatePickerBlk)(NSString *dateStr);
 @interface SettingDatePickerView : UIView
 {
     UIButton*           _coverButton;
+    UIView*             _contentView;
+    UIButton*           _cancelButton;
+    UIButton*           _confirmButton;
     UIDatePicker*       _datePicker;
 }
 @property (nonatomic, readonly)UIDatePicker *datePicker;

@@ -25,9 +25,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if(self.chatType == ChatTypeClass)
+    if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup)
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MineProfile"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickClassMember)];
+    }
+    else
+    {
+        
     }
     
     _inputView = [[InputBarView alloc] init];

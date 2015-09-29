@@ -19,6 +19,11 @@
         [_imageView setContentMode:UIViewContentModeCenter];
         [self addSubview:_imageView];
         
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _imageView.bottom, self.width, 20)];
+        [_nameLabel setTextAlignment:NSTextAlignmentCenter];
+        [_nameLabel setFont:[UIFont systemFontOfSize:13]];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [self addSubview:_nameLabel];
     }
     return self;
 }
@@ -28,6 +33,7 @@
     _faceIndex = faceIndex;
     UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"biaoqing%ld",_faceIndex + 1]];
     [_imageView setImage:image];
+    [_nameLabel setText:[MFWFace faceStringForIndex:_faceIndex]];
 }
 
 @end

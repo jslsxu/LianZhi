@@ -19,6 +19,7 @@
 @interface FaceItemCell : UICollectionViewCell
 {
     UIImageView*    _imageView;
+     UILabel*        _nameLabel;
 }
 @property (nonatomic, assign)NSInteger faceIndex;
 @end

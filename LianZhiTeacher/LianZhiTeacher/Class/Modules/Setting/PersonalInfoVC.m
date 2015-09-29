@@ -156,8 +156,9 @@
         _infoArray = [[NSMutableArray alloc] init];
     PersonalInfoItem *nameItem = [[PersonalInfoItem alloc] initWithKey:@"姓名" value:[UserCenter sharedInstance].userInfo.name canEdit:YES];
     [nameItem setRequestKey:@"name"];
-    PersonalInfoItem *genderItem = [[PersonalInfoItem alloc] initWithKey:@"昵称" value:kStringFromValue([UserCenter sharedInstance].userInfo.gender) canEdit:YES];
-    [genderItem setRequestKey:@"sex"];
+    
+    PersonalInfoItem *nickItem = [[PersonalInfoItem alloc] initWithKey:@"昵称" value:[UserCenter sharedInstance].userInfo.nickName canEdit:YES];
+    [nickItem setRequestKey:@"nick"];
     PersonalInfoItem *birthDayItem = [[PersonalInfoItem alloc] initWithKey:@"出生日期" value:[UserCenter sharedInstance].userInfo.birthDay canEdit:NO];
     [birthDayItem setRequestKey:@"birthday"];
     PersonalInfoItem *emailItem = [[PersonalInfoItem alloc] initWithKey:@"联系邮箱" value:[UserCenter sharedInstance].userInfo.email canEdit:YES];
@@ -165,7 +166,7 @@
     PersonalInfoItem *phoneItem = [[PersonalInfoItem alloc] initWithKey:@"登陆手机" value:[UserCenter sharedInstance].userInfo.mobile canEdit:NO];
     PersonalInfoItem *passwordItem = [[PersonalInfoItem alloc] initWithKey:@"登录密码" value:@"******" canEdit:NO];
     
-    [_infoArray addObjectsFromArray:@[nameItem,genderItem,birthDayItem,emailItem,phoneItem,passwordItem]];
+    [_infoArray addObjectsFromArray:@[nameItem,nickItem,birthDayItem,emailItem,phoneItem,passwordItem]];
 }
 
 - (void)onAvatarModification
@@ -256,8 +257,9 @@
     {
         SettingDatePickerView *datePicker = [[SettingDatePickerView alloc] initWithType:SettingDatePickerTypeDate];
         [datePicker setBlk:^(NSString *dateStr){
-            PersonalInfoItem *birthdayItem = [_infoArray objectAtIndex:indexPath.row + 2];
+            PersonalInfoItem *birthdayItem = [_infoArray objectAtIndex:indexPath.row];
             [birthdayItem setValue:dateStr];
+            [self onSaveButtonClicked];
             [tableView reloadData];
         }];
         [datePicker show];
@@ -288,6 +290,7 @@
         CommonInputVC *commonInputVC = [[CommonInputVC alloc] initWithOriginal:infoItem.value forKey:infoItem.key completion:^(NSString *value) {
             [infoItem setValue:value];
             [self onSaveButtonClicked];
+            [self.tableView reloadData];
         }];
         [self.navigationController pushViewController:commonInputVC animated:YES];
     }
@@ -299,6 +302,7 @@
     self.avatarImage = [info objectForKey:UIImagePickerControllerEditedImage];
     [picker dismissViewControllerAnimated:YES completion:^{
         [_avatar setImage:self.avatarImage];
+        [self onSaveButtonClicked];
     }];
 }
 

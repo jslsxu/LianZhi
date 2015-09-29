@@ -98,12 +98,12 @@ static const char ActionItemKey;
             [button setFrame:CGRectMake(kActionSheetHMargin, spaceYStart, _contentView.width - kActionSheetHMargin * 2, kActionSheetButtonHeight)];
             if(item == destructiveItem)
             {
-                [button setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"E82551"] size:button.size cornerRadius:kActionSheetButtonHeight / 2] resizableImageWithCapInsets:UIEdgeInsetsMake(0, kActionSheetButtonHeight / 2, 0, kActionSheetButtonHeight / 2)] forState:UIControlStateNormal];
+                [button setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"E82551"] size:button.size cornerRadius:5]  forState:UIControlStateNormal];
             }
             else
             {
                 
-                [button setBackgroundImage:[[UIImage imageWithColor:kCommonParentTintColor size:button.size cornerRadius:kActionSheetButtonHeight / 2] resizableImageWithCapInsets:UIEdgeInsetsMake(0, kActionSheetButtonHeight / 2, 0, kActionSheetButtonHeight / 2)] forState:UIControlStateNormal];
+                [button setBackgroundImage:[UIImage imageWithColor:kCommonParentTintColor size:button.size cornerRadius:5] forState:UIControlStateNormal];
             }
             [button.titleLabel setFont:kButtonTextFont];
             [button setTitle:item.title forState:UIControlStateNormal];

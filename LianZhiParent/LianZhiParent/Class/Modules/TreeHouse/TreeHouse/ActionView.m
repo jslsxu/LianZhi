@@ -8,6 +8,9 @@
 
 #import "ActionView.h"
 
+#define kActionViewWidth                    180
+#define kActionViewHeight                   30
+
 @interface ActionView ()
 @property (nonatomic, copy)Action action;
 @end
@@ -25,7 +28,7 @@
         [_coverButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventAllEvents];
         [self addSubview:_coverButton];
         
-        _contentView = [[UIView alloc] initWithFrame:CGRectMake(point.x - 180 - 10, point.y - 18, 180, 26)];
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake(point.x - kActionViewWidth - 10, point.y - kActionViewHeight / 2, kActionViewWidth, kActionViewHeight)];
         [_contentView setBackgroundColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_contentView.layer setCornerRadius:2];
         [_contentView.layer setMasksToBounds:YES];

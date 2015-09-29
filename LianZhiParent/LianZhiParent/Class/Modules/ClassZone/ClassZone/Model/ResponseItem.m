@@ -84,5 +84,10 @@
         [self.praiseArray insertObject:praiseUser atIndex:0];
 }
 
+- (void)removeResponse:(ResponseItem *)delResponse
+{
+    if([self.responseArray containsObject:delResponse])
+        [self.responseArray removeObject:delResponse];
+}
 
 @end

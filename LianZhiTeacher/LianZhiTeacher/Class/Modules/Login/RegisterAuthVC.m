@@ -69,10 +69,11 @@
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:[UIApplication sharedApplication].keyWindow];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/account_apply" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:NO];
-        [ProgressHUD showHintText:@"申请成功"];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        TNButtonItem *confirmItem = [TNButtonItem itemWithTitle:@"完成" action:^{
             [self.navigationController popToRootViewControllerAnimated:YES];
-        });
+        }];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"客服将在七日内处理您的申请信息" buttonItems:@[confirmItem]];
+        [alertView show];
     } fail:^(NSString *errMsg) {
         [hud hide:NO];
         [ProgressHUD showHintText:errMsg];

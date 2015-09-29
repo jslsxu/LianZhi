@@ -91,7 +91,7 @@ static NSArray *tabDatas = nil;
             view.hidden = YES;
         }
     }];
-    NSArray *tabItemTitleArray = @[@"消息",@"联系人",@"树屋",@"班空间",@"发现"];
+    NSArray *tabItemTitleArray = @[@"消息",@"联系人",@"树屋",@"班博客",@"发现"];
     CGFloat tabWidth = self.view.width / tabItemTitleArray.count;
     for (NSInteger i = 0; i < tabItemTitleArray.count; i++)
     {

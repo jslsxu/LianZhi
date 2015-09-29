@@ -27,4 +27,5 @@
 
 - (void)addResponse:(ResponseItem *)newResponse;
 - (void)addPraiseUser:(UserInfo *)praiseUser;
+- (void)removeResponse:(ResponseItem *)delResponse;
 @end

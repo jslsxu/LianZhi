@@ -107,37 +107,21 @@
         [ProgressHUD showHintText:errMsg];
         return;
     }
-    PasswordConfirmVC *passwordConfirmVC = [[PasswordConfirmVC alloc] init];
-    [self.navigationController pushViewController:passwordConfirmVC animated:YES];
-    //    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在登录" toView:self.view];
-    //    __weak typeof(self) wself = self;
-    //    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    //    [params setValue:self.mobile forKey:@"mobile"];
-    //    [params setValue:_nameField.text forKey:@"name"];
-    //    [params setValue:_authCodeField.text forKey:@"code"];
-    //    [params setValue:[UserCenter sharedInstance].deviceToken forKey:@"device_token"];
-    //    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/login_mobile" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper* responseObject) {
-    //        [hud hide:NO];
-    //         TNDataWrapper *childrenWrapper = [responseObject getDataWrapperForKey:@"children"];
-    //        if(childrenWrapper.count == 0)
-    //        {
-    //            TNButtonItem *item = [TNButtonItem itemWithTitle:@"确定" action:^{
-    //
-    //            }];
-    //            TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"未找到您的孩子，请联系管理员或客服人员" buttonItems:@[item]];
-    //            [alertView show];
-    //        }
-    //        else
-    //        {
-    //            [[UserCenter sharedInstance] parseData:responseObject];
-    //            if(wself.loginCallBack)
-    //                wself.loginCallBack(YES,NO);
-    //        }
-    //
-    //    } fail:^(NSString *errMsg) {
-    //        [hud hide:NO];
-    //        [ProgressHUD showHintText:errMsg];
-    //    }];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:mobile forKey:@"mobile"];
+    [params setValue:authCode forKey:@"code"];
+    [params setValue:name forKey:@"name"];
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:[UIApplication sharedApplication].keyWindow];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/login_mobile" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [hud hide:NO];
+        [[UserCenter sharedInstance] parseData:responseObject];
+        PasswordConfirmVC *passwordConfirmVC = [[PasswordConfirmVC alloc] init];
+        [self.navigationController pushViewController:passwordConfirmVC animated:YES];
+    } fail:^(NSString *errMsg) {
+        [hud hide:NO];
+        [ProgressHUD showHintText:errMsg];
+    }];
+
 }
 
 - (void)startTimer
