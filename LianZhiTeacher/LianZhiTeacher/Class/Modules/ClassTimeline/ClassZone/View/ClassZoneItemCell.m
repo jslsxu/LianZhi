@@ -39,6 +39,12 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         [_timeLabel setTextColor:[UIColor colorWithHexString:@"a0a0a0"]];
         [self addSubview:_timeLabel];
         
+        _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_deleteButton setFrame:CGRectMake(self.width - 10 - 30, 0, 30, 30)];
+        [_deleteButton setImage:[UIImage imageNamed:@"ClassZoneTrash"] forState:UIControlStateNormal];
+        [_deleteButton addTarget:self action:@selector(onDeleteButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:_deleteButton];
+        
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_contentLabel setBackgroundColor:[UIColor clearColor]];
         [_contentLabel setFont:[UIFont systemFontOfSize:14]];
@@ -163,6 +169,8 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     [_timeLabel setText:item.formatTime];
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(_nameLabel.right + 5, _nameLabel.bottom - _timeLabel.height)];
+    
+    _deleteButton.hidden = !([item.userInfo.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid]);
     
     NSInteger contentWidth = self.width - kImageLeftMargin - kImageRightMargin;
     CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(contentWidth, 0) andFont:_contentLabel.font];

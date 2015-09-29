@@ -544,7 +544,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
                 
             }];
         }];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"确定删除原创内容?" buttonItems:@[confirmItem, cancelItem]];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"确定删除原创内容?" buttonItems:@[cancelItem,confirmItem]];
         [alertView show];
     }
     else
@@ -612,8 +612,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-    FeedItemDetailVC *feedItemDetailVC = [[FeedItemDetailVC alloc] init];
-    [self.navigationController pushViewController:feedItemDetailVC animated:YES];
+//    FeedItemDetailVC *feedItemDetailVC = [[FeedItemDetailVC alloc] init];
+//    [self.navigationController pushViewController:feedItemDetailVC animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

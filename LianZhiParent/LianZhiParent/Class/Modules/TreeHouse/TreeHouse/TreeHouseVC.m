@@ -7,6 +7,7 @@
 //
 
 #import "TreeHouseVC.h"
+#import "TreeHouseDetailVC.h"
 #import "PublishSelectionView.h"
 NSString *const kPublishPhotoItemFinishedNotification = @"PublishPhotoItemFinishedNotification";
 NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
@@ -386,6 +387,14 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     TreeHouseCell *treehouseCell = (TreeHouseCell *)cell;
     if([treehouseCell respondsToSelector:@selector(setDelegate:)])
         [treehouseCell setDelegate:self];
+}
+
+- (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
+{
+//    TreehouseItem *item = (TreehouseItem *)modelItem;
+//    TreeHouseDetailVC *detailVC = [[TreeHouseDetailVC alloc] init];
+//    [detailVC setFeedId:item.itemID];
+//    [self.navigationController pushViewController:detailVC animated:YES];
 }
 
 #pragma mark - PublishTreeItemDelegate

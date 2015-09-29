@@ -8,8 +8,24 @@
 
 #import "TNBaseTableViewController.h"
 
-@interface TreeHouseDetailVC : TNBaseTableViewController
+@interface TreeHouseDetailHeaderView : UIView<UICollectionViewDataSource, UICollectionViewDelegate>
+{
+    AvatarView* _avatar;
+    UILabel*    _nameLabel;
+    UILabel*    _timeLabel;
+    UILabel*    _addressLabel;
+    UIButton*   _deleteButon;
+    UILabel*    _contentLabel;
+    UIButton*   _tagButton;
+    UICollectionView*   _collectionView;
+    
+}
+
+@end
+
+@interface TreeHouseDetailVC : TNBaseViewController
 {
     
 }
+@property (nonatomic, copy)NSString *feedId;
 @end

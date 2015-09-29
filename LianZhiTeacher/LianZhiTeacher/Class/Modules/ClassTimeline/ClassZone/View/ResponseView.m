@@ -134,7 +134,8 @@
     NSInteger tableHeight = 0;
     if(responseArray.count > 0)
     {
-        NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
+//        NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
+        NSInteger responseNum = responseArray.count;
         for (NSInteger i = 0; i < responseNum; i++)
         {
             ResponseItem *responseItem = responseArray[i];
@@ -191,7 +192,8 @@
     NSInteger tableHeight = 0;
     if(responseArray.count > 0)
     {
-        NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
+//        NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
+        NSInteger responseNum = responseArray.count;
         for (NSInteger i = 0; i < responseNum; i++)
         {
             ResponseItem *responseItem = responseArray[i];

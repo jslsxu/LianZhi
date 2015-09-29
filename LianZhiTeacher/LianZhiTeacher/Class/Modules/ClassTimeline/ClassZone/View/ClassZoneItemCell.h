@@ -26,6 +26,7 @@ extern NSString *const kClassZoneItemDeleteKey;
     AvatarView*         _avatar;
     UILabel*            _nameLabel;
     UILabel*            _timeLabel;
+    UIButton*           _deleteButton;
     UILabel*            _contentLabel;
     UICollectionView*   _collectionView;
     MessageVoiceButton* _voiceButton;

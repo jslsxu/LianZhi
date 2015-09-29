@@ -8,6 +8,7 @@
 
 #import "TNListModel.h"
 
-@interface TreeHouseDetailModel : TNListModel
+@interface TreeHouseDetailModel : TNModelItem
+@property (nonatomic, strong)UserInfo *userInfo;
 
 @end

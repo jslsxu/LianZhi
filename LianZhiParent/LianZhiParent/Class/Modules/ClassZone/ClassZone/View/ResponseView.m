@@ -11,7 +11,7 @@
 #define kPraiseViewHeight                   35
 #define kHMargin                            10
 
-#define kMaxResponseNum                     5
+//#define kMaxResponseNum                     5
 #define kResponseItemCellMargin             3
 
 @implementation CommentCell
@@ -134,7 +134,8 @@
     NSInteger tableHeight = 0;
     if(responseArray.count > 0)
     {
-        NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
+//        NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
+        NSInteger responseNum = responseArray.count;
         for (NSInteger i = 0; i < responseNum; i++)
         {
             ResponseItem *responseItem = responseArray[i];
@@ -191,7 +192,7 @@
     NSInteger tableHeight = 0;
     if(responseArray.count > 0)
     {
-        NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
+        NSInteger responseNum = responseArray.count;
         for (NSInteger i = 0; i < responseNum; i++)
         {
             ResponseItem *responseItem = responseArray[i];
