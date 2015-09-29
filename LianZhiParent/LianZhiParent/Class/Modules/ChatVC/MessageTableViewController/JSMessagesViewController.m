@@ -25,7 +25,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = self.name;
     if(self.chatType == ChatTypeClass)
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MineProfile"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickClassMember)];
@@ -40,6 +39,14 @@
     [self bindTableCell:@"MessageCell" tableModel:@"ChatMessageModel"];
     
     [self requestData:REQUEST_GETMORE];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
+    [_tableView addGestureRecognizer:tapGesture];
+}
+
+- (void)onTap
+{
+    [_inputView setInputType:InputTypeNone];
 }
 
 - (void)onClickClassMember

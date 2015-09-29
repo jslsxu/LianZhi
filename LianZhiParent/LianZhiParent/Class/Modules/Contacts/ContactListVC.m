@@ -40,6 +40,7 @@
         [self addSubview:_sepLine];
         
         _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_chatButton setUserInteractionEnabled:NO];
         [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
         [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
         [_chatButton setImage:[UIImage imageNamed:@"MassChatNormal"] forState:UIControlStateNormal];
@@ -169,18 +170,23 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ClassInfo *class = [UserCenter sharedInstance].curChild.classes[indexPath.section];
     TeacherInfo *teacherInfo = [[class teachers] objectAtIndex:indexPath.row];
-    if(teacherInfo.mobile.length > 0)
-    {
-        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-        TNButtonItem *item = [TNButtonItem itemWithTitle:@"拨打" action:^{
-//            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",teacherInfo.mobile];
-//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-            JSMessagesViewController *messageVC = [[JSMessagesViewController alloc] init];
-            [ApplicationDelegate popAndPush:messageVC];
-        }];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",teacherInfo.mobile] buttonItems:@[cancelItem,item]];
-        [alertView show];
-    }
+//    if(teacherInfo.mobile.length > 0)
+//    {
+//        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+//        TNButtonItem *item = [TNButtonItem itemWithTitle:@"拨打" action:^{
+////            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",teacherInfo.mobile];
+////            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+//            JSMessagesViewController *messageVC = [[JSMessagesViewController alloc] init];
+//            [ApplicationDelegate popAndPush:messageVC];
+//        }];
+//        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",teacherInfo.mobile] buttonItems:@[cancelItem,item]];
+//        [alertView show];
+//    }
+    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+    [chatVC setTargetID:teacherInfo.uid];
+    [chatVC setTitle:teacherInfo.teacherName];
+    [chatVC setChatType:ChatTypeTeacher];
+    [ApplicationDelegate popAndPush:chatVC];
 }
 
 - (void)didReceiveMemoryWarning {

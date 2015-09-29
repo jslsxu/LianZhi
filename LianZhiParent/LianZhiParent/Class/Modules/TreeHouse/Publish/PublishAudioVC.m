@@ -28,6 +28,7 @@
     [self.view addSubview:_recordView];
     
     _textField = [[UITextField alloc] initWithFrame:CGRectMake(15, _recordView.bottom, self.view.width - 15 * 2, 40)];
+    [_textField setDelegate:self];
     [_textField setPlaceholder:@"给录音起个标题吧"];
     [_textField setFont:[UIFont systemFontOfSize:16]];
     [_textField setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];

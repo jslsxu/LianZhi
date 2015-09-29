@@ -8,6 +8,31 @@
 
 #import "NotificationTargetSelectVC.h"
 #import "NotificationClassStudentsVC.h"
+
+@implementation NotificationTeacherGroup
+
+- (void)parseData:(TNDataWrapper *)dataWrapper
+{
+    self.groupId = [dataWrapper getStringForKey:@"id"];
+    self.groupName = [dataWrapper getStringForKey:@"name"];
+    self.groupLogo = [dataWrapper getStringForKey:@"logo"];
+    TNDataWrapper *teacherArrayWrapper = [dataWrapper getDataWrapperForKey:@"teachers"];
+    if(teacherArrayWrapper.count > 0)
+    {
+        NSMutableArray *teacherArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < teacherArrayWrapper.count; i++)
+        {
+            TeacherInfo *teacherInfo = [[TeacherInfo alloc] init];
+            TNDataWrapper *teacherWrapper = [teacherArrayWrapper getDataWrapperForIndex:i];
+            [teacherInfo parseData:teacherWrapper];
+            [teacherArray addObject:teacherInfo];
+        }
+        self.teachers = teacherArray;
+    }
+}
+
+@end
+
 @implementation NotificationTargetCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -71,6 +96,7 @@
 @interface NotificationTargetSelectVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong)NSArray *groupArray;
 @property (nonatomic, strong)NSArray *classesArray;
+@property (nonatomic, strong)NSArray *teacherGroupArray;
 @end
 
 @implementation NotificationTargetSelectVC
@@ -171,26 +197,8 @@
         [hud hide:NO];
         [ProgressHUD showHintText:errMsg];
     }];
-//    
-//    
-//    [[HttpRequestEngine sharedInstance] makeSessionRequestFromUrl:@"notice/send" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//        for (NSInteger i = 0; i < self.imageArray.count; i++)
-//        {
-//            NSString *filename = [NSString stringWithFormat:@"picture_%ld",(long)i];
-//            [formData appendPartWithFileData:UIImageJPEGRepresentation(self.imageArray[i], 0.8) name:filename fileName:filename mimeType:@"image/jpeg"];
-//        }
-//        if(self.audioData)
-//            [formData appendPartWithFileData:self.audioData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
-//    } completion:^(NSURLSessionDataTask *task, TNDataWrapper *responseObject) {
-//        [hud hide:NO];
-//        [ProgressHUD showHintText:@"发送成功"];
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            [self dismissViewControllerAnimated:YES completion:nil];
-//        });
-//    } fail:^(NSString *errMsg) {
-//         [hud hide:NO];
-//        [ProgressHUD showHintText:errMsg];
-//    }];
+    
+    
 
 }
 
@@ -228,6 +236,26 @@
     } fail:^(NSString *errMsg) {
         
     }];
+    
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"app/groups" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        TNDataWrapper *groupsWrapper = [responseObject getDataWrapperForKey:@"list"];
+        if(groupsWrapper.count > 0)
+        {
+            NSMutableArray *groupArray = [NSMutableArray array];
+            for (NSInteger i = 0; i < groupsWrapper.count; i++)
+            {
+                TNDataWrapper *groupWrapper = [groupsWrapper getDataWrapperForIndex:i];
+                NotificationTeacherGroup *group = [[NotificationTeacherGroup alloc] init];
+                [group parseData:groupWrapper];
+                [groupArray addObject:group];
+            }
+            self.groupArray = groupArray;
+        }
+        [_tableView reloadData];
+    } fail:^(NSString *errMsg) {
+        
+    }];
+
 }
 
 #pragma mark = UITableViewDelegate

@@ -206,21 +206,24 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *docDir = [paths objectAtIndex:0];
-    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在清除缓存文件..." toView:ApplicationDelegate.window];
-    NSArray *subpathArray = [[NSFileManager defaultManager] subpathsAtPath:docDir];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        for (NSString *subPath in subpathArray) {
-            NSString *path = [docDir stringByAppendingPathComponent:subPath];
-            [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [hud hide:NO];
-            [ProgressHUD showHintText:@"清除缓存完成"];
+    if(indexPath.section == 3 && indexPath.row == 1)
+    {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSString *docDir = [paths objectAtIndex:0];
+        MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在清除缓存文件..." toView:ApplicationDelegate.window];
+        NSArray *subpathArray = [[NSFileManager defaultManager] subpathsAtPath:docDir];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            for (NSString *subPath in subpathArray) {
+                NSString *path = [docDir stringByAppendingPathComponent:subPath];
+                [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [hud hide:NO];
+                [ProgressHUD showHintText:@"清除缓存完成"];
+            });
         });
-    });
+    }
 }
 
 - (void)saveSettings

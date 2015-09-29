@@ -15,6 +15,7 @@
 {
     self.notificationID = [dataWrapper getStringForKey:@"id"];
     self.words = [dataWrapper getStringForKey:@"words"];
+    self.ctime = [dataWrapper getStringForKey:@"created_time"];
     self.notificationType = 1;
     TNDataWrapper *audioWrapper = [dataWrapper getDataWrapperForKey:@"voice"];
     if(audioWrapper.count > 0)
@@ -81,6 +82,7 @@
         imageStr = @"NotiRecordPhotoIcon";
     [self.imageView setImage:[UIImage imageNamed:imageStr]];
     [self.textLabel setText:item.words];
+    [self.detailTextLabel setText:item.ctime];
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width

@@ -12,6 +12,7 @@
 @property (nonatomic, copy)NSString *notificationID;
 @property (nonatomic, copy)NSString *words;
 @property (nonatomic, assign)NSInteger notificationType;
+@property (nonatomic, copy)NSString *ctime;
 @end
 
 @interface NotificationModel : TNListModel

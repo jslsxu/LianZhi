@@ -8,6 +8,14 @@
 
 #import "TNBaseViewController.h"
 
+@interface NotificationTeacherGroup : TNModelItem
+@property (nonatomic, copy)NSString *groupId;
+@property (nonatomic, copy)NSString *groupName;
+@property (nonatomic, copy)NSString *groupLogo;
+@property (nonatomic, strong)NSArray *teachers;
+
+@end
+
 @interface NotificationTargetCell : TNTableViewCell
 {
     UIButton*   _checkButton;

@@ -108,6 +108,7 @@
     NSString *text = [textView text];
     if(text.length > kCommonMaxNum)
         [textView setText:[text substringToIndex:kCommonMaxNum]];
+    [_numLabel setText:[NSString stringWithFormat:@"%ld",(long)(kCommonMaxNum - textView.text.length)]];
 }
 
 

@@ -33,6 +33,13 @@
     [self bindTableCell:@"MessageCell" tableModel:@"ChatMessageModel"];
     
     [self requestData:REQUEST_GETMORE];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
+    [_tableView addGestureRecognizer:tapGesture];
+}
+
+- (void)onTap
+{
+    [_inputView setInputType:InputTypeNone];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
