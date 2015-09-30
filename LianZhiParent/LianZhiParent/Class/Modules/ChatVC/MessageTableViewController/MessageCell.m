@@ -43,6 +43,10 @@
         _contentButton.titleLabel.numberOfLines = 0;
         [self addSubview:_contentButton];
         
+        UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPress)];
+        [longPressGesture setMinimumPressDuration:1];
+        [_contentButton addGestureRecognizer:longPressGesture];
+        
         _audioTimeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_audioTimeLabel setFont:[UIFont systemFontOfSize:14]];
         [_audioTimeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
@@ -168,6 +172,19 @@
     [_playButton setVoiceWithURL:[NSURL URLWithString:audioItem.audioUrl] withAutoPlay:YES];
 }
 
+- (void)onLongPress
+{
+    MessageItem *messageItem = (MessageItem *)self.modelItem;
+    if(messageItem.messageContent.messageType == UUMessageTypeText)
+    {
+        [_contentButton becomeFirstResponder];
+        UIMenuController *menu = [UIMenuController sharedMenuController];
+        [menu setTargetRect:_contentButton.frame inView:self];
+        [menu setMenuVisible:YES animated:YES];
+    }
+
+}
+
 - (void)onContentButtonClicked
 {
     MessageItem *messageItem = (MessageItem *)self.modelItem;
@@ -197,4 +214,15 @@
     return @([messageItem cellHeight]);
 }
 
+-(BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    return (action == @selector(copy:));
+}
+
+-(void)copy:(id)sender
+{
+    MessageItem *messageItem = (MessageItem *)self.modelItem;
+    UIPasteboard *pboard = [UIPasteboard generalPasteboard];
+    pboard.string = messageItem.messageContent.text;
+}
 @end

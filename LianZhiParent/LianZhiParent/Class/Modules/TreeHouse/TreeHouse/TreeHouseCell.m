@@ -163,7 +163,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     [_addressLabel sizeToFit];
     [_addressLabel setOrigin:CGPointMake(10, 25)];
     
-    [_trashButton setFrame:CGRectMake(_bgView.width - 10 - 30, 10, 30, 30)];
+    [_trashButton setFrame:CGRectMake(_bgView.width - 30 - 5, 5, 30, 30)];
     [_trashButton setHidden:!item.canEdit];
     
     

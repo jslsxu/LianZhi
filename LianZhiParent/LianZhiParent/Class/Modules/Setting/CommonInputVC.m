@@ -43,6 +43,8 @@
     [_textField addTarget:self action:@selector(onTextFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
     [_textField setText:self.originalValue];
     [bgView addSubview:_textField];
+    
+    [_textField becomeFirstResponder];
 }
 
 - (void)onSave

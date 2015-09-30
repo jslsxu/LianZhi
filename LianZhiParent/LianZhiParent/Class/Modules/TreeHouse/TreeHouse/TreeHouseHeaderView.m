@@ -66,8 +66,8 @@
     self = [super initWithFrame:frame];
     {
         self.height = kTreeHouseHeaderHeight;
-        _bannerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.width, 75)];
-        [_bannerImageView setImage:[UIImage imageNamed:@"TreeHouseBanner.png"]];
+        _bannerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.width, 100)];
+        [_bannerImageView setImage:[UIImage imageNamed:@"TreeHouseBanner"]];
         [_bannerImageView setClipsToBounds:YES];
         [_bannerImageView setContentMode:UIViewContentModeScaleAspectFill];
         [self addSubview:_bannerImageView];
@@ -78,8 +78,8 @@
         
         _avatar = [[AvatarView alloc] initWithRadius:36];
         [_avatar setBorderWidth:3];
-        [_avatar setBorderColor:[UIColor colorWithWhite:0 alpha:0.2]];
-        [_avatar setCenter:CGPointMake(50, _bannerImageView.bottom)];
+        [_avatar setBorderColor:[UIColor whiteColor]];
+        [_avatar setCenter:CGPointMake(50, _bannerImageView.bottom - 30)];
         [self addSubview:_avatar];
         
         NSString *title = @"相册";

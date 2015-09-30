@@ -191,7 +191,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [_publishButton setImage:[UIImage imageNamed:@"TreeHouseEdit.png"] forState:UIControlStateNormal];
     [_publishButton addTarget:self action:@selector(onPublishButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_publishButton];
-    [_publishButton setFrame:CGRectMake(self.view.width - publishButtonWidth - 15, self.view.height - publishButtonWidth - 15, publishButtonWidth, publishButtonWidth)];
+    [_publishButton setFrame:CGRectMake(30, self.view.height - publishButtonWidth - 15, publishButtonWidth, publishButtonWidth)];
     
     UIView *whiteLine = [[UIView alloc] initWithFrame:CGRectMake((50 - 2 / 2), 0, 2, self.view.height)];
     [whiteLine setBackgroundColor:[UIColor whiteColor]];
@@ -279,7 +279,16 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             curAlert = alertInfo;
         }
     }
+    if(curAlert)
+    {
+        [_headerView setHeight:100 + 54];
+    }
+    else
+    {
+        [_headerView setHeight:100 + 30];
+    }
     [_headerView setCommentItem:curAlert];
+    [self.tableView setTableHeaderView:_headerView];
 }
 
 #pragma mark - ReplyBoxDelegate
@@ -391,8 +400,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             }];
         }];
         TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-        TNActionSheet *actionSheet = [[TNActionSheet alloc] initWithTitle:nil descriptionView:nil destructiveButton:deleteItem cancelItem:cancelItem otherItems:nil];
-        [actionSheet show];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除这条评论?" buttonItems:@[cancelItem, deleteItem]];
+        [alertView show];
     }
     else
     {

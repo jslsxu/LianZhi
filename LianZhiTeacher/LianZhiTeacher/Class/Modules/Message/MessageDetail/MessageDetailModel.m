@@ -38,10 +38,6 @@
     }
 }
 
-- (void)dealloc
-{
-    
-}
 
 @end
 
@@ -69,6 +65,8 @@
         MessageDetailItem *item = [[MessageDetailItem alloc] init];
         TNDataWrapper *detailWrapper = [listWrapper getDataWrapperForIndex:i];
         [item parseData:detailWrapper];
+        [item setAuthor:self.author];
+        [item setAvatarUrl:self.avatarUrl];
         [self.modelItemArray addObject:item];
     }
     return parse;

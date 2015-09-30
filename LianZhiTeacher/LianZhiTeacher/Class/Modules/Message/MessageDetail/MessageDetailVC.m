@@ -24,12 +24,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSMutableString *text = [NSMutableString stringWithString:self.fromInfo.name];
-    if(self.fromInfo.label.length > 0)
-        [text appendString:[NSString stringWithFormat:@"(%@)",self.fromInfo.label]];
-    self.title = text;
-    
+//    NSMutableString *text = [NSMutableString stringWithString:self.fromInfo.name];
+//    if(self.fromInfo.label.length > 0)
+//        [text appendString:[NSString stringWithFormat:@"(%@)",self.fromInfo.label]];
+//    self.title = text;
+    self.title = [UserCenter sharedInstance].curSchool.schoolName;
     [self bindTableCell:@"MessageDetailItemCell" tableModel:@"MessageDetailModel"];
+    MessageDetailModel *detailModel = (MessageDetailModel *)self.tableViewModel;
+    [detailModel setAuthor:self.fromInfo.name];
+    [detailModel setAvatarUrl:self.fromInfo.logoUrl];
     [self setSupportPullDown:YES];
     [self setSupportPullUp:YES];
     [self requestData:REQUEST_REFRESH];

@@ -8,6 +8,21 @@
 
 #import "StudentParentsVC.h"
 #import "JSMessagesViewController.h"
+
+@implementation ContactGroup
+
+- (id)init
+{
+    self = [super init];
+    if(self)
+    {
+        NSMutableArray *contactsArray = [[NSMutableArray alloc] initWithCapacity:0];
+        [self setContacts:contactsArray];
+    }
+    return self;
+}
+@end
+
 @implementation StudentParentCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -16,8 +31,8 @@
     if(self)
     {
         _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_chatButton setUserInteractionEnabled:NO];
         [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
-        [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
         [_chatButton setImage:[UIImage imageNamed:@"SingleChatNormal"] forState:UIControlStateNormal];
         [_chatButton setImage:[UIImage imageNamed:@"SignleChatHighlighted"] forState:UIControlStateHighlighted];
         [self addSubview:_chatButton];
@@ -29,16 +44,11 @@
     return self;
 }
 
-- (void)onChatClicked
-{
-    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-    [ApplicationDelegate popAndPush:chatVC];
-}
 
 @end
 
 @interface StudentParentsVC ()<UITableViewDataSource, UITableViewDelegate>
-
+@property (nonatomic, strong)NSArray *formatterMemberArray;
 @end
 
 @implementation StudentParentsVC
@@ -46,28 +56,64 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    self.title = self.childInfo.name;
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStylePlain];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:_tableView];
 }
 
-#pragma mark - 
+- (void)setChildInfo:(ChildInfo *)childInfo
+{
+    _childInfo = childInfo;
+    NSMutableArray *keys = [[NSMutableArray alloc] initWithCapacity:0];
+    for (FamilyInfo *item in _childInfo.family) {
+        if(item.relation)
+        {
+            BOOL contains = NO;
+            for (NSString *key in keys) {
+                if([key isEqualToString:item.relation])
+                    contains = YES;
+            }
+            if(contains)
+                continue;
+            else
+                [keys addObject:item.relation];
+        }
+    }
+    
+    NSMutableArray *parentsArray = [NSMutableArray array];
+    for (NSString *key in keys) {
+        ContactGroup *group = [[ContactGroup alloc] init];
+        [group setKey:key];
+        [parentsArray addObject:group];
+        for (FamilyInfo *item in _childInfo.family)
+        {
+            if([item.relation isEqualToString:key])
+                [group.contacts addObject:item];
+        }
+    }
+    self.formatterMemberArray = parentsArray;
+}
+
+#pragma mark -
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return self.formatterMemberArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    ContactGroup *group = [self.formatterMemberArray objectAtIndex:section];
+    return group.contacts.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"爸爸";
+    ContactGroup *group = [self.formatterMemberArray objectAtIndex:section];
+    return group.key;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -80,8 +126,23 @@
         [cell.textLabel setFont:[UIFont systemFontOfSize:14]];
         [cell.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
     }
-    [cell.textLabel setText:@"爸爸"];
+    ContactGroup *group = [self.formatterMemberArray objectAtIndex:indexPath.section];
+    FamilyInfo *familyInfo = group.contacts[indexPath.row];
+    [cell.textLabel setText:familyInfo.name];
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ContactGroup *group = [self.formatterMemberArray objectAtIndex:indexPath.section];
+    FamilyInfo *familyInfo = group.contacts[indexPath.row];
+    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+    [chatVC setChatType:ChatTypeParents];
+    [chatVC setTargetID:familyInfo.uid];
+    [chatVC setTo_objid:self.childInfo.uid];
+    [chatVC setTitle:familyInfo.name];
+    [ApplicationDelegate popAndPush:chatVC];
 }
 
 - (void)didReceiveMemoryWarning {

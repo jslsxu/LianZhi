@@ -650,8 +650,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             }];
         }];
         TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-        TNActionSheet *actionSheet = [[TNActionSheet alloc] initWithTitle:nil descriptionView:nil destructiveButton:deleteItem cancelItem:cancelItem otherItems:nil];
-        [actionSheet show];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除这条评论?" buttonItems:@[cancelItem, deleteItem]];
+        [alertView show];
     }
     else
     {

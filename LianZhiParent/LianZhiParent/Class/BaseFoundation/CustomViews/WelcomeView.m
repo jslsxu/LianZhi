@@ -36,7 +36,11 @@ static __strong UIWindow *welcomeWindow = nil;
         
         for (NSInteger i = 0; i < kWelcomePhotoNum; i++) {
             UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * _scrollView.width, 0, _scrollView.width, _scrollView.height)];
-            NSString *imageStr = [NSString stringWithFormat:@"guide%ld.jpg",(long)(i + 1)];
+            NSString *imageStr = nil;
+            if(kScreenHeight > 480)
+                imageStr = [NSString stringWithFormat:@"guide%ld.png",(long)(i + 1)];
+            else
+                imageStr = [NSString stringWithFormat:@"small_guide%ld.png",(long)i + 1];
             NSString *path = [[NSBundle mainBundle] pathForResource:imageStr ofType:nil];
             [imageView setImage:[UIImage imageWithContentsOfFile:path]];
             [_scrollView addSubview:imageView];
@@ -45,10 +49,10 @@ static __strong UIWindow *welcomeWindow = nil;
             {
                 [imageView setUserInteractionEnabled:YES];
                 UIButton *enterButton = [UIButton buttonWithType:UIButtonTypeCustom];
-                if(self.height == 480)
-                    [enterButton setFrame:CGRectMake(self.width / 4, self.height - 45 - 45, self.width / 2, 45)];
+                if(kScreenHeight > 480)
+                    [enterButton setFrame:CGRectMake(self.width / 4, self.height - 70 * self.height / 568, self.width / 2, 30 * self.height / 568)];
                 else
-                    [enterButton setFrame:CGRectMake(self.width / 4, self.height - 60 - 55, self.width / 2, 55)];
+                    [enterButton setFrame:CGRectMake((self.width - 170) / 2, self.height - 40 - 30, 170, 30)];
                 [enterButton addTarget:self action:@selector(onEnterButtonClicked) forControlEvents:UIControlEventTouchUpInside];
                 [imageView addSubview:enterButton];
             }
@@ -74,7 +78,7 @@ static __strong UIWindow *welcomeWindow = nil;
 {
     [UIView animateWithDuration:0.3 animations:^{
         self.alpha = 0.f;
-        self.transform = CGAffineTransformMakeScale(1.3, 1.3);
+        self.transform = CGAffineTransformMakeScale(1.1, 1.1);
     } completion:^(BOOL finished) {
         [self setHidden:YES];
         welcomeWindow = nil;

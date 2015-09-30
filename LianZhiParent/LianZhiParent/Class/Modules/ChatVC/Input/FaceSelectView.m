@@ -15,7 +15,7 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.width, self.height - 20)];
         [_imageView setContentMode:UIViewContentModeCenter];
         [self addSubview:_imageView];
         
@@ -31,7 +31,7 @@
 - (void)setFaceIndex:(NSInteger)faceIndex
 {
     _faceIndex = faceIndex;
-    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"biaoqing%ld",_faceIndex + 1]];
+    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"biaoqing%ld",(long)_faceIndex + 1]];
     [_imageView setImage:image];
     [_nameLabel setText:[MFWFace faceStringForIndex:_faceIndex]];
 }

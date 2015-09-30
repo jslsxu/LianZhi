@@ -32,14 +32,13 @@
         
         if([UserCenter sharedInstance].curChild.classes.count > 0)
         {
-            [_switchButton setHidden:NO];
             [self setClassInfo:[UserCenter sharedInstance].curChild.classes[0]];
         }
         else
         {
-            [_switchButton setHidden:YES];
             [self setClassInfo:nil];
         }
+        [_switchButton setHidden:[UserCenter sharedInstance].curChild.classes.count == 1];
     }
     return self;
 }

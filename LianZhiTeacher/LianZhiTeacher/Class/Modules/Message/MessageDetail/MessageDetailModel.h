@@ -11,6 +11,7 @@
 @interface MessageDetailItem : TNModelItem
 @property (nonatomic, copy)NSString *msgID;
 @property (nonatomic, copy)NSString *author;
+@property (nonatomic, copy)NSString *avatarUrl;
 @property (nonatomic, copy)NSString *content;
 @property (nonatomic, strong)AudioItem *audioItem;
 @property (nonatomic, copy)NSString *time;
@@ -19,6 +20,8 @@
 @end
 
 @interface MessageDetailModel : TNListModel
+@property (nonatomic, copy)NSString *author;
+@property (nonatomic, copy)NSString *avatarUrl;
 @property (nonatomic, assign)BOOL hasMore;
 @property (nonatomic, copy)NSString *minID;
 @end

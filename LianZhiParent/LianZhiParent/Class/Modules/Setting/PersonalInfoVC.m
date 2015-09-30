@@ -161,7 +161,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
         _infoArray = [[NSMutableArray alloc] init];
     PersonalInfoItem *nameItem = [[PersonalInfoItem alloc] initWithKey:@"姓名" value:[UserCenter sharedInstance].userInfo.name canEdit:YES];
     [nameItem setRequestKey:@"name"];
-    PersonalInfoItem *nickNameItem = [[PersonalInfoItem alloc] initWithKey:@"昵称" value:nil canEdit:YES];
+    PersonalInfoItem *nickNameItem = [[PersonalInfoItem alloc] initWithKey:@"昵称" value:[UserCenter sharedInstance].userInfo.nickName canEdit:YES];
     [nickNameItem setRequestKey:@"nick"];
     PersonalInfoItem *birthDayItem = [[PersonalInfoItem alloc] initWithKey:@"出生日期" value:[UserCenter sharedInstance].userInfo.birthDay canEdit:NO];
     [birthDayItem setRequestKey:@"birthday"];
@@ -310,7 +310,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
     {
         SettingDatePickerView *datePicker = [[SettingDatePickerView alloc] initWithType:SettingDatePickerTypeDate];
         [datePicker setBlk:^(NSString *dateStr){
-            PersonalInfoItem *birthdayItem = [_infoArray objectAtIndex:1];
+            PersonalInfoItem *birthdayItem = [_infoArray objectAtIndex:2];
             [birthdayItem setValue:dateStr];
             [self onSaveButtonClicked];
             [self.tableView reloadData];

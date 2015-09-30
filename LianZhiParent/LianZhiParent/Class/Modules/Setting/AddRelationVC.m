@@ -83,13 +83,13 @@
     PersonalInfoItem *birthdayItem = [[PersonalInfoItem alloc] initWithKey:@"出生日期" value:nil canEdit:YES];
     [birthdayItem setRequestKey:@"birthday"];
     PersonalInfoItem *mailItem = [[PersonalInfoItem alloc] initWithKey:@"联系邮箱" value:nil canEdit:YES];
-    [mailItem setRequestKey:@"mail"];
+    [mailItem setRequestKey:@"email"];
     PersonalInfoItem *phoneItem = [[PersonalInfoItem alloc] initWithKey:@"登录手机" value:nil canEdit:YES];
     [phoneItem setKeyboardType:UIKeyboardTypePhonePad];
-    [phoneItem setRequestKey:@"phone"];
+    [phoneItem setRequestKey:@"mobile"];
     PersonalInfoItem *accountItem = [[PersonalInfoItem alloc] initWithKey:@"连枝账号" value:nil canEdit:YES];
     [accountItem setKeyboardType:UIKeyboardTypeNumberPad];
-    [accountItem setRequestKey:@"account"];
+    [accountItem setRequestKey:@"uid"];
     PersonalInfoItem *relationShipItem = [[PersonalInfoItem alloc] initWithKey:@"家长身份" value:nil canEdit:NO];
     [relationShipItem setRequestKey:@"relations"];
     [_infoArray addObjectsFromArray:@[nameItem,nickItem,birthdayItem,mailItem,phoneItem,accountItem,relationShipItem]];
@@ -237,6 +237,7 @@
         {
             cell = [[AvatarCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
         }
+        [cell.avatarView setImage:self.avatarImage];
         return cell;
     }
     else

@@ -92,16 +92,16 @@
 
 - (void)onAddActionClicked
 {
-    if(self.messageModel.canPublish)
-    {
+//    if(self.messageModel.canPublish)
+//    {
         ActionPopView *actionView = [[ActionPopView alloc] initWithFrame:CGRectMake(self.view.width - 140, 64, 140, 100)];
         [actionView setDelegate:self];
         [actionView show];
-    }
-    else
-    {
-        [self onNewChat];
-    }
+//    }
+//    else
+//    {
+//        [self onNewChat];
+//    }
 }
 
 - (void)onPublishPhotoFinished:(NSNotification *)notification

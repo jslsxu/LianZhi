@@ -24,43 +24,90 @@
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [self addSubview:_nameLabel];
         
-        _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
-        [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_chatButton setImage:[UIImage imageNamed:@"SingleChatNormal"] forState:UIControlStateNormal];
-        [_chatButton setImage:[UIImage imageNamed:@"SignleChatHighlighted"] forState:UIControlStateHighlighted];
-        [self addSubview:_chatButton];
-        
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
         [_sepLine setBackgroundColor:kSepLineColor];
         [self addSubview:_sepLine];
     }
     return self;
 }
-
-- (void)onChatClicked
+- (void)setUserInfo:(UserInfo *)userInfo
 {
-    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-    [ApplicationDelegate popAndPush:chatVC];
+    _userInfo = userInfo;
+    if([_userInfo isKindOfClass:[TeacherInfo class]])
+        [_nameLabel setText:[(TeacherInfo *)userInfo teacherName]];
+    else if([_userInfo isKindOfClass:[ChildInfo class]])
+        [_nameLabel setText:[(ChildInfo *)_userInfo name]];
+    [_avatarView setImageWithUrl:[NSURL URLWithString:_userInfo.avatar]];
 }
 
 @end
 
 @interface ClassMemberVC ()<UITableViewDataSource, UITableViewDelegate>
-
+@property (nonatomic, strong)NSArray *teacherArray;
+@property (nonatomic, strong)NSArray *studentArray;
 @end
 
 @implementation ClassMemberVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStylePlain];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_tableView setDataSource:self];
     [_tableView setDelegate:self];
     [self.view addSubview:_tableView];
+    
+    [self requestData];
 }
 
+- (void)requestData
+{
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"contact/list" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+//        TNDataWrapper *classesWrapper = [responseObject getDataWrapperForKey:@"class"];
+        TNDataWrapper *classesWrapper = responseObject;
+        if(classesWrapper.count > 0)
+        {
+            for (NSInteger i = 0; i < classesWrapper.count; i++)
+            {
+                TNDataWrapper *classWrapper = [classesWrapper getDataWrapperForIndex:i];
+                if([self.classID isEqualToString:[classWrapper getStringForKey:@"id"]])
+                {
+                    TNDataWrapper *teacherArrayWrapper = [classWrapper getDataWrapperForKey:@"teachers"];
+                    if(teacherArrayWrapper.count > 0)
+                    {
+                        NSMutableArray *teacherArray = [NSMutableArray array];
+                        for (NSInteger i = 0; i < teacherArrayWrapper.count; i++)
+                        {
+                            TNDataWrapper *teacherItemWrapper = [teacherArrayWrapper getDataWrapperForIndex:i];
+                            TeacherInfo *teacherInfo = [[TeacherInfo alloc] init];
+                            [teacherInfo parseData:teacherItemWrapper];
+                            [teacherArray addObject:teacherInfo];
+                        }
+                        self.teacherArray = teacherArray;
+                    }
+                    
+                    TNDataWrapper *studentArrayWrapper = [classWrapper getDataWrapperForKey:@"students"];
+                    if(studentArrayWrapper.count > 0)
+                    {
+                        NSMutableArray *studentArray = [NSMutableArray array];
+                        for (NSInteger i = 0; i < teacherArrayWrapper.count; i++)
+                        {
+                            TNDataWrapper *studentItemWrapper = [studentArrayWrapper getDataWrapperForIndex:i];
+                            ChildInfo *studentInfo = [[ChildInfo alloc] init];
+                            [studentInfo parseData:studentItemWrapper];
+                            [studentArray addObject:studentInfo];
+                        }
+                        self.studentArray = studentArray;
+                    }
+                }
+            }
+            [_tableView reloadData];
+        }
+    } fail:^(NSString *errMsg) {
+        
+    }];
+}
 
 #pragma mark 
 
@@ -71,7 +118,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 15;
+    if(section == 0)
+        return self.teacherArray.count;
+    else
+        return self.studentArray.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -92,13 +142,13 @@
     }
     if(indexPath.section == 0)
     {
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        [cell.chatButton setHidden:NO];
+        [cell setUserInfo:self.teacherArray[indexPath.row]];
+        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SingleChatNormal"]]];
     }
     else
     {
-        [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
-        [cell.chatButton setHidden:YES];
+        [cell setUserInfo:self.studentArray[indexPath.row]];
+        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }
     return cell;
 }
@@ -108,8 +158,19 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if(indexPath.section == 1)
     {
+        ChildInfo *childInfo = self.studentArray[indexPath.row];
         StudentParentsVC *studentParentsVC = [[StudentParentsVC alloc] init];
+        [studentParentsVC setChildInfo:childInfo];
         [CurrentROOTNavigationVC pushViewController:studentParentsVC animated:YES];
+    }
+    else
+    {
+        TeacherInfo *teacherInfo = self.teacherArray[indexPath.row];
+        JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+        [chatVC setTargetID:teacherInfo.uid];
+        [chatVC setChatType:ChatTypeTeacher];
+        [chatVC setTitle:teacherInfo.teacherName];
+        [ApplicationDelegate popAndPush:chatVC];
     }
 }
 

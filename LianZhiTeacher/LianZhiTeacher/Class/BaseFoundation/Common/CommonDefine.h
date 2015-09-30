@@ -49,5 +49,5 @@
 #define kParentClientAppStoreUrl            @"https://itunes.apple.com/us/app/lian-zhi-jia-zhang-ban/id967746596?l=zh&ls=1&mt=8"
 #define kTeacherClientAppStoreUrl           @"https://itunes.apple.com/us/app/lian-zhi-jiao-shi-ban/id967746734?l=zh&ls=1&mt=8"
 #define kAutoNaviApiKey                     @"b3ddcca903cd26035f8f210f9b88e09e"   //normal
-//#define kAutoNaviApiKey                     @"decb8fe01d59d025c69fa220b3be1991"
+//#define kAutoNaviApiKey                     @"decb8fe01d59d025c69fa220b3be1991"          //inhouse
 #endif

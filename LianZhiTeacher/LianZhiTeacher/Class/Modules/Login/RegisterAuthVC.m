@@ -66,6 +66,7 @@
     [params setValue:self.name forKey:@"name"];
     [params setValue:self.school forKey:@"school"];
     [params setValue:self.area forKey:@"area"];
+    [params setValue:authCode forKey:@"code"];
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:[UIApplication sharedApplication].keyWindow];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/account_apply" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:NO];

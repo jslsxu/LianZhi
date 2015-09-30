@@ -20,8 +20,6 @@
         [self setBackgroundColor:[UIColor whiteColor]];
         [self.moreOptionsButton setBackgroundColor:kCommonTeacherTintColor];
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(10, 8, 44, 44)];
-        [_logoView setBorderWidth:2];
-        [_logoView setBorderColor:[UIColor colorWithHexString:@"C0C0C0"]];
         [self.actualContentView addSubview:_logoView];
         
         _numIndicator = [[NumIndicator alloc] initWithFrame:CGRectZero];

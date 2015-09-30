@@ -42,7 +42,7 @@
         [_logoView setBorderWidth:2];
         [self addSubview:_logoView];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_logoView.right + 10, 0, 100, kOperationHeight)];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, 100, kOperationHeight)];
         [_nameLabel setFont:[UIFont systemFontOfSize:13]];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
         [_bgView addSubview:_nameLabel];
@@ -100,6 +100,7 @@
 {
     MessageDetailItem *item = (MessageDetailItem *)modelItem;
     [_nameLabel setText:item.author];
+    [_logoView setImageWithUrl:[NSURL URLWithString:item.avatarUrl]];
     [_timeLabel setText:item.timeStr];
     [_timeLabel sizeToFit];
     [_timeLabel setFrame:CGRectMake(_bgView.width - kContentHMargin - _timeLabel.width, (kOperationHeight - _timeLabel.height) / 2, _timeLabel.width, _timeLabel.height)];

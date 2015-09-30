@@ -16,6 +16,7 @@
     UILabel*    _modifyLabel;
     UIView*     _sepLien;
 }
+@property (nonatomic, readonly)AvatarView *avatarView;
 @property (nonatomic, strong)ChildInfo *childInfo;
 @end
 

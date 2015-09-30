@@ -126,15 +126,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL classOperationShow = [[userDefaults valueForKey:kClassZoneShown] boolValue];
-    if(classOperationShow == NO)
-    {
-        [self addUserGuide];
-        classOperationShow = YES;
-        [userDefaults setValue:@(classOperationShow) forKey:kClassZoneShown];
-        [userDefaults synchronize];
-    }
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    BOOL classOperationShow = [[userDefaults valueForKey:kClassZoneShown] boolValue];
+//    if(classOperationShow == NO)
+//    {
+//        [self addUserGuide];
+//        classOperationShow = YES;
+//        [userDefaults setValue:@(classOperationShow) forKey:kClassZoneShown];
+//        [userDefaults synchronize];
+//    }
 }
 
 - (void)viewDidLoad {
@@ -160,9 +160,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurChildChanged) name:kUserCenterChangedCurChildNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
     
-    _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - REPLY_BOX_HEIGHT, self.view.width, REPLY_BOX_HEIGHT)];
+    _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, kScreenHeight - REPLY_BOX_HEIGHT, self.view.width, REPLY_BOX_HEIGHT)];
     [_replyBox setDelegate:self];
-    [ApplicationDelegate.homeVC.view addSubview:_replyBox];
+    [[UIApplication sharedApplication].keyWindow addSubview:_replyBox];
     _replyBox.hidden = YES;
 }
 
@@ -260,8 +260,8 @@
             }];
         }];
         TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-        TNActionSheet *actionSheet = [[TNActionSheet alloc] initWithTitle:nil descriptionView:nil destructiveButton:deleteItem cancelItem:cancelItem otherItems:nil];
-        [actionSheet show];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除这条评论?" buttonItems:@[cancelItem, deleteItem]];
+        [alertView show];
     }
     else
     {
