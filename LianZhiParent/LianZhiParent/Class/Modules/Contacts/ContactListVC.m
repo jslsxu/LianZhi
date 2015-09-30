@@ -40,7 +40,6 @@
         [self addSubview:_sepLine];
         
         _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_chatButton setUserInteractionEnabled:NO];
         [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
         [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
         [_chatButton setImage:[UIImage imageNamed:@"MassChatNormal"] forState:UIControlStateNormal];
