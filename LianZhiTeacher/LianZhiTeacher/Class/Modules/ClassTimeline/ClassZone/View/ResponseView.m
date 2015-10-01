@@ -10,7 +10,7 @@
 
 #define kPraiseViewHeight                   35
 #define kHMargin                            10
-
+#define kExtraHeight                        25
 #define kMaxResponseNum                     5
 #define kResponseItemCellMargin             3
 
@@ -134,15 +134,14 @@
     NSInteger tableHeight = 0;
     if(responseArray.count > 0)
     {
-//        NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
-        NSInteger responseNum = responseArray.count;
+        NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
         for (NSInteger i = 0; i < responseNum; i++)
         {
             ResponseItem *responseItem = responseArray[i];
             NSInteger itemHeight = [CommentCell cellHeight:responseItem cellWidth:width].floatValue;
             tableHeight += itemHeight;
         }
-        tableHeight += kResponseItemCellMargin;
+        tableHeight += kExtraHeight + kResponseItemCellMargin;
     }
     height += tableHeight;
     return height;
@@ -192,15 +191,14 @@
     NSInteger tableHeight = 0;
     if(responseArray.count > 0)
     {
-//        NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
-        NSInteger responseNum = responseArray.count;
+        NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
         for (NSInteger i = 0; i < responseNum; i++)
         {
             ResponseItem *responseItem = responseArray[i];
             NSInteger itemHeight = [CommentCell cellHeight:responseItem cellWidth:_tableView.width].floatValue;
             tableHeight += itemHeight;
         }
-        tableHeight += kResponseItemCellMargin;
+        tableHeight += kExtraHeight + kResponseItemCellMargin;
         [_tableView setHidden:NO];
         [_tableView setFrame:CGRectMake(0, height, self.width, tableHeight)];
         [_tableView reloadData];
@@ -214,8 +212,41 @@
 #pragma mark - UITableVIewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.responseModel.responseArray.count;
+    NSInteger count = MIN(self.responseModel.responseArray.count, kMaxResponseNum);
+    return count;
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if(self.responseModel.responseArray.count == 0)
+        return 0.1;
+    else
+        return kExtraHeight;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    NSInteger count = self.responseModel.responseArray.count;
+    if(count == 0)
+        return nil;
+    else
+    {
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, kExtraHeight)];
+        [footerView setUserInteractionEnabled:NO];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, footerView.width - 10 * 2, footerView.height)];
+        [label setFont:[UIFont systemFontOfSize:12]];
+        [label setTextColor:[UIColor colorWithHexString:@"395c9d"]];
+        [label setTextAlignment:NSTextAlignmentRight];
+        NSString *extraStr = nil;
+        if(kMaxResponseNum >= count)//查看详情
+            extraStr = @"查看详情>";
+        else
+            extraStr = @"更多评论>";
+        [label setText:extraStr];
+        [footerView addSubview:label];
+        return footerView;
+    }
+}
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
