@@ -8,6 +8,34 @@
 
 #import "TNBaseTableViewController.h"
 #import "ClassZoneModel.h"
-@interface FeedItemDetailVC : TNBaseViewController
+#import "PraiseListView.h"
+
+@interface FeedItemDetailHeaderView : UIView<UICollectionViewDataSource, UICollectionViewDelegate>
+{
+    AvatarView* _avatar;
+    UILabel*    _nameLabel;
+    UILabel*    _timeLabel;
+    UILabel*    _addressLabel;
+    UIButton*   _deleteButon;
+    UILabel*    _contentLabel;
+    MessageVoiceButton* _voiceButton;
+    UILabel*    _spanLabel;
+    UICollectionView*   _collectionView;
+}
 @property (nonatomic, strong)ClassZoneItem *zoneItem;
+@property (nonatomic, copy)void (^deleteCallBack)();
+@end
+
+@interface FeedItemDetailVC : TNBaseViewController
+{
+    FeedItemDetailHeaderView*   _headerView;
+    PraiseListView*             _praiseView;
+    UITableView*                _tableView;
+    UIToolbar*                  _toolBar;
+    NSMutableArray*             _buttonItems;
+    ReplyBox*                   _replyBox;
+}
+@property (nonatomic, copy)NSString *classId;
+@property (nonatomic, strong)ClassZoneItem *zoneItem;
+@property (nonatomic, copy)void (^deleteCallBack)();
 @end

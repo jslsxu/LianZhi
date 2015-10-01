@@ -375,6 +375,8 @@
 		37FD70981BBCEF9800C83AB4 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70901BBCEF9800C83AB4 /* unzip.c */; };
 		37FD70991BBCEF9800C83AB4 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70921BBCEF9800C83AB4 /* zip.c */; };
 		37FD709A1BBCEF9800C83AB4 /* ZipArchive.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70951BBCEF9800C83AB4 /* ZipArchive.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		37FD70AE1BBD7A8000C83AB4 /* DetailCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70AD1BBD7A8000C83AB4 /* DetailCommentCell.m */; };
+		37FD70BE1BBDB7B400C83AB4 /* PraiseListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70BD1BBDB7B400C83AB4 /* PraiseListView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1101,6 +1103,10 @@
 		37FD70931BBCEF9800C83AB4 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		37FD70941BBCEF9800C83AB4 /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
 		37FD70951BBCEF9800C83AB4 /* ZipArchive.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZipArchive.mm; sourceTree = "<group>"; };
+		37FD70AC1BBD7A8000C83AB4 /* DetailCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailCommentCell.h; sourceTree = "<group>"; };
+		37FD70AD1BBD7A8000C83AB4 /* DetailCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailCommentCell.m; sourceTree = "<group>"; };
+		37FD70BC1BBDB7B400C83AB4 /* PraiseListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PraiseListView.h; sourceTree = "<group>"; };
+		37FD70BD1BBDB7B400C83AB4 /* PraiseListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PraiseListView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2698,6 +2704,10 @@
 			children = (
 				37FD6E451BBA698D00C83AB4 /* FeedItemDetailVC.h */,
 				37FD6E461BBA698D00C83AB4 /* FeedItemDetailVC.m */,
+				37FD70AC1BBD7A8000C83AB4 /* DetailCommentCell.h */,
+				37FD70AD1BBD7A8000C83AB4 /* DetailCommentCell.m */,
+				37FD70BC1BBDB7B400C83AB4 /* PraiseListView.h */,
+				37FD70BD1BBDB7B400C83AB4 /* PraiseListView.m */,
 			);
 			path = FeedItemDetail;
 			sourceTree = "<group>";
@@ -3015,6 +3025,7 @@
 				3728A74C1B9EE5C400310457 /* PublishGrowthTimelineVC.m in Sources */,
 				3725715B1A80C0450087F178 /* SettingDatePickerView.m in Sources */,
 				3793FAE21B7CFFF000501F77 /* MJRefreshFooterView.m in Sources */,
+				37FD70BE1BBDB7B400C83AB4 /* PraiseListView.m in Sources */,
 				3793FAF21B7CFFF000501F77 /* TaskUploadManager.m in Sources */,
 				3793FA831B7CFFF000501F77 /* ActionSelectView.m in Sources */,
 				3793FA961B7CFFF000501F77 /* SimpleImageScanView.m in Sources */,
@@ -3034,6 +3045,7 @@
 				3793FAB91B7CFFF000501F77 /* MLAudioRecorder.m in Sources */,
 				37FD6E281BB444FB00C83AB4 /* ClassSelectionVC.m in Sources */,
 				3793FA291B7CFFF000501F77 /* OpenUDID.m in Sources */,
+				37FD70AE1BBD7A8000C83AB4 /* DetailCommentCell.m in Sources */,
 				3793FA261B7CFFF000501F77 /* MBProgressHUD+Add.m in Sources */,
 				3793FA2B1B7CFFF000501F77 /* RETableViewCreditCardCell.m in Sources */,
 				3793FA7B1B7CFFF000501F77 /* CTAssetsPageViewController.m in Sources */,

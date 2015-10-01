@@ -10,7 +10,7 @@
 
 @interface CommentItem : TNModelItem
 @property (nonatomic, copy)NSString *content;
-@property (nonatomic, strong)NSString *toUser;
+@property (nonatomic, copy)NSString *toUser;
 @property (nonatomic, copy)NSString *commentId;
 @property (nonatomic, copy)NSString *ctime;
 

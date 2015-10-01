@@ -7,8 +7,8 @@
 //
 
 #import "TreeHouseVC.h"
-#import "TreeHouseDetailVC.h"
 #import "PublishSelectionView.h"
+#import "TreeHouseItemDetailVC.h"
 NSString *const kPublishPhotoItemFinishedNotification = @"PublishPhotoItemFinishedNotification";
 NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 @interface TreeHouseVC ()<PublishSelectDelegate, ActionSelectViewDelegate>
@@ -433,10 +433,25 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-//    TreehouseItem *item = (TreehouseItem *)modelItem;
-//    TreeHouseDetailVC *detailVC = [[TreeHouseDetailVC alloc] init];
-//    [detailVC setFeedId:item.itemID];
-//    [self.navigationController pushViewController:detailVC animated:YES];
+    TreehouseItem *item = (TreehouseItem *)modelItem;
+    if(!item.newSend)
+    {
+        TreeHouseItemDetailVC *detailVC = [[TreeHouseItemDetailVC alloc] init];
+        [detailVC setTreeHouseItem:item];
+        [detailVC setDeleteCallBack:^{
+            NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:item];
+            if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
+            {
+                [self.tableViewModel.modelItemArray removeObject:item];
+                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
+            }
+        }];
+        [detailVC setModifyCallBack:^{
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }];
+        [self.navigationController pushViewController:detailVC animated:YES];
+    }
 }
 
 #pragma mark - PublishTreeItemDelegate

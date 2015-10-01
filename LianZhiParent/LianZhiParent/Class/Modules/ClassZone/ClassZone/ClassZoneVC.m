@@ -11,6 +11,7 @@
 #import "ActionView.h"
 #import "SwitchClassVC.h"
 #import "NewMessageVC.h"
+#import "FeedItemDetailVC.h"
 #define kClassZoneShown                         @"ClassZoneShown"
 
 @implementation ClassZoneHeaderView
@@ -419,6 +420,14 @@
 {
     NSString *newsPaper = [(ClassZoneModel *)self.tableViewModel newsPaper];
     [_headerView setNewsPaper:newsPaper];
+}
+
+- (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
+{
+    ClassZoneItem *item = (ClassZoneItem *)modelItem;
+    FeedItemDetailVC *itemDetailVC = [[FeedItemDetailVC alloc] init];
+    [itemDetailVC setZoneItem:item];
+    [self.navigationController pushViewController:itemDetailVC animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

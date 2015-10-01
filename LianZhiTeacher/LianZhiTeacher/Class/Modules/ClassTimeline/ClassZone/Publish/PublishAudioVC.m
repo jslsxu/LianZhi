@@ -91,7 +91,7 @@
                 if([self.delegate respondsToSelector:@selector(publishZoneItemFinished:)])
                     [self.delegate publishZoneItemFinished:zoneItem];
             }
-            [ProgressHUD showSuccess:@"发布成功"];
+            [ProgressHUD showHintText:@"发布成功"];
             [self performSelector:@selector(onBack) withObject:nil afterDelay:2];
         } fail:^(NSString *errMsg) {
             [self showError];

@@ -55,6 +55,7 @@
     if(self.notificationItem.audioItem)
     {
         MessageVoiceButton *voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(20, spaceYStart, viewParent.width / 2, 35)];
+        [voiceButton setAudioItem:self.notificationItem.audioItem];
         [contentView addSubview:voiceButton];
         
         UILabel *spanLabel = [[UILabel alloc] initWithFrame:CGRectMake(voiceButton.right, voiceButton.y, 60, voiceButton.height)];
@@ -64,6 +65,8 @@
         [spanLabel sizeToFit];
         [spanLabel setOrigin:CGPointMake(voiceButton.right + 10, spaceYStart + (voiceButton.height - spanLabel.height) / 2)];
         [contentView addSubview:spanLabel];
+        
+        spaceYStart += 35 + 10;
     }
     
     if(self.notificationItem.photoArray.count > 0)

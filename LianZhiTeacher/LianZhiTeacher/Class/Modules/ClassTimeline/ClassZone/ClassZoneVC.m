@@ -612,8 +612,24 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-//    FeedItemDetailVC *feedItemDetailVC = [[FeedItemDetailVC alloc] init];
-//    [self.navigationController pushViewController:feedItemDetailVC animated:YES];
+    ClassZoneItem *zoneItem = (ClassZoneItem *)modelItem;
+    if(!zoneItem.newSent)
+    {
+        FeedItemDetailVC *feedItemDetailVC = [[FeedItemDetailVC alloc] init];
+        [feedItemDetailVC setZoneItem:zoneItem];
+        [feedItemDetailVC setClassId:self.classInfo.classID];
+        [feedItemDetailVC setDeleteCallBack:^{
+            NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:modelItem];
+            if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
+            {
+                [self.tableViewModel.modelItemArray removeObject:modelItem];
+                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
+            }
+
+        }];
+        [self.navigationController pushViewController:feedItemDetailVC animated:YES];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

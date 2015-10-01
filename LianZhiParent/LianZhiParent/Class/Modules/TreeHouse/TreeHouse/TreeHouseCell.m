@@ -64,7 +64,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [_bgView addSubview:_addressLabel];
         
         _trashButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_trashButton setImage:[UIImage imageNamed:@"TimelineTrash.png"] forState:UIControlStateNormal];
+        [_trashButton setImage:[UIImage imageNamed:@"TimelineTrash"] forState:UIControlStateNormal];
         [_trashButton addTarget:self action:@selector(onTrashClicked) forControlEvents:UIControlEventTouchUpInside];
         [_bgView addSubview:_trashButton];
         
