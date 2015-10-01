@@ -8,7 +8,7 @@
 
 #import "TNBaseViewController.h"
 
-@interface RelatedSchoolCell : UITableViewCell
+@interface RelatedSchoolCell : TNTableViewCell
 {
     LogoView*       _logoView;
     UILabel*        _nameLabel;
@@ -19,7 +19,7 @@
 
 @end
 
-@interface RelatedClassCell : UITableViewCell
+@interface RelatedClassCell : TNTableViewCell
 {
     UIButton*       _reportButton;
     UILabel*        _nameLabel;

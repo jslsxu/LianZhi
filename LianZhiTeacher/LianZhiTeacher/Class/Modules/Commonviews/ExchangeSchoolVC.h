@@ -9,7 +9,7 @@
 #import "TNBaseViewController.h"
 #import "MessageGroupListModel.h"
 #import "PreviewMessageVC.h"
-@interface SchoolInfoCell : UITableViewCell
+@interface SchoolInfoCell : TNTableViewCell
 {
     LogoView*       _logoView;
     UILabel*        _nameLabel;

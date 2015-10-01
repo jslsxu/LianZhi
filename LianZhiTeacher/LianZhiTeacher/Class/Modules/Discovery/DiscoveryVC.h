@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseViewController.h"
-@interface DiscoveryCell : UITableViewCell
+@interface DiscoveryCell : TNTableViewCell
 {
     UIImageView*    _redDot;
 }

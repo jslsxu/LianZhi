@@ -121,6 +121,8 @@
     NSInteger row = indexPath.row;
     NSString *classStr = self.actionArray[row];
     TNBaseViewController *vc = [[NSClassFromString(classStr) alloc] init];
+    if([vc isKindOfClass:[TNBaseWebViewController class]])
+        [(TNBaseWebViewController *)vc setUrl:[UserCenter sharedInstance].curSchool.schoolUrl];
     if(vc)
         [CurrentROOTNavigationVC pushViewController:vc animated:YES];
         

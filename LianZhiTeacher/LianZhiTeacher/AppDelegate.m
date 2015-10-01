@@ -57,6 +57,7 @@ static SystemSoundID shake_sound_male_id = 0;
         [self handleNotification:notificationInfo];
     [WelcomeView showWelcome];
     [self startReachability];
+    [self expendOperationGuide];
     return YES;
 }
 
@@ -299,6 +300,27 @@ static SystemSoundID shake_sound_male_id = 0;
     [self.rootNavigation pushViewController:viewController animated:YES];
 }
 
+- (void)expendOperationGuide
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSString *codeDatabase = [path stringByAppendingPathComponent:@"Guide"];
+        if(![[NSFileManager defaultManager] fileExistsAtPath:codeDatabase])
+        {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSString *originalPath = [[NSBundle mainBundle] pathForResource:@"Guide" ofType:@"zip"];
+                //解压缩
+                ZipArchive *za = [[ZipArchive alloc] init];
+                if ([za UnzipOpenFile:originalPath])
+                {
+                    BOOL ret = [za UnzipFileTo: path overWrite: YES];
+                    NSLog(@"unzip %d",ret);
+                }
+                
+            });
+        }
+    });
+}
 
 #pragma mark - Reachability
 - (void)startReachability

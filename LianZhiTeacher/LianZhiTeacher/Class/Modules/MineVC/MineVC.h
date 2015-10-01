@@ -8,7 +8,7 @@
 
 #import "TNBaseViewController.h"
 
-@interface UserInfoCell : UITableViewCell
+@interface UserInfoCell : TNTableViewCell
 {
     AvatarView*     _avatarView;
     UILabel*        _nameLabel;

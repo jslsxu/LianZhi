@@ -26,7 +26,7 @@ typedef NS_ENUM(NSInteger, RelationInfoType) {
 @end
 
 
-@interface RelatedItemInfoCell : UITableViewCell
+@interface RelatedItemInfoCell : TNTableViewCell
 {
     UIImageView*    _bgImageView;
     LogoView*       _logoView;

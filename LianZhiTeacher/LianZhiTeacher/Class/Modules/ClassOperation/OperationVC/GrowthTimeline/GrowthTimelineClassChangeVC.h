@@ -14,7 +14,7 @@ typedef NS_ENUM(NSInteger, SelectType)
     SelectTypePart,             //部分选择
     SelectTypeAll,              //全部选择
 };
-@interface GrowthClassCell : UITableViewCell
+@interface GrowthClassCell : TNTableViewCell
 {
     LogoView*   _logoView;
     UILabel*    _nameLabel;

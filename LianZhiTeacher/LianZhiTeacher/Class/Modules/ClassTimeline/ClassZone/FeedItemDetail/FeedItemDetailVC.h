@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseTableViewController.h"
-
-@interface FeedItemDetailVC : TNBaseTableViewController
-
+#import "ClassZoneModel.h"
+@interface FeedItemDetailVC : TNBaseViewController
+@property (nonatomic, strong)ClassZoneItem *zoneItem;
 @end

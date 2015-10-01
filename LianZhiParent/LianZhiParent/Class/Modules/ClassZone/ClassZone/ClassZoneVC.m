@@ -265,12 +265,12 @@
     }
     else
     {
+        [_replyBox setPlaceHolder:[NSString stringWithFormat:@"回复:%@",self.targetResponseItem.sendUser.name]];
         _replyBox.hidden = NO;
         [_replyBox assignFocus];
         
         self.targetClassZoneItem = (ClassZoneItem *)cell.modelItem;
         self.targetResponseItem = responseItem;
-        [_replyBox setPlaceHolder:[NSString stringWithFormat:@"回复:%@",self.targetResponseItem.sendUser.name]];
     }
 }
 

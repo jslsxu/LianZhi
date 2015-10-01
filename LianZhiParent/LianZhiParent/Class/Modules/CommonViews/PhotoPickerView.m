@@ -16,7 +16,7 @@
     if(self)
     {
         [self setBackgroundColor:[UIColor colorWithHexString:@"D8D8D8"]];
-        _hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.width, self.height / 2)];
+        _hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height / 6, self.width, self.height / 3)];
         [_hintLabel setTextColor:[UINavigationBar appearance].barTintColor];
         [_hintLabel setTextAlignment:NSTextAlignmentCenter];
         [_hintLabel setFont:[UIFont systemFontOfSize:14]];
@@ -26,7 +26,7 @@
         _cameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_cameraBtn setImage:[UIImage imageNamed:@"PhotoPickerCamera"] forState:UIControlStateNormal];
         [_cameraBtn addTarget:self action:@selector(onCameraButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_cameraBtn setFrame:CGRectMake((self.width / 2 - 36) / 2, self.height / 2, 36, self.height / 2)];
+        [_cameraBtn setFrame:CGRectMake((self.width / 2 - 36) / 2, self.height / 2, 36, 36)];
         [self addSubview:_cameraBtn];
         
         _albumBtn = [UIButton buttonWithType:UIButtonTypeCustom];

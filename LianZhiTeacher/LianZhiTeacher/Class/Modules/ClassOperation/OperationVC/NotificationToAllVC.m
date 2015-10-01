@@ -10,6 +10,53 @@
 #import "TextMessageSendVC.h"
 #import "PhotoOperationVC.h"
 #import "AudioMessageSendVC.h"
+#import "NotificationDetailVC.h"
+@implementation SentGroup
+
+- (void)parseData:(TNDataWrapper *)dataWrapper
+{
+    self.groupID = [dataWrapper getStringForKey:@"id"];
+    self.groupName = [dataWrapper getStringForKey:@"name"];
+    self.sentNum = [dataWrapper getIntegerForKey:@"sent_num"];
+}
+
+@end
+
+@implementation SentTarget
+
+- (void)parseData:(TNDataWrapper *)dataWrapper
+{
+    TNDataWrapper *classesWrapper = [dataWrapper getDataWrapperForKey:@"classes"];
+    if(classesWrapper.count > 0)
+    {
+        NSMutableArray *classArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < classesWrapper.count; i++)
+        {
+            TNDataWrapper *classItemWrapper = [classesWrapper getDataWrapperForIndex:i];
+            ClassInfo *classInfo = [[ClassInfo alloc] init];
+            [classInfo parseData:classItemWrapper];
+            [classArray addObject:classInfo];
+        }
+        self.classArray = classArray;
+    }
+    
+    TNDataWrapper *groupsWrapper = [dataWrapper getDataWrapperForKey:@"groups"];
+    if(groupsWrapper.count > 0)
+    {
+        NSMutableArray *groupArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < classesWrapper.count; i++)
+        {
+            TNDataWrapper *groupItemWrapper = [classesWrapper getDataWrapperForIndex:i];
+            SentGroup *groupInfo = [[SentGroup alloc] init];
+            [groupInfo parseData:groupItemWrapper];
+            [groupArray addObject:groupInfo];
+        }
+        self.groupArray = groupArray;
+    }
+}
+
+@end
+
 @implementation NotificationItem
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
@@ -19,11 +66,34 @@
     self.notificationType = 1;
     TNDataWrapper *audioWrapper = [dataWrapper getDataWrapperForKey:@"voice"];
     if(audioWrapper.count > 0)
+    {
         self.notificationType = 2;
+        AudioItem *audioItem = [[AudioItem alloc] init];
+        [audioItem parseData:audioWrapper];
+        self.audioItem = audioItem;
+    }
     
     TNDataWrapper *photoWrapper = [dataWrapper getDataWrapperForKey:@"pictures"];
     if(photoWrapper.count > 0)
+    {
         self.notificationType = 3;
+        NSMutableArray *photoArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < photoWrapper.count; i++)
+        {
+            TNDataWrapper *photoItemWrapper = [photoWrapper getDataWrapperForIndex:i];
+            PhotoItem *photoItem = [[PhotoItem alloc] initWithDataWrapper:photoItemWrapper];
+            [photoArray addObject:photoItem];
+        }
+        self.photoArray = photoArray;
+    }
+    
+    TNDataWrapper *sentTargetWrapper = [dataWrapper getDataWrapperForKey:@"target"];
+    if(sentTargetWrapper.count > 0)
+    {
+        SentTarget *target = [[SentTarget alloc] init];
+        [target parseData:sentTargetWrapper];
+        self.sentTarget = target;
+    }
 }
 
 @end
@@ -185,6 +255,14 @@
     AudioMessageSendVC *messageOperationVC = [[AudioMessageSendVC alloc] init];
     TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:messageOperationVC];
     [self presentViewController:nav animated:YES completion:nil];
+}
+
+#pragma mark - UITableViewDelegate
+- (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
+{
+    NotificationDetailVC *notiDetailVC = [[NotificationDetailVC alloc] init];
+    [notiDetailVC setNotificationItem:(NotificationItem *)modelItem];
+    [self.navigationController pushViewController:notiDetailVC animated:YES];
 }
 
 @end

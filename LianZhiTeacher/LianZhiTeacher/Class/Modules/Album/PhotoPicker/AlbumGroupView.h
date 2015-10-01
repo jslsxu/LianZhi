@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AlbumItemCell : UITableViewCell
+@interface AlbumItemCell : TNTableViewCell
 {
     UIImageView*    _albumCoverImage;
     UILabel*        _titleLabel;

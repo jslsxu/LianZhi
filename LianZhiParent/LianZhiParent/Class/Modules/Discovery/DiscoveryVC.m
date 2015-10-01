@@ -7,6 +7,7 @@
 //
 
 #import "DiscoveryVC.h"
+#import "OperationGuideVC.h"
 
 @implementation DiscoveryCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -110,13 +111,13 @@
         {
             TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
             [webVC setTitle:self.titleArray[section][row]];
+            [webVC setUrl:[UserCenter sharedInstance].userData.config.faqUrl];
             [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
         }
         else
         {
-            TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-            [webVC setTitle:self.titleArray[section][row]];
-            [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
+            OperationGuideVC *operationGuideVC = [[OperationGuideVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:operationGuideVC animated:YES];
         }
     }
 }

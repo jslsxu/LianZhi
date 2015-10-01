@@ -16,7 +16,7 @@
     if(self)
     {
         [self setBackgroundColor:[UIColor colorWithHexString:@"E6E6E6"]];
-        _hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 15, self.width, 15)];
+        _hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height / 6, self.width, self.height / 3)];
         [_hintLabel setTextColor:kCommonTeacherTintColor];
         [_hintLabel setTextAlignment:NSTextAlignmentCenter];
         [_hintLabel setFont:[UIFont systemFontOfSize:14]];
@@ -26,13 +26,13 @@
         _cameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_cameraBtn setImage:[UIImage imageNamed:@"PhotoPickerCamera"] forState:UIControlStateNormal];
         [_cameraBtn addTarget:self action:@selector(onCameraButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_cameraBtn setFrame:CGRectMake(self.width / 4 - 36 / 2, _hintLabel.bottom + 5, 36, 36)];
+        [_cameraBtn setFrame:CGRectMake((self.width / 2 - 36) / 2, self.height / 2, 36, 36)];
         [self addSubview:_cameraBtn];
         
         _albumBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_albumBtn setImage:[UIImage imageNamed:@"PhotoPickerAlbum"] forState:UIControlStateNormal];
         [_albumBtn addTarget:self action:@selector(onAlbumButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_albumBtn setFrame:CGRectMake(self.width * 3 / 4 - 36 / 2, _hintLabel.bottom + 5, 36, 36)];
+        [_albumBtn setFrame:CGRectMake(self.width / 2 + (self.width / 2 - 36) / 2, _hintLabel.bottom + 5, 36, 36)];
         [self addSubview:_albumBtn];
     }
     return self;

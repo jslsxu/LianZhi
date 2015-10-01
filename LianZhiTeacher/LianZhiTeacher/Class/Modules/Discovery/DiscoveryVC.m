@@ -8,6 +8,7 @@
 
 #import "DiscoveryVC.h"
 #import "InterestVC.h"
+#import "OperationGuideVC.h"
 @implementation DiscoveryCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -107,16 +108,14 @@
         if(indexPath.row == 0)
         {
             TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-            [webVC setUrl:[UserCenter sharedInstance].userData.config.aboutUrl];
+            [webVC setUrl:[UserCenter sharedInstance].userData.config.faqUrl];
             [webVC setTitle:@"常见问题"];
             [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
         }
         else
         {
-            TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-             [webVC setUrl:[UserCenter sharedInstance].userData.config.introUrl];
-            [webVC setTitle:@"操作指南"];
-            [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
+            OperationGuideVC *operationGuideVC = [[OperationGuideVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:operationGuideVC animated:YES];
         }
     }
 }

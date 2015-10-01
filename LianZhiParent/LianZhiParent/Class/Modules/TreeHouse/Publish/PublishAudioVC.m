@@ -90,7 +90,7 @@
                 if([self.delegate respondsToSelector:@selector(publishTreeHouseSuccess:)])
                     [self.delegate publishTreeHouseSuccess:item];
             }
-            [ProgressHUD showSuccess:@"发布成功"];
+            [ProgressHUD showHintText:@"发布成功"];
             [self performSelector:@selector(onBack) withObject:nil afterDelay:2];
         } fail:^(NSString *errMsg) {
             [self showError];

@@ -24,7 +24,7 @@ extern NSString *const kAddRelationNotification;
 - (instancetype)initWithKey:(NSString *)key value:(NSString *)value canEdit:(BOOL)canEdit;
 @end
 
-@interface PersonalInfoCell : UITableViewCell<UITextFieldDelegate>
+@interface PersonalInfoCell : TNTableViewCell<UITextFieldDelegate>
 {
     UIView*         _sepLine;
 }

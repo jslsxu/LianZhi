@@ -1,6 +1,7 @@
 
 
 #import "JSMessagesViewController.h"
+#import "ClassMemberVC.h"
 @implementation JSMessagesViewController
 
 
@@ -49,7 +50,10 @@
 
 - (void)onShowClassMembers
 {
-    
+    ClassMemberVC *classMemberVC = [[ClassMemberVC alloc] init];
+    [classMemberVC setClassID:self.targetID];
+    [classMemberVC setTitle:self.title];
+    [self.navigationController pushViewController:classMemberVC animated:YES];
 }
 
 - (void)onTelephoneClicked
@@ -71,6 +75,7 @@
     [task setObserver:self];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.targetID forKey:@"to_id"];
+    [params setValue:self.to_objid forKey:@"to_objid"];
     [params setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
     [params setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"objid"];
     

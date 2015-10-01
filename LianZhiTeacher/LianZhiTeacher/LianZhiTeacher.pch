@@ -18,5 +18,6 @@
 #import "LoginVC.h"
 #import "PhotoFlowVC.h"
 #import "JSMessagesViewController.h"
+#import "ZipArchive.h"
 #endif
 #endif

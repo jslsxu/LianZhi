@@ -365,6 +365,16 @@
 		37FD6E591BBBDD7300C83AB4 /* small_guide3.png in Resources */ = {isa = PBXBuildFile; fileRef = 37FD6E4F1BBBDD7300C83AB4 /* small_guide3.png */; };
 		37FD6E5A1BBBDD7300C83AB4 /* small_guide4.png in Resources */ = {isa = PBXBuildFile; fileRef = 37FD6E501BBBDD7300C83AB4 /* small_guide4.png */; };
 		37FD6E5B1BBBDD7300C83AB4 /* small_guide5.png in Resources */ = {isa = PBXBuildFile; fileRef = 37FD6E511BBBDD7300C83AB4 /* small_guide5.png */; };
+		37FD6E751BBC51DF00C83AB4 /* ClassMemberVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E721BBC51DF00C83AB4 /* ClassMemberVC.m */; };
+		37FD6E761BBC51DF00C83AB4 /* StudentParentsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E741BBC51DF00C83AB4 /* StudentParentsVC.m */; };
+		37FD6E7A1BBC5B1300C83AB4 /* NotificationDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E791BBC5B1300C83AB4 /* NotificationDetailVC.m */; };
+		37FD6FDD1BBCE55800C83AB4 /* OperationGuideVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6FDC1BBCE55800C83AB4 /* OperationGuideVC.m */; };
+		37FD70871BBCEEDE00C83AB4 /* Guide.zip in Resources */ = {isa = PBXBuildFile; fileRef = 37FD70861BBCEEDE00C83AB4 /* Guide.zip */; };
+		37FD70961BBCEF9800C83AB4 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 37FD708C1BBCEF9800C83AB4 /* ioapi.c */; };
+		37FD70971BBCEF9800C83AB4 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 37FD708E1BBCEF9800C83AB4 /* mztools.c */; };
+		37FD70981BBCEF9800C83AB4 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70901BBCEF9800C83AB4 /* unzip.c */; };
+		37FD70991BBCEF9800C83AB4 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70921BBCEF9800C83AB4 /* zip.c */; };
+		37FD709A1BBCEF9800C83AB4 /* ZipArchive.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70951BBCEF9800C83AB4 /* ZipArchive.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1071,6 +1081,26 @@
 		37FD6E4F1BBBDD7300C83AB4 /* small_guide3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = small_guide3.png; sourceTree = "<group>"; };
 		37FD6E501BBBDD7300C83AB4 /* small_guide4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = small_guide4.png; sourceTree = "<group>"; };
 		37FD6E511BBBDD7300C83AB4 /* small_guide5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = small_guide5.png; sourceTree = "<group>"; };
+		37FD6E711BBC51DF00C83AB4 /* ClassMemberVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassMemberVC.h; sourceTree = "<group>"; };
+		37FD6E721BBC51DF00C83AB4 /* ClassMemberVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassMemberVC.m; sourceTree = "<group>"; };
+		37FD6E731BBC51DF00C83AB4 /* StudentParentsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentParentsVC.h; sourceTree = "<group>"; };
+		37FD6E741BBC51DF00C83AB4 /* StudentParentsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentParentsVC.m; sourceTree = "<group>"; };
+		37FD6E781BBC5B1300C83AB4 /* NotificationDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationDetailVC.h; sourceTree = "<group>"; };
+		37FD6E791BBC5B1300C83AB4 /* NotificationDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationDetailVC.m; sourceTree = "<group>"; };
+		37FD6FDB1BBCE55800C83AB4 /* OperationGuideVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OperationGuideVC.h; sourceTree = "<group>"; };
+		37FD6FDC1BBCE55800C83AB4 /* OperationGuideVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperationGuideVC.m; sourceTree = "<group>"; };
+		37FD70861BBCEEDE00C83AB4 /* Guide.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Guide.zip; sourceTree = "<group>"; };
+		37FD708B1BBCEF9800C83AB4 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		37FD708C1BBCEF9800C83AB4 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		37FD708D1BBCEF9800C83AB4 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		37FD708E1BBCEF9800C83AB4 /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		37FD708F1BBCEF9800C83AB4 /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		37FD70901BBCEF9800C83AB4 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		37FD70911BBCEF9800C83AB4 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		37FD70921BBCEF9800C83AB4 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		37FD70931BBCEF9800C83AB4 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		37FD70941BBCEF9800C83AB4 /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
+		37FD70951BBCEF9800C83AB4 /* ZipArchive.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZipArchive.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1195,6 +1225,7 @@
 		3728A7111B9D376300310457 /* ChatVC */ = {
 			isa = PBXGroup;
 			children = (
+				37FD6E701BBC51DF00C83AB4 /* ExtraInfoVC */,
 				37FD6DDA1BAEE01C00C83AB4 /* MessageTableViewController */,
 				3728A7121B9D376300310457 /* Input */,
 			);
@@ -1278,6 +1309,7 @@
 		3793F82C1B7CFFEF00501F77 /* 3rdPart */ = {
 			isa = PBXGroup;
 			children = (
+				37FD708A1BBCEF9800C83AB4 /* minizip */,
 				3793F82D1B7CFFEF00501F77 /* AutoNavi */,
 				3793F8311B7CFFEF00501F77 /* GifImage */,
 				3793F8361B7CFFEF00501F77 /* MBProgressHUD */,
@@ -2194,6 +2226,7 @@
 		37A46F6B1A5B016B00A5FB63 /* OperationVC */ = {
 			isa = PBXGroup;
 			children = (
+				37FD6E771BBC5AFC00C83AB4 /* NotificationDetailVC */,
 				37A46F6C1A5B017D00A5FB63 /* TextMessageSendVC.h */,
 				37A46F6D1A5B017D00A5FB63 /* TextMessageSendVC.m */,
 				37C01B0C1A6C210300C8F454 /* PhotoOperationVC.h */,
@@ -2319,6 +2352,7 @@
 		37C3568E1A3FE71000B948E6 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				37FD70861BBCEEDE00C83AB4 /* Guide.zip */,
 				37FD6DFF1BB054D100C83AB4 /* WelcomeView */,
 				3725714E1A80B38C0087F178 /* Sound */,
 			);
@@ -2426,6 +2460,8 @@
 				37DEE4E71A57C21D009A8771 /* DiscoveryVC.m */,
 				372ED8211B81795A00D07344 /* InterestVC.h */,
 				372ED8221B81795A00D07344 /* InterestVC.m */,
+				37FD6FDB1BBCE55800C83AB4 /* OperationGuideVC.h */,
+				37FD6FDC1BBCE55800C83AB4 /* OperationGuideVC.m */,
 			);
 			path = Discovery;
 			sourceTree = "<group>";
@@ -2666,6 +2702,44 @@
 			path = FeedItemDetail;
 			sourceTree = "<group>";
 		};
+		37FD6E701BBC51DF00C83AB4 /* ExtraInfoVC */ = {
+			isa = PBXGroup;
+			children = (
+				37FD6E711BBC51DF00C83AB4 /* ClassMemberVC.h */,
+				37FD6E721BBC51DF00C83AB4 /* ClassMemberVC.m */,
+				37FD6E731BBC51DF00C83AB4 /* StudentParentsVC.h */,
+				37FD6E741BBC51DF00C83AB4 /* StudentParentsVC.m */,
+			);
+			path = ExtraInfoVC;
+			sourceTree = "<group>";
+		};
+		37FD6E771BBC5AFC00C83AB4 /* NotificationDetailVC */ = {
+			isa = PBXGroup;
+			children = (
+				37FD6E781BBC5B1300C83AB4 /* NotificationDetailVC.h */,
+				37FD6E791BBC5B1300C83AB4 /* NotificationDetailVC.m */,
+			);
+			path = NotificationDetailVC;
+			sourceTree = "<group>";
+		};
+		37FD708A1BBCEF9800C83AB4 /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				37FD708B1BBCEF9800C83AB4 /* crypt.h */,
+				37FD708C1BBCEF9800C83AB4 /* ioapi.c */,
+				37FD708D1BBCEF9800C83AB4 /* ioapi.h */,
+				37FD708E1BBCEF9800C83AB4 /* mztools.c */,
+				37FD708F1BBCEF9800C83AB4 /* mztools.h */,
+				37FD70901BBCEF9800C83AB4 /* unzip.c */,
+				37FD70911BBCEF9800C83AB4 /* unzip.h */,
+				37FD70921BBCEF9800C83AB4 /* zip.c */,
+				37FD70931BBCEF9800C83AB4 /* zip.h */,
+				37FD70941BBCEF9800C83AB4 /* ZipArchive.h */,
+				37FD70951BBCEF9800C83AB4 /* ZipArchive.mm */,
+			);
+			path = minizip;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2724,6 +2798,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37FD70871BBCEEDE00C83AB4 /* Guide.zip in Resources */,
 				37FD6E5B1BBBDD7300C83AB4 /* small_guide5.png in Resources */,
 				37FD6E561BBBDD7300C83AB4 /* guide1.png in Resources */,
 				3793FA611B7CFFF000501F77 /* zbar-back.png in Resources */,
@@ -2803,6 +2878,7 @@
 				3793FA2E1B7CFFF000501F77 /* RETableViewInlineDatePickerCell.m in Sources */,
 				3793FADB1B7CFFF000501F77 /* BGTableViewCell.m in Sources */,
 				3793FABB1B7CFFF000501F77 /* MLDataCache.m in Sources */,
+				37FD70981BBCEF9800C83AB4 /* unzip.c in Sources */,
 				3793FAE71B7CFFF000501F77 /* TNCollectionViewCell.m in Sources */,
 				37DEE4DF1A57C1D8009A8771 /* ClassZoneVC.m in Sources */,
 				3793FAB31B7CFFF000501F77 /* AmrPlayerReader.m in Sources */,
@@ -2864,6 +2940,7 @@
 				37DEE4BF1A57C19C009A8771 /* MessageGroupItemCell.m in Sources */,
 				37E93FC41A7E9CC600AD45A1 /* MJPhotoProgressView.m in Sources */,
 				3793FA6D1B7CFFF000501F77 /* AFURLConnectionOperation.m in Sources */,
+				37FD6E7A1BBC5B1300C83AB4 /* NotificationDetailVC.m in Sources */,
 				37DEE4BE1A57C19C009A8771 /* MessageDetailVC.m in Sources */,
 				3793F5141B7B2CF400501F77 /* ApplicationBoxVC.m in Sources */,
 				3793FA3E1B7CFFF000501F77 /* RENumberItem.m in Sources */,
@@ -2891,6 +2968,7 @@
 				3793FA571B7CFFF000501F77 /* TTTAttributedLabel.m in Sources */,
 				3793FA901B7CFFF000501F77 /* MSCircleImageView.m in Sources */,
 				3793FA821B7CFFF000501F77 /* NSDateFormatter+timeIntervalFormatter.m in Sources */,
+				37FD6E761BBC51DF00C83AB4 /* StudentParentsVC.m in Sources */,
 				3793FA771B7CFFF000501F77 /* CTAssetItemViewController.m in Sources */,
 				3793FAD51B7CFFF000501F77 /* UIImage+GIF.m in Sources */,
 				372774EB1A5D94EC00464461 /* GrowthTimelinePublishCell.m in Sources */,
@@ -2901,6 +2979,7 @@
 				3793FA9B1B7CFFF000501F77 /* WelcomeView.m in Sources */,
 				3793FAAA1B7CFFF000501F77 /* UIView+Frame.m in Sources */,
 				372571581A80BF8C0087F178 /* PasswordModifyVC.m in Sources */,
+				37FD709A1BBCEF9800C83AB4 /* ZipArchive.mm in Sources */,
 				3793FA941B7CFFF000501F77 /* POISelectVC.m in Sources */,
 				37CA18721AB70A2F00B49B55 /* PhotoPickerCell.m in Sources */,
 				3793FA5A1B7CFFF000501F77 /* QRCodeGenerator.m in Sources */,
@@ -2930,6 +3009,7 @@
 				3793FAE81B7CFFF000501F77 /* TNTableViewCell.m in Sources */,
 				37DEE4BD1A57C19C009A8771 /* MessageDetailModel.m in Sources */,
 				37C355D61A3FD5CF00B948E6 /* main.m in Sources */,
+				37FD6FDD1BBCE55800C83AB4 /* OperationGuideVC.m in Sources */,
 				37E93FC31A7E9CC600AD45A1 /* MJPhotoLoadingView.m in Sources */,
 				37C88F6E1A827AD2008E44DB /* LogConfig.m in Sources */,
 				3728A74C1B9EE5C400310457 /* PublishGrowthTimelineVC.m in Sources */,
@@ -2945,6 +3025,7 @@
 				37FD6DE81BAEE01C00C83AB4 /* JSMessagesViewController.m in Sources */,
 				37FD6E471BBA698D00C83AB4 /* FeedItemDetailVC.m in Sources */,
 				37DEE4F01A57C24A009A8771 /* PersonalInfoVC.m in Sources */,
+				37FD6E751BBC51DF00C83AB4 /* ClassMemberVC.m in Sources */,
 				3728A73B1B9D376300310457 /* MFWFace.m in Sources */,
 				3793FA3D1B7CFFF000501F77 /* REMultipleChoiceItem.m in Sources */,
 				3793FA721B7CFFF000501F77 /* UrlHandler.m in Sources */,
@@ -2970,6 +3051,7 @@
 				371C6E961A72217400FA4AEC /* MessageVoiceButton.m in Sources */,
 				3793FAF41B7CFFF000501F77 /* Reachability.m in Sources */,
 				3793FA6F1B7CFFF000501F77 /* AFURLResponseSerialization.m in Sources */,
+				37FD70961BBCEF9800C83AB4 /* ioapi.c in Sources */,
 				3793F5101B7B286700501F77 /* MineVC.m in Sources */,
 				3793FADF1B7CFFF000501F77 /* TNGetMoreCell.m in Sources */,
 				3793FA8B1B7CFFF000501F77 /* DAContextMenuCell.m in Sources */,
@@ -3030,10 +3112,12 @@
 				3728A74F1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m in Sources */,
 				3793FAEC1B7CFFF000501F77 /* TNBaseCollectionViewController.m in Sources */,
 				3793FA7D1B7CFFF000501F77 /* CTAssetsPickerController.m in Sources */,
+				37FD70991BBCEF9800C83AB4 /* zip.c in Sources */,
 				3728A7521B9F524000310457 /* GrowthTimelineClassChangeVC.m in Sources */,
 				37E93FC51A7E9CC600AD45A1 /* MJPhotoView.m in Sources */,
 				37D8C7BE1A59A1B700E5E2E4 /* ClassBatOperationView.m in Sources */,
 				3793FADA1B7CFFF000501F77 /* UIView+WebCacheOperation.m in Sources */,
+				37FD70971BBCEF9800C83AB4 /* mztools.c in Sources */,
 				3793FA561B7CFFF000501F77 /* REURLValidator.m in Sources */,
 				371C6DAF1A7015AF00FA4AEC /* PublishSelectionView.m in Sources */,
 				379947EB1A66B430008E4B4F /* PhotoFlowVC.m in Sources */,

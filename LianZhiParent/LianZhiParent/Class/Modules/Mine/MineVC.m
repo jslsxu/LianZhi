@@ -20,6 +20,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
+        self.width = kScreenWidth;
         _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(20, 10, 55, 55)];
         [_avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
         [self addSubview:_avatarView];

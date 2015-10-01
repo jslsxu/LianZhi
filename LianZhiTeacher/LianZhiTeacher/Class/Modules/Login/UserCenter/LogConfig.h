@@ -12,4 +12,6 @@
 @property (nonatomic, copy)NSString *dicoveryUrl;
 @property (nonatomic, copy)NSString *introUrl;
 @property (nonatomic, copy)NSString *aboutUrl;
+@property (nonatomic, copy)NSString *helpUrl;
+@property (nonatomic, copy)NSString *faqUrl;
 @end

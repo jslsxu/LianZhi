@@ -9,7 +9,7 @@
 #import "TNTableViewCell.h"
 #import "ContactModel.h"
 #import "SchoolInfo.h"
-@interface ClassItemCell : UITableViewCell
+@interface ClassItemCell : TNTableViewCell
 {
     LogoView*   _logoView;
     UILabel*    _nameLabel;
@@ -25,7 +25,7 @@
 
 @end
 
-@interface ContactItemCell : UITableViewCell
+@interface ContactItemCell : TNTableViewCell
 {
     MSCircleImageView*  _avatar;
     UILabel*            _nameLabel;
