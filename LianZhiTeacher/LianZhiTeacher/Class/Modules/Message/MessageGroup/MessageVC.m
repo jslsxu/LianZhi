@@ -25,7 +25,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self requestData:REQUEST_REFRESH];
+    if(self.timer == nil)
+    {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(refreshData) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    }
     
     [ApplicationDelegate homeVC].navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ActionAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddActionClicked)];
 }
@@ -41,8 +45,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(refresh) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+        
     }
     return self;
 }
@@ -85,11 +88,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onPublishPhotoFinished:) name:kPublishPhotoItemFinishedNotification object:nil];
 }
 
-- (void)refresh
-{
-    [self requestData:REQUEST_REFRESH];
-}
-
 - (void)onAddActionClicked
 {
 //    if(self.messageModel.canPublish)
@@ -117,7 +115,13 @@
 
 - (void)refreshData
 {
-    [self requestData:REQUEST_REFRESH];
+    if(ApplicationDelegate.logouted)
+    {
+        [self.timer invalidate];
+        self.timer = nil;
+    }
+    else
+        [self requestData:REQUEST_REFRESH];
 }
 
 - (void)requestData:(REQUEST_TYPE)requestType

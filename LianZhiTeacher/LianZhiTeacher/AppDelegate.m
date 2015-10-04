@@ -84,6 +84,7 @@ static SystemSoundID shake_sound_male_id = 0;
                 errMsg = @"本账号已在其他地点登陆，如不是您本人操作，可能个人信息已泄露，请修改密码或联系客服";
             else if(errCode == 9005)
                 errMsg = @"重要关联发生变化，请重新登录";
+            self.logouted = YES;
             if([[UserCenter sharedInstance] hasLogin] && !showLogout)
             {
                 showLogout = YES;
@@ -153,6 +154,7 @@ static SystemSoundID shake_sound_male_id = 0;
 //    [self showNewEditionPreview];
     
     void (^callback)() = ^(){
+        self.logouted = NO;
          [[HttpRequestEngine sharedInstance] setCommonCacheRoot:[NSString stringWithFormat:@"school_id_%@",[UserCenter sharedInstance].curSchool.schoolID]];
         HomeViewController *homeVC = [[HomeViewController alloc] init];
         self.homeVC = homeVC;
@@ -187,6 +189,7 @@ static SystemSoundID shake_sound_male_id = 0;
 
 - (void)logout
 {
+    self.logouted = YES;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[TaskUploadManager sharedInstance] cleanTask];
     });

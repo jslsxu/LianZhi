@@ -15,6 +15,7 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong) TNBaseNavigationController *rootNavigation;
 @property (nonatomic, weak)HomeViewController *homeVC;
+@property (nonatomic, assign)BOOL logouted;
 - (void)playSound;
 - (void)logout;
 - (void)popAndPush:(UIViewController *)viewController;

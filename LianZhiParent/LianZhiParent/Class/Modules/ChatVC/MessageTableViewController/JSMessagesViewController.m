@@ -91,7 +91,13 @@
 
 - (void)getMessage
 {
-    [self requestData:REQUEST_GETMORE];
+    if(ApplicationDelegate.logouted)
+    {
+        [_timer invalidate];
+        _timer = nil;
+    }
+    else
+        [self requestData:REQUEST_GETMORE];
 }
 
 

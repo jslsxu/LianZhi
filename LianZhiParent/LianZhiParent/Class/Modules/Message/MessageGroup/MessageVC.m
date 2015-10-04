@@ -23,7 +23,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self requestData:REQUEST_REFRESH];
+    if(self.timer == nil)
+    {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(refreshData) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    }
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -31,8 +35,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(refresh) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
     }
     return self;
 }
@@ -76,11 +78,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onPublishPhotoFinished:) name:kPublishPhotoItemFinishedNotification object:nil];
 }
 
-- (void)refresh
-{
-    [self requestData:REQUEST_REFRESH];
-}
-
 - (void)onPublishPhotoFinished:(NSNotification *)notification
 {
     [self requestData:REQUEST_REFRESH];
@@ -108,7 +105,13 @@
 
 - (void)refreshData
 {
-    [self requestData:REQUEST_REFRESH];
+    if(ApplicationDelegate.logouted)
+    {
+        [_timer invalidate];
+        _timer = nil;
+    }
+    else
+        [self requestData:REQUEST_REFRESH];
 }
 
 - (void)requestData:(REQUEST_TYPE)requestType
