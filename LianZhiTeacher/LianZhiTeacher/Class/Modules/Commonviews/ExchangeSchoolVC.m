@@ -21,9 +21,16 @@
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(15, (kSchoolCellHeight - 36) / 2, 36, 36)];
         [self addSubview:_logoView];
         
+        _redDot = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 6, 6)];
+        [_redDot setBackgroundColor:[UIColor colorWithHexString:@"F0003A"]];
+        [_redDot.layer setCornerRadius:3];
+        [_redDot.layer setMasksToBounds:YES];
+        [self addSubview:_redDot];
+        
         _arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"RightArrow")]];
         [_arrowImage setOrigin:CGPointMake(self.width - _arrowImage.width - 30, (60 - _arrowImage.height) / 2)];
         [self addSubview:_arrowImage];
+
         
         _statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_statusLabel setTextColor:kCommonTeacherTintColor];
@@ -62,6 +69,13 @@
     [_arrowImage setHidden:_isCurSchool];
 }
 
+- (void)setHasNew:(BOOL)hasNew
+{
+    _hasNew = hasNew;
+    _redDot.hidden = !_hasNew;
+    [_redDot setOrigin:CGPointMake(_nameLabel.right + 5, (kSchoolCellHeight - _redDot.height) / 2)];
+}
+
 @end
 
 
@@ -74,6 +88,8 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"%ld所",(long)[UserCenter sharedInstance].userData.schools.count] style:UIBarButtonItemStylePlain target:nil action:nil];
     [self.view setBackgroundColor:[UIColor colorWithRed:229 / 255.0 green:229 / 255.0 blue:229 / 255.0 alpha:1.f]];
     
+    _messages = [NSMutableArray arrayWithArray:[UserCenter sharedInstance].userData.schools];
+    
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     [_tableView setBackgroundColor:[UIColor clearColor]];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
@@ -81,7 +97,37 @@
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [self.view addSubview:_tableView];
+    
+    [self requestData];
 }
+
+- (void)requestData
+{
+    for (SchoolInfo *schoolInfo in _messages) {
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/index" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"school_id":schoolInfo.schoolID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            TNDataWrapper *listWrapper = [responseObject getDataWrapperForKey:@"list"];
+            if(listWrapper.count > 0)
+            {
+                MessageGroupItem *groupItem = [[MessageGroupItem alloc] init];
+                for (NSInteger i = 0; i < listWrapper.count; i++)
+                {
+                    TNDataWrapper *firstMessageWrapper = [listWrapper getDataWrapperForIndex:i];
+                    NSInteger unread = [firstMessageWrapper getIntegerForKey:@"unread"];
+                    if(unread > 0)
+                    {
+                        [groupItem parseData:firstMessageWrapper];
+                        [_messages replaceObjectAtIndex:[_messages indexOfObject:schoolInfo] withObject:groupItem];
+                        [_tableView reloadData];
+                        break;
+                    }
+                }
+            }
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    }
+}
+
 
 #pragma mark - UITableViewDelegate
 
@@ -105,6 +151,7 @@
     SchoolInfo *schoolInfo = [UserCenter sharedInstance].schools[indexPath.row];
     [cell setSchoolInfo:schoolInfo];
     [cell setIsCurSchool:[schoolInfo.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID]];
+    [cell setHasNew:[_messages[indexPath.row] isKindOfClass:[MessageGroupItem class]]];
     return cell;
 }
 

@@ -14,6 +14,7 @@
     UILabel*        _authorLabel;
     UILabel*        _contentLabel;
     UILabel*        _timeLabel;
+    UIImageView*    _contentImageView;
     UIView*         _sepLine;
 }
 @end

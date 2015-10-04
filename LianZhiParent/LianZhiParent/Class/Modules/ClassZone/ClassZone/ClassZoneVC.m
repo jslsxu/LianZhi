@@ -74,8 +74,9 @@
 - (void)setCommentItem:(TimelineCommentItem *)commentItem
 {
     _commentItem = commentItem;
-    [_msgIndicator setHidden:_commentItem == nil];
-    if(_commentItem)
+    BOOL hide = _commentItem == nil || _commentItem.alertInfo.num == 0;
+    [_msgIndicator setHidden:hide];
+    if(!hide)
     {
         [_msgIndicator setCommentItem:_commentItem];
         self.height = 160 + 42;

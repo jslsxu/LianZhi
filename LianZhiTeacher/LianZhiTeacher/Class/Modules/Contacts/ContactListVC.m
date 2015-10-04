@@ -264,6 +264,7 @@
         ContactGroup *group = [_contactModel.teachers objectAtIndex:indexPath.section];
         TeacherInfo *teacher = [group.contacts objectAtIndex:indexPath.row];
         JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+        [chatVC setTo_objid:[UserCenter sharedInstance].curSchool.schoolID];
         [chatVC setTargetID:teacher.uid];
         [chatVC setChatType:ChatTypeTeacher];
         [chatVC setTitle:teacher.name];

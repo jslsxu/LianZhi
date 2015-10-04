@@ -71,6 +71,7 @@
 - (void)onChatClicked
 {
     JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+    [chatVC setTo_objid:self.classInfo.schoolInfo.schoolID];
     [chatVC setTargetID:self.classInfo.classID];
     [chatVC setTitle:self.classInfo.className];
     [chatVC setChatType:ChatTypeClass];
@@ -181,7 +182,10 @@
 //        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",teacherInfo.mobile] buttonItems:@[cancelItem,item]];
 //        [alertView show];
 //    }
+    NSInteger section = indexPath.section;
+    ClassInfo *classInfo = [UserCenter sharedInstance].curChild.classes[section];
     JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+    [chatVC setTo_objid:classInfo.schoolInfo.schoolID];
     [chatVC setTargetID:teacherInfo.uid];
     [chatVC setTitle:teacherInfo.teacherName];
     [chatVC setChatType:ChatTypeTeacher];

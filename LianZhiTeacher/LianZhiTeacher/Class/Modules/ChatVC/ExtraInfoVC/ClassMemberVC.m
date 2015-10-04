@@ -43,6 +43,7 @@
 @end
 
 @interface ClassMemberVC ()<UITableViewDataSource, UITableViewDelegate>
+@property (nonatomic, strong)SchoolInfo* schooldInfo;
 @property (nonatomic, strong)NSArray *teacherArray;
 @property (nonatomic, strong)NSArray *studentArray;
 @end
@@ -69,6 +70,15 @@
         TNDataWrapper *classWrapper = [responseObject getDataWrapperForKey:@"class"];
         if(classWrapper.count > 0)
         {
+            
+            TNDataWrapper *schoolWrapper = [classWrapper getDataWrapperForKey:@"school"];
+            if(schoolWrapper.count > 0)
+            {
+                SchoolInfo *schoolInfo = [[SchoolInfo alloc] init];
+                [schoolInfo parseData:schoolWrapper];
+                self.schooldInfo = schoolInfo;
+            }
+            
             TNDataWrapper *teacherArrayWrapper = [classWrapper getDataWrapperForKey:@"teachers"];
             if(teacherArrayWrapper.count > 0)
             {
@@ -161,6 +171,7 @@
     {
         TeacherInfo *teacherInfo = self.teacherArray[indexPath.row];
         JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+        [chatVC setTo_objid:self.schooldInfo.schoolID];
         [chatVC setTargetID:teacherInfo.uid];
         [chatVC setChatType:ChatTypeTeacher];
         [chatVC setTitle:teacherInfo.name];

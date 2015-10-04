@@ -34,6 +34,7 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @property (nonatomic, copy)NSString *logo;
 @property (nonatomic, strong)SchoolInfo *schoolInfo;
 @property (nonatomic, strong)NSArray *teachers;
+@property (nonatomic, strong)NSArray *students;
 
 @end
 

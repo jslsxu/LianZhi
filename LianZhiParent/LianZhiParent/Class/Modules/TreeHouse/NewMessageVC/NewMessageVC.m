@@ -46,9 +46,13 @@
 
 - (void)onCleanMessage
 {
-    
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/clear_lognotice" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"objid" : self.objid,@"types" : (self.types == NewMessageTypeClassZone ? @"0" : @"1")} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [self.tableViewModel.modelItemArray removeAllObjects];
+        [self.tableView reloadData];
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

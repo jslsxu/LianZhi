@@ -114,8 +114,18 @@
 - (void)setCommentItem:(TimelineCommentItem *)commentItem
 {
     _commentItem = commentItem;
-    [_msgIndicator setHidden:_commentItem == nil];
-    [_msgIndicator setCommentItem:_commentItem];
+    BOOL hide = _commentItem == nil || _commentItem.alertInfo.num == 0;
+    [_msgIndicator setHidden:hide];
+    if(!hide)
+    {
+        [self setHeight:100 + 54];
+    }
+    else
+    {
+        [self setHeight:100 + 30];
+    }
+    if(!hide)
+        [_msgIndicator setCommentItem:_commentItem];
 }
 
 - (void)setupHeaderView

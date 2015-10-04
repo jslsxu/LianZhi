@@ -279,14 +279,6 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             curAlert = alertInfo;
         }
     }
-    if(curAlert)
-    {
-        [_headerView setHeight:100 + 54];
-    }
-    else
-    {
-        [_headerView setHeight:100 + 30];
-    }
     [_headerView setCommentItem:curAlert];
     [self.tableView setTableHeaderView:_headerView];
 }

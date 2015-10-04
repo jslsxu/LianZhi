@@ -70,6 +70,7 @@
     [task setObserver:self];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.targetID forKey:@"to_id"];
+    [params setValue:self.to_objid forKey:@"to_objid"];
     [params setValue:[UserCenter sharedInstance].curChild.uid forKey:@"objid"];
     [params setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
     

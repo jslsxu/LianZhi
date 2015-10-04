@@ -13,6 +13,7 @@
 {
     self.uid = [dataWrapper getStringForKey:@"id"];
     self.name = [dataWrapper getStringForKey:@"name"];
+    self.label = [dataWrapper getStringForKey:@"label"];
     self.title = [dataWrapper getStringForKey:@"title"];
     self.nickName = [dataWrapper getStringForKey:@"nick"];
     self.gender = [dataWrapper getIntegerForKey:@"sex"];

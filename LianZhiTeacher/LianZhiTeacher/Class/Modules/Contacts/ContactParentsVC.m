@@ -133,6 +133,7 @@
 //        [alertView show];
 //    }
     JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+    [chatVC setTo_objid:self.studentInfo.uid];
     [chatVC setTargetID:userInfo.uid];
     [chatVC setChatType:ChatTypeParents];
     [chatVC setTitle:[NSString stringWithFormat:@"%@的%@",self.studentInfo.name,[(FamilyInfo *)userInfo relation]]];

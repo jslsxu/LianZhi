@@ -91,6 +91,19 @@
         }
         [self setTeachers:teacherArray];
     }
+    
+    TNDataWrapper *studentsDataWrapper = [dataWrapper getDataWrapperForKey:@"students"];
+    if(studentsDataWrapper.count > 0)
+    {
+        NSMutableArray *studentArray = [[NSMutableArray alloc] initWithCapacity:0];
+        for (NSInteger i = 0; i < studentsDataWrapper.count; i++) {
+            TNDataWrapper *studentWrapper = [studentsDataWrapper getDataWrapperForIndex:i];
+            ChildInfo *childInfo = [[ChildInfo alloc] init];
+            [childInfo parseData:studentWrapper];
+            [studentArray addObject:childInfo];
+        }
+        [self setStudents:studentArray];
+    }
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder

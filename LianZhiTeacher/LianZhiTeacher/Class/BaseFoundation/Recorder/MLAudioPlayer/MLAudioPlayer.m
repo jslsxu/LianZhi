@@ -199,6 +199,7 @@ void outBufferHandler(void *inUserData,AudioQueueRef inAQ,AudioQueueBufferRef in
     self.isPlaying = YES;
     
     self.isPlayDone = NO;
+    
     [self startProximityMonitering];
     
     //输出的buffer必须先填满一次才能准备下一次buffer
@@ -277,13 +278,22 @@ void outBufferHandler(void *inUserData,AudioQueueRef inAQ,AudioQueueBufferRef in
 }
 
 - (void)startProximityMonitering {
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-    if ([self isUseOutputExceptBuiltInPort]) {
-        [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
-    }else{
-        [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+    if([UserCenter sharedInstance].personalSetting.earPhone)
+    {
+        if ([self isUseOutputExceptBuiltInPort]) {
+            [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        }
     }
-    DLOG(@"开启距离监听");
+    else
+    {
+        [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+        if ([self isUseOutputExceptBuiltInPort]) {
+            [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        }else{
+            [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+        }
+        DLOG(@"开启距离监听");
+    }
 }
 
 - (void)stopProximityMonitering {

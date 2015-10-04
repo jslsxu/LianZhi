@@ -74,9 +74,13 @@
     [task setRequestType:requestType];
     [task setObserver:self];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"objid"];
     [params setValue:self.targetID forKey:@"to_id"];
-    [params setValue:self.to_objid forKey:@"to_objid"];
     [params setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
+    if(self.chatType == ChatTypeGroup || self.chatType == ChatTypeClass)
+        [params setValue:@"0" forKey:@"to_objid"];
+    else
+        [params setValue:self.to_objid forKey:@"to_objid"];
     [params setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"objid"];
     
     ChatMessageModel *messageModel = (ChatMessageModel *)[self tableViewModel];
@@ -122,7 +126,10 @@
 {
     NSMutableDictionary *messageParam = [NSMutableDictionary dictionary];
     [messageParam setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"objid"];
-    [messageParam setValue:self.to_objid forKey:@"to_objid"];
+    if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup)
+        [messageParam setValue:@"0" forKey:@"to_objid"];
+    else
+        [messageParam setValue:self.to_objid forKey:@"to_objid"];
     [messageParam setValue:self.targetID forKey:@"to_id"];
     [messageParam setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
     [messageParam setValue:dic[@"type"] forKey:@"content_type"];

@@ -125,8 +125,9 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (void)setCommentItem:(TimelineCommentItem *)commentItem
 {
     _commentItem = commentItem;
-    [_msgIndicator setHidden:_commentItem == nil];
-    if(_commentItem)
+    BOOL hide = _commentItem == nil || _commentItem.alertInfo.num == 0;
+    [_msgIndicator setHidden:hide];
+    if(!hide)
     {
         [_msgIndicator setCommentItem:_commentItem];
         self.height = 160 + 42;
@@ -355,14 +356,14 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 //    [self setupToolBar:_publishToolBar];
     [self.view addSubview:_publishToolBar];
     
-    ClassInfo *curClassInfo = [UserCenter sharedInstance].curSchool.classes[0];
-    [self setClassInfo:curClassInfo];
-    
     [self.tableView setHeight:self.view.height - 49];
     
     _headerView = [[ClassZoneHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 160)];
     [_headerView setDelegate:self];
     [self.tableView setTableHeaderView:_headerView];
+    
+    ClassInfo *curClassInfo = [UserCenter sharedInstance].curSchool.classes[0];
+    [self setClassInfo:curClassInfo];
     
     [self bindTableCell:@"ClassZoneItemCell" tableModel:@"ClassZoneModel"];
     [self setSupportPullDown:YES];

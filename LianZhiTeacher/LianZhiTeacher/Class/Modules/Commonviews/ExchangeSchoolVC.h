@@ -13,16 +13,19 @@
 {
     LogoView*       _logoView;
     UILabel*        _nameLabel;
+    UIView*         _redDot;
     UILabel*        _statusLabel;
     UIImageView*    _arrowImage;
     UIView*         _sepLine;
 }
 @property (nonatomic, strong)SchoolInfo *schoolInfo;
 @property (nonatomic, assign)BOOL isCurSchool;
+@property (nonatomic, assign)BOOL hasNew;
 @end
 
 @interface ExchangeSchoolVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
+    NSMutableArray* _messages;
     UITableView*    _tableView;
 }
 @end

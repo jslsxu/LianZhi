@@ -107,7 +107,7 @@
     NSString *content = _treeHouseItem.detail;
     if(content.length > 0)
     {
-        CGSize contentSize = [content boundingRectWithSize:CGSizeMake(_contentLabel.width, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:12]];
+        CGSize contentSize = [content boundingRectWithSize:CGSizeMake(self.width - 45 - 10, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
         [_contentLabel setSize:CGSizeMake(self.width - 45 - 10, contentSize.height)];
         [_contentLabel setText:content];
         spaceYStart += contentSize.height + 10;

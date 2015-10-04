@@ -10,6 +10,7 @@
 @interface UserInfo : TNModelItem<NSCoding>
 @property (nonatomic, copy)NSString *uid;
 @property (nonatomic, copy)NSString *name;
+@property (nonatomic, copy)NSString *label;
 @property (nonatomic, copy)NSString *title;
 @property (nonatomic, copy)NSString *nickName;
 @property (nonatomic, copy)NSString *constellation;

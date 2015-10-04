@@ -82,15 +82,6 @@
             if(item.msgNum > 0 && item.soundOn)
                 hasNew = YES;
         }
-//        if(hasNew && self.playAlert)
-//        {
-//            //有新消息，播放声音
-//            if([UserCenter sharedInstance].personalSetting.soundOn)
-//                [ApplicationDelegate playSound];
-//            if([UserCenter sharedInstance].personalSetting.shakeOn)
-//                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-//
-//        }
     }
     
     return parse;

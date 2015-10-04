@@ -40,7 +40,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         [self addSubview:_timeLabel];
         
         _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_deleteButton setFrame:CGRectMake(self.width - 10 - 30, 0, 30, 30)];
+        [_deleteButton setFrame:CGRectMake(self.width - 40, 0, 40, 40)];
         [_deleteButton setImage:[UIImage imageNamed:@"ClassZoneTrash"] forState:UIControlStateNormal];
         [_deleteButton addTarget:self action:@selector(onDeleteButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_deleteButton];
