@@ -3258,7 +3258,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					../BaseFoundation/3rdPart/AutoNavi,
@@ -3276,7 +3276,7 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/Recorder/MLAudioRecorder/amr_en_de/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "309f869c-e642-40a5-b863-7a8e12cdd04a";
+				PROVISIONING_PROFILE = "72ffb7ff-6a30-4cbc-bc91-64fe85646ba9";
 			};
 			name = Debug;
 		};
@@ -3285,7 +3285,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					../BaseFoundation/3rdPart/AutoNavi,
@@ -3303,7 +3303,7 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/Recorder/MLAudioRecorder/amr_en_de/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "309f869c-e642-40a5-b863-7a8e12cdd04a";
+				PROVISIONING_PROFILE = "72ffb7ff-6a30-4cbc-bc91-64fe85646ba9";
 			};
 			name = Release;
 		};

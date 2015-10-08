@@ -67,6 +67,7 @@
     {
         [_nameLabel setTextAlignment:NSTextAlignmentRight];
         [_avatarView setX:self.width - kAvatarHMargin - _avatarView.width];
+        [_contentButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_contentButton setBackgroundImage:[[UIImage imageNamed:@"MessageSendedBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)] forState:UIControlStateNormal];
         [_contentButton setBackgroundImage:[[UIImage imageNamed:@"MessageSendedBGHighlighted"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)] forState:UIControlStateHighlighted];
         [_contentButton setContentEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 15)];
@@ -79,6 +80,7 @@
     {
         [_nameLabel setTextAlignment:NSTextAlignmentLeft];
         [_avatarView setX:kAvatarHMargin];
+        [_contentButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_contentButton setBackgroundImage:[[UIImage imageNamed:@"MessageReceivedBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)] forState:UIControlStateNormal];
         [_contentButton setBackgroundImage:[[UIImage imageNamed:@"MessageReceivedBGHighlighted"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)] forState:UIControlStateHighlighted];
         [_contentButton setContentEdgeInsets:UIEdgeInsetsMake(10, 15, 10, 10)];
