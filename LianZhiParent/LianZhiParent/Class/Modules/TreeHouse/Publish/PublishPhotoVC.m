@@ -11,7 +11,7 @@
 #define kBorderMargin                   16
 
 #define kBaseTag                        1000
-@interface PublishPhotoVC ()<UITextFieldDelegate>
+@interface PublishPhotoVC ()<UITextViewDelegate>
 
 @end
 
@@ -88,14 +88,14 @@
     
     [self setupImageView];
     
-    _textField = [[UITextField alloc] initWithFrame:CGRectMake(10, _bgView.bottom + 20, _bgView.width, 30)];
-    [_textField setFont:[UIFont systemFontOfSize:16]];
-    [_textField setDelegate:self];
-    [_textField setPlaceholder:@"我发了一堆图片，快来看看吧"];
-    [_textField setText:self.words];
-    [_scrollView addSubview:_textField];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, _bgView.bottom + 20, _bgView.width, 60)];
+    [_textView setFont:[UIFont systemFontOfSize:16]];
+    [_textView setDelegate:self];
+    [_textView setPlaceholder:@"我发了一堆图片，快来看看吧"];
+    [_textView setText:self.words];
+    [_scrollView addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textField.bottom, _textField.width, 1)];
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom, _textView.width, 1)];
     [sepLine setBackgroundColor:kCommonParentTintColor];
     [_scrollView addSubview:sepLine];
     
@@ -200,6 +200,7 @@
             sourceImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:imageItem.thumbnailUrl];
         }
         [photoItem setImage:sourceImage];
+        [photoItem setPhotoID:imageItem.photoID];
         [photoItem setThumbnailUrl:imageItem.thumbnailUrl];
         [photoItem setOriginalUrl:imageItem.originalUrl];
         [photoItem setPublishImageItem:imageItem];
@@ -211,7 +212,10 @@
     {
         [params setValue:poiItem.poiInfo.name forKey:@"position"];
     }
-    [item setParams:@{@"onlywifi_time":kStringFromValue([[NSDate date] timeIntervalSince1970])}];
+    if(self.forward)
+        [params setValue:@"1" forKey:@"forward"];
+    [params setValue:kStringFromValue((NSInteger)[[NSDate date] timeIntervalSince1970]) forKey:@"onlywifi_time"];
+    [item setParams:params];
     
     NSDate *date = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -222,7 +226,7 @@
     }
     [item setTime:[formatter stringFromDate:date]];
     [item setPhotos:photos];
-    [item setDetail:_textField.text];
+    [item setDetail:_textView.text];
     [item setUser:[UserCenter sharedInstance].userInfo];
     [item setNewSend:YES];
     if([self.delegate respondsToSelector:@selector(publishTreeHouseSuccess:)])
@@ -348,11 +352,11 @@
 
 #pragma mark - UItextViewDelegate
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if([string isEqualToString:@"\n"])
+    if([text isEqualToString:@"\n"])
     {
-        [textField resignFirstResponder];
+        [textView resignFirstResponder];
         return NO;
     }
     return YES;

@@ -40,6 +40,7 @@
     self =[super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
+        [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         _checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_checkButton setFrame:CGRectMake(30, 0, 20, self.height)];
         [_checkButton setUserInteractionEnabled:NO];
@@ -117,6 +118,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"消息通知";
+    self.classesArray = [UserCenter sharedInstance].curSchool.classes;
     _selectedMateArray = [NSMutableArray array];
     _selectedStudentDic = [NSMutableDictionary dictionary];
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
@@ -231,19 +233,19 @@
             self.groupArray = groupArray;
         }
         
-        TNDataWrapper *classesWrapper = [responseObject getDataWrapperForKey:@"classes"];
-        if(classesWrapper.count > 0)
-        {
-            NSMutableArray *groupArray = [NSMutableArray array];
-            for (NSInteger i = 0; i < classesWrapper.count; i++)
-            {
-                TNDataWrapper *classWrapper = [classesWrapper getDataWrapperForIndex:i];
-                ClassInfo *classInfo = [[ClassInfo alloc] init];
-                [classInfo parseData:classWrapper];
-                [groupArray addObject:classInfo];
-            }
-            self.classesArray = groupArray;
-        }
+//        TNDataWrapper *classesWrapper = [responseObject getDataWrapperForKey:@"classes"];
+//        if(classesWrapper.count > 0)
+//        {
+//            NSMutableArray *groupArray = [NSMutableArray array];
+//            for (NSInteger i = 0; i < classesWrapper.count; i++)
+//            {
+//                TNDataWrapper *classWrapper = [classesWrapper getDataWrapperForIndex:i];
+//                ClassInfo *classInfo = [[ClassInfo alloc] init];
+//                [classInfo parseData:classWrapper];
+//                [groupArray addObject:classInfo];
+//            }
+//            self.classesArray = groupArray;
+//        }
         [_tableView reloadData];
     } fail:^(NSString *errMsg) {
         
@@ -316,7 +318,7 @@
         NotificationGroupHeaderView *headerView = [[NotificationGroupHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 50)];
         if(section == 0)
         {
-            [headerView.nameLabel setText:@"我教授的班"];
+            [headerView.nameLabel setText:@"我管理的班"];
             NSInteger selectNum = 0;
             for (ClassInfo *classInfo in self.groupArray)
             {
@@ -332,7 +334,7 @@
         }
         else
         {
-            [headerView.nameLabel setText:@"我管理的班"];
+            [headerView.nameLabel setText:@"我教授的班"];
             NSInteger selectNum = 0;
             for (ClassInfo *classInfo in self.classesArray)
             {
@@ -341,7 +343,7 @@
             }
             if(selectNum == 0)
                 [headerView setSelectType:SelectTypeNone];
-            else if(selectNum == self.groupArray.count)
+            else if(selectNum == self.classesArray.count)
                 [headerView setSelectType:SelectTypeAll];
             else
                 [headerView setSelectType:SelectTypePart];
@@ -383,7 +385,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if(_segmentControl.selectedSegmentIndex == 0)
     {
         NSInteger section = indexPath.section;

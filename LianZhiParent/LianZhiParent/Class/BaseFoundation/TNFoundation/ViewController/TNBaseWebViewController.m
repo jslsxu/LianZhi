@@ -13,15 +13,15 @@
 
 @implementation TNBaseWebViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    if(_webView)
-    {
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.url]];
-        [_webView loadRequest:request];
-    }
-}
+//- (void)viewWillAppear:(BOOL)animated
+//{
+//    [super viewWillAppear:animated];
+//    if(_webView)
+//    {
+//        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.url]];
+//        [_webView loadRequest:request];
+//    }
+//}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -34,6 +34,9 @@
     _indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [_indicator setHidesWhenStopped:YES];
     [self.view addSubview:_indicator];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.url]];
+    [_webView loadRequest:request];
 }
 
 - (void)setupSubviews

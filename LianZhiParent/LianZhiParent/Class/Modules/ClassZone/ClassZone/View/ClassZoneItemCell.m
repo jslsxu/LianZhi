@@ -38,6 +38,12 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         [_timeLabel setTextColor:[UIColor colorWithHexString:@"a0a0a0"]];
         [self addSubview:_timeLabel];
         
+//        _shareToTreeHouseButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_shareToTreeHouseButton setImage:[UIImage imageNamed:@"ShareToTreeHouse"] forState:UIControlStateNormal];
+//        [_shareToTreeHouseButton addTarget:self action:@selector(onShareToTreeHouse) forControlEvents:UIControlEventTouchUpInside];
+//        [_shareToTreeHouseButton setSize:CGSizeMake(72, 20)];
+//        [self addSubview:_shareToTreeHouseButton];
+        
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_contentLabel setBackgroundColor:[UIColor clearColor]];
         [_contentLabel setFont:[UIFont systemFontOfSize:14]];
@@ -100,6 +106,13 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
 {
     ClassZoneItem *item = (ClassZoneItem *)self.modelItem;
     [_voiceButton setVoiceWithURL:[NSURL URLWithString:item.audioItem.audioUrl] withAutoPlay:YES];
+}
+
+- (void)onShareToTreeHouse
+{
+    ClassZoneItem *item = (ClassZoneItem *)self.modelItem;
+    if([self.delegate respondsToSelector:@selector(onShareToTreeHouse:)])
+        [self.delegate onShareToTreeHouse:item];
 }
 
 - (void)onActionClicked

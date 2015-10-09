@@ -42,4 +42,5 @@
     ClassZoneHeaderView*            _headerView;
     ReplyBox*                       _replyBox;
 }
+@property (nonatomic, strong)ClassInfo *classInfo;
 @end

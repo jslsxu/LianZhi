@@ -37,6 +37,10 @@
         [_bgView.layer setMasksToBounds:YES];
         [self addSubview:_bgView];
         
+        UILongPressGestureRecognizer *longGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPress)];
+        [longGesture setMinimumPressDuration:1];
+        [_bgView addGestureRecognizer:longGesture];
+        
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(20, 5, 45, 45)];
         [_logoView setBorderColor:[UIColor whiteColor]];
         [_logoView setBorderWidth:2];
@@ -94,6 +98,35 @@
         [_bgView addSubview:_collectionView];
     }
     return self;
+}
+
+- (void)onLongPress
+{
+    MessageDetailItem *messageItem = (MessageDetailItem *)self.modelItem;
+    if(messageItem.content.length > 0)
+    {
+        [self becomeFirstResponder];
+        UIMenuController *menu = [UIMenuController sharedMenuController];
+        [menu setTargetRect:_contentLabel.frame inView:self];
+        [menu setMenuVisible:YES animated:YES];
+    }
+}
+
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    return (action == @selector(copy:));
+}
+
+-(void)copy:(id)sender
+{
+    MessageDetailItem *messageItem = (MessageDetailItem *)self.modelItem;
+    UIPasteboard *pboard = [UIPasteboard generalPasteboard];
+    pboard.string = messageItem.content;
 }
 
 - (void)onReloadData:(TNModelItem *)modelItem

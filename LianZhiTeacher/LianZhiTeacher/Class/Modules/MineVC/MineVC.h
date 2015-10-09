@@ -15,7 +15,7 @@
     UIImageView*    _genderView;
     UILabel*        _idLabel;
 }
-
+- (void)refresh;
 @end
 
 @interface MineVC : TNBaseViewController

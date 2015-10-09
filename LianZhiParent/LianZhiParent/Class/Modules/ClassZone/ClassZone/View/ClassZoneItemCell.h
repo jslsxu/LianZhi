@@ -12,6 +12,7 @@
 #import "ResponseView.h"
 @class ClassZoneItemCell;
 @protocol ClassZoneItemCellDelegate <NSObject>
+- (void)onShareToTreeHouse:(ClassZoneItem *)zoneItem;
 - (void)onActionClicked:(ClassZoneItemCell *)cell;
 - (void)onResponseClickedAtTarget:(ResponseItem *)responseItem cell:(ClassZoneItemCell *)cell;
 
@@ -22,6 +23,7 @@
     AvatarView*         _avatar;
     UILabel*            _nameLabel;
     UILabel*            _timeLabel;
+    UIButton*           _shareToTreeHouseButton;
     UILabel*            _contentLabel;
     UICollectionView*   _collectionView;
     MessageVoiceButton* _voiceButton;

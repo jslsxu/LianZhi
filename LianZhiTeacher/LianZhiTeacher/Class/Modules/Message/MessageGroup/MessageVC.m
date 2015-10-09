@@ -19,6 +19,7 @@
 
 - (void)dealloc
 {
+    NSLog(@"%@ dealloc",[self class]);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -38,16 +39,6 @@
 {
     [super viewDidDisappear:animated];
     [ApplicationDelegate homeVC].navigationItem.rightBarButtonItem = nil;
-}
-
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if(self)
-    {
-        
-    }
-    return self;
 }
 
 - (void)invalidate

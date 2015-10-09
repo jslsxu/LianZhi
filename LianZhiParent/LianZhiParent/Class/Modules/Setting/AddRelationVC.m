@@ -237,7 +237,8 @@
         {
             cell = [[AvatarCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
         }
-        [cell.avatarView setImage:self.avatarImage];
+        if(self.avatarImage)
+            [cell.avatarView setImage:self.avatarImage];
         return cell;
     }
     else
@@ -275,8 +276,20 @@
     else if(row == 1 || row == 2 || row == 4 || row == 5 || row == 6)
     {
         CommonInputVC *inputVC = [[CommonInputVC alloc] initWithOriginal:item.value forKey:item.key completion:^(NSString *value) {
-            item.value = value;
-            [self.tableView reloadData];
+            BOOL validate = YES;
+            if(row == 4)
+            {
+                validate = [value isEmailAddress];
+                if(!validate)
+                {
+                    [ProgressHUD showHintText:@"邮箱格式不正确"];
+                }
+            }
+            if(validate)
+            {
+                item.value = value;
+                [self.tableView reloadData];
+            }
         }];
         [self.navigationController pushViewController:inputVC animated:YES];
     }

@@ -14,21 +14,20 @@
 {
     [super layoutSubviews];
     
-    if (self.titleLabel.text.length > 0) {
-        self.titleLabel.font = [UIFont systemFontOfSize:self.presenting ? 13 : 11];
+    if (self.titleLabel.text.length > 0)
+    {
         self.imageView.contentMode = UIViewContentModeCenter;
         
-        CGFloat spacing = 2;
         
         // lower the text and push it left so it appears centered
         //  below the image
         CGSize imageSize = self.imageView.frame.size;
-        self.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (imageSize.height + spacing), 0.0);
+        self.titleEdgeInsets = UIEdgeInsetsMake(0.0, - imageSize.width, - (imageSize.height + self.spacing), 0.0);
         
         // raise the image and push it right so it appears centered
         //  above the text
         CGSize titleSize = self.titleLabel.frame.size;
-        self.imageEdgeInsets = UIEdgeInsetsMake(- (titleSize.height + spacing), 0.0, 0.0, - titleSize.width);
+        self.imageEdgeInsets = UIEdgeInsetsMake(- (titleSize.height + self.spacing), 0.0, 0.0, - titleSize.width);
     } else {
         self.titleEdgeInsets = UIEdgeInsetsZero;
         self.imageEdgeInsets = UIEdgeInsetsZero;
@@ -50,6 +49,12 @@
     else
         [_numIndicator setHidden:YES];
     [_numIndicator setIndicator:_badgeValue];
-    [_numIndicator setCenter:CGPointMake(self.centerX + 15, _numIndicator.height / 2)];
+    [_numIndicator setCenter:CGPointMake(self.width / 2 + 15, _numIndicator.height / 2)];
+}
+
+- (void)setSpacing:(CGFloat)spacing
+{
+    _spacing = spacing;
+    [self setNeedsLayout];
 }
 @end

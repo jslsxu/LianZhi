@@ -8,7 +8,7 @@
 
 #import "AudioMessageSendVC.h"
 
-@interface AudioMessageSendVC ()<UITextFieldDelegate>
+@interface AudioMessageSendVC ()<UITextViewDelegate>
 
 @end
 
@@ -21,14 +21,14 @@
     [_recordView setDelegate:self];
     [self.view addSubview:_recordView];
     
-    _textField = [[UITextField alloc] initWithFrame:CGRectMake(10, _recordView.bottom, _recordView.width, 40)];
-    [_textField setDelegate:self];
-    [_textField setPlaceholder:@"给录音起个标题吧"];
-    [_textField setFont:[UIFont systemFontOfSize:16]];
-    [_textField setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-    [self.view addSubview:_textField];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, _recordView.bottom, _recordView.width, 60)];
+    [_textView setDelegate:self];
+    [_textView setPlaceholder:@"给录音起个标题吧"];
+    [_textView setFont:[UIFont systemFontOfSize:16]];
+    [_textView setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+    [self.view addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textField.bottom, _recordView.width, 1)];
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom, self.view.width - 10 * 2, 1)];
     [sepLine setBackgroundColor:kCommonTeacherTintColor];
     [self.view addSubview:sepLine];
 }
@@ -36,7 +36,7 @@
 - (NSDictionary *)params
 {
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    [dic setValue:[_textField text] forKey:@"words"];
+    [dic setValue:[_textView text] forKey:@"words"];
     [dic setValue:kStringFromValue(_recordView.tmpAmrDuration) forKey:@"voice_time"];
     return dic;
 }
@@ -47,15 +47,16 @@
 }
 
 #pragma mark 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if([string isEqualToString:@"\n"])
+    if([text isEqualToString:@"\n"])
     {
-        [textField resignFirstResponder];
+        [textView resignFirstResponder];
         return NO;
     }
     return YES;
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

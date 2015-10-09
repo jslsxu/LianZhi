@@ -31,22 +31,27 @@ static SystemSoundID shake_sound_male_id = 0;
     [self registerThirdParty];
     [self registerRemoteNotification];
     [self registerSound];
-    self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:nil];
-    [self.window setRootViewController:self.rootNavigation];
-    if(![[UserCenter sharedInstance] hasLogin])
-        [LoginVC presentLoginVCAnimation:NO completion:^(BOOL loginSuccess, BOOL loginCancel) {
-            if(loginSuccess)
-                [self loginSuccess];
-        }];
-    else
+    
+    if([[UserCenter sharedInstance] hasLogin])
     {
         HomeViewController *homeVC = [[HomeViewController alloc] init];
-        self.homeVC = homeVC;
         self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:homeVC];
         [self.window setRootViewController:self.rootNavigation];
+        self.homeVC = homeVC;
         [self showNewEditionPreview];
     }
-    NSDictionary *notificationInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
+    else
+    {
+        LoginVC *loginVC = [[LoginVC alloc] init];
+        [loginVC setCompletion:^(BOOL loginSuccess, BOOL loginCancel) {
+            if(loginSuccess)
+            {
+                [self loginSuccess];
+            }
+        }];
+        self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:loginVC];
+        [self.window setRootViewController:self.rootNavigation];
+    }    NSDictionary *notificationInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
     if(notificationInfo)
         [self handleNotification:notificationInfo];
     [WelcomeView showWelcome];
@@ -254,13 +259,17 @@ static SystemSoundID shake_sound_male_id = 0;
         [[TaskUploadManager sharedInstance] cleanTask];
     });
     [self.homeVC.messageVC invalidate];
-    self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:nil];
+    
+    LoginVC *loginVC = [[LoginVC alloc] init];
+    [loginVC setCompletion:^(BOOL loginSuccess, BOOL loginCancel) {
+        if(loginSuccess)
+        {
+            [self loginSuccess];
+        }
+    }];
+    self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:loginVC];
     [self.window setRootViewController:self.rootNavigation];
     [[UserCenter sharedInstance] logout];
-    [LoginVC presentLoginVCAnimation:NO completion:^(BOOL loginSuccess, BOOL loginCancel) {
-        if(loginSuccess)
-            [self loginSuccess];
-    }];
 }
 
 - (void)registerSound

@@ -29,7 +29,7 @@
         self.title = @"软件错误报告";
     else if(self.type == 2)
         self.title = @"产品升级建议";
-    else
+    else if(self.type == 3)
         self.title = @"家庭成员报错";
     if(self.type == 1 || self.type == 2)
     {

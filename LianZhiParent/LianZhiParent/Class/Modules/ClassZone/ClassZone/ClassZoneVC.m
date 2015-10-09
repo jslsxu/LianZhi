@@ -20,7 +20,9 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        [self setBackgroundColor:[UIColor colorWithRed:19 / 255.0 green:48 / 255.0 blue:43 / 255.0 alpha:1.f]];
+        UIView *bgView = [[UIView alloc] initWithFrame:self.bounds];
+        [bgView setBackgroundColor:[UIColor colorWithRed:19 / 255.0 green:48 / 255.0 blue:43 / 255.0 alpha:1.f]];
+        [self addSubview:bgView];
         
         CGFloat buttonWidth = 40;
         _albumButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -113,7 +115,6 @@
 @end
 
 @interface ClassZoneVC ()<ClassZoneItemCellDelegate>
-@property (nonatomic, strong)ClassInfo *classInfo;
 @property (nonatomic, strong)ClassZoneItem *targetClassZoneItem;
 @property (nonatomic, strong)ResponseItem *targetResponseItem;
 @end
@@ -199,7 +200,7 @@
     TimelineCommentItem *curAlert = nil;
     for (TimelineCommentItem *alertInfo in commentArray)
     {
-        if([alertInfo.objid isEqualToString:self.classInfo.classID])
+        if([alertInfo.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
         {
             curAlert = alertInfo;
         }
@@ -329,6 +330,11 @@
     [actionView show];
 }
 
+- (void)onShareToTreeHouse:(ClassZoneItem *)zoneItem
+{
+    
+}
+
 #pragma mark TNBaseTableViewController
 - (BOOL)supportCache
 {
@@ -374,7 +380,7 @@
 {
     NewMessageVC *newMessageVC = [[NewMessageVC alloc] init];
     [newMessageVC setTypes:NewMessageTypeClassZone];
-    [newMessageVC setObjid:self.classInfo.classID];
+    [newMessageVC setObjid:[UserCenter sharedInstance].curChild.uid];
     [CurrentROOTNavigationVC pushViewController:newMessageVC animated:YES];
 }
 

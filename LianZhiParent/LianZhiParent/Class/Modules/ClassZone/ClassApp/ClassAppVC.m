@@ -48,10 +48,10 @@
 - (void)TNBaseCollectionViewControllerModifyLayout:(UICollectionViewLayout *)layout
 {
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)layout;
-    [flowLayout setItemSize:CGSizeMake(60, 60)];
-    [flowLayout setMinimumInteritemSpacing:20];
+    [flowLayout setItemSize:CGSizeMake(70, 80)];
+    [flowLayout setMinimumInteritemSpacing:15];
     [flowLayout setMinimumLineSpacing:15];
-    [flowLayout setSectionInset:UIEdgeInsetsMake(50, 50, 50, 50)];
+    [flowLayout setSectionInset:UIEdgeInsetsMake(50, 40, 50, 40)];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType

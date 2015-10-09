@@ -227,7 +227,7 @@
     {
         LZTabBarButton *sendButton = [LZTabBarButton buttonWithType:UIButtonTypeCustom];
         [sendButton setImage:[UIImage imageNamed:imageArray[i]] forState:UIControlStateNormal];
-        [sendButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [sendButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
         [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [sendButton setTitle:titleArray[i] forState:UIControlStateNormal];
         [sendButton addTarget:self action:NSSelectorFromString([NSString stringWithFormat:@"on%@",imageArray[i]]) forControlEvents:UIControlEventTouchUpInside];

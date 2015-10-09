@@ -28,7 +28,7 @@
     NSArray *           _tabDatas;
     NSMutableArray *    _tabbarButtons;
 }
-@property (nonatomic, strong)MessageVC *messageVC;
+@property (nonatomic, weak)MessageVC *messageVC;
 - (void)selectAtIndex:(NSInteger)index;
 
 

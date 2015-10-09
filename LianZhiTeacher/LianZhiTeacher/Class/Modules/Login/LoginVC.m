@@ -11,7 +11,6 @@
 #import "RegisterVC.h"
 #define kLoginUserNameKey               @"LoginUserNameKey"
 @interface LoginVC ()
-@property (nonatomic, copy)LoginCompletion completion;
 @end
 
 @implementation LoginVC

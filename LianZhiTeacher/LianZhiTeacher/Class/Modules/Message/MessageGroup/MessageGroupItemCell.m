@@ -30,6 +30,11 @@
         [_nameLabel setTextColor:[UIColor colorWithRed:86 / 255.0 green:86 / 255.0 blue:86 / 255.0 alpha:1.0]];
         [self.actualContentView addSubview:_nameLabel];
         
+        _schoolLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_schoolLabel setFont:[UIFont systemFontOfSize:14]];
+        [_schoolLabel setTextColor:[UIColor colorWithRed:86 / 255.0 green:86 / 255.0 blue:86 / 255.0 alpha:1.0]];
+        [self.actualContentView addSubview:_schoolLabel];
+        
         _massChatIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MassChatIndicator"]];
         [_massChatIndicator setHidden:YES];
         [self.actualContentView addSubview:_massChatIndicator];
@@ -86,8 +91,6 @@
     [_timeLabel setRight:self.width - 10];
     
     NSString *name = _messageItem.fromInfo.name;
-    if([_messageItem.fromInfo.label length] > 0)
-        name = [NSString stringWithFormat:@"%@(%@)",name,_messageItem.fromInfo.label];
     _nameLabel.text = name;
     [_nameLabel sizeToFit];
     [_nameLabel setWidth:MIN(_timeLabel.left - 10 - _nameLabel.left - 30, _nameLabel.width)];
@@ -97,10 +100,14 @@
     if(fromType == MessageFromTypeFromClass)
     {
         [_massChatIndicator setHidden:NO];
-        [_massChatIndicator setOrigin:CGPointMake(_nameLabel.right + 10, _nameLabel.y + (_nameLabel.height - _massChatIndicator.height) / 2)];
+        [_massChatIndicator setOrigin:CGPointMake(_nameLabel.right + 5, _nameLabel.y + (_nameLabel.height - _massChatIndicator.height) / 2)];
     }
     else
         [_massChatIndicator setHidden:YES];
+    
+    [_schoolLabel setText:_messageItem.fromInfo.label];
+    [_schoolLabel sizeToFit];
+    [_schoolLabel setFrame:CGRectMake(_massChatIndicator.right + 5, _nameLabel.y + (_nameLabel.height - _schoolLabel.height) / 2, MIN(_schoolLabel.width, _timeLabel.x - 5 - (_massChatIndicator.right + 5)), _schoolLabel.height)];
     
     //通知图标
     if([_messageItem.fromInfo isNotification])

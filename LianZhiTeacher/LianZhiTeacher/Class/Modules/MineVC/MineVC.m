@@ -22,37 +22,43 @@
     if(self)
     {
         _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(20, 10, 55, 55)];
-        [_avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
         [self addSubview:_avatarView];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_nameLabel setTextColor:[UIColor grayColor]];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
-        [_nameLabel setText:[UserCenter sharedInstance].userInfo.name];
-        [_nameLabel sizeToFit];
-        [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, 20)];
         [self addSubview:_nameLabel];
         
         _genderView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        GenderType gender = [UserCenter sharedInstance].userInfo.gender;
-        if(gender == GenderFemale)
-            [_genderView setImage:[UIImage imageNamed:(@"GenderFemale")]];
-        else
-            [_genderView setImage:[UIImage imageNamed:(@"GenderMale")]];
-        [_genderView setFrame:CGRectMake(_nameLabel.right + 5, _nameLabel.y, 8, 14)];
         [self addSubview:_genderView];
         
         _idLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_idLabel setTextColor:[UIColor lightGrayColor]];
         [_idLabel setFont:[UIFont systemFontOfSize:14]];
-        [_idLabel setText:[NSString stringWithFormat:@"连枝号:%@",[UserCenter sharedInstance].userInfo.uid]];
-        [_idLabel sizeToFit];
-        [_idLabel setOrigin:CGPointMake(_avatarView.right + 10, kUserInfoCellHeight - 20 - _idLabel.height)];
         [self addSubview:_idLabel];
     }
     return self;
 }
 
+- (void)refresh
+{
+    [_avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
+    [_nameLabel setText:[UserCenter sharedInstance].userInfo.name];
+    [_nameLabel sizeToFit];
+    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, 20)];
+    
+    GenderType gender = [UserCenter sharedInstance].userInfo.gender;
+    if(gender == GenderFemale)
+        [_genderView setImage:[UIImage imageNamed:(@"GenderFemale")]];
+    else
+        [_genderView setImage:[UIImage imageNamed:(@"GenderMale")]];
+    [_genderView setFrame:CGRectMake(_nameLabel.right + 5, _nameLabel.y, 8, 14)];
+    
+    [_idLabel setText:[NSString stringWithFormat:@"连枝号:%@",[UserCenter sharedInstance].userInfo.uid]];
+    [_idLabel sizeToFit];
+    [_idLabel setOrigin:CGPointMake(_avatarView.right + 10, kUserInfoCellHeight - 20 - _idLabel.height)];
+
+}
 @end
 
 
@@ -62,7 +68,6 @@
 @end
 
 @implementation MineVC
-
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -72,6 +77,12 @@
         self.imageArray = @[@[@"IconMySchool",@"IconSetting"],@[@"IconAbout",@"IconContact"]];
     }
     return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [_tableView reloadData];
 }
 
 - (void)viewDidLoad
@@ -128,6 +139,7 @@
         {
             cell = [[UserInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
         }
+        [cell refresh];
         return cell;
     }
     else

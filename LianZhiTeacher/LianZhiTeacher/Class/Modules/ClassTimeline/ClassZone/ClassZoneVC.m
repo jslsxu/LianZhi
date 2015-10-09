@@ -391,6 +391,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     for (NSInteger i = 0; i < actionCount; i++)
     {
         LZTabBarButton *barButton = [[LZTabBarButton alloc] initWithFrame:CGRectMake(tabWidth * i, 0, tabWidth, viewParent.height)];
+        [barButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
         [barButton setTitle:titleArray[i] forState:UIControlStateNormal];
         [barButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [barButton setTitleColor:kCommonTeacherTintColor forState:UIControlStateHighlighted];

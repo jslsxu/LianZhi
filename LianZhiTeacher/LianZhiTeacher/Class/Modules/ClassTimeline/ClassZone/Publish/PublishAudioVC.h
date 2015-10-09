@@ -10,7 +10,7 @@
 
 @interface PublishAudioVC : PublishBaseVC<AudioRecordViewDelegate>
 {
-    AudioRecordView*    _recordView;
-    UITextField*        _textField;
+    AudioRecordView*            _recordView;
+    UTPlaceholderTextView*      _textView;
 }
 @end

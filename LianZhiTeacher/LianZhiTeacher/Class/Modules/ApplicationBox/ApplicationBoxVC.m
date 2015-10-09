@@ -28,6 +28,8 @@
         [self addSubview:_bgView];
         
         _coverButton = [LZTabBarButton buttonWithType:UIButtonTypeCustom];
+        [_coverButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [_coverButton setSpacing:6];
         [_coverButton setUserInteractionEnabled:NO];
         [_coverButton setFrame:self.bounds];
         [_coverButton setTitleColor:[UIColor colorWithHexString:@"2c2c2c"] forState:UIControlStateNormal];

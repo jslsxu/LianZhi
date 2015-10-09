@@ -13,5 +13,5 @@
     NumIndicator*   _numIndicator;
 }
 @property (nonatomic, copy)NSString *badgeValue;
-@property (nonatomic, assign)BOOL presenting;
+@property (nonatomic, assign)CGFloat spacing;
 @end

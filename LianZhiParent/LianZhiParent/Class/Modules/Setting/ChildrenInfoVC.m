@@ -23,6 +23,7 @@
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         self.width = kScreenWidth;
         _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(15, (kAvatarCellHeight - 46) / 2, 46, 46)];
+        [_avatarView setImageWithUrl:nil];
         [self addSubview:_avatarView];
         
         _modifyLabel = [[UILabel alloc] initWithFrame:CGRectZero];

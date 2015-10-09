@@ -10,7 +10,7 @@
 
 #define kBorderMargin              15
 
-@interface PublishAudioVC ()<UITextFieldDelegate>
+@interface PublishAudioVC ()<UITextViewDelegate>
 
 @end
 
@@ -27,14 +27,14 @@
     [_recordView setDelegate:self];
     [self.view addSubview:_recordView];
     
-    _textField = [[UITextField alloc] initWithFrame:CGRectMake(15, _recordView.bottom, self.view.width - 15 * 2, 40)];
-    [_textField setDelegate:self];
-    [_textField setPlaceholder:@"给录音起个标题吧"];
-    [_textField setFont:[UIFont systemFontOfSize:16]];
-    [_textField setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-    [self.view addSubview:_textField];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(15, _recordView.bottom, self.view.width - 15 * 2, 60)];
+    [_textView setDelegate:self];
+    [_textView setPlaceholder:@"给录音起个标题吧"];
+    [_textView setFont:[UIFont systemFontOfSize:16]];
+    [_textView setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+    [self.view addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(15, _textField.bottom, _textField.width, 1)];
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(15, _textView.bottom, _textView.width, 1)];
     [sepLine setBackgroundColor:kCommonParentTintColor];
     [self.view addSubview:sepLine];
     
@@ -44,32 +44,13 @@
 
 }
 
-- (void)setupTitleView:(UIView *)viewParent
-{
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewParent.width, 1)];
-    [sepLine setBackgroundColor:kSepLineColor];
-    [viewParent addSubview:sepLine];
-    
-    _textField = [[UITextField alloc] initWithFrame:CGRectMake(5, 5, viewParent.width - 5 * 2, viewParent.height - 10)];
-    [_textField addTarget:self action:@selector(onTextFieldChanged:) forControlEvents:UIControlEventEditingChanged];
-    [_textField setTextAlignment:NSTextAlignmentCenter];
-    [_textField setBackgroundColor:[UIColor clearColor]];
-    [_textField setFont:[UIFont systemFontOfSize:14]];
-    [_textField setTextColor:kNormalTextColor];
-    [_textField setReturnKeyType:UIReturnKeyDone];
-    [_textField setPlaceholder:@"点此输入，给录音起个标题吧!"];
-    [_textField setDelegate:self];
-    [viewParent addSubview:_textField];
-    
-}
-
 - (void)onSendClicked
 {
     NSData *amrData = [_recordView tmpAmrData];
     if(amrData.length > 0)
     {
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        [params setValue:_textField.text forKey:@"words"];
+        [params setValue:_textView.text forKey:@"words"];
         [params setValue:kStringFromValue([_recordView tmpAmrDuration]) forKey:@"voice_time"];
         POIItem *poiItem = _poiInfoView.poiItem;
         if(!poiItem.clearLocation)
@@ -111,21 +92,14 @@
 }
 
 #pragma mark - UITextFieldDelegate
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if([string isEqualToString:@"\n"])
+    if([text isEqualToString:@"\n"])
     {
-        [textField resignFirstResponder];
+        [textView resignFirstResponder];
         return NO;
     }
     return YES;
-}
-
-- (void)onTextFieldChanged:(UITextField *)textField
-{
-    NSString *text = textField.text;
-    if(text.length > 200)
-        [textField setText:[text substringToIndex:200]];
 }
 
 //#pragma mark KeyboardNotification

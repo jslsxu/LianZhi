@@ -115,8 +115,11 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
                 [images setValue:UIImageJPEGRepresentation(imageItem.image, 0.8) forKey:photoKey];
         }
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"tree/post_content" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-            for (NSString *key in images.allKeys) {
-                [formData appendPartWithFileData:images[key] name:key fileName:key mimeType:@"image/jpeg"];
+            for (NSString *key in images.allKeys)
+            {
+                NSData *imageData = images[key];
+                if(imageData)
+                    [formData appendPartWithFileData:imageData name:key fileName:key mimeType:@"image/jpeg"];
             }
         } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             TNDataWrapper *infoWrapper = [responseObject getDataWrapperForKey:@"info"];

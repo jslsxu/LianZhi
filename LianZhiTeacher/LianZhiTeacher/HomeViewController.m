@@ -42,6 +42,7 @@ static NSArray *tabDatas = nil;
 
 - (void)dealloc
 {
+    NSLog(@"%@ dealloc",[self class]);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -130,6 +131,7 @@ static NSArray *tabDatas = nil;
     {
         CGFloat spaceX = tabWidth * i;
         LZTabBarButton *barButton = [[LZTabBarButton alloc] initWithFrame:CGRectMake(spaceX, 0, tabWidth, self.tabBar.height)];
+        [barButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
         [barButton setTitle:tabItemTitleArray[i] forState:UIControlStateNormal];
         [barButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [barButton addTarget:self action:@selector(onTabButtonClicked:) forControlEvents:UIControlEventTouchUpInside];

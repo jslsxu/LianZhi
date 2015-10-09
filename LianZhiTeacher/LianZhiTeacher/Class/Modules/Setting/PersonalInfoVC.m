@@ -163,7 +163,7 @@
     [birthDayItem setRequestKey:@"birthday"];
     PersonalInfoItem *emailItem = [[PersonalInfoItem alloc] initWithKey:@"联系邮箱" value:[UserCenter sharedInstance].userInfo.email canEdit:YES];
     [emailItem setRequestKey:@"email"];
-    PersonalInfoItem *phoneItem = [[PersonalInfoItem alloc] initWithKey:@"登陆手机" value:[UserCenter sharedInstance].userInfo.mobile canEdit:NO];
+    PersonalInfoItem *phoneItem = [[PersonalInfoItem alloc] initWithKey:@"登录手机" value:[UserCenter sharedInstance].userInfo.mobile canEdit:NO];
     PersonalInfoItem *passwordItem = [[PersonalInfoItem alloc] initWithKey:@"登录密码" value:@"******" canEdit:NO];
     
     [_infoArray addObjectsFromArray:@[nameItem,nickItem,birthDayItem,emailItem,phoneItem,passwordItem]];

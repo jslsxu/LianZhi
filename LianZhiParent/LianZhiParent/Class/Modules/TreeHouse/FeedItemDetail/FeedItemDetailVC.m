@@ -219,6 +219,7 @@
     for (NSInteger i = 0; i < titleArray.count; i++)
     {
         LZTabBarButton *barButton = [[LZTabBarButton alloc] initWithFrame:CGRectMake(tabWidth * i, 0, tabWidth, viewParent.height)];
+        [barButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
         [barButton setTitle:titleArray[i] forState:UIControlStateNormal];
         [barButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [barButton setTitleColor:kCommonParentTintColor forState:UIControlStateHighlighted];

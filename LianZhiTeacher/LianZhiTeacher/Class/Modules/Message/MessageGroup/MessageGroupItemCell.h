@@ -14,6 +14,7 @@
     LogoView*       _logoView;
     NumIndicator*   _numIndicator;
     UILabel*        _numLabel;
+    UILabel*        _schoolLabel;
     UIImageView*    _soundOff;
     UILabel*        _nameLabel;
     UILabel*        _timeLabel;

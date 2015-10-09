@@ -76,7 +76,7 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
             TNDataWrapper *itemWrapper = [classCommentWrapper getDataWrapperForIndex:i];
             TimelineCommentItem *commentItem = [[TimelineCommentItem alloc] init];
             [commentItem parseData:itemWrapper];
-            [commentItem setObjid:[itemWrapper getStringForKey:@"class_id"]];
+            [commentItem setObjid:[itemWrapper getStringForKey:@"child_id"]];
             [classNewCommentArray addObject:commentItem];
         }
         self.classNewCommentArray = classNewCommentArray;

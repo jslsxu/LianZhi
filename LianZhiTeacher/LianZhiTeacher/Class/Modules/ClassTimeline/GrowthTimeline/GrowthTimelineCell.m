@@ -74,7 +74,7 @@
     GrowthTimelineItem *timelineItem = (GrowthTimelineItem *)modelItem;
     StudentInfo *userInfo = timelineItem.student;
     [_avatarView setImageWithUrl:[NSURL URLWithString:userInfo.avatar]];
-    [_nickNameLabel setText:userInfo.nickName];
+    [_nickNameLabel setText:userInfo.name];
     
     for (NSInteger i = 0; i < 5; i++)
     {

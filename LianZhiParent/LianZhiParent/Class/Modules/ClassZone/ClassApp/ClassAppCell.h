@@ -11,5 +11,6 @@
 @interface ClassAppCell : TNCollectionViewCell
 {
     UIImageView*    _appImageView;
+    UILabel*        _nameLabel;
 }
 @end

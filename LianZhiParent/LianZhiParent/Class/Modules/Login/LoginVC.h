@@ -13,7 +13,7 @@ typedef void(^LoginCompletion)(BOOL loginSuccess, BOOL loginCancel);
     UITextField*    _userNameField;
     UITextField*    _passwordField;
 }
-
+@property (nonatomic, copy)LoginCompletion completion;
 + (void)presentLoginVCAnimation:(BOOL)animated completion:(LoginCompletion)compleciton;
 
 @end

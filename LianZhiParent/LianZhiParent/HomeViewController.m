@@ -34,9 +34,9 @@ static NSArray *tabDatas = nil;
     {
         self.edgesForExtendedLayout = UIRectEdgeNone;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNewMsgNumChanged) name:kNewMsgNumNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFoundChanged) name:kFoundNotification object:nil];
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFoundChanged) name:kFoundNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onChildInfoChanged) name:kChildInfoChangedNotification object:nil];
-        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
         NSMutableArray *subVCs = [[NSMutableArray alloc] initWithCapacity:0];
         NSArray *subVCArray = @[@"MessageVC",@"ContactListVC",@"TreeHouseVC",@"ClassZoneVC",@"DiscoveryVC"];
         
@@ -55,6 +55,37 @@ static NSArray *tabDatas = nil;
     return self;
 }
 
+- (void)onStatusChanged
+{
+    NSInteger newMsg = [UserCenter sharedInstance].statusManager.msgNum;
+    LZTabBarButton *msgButton = (LZTabBarButton *)_tabbarButtons[0];
+    [msgButton setBadgeValue:(newMsg > 0 ? kStringFromValue(newMsg) : nil)];
+    
+    NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+    for (TimelineCommentItem *item in classNewCommentArray)
+    {
+        if([item.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
+        {
+            LZTabBarButton *classTabButton = (LZTabBarButton *)_tabbarButtons[3];
+            NSInteger num = item.alertInfo.num;
+            [classTabButton setBadgeValue:num > 0 ? kStringFromValue(num) : nil];
+            break;
+        }
+    }
+    
+    NSArray *treeNewCommentArray = [UserCenter sharedInstance].statusManager.treeNewCommentArray;
+    for (TimelineCommentItem *item in treeNewCommentArray)
+    {
+        if([item.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
+        {
+            LZTabBarButton *treeTabButton = (LZTabBarButton *)_tabbarButtons[2];
+            NSInteger num = item.alertInfo.num;
+            [treeTabButton setBadgeValue:num > 0 ? kStringFromValue(num) : nil];
+            break;
+        }
+    }
+}
+
 - (void)onNewMsgNumChanged
 {
     NSInteger newMsg = [UserCenter sharedInstance].statusManager.msgNum;
@@ -62,12 +93,12 @@ static NSArray *tabDatas = nil;
     [msgButton setBadgeValue:(newMsg > 0 ? kStringFromValue(newMsg) : nil)];
 }
 
-- (void)onFoundChanged
-{
-    BOOL foundNew = [UserCenter sharedInstance].statusManager.found;
-    LZTabBarButton *msgButton = [_tabbarButtons lastObject];
-    [msgButton setBadgeValue:(foundNew ? @"" : nil)];
-}
+//- (void)onFoundChanged
+//{
+//    BOOL foundNew = [UserCenter sharedInstance].statusManager.found;
+//    LZTabBarButton *msgButton = [_tabbarButtons lastObject];
+//    [msgButton setBadgeValue:(foundNew ? @"" : nil)];
+//}
 
 - (void)onChildInfoChanged
 {
@@ -97,7 +128,7 @@ static NSArray *tabDatas = nil;
     {
         CGFloat spaceX = tabWidth * i;
         LZTabBarButton *barButton = [[LZTabBarButton alloc] initWithFrame:CGRectMake(spaceX, 0, tabWidth, self.tabBar.height)];
-        
+        [barButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
         [barButton setTitle:tabItemTitleArray[i] forState:UIControlStateNormal];
         [barButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [barButton addTarget:self action:@selector(onTabButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
