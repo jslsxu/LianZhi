@@ -17,7 +17,7 @@
     [super viewDidLoad];
     self.title = @"联系客服";
     
-    _titleArray = @[@"软件错误报告",@"产品升级建议",@"家庭成员报错"];
+    _titleArray = @[@"软件错误报告",@"产品升级建议",@"家庭成员报错",@"登录信息修改"];
     
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
@@ -31,7 +31,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return _titleArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

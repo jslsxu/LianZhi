@@ -21,14 +21,13 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
-        self.width = kScreenWidth - 55 - 10;
         [self setBackgroundColor:[UIColor clearColor]];
         _commentLabel = [[UILabel alloc] initWithFrame:self.bounds];
         [_commentLabel setBackgroundColor:[UIColor clearColor]];
         [_commentLabel setFont:[UIFont systemFontOfSize:12]];
         [_commentLabel setNumberOfLines:0];
         [_commentLabel setLineBreakMode:NSLineBreakByWordWrapping];
-        [self addSubview:_commentLabel];
+        [self.contentView addSubview:_commentLabel];
     
         UIView *selectedView = [[UIView alloc] initWithFrame:CGRectZero];
         [selectedView setBackgroundColor:[UIColor colorWithHexString:@"D0D0D0"]];
@@ -51,6 +50,8 @@
     }
     [commentStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@":%@",responseItem.commentItem.content] attributes:contentDic]];
     [_commentLabel setAttributedText:commentStr];
+//    [_commentLabel setFrame:CGRectMake(10, 3, self.width - 10 * 2, 0)];
+//    [_commentLabel sizeToFit];
     CGSize size = [commentStr.string boundingRectWithSize:CGSizeMake(self.width - 10 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:12]];
     [_commentLabel setFrame:CGRectMake(10, 3, size.width, size.height)];
 }
@@ -210,6 +211,12 @@
     [self setHeight:height];
 }
 
+- (void)onDetailClicked
+{
+    if([self.delegate respondsToSelector:@selector(onDetailClicked)])
+        [self.delegate onDetailClicked];
+}
+
 #pragma mark - UITableVIewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -233,7 +240,6 @@
     else
     {
         UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, kExtraHeight)];
-        [footerView setUserInteractionEnabled:NO];
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, footerView.width - 10 * 2, footerView.height)];
         [label setFont:[UIFont systemFontOfSize:12]];
         [label setTextColor:[UIColor colorWithHexString:@"395c9d"]];
@@ -245,6 +251,12 @@
             extraStr = @"更多评论>";
         [label setText:extraStr];
         [footerView addSubview:label];
+        
+        UIButton *coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [coverButton setFrame:label.frame];
+        [coverButton addTarget:self action:@selector(onDetailClicked) forControlEvents:UIControlEventTouchUpInside];
+        [footerView addSubview:coverButton];
+        
         return footerView;
     }
 }
@@ -256,6 +268,7 @@
     if(nil == cell)
     {
         cell = [[CommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+        [cell setWidth:tableView.width];
     }
     [cell setResponseItem:self.responseModel.responseArray[indexPath.row]];
     return cell;

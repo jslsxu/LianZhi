@@ -63,7 +63,7 @@
     CGFloat margin = 15;
     NSInteger vMargin = 8;
     
-    NSArray *functionArray = @[@"请选择功能类型",@"请选择功能类型",@"请选择关联错误的成员"];
+    NSArray *functionArray = @[@"请选择功能类型",@"请选择功能类型",@"请选择关联错误的成员",@""];
     _contactField = [[LZTextField alloc] initWithFrame:CGRectMake(margin, margin, self.view.width - margin * 2, 40)];
     [_contactField setPlaceholder:@"请留下您的联系方式"];
     [_contactField setTextColor:[UIColor colorWithHexString:@"666666"]];
@@ -74,22 +74,25 @@
     [self.view addSubview:_contactField];
     
     CGFloat spaceYStart = _contactField.bottom + vMargin;
-    _groupField = [[LZTextField alloc] initWithFrame:CGRectMake(margin, spaceYStart, self.view.width - margin * 2, 40)];
-    [_groupField setPlaceholder:functionArray[self.type - 1]];
-    [_groupField setTextColor:[UIColor colorWithHexString:@"666666"]];
-    [_groupField setReturnKeyType:UIReturnKeyDone];
-    [_groupField setDelegate:self];
-    [_groupField setFont:[UIFont systemFontOfSize:15]];
-    UIImageView *rightView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]];
-    [rightView setOrigin:CGPointMake(_groupField.width - rightView.width - 10, (_groupField.height - rightView.height) / 2)];
-    [_groupField addSubview:rightView];
-    
-    UIButton *coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [coverButton setFrame:_groupField.bounds];
-    [coverButton addTarget:self action:@selector(onCoverButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_groupField addSubview:coverButton];
-    [self.view addSubview:_groupField];
-    spaceYStart += 40 + vMargin;
+    if(self.type != 4)
+    {
+        _groupField = [[LZTextField alloc] initWithFrame:CGRectMake(margin, spaceYStart, self.view.width - margin * 2, 40)];
+        [_groupField setPlaceholder:functionArray[self.type - 1]];
+        [_groupField setTextColor:[UIColor colorWithHexString:@"666666"]];
+        [_groupField setReturnKeyType:UIReturnKeyDone];
+        [_groupField setDelegate:self];
+        [_groupField setFont:[UIFont systemFontOfSize:15]];
+        UIImageView *rightView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]];
+        [rightView setOrigin:CGPointMake(_groupField.width - rightView.width - 10, (_groupField.height - rightView.height) / 2)];
+        [_groupField addSubview:rightView];
+        
+        UIButton *coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [coverButton setFrame:_groupField.bounds];
+        [coverButton addTarget:self action:@selector(onCoverButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_groupField addSubview:coverButton];
+        [self.view addSubview:_groupField];
+        spaceYStart += 40 + vMargin;
+    }
     
     UIView *textViewBG = [[UIView alloc] initWithFrame:CGRectZero];
     [textViewBG setBackgroundColor:[UIColor whiteColor]];

@@ -24,7 +24,7 @@
         _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(0, 12, 36, 36)];
         [self addSubview:_avatar];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 20, 0, 15)];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 15, 0, 15)];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"747474"]];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [self addSubview:_nameLabel];
@@ -40,7 +40,7 @@
         [_deleteButon addTarget:self action:@selector(onDeleteButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_deleteButon];
         
-        _addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 40, 0, 15)];
+        _addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 35, self.width - 10 - 45, 15)];
         [_addressLabel setTextColor:[UIColor colorWithHexString:@"cacaca"]];
         [_addressLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_addressLabel];

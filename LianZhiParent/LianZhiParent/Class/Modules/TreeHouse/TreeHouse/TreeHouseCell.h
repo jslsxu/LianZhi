@@ -18,7 +18,7 @@ extern NSString *const kTreeHouseItemKey;
 
 @class TreeHouseCell;
 @protocol TreeHouseCellDelegate <NSObject>
-
+- (void)onShowDetail:(TreehouseItem *)treeItem;
 - (void)onActionClicked:(TreeHouseCell *)cell;
 - (void)onResponseClickedAtTarget:(ResponseItem *)responseItem cell:(TreeHouseCell *)cell;
 @end

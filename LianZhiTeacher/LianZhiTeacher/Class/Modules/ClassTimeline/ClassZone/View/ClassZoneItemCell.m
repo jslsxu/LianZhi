@@ -128,6 +128,12 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         [self.delegate onResponseClickedAtTarget:responseItem cell:self];
 }
 
+- (void)onDetailClicked
+{
+    if([self.delegate respondsToSelector:@selector(onShowDetail:)])
+        [self.delegate onShowDetail:(ClassZoneItem *)self.modelItem];
+}
+
 #pragma mark - UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {

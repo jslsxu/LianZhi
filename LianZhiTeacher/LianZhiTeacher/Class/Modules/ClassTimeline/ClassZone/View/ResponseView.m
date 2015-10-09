@@ -209,6 +209,12 @@
     [self setHeight:height];
 }
 
+- (void)onDetailClicked
+{
+    if([self.delegate respondsToSelector:@selector(onDetailClicked)])
+        [self.delegate onDetailClicked];
+}
+
 #pragma mark - UITableVIewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -231,7 +237,7 @@
     else
     {
         UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, kExtraHeight)];
-        [footerView setUserInteractionEnabled:NO];
+        
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, footerView.width - 10 * 2, footerView.height)];
         [label setFont:[UIFont systemFontOfSize:12]];
         [label setTextColor:[UIColor colorWithHexString:@"395c9d"]];
@@ -243,6 +249,11 @@
             extraStr = @"更多评论>";
         [label setText:extraStr];
         [footerView addSubview:label];
+        
+        UIButton *coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [coverButton setFrame:label.frame];
+        [coverButton addTarget:self action:@selector(onDetailClicked) forControlEvents:UIControlEventTouchUpInside];
+        [footerView addSubview:coverButton];
         return footerView;
     }
 }

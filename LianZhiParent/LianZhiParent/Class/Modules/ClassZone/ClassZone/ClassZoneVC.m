@@ -253,7 +253,7 @@
     if([[UserCenter sharedInstance].userInfo.uid isEqualToString:responseItem.sendUser.uid])
     {
         ClassZoneItem *zoneItem = (ClassZoneItem *)cell.modelItem;
-        TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除" action:^{
+        TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除评论" action:^{
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : zoneItem.itemID, @"types" : @"0"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
                 [ProgressHUD showHintText:@"删除成功"];
                 [zoneItem.responseModel removeResponse:responseItem];
@@ -262,7 +262,7 @@
                 [ProgressHUD showHintText:errMsg];
             }];
         }];
-        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消返回" action:nil];
         TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除这条评论?" buttonItems:@[cancelItem, deleteItem]];
         [alertView show];
     }
@@ -328,6 +328,13 @@
         }
     }];
     [actionView show];
+}
+
+- (void)onShowDetail:(ClassZoneItem *)zoneItem
+{
+    FeedItemDetailVC *itemDetailVC = [[FeedItemDetailVC alloc] init];
+    [itemDetailVC setZoneItem:zoneItem];
+    [self.navigationController pushViewController:itemDetailVC animated:YES];
 }
 
 - (void)onShareToTreeHouse:(ClassZoneItem *)zoneItem

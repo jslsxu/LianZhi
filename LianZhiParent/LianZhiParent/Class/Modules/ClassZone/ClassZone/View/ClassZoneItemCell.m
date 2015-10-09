@@ -123,6 +123,12 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     }
 }
 
+- (void)onDetailClicked
+{
+    if([self.delegate respondsToSelector:@selector(onShowDetail:)])
+        [self.delegate onShowDetail:(ClassZoneItem *)self.modelItem];
+}
+
 #pragma mark -ResponseDelegate
 - (void)onResponseItemClicked:(ResponseItem *)responseItem
 {

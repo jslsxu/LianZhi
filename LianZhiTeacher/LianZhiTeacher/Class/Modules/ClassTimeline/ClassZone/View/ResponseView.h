@@ -27,7 +27,7 @@
 @protocol ResponseDelegate <NSObject>
 
 - (void)onResponseItemClicked:(ResponseItem *)responseItem;
-
+- (void)onDetailClicked;
 @end
 
 @interface ResponseView : UIView

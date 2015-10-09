@@ -274,7 +274,7 @@
     {
         TNButtonItem *mofifyItem = [TNButtonItem itemWithTitle:@"前往客服中心上报" action:^{
             ReportProblemVC *reportVC = [[ReportProblemVC alloc] init];
-            [reportVC setType:1];
+            [reportVC setType:4];
             [self.navigationController pushViewController:reportVC animated:YES];
         }];
         TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消本次操作" action:^{

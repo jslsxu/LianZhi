@@ -734,6 +734,26 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [actionView show];
 }
 
+- (void)onShowDetail:(ClassZoneItem *)zoneItem
+{
+    if(!zoneItem.newSent)
+    {
+        FeedItemDetailVC *feedItemDetailVC = [[FeedItemDetailVC alloc] init];
+        [feedItemDetailVC setZoneItem:zoneItem];
+        [feedItemDetailVC setClassId:self.classInfo.classID];
+        [feedItemDetailVC setDeleteCallBack:^{
+            NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:zoneItem];
+            if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
+            {
+                [self.tableViewModel.modelItemArray removeObject:zoneItem];
+                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
+            }
+            
+        }];
+        [self.navigationController pushViewController:feedItemDetailVC animated:YES];
+    }
+}
 
 #pragma mark - ClassZoneHeaderDelegate
 

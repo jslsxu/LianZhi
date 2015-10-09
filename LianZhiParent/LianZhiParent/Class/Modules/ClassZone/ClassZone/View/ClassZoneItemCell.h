@@ -15,7 +15,7 @@
 - (void)onShareToTreeHouse:(ClassZoneItem *)zoneItem;
 - (void)onActionClicked:(ClassZoneItemCell *)cell;
 - (void)onResponseClickedAtTarget:(ResponseItem *)responseItem cell:(ClassZoneItemCell *)cell;
-
+- (void)onShowDetail:(ClassZoneItem *)zoneItem;
 @end
 
 @interface ClassZoneItemCell : TNTableViewCell<UICollectionViewDataSource, UICollectionViewDelegate, ResponseDelegate>

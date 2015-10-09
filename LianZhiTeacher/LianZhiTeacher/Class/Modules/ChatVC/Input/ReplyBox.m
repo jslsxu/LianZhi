@@ -68,7 +68,7 @@
     }
     
     [self.hPGrowingTextView resignFirstResponder];
-    self.frame = CGRectMake(0, self.superview.frame.size.height - self.frame.size.height, self.frame.size.width, self.frame.size.height);
+    self.frame = CGRectMake(0, self.superview.frame.size.height, self.frame.size.width, self.frame.size.height);
     
     // notify move
     if(self.delegate && [self.delegate respondsToSelector:@selector(onActionViewMove:Duration:Type:)]) {
@@ -313,7 +313,7 @@
     // get a rect for the textView frame
     CGRect containerFrame = self.frame;
     
-    containerFrame.origin.y = self.superview.bounds.size.height - self.frame.size.height;
+    containerFrame.origin.y = self.superview.bounds.size.height;
     
     // animations settings
     [UIView beginAnimations:nil context:NULL];

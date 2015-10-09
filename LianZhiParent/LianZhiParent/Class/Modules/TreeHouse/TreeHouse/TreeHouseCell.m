@@ -248,6 +248,12 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     }
 }
 
+- (void)onDetailClicked
+{
+    if([self.delegate respondsToSelector:@selector(onShowDetail:)])
+        [self.delegate onShowDetail:(TreehouseItem *)self.modelItem];
+}
+
 #pragma mark - ResponseViewDelegate
 - (void)onResponseItemClicked:(ResponseItem *)responseItem
 {

@@ -25,7 +25,7 @@
 @end
 
 @protocol ResponseDelegate <NSObject>
-
+- (void)onDetailClicked;
 - (void)onResponseItemClicked:(ResponseItem *)responseItem;
 
 @end

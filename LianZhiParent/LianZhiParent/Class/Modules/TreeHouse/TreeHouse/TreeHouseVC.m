@@ -204,9 +204,9 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     _headerView = [[TreeHouseHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 0)];
     [self.tableView setTableHeaderView:_headerView];
     
-    _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - REPLY_BOX_HEIGHT, self.view.width, REPLY_BOX_HEIGHT)];
+    _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, kScreenHeight, self.view.width, REPLY_BOX_HEIGHT)];
     [_replyBox setDelegate:self];
-    [ApplicationDelegate.homeVC.view addSubview:_replyBox];
+    [[UIApplication sharedApplication].keyWindow addSubview:_replyBox];
     _replyBox.hidden = YES;
 }
 
@@ -385,7 +385,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     if([[UserCenter sharedInstance].userInfo.uid isEqualToString:responseItem.sendUser.uid])
     {
         TreehouseItem *zoneItem = (TreehouseItem *)cell.modelItem;
-        TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除" action:^{
+        TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除评论" action:^{
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : zoneItem.itemID, @"types" : @"1"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
                 [ProgressHUD showHintText:@"删除成功"];
                 [zoneItem.responseModel removeResponse:responseItem];
@@ -394,7 +394,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
                 [ProgressHUD showHintText:errMsg];
             }];
         }];
-        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消返回" action:nil];
         TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除这条评论?" buttonItems:@[cancelItem, deleteItem]];
         [alertView show];
     }
@@ -405,6 +405,28 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         [_replyBox assignFocus];
         self.targetTreeHouseItem = (TreehouseItem *)cell.modelItem;
         self.targetResponseItem = responseItem;
+    }
+}
+
+- (void)onShowDetail:(TreehouseItem *)treeItem
+{
+    if(!treeItem.newSend)
+    {
+        TreeHouseItemDetailVC *detailVC = [[TreeHouseItemDetailVC alloc] init];
+        [detailVC setTreeHouseItem:treeItem];
+        [detailVC setDeleteCallBack:^{
+            NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:treeItem];
+            if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
+            {
+                [self.tableViewModel.modelItemArray removeObject:treeItem];
+                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
+            }
+        }];
+        [detailVC setModifyCallBack:^{
+            [self.tableView reloadData];
+        }];
+        [self.navigationController pushViewController:detailVC animated:YES];
     }
 }
 
