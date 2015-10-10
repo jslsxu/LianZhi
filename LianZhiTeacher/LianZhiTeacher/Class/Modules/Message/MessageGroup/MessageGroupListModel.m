@@ -20,6 +20,7 @@
     self.label = [dataWrapper getStringForKey:@"label"];
     self.typeName = [dataWrapper getStringForKey:@"type_name"];
     self.from_obj_id = [dataWrapper getStringForKey:@"from_obj_id"];
+    self.mobile = [dataWrapper getStringForKey:@"mobile"];
 }
 
 - (BOOL)isNotification

@@ -24,12 +24,11 @@
         [self addSubview:_nameLabel];
 
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 44 - 0.5, self.width, 0.5)];
-        [_sepLine setBackgroundColor:[UIColor colorWithRed:240 / 255.0 green:240 / 255.0 blue:240 / 255.0 alpha:1.f]];
+        [_sepLine setBackgroundColor:kSepLineColor];
         [self addSubview:_sepLine];
         
         _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
-        [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
         [_chatButton setImage:[UIImage imageNamed:@"ChatButtonNormal"] forState:UIControlStateNormal];
         [_chatButton setImage:[UIImage imageNamed:@"ChatButtonHighlighted"] forState:UIControlStateHighlighted];
         [self addSubview:_chatButton];
@@ -42,15 +41,6 @@
     _classInfo = classInfo;
     [_logoView setImageWithUrl:[NSURL URLWithString:_classInfo.logoUrl]];
     [_nameLabel setText:_classInfo.className];
-}
-
-- (void)onChatClicked
-{
-    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-    [chatVC setTargetID:self.classInfo.classID];
-    [chatVC setChatType:ChatTypeClass];
-    [chatVC setTitle:self.classInfo.className];
-    [ApplicationDelegate popAndPush:chatVC];
 }
 
 @end
@@ -114,9 +104,13 @@
         [_commentLabel setText:teacher.title];
         [_commentLabel sizeToFit];
         [_commentLabel setOrigin:CGPointMake(_nameLabel.right + 15, (self.height - _commentLabel.height) / 2)];
+        [self setAccessoryView:nil];
     }
     else
+    {
         [_chatButton setHidden:YES];
+        [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+    }
 }
 
 - (void)onChatClicked

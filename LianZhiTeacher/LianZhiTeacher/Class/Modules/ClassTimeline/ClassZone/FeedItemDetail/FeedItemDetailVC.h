@@ -16,6 +16,7 @@
     UILabel*    _nameLabel;
     UILabel*    _timeLabel;
     UILabel*    _addressLabel;
+    UIButton*   _addressButton;
     UIButton*   _deleteButon;
     UILabel*    _contentLabel;
     MessageVoiceButton* _voiceButton;

@@ -8,6 +8,9 @@
 
 #import "POIListModel.h"
 
+@implementation PositionItem
+@end
+
 @implementation POIItem
 
 

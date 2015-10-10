@@ -31,7 +31,8 @@
     }
     else
     {
-        
+        if(self.mobile.length > 0)
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"CallMobile"] style:UIBarButtonItemStylePlain target:self action:@selector(onTelephoneClicked)];
     }
     
     _inputView = [[InputBarView alloc] init];
@@ -59,6 +60,20 @@
     [classMemberVC setClassID:self.targetID];
     [classMemberVC setTitle:self.title];
     [self.navigationController pushViewController:classMemberVC animated:YES];
+}
+
+- (void)onTelephoneClicked
+{
+    if(self.mobile.length > 0)
+    {
+        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+        TNButtonItem *item = [TNButtonItem itemWithTitle:@"拨打" action:^{
+            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",self.mobile];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+        }];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",self.mobile] buttonItems:@[cancelItem,item]];
+        [alertView show];
+    }
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType

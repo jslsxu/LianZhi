@@ -17,7 +17,8 @@
     self.formatTime = [dataWrapper getStringForKey:@"time_str"];
     self.canEdit = [dataWrapper getBoolForKey:@"can_edit"];
     self.position = [dataWrapper getStringForKey:@"position"];
-    
+    self.longitude = [dataWrapper getFloatForKey:@"longitude"];
+    self.latitude = [dataWrapper getFloatForKey:@"latitude"];
     TNDataWrapper *audioWrapper = [dataWrapper getDataWrapperForKey:@"voice"];
     if([audioWrapper count] > 0)
     {

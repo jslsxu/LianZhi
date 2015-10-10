@@ -21,6 +21,7 @@
         [_hintLabel setTextAlignment:NSTextAlignmentCenter];
         [_hintLabel setFont:[UIFont systemFontOfSize:14]];
         [_hintLabel setText:@"添加一张"];
+        [_hintLabel sizeToFit];
         [self addSubview:_hintLabel];
         
         _cameraBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -40,9 +41,13 @@
 
 - (void)layoutSubviews
 {
-    [_hintLabel setWidth:self.width];
-    [_cameraBtn setFrame:CGRectMake(self.width / 4 - 36 / 2, _hintLabel.bottom + 5, 36, 36)];
-    [_albumBtn setFrame:CGRectMake(self.width * 3 / 4 - 36 / 2, _hintLabel.bottom + 5, 36, 36)];
+    NSInteger hMargin = 10;
+    NSInteger VMargin = 10;
+    NSInteger width = 36 * 2 + hMargin;
+    NSInteger height = 36 + 20 + VMargin;
+    [_hintLabel setOrigin:CGPointMake((self.width - _hintLabel.width) / 2, (self.height - height) / 2)];
+    [_cameraBtn setOrigin:CGPointMake((self.width - width) / 2, _hintLabel.bottom + VMargin)];
+    [_albumBtn setOrigin:CGPointMake(_cameraBtn.right + hMargin, _hintLabel.bottom + VMargin)];
 }
 
 - (void)onCameraButtonClicked

@@ -174,6 +174,7 @@
         [chatVC setTo_objid:self.schooldInfo.schoolID];
         [chatVC setTargetID:teacherInfo.uid];
         [chatVC setChatType:ChatTypeTeacher];
+        [chatVC setMobile:teacherInfo.mobile];
         [chatVC setTitle:teacherInfo.name];
         [ApplicationDelegate popAndPush:chatVC];
     }

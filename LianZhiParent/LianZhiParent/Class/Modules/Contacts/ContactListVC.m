@@ -187,6 +187,7 @@
     JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
     [chatVC setTo_objid:classInfo.schoolInfo.schoolID];
     [chatVC setTargetID:teacherInfo.uid];
+    [chatVC setMobile:teacherInfo.mobile];
     [chatVC setTitle:teacherInfo.teacherName];
     [chatVC setChatType:ChatTypeTeacher];
     [ApplicationDelegate popAndPush:chatVC];

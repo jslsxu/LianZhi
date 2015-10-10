@@ -8,7 +8,7 @@
 
 #import "TreeHouseCell.h"
 #import "CollectionImageCell.h"
-
+#import "DestinationVC.h"
 #define kInnerMargin                        8
 
 NSString *const kTreeHouseItemDeleteNotification = @"TreeHouseItemDeleteNotification";
@@ -58,10 +58,12 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [_timeLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
         [_bgView addSubview:_timeLabel];
         
-        _addressLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_addressLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
-        [_addressLabel setFont:[UIFont systemFontOfSize:12]];
-        [_bgView addSubview:_addressLabel];
+        _addressButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_addressButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithWhite:0 alpha:0.5] size:CGSizeMake(10, 10)] resizableImageWithCapInsets:UIEdgeInsetsMake(2, 2, 2, 2)] forState:UIControlStateHighlighted];
+        [_addressButton addTarget:self action:@selector(onPositionTap) forControlEvents:UIControlEventTouchUpInside];
+        [_addressButton setTitleColor:[UIColor colorWithHexString:@"9a9a9a"] forState:UIControlStateNormal];
+        [_addressButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
+        [_bgView addSubview:_addressButton];
         
         _trashButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_trashButton setImage:[UIImage imageNamed:@"TimelineTrash"] forState:UIControlStateNormal];
@@ -159,9 +161,9 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(_authorLabel.right + 5, _authorLabel.bottom - _timeLabel.height)];
     
-    [_addressLabel setText:item.position];
-    [_addressLabel sizeToFit];
-    [_addressLabel setOrigin:CGPointMake(10, 25)];
+    [_addressButton setTitle:item.position forState:UIControlStateNormal];
+    CGSize positionSize = [item.position sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12]}];
+    [_addressButton setFrame:CGRectMake(10, 27, positionSize.width, positionSize.height)];
     
     [_trashButton setFrame:CGRectMake(_bgView.width - 30 - 5, 5, 30, 30)];
     [_trashButton setHidden:!item.canEdit];
@@ -238,6 +240,19 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     
     spaceYStart += _responseView.height + 10;
     [_bgView setHeight:spaceYStart];
+}
+
+- (void)onPositionTap
+{
+    TreehouseItem *item = (TreehouseItem *)self.modelItem;
+    if(item.position.length > 0)
+    {
+        DestinationVC *destinationVC = [[DestinationVC alloc] init];
+        [destinationVC setPosition:item.position];
+        [destinationVC setLongitude:item.longitude];
+        [destinationVC setLatitude:item.latitude];
+        [CurrentROOTNavigationVC pushViewController:destinationVC animated:YES];
+    }
 }
 
 - (void)onActionClicked

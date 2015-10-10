@@ -82,7 +82,9 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         [self addSubview:_collectionView];
         
         _addressButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_addressButton setTitleColor:[UIColor colorWithHexString:@"a0a0a0"] forState:UIControlStateNormal];
+        [_addressButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithWhite:0 alpha:0.5] size:CGSizeMake(10, 10)] resizableImageWithCapInsets:UIEdgeInsetsMake(2, 2, 2, 2)] forState:UIControlStateHighlighted];
+        [_addressButton addTarget:self action:@selector(onAddressClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_addressButton setTitleColor:[UIColor colorWithHexString:@"9a9a9a"] forState:UIControlStateNormal];
         [_addressButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_addressButton];
         
@@ -118,6 +120,19 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     if([self.delegate respondsToSelector:@selector(onActionClicked:)])
     {
         [self.delegate onActionClicked:self];
+    }
+}
+
+- (void)onAddressClicked
+{
+    ClassZoneItem *item = (ClassZoneItem *)self.modelItem;
+    if(item.position.length > 0)
+    {
+        DestinationVC *destinationVC = [[DestinationVC alloc] init];
+        [destinationVC setPosition:item.position];
+        [destinationVC setLongitude:item.longitude];
+        [destinationVC setLatitude:item.latitude];
+        [CurrentROOTNavigationVC pushViewController:destinationVC animated:YES];
     }
 }
 

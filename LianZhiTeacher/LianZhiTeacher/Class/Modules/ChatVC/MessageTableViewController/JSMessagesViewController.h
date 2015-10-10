@@ -15,4 +15,5 @@
 @property (nonatomic, assign)ChatType chatType;
 @property (nonatomic, copy)NSString *userID;
 @property (nonatomic, copy)NSString *name;
+@property (nonatomic, copy)NSString *mobile;
 @end

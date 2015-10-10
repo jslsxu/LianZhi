@@ -90,24 +90,34 @@
     [_timeLabel sizeToFit];
     [_timeLabel setRight:self.width - 10];
     
-    NSString *name = _messageItem.fromInfo.name;
-    _nameLabel.text = name;
-    [_nameLabel sizeToFit];
-    [_nameLabel setWidth:MIN(_timeLabel.left - 10 - _nameLabel.left - 30, _nameLabel.width)];
-    
     MessageFromType fromType = _messageItem.fromInfo.type;
+    NSString *name = _messageItem.fromInfo.name;
+    if(fromType != MessageFromTypeFromClass)
+    {
+        if(_messageItem.fromInfo.label.length > 0)
+            name = [NSString stringWithFormat:@"%@(%@)",name,_messageItem.fromInfo.label];
+    }
+    _nameLabel.text = name;
+    CGSize nameSize = [name boundingRectWithSize:CGSizeMake(_timeLabel.left - _nameLabel.left - 40, CGFLOAT_MAX) andFont:_nameLabel.font];
+    [_nameLabel setWidth:MIN(_timeLabel.left - _nameLabel.left - 40, nameSize.width)];
+    
     //群聊图标
     if(fromType == MessageFromTypeFromClass)
     {
         [_massChatIndicator setHidden:NO];
-        [_massChatIndicator setOrigin:CGPointMake(_nameLabel.right + 5, _nameLabel.y + (_nameLabel.height - _massChatIndicator.height) / 2)];
+        [_massChatIndicator setOrigin:CGPointMake(_nameLabel.right + 10, _nameLabel.y + (_nameLabel.height - _massChatIndicator.height) / 2)];
+        
+        [_schoolLabel setHidden:NO];
+        [_schoolLabel setText:_messageItem.fromInfo.label];
+        [_schoolLabel sizeToFit];
+        [_schoolLabel setFrame:CGRectMake(_massChatIndicator.right + 5, _nameLabel.y + (_nameLabel.height - _schoolLabel.height) / 2, MIN(_schoolLabel.width, _timeLabel.x - 5 - (_massChatIndicator.right + 5)), _schoolLabel.height)];
     }
     else
+    {
         [_massChatIndicator setHidden:YES];
-    
-    [_schoolLabel setText:_messageItem.fromInfo.label];
-    [_schoolLabel sizeToFit];
-    [_schoolLabel setFrame:CGRectMake(_massChatIndicator.right + 5, _nameLabel.y + (_nameLabel.height - _schoolLabel.height) / 2, MIN(_schoolLabel.width, _timeLabel.x - 5 - (_massChatIndicator.right + 5)), _schoolLabel.height)];
+        [_schoolLabel setHidden:YES];
+    }
+
     
     //通知图标
     if([_messageItem.fromInfo isNotification])

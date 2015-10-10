@@ -339,6 +339,11 @@
 		37CFA5B51A4AF2920061D7B8 /* MessageDetailItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CFA5B41A4AF2920061D7B8 /* MessageDetailItemCell.m */; };
 		37CFA5B81A4AF2A70061D7B8 /* MessageDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CFA5B71A4AF2A70061D7B8 /* MessageDetailModel.m */; };
 		37D5536F1A7EAE6F00D77F89 /* ClassAlbumVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D5536E1A7EAE6F00D77F89 /* ClassAlbumVC.m */; };
+		37D6EE1C1BC8F984000994A2 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6EE1B1BC8F984000994A2 /* MapKit.framework */; };
+		37D6EE231BC90338000994A2 /* DestinationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EE221BC90338000994A2 /* DestinationVC.m */; };
+		37D6EE261BC9036D000994A2 /* RegionAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EE251BC9036D000994A2 /* RegionAnnotationView.m */; };
+		37D6EE291BC908B0000994A2 /* CheckInstalledMapAPP.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EE271BC908B0000994A2 /* CheckInstalledMapAPP.m */; };
+		37D6EE2C1BC90B05000994A2 /* LocationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EE2B1BC90B05000994A2 /* LocationChange.m */; };
 		37E569AD1AEF8FB400337DA4 /* QrCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E569AC1AEF8FB400337DA4 /* QrCodeView.m */; };
 		37E7C9151B1613EC005D653F /* SurroundingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E7C9141B1613EC005D653F /* SurroundingVC.m */; };
 		37E7C9181B161403005D653F /* SurroundingItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E7C9171B161403005D653F /* SurroundingItemCell.m */; };
@@ -1055,6 +1060,15 @@
 		37CFA5B71A4AF2A70061D7B8 /* MessageDetailModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageDetailModel.m; sourceTree = "<group>"; };
 		37D5536D1A7EAE6F00D77F89 /* ClassAlbumVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassAlbumVC.h; sourceTree = "<group>"; };
 		37D5536E1A7EAE6F00D77F89 /* ClassAlbumVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassAlbumVC.m; sourceTree = "<group>"; };
+		37D6EE1B1BC8F984000994A2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		37D6EE211BC90338000994A2 /* DestinationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationVC.h; sourceTree = "<group>"; };
+		37D6EE221BC90338000994A2 /* DestinationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationVC.m; sourceTree = "<group>"; };
+		37D6EE241BC9036D000994A2 /* RegionAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegionAnnotationView.h; sourceTree = "<group>"; };
+		37D6EE251BC9036D000994A2 /* RegionAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegionAnnotationView.m; sourceTree = "<group>"; };
+		37D6EE271BC908B0000994A2 /* CheckInstalledMapAPP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckInstalledMapAPP.m; sourceTree = "<group>"; };
+		37D6EE281BC908B0000994A2 /* CheckInstalledMapAPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckInstalledMapAPP.h; sourceTree = "<group>"; };
+		37D6EE2A1BC90B05000994A2 /* LocationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationChange.h; sourceTree = "<group>"; };
+		37D6EE2B1BC90B05000994A2 /* LocationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationChange.m; sourceTree = "<group>"; };
 		37E569AB1AEF8FB400337DA4 /* QrCodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QrCodeView.h; sourceTree = "<group>"; };
 		37E569AC1AEF8FB400337DA4 /* QrCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QrCodeView.m; sourceTree = "<group>"; };
 		37E7C9131B1613EC005D653F /* SurroundingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurroundingVC.h; sourceTree = "<group>"; };
@@ -1145,6 +1159,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37D6EE1C1BC8F984000994A2 /* MapKit.framework in Frameworks */,
 				3793F7561B7CFFD900501F77 /* AMapSearchKit.framework in Frameworks */,
 				37E7C9491B162C61005D653F /* Security.framework in Frameworks */,
 				3793F7941B7CFFD900501F77 /* libzbar.a in Frameworks */,
@@ -2463,6 +2478,7 @@
 		37C355F91A3FD67300B948E6 = {
 			isa = PBXGroup;
 			children = (
+				37D6EE1B1BC8F984000994A2 /* MapKit.framework */,
 				37E7C9481B162C61005D653F /* Security.framework */,
 				37E7C9461B162C58005D653F /* libstdc++.6.0.9.dylib */,
 				37E7C9441B162C4B005D653F /* libz.dylib */,
@@ -2717,6 +2733,21 @@
 			path = MessageDetail;
 			sourceTree = "<group>";
 		};
+		37D6EE201BC90338000994A2 /* DestinationVC */ = {
+			isa = PBXGroup;
+			children = (
+				37D6EE211BC90338000994A2 /* DestinationVC.h */,
+				37D6EE221BC90338000994A2 /* DestinationVC.m */,
+				37D6EE241BC9036D000994A2 /* RegionAnnotationView.h */,
+				37D6EE251BC9036D000994A2 /* RegionAnnotationView.m */,
+				37D6EE271BC908B0000994A2 /* CheckInstalledMapAPP.m */,
+				37D6EE281BC908B0000994A2 /* CheckInstalledMapAPP.h */,
+				37D6EE2A1BC90B05000994A2 /* LocationChange.h */,
+				37D6EE2B1BC90B05000994A2 /* LocationChange.m */,
+			);
+			path = DestinationVC;
+			sourceTree = "<group>";
+		};
 		37E569AA1AEF8F8E00337DA4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2756,6 +2787,7 @@
 				37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */,
 				3705FF951BA2CCEF00F0C6F6 /* NumIndicator.m */,
 				3705FF961BA2CCEF00F0C6F6 /* NumIndicator.h */,
+				37D6EE201BC90338000994A2 /* DestinationVC */,
 			);
 			path = CommonViews;
 			sourceTree = "<group>";
@@ -2996,6 +3028,7 @@
 				3793F80D1B7CFFD900501F77 /* UIImageView+WebCache.m in Sources */,
 				3793F7DE1B7CFFD900501F77 /* UIView+Frame.m in Sources */,
 				3793F7731B7CFFD900501F77 /* REPickerItem.m in Sources */,
+				37D6EE261BC9036D000994A2 /* RegionAnnotationView.m in Sources */,
 				3793F7AC1B7CFFD900501F77 /* CTAssetScrollView.m in Sources */,
 				3793F7CF1B7CFFD900501F77 /* WelcomeView.m in Sources */,
 				3793F7F11B7CFFD900501F77 /* MLPlayVoiceButton.m in Sources */,
@@ -3005,6 +3038,7 @@
 				3793F7A01B7CFFD900501F77 /* AFSecurityPolicy.m in Sources */,
 				37CFA5241A499C210061D7B8 /* MessageGroupItemCell.m in Sources */,
 				3793F7AE1B7CFFD900501F77 /* CTAssetsGroupViewController.m in Sources */,
+				37D6EE2C1BC90B05000994A2 /* LocationChange.m in Sources */,
 				3793F80C1B7CFFD900501F77 /* UIImageView+HighlightedWebCache.m in Sources */,
 				3793F8141B7CFFD900501F77 /* MJRefreshBaseView.m in Sources */,
 				37EAC9F01B82DEE5007BFBA1 /* iCarousel.m in Sources */,
@@ -3184,6 +3218,7 @@
 				3793F78C1B7CFFD900501F77 /* bitstream.c in Sources */,
 				3793F7EB1B7CFFD900501F77 /* AmrRecordWriter.m in Sources */,
 				3793F7AD1B7CFFD900501F77 /* CTAssetsGroupViewCell.m in Sources */,
+				37D6EE291BC908B0000994A2 /* CheckInstalledMapAPP.m in Sources */,
 				3793F7C31B7CFFD900501F77 /* LZTextField.m in Sources */,
 				3793F7721B7CFFD900501F77 /* RENumberItem.m in Sources */,
 				37C53AA81B14E3BF00C3ED69 /* VacationHistoryVC.m in Sources */,
@@ -3236,6 +3271,7 @@
 				3720C1461A41E19D000357A5 /* SettingsVC.m in Sources */,
 				37CFA5B21A4AF27C0061D7B8 /* MessageDetailVC.m in Sources */,
 				3793F8081B7CFFD900501F77 /* UIButton+WebCache.m in Sources */,
+				37D6EE231BC90338000994A2 /* DestinationVC.m in Sources */,
 				3793F7A11B7CFFD900501F77 /* AFURLConnectionOperation.m in Sources */,
 				37FD6DC41BAE7C7F00C83AB4 /* MessageItem.m in Sources */,
 				37E7C91B1B161418005D653F /* SurroundingItem.m in Sources */,

@@ -8,6 +8,7 @@
 
 #import "ClassZoneItemCell.h"
 #import "CollectionImageCell.h"
+#import "DestinationVC.h"
 #define kInnerMargin                    8
 #define kImageLeftMargin                55
 #define kImageRightMargin               20
@@ -81,7 +82,9 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         [self addSubview:_collectionView];
         
         _addressButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_addressButton setTitleColor:[UIColor colorWithHexString:@"a0a0a0"] forState:UIControlStateNormal];
+        [_addressButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithWhite:0 alpha:0.5] size:CGSizeMake(10, 10)] resizableImageWithCapInsets:UIEdgeInsetsMake(2, 2, 2, 2)] forState:UIControlStateHighlighted];
+        [_addressButton addTarget:self action:@selector(onAddressClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_addressButton setTitleColor:[UIColor colorWithHexString:@"9a9a9a"] forState:UIControlStateNormal];
         [_addressButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_addressButton];
         
@@ -127,6 +130,19 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
 {
     if([self.delegate respondsToSelector:@selector(onShowDetail:)])
         [self.delegate onShowDetail:(ClassZoneItem *)self.modelItem];
+}
+
+- (void)onAddressClicked
+{
+    ClassZoneItem *item = (ClassZoneItem *)self.modelItem;
+    if(item.position.length > 0)
+    {
+        DestinationVC *destinationVC = [[DestinationVC alloc] init];
+        [destinationVC setPosition:item.position];
+        [destinationVC setLongitude:item.longitude];
+        [destinationVC setLatitude:item.latitude];
+        [CurrentROOTNavigationVC pushViewController:destinationVC animated:YES];
+    }
 }
 
 #pragma mark -ResponseDelegate
@@ -220,7 +236,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     }
     [_addressButton setTitle:item.position forState:UIControlStateNormal];
     CGSize titleSize = [[_addressButton titleForState:UIControlStateNormal] sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12]}];
-    [_addressButton setFrame:CGRectMake(kImageLeftMargin, spaceYStart, titleSize.width, 20)];
+    [_addressButton setFrame:CGRectMake(kImageLeftMargin, spaceYStart, titleSize.width, titleSize.height)];
     [_actionButton setFrame:CGRectMake(self.width - 40, spaceYStart, 40, 20)];
     spaceYStart += 20 + 10;
     

@@ -27,7 +27,7 @@ extern NSString *const kTreeHouseItemKey;
 {
     UILabel*            _authorLabel;
     UILabel*            _dateLabel;
-    UILabel*            _addressLabel;
+    UIButton*           _addressButton;
     UILabel*            _timeLabel;
     UILabel*            _tagLabel;
     UIButton*           _tagButton;

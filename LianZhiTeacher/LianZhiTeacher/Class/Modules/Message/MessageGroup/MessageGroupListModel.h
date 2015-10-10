@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, MessageFromType){
 @property (nonatomic, strong)UIImage *logoImage;
 @property (nonatomic, copy)NSString *typeName;
 @property (nonatomic, copy)NSString *from_obj_id;
+@property (nonatomic, copy)NSString *mobile;
 - (BOOL)isNotification;
 @end
 

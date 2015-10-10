@@ -34,6 +34,11 @@
         [_massChatIndicator setHidden:YES];
         [self.actualContentView addSubview:_massChatIndicator];
         
+        _schoolLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_schoolLabel setFont:[UIFont systemFontOfSize:14]];
+        [_schoolLabel setTextColor:[UIColor colorWithRed:86 / 255.0 green:86 / 255.0 blue:86 / 255.0 alpha:1.0]];
+        [self.actualContentView addSubview:_schoolLabel];
+        
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.right + 10, 10, self.width - 10 - (_nameLabel.right + 10), 18)];
         [_timeLabel setFont:[UIFont systemFontOfSize:13]];
         [_timeLabel setTextColor:[UIColor colorWithRed:81 / 255.0 green:81 / 255.0  blue:81 / 255.0  alpha:1.0]];
@@ -85,22 +90,33 @@
     [_timeLabel sizeToFit];
     [_timeLabel setRight:self.width - 10];
     
+    MessageFromType fromType = _messageItem.fromInfo.type;
     NSString *name = _messageItem.fromInfo.name;
-    if([_messageItem.fromInfo.label length] > 0)
-        name = [NSString stringWithFormat:@"%@(%@)",name,_messageItem.fromInfo.label];
+    if(fromType != MessageFromTypeFromClass)
+    {
+        if(_messageItem.fromInfo.label.length > 0)
+            name = [NSString stringWithFormat:@"%@(%@)",name,_messageItem.fromInfo.label];
+    }
     _nameLabel.text = name;
     CGSize nameSize = [name boundingRectWithSize:CGSizeMake(_timeLabel.left - _nameLabel.left - 40, CGFLOAT_MAX) andFont:_nameLabel.font];
     [_nameLabel setWidth:MIN(_timeLabel.left - _nameLabel.left - 40, nameSize.width)];
-    
-    MessageFromType fromType = _messageItem.fromInfo.type;
+
     //群聊图标
     if(fromType == MessageFromTypeFromClass)
     {
         [_massChatIndicator setHidden:NO];
         [_massChatIndicator setOrigin:CGPointMake(_nameLabel.right + 10, _nameLabel.y + (_nameLabel.height - _massChatIndicator.height) / 2)];
+        
+        [_schoolLabel setHidden:NO];
+        [_schoolLabel setText:_messageItem.fromInfo.label];
+        [_schoolLabel sizeToFit];
+        [_schoolLabel setFrame:CGRectMake(_massChatIndicator.right + 5, _nameLabel.y + (_nameLabel.height - _schoolLabel.height) / 2, MIN(_schoolLabel.width, _timeLabel.x - 5 - (_massChatIndicator.right + 5)), _schoolLabel.height)];
     }
     else
+    {
         [_massChatIndicator setHidden:YES];
+        [_schoolLabel setHidden:YES];
+    }
     
     //通知图标
     if([_messageItem.fromInfo isNotification])

@@ -97,9 +97,8 @@
 
 - (void)onReportError
 {
-    ReportProblemVC *reportProblemVC = [[ReportProblemVC alloc] init];
-    [reportProblemVC setType:3];
-    [CurrentROOTNavigationVC pushViewController:reportProblemVC animated:YES];
+    if([self.delegate respondsToSelector:@selector(childrenExtraCellReport:)])
+        [self.delegate childrenExtraCellReport:self];
 }
 
 @end
@@ -132,7 +131,7 @@
 
 @end
 
-@interface ChildrenInfoVC ()
+@interface ChildrenInfoVC ()<ChildrenExtraCellDelegate>
 @property (nonatomic, strong)UIImage *avatarImage;
 @property (nonatomic, strong)NSMutableArray *infoArray;
 @end
@@ -335,6 +334,19 @@
     self.curIndex = carousel.currentItemIndex;
     [self refreshData];
 }
+
+#pragma mark - ChildrenExtraCellDelegate
+- (void)childrenExtraCellReport:(ChildrenExtraInfoCell *)cell
+{
+    NSIndexPath *index = [_tableView indexPathForCell:cell];
+    ReportProblemVC *reportProblemVC = [[ReportProblemVC alloc] init];
+    if(index.section == 1)
+        [reportProblemVC setType:2];
+    else
+        [reportProblemVC setType:3];
+    [CurrentROOTNavigationVC pushViewController:reportProblemVC animated:YES];
+}
+
 #pragma mark - UITableViewDelegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -456,6 +468,7 @@
             [cell.logoView setHidden:YES];
             [cell setText:[NSString stringWithFormat:@"%@(%@)",familyInfo.name,familyInfo.relation] extra:[NSString stringWithFormat:@"(%@)",familyInfo.mobile]];
         }
+        [cell setDelegate:self];
         return cell;
     }
 }

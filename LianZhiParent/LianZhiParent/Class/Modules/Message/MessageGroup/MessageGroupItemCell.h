@@ -16,6 +16,7 @@
     UILabel*        _numLabel;
     UIImageView*    _soundOff;
     UILabel*        _nameLabel;
+    UILabel*        _schoolLabel;
     UILabel*        _timeLabel;
     UIImageView*    _notificationIndicator;
     UIImageView*    _massChatIndicator;

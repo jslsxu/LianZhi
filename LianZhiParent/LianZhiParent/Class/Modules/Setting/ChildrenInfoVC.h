@@ -20,6 +20,14 @@
 @property (nonatomic, strong)ChildInfo *childInfo;
 @end
 
+@class ChildrenExtraInfoCell;
+
+@protocol ChildrenExtraCellDelegate <NSObject>
+
+- (void)childrenExtraCellReport:(ChildrenExtraInfoCell *)cell;
+
+@end
+
 @interface ChildrenExtraInfoCell : UITableViewCell
 {
     LogoView*   _logoView;
@@ -29,6 +37,7 @@
     UIView*     _sepLine;
 }
 @property (nonatomic, readonly)LogoView *logoView;
+@property (nonatomic, weak)id<ChildrenExtraCellDelegate> delegate;
 
 - (void)setText:(NSString *)text extra:(NSString *)extra;
 @end

@@ -304,6 +304,10 @@
 		37CA18721AB70A2F00B49B55 /* PhotoPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA186B1AB70A2F00B49B55 /* PhotoPickerCell.m */; };
 		37CA18731AB70A2F00B49B55 /* PhotoPickerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA186E1AB70A2F00B49B55 /* PhotoPickerModel.m */; };
 		37CCE2561B8B0649007BFA4F /* ActionPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCE2551B8B0649007BFA4F /* ActionPopView.m */; };
+		37D6EE361BC90C62000994A2 /* CheckInstalledMapAPP.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EE2F1BC90C62000994A2 /* CheckInstalledMapAPP.m */; };
+		37D6EE371BC90C62000994A2 /* DestinationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EE311BC90C62000994A2 /* DestinationVC.m */; };
+		37D6EE381BC90C62000994A2 /* LocationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EE331BC90C62000994A2 /* LocationChange.m */; };
+		37D6EE391BC90C62000994A2 /* RegionAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EE351BC90C62000994A2 /* RegionAnnotationView.m */; };
 		37D8C7B41A59803D00E5E2E4 /* ClassOperationHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D8C7B31A59803D00E5E2E4 /* ClassOperationHeaderView.m */; };
 		37D8C7B71A5986D800E5E2E4 /* StudentGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D8C7B61A5986D800E5E2E4 /* StudentGridView.m */; };
 		37D8C7BA1A5986F000E5E2E4 /* ClassTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D8C7B91A5986F000E5E2E4 /* ClassTableCell.m */; };
@@ -972,6 +976,14 @@
 		37CCE2541B8B0649007BFA4F /* ActionPopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionPopView.h; sourceTree = "<group>"; };
 		37CCE2551B8B0649007BFA4F /* ActionPopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionPopView.m; sourceTree = "<group>"; };
 		37CF74ED1A92589500660604 /* TeacherDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherDefine.h; sourceTree = "<group>"; };
+		37D6EE2E1BC90C62000994A2 /* CheckInstalledMapAPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckInstalledMapAPP.h; sourceTree = "<group>"; };
+		37D6EE2F1BC90C62000994A2 /* CheckInstalledMapAPP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckInstalledMapAPP.m; sourceTree = "<group>"; };
+		37D6EE301BC90C62000994A2 /* DestinationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationVC.h; sourceTree = "<group>"; };
+		37D6EE311BC90C62000994A2 /* DestinationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DestinationVC.m; sourceTree = "<group>"; };
+		37D6EE321BC90C62000994A2 /* LocationChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationChange.h; sourceTree = "<group>"; };
+		37D6EE331BC90C62000994A2 /* LocationChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationChange.m; sourceTree = "<group>"; };
+		37D6EE341BC90C62000994A2 /* RegionAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegionAnnotationView.h; sourceTree = "<group>"; };
+		37D6EE351BC90C62000994A2 /* RegionAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegionAnnotationView.m; sourceTree = "<group>"; };
 		37D8C7B21A59803D00E5E2E4 /* ClassOperationHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassOperationHeaderView.h; sourceTree = "<group>"; };
 		37D8C7B31A59803D00E5E2E4 /* ClassOperationHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassOperationHeaderView.m; sourceTree = "<group>"; };
 		37D8C7B51A5986D800E5E2E4 /* StudentGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentGridView.h; sourceTree = "<group>"; };
@@ -2382,6 +2394,21 @@
 			path = CommonDefine;
 			sourceTree = "<group>";
 		};
+		37D6EE2D1BC90C62000994A2 /* DestinationVC */ = {
+			isa = PBXGroup;
+			children = (
+				37D6EE2E1BC90C62000994A2 /* CheckInstalledMapAPP.h */,
+				37D6EE2F1BC90C62000994A2 /* CheckInstalledMapAPP.m */,
+				37D6EE301BC90C62000994A2 /* DestinationVC.h */,
+				37D6EE311BC90C62000994A2 /* DestinationVC.m */,
+				37D6EE321BC90C62000994A2 /* LocationChange.h */,
+				37D6EE331BC90C62000994A2 /* LocationChange.m */,
+				37D6EE341BC90C62000994A2 /* RegionAnnotationView.h */,
+				37D6EE351BC90C62000994A2 /* RegionAnnotationView.m */,
+			);
+			path = DestinationVC;
+			sourceTree = "<group>";
+		};
 		37D8C7BB1A598BE800E5E2E4 /* DataStruct */ = {
 			isa = PBXGroup;
 			children = (
@@ -2607,6 +2634,7 @@
 				3793FAF81B7D081900501F77 /* PhotoPickerView.h */,
 				3705FF921BA2BE7200F0C6F6 /* NumIndicator.h */,
 				3705FF931BA2BE7200F0C6F6 /* NumIndicator.m */,
+				37D6EE2D1BC90C62000994A2 /* DestinationVC */,
 			);
 			path = Commonviews;
 			sourceTree = "<group>";
@@ -2781,7 +2809,6 @@
 				TargetAttributes = {
 					37C355CF1A3FD5CF00B948E6 = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = JRFF54BK3W;
 					};
 				};
 			};
@@ -2983,6 +3010,7 @@
 				3793FAD51B7CFFF000501F77 /* UIImage+GIF.m in Sources */,
 				372774EB1A5D94EC00464461 /* GrowthTimelinePublishCell.m in Sources */,
 				3793FAD71B7CFFF000501F77 /* UIImage+WebP.m in Sources */,
+				37D6EE371BC90C62000994A2 /* DestinationVC.m in Sources */,
 				3728A7391B9D376300310457 /* HPTextViewInternal.m in Sources */,
 				3793FAE61B7CFFF000501F77 /* UIView+MJExtension.m in Sources */,
 				37C8901C1A890DF9008E44DB /* ClassZoneManager.m in Sources */,
@@ -3149,16 +3177,19 @@
 				37FD6E311BB4817900C83AB4 /* NewMessageModel.m in Sources */,
 				3728A7361B9D376300310457 /* FaceSelectView.m in Sources */,
 				3793FA921B7CFFF000501F77 /* POIItemCell.m in Sources */,
+				37D6EE381BC90C62000994A2 /* LocationChange.m in Sources */,
 				3793FAF61B7CFFF000501F77 /* Utility.m in Sources */,
 				371C6DAD1A7015AF00FA4AEC /* PublishBaseVC.m in Sources */,
 				3793FA861B7CFFF000501F77 /* RIButtonItem.m in Sources */,
 				37A46F6E1A5B017D00A5FB63 /* TextMessageSendVC.m in Sources */,
 				376FC6C71B0332A300289DC2 /* QrCodeView.m in Sources */,
+				37D6EE361BC90C62000994A2 /* CheckInstalledMapAPP.m in Sources */,
 				37E93F9A1A7DC48200AD45A1 /* TNAlertView.m in Sources */,
 				3793FA681B7CFFF000501F77 /* AFHTTPRequestOperationManager.m in Sources */,
 				3793FA331B7CFFF000501F77 /* RETableViewPickerCell.m in Sources */,
 				3793FA6A1B7CFFF000501F77 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				3793FA511B7CFFF000501F77 /* REValidation.m in Sources */,
+				37D6EE391BC90C62000994A2 /* RegionAnnotationView.m in Sources */,
 				37CA18711AB70A2F00B49B55 /* PhotoPickerItem.m in Sources */,
 				3793FA911B7CFFF000501F77 /* PoiInfoView.m in Sources */,
 				3793FAD11B7CFFF000501F77 /* SDWebImageDownloaderOperation.m in Sources */,
@@ -3258,7 +3289,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					../BaseFoundation/3rdPart/AutoNavi,
@@ -3285,7 +3316,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					../BaseFoundation/3rdPart/AutoNavi,

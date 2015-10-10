@@ -24,6 +24,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSArray *titleArray = @[@"软件错误报告",@"产品升级建议",@"关联信息报错",@"登录信息修改"];
+    self.title = titleArray[self.type - 1];
     
     if(self.type == 1 || self.type == 2)
     {

@@ -239,6 +239,7 @@
             [chatVC setChatType:(ChatType)groupItem.fromInfo.type];
             [chatVC setTargetID:groupItem.fromInfo.uid];
             [chatVC setTo_objid:groupItem.fromInfo.from_obj_id];
+            [chatVC setMobile:groupItem.fromInfo.mobile];
             [chatVC setTitle:groupItem.fromInfo.name];
             [self.navigationController pushViewController:chatVC animated:YES];
         }

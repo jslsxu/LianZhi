@@ -136,6 +136,7 @@
     [chatVC setTo_objid:self.studentInfo.uid];
     [chatVC setTargetID:userInfo.uid];
     [chatVC setChatType:ChatTypeParents];
+    [chatVC setMobile:userInfo.mobile];
     [chatVC setTitle:[NSString stringWithFormat:@"%@的%@",self.studentInfo.name,[(FamilyInfo *)userInfo relation]]];
     [ApplicationDelegate popAndPush:chatVC];
 }

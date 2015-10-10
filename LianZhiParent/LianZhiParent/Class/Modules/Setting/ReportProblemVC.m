@@ -30,7 +30,7 @@
     else if(self.type == 2)
         self.title = @"产品升级建议";
     else if(self.type == 3)
-        self.title = @"家庭成员报错";
+        self.title = @"关联信息报错";
     else
         self.title = @"登录信息修改";
     if(self.type == 1 || self.type == 2)

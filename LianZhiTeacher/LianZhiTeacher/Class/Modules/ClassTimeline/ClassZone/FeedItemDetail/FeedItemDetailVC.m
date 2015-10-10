@@ -42,7 +42,13 @@
         _addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 35, _deleteButon.x - 10 - 45, 15)];
         [_addressLabel setTextColor:[UIColor colorWithHexString:@"cacaca"]];
         [_addressLabel setFont:[UIFont systemFontOfSize:12]];
+        [_addressLabel setUserInteractionEnabled:YES];
         [self addSubview:_addressLabel];
+        
+        _addressButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_addressButton addTarget:self action:@selector(onAddressClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_addressButton setFrame:_addressLabel.bounds];
+        [_addressLabel addSubview:_addressButton];
         
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 55, self.width - 45, 0)];
         [_contentLabel setNumberOfLines:0];
@@ -138,6 +144,18 @@
     
     spaceYStart += 10;
     self.height = spaceYStart;
+}
+
+- (void)onAddressClicked
+{
+    if(self.zoneItem.position.length > 0)
+    {
+        DestinationVC *destinationVC = [[DestinationVC alloc] init];
+        [destinationVC setPosition:self.zoneItem.position];
+        [destinationVC setLongitude:self.zoneItem.longitude];
+        [destinationVC setLatitude:self.zoneItem.latitude];
+        [CurrentROOTNavigationVC pushViewController:destinationVC animated:YES];
+    }
 }
 
 - (void)onDeleteButtonClicked

@@ -126,6 +126,7 @@
     [chatVC setChatType:ChatTypeParents];
     [chatVC setTargetID:familyInfo.uid];
     [chatVC setTo_objid:self.studentInfo.uid];
+    [chatVC setMobile:familyInfo.mobile];
     [chatVC setTitle:familyInfo.name];
     [ApplicationDelegate popAndPush:chatVC];
 }
