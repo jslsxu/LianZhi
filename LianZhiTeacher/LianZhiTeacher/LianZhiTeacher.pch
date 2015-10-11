@@ -20,5 +20,6 @@
 #import "JSMessagesViewController.h"
 #import "ZipArchive.h"
 #import "DestinationVC.h"
+#import "ShareActionView.h"
 #endif
 #endif

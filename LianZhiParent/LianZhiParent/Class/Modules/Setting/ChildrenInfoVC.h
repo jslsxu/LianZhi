@@ -42,18 +42,20 @@
 - (void)setText:(NSString *)text extra:(NSString *)extra;
 @end
 
-@interface ChildrenItemView : UIView
+@interface ChildrenItemView : UICollectionViewCell
 {
+    UIView*         _contentView;
     AvatarView*     _avatar;
     UILabel*        _nameLabel;
 }
+@property (nonatomic, assign)BOOL curSelected;
 @property (nonatomic, weak)ChildInfo *childInfo;
 @end
 
-@interface ChildrenInfoVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate, iCarouselDataSource, iCarouselDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface ChildrenInfoVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
-    iCarousel*          _headerView;
-    UITableView*        _tableView;
+    UICollectionView*           _headerView;
+    UITableView*                _tableView;
 }
 @property (nonatomic, assign)NSInteger curIndex;
 @end

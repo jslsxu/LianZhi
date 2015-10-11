@@ -28,8 +28,9 @@ static SystemSoundID shake_sound_male_id = 0;
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setBackgroundColor:[UIColor whiteColor]];
     [self.window makeKeyAndVisible];
+    [[SVShare sharedInstance] initialize];
     [[TaskUploadManager sharedInstance] start];
-    [MAMapServices sharedServices].apiKey = @"b3ddcca903cd26035f8f210f9b88e09e";;
+    [MAMapServices sharedServices].apiKey = kAutoNaviApiKey;
     [self setupCommonHandler];
     [self registerSound];           //注册声音
     [self setupCommonAppearance];

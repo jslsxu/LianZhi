@@ -14,7 +14,7 @@
 @property (nonatomic, strong)AmrRecordWriter*   amrWriter;
 @property (nonatomic, strong)MLAudioPlayer*     player;
 @property (nonatomic, strong)AmrPlayerReader*   amrReader;
-@property (nonatomic, assign)NSInteger          duration;
+
 @end
 
 @implementation AudioRecordView
@@ -37,12 +37,28 @@
     return self.duration;
 }
 
+- (void)setDuration:(NSInteger)duration
+{
+    _duration = duration;
+    [_timeLabel setText:[NSString stringWithFormat:@"%ld:%02ld",(long)self.duration / 60, (long)self.duration % 60]];
+}
+
 + (NSString *)tempFilePath
 {
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *filePath = [path stringByAppendingPathComponent:@"record.amr"];
     return filePath;
 }
+
+- (void)setTmpAmrData:(NSData *)amrData
+{
+    if(amrData.length > 0)
+    {
+        NSString *path = [[self class] tempFilePath];
+        [amrData writeToFile:path atomically:YES];
+    }
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

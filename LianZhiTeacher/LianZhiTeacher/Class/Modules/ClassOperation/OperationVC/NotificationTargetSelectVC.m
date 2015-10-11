@@ -287,7 +287,7 @@
 {
     if(_segmentControl.selectedSegmentIndex == 0)
     {
-        if(section == 0)
+        if(section == 1)
             return self.groupArray.count;
         else
             return self.classesArray.count;
@@ -316,7 +316,7 @@
     if(_segmentControl.selectedSegmentIndex == 0)
     {
         NotificationGroupHeaderView *headerView = [[NotificationGroupHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 50)];
-        if(section == 0)
+        if(section == 1)
         {
             [headerView.nameLabel setText:@"我管理的班"];
             NSInteger selectNum = 0;
@@ -365,13 +365,13 @@
     if(_segmentControl.selectedSegmentIndex == 0)
     {
         ClassInfo *classInfo = nil;
-        if(indexPath.section == 0)
+        if(indexPath.section == 1)
             classInfo = self.groupArray[indexPath.row];
         else
             classInfo = self.classesArray[indexPath.row];
         [cell.nameLabel setText:classInfo.className];
         [cell.checkButton setSelected:[_selectedStudentDic valueForKey:classInfo.classID]];
-        [cell setAccessoryView:[[UIImageView alloc] initWithImage:indexPath.section == 1 ? [UIImage imageNamed:@"RightArrow"] : nil]];
+        [cell setAccessoryView:[[UIImageView alloc] initWithImage:indexPath.section == 0 ? [UIImage imageNamed:@"RightArrow"] : nil]];
     }
     else
     {
@@ -390,11 +390,11 @@
         NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
         ClassInfo *classInfo = nil;
-        if(section == 0)
+        if(section == 1)
             classInfo = self.groupArray[row];
         else
             classInfo = self.classesArray[row];
-        if(section == 1)
+        if(section == 0)
         {
             NotificationClassStudentsVC *studentVC = [[NotificationClassStudentsVC alloc] init];
             [studentVC setTitle:classInfo.className];

@@ -8,6 +8,13 @@
 
 #import "TNBaseViewController.h"
 
+@interface SentClassInfo : TNModelItem
+@property (nonatomic, copy)NSString *classID;
+@property (nonatomic, copy)NSString *name;
+@property (nonatomic, assign)NSInteger sentNum;
+
+@end
+
 @interface SentGroup : TNModelItem
 @property (nonatomic, copy)NSString *groupID;
 @property (nonatomic, copy)NSString *groupName;

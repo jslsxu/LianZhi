@@ -8,7 +8,7 @@
 
 #import "ActionView.h"
 
-#define kActionViewWidth                180
+#define kActionViewWidth                210
 #define kActionViewHeight               30
 
 @interface ActionView ()
@@ -34,7 +34,7 @@
         [_contentView.layer setMasksToBounds:YES];
         [self addSubview:_contentView];
         
-        NSArray *titleArray = @[praised ? @"取消" : @"赞",@"评论"];
+        NSArray *titleArray = @[praised ? @"取消" : @"赞",@"评论",@"分享"];
         NSArray *imageArray = @[@"ActionPraise",@"ActionComment",@"ActionShare"];
         NSArray *actionArray = @[@"onActionPraise",@"onActionComment",@"onActionShare"];
         NSInteger itemWidth = _contentView.width / titleArray.count;
@@ -44,7 +44,7 @@
             [button setFrame:CGRectMake(itemWidth * i, 0, itemWidth, _contentView.height)];
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [button setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
-            [button.titleLabel setFont:[UIFont systemFontOfSize:14]];
+            [button.titleLabel setFont:[UIFont systemFontOfSize:13]];
             [button setTitle:titleArray[i] forState:UIControlStateNormal];
             [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Normal",imageArray[i]]] forState:UIControlStateNormal];
             [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Highlighted",imageArray[i]]] forState:UIControlStateHighlighted];

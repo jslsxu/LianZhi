@@ -8,7 +8,10 @@
 
 #import "NotificationDetailVC.h"
 #import "CollectionImageCell.h"
-
+#import "MessageSendVC.h"
+#import "TextMessageSendVC.h"
+#import "PhotoOperationVC.h"
+#import "AudioMessageSendVC.h"
 @interface NotificationDetailVC ()<UICollectionViewDataSource, UICollectionViewDelegate>
 
 @end
@@ -18,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"消息详情";
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"转发" style:UIBarButtonItemStylePlain target:self action:@selector(onSendNextClicked)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"转发" style:UIBarButtonItemStylePlain target:self action:@selector(onSendNextClicked)];
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStyleGrouped];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
@@ -54,16 +57,19 @@
     
     if(self.notificationItem.audioItem)
     {
-        MessageVoiceButton *voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(20, spaceYStart, viewParent.width / 2, 35)];
-        [voiceButton setAudioItem:self.notificationItem.audioItem];
-        [contentView addSubview:voiceButton];
+        _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(20, spaceYStart, viewParent.width / 2, 35)];
+        [_voiceButton addTarget:self action:@selector(onVoiceClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_voiceButton setAudioItem:self.notificationItem.audioItem];
+        [contentView addSubview:_voiceButton];
         
-        UILabel *spanLabel = [[UILabel alloc] initWithFrame:CGRectMake(voiceButton.right, voiceButton.y, 60, voiceButton.height)];
+        [_voiceButton setVoiceWithURL:[NSURL URLWithString:self.notificationItem.audioItem.audioUrl] withAutoPlay:NO];
+        
+        UILabel *spanLabel = [[UILabel alloc] initWithFrame:CGRectMake(_voiceButton.right, _voiceButton.y, 60, _voiceButton.height)];
         [spanLabel setTextColor:[UIColor colorWithHexString:@"8f8f8f"]];
         [spanLabel setFont:[UIFont systemFontOfSize:10]];
         [spanLabel setText:[Utility formatStringForTime:self.notificationItem.audioItem.timeSpan]];
         [spanLabel sizeToFit];
-        [spanLabel setOrigin:CGPointMake(voiceButton.right + 10, spaceYStart + (voiceButton.height - spanLabel.height) / 2)];
+        [spanLabel setOrigin:CGPointMake(_voiceButton.right + 10, spaceYStart + (_voiceButton.height - spanLabel.height) / 2)];
         [contentView addSubview:spanLabel];
         
         spaceYStart += 35 + 10;
@@ -121,9 +127,39 @@
     [viewParent setHeight:spaceYStart];
 }
 
+- (void)onVoiceClicked
+{
+    [_voiceButton setVoiceWithURL:[NSURL URLWithString:self.notificationItem.audioItem.audioUrl] withAutoPlay:YES];
+}
+
 - (void)onSendNextClicked
 {
-    
+    MessageSendVC *messageSendVC = nil;
+    if(self.notificationItem.photoArray.count > 0)
+    {
+        PhotoOperationVC *photoOperationVC = [[PhotoOperationVC alloc] init];
+        [photoOperationVC setOriginalImageArray:self.notificationItem.photoArray];
+        
+        messageSendVC = photoOperationVC;
+    }
+    else if(self.notificationItem.audioItem)
+    {
+        AudioMessageSendVC *audioVC = [[AudioMessageSendVC alloc] init];
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.notificationItem.audioItem.audioUrl]];
+        [audioVC setAmrData:[[MLDataCache shareInstance] cachedDataForRequest:request]];
+        [audioVC setDuration:self.notificationItem.audioItem.timeSpan];
+        messageSendVC = audioVC;
+    }
+    else
+    {
+        TextMessageSendVC *textVC = [[TextMessageSendVC alloc] init];
+        
+        
+        messageSendVC = textVC;
+    }
+    [messageSendVC setWords:self.notificationItem.words];
+    TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:messageSendVC];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDelegate
@@ -181,9 +217,9 @@
     NSInteger row = indexPath.row;
     if(section == 0)
     {
-        ClassInfo *classInfo = self.notificationItem.sentTarget.classArray[row];
-        [cell.textLabel setText:classInfo.className];
-        [cell.detailTextLabel setText:kStringFromValue(classInfo.num)];
+        SentClassInfo *classInfo = self.notificationItem.sentTarget.classArray[row];
+        [cell.textLabel setText:classInfo.name];
+        [cell.detailTextLabel setText:kStringFromValue(classInfo.sentNum)];
     }
     else
     {

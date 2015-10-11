@@ -45,9 +45,13 @@
     [_numLabel setText:kStringFromValue(kCommonMaxNum)];
     [_bgView addSubview:_numLabel];
     
+    [_textView setText:self.words];
+    [self textViewDidChange:_textView];
     
     _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(0, _numLabel.bottom, _bgView.width, 40)];
     [_poiInfoView setParentVC:self];
+    if(self.poiItem)
+        [_poiInfoView setPoiItem:self.poiItem];
     [_bgView addSubview:_poiInfoView];
 }
 

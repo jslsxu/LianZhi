@@ -43,7 +43,7 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
         [_logoView setBorderWidth:2];
         [self addSubview:_logoView];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_logoView.right + 10, 0, 100, kOperationHeight)];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, 100, kOperationHeight)];
         [_nameLabel setFont:[UIFont systemFontOfSize:13]];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
         [_bgView addSubview:_nameLabel];
@@ -107,7 +107,8 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     MessageDetailItem *item = (MessageDetailItem *)modelItem;
-    [_nameLabel setText:item.author];
+    [_logoView setImageWithUrl:[NSURL URLWithString:item.fromInfo.logoUrl]];
+    [_nameLabel setText:item.fromInfo.label];
     [_timeLabel setText:item.timeStr];
     [_timeLabel sizeToFit];
     [_timeLabel setFrame:CGRectMake(_bgView.width - kContentHMargin - _timeLabel.width, (kOperationHeight - _timeLabel.height) / 2, _timeLabel.width, _timeLabel.height)];
@@ -117,11 +118,14 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
         content = @"这是一条语音内容，点击播放:";
     if(item.content.length > 0)
     {
+        [_contentLabel setHidden:NO];
         [_contentLabel setText:item.content];
         CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(_contentLabel.width, CGFLOAT_MAX) andFont:_contentLabel.font];
         [_contentLabel setHeight:contentSize.height];
         height += contentSize.height + 10;
     }
+    else
+        [_contentLabel setHidden:YES];
     [_collectionView setHidden:YES];
     [_voiceButton setHidden:YES];
     [_voiceSpanLabel setHidden:YES];

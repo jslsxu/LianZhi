@@ -15,7 +15,8 @@
 
 #define kAvatarHMargin              8
 #define kMessageCellVMargin         10
-#define kFaceWith                   80
+#define kFaceWith                   100
+#define kFaceHeight                 80
 @interface MessageCell : TNTableViewCell
 {
     UILabel*                    _timeLabel;

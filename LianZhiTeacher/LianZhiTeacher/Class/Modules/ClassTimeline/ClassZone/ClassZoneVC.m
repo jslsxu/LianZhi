@@ -728,7 +728,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         }
         else
         {
-            
+            [ShareActionView shareWithTitle:@"" content:@"" image:nil imageUrl:nil url:kTeacherClientAppStoreUrl];
         }
     }];
     [actionView show];

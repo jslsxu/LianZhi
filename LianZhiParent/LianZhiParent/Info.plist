@@ -26,6 +26,21 @@
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>使用定位获取附近信息，为您提供更精准的本地服务</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string></string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>EdugateAppParent</string>
+				<string>wx0e5e32610ac8348c</string>
+				<string>wb251515278</string>
+				<string>tencent1104828207</string>
+				<string>QQ41DA572F</string>
+			</array>
+		</dict>
+	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

@@ -7,8 +7,9 @@
 //
 
 #import "TNListModel.h"
-
+#import "MessageGroupListModel.h"
 @interface MessageDetailItem : TNModelItem
+@property (nonatomic, strong)MessageFromInfo *fromInfo;
 @property (nonatomic, copy)NSString *msgID;
 @property (nonatomic, copy)NSString *author;
 @property (nonatomic, copy)NSString *content;
@@ -19,6 +20,7 @@
 @end
 
 @interface MessageDetailModel : TNListModel
+@property (nonatomic, strong)MessageFromInfo *fromInfo;
 @property (nonatomic, assign)BOOL hasMore;
 @property (nonatomic, copy)NSString *minID;
 @end

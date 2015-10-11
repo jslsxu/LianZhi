@@ -39,11 +39,12 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         [_timeLabel setTextColor:[UIColor colorWithHexString:@"a0a0a0"]];
         [self addSubview:_timeLabel];
         
-//        _shareToTreeHouseButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [_shareToTreeHouseButton setImage:[UIImage imageNamed:@"ShareToTreeHouse"] forState:UIControlStateNormal];
-//        [_shareToTreeHouseButton addTarget:self action:@selector(onShareToTreeHouse) forControlEvents:UIControlEventTouchUpInside];
-//        [_shareToTreeHouseButton setSize:CGSizeMake(72, 20)];
-//        [self addSubview:_shareToTreeHouseButton];
+        _shareToTreeHouseButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_shareToTreeHouseButton setImage:[UIImage imageNamed:@"ShareToTreeHouse"] forState:UIControlStateNormal];
+        [_shareToTreeHouseButton addTarget:self action:@selector(onShareToTreeHouse) forControlEvents:UIControlEventTouchUpInside];
+        [_shareToTreeHouseButton setSize:CGSizeMake(72, 20)];
+        [_shareToTreeHouseButton setOrigin:CGPointMake(self.width - 80, 10)];
+        [self addSubview:_shareToTreeHouseButton];
         
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_contentLabel setBackgroundColor:[UIColor clearColor]];

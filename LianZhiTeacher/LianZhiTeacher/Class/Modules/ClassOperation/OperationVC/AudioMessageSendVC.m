@@ -19,6 +19,12 @@
     self.title = @"语音通知";
     _recordView = [[AudioRecordView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, (self.view.height - 64) / 2)];
     [_recordView setDelegate:self];
+    if(self.amrData.length > 0 && self.duration > 0)
+    {
+        [_recordView setTmpAmrData:self.amrData];
+        [_recordView setDuration:self.duration];
+        [_recordView setRecordType:RecordTypePlay];
+    }
     [self.view addSubview:_recordView];
     
     _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, _recordView.bottom, _recordView.width, 60)];
@@ -26,6 +32,7 @@
     [_textView setPlaceholder:@"给录音起个标题吧"];
     [_textView setFont:[UIFont systemFontOfSize:16]];
     [_textView setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+    [_textView setText:self.words];
     [self.view addSubview:_textView];
     
     UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom, self.view.width - 10 * 2, 1)];
@@ -36,7 +43,10 @@
 - (NSDictionary *)params
 {
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    [dic setValue:[_textView text] forKey:@"words"];
+    NSString *content = _textView.text;
+    if(content.length == 0)
+        content = @"都来听听我说的语录";
+    [dic setValue:content forKey:@"words"];
     [dic setValue:kStringFromValue(_recordView.tmpAmrDuration) forKey:@"voice_time"];
     return dic;
 }

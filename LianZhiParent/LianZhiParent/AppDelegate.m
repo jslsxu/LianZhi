@@ -27,6 +27,7 @@ static SystemSoundID shake_sound_male_id = 0;
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setBackgroundColor:kCommonBackgroundColor];
     [self.window makeKeyAndVisible];
+    [[SVShare sharedInstance] initialize];
     [self setupCommonHandler];
     [self registerThirdParty];
     [self registerRemoteNotification];

@@ -10,6 +10,7 @@
 #import "Extends.h"
 #import "Utility.h"
 #import "ZBarSDK.h"
+#import "SVShare.h"
 #import <MAMapKit/MAMapKit.h> 
 #import <AMapSearchKit/AMapSearchAPI.h>
 #import "QRCodeGenerator.h"

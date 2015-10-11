@@ -75,7 +75,7 @@
     }
     else
     {
-        height = kFaceWith;
+        height = kFaceHeight;
     }
     return height + 10 * 2 + 5 + kTimeLabelHeight;
 }

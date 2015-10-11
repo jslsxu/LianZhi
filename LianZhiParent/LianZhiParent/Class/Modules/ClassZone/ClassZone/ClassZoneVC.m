@@ -339,7 +339,59 @@
 
 - (void)onShareToTreeHouse:(ClassZoneItem *)zoneItem
 {
+    PublishBaseVC *publishVC = [[PublishBaseVC alloc] init];
+    if(zoneItem.photos.count > 0)
+    {
+        PublishPhotoVC *publishPhotoVC = [[PublishPhotoVC alloc] init];
+        [publishPhotoVC setWords:zoneItem.content];
+        NSMutableArray *photoArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < zoneItem.photos.count; i++)
+        {
+            PhotoItem *photoItem = zoneItem.photos[i];
+            PublishImageItem *publishImageItem = [[PublishImageItem alloc] init];
+            [publishImageItem setPhotoID:photoItem.photoID];
+            [publishImageItem setThumbnailUrl:photoItem.thumbnailUrl];
+            [publishImageItem setOriginalUrl:photoItem.originalUrl];
+            [photoArray addObject:publishImageItem];
+        }
+        [publishPhotoVC setForward:YES];
+        [publishPhotoVC setOriginalImageArray:photoArray];
+        [publishPhotoVC setDelegate:ApplicationDelegate.homeVC.treeHouseVC];
+        
+        publishVC = publishPhotoVC;
+    }
+    else if(zoneItem.audioItem)
+    {
+        AudioItem *audioItem = zoneItem.audioItem;
+        PublishAudioVC *publishAudioVC = [[PublishAudioVC alloc] init];
+        [publishAudioVC setWords:zoneItem.content];
+        [publishAudioVC setDuration:audioItem.timeSpan];
+        
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:audioItem.audioUrl]];
+        [publishAudioVC setAmrData:[[MLDataCache shareInstance] cachedDataForRequest:request]];
+        publishVC = publishAudioVC;
+    }
+    else
+    {
+        PublishArticleVC *publishArticleVC = [[PublishArticleVC alloc] init];
+        [publishArticleVC setWords:zoneItem.content];
+        
+        publishVC = publishArticleVC;
+    }
+    if(zoneItem.position.length > 0)
+    {
+        AMapPOI *poiInfo = [[AMapPOI alloc] init];
+        AMapGeoPoint *location = [AMapGeoPoint locationWithLatitude:zoneItem.latitude longitude:zoneItem.longitude];
+        [poiInfo setName:zoneItem.position];
+        [poiInfo setLocation:location];
+        POIItem *poiItem = [[POIItem alloc] init];
+        [poiItem setPoiInfo:poiInfo];
+        
+        [publishVC setPoiItem:poiItem];
+    }
     
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:publishVC];
+    [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
 }
 
 #pragma mark TNBaseTableViewController

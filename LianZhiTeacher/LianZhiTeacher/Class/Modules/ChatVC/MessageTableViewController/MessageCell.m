@@ -154,7 +154,7 @@
         [_contentButton setBackgroundImage:nil forState:UIControlStateNormal];
         [_contentButton setBackgroundImage:nil forState:UIControlStateHighlighted];
         [_contentButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"biaoqing%ld",(long)(index + 1)]] forState:UIControlStateNormal];
-        [_contentButton setSize:CGSizeMake(kFaceWith, kFaceWith)];
+        [_contentButton setSize:CGSizeMake(kFaceWith, kFaceHeight)];
     }
     if(UUMessageFromMe == messageItem.from)
     {

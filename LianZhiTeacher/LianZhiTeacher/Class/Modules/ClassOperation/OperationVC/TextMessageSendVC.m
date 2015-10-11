@@ -39,6 +39,8 @@
     [_numLabel setText:kStringFromValue(kReportContentMaxNum)];
     [_bgView addSubview:_numLabel];
     
+    [_textView setText:self.words];
+    [self textViewDidChange:_textView];
 //    _checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
 //    [_checkButton setFrame:CGRectMake(0, _bgView.bottom, 30, 30)];
 //    [_checkButton setImage:[UIImage imageNamed:@"StudentUnselected"] forState:UIControlStateNormal];

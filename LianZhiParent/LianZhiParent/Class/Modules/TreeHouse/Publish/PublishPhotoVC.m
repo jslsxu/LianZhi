@@ -101,6 +101,8 @@
     
     _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(10, sepLine.bottom, _bgView.width, 40)];
     [_poiInfoView setParentVC:self];
+    if(self.poiItem)
+        [_poiInfoView setPoiItem:self.poiItem];
     [_scrollView addSubview:_poiInfoView];
     
     [_scrollView setContentSize:CGSizeMake(_scrollView.width, MAX(self.view.height - 64, _poiInfoView.bottom))];

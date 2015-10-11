@@ -143,11 +143,14 @@
         content = @"这是一条语音内容，点击播放:";
     if(item.content.length > 0)
     {
+        [_contentLabel setHidden:NO];
         [_contentLabel setText:item.content];
         CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(_contentLabel.width, CGFLOAT_MAX) andFont:_contentLabel.font];
         [_contentLabel setHeight:contentSize.height];
         height += contentSize.height + 10;
     }
+    else
+        [_contentLabel setHidden:YES];
     [_collectionView setHidden:YES];
     [_voiceButton setHidden:YES];
     [_voiceSpanLabel setHidden:YES];

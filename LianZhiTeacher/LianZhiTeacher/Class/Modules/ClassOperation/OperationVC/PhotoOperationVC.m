@@ -11,7 +11,7 @@
 #define kBorderMargin                   16
 #define kBaseTag                        1000
 
-@interface PhotoOperationVC ()< UITextFieldDelegate, UIScrollViewDelegate>
+@interface PhotoOperationVC ()< UITextViewDelegate, UIScrollViewDelegate>
 
 @end
 
@@ -42,6 +42,16 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
     
+    if(self.originalImageArray.count > 0)
+    {
+        for (PhotoItem *photoItem in self.originalImageArray)
+        {
+            PublishImageItem *imageItem = [[PublishImageItem alloc] init];
+            [imageItem setImage:[[SDImageCache sharedImageCache] imageFromDiskCacheForKey:photoItem.thumbnailUrl]];
+            [_imageArray addObject:imageItem];
+        }
+    }
+    
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
     [_scrollView setBounces:YES];
     [_scrollView setDelegate:self];
@@ -58,7 +68,10 @@
 - (NSDictionary *)params
 {
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    [dic setValue:[_textField text] forKey:@"words"];
+    NSString *content = _textView.text;
+    if(content.length == 0)
+        content = @"快来看看我发送的照片";
+    [dic setValue:content forKey:@"words"];
     return dic;
 }
 
@@ -107,13 +120,14 @@
     
     [self setupImageView];
     
-    _textField = [[UITextField alloc] initWithFrame:CGRectMake(10, _bgView.bottom + 20, _bgView.width, 30)];
-    [_textField setFont:[UIFont systemFontOfSize:16]];
-    [_textField setDelegate:self];
-    [_textField setPlaceholder:@"我发了一堆图片，快来看看吧"];
-    [_scrollView addSubview:_textField];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, _bgView.bottom + 20, _bgView.width, 60)];
+    [_textView setFont:[UIFont systemFontOfSize:16]];
+    [_textView setDelegate:self];
+    [_textView setPlaceholder:@"我发了一堆图片，快来看看吧"];
+    [_textView setText:self.words];
+    [_scrollView addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textField.bottom, _textField.width, 1)];
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom, _textView.width, 1)];
     [sepLine setBackgroundColor:kCommonTeacherTintColor];
     [_scrollView addSubview:sepLine];
     
@@ -193,11 +207,11 @@
 
 
 #pragma mark - UITextViewDelegate
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    if([string isEqualToString:@"\n"])
+    if([text isEqualToString:@"\n"])
     {
-        [textField resignFirstResponder];
+        [textView resignFirstResponder];
         return NO;
     }
     return YES;

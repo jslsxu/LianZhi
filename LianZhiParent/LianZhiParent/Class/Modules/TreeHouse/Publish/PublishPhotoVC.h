@@ -19,6 +19,5 @@
     UTPlaceholderTextView*        _textView;
 }
 @property (nonatomic, strong)NSArray *originalImageArray;
-@property (nonatomic, copy)NSString *words;
 @property (nonatomic, assign)BOOL forward;
 @end

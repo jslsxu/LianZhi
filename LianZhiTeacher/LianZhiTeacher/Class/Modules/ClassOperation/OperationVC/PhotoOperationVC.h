@@ -25,8 +25,9 @@
     PhotoPickerView*    _pickerView;
     UIView*             _bgView;
     NSMutableArray*     _imageItemViewArray;
-    UITextField*        _textField;
+    UTPlaceholderTextView*        _textView;
 }
+@property (nonatomic, strong)NSArray *originalImageArray;
 @property (nonatomic, assign)BOOL sendToClass;
 @property (nonatomic, strong)ClassInfo *classInfo;
 @property (nonatomic, strong)NSArray *targetArray;

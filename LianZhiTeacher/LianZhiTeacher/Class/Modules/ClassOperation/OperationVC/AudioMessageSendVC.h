@@ -13,4 +13,6 @@
     AudioRecordView*            _recordView;
     UTPlaceholderTextView*        _textView;
 }
+@property (nonatomic, strong)NSData *amrData;
+@property (nonatomic, assign)NSInteger duration;
 @end

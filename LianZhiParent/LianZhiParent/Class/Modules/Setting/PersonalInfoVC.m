@@ -317,12 +317,12 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
         }];
         [datePicker show];
     }
-    else if(row == 4)//守家
+    else if(row == 4)
     {
         TNButtonItem *mofifyItem = [TNButtonItem itemWithTitle:@"前往客服中心上报" action:^{
             
             ReportProblemVC *reportVC = [[ReportProblemVC alloc] init];
-            [reportVC setType:1];
+            [reportVC setType:4];
             [self.navigationController pushViewController:reportVC animated:YES];
         }];
         TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消本次操作" action:^{
@@ -347,9 +347,18 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
     {
         PersonalInfoItem *infoItem = _infoArray[row];
         CommonInputVC *commonInputVC = [[CommonInputVC alloc] initWithOriginal:infoItem.value forKey:infoItem.key completion:^(NSString *value) {
-            infoItem.value = value;
-            [self onSaveButtonClicked];
-            [self.tableView reloadData];
+            BOOL validate = YES;
+            if(row == 3)
+            {
+                validate = [value isEmailAddress];
+                [ProgressHUD showHintText:@"邮箱格式不正确"];
+            }
+            if(validate)
+            {
+                infoItem.value = value;
+                [self onSaveButtonClicked];
+                [self.tableView reloadData];
+            }
         }];
         [CurrentROOTNavigationVC pushViewController:commonInputVC animated:YES];
     }

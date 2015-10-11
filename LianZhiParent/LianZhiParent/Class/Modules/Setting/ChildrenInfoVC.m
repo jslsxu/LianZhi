@@ -110,14 +110,16 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        _avatar = [[AvatarView alloc] initWithFrame:CGRectMake((self.width - 60) / 2, 0, 60, 60)];
-        [self addSubview:_avatar];
+        _contentView = [[UIView alloc] initWithFrame:self.bounds];
+        [self addSubview:_contentView];
+        _avatar = [[AvatarView alloc] initWithFrame:CGRectMake((self.width - 60) / 2, 10, 60, 60)];
+        [_contentView addSubview:_avatar];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _avatar.bottom + 5, self.width, 15)];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _avatar.bottom + 5, self.width, 20)];
         [_nameLabel setTextColor:[UIColor whiteColor]];
         [_nameLabel setFont:[UIFont systemFontOfSize:13]];
         [_nameLabel setTextAlignment:NSTextAlignmentCenter];
-        [self addSubview:_nameLabel];
+        [_contentView addSubview:_nameLabel];
     }
     return self;
 }
@@ -129,6 +131,24 @@
     [_nameLabel setText:_childInfo.name];
 }
 
+- (void)setCurSelected:(BOOL)curSelected
+{
+    _curSelected = curSelected;
+    [_contentView setTransform:_curSelected ? CGAffineTransformIdentity : CGAffineTransformMakeScale(0.8, 0.8)];
+    if(_curSelected)
+    {
+        [_avatar.layer setCornerRadius:_avatar.height / 2];
+        [_avatar.layer setBorderWidth:2];
+        [_avatar.layer setBorderColor:[UIColor whiteColor].CGColor];
+        [_avatar.layer setMasksToBounds:YES];
+    }
+    else
+    {
+        [_avatar.layer setCornerRadius:0];
+        [_avatar.layer setBorderWidth:0];
+    }
+    [_contentView setAlpha:_curSelected ? 1.f : 0.6f];
+}
 @end
 
 @interface ChildrenInfoVC ()<ChildrenExtraCellDelegate>
@@ -153,12 +173,19 @@
     [headerView setImage:[UIImage imageNamed:@"ChildrenBG"]];
     [headerView setUserInteractionEnabled:YES];
     
-    _headerView = [[iCarousel alloc] initWithFrame:CGRectMake(0, 0, _tableView.width, 100)];
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    [layout setItemSize:CGSizeMake(100, 100)];
+    [layout setMinimumInteritemSpacing:0];
+    [layout setMinimumLineSpacing:0];
+    
+    _headerView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, _tableView.width, 100) collectionViewLayout:layout];
+    [_headerView setBackgroundColor:[UIColor clearColor]];
     [_headerView setDataSource:self];
     [_headerView setDelegate:self];
-    [_headerView setDecelerationRate:0.5];
-    [_headerView setType:iCarouselTypeRotary];
+    [_headerView registerClass:[ChildrenItemView class] forCellWithReuseIdentifier:@"ChildrenItemView"];
     [headerView addSubview:_headerView];
+    
     [_tableView setTableHeaderView:headerView];
     
     [self refreshData];
@@ -310,28 +337,25 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - iCarouselDelegate
-- (NSInteger)numberOfItemsInCarousel:(iCarousel *)carousel
+#pragma mark - UICollectionViewDelegate
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return [UserCenter sharedInstance].children.count;
 }
 
-- (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(view == nil)
-    {
-        NSInteger width = carousel.width;
-        ChildrenItemView *itemView = [[ChildrenItemView alloc] initWithFrame:CGRectMake(width * 0.1, 0, width * 0.8, 80)];
-        [itemView setChildInfo:[UserCenter sharedInstance].children[index]];
-        view = itemView;
-    }
-    return view;
+    ChildrenItemView *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ChildrenItemView" forIndexPath:indexPath];
+    [cell setChildInfo:[UserCenter sharedInstance].children[indexPath.row]];
+    [cell setCurSelected:self.curIndex == indexPath.row];
+    return cell;
 }
 
-
-- (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.curIndex = carousel.currentItemIndex;
+    self.curIndex = indexPath.row;
+    [collectionView reloadData];
     [self refreshData];
 }
 

@@ -59,11 +59,17 @@
     if(type == REQUEST_REFRESH)
         [self.modelItemArray removeAllObjects];
     self.hasMore = [data getBoolForKey:@"has_next"];
+    TNDataWrapper *fromWrapper = [data getDataWrapperForKey:@"from"];
+    MessageFromInfo *fromInfo = [[MessageFromInfo alloc] init];
+    [fromInfo parseData:fromWrapper];
+    self.fromInfo = fromInfo;
+    
     TNDataWrapper *listWrapper = [data getDataWrapperForKey:@"list"];
     for (NSInteger i = 0; i < listWrapper.count; i++) {
         MessageDetailItem *item = [[MessageDetailItem alloc] init];
         TNDataWrapper *detailWrapper = [listWrapper getDataWrapperForIndex:i];
         [item parseData:detailWrapper];
+        item.fromInfo = self.fromInfo;
         [self.modelItemArray addObject:item];
     }
     return parse;

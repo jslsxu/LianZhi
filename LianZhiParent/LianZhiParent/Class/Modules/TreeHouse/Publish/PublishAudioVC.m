@@ -24,12 +24,19 @@
 - (void)setupSubviews
 {
     _recordView = [[AudioRecordView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, (self.view.height - 64) / 2)];
+    if(self.amrData && self.duration > 0)
+    {
+        [_recordView setTmpAmrData:self.amrData];
+        [_recordView setDuration:self.duration];
+        [_recordView setRecordType:RecordTypePlay];
+    }
     [_recordView setDelegate:self];
     [self.view addSubview:_recordView];
     
     _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(15, _recordView.bottom, self.view.width - 15 * 2, 60)];
     [_textView setDelegate:self];
     [_textView setPlaceholder:@"给录音起个标题吧"];
+    [_textView setText:self.words];
     [_textView setFont:[UIFont systemFontOfSize:16]];
     [_textView setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
     [self.view addSubview:_textView];
@@ -40,6 +47,8 @@
     
     _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(20, sepLine.bottom, self.view.width - 20 * 2, 40)];
     [_poiInfoView setParentVC:self];
+    if(self.poiItem)
+        [_poiInfoView setPoiItem:self.poiItem];
     [self.view addSubview:_poiInfoView];
 
 }
@@ -47,7 +56,7 @@
 - (void)onSendClicked
 {
     NSData *amrData = [_recordView tmpAmrData];
-    if(amrData.length > 0)
+    if(amrData.length > 0 && [_recordView tmpAmrDuration] > 0)
     {
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         [params setValue:_textView.text forKey:@"words"];

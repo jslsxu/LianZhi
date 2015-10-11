@@ -11,6 +11,7 @@
 @interface NotificationDetailVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
     UIView*         _headerView;
+    MessageVoiceButton *_voiceButton;
     UITableView*    _tableView;
 }
 @property (nonatomic, strong)NotificationItem *notificationItem;

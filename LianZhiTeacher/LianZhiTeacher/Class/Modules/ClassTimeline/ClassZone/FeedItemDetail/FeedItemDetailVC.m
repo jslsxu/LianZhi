@@ -9,7 +9,7 @@
 #import "FeedItemDetailVC.h"
 #import "CollectionImageCell.h"
 #import "DetailCommentCell.h"
-
+#import "ShareActionView.h"
 #define kInnerMargin                5
 
 @implementation FeedItemDetailHeaderView
@@ -238,7 +238,7 @@
         _buttonItems = [NSMutableArray array];
     else
         [_buttonItems removeAllObjects];
-    NSArray *titleArray = @[@"赞",@"评论"];
+    NSArray *titleArray = @[@"赞",@"评论",@"分享"];
     NSArray *imageArray = @[@"DetailPraise",@"DetailResponse",@"DetailShare"];
     CGFloat tabWidth = self.view.width / titleArray.count;
     for (NSInteger i = 0; i < titleArray.count; i++)
@@ -334,7 +334,7 @@
     }
     else
     {
-        
+        [ShareActionView shareWithTitle:@"分享" content:@"wwww" image:nil imageUrl:nil url:kTeacherClientAppStoreUrl];
     }
 }
 

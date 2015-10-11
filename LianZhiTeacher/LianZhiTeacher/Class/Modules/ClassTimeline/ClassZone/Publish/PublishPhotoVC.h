@@ -16,6 +16,6 @@
     PhotoPickerView*    _pickerView;
     UIView*             _bgView;
     NSMutableArray*     _imageItemViewArray;
-    UITextField*        _textField;
+    UTPlaceholderTextView*  _textView;
 }
 @end

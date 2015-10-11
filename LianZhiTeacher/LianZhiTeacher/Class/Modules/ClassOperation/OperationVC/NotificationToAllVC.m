@@ -11,6 +11,18 @@
 #import "PhotoOperationVC.h"
 #import "AudioMessageSendVC.h"
 #import "NotificationDetailVC.h"
+
+@implementation SentClassInfo
+
+- (void)parseData:(TNDataWrapper *)dataWrapper
+{
+    self.classID = [dataWrapper getStringForKey:@"classid"];
+    self.sentNum = [dataWrapper getIntegerForKey:@"sent_num"];
+    self.name = [dataWrapper getStringForKey:@"name"];
+}
+
+@end
+
 @implementation SentGroup
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
@@ -33,7 +45,7 @@
         for (NSInteger i = 0; i < classesWrapper.count; i++)
         {
             TNDataWrapper *classItemWrapper = [classesWrapper getDataWrapperForIndex:i];
-            ClassInfo *classInfo = [[ClassInfo alloc] init];
+            SentClassInfo *classInfo = [[SentClassInfo alloc] init];
             [classInfo parseData:classItemWrapper];
             [classArray addObject:classInfo];
         }
@@ -63,6 +75,7 @@
     self.notificationID = [dataWrapper getStringForKey:@"id"];
     self.words = [dataWrapper getStringForKey:@"words"];
     self.ctime = [dataWrapper getStringForKey:@"created_time"];
+    self.sentNum = [dataWrapper getIntegerForKey:@"send_num"];
     self.notificationType = 1;
     TNDataWrapper *audioWrapper = [dataWrapper getDataWrapperForKey:@"voice"];
     if(audioWrapper.count > 0)

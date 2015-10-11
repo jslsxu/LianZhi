@@ -12,7 +12,7 @@
 
 #define kBaseTag                        1000
 
-@interface PublishPhotoVC ()<UITextFieldDelegate>
+@interface PublishPhotoVC ()<UITextViewDelegate>
 
 @end
 
@@ -84,13 +84,13 @@
     
     [self setupImageView];
     
-    _textField = [[UITextField alloc] initWithFrame:CGRectMake(10, _bgView.bottom + 20, _bgView.width, 30)];
-    [_textField setFont:[UIFont systemFontOfSize:16]];
-    [_textField setDelegate:self];
-    [_textField setPlaceholder:@"我发了一堆图片，快来看看吧"];
-    [_scrollView addSubview:_textField];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, _bgView.bottom + 20, _bgView.width, 60)];
+    [_textView setFont:[UIFont systemFontOfSize:16]];
+    [_textView setDelegate:self];
+    [_textView setPlaceholder:@"我发了一堆图片，快来看看吧"];
+    [_scrollView addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textField.bottom, _textField.width, 1)];
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom, _textView.width, 1)];
     [sepLine setBackgroundColor:kCommonTeacherTintColor];
     [_scrollView addSubview:sepLine];
     
@@ -182,7 +182,10 @@
     }
     ClassZoneItem *item = [[ClassZoneItem alloc] init];
     [item setNewSent:YES];
-    [item setContent:_textField.text];
+    NSString *content = _textView.text;
+    if(content.length == 0)
+        content = _textView.placeholder;
+    [item setContent:content];
     NSMutableArray *photos = [[NSMutableArray alloc] initWithCapacity:0];
     for (NSInteger i = 0; i < [_imageArray count];i++) {
         PublishImageItem *imageItem = _imageArray[i];

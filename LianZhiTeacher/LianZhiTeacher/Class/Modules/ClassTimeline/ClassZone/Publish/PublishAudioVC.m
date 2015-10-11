@@ -66,7 +66,7 @@
 - (void)onSendClicked
 {
     NSData *amrData = [_recordView tmpAmrData];
-    if(amrData.length > 0)
+    if(amrData.length > 0 && [_recordView tmpAmrDuration] > 0)
     {
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         [params setValue:self.classInfo.classID forKey:@"class_id"];

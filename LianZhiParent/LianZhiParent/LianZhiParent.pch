@@ -22,5 +22,6 @@
 #import "UserCenter.h"
 #import "LoginVC.h"
 #import "JSMessagesViewController.h"
+#import "ShareActionView.h"
 #endif
 #endif
