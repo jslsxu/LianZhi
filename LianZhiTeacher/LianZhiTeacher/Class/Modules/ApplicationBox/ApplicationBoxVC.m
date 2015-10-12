@@ -71,9 +71,12 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        self.actionArray = @[@"NotificationToAllVC",@"ContactListVC",@"ClassZoneVC",@"PublishGrowthTimelineVC",@"TNBaseWebViewController"];
-        self.titleArray = @[@"发布通知",@"聊天空间",@"班博客",@"家园手册",@"校主页"];
-        self.imageArray = @[@"AppPublishNote",@"AppChat",@"AppClassZone",@"AppParent",@"AppSchoolHome"];
+//        self.actionArray = @[@"NotificationToAllVC",@"ContactListVC",@"ClassZoneVC",@"PublishGrowthTimelineVC",@"TNBaseWebViewController"];
+//        self.titleArray = @[@"发布通知",@"聊天空间",@"班博客",@"家园手册",@"校主页"];
+//        self.imageArray = @[@"AppPublishNote",@"AppChat",@"AppClassZone",@"AppParent",@"AppSchoolHome"];
+        self.actionArray = @[@"NotificationToAllVC",@"ContactListVC",@"ClassZoneVC",@"PublishGrowthTimelineVC",@"StudentAttendanceVC",@"MyAttendanceVC",@"HomeWordkVC",@"TNBaseWebViewController"];
+        self.titleArray = @[@"发布通知",@"聊天空间",@"班博客",@"家园手册",@"学生考勤",@"我的考勤",@"作业练习",@"校主页"];
+        self.imageArray = @[@"AppPublishNote",@"AppChat",@"AppClassZone",@"AppParent",@"AppStudentAttendance",@"AppMyAttendance",@"AppHomeWork",@"AppSchoolHome"];
         self.appItems = [NSMutableArray array];
         for (NSInteger i = 0; i < self.titleArray.count; i++)
         {
