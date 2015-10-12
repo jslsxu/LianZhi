@@ -202,7 +202,17 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     self.title = @"详情";
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(12, 0, self.view.width - 12 * 2, self.view.height - 64 - 50) style:UITableViewStyleGrouped];
+    if(self.zoneItem == nil)
+    {
+        [self requestData];
+    }
+    else
+        [self setup];
+}
+
+- (void)setup
+{
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(12, 0, self.view.width - 12 * 2, kScreenHeight - 64 - 50) style:UITableViewStyleGrouped];
     [_tableView setBackgroundColor:[UIColor clearColor]];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
@@ -210,7 +220,7 @@
     [_tableView setShowsVerticalScrollIndicator:NO];
     [self.view addSubview:_tableView];
     
-    _toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.height - 64 - 50, self.view.width, 50)];
+    _toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0,kScreenHeight - 64 - 50, self.view.width, 50)];
     [self setupToolBar:_toolBar];
     [self.view addSubview:_toolBar];
     
@@ -221,7 +231,7 @@
         [wself onDelete];
     }];
     [_tableView setTableHeaderView:_headerView];
- 
+    
     _praiseView = [[PraiseListView alloc] initWithFrame:CGRectMake(0, 0, _tableView.width, 0)];
     [_praiseView setPraiseArray:self.zoneItem.responseModel.praiseArray];
     
@@ -229,6 +239,7 @@
     [_replyBox setDelegate:self];
     [self.view addSubview:_replyBox];
     _replyBox.hidden = YES;
+
 }
 
 - (void)setupToolBar:(UIView *)viewParent
@@ -262,6 +273,24 @@
             [barButton setTitle:praised ? @"取消" : @"赞" forState:UIControlStateNormal];
         }
     }
+}
+
+- (void)requestData
+{
+    __weak typeof(self) wself = self;
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"class_id":self.classId,@"feed_id" : self.messageItem.feedItem.feedID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject)
+    {
+        if(responseObject.count > 0)
+        {
+            TNDataWrapper *dataWrapper = [responseObject getDataWrapperForIndex:0];
+            ClassZoneItem *zoneItem = [[ClassZoneItem alloc] init];
+            [zoneItem parseData:dataWrapper];
+            wself.zoneItem = zoneItem;
+            [wself setup];
+        }
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (void)onDelete
@@ -334,7 +363,10 @@
     }
     else
     {
-        [ShareActionView shareWithTitle:@"分享" content:@"wwww" image:nil imageUrl:nil url:kTeacherClientAppStoreUrl];
+        NSString *imageUrl = nil;
+        if(self.zoneItem.photos.count > 0)
+            imageUrl = [self.zoneItem.photos[0] thumbnailUrl];
+        [ShareActionView shareWithTitle:self.zoneItem.content content:nil image:nil imageUrl:imageUrl url:kTeacherClientAppStoreUrl];
     }
 }
 

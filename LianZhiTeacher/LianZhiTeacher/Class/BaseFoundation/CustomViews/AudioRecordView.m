@@ -72,20 +72,19 @@
         [self addSubview:_deleteButton];
         
         _audioIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MicrophoneGray.png"]];
-        [_audioIndicator setCenter:CGPointMake(80, self.height / 2)];
+         [_audioIndicator setOrigin:CGPointMake(self.width / 2 - _audioIndicator.width - 20, (self.height - _audioIndicator.height) / 2)];
         [self addSubview:_audioIndicator];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         [_timeLabel setBackgroundColor:[UIColor clearColor]];
-        [_timeLabel setTextAlignment:NSTextAlignmentCenter];
         [_timeLabel setFont:[UIFont boldSystemFontOfSize:32]];
         [_timeLabel setText:@"0:00"];
-        [_timeLabel setTextColor:[UIColor colorWithRed:83 / 255.0 green:83 / 255.0 blue:83 / 255.0 alpha:1.f]];
-        [_timeLabel setFrame:CGRectMake(self.width / 2, _audioIndicator.y, 110, _audioIndicator.height / 2)];
+        [_timeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
+        [_timeLabel setFrame:CGRectMake(self.width / 2 + 20, _audioIndicator.y, 110, _audioIndicator.height / 2)];
         [self addSubview:_timeLabel];
         
         _recordButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_recordButton setFrame:CGRectMake(self.width / 2, _timeLabel.bottom, 110, _audioIndicator.height  / 2)];
+        [_recordButton setFrame:CGRectMake(self.width / 2 + 20, _timeLabel.bottom, 50, _audioIndicator.height  / 2)];
         [_recordButton setImage:[UIImage imageNamed:@"StartRecord.png"] forState:UIControlStateNormal];
         [_recordButton addTarget:self action:@selector(onRecordButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_recordButton];
@@ -101,7 +100,7 @@
         MLAudioMeterObserver *meterObserver = [[MLAudioMeterObserver alloc]init];
         [meterObserver setRefreshInterval:0.1];
         meterObserver.actionBlock = ^(NSArray *levelMeterStates,MLAudioMeterObserver *meterObserver){
-            NSInteger index = [MLAudioMeterObserver volumeForLevelMeterStates:levelMeterStates] * 13 + 1;
+            NSInteger index = [MLAudioMeterObserver volumeForLevelMeterStates:levelMeterStates] * 10 + 1;
             NSString *imageStr = [NSString stringWithFormat:@"Recording%ld.png",(long)index];
             [_audioIndicator setImage:[UIImage imageNamed:(imageStr)]];
         };

@@ -126,6 +126,11 @@
     [super viewDidLoad];
     self.title = @"成长手册";
     self.date = [NSDate date];
+    
+    _verLine = [[UIView alloc] initWithFrame:CGRectMake(55, _headerView.height, 2, self.view.height - 64 - _headerView.height)];
+    [_verLine setBackgroundColor:[UIColor whiteColor]];
+    [self.view addSubview:_verLine];
+    
     _headerView = [[GrowthTimelineHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 80)];
     [_headerView setDelegate:self];
     [self.tableView setTableHeaderView:_headerView];
@@ -134,13 +139,6 @@
     [self bindTableCell:@"GrowthTimelineCell" tableModel:@"GrowthTimelineModel"];
     [self setSupportPullUp:YES];
     [self requestData:REQUEST_REFRESH];
-}
-
-- (void)setupSubviews
-{
-    _verLine = [[UIView alloc] initWithFrame:CGRectMake(55, _headerView.height, 2, self.view.height - _headerView.height)];
-    [_verLine setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:_verLine];
 }
 
 #pragma mark - GrowthDatePickerDelegate

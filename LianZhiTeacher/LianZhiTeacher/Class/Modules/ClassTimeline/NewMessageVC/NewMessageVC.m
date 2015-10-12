@@ -9,6 +9,7 @@
 #import "NewMessageVC.h"
 #import "NewMessageCell.h"
 #import "NewMessageModel.h"
+#import "FeedItemDetailVC.h"
 @interface NewMessageVC ()
 
 @end
@@ -46,12 +47,22 @@
 
 - (void)onCleanMessage
 {
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/clear_lognotice" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"objid" : self.objid,@"" : @"0"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        [self.tableViewModel.modelItemArray removeAllObjects];
-        [self.tableView reloadData];
+    __weak typeof(self) wself = self;
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/clear_lognotice" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"objid" : self.objid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [wself.tableViewModel.modelItemArray removeAllObjects];
+        [wself.tableView reloadData];
     } fail:^(NSString *errMsg) {
         
     }];
+}
+
+- (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
+{
+    NewMessageItem *messageItem = (NewMessageItem *)modelItem;
+    FeedItemDetailVC *feedDetailVC = [[FeedItemDetailVC alloc] init];
+    [feedDetailVC setClassId:self.objid];
+    [feedDetailVC setMessageItem:messageItem];
+    [self.navigationController pushViewController:feedDetailVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

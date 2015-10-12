@@ -9,6 +9,8 @@
 #import "NewMessageVC.h"
 #import "NewMessageCell.h"
 #import "NewMessageModel.h"
+#import "FeedItemDetailVC.h"
+#import "TreeHouseItemDetailVC.h"
 @interface NewMessageVC ()
 
 @end
@@ -53,6 +55,26 @@
         
     }];
 }
+
+
+- (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
+{
+    NewMessageItem *messageItem = (NewMessageItem *)modelItem;
+    if(messageItem.feedItem.types == 0)
+    {
+        FeedItemDetailVC *feedDetailVC = [[FeedItemDetailVC alloc] init];
+        [feedDetailVC setMessageItem:messageItem];
+        [feedDetailVC setClassId:self.objid];
+        [self.navigationController pushViewController:feedDetailVC animated:YES];
+    }
+    else
+    {
+        TreeHouseItemDetailVC *detailVC = [[TreeHouseItemDetailVC alloc] init];
+        [detailVC setMessageItem:messageItem];
+        [self.navigationController pushViewController:detailVC animated:YES];
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

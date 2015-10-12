@@ -324,7 +324,10 @@
         }
         else
         {
-            
+            NSString *imageUrl = nil;
+            if(self.targetClassZoneItem.photos.count > 0)
+                imageUrl = [self.targetClassZoneItem.photos[0] thumbnailUrl];
+            [ShareActionView shareWithTitle:self.targetClassZoneItem.content content:nil image:nil imageUrl:imageUrl url:kParentClientAppStoreUrl];
         }
     }];
     [actionView show];

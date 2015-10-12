@@ -19,6 +19,7 @@
     self.classID = [dataWrapper getStringForKey:@"classid"];
     self.sentNum = [dataWrapper getIntegerForKey:@"sent_num"];
     self.name = [dataWrapper getStringForKey:@"name"];
+    self.totalNum = [dataWrapper getIntegerForKey:@"students_num"];
 }
 
 @end
@@ -30,6 +31,7 @@
     self.groupID = [dataWrapper getStringForKey:@"id"];
     self.groupName = [dataWrapper getStringForKey:@"name"];
     self.sentNum = [dataWrapper getIntegerForKey:@"sent_num"];
+    self.totalNum = [dataWrapper getIntegerForKey:@"students_num"];
 }
 
 @end
@@ -75,7 +77,7 @@
     self.notificationID = [dataWrapper getStringForKey:@"id"];
     self.words = [dataWrapper getStringForKey:@"words"];
     self.ctime = [dataWrapper getStringForKey:@"created_time"];
-    self.sentNum = [dataWrapper getIntegerForKey:@"send_num"];
+    self.sentNum = [dataWrapper getIntegerForKey:@"sent_num"];
     self.notificationType = 1;
     TNDataWrapper *audioWrapper = [dataWrapper getDataWrapperForKey:@"voice"];
     if(audioWrapper.count > 0)

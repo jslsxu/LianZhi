@@ -7,12 +7,12 @@
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "StopPlay@2x.png"
+      "filename" : "btn_stop@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "StopPlay@3x.png"
+      "filename" : "btn_stop@3x.png"
     }
   ],
   "info" : {

@@ -9,7 +9,7 @@
 #import "TNBaseTableViewController.h"
 #import "ClassZoneModel.h"
 #import "PraiseListView.h"
-
+#import "NewMessageModel.h"
 @interface FeedItemDetailHeaderView : UIView<UICollectionViewDataSource, UICollectionViewDelegate>
 {
     AvatarView* _avatar;
@@ -38,5 +38,6 @@
 }
 @property (nonatomic, copy)NSString *classId;
 @property (nonatomic, strong)ClassZoneItem *zoneItem;
+@property (nonatomic, strong)NewMessageItem *messageItem;
 @property (nonatomic, copy)void (^deleteCallBack)();
 @end

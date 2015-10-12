@@ -373,7 +373,10 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         }
         else
         {
-            
+            NSString *imageUrl = nil;
+            if(self.targetTreeHouseItem.photos.count > 0)
+                imageUrl = [self.targetTreeHouseItem.photos[0] thumbnailUrl];
+            [ShareActionView shareWithTitle:self.targetTreeHouseItem.detail content:nil image:nil imageUrl:imageUrl url:kParentClientAppStoreUrl];
         }
     }];
     [actionView show];

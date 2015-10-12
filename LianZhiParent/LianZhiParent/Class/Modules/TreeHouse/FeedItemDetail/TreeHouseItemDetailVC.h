@@ -10,6 +10,7 @@
 #import "CollectionImageCell.h"
 #import "DetailCommentCell.h"
 #import "PraiseListView.h"
+#import "NewMessageModel.h"
 @interface TreeHouseItemDetailHeaderView : UIView<UICollectionViewDataSource, UICollectionViewDelegate>
 {
     AvatarView* _avatar;
@@ -40,6 +41,7 @@
 }
 
 @property (nonatomic, strong)TreehouseItem *treeHouseItem;
+@property (nonatomic, strong)NewMessageItem *messageItem;
 @property (nonatomic, copy)void (^deleteCallBack)();
 @property (nonatomic, copy)void (^modifyCallBack)();
 @end

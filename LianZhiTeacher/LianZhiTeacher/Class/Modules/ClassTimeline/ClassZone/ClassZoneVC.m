@@ -728,7 +728,10 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         }
         else
         {
-            [ShareActionView shareWithTitle:@"" content:@"" image:nil imageUrl:nil url:kTeacherClientAppStoreUrl];
+            NSString *imageUrl = nil;
+            if(self.targetZoneItem.photos.count > 0)
+                imageUrl = [self.targetZoneItem.photos[0] thumbnailUrl];
+            [ShareActionView shareWithTitle:self.targetZoneItem.content content:nil image:nil imageUrl:imageUrl url:kTeacherClientAppStoreUrl];
         }
     }];
     [actionView show];

@@ -18,6 +18,7 @@ typedef NS_ENUM(NSInteger, FeedType)
 
 @interface FeedItem : TNModelItem
 @property (nonatomic, copy)NSString *feedID;
+@property (nonatomic, assign)NSInteger types;
 @property (nonatomic, assign)FeedType feedType;
 @property (nonatomic, copy)NSString *feedText;
 @property (nonatomic, copy)NSString *feedAudio;
@@ -27,7 +28,6 @@ typedef NS_ENUM(NSInteger, FeedType)
 @interface NewMessageItem : TNModelItem
 @property (nonatomic, strong)UserInfo *userInfo;
 @property (nonatomic, copy)NSString *comment_content;
-@property (nonatomic, assign)NSInteger types;
 @property (nonatomic, copy)NSString *ctime;
 @property (nonatomic, copy)NSString *lastID;
 @property (nonatomic, assign)BOOL hasMore;

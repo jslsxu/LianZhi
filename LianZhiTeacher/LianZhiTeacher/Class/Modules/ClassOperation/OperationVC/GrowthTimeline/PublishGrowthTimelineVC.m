@@ -13,6 +13,10 @@
 @property (nonatomic, strong)ClassInfo *classInfo;
 @property (nonatomic, strong)NSArray *imageArray;
 @property (nonatomic, strong)NSArray *keyArray;
+
+@property (nonatomic, copy)NSString *mood;
+@property (nonatomic, assign)NSInteger stoolNum;
+@property (nonatomic, copy)NSString *temparature;
 @end
 
 @implementation PublishGrowthTimelineVC
@@ -24,8 +28,10 @@
     {
         _healthArray = [NSMutableArray array];
         self.classInfo = [UserCenter sharedInstance].curSchool.classes[0];
-        self.imageArray = @[@"Mood",@"Toilet",@"Temperature",@"Drink",@"Sleep"];
         self.keyArray = @[@"mood",@"stool_num",@"temperature",@"water",@"sleep"];
+        self.mood = @"高兴";
+        self.stoolNum = 0;
+        self.temparature = @"正常";
     }
     return self;
 }
@@ -90,13 +96,17 @@
     NSInteger vMargin = 20;
     NSInteger itemWIdth = 50;
     NSInteger innerMargin = (viewParent.width - hMargin * 2 - itemWIdth * 5) / 4;
+    NSArray *imageArray = @[@"ExpressionHappy",@"ToiletNo",@"TempNormal",@"DrinkNormal",@"SleepNormal"];
     for (NSInteger i = 0; i < 5; i++)
     {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button setFrame:CGRectMake(hMargin + (innerMargin + itemWIdth) * i, vMargin, itemWIdth, itemWIdth)];
-        [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Normal",self.imageArray[i]]] forState:UIControlStateNormal];
-        [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Abnormal",self.imageArray[i]]] forState:UIControlStateSelected];
         [button addTarget:self action:@selector(onHealthButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [button setImage:[UIImage imageNamed:imageArray[i]] forState:UIControlStateNormal];
+        if(i == 3)
+            [button setImage:[UIImage imageNamed:@"DrinkAbnormal"] forState:UIControlStateSelected];
+        else if(i == 4)
+            [button setImage:[UIImage imageNamed:@"SleepAbnormal"] forState:UIControlStateSelected];
         [viewParent addSubview:button];
         [_healthArray addObject:button];
     }
@@ -118,7 +128,17 @@
 
 - (void)onHealthButtonClicked:(UIButton *)button
 {
-    button.selected = !button.selected;
+    NSInteger index = [_healthArray indexOfObject:button];
+    if(index == 0)
+        [self onEmotionButtonClicked];
+    else if(index == 1)
+        [self onToiletButtonClicked];
+    else if(index == 2)
+        [self onTemperatureButtonClicked];
+    else
+    {
+        button.selected = !button.selected;
+    }
 }
 
 - (void)onSendButtonClicked
@@ -128,7 +148,20 @@
     {
         NSString *key = self.keyArray[i];
         UIButton *healthButton = _healthArray[i];
-        [record setValue:kStringFromValue(healthButton.selected) forKey:key];
+        BOOL selected = healthButton.selected;
+        if(i >= 3)
+            [record setValue:kStringFromValue(selected) forKey:key];
+        else
+        {
+            NSString *status;
+            if(i == 0)
+                status = self.mood;
+            else if (i == 1)
+                status = kStringFromValue(self.stoolNum);
+            else
+                status = self.temparature;
+            [record setValue:status forKey:key];
+        }
     }
     [record setValue:_textView.text forKey:@"words"];
     GrowthTimelineClassChangeVC *classSelectVC = [[GrowthTimelineClassChangeVC alloc] init];
@@ -160,6 +193,67 @@
     [UIView animateWithDuration:[duration floatValue] delay:0 options:curve.integerValue animations:^{
         [_scrollView setContentInset:UIEdgeInsetsZero];
     } completion:nil];
+}
+
+- (void)onTemperatureButtonClicked
+{
+    NSString *next = nil;
+    UIButton *temparatureButton = _healthArray[2];
+    if([self.temparature isEqualToString:@"正常"])
+    {
+        [temparatureButton setImage:[UIImage imageNamed:(@"TempHigh")] forState:UIControlStateNormal];
+        next = @"发烧";
+    }
+    else if([self.temparature isEqualToString:@"发烧"])
+    {
+        [temparatureButton setImage:[UIImage imageNamed:(@"TempNormal")] forState:UIControlStateNormal];
+        next = @"正常";
+    }
+    self.temparature = next;
+}
+
+- (void)onToiletButtonClicked
+{
+    NSInteger next = 0;
+    UIButton *toiletButton = _healthArray[1];
+    if(self.stoolNum == 0)
+    {
+        next = 1;
+        [toiletButton setImage:[UIImage imageNamed:(@"ToiletOnce.png")] forState:UIControlStateNormal];
+    }
+    else if(self.stoolNum == 1)
+    {
+        next = 2;
+        [toiletButton setImage:[UIImage imageNamed:(@"ToiletTwice.png")] forState:UIControlStateNormal];
+    }
+    else
+    {
+        next = 0;
+        [toiletButton setImage:[UIImage imageNamed:(@"ToiletNo.png")] forState:UIControlStateNormal];
+    }
+    self.stoolNum = next;
+}
+
+- (void)onEmotionButtonClicked
+{
+    NSString *next = nil;
+    UIButton *moodButton = _healthArray[0];
+    if([self.mood isEqualToString:@"高兴"])
+    {
+        next = @"哭闹";
+        [moodButton setImage:[UIImage imageNamed:(@"ExpressionCry")] forState:UIControlStateNormal];
+    }
+    else if ([self.mood isEqualToString:@"哭闹"])
+    {
+        next = @"一般";
+        [moodButton setImage:[UIImage imageNamed:(@"ExpressionSimple")] forState:UIControlStateNormal];
+    }
+    else
+    {
+        next = @"高兴";
+        [moodButton setImage:[UIImage imageNamed:(@"ExpressionHappy")] forState:UIControlStateNormal];
+    }
+    self.mood = next;
 }
 
 

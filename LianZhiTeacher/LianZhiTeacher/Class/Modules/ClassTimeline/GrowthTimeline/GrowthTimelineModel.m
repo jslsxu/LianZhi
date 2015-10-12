@@ -14,9 +14,10 @@
     self.growthID = [dataWrapper getStringForKey:@"id"];
     self.date = [dataWrapper getStringForKey:@"date"];
     self.time = [dataWrapper getStringForKey:@"time"];
-    self.emotion = [dataWrapper getBoolForKey:@"mood"];
-    self.stool = [dataWrapper getBoolForKey:@"stool_num"];
-    self.temparature = [dataWrapper getBoolForKey:@"temperature"];
+    self.emotion = [dataWrapper getStringForKey:@"mood"];
+    self.stoolNum = [dataWrapper getIntegerForKey:@"stool_num"];
+    self.temparature = [dataWrapper getStringForKey:@"temperature"];
+    
     self.water = [dataWrapper getBoolForKey:@"water"];
     self.sleep = [dataWrapper getBoolForKey:@"sleep"];
     self.content = [dataWrapper getStringForKey:@"words"];

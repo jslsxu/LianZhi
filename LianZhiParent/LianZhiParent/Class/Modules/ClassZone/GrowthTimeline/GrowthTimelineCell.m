@@ -144,20 +144,38 @@
     else
         [_dateLabel setHidden:YES];
     
-    for (NSInteger i = 0; i < 5; i++)
-    {
-        UIButton *button = _statusArray[i];
-        if(i== 0)
-            [button setSelected:timelineItem.emotion];
-        if(i == 1)
-            [button setSelected:timelineItem.stool];
-        if(i == 2)
-            [button setSelected:timelineItem.temparature];
-        if(i == 3)
-            [button setSelected:timelineItem.water];
-        if(i == 4)
-            [button setSelected:timelineItem.sleep];
-    }
+    UIButton *feelingButton = _statusArray[0];
+    NSString *emotion = timelineItem.emotion;
+    if([emotion isEqualToString:@"高兴"])
+        [feelingButton setImage:[UIImage imageNamed:(@"ExpressionHappy")] forState:UIControlStateNormal];
+    else if ([emotion isEqualToString:@"哭闹"])
+        [feelingButton setImage:[UIImage imageNamed:(@"ExpressionCry")] forState:UIControlStateNormal];
+    else
+        [feelingButton setImage:[UIImage imageNamed:(@"ExpressionSimple")] forState:UIControlStateNormal];
+    
+    UIButton *toiletButton = _statusArray[1];
+    NSInteger stoolNum = timelineItem.stoolNum;
+    if(stoolNum == 0)
+        [toiletButton setImage:[UIImage imageNamed:(@"ToiletNo")] forState:UIControlStateNormal];
+    else if(stoolNum == 1)
+        [toiletButton setImage:[UIImage imageNamed:(@"ToiletOnce")] forState:UIControlStateNormal];
+    else if (stoolNum == 2)
+        [toiletButton setImage:[UIImage imageNamed:(@"ToiletTwice")] forState:UIControlStateNormal];
+    
+    UIButton *temparatureButton = _statusArray[2];
+    NSString *temp = timelineItem.temparature;
+    if([temp isEqualToString:@"正常"])
+        [temparatureButton setImage:[UIImage imageNamed:(@"TempNormal.png")] forState:UIControlStateNormal];
+    else if([temp isEqualToString:@"发烧"])
+        [temparatureButton setImage:[UIImage imageNamed:(@"TempHigh.png")] forState:UIControlStateNormal];
+    
+    UIButton *waterButton = _statusArray[3];
+    [waterButton setImage:[UIImage imageNamed:timelineItem.water ? @"DrinkAbnormal" : @"DrinkNormal"] forState:UIControlStateNormal];
+    
+    UIButton *sleepButton = _statusArray[4];
+    [sleepButton setImage:[UIImage imageNamed:timelineItem.sleep ? @"SleepAbnormal" : @"SleepNormal"] forState:UIControlStateNormal];
+    
+    
     NSInteger spaceYStart = 60;
     NSString *content = timelineItem.content;
     if(content.length > 0)

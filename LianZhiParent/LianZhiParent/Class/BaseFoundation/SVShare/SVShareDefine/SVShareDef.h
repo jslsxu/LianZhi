@@ -26,8 +26,8 @@
 /**
  *  Weixin
  */
-#define AppKey_Weixin       @"wx0e5e32610ac8348c"
-#define AppSecret_Weixin    @"55580733caf425211d8e1d223f2c3f32"
+#define AppKey_Weixin       @"wx7b4dfff6299dc03d"
+#define AppSecret_Weixin    @"be3024278615b729973054fd7ed7650e"
 
 /**
  *  SinaWeibo

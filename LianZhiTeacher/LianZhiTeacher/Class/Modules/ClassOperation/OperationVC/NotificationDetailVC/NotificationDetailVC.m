@@ -219,13 +219,13 @@
     {
         SentClassInfo *classInfo = self.notificationItem.sentTarget.classArray[row];
         [cell.textLabel setText:classInfo.name];
-        [cell.detailTextLabel setText:kStringFromValue(classInfo.sentNum)];
+        [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld/%ld",classInfo.sentNum, classInfo.totalNum]];
     }
     else
     {
         SentGroup *group = self.notificationItem.sentTarget.groupArray[row];
         [cell.textLabel setText:group.groupName];
-        [cell.detailTextLabel setText:kStringFromValue(group.sentNum)];
+        [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld/%ld",group.sentNum, group.totalNum]];
     }
 //    [cell.textLabel setText:];
     return cell;

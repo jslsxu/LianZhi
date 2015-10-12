@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>cn.edugate.EdugateAppTeacher</string>
+	<string>cn.edugate.inhouse.EdugateAppTeacher</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -20,6 +20,21 @@
 	<string>2.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string></string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>EdugateAppTeacher</string>
+				<string>wxd3e0e544390c6121</string>
+				<string>wb251515278</string>
+				<string>tencent1104828209</string>
+				<string>QQ41DA5731</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>2.0.1</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -35,21 +50,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string></string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>EdugateAppTeacher</string>
-				<string>wx0e5e32610ac8348c</string>
-				<string>wb251515278</string>
-				<string>tencent1104828209</string>
-				<string>QQ41DA5731</string>
-			</array>
-		</dict>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>

@@ -12,8 +12,9 @@
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
     self.feedID = [dataWrapper getStringForKey:@"id"];
-    self.feedType = [dataWrapper getIntegerForKey:@"type"];
-    TNDataWrapper *contentWrapper = [dataWrapper getDataWrapperForKey:@"feed_content"];
+    self.types = [dataWrapper getIntegerForKey:@"types"];
+    self.feedType = [dataWrapper getIntegerForKey:@"content_type"];
+    TNDataWrapper *contentWrapper = [dataWrapper getDataWrapperForKey:@"content"];
     self.feedText = [contentWrapper getStringForKey:@"text"];
     self.feedAudio = [contentWrapper getStringForKey:@"voic"];
     self.feedPhoto = [contentWrapper getStringForKey:@"img"];
@@ -31,7 +32,6 @@
     self.userInfo = userInfo;
     
     self.comment_content = [dataWrapper getStringForKey:@"comment_content"];
-    self.types = [dataWrapper getIntegerForKey:@"types"];
     self.ctime = [dataWrapper getStringForKey:@"ctime"];
     TNDataWrapper *moreWrapper = [dataWrapper getDataWrapperForKey:@"more"];
     self.hasMore = [moreWrapper getBoolForKey:@"has"];

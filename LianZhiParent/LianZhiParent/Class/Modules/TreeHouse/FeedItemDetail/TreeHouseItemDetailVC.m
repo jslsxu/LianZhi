@@ -320,7 +320,16 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     self.title = @"详情";
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(12, 0, self.view.width - 12 * 2, self.view.height - 64 - 50) style:UITableViewStyleGrouped];
+    if(self.treeHouseItem)
+        [self setup];
+    else
+        [self requestData];
+}
+
+- (void)setup
+{
+    
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(12, 0, self.view.width - 12 * 2, kScreenHeight - 64 - 50) style:UITableViewStyleGrouped];
     [_tableView setBackgroundColor:[UIColor clearColor]];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
@@ -328,7 +337,7 @@
     [_tableView setShowsVerticalScrollIndicator:NO];
     [self.view addSubview:_tableView];
     
-    _toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.height - 64 - 50, self.view.width, 50)];
+    _toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, kScreenHeight - 64 - 50, self.view.width, 50)];
     [self setupToolBar:_toolBar];
     [self.view addSubview:_toolBar];
     
@@ -351,6 +360,25 @@
     [_replyBox setDelegate:self];
     [self.view addSubview:_replyBox];
     _replyBox.hidden = YES;
+
+}
+
+- (void)requestData
+{
+    __weak typeof(self) wself = self;
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"tree/detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"child_id":[UserCenter sharedInstance].curChild.uid,@"feed_id" : self.messageItem.feedItem.feedID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject)
+     {
+         if(responseObject.count > 0)
+         {
+             TNDataWrapper *dataWrapper = [responseObject getDataWrapperForIndex:0];
+             TreehouseItem *zoneItem = [[TreehouseItem alloc] init];
+             [zoneItem parseData:dataWrapper];
+             wself.treeHouseItem = zoneItem;
+             [wself setup];
+         }
+     } fail:^(NSString *errMsg) {
+         
+     }];
 }
 
 - (void)setupToolBar:(UIView *)viewParent
@@ -453,7 +481,10 @@
     }
     else
     {
-        [ShareActionView shareWithTitle:@"wewewe" content:@"sdsds" image:nil imageUrl:nil url:kParentClientAppStoreUrl];
+        NSString *imageUrl = nil;
+        if(self.treeHouseItem.photos.count > 0)
+            imageUrl = [self.treeHouseItem.photos[0] thumbnailUrl];
+        [ShareActionView shareWithTitle:self.treeHouseItem.detail content:nil image:nil imageUrl:imageUrl url:kParentClientAppStoreUrl];
     }
 }
 
