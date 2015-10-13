@@ -102,7 +102,7 @@
     [_timeLabel setOrigin:CGPointMake(_nameLabel.right + 4, _nameLabel.y + (_nameLabel.height - _timeLabel.height) / 2)];
     
     [_addressLabel setText:_treeHouseItem.position];
-    
+    [_deleteButon setHidden:!_treeHouseItem.canEdit];
     NSInteger spaceYStart = 55;
     NSString *content = _treeHouseItem.detail;
     if(content.length > 0)

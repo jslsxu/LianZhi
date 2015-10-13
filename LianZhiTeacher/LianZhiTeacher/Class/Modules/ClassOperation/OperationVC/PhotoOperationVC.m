@@ -127,7 +127,7 @@
     [_textView setText:self.words];
     [_scrollView addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom, _textView.width, 1)];
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom + 10, _textView.width, 1)];
     [sepLine setBackgroundColor:kCommonTeacherTintColor];
     [_scrollView addSubview:sepLine];
     

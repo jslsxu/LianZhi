@@ -35,7 +35,7 @@
     [_textView setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
     [self.view addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(15, _textView.bottom, _textView.width, 1)];
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(15, _textView.bottom + 10, _textView.width, 1)];
     [sepLine setBackgroundColor:kCommonTeacherTintColor];
     [self.view addSubview:sepLine];
     
@@ -51,7 +51,7 @@
     [sepLine setBackgroundColor:kSepLineColor];
     [viewParent addSubview:sepLine];
     
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(5, 5, viewParent.width - 5 * 2, viewParent.height - 10)];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, 5, viewParent.width - 10 * 2, viewParent.height - 10)];
     [_textView setTextAlignment:NSTextAlignmentCenter];
     [_textView setBackgroundColor:[UIColor clearColor]];
     [_textView setFont:[UIFont systemFontOfSize:14]];

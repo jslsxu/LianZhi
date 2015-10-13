@@ -86,6 +86,9 @@
         AudioItem *audioItem = [[AudioItem alloc] init];
         [audioItem parseData:audioWrapper];
         self.audioItem = audioItem;
+        
+        if(self.words.length == 0)
+            self.words = @"发送了一条语音消息";
     }
     
     TNDataWrapper *photoWrapper = [dataWrapper getDataWrapperForKey:@"pictures"];
@@ -100,6 +103,9 @@
             [photoArray addObject:photoItem];
         }
         self.photoArray = photoArray;
+        
+        if(self.words.length == 0)
+            self.words = [NSString stringWithFormat:@"发送了%ld张照片",self.photoArray.count];
     }
     
     TNDataWrapper *sentTargetWrapper = [dataWrapper getDataWrapperForKey:@"target"];
@@ -147,8 +153,17 @@
     if(self)
     {
         [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
-        [self.textLabel setFont:[UIFont systemFontOfSize:13]];
-        [self.detailTextLabel setFont:[UIFont systemFontOfSize:11]];
+        
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_contentLabel setTextColor:self.textLabel.textColor];
+        [_contentLabel setFont:[UIFont systemFontOfSize:13]];
+        [self addSubview:_contentLabel];
+        
+        _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_timeLabel setFont:[UIFont systemFontOfSize:11]];
+        [_timeLabel setTextColor:self.detailTextLabel.textColor];
+        [self addSubview:_timeLabel];
+        
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
         [_sepLine setBackgroundColor:kSepLineColor];
         [self addSubview:_sepLine];
@@ -166,8 +181,12 @@
     else
         imageStr = @"NotiRecordPhotoIcon";
     [self.imageView setImage:[UIImage imageNamed:imageStr]];
-    [self.textLabel setText:item.words];
-    [self.detailTextLabel setText:item.ctime];
+    [_timeLabel setText:item.ctime];
+    [_timeLabel sizeToFit];
+    [_timeLabel setOrigin:CGPointMake(self.width - 30 - _timeLabel.width, (self.height - _timeLabel.height) / 2)];
+    [_contentLabel setText:item.words];
+    [_contentLabel sizeToFit];
+    [_contentLabel setFrame:CGRectMake(45, (self.height - _contentLabel.height) / 2, MIN(_contentLabel.width, _timeLabel.left - 10 - 45), _contentLabel.height)];
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width

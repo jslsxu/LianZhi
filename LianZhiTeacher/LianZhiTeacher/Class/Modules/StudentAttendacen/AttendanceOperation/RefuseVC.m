@@ -25,7 +25,7 @@
     [_textView setPlaceholder:[NSString stringWithFormat:@"请向家长说明%@",self.title]];
     [self.view addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom + 5, _textView.width, 1)];
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom + 10, _textView.width, 1)];
     [sepLine setBackgroundColor:kCommonTeacherTintColor];
     [self.view addSubview:sepLine];
     

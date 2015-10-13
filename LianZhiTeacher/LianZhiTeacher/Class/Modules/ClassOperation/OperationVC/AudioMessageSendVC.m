@@ -27,7 +27,7 @@
     }
     [self.view addSubview:_recordView];
     
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, _recordView.bottom, _recordView.width, 60)];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, _recordView.bottom, self.view.width - 10 * 2, 60)];
     [_textView setDelegate:self];
     [_textView setPlaceholder:@"给录音起个标题吧"];
     [_textView setFont:[UIFont systemFontOfSize:16]];
@@ -35,7 +35,7 @@
     [_textView setText:self.words];
     [self.view addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom, self.view.width - 10 * 2, 1)];
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom + 10, self.view.width - 10 * 2, 1)];
     [sepLine setBackgroundColor:kCommonTeacherTintColor];
     [self.view addSubview:sepLine];
 }

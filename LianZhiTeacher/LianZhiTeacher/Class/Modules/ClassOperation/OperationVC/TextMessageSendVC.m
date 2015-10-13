@@ -28,7 +28,7 @@
     [_textView setPlaceholder:@"请输入您要发布的内容"];
     [_bgView addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom + 5, _textView.width, 1)];
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom + 10, _textView.width, 1)];
     [sepLine setBackgroundColor:kCommonTeacherTintColor];
     [_bgView addSubview:sepLine];
     

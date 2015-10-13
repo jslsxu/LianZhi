@@ -80,23 +80,36 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    if(self.showParentsOnly)
+        return 1;
     return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(section == 0)
-        return self.classInfo.teachers.count;
-    else
+    if(self.showParentsOnly)
+    {
         return self.classInfo.students.count;
+    }
+    else
+    {
+        if(section == 0)
+            return self.classInfo.teachers.count;
+        else
+            return self.classInfo.students.count;
+    }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if(section == 0)
-        return @"教师";
-    else
-        return @"学生";
+    if(!self.showParentsOnly)
+    {
+        if(section == 0)
+            return @"教师";
+        else
+            return @"学生";
+    }
+    return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -107,15 +120,23 @@
     {
         cell = [[MemberCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
-    if(indexPath.section == 0)
-    {
-        [cell setUserInfo:self.classInfo.teachers[indexPath.row]];
-        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SingleChatNormal"]]];
-    }
-    else
+    if(self.showParentsOnly)
     {
         [cell setUserInfo:self.classInfo.students[indexPath.row]];
         [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+    }
+    else
+    {
+        if(indexPath.section == 0)
+        {
+            [cell setUserInfo:self.classInfo.teachers[indexPath.row]];
+            [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SingleChatNormal"]]];
+        }
+        else
+        {
+            [cell setUserInfo:self.classInfo.students[indexPath.row]];
+            [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+        }
     }
     return cell;
 }
@@ -123,23 +144,34 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if(indexPath.section == 1)
+    if(!self.showParentsOnly)
+    {
+        if(indexPath.section == 1)
+        {
+            ChildInfo *childInfo = self.classInfo.students[indexPath.row];
+            StudentParentsVC *studentParentsVC = [[StudentParentsVC alloc] init];
+            [studentParentsVC setChildInfo:childInfo];
+            [CurrentROOTNavigationVC pushViewController:studentParentsVC animated:YES];
+        }
+        else
+        {
+            TeacherInfo *teacherInfo = self.classInfo.teachers[indexPath.row];
+            JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+            [chatVC setTo_objid:self.classInfo.schoolInfo.schoolID];
+            [chatVC setTargetID:teacherInfo.uid];
+            [chatVC setChatType:ChatTypeTeacher];
+            [chatVC setMobile:teacherInfo.mobile];
+            [chatVC setTitle:teacherInfo.teacherName];
+            [ApplicationDelegate popAndPush:chatVC];
+        }
+    }
+    else
     {
         ChildInfo *childInfo = self.classInfo.students[indexPath.row];
         StudentParentsVC *studentParentsVC = [[StudentParentsVC alloc] init];
         [studentParentsVC setChildInfo:childInfo];
         [CurrentROOTNavigationVC pushViewController:studentParentsVC animated:YES];
-    }
-    else
-    {
-        TeacherInfo *teacherInfo = self.classInfo.teachers[indexPath.row];
-        JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-        [chatVC setTo_objid:self.classInfo.schoolInfo.schoolID];
-        [chatVC setTargetID:teacherInfo.uid];
-        [chatVC setChatType:ChatTypeTeacher];
-        [chatVC setMobile:teacherInfo.mobile];
-        [chatVC setTitle:teacherInfo.teacherName];
-        [ApplicationDelegate popAndPush:chatVC];
+
     }
 }
 

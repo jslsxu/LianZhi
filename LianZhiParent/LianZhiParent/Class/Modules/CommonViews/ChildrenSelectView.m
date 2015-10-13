@@ -18,8 +18,6 @@
     {
         _avatar = [[AvatarView alloc] initWithFrame:self.bounds];
         [_avatar setUserInteractionEnabled:NO];
-        [_avatar setBorderColor:[UIColor whiteColor]];
-        [_avatar setBorderWidth:2];
         [_avatar.layer setCornerRadius:_avatar.width / 2];
         [_avatar.layer setMasksToBounds:YES];
         [self addSubview:_avatar];
@@ -34,7 +32,7 @@
         
         _redDot = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 8, 8)];
         [_redDot setImage:[UIImage imageNamed:@"RedDot.png"]];
-        [_redDot setOrigin:CGPointMake(_avatar.right - 6, _avatar.y)];
+        [_redDot setOrigin:CGPointMake(_avatar.right - 8, _avatar.y)];
         [self addSubview:_redDot];
         [_redDot setHidden:YES];
     }

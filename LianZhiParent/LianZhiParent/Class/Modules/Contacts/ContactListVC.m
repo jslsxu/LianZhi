@@ -8,6 +8,21 @@
 
 #import "ContactListVC.h"
 #import "JSMessagesViewController.h"
+#import "ClassMemberVC.h"
+@implementation ClassParentsCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if(self)
+    {
+        
+    }
+    return self;
+}
+
+@end
+
 @implementation ContactListHeaderView
 - (id)initWithFrame:(CGRect)frame
 {
@@ -93,7 +108,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
   
-    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_tableView setDelegate:self];
@@ -125,7 +140,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     ClassInfo *class = [UserCenter sharedInstance].curChild.classes[section];
-    return class.teachers.count;
+    return class.teachers.count + 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -160,37 +175,47 @@
         cell = [[ContactItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
     ClassInfo *class = [UserCenter sharedInstance].curChild.classes[indexPath.section];
-    [cell setTeachInfo:[[class teachers] objectAtIndex:indexPath.row]];
-    [cell setSchoolInfo:class.schoolInfo];
+    NSArray *teachers = class.teachers;
+    if(indexPath.row == teachers.count)
+    {
+        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+        [cell setStudetsParentsCell:YES];
+    }
+    else
+    {
+        [cell setStudetsParentsCell:NO];
+        [cell setAccessoryView:nil];
+        [cell setTeachInfo:[[class teachers] objectAtIndex:indexPath.row]];
+        [cell setSchoolInfo:class.schoolInfo];
+    }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSInteger row = indexPath.row;
     ClassInfo *class = [UserCenter sharedInstance].curChild.classes[indexPath.section];
-    TeacherInfo *teacherInfo = [[class teachers] objectAtIndex:indexPath.row];
-//    if(teacherInfo.mobile.length > 0)
-//    {
-//        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-//        TNButtonItem *item = [TNButtonItem itemWithTitle:@"拨打" action:^{
-////            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",teacherInfo.mobile];
-////            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-//            JSMessagesViewController *messageVC = [[JSMessagesViewController alloc] init];
-//            [ApplicationDelegate popAndPush:messageVC];
-//        }];
-//        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",teacherInfo.mobile] buttonItems:@[cancelItem,item]];
-//        [alertView show];
-//    }
-    NSInteger section = indexPath.section;
-    ClassInfo *classInfo = [UserCenter sharedInstance].curChild.classes[section];
-    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-    [chatVC setTo_objid:classInfo.schoolInfo.schoolID];
-    [chatVC setTargetID:teacherInfo.uid];
-    [chatVC setMobile:teacherInfo.mobile];
-    [chatVC setTitle:teacherInfo.teacherName];
-    [chatVC setChatType:ChatTypeTeacher];
-    [ApplicationDelegate popAndPush:chatVC];
+    if(row < class.teachers.count)
+    {
+        TeacherInfo *teacherInfo = [[class teachers] objectAtIndex:indexPath.row];
+        NSInteger section = indexPath.section;
+        ClassInfo *classInfo = [UserCenter sharedInstance].curChild.classes[section];
+        JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+        [chatVC setTo_objid:classInfo.schoolInfo.schoolID];
+        [chatVC setTargetID:teacherInfo.uid];
+        [chatVC setMobile:teacherInfo.mobile];
+        [chatVC setTitle:teacherInfo.teacherName];
+        [chatVC setChatType:ChatTypeTeacher];
+        [ApplicationDelegate popAndPush:chatVC];
+    }
+    else
+    {
+        ClassMemberVC *classMemberVC = [[ClassMemberVC alloc] init];
+        [classMemberVC setShowParentsOnly:YES];
+        [classMemberVC setClassID:class.classID];
+        [self.navigationController pushViewController:classMemberVC animated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

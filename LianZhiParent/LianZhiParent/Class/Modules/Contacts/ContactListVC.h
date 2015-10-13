@@ -7,6 +7,14 @@
 //
 
 #import "ContactItemCell.h"
+
+@interface ClassParentsCell : TNTableViewCell
+{
+    
+}
+
+@end
+
 @interface ContactListHeaderView : UIView
 {
     LogoView*   _logoView;

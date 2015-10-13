@@ -28,7 +28,8 @@
             TNDataWrapper *messageWrapper = [itemsWrapper getDataWrapperForIndex:i];
             MessageItem *item = [[MessageItem alloc] init];
             [item parseData:messageWrapper];
-            [newArray addObject:item];
+            if(item.messageContent.messageType != UUMessageTypeDeleted)
+                [newArray addObject:item];
         }
         
         if(type == REQUEST_REFRESH)//下拉

@@ -135,7 +135,7 @@
         if(cell == nil)
         {
             cell = [[USerInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
-            [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DatePickerNext"]]];
+            [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
         }
         [cell refresh];
         return cell;
@@ -149,7 +149,7 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
             [cell.textLabel setFont:[UIFont systemFontOfSize:15]];
             [cell.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-            [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DatePickerNext"]]];
+            [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
         }
         NSArray *imageArray = @[@[@"MineChildren",@"MineSetting"],@[@"MineAbout",@"MineContact"]];
         NSArray *titleArray = @[@[@"孩子档案",@"系统设置"],@[@"关于连枝",@"联系客服"]];

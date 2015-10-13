@@ -24,4 +24,5 @@
     UITableView*    _tableView;
 }
 @property (nonatomic, copy)NSString *classID;
+@property (nonatomic, assign)BOOL showParentsOnly;
 @end

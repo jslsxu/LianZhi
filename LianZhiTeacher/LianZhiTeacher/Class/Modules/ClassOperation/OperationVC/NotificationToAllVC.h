@@ -46,7 +46,9 @@
 
 @interface NotificationCell : TNTableViewCell
 {
-    UIView* _sepLine;
+    UILabel*    _contentLabel;
+    UILabel*    _timeLabel;
+    UIView*     _sepLine;
 }
 @end
 

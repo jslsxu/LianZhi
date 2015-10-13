@@ -42,7 +42,6 @@
         _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_chatButton setUserInteractionEnabled:NO];
         [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
-        [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
         [_chatButton setImage:[UIImage imageNamed:@"SingleChatNormal"] forState:UIControlStateNormal];
         [_chatButton setImage:[UIImage imageNamed:@"SignleChatHighlighted"] forState:UIControlStateHighlighted];
         [self addSubview:_chatButton];
@@ -64,14 +63,19 @@
     [_commentLabel setOrigin:CGPointMake(_nameLabel.right + 15, (self.height - _commentLabel.height) / 2)];
 }
 
-- (void)onChatClicked
+- (void)setStudetsParentsCell:(BOOL)studetsParentsCell
 {
-    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-    [chatVC setTo_objid:self.schoolInfo.schoolID];
-    [chatVC setTargetID:_teachInfo.uid];
-    [chatVC setMobile:_teachInfo.mobile];
-    [chatVC setChatType:ChatTypeTeacher];
-    [ApplicationDelegate popAndPush:chatVC];
+    _studetsParentsCell = studetsParentsCell;
+    if(_studetsParentsCell)
+    {
+        [_logoView setImage:[UIImage imageNamed:@"StudentsParentContact"]];
+        
+        [_nameLabel setText:@"班级同学家长"];
+        [_nameLabel sizeToFit];
+        [_nameLabel setOrigin:CGPointMake(_logoView.right + 15, (self.height - _nameLabel.height) / 2)];
+        
+    }
+    [_commentLabel setHidden:_studetsParentsCell];
+    [_chatButton setHidden:_studetsParentsCell];
 }
-
 @end

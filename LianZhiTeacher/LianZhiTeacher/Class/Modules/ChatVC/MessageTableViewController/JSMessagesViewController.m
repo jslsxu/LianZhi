@@ -20,6 +20,7 @@
     
     _timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(getMessage) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    [_timer fire];
 }
 
 - (void)viewDidLoad
@@ -44,7 +45,6 @@
     [self.tableView setHeight:self.view.height - _inputView.height];
     [self bindTableCell:@"MessageCell" tableModel:@"ChatMessageModel"];
     
-    [self requestData:REQUEST_GETMORE];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
     [_tableView addGestureRecognizer:tapGesture];
 }

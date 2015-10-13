@@ -110,6 +110,7 @@
         [_voiceButton setHidden:NO];
         [_spanLabel setHidden:NO];
         [_voiceButton setAudioItem:_zoneItem.audioItem];
+        [_voiceButton setVoiceWithURL:[NSURL URLWithString:_zoneItem.audioItem.audioUrl]];
         [_voiceButton setY:spaceYStart];
         [_spanLabel setText:[Utility formatStringForTime:_zoneItem.audioItem.timeSpan]];
         [_spanLabel setY:_voiceButton.y];
@@ -226,8 +227,8 @@
         _buttonItems = [NSMutableArray array];
     else
         [_buttonItems removeAllObjects];
-    NSArray *titleArray = @[@"赞",@"评论",@"分享"];
-    NSArray *imageArray = @[@"DetailPraise",@"DetailResponse",@"DetailShare"];
+    NSArray *titleArray = @[@"赞",@"评论",@"分享",@"转发到树屋"];
+    NSArray *imageArray = @[@"DetailPraise",@"DetailResponse",@"DetailShare",@"DetailForward"];
     CGFloat tabWidth = self.view.width / titleArray.count;
     for (NSInteger i = 0; i < titleArray.count; i++)
     {
@@ -312,12 +313,70 @@
         _replyBox.hidden = NO;
         [_replyBox assignFocus];
     }
-    else
+    else if(index == 2)
     {
         NSString *imageUrl = nil;
         if(self.zoneItem.photos.count > 0)
             imageUrl = [self.zoneItem.photos[0] thumbnailUrl];
         [ShareActionView shareWithTitle:self.zoneItem.content content:nil image:nil imageUrl:imageUrl url:kParentClientAppStoreUrl];
+    }
+    else
+    {
+        PublishBaseVC *publishVC = [[PublishBaseVC alloc] init];
+        if(self.zoneItem.photos.count > 0)
+        {
+            PublishPhotoVC *publishPhotoVC = [[PublishPhotoVC alloc] init];
+            [publishPhotoVC setWords:self.zoneItem.content];
+            NSMutableArray *photoArray = [NSMutableArray array];
+            for (NSInteger i = 0; i < self.zoneItem.photos.count; i++)
+            {
+                PhotoItem *photoItem = self.zoneItem.photos[i];
+                PublishImageItem *publishImageItem = [[PublishImageItem alloc] init];
+                [publishImageItem setPhotoID:photoItem.photoID];
+                [publishImageItem setThumbnailUrl:photoItem.thumbnailUrl];
+                [publishImageItem setOriginalUrl:photoItem.originalUrl];
+                [photoArray addObject:publishImageItem];
+            }
+            [publishPhotoVC setForward:YES];
+            [publishPhotoVC setOriginalImageArray:photoArray];
+            [publishPhotoVC setDelegate:ApplicationDelegate.homeVC.treeHouseVC];
+            
+            publishVC = publishPhotoVC;
+        }
+        else if(self.zoneItem.audioItem)
+        {
+            AudioItem *audioItem = self.zoneItem.audioItem;
+            PublishAudioVC *publishAudioVC = [[PublishAudioVC alloc] init];
+            [publishAudioVC setWords:self.zoneItem.content];
+            [publishAudioVC setDuration:audioItem.timeSpan];
+            
+            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:audioItem.audioUrl]];
+            NSData *amrData = [[MLDataCache shareInstance] cachedDataForRequest:request];
+            if(amrData)
+                [publishAudioVC setAmrData:amrData];
+            publishVC = publishAudioVC;
+        }
+        else
+        {
+            PublishArticleVC *publishArticleVC = [[PublishArticleVC alloc] init];
+            [publishArticleVC setWords:self.zoneItem.content];
+            
+            publishVC = publishArticleVC;
+        }
+        if(self.zoneItem.position.length > 0)
+        {
+            AMapPOI *poiInfo = [[AMapPOI alloc] init];
+            AMapGeoPoint *location = [AMapGeoPoint locationWithLatitude:self.zoneItem.latitude longitude:self.zoneItem.longitude];
+            [poiInfo setName:self.zoneItem.position];
+            [poiInfo setLocation:location];
+            POIItem *poiItem = [[POIItem alloc] init];
+            [poiItem setPoiInfo:poiInfo];
+            
+            [publishVC setPoiItem:poiItem];
+        }
+        
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:publishVC];
+        [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
     }
 }
 

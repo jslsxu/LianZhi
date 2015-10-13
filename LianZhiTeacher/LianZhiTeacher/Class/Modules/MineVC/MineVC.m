@@ -138,6 +138,7 @@
         if(cell == nil)
         {
             cell = [[UserInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+            [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
         }
         [cell refresh];
         return cell;

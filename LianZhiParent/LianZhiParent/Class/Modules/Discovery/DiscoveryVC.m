@@ -85,7 +85,7 @@
         cell = [[DiscoveryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
         [cell.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [cell.textLabel setFont:[UIFont systemFontOfSize:15]];
-        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DatePickerNext"]]];
+        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
