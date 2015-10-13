@@ -22,6 +22,7 @@
     self.constellation = [dataWrapper getStringForKey:@"constellation"];
     self.email = [dataWrapper getStringForKey:@"email"];
     self.birthDay = [dataWrapper getStringForKey:@"birthday"];
+    self.actived = [dataWrapper getStringForKey:@"actived"];
 }
 
 - (NSDictionary *)toDictionary
@@ -37,6 +38,7 @@
     [dictionary setValue:self.constellation forKey:@"constellation"];
     [dictionary setValue:self.email forKey:@"email"];
     [dictionary setValue:self.birthDay forKey:@"birthday"];
+    [dictionary setValue:kStringFromValue(self.actived) forKey:@"actived"];
     return dictionary;
 }
 
@@ -54,7 +56,7 @@
         self.constellation = [aDecoder decodeObjectForKey:@"constellation"];
         self.email = [aDecoder decodeObjectForKey:@"email"];
         self.birthDay = [aDecoder decodeObjectForKey:@"birthday"];
-        
+        self.actived = [aDecoder decodeBoolForKey:@"actived"];
     }
     return self;
 }
@@ -71,6 +73,7 @@
     [aCoder encodeObject:self.constellation forKey:@"constellation"];
     [aCoder encodeObject:self.email forKey:@"email"];
     [aCoder encodeObject:self.birthDay forKey:@"birthday"];
+    [aCoder encodeBool:self.actived forKey:@"actived"];
 }
 
 @end

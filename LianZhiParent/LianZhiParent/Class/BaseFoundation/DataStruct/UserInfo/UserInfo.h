@@ -20,5 +20,6 @@
 @property (nonatomic, copy)NSString *mobile;
 @property (nonatomic, copy)NSString *avatar;
 @property (nonatomic, copy)NSString *shortIndex;
+@property (nonatomic, assign)BOOL actived;
 @end
 

@@ -27,10 +27,10 @@
     [audioItem parseData:audioWrapper];
     self.audioItem = audioItem;
     
-    NSInteger timeInterval = [dataWrapper getIntegerForKey:@"ctime"];
+    self.timeInterval = [dataWrapper getIntegerForKey:@"ctime"];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MM月dd日 HH:mm:ss"];
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:self.timeInterval];
     self.ctime = [formatter stringFromDate:date];
 }
 
@@ -73,10 +73,12 @@
         else
             height = kPhotoMaxHeight;
     }
-    else
+    else if(self.messageContent.messageType == UUMessageTypeFace)
     {
         height = kFaceHeight;
     }
-    return height + 10 * 2 + 5 + kTimeLabelHeight;
+    else if(self.messageContent.messageType == UUMessageTypeRevoked)
+        height = 32;
+    return height + 10 + 15  + kTimeLabelHeight;
 }
 @end

@@ -27,7 +27,7 @@
 
 @interface ContactItemCell : TNTableViewCell
 {
-    MSCircleImageView*  _avatar;
+    AvatarView*  _avatar;
     UILabel*            _nameLabel;
     UILabel*            _commentLabel;
     UIImageView*        _genderImageView;

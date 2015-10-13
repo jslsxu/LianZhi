@@ -181,6 +181,13 @@
     [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:modelArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MessageCell *cell = (MessageCell *)[super tableView:tableView cellForRowAtIndexPath:indexPath];
+    [cell setDelegate:self];
+    return cell;
+}
+
 - (void)TNBaseTableViewControllerRequestSuccess
 {
     ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
@@ -241,5 +248,40 @@
     [_tableView reloadData];
     [self scrollToBottom];
 }
+
+#pragma mark - MessageCellDelegate
+- (void)onRevokeMessage:(MessageItem *)messageItem
+{
+    __weak typeof(self) wself = self;
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/revoke" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"mid" : messageItem.messageContent.mid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        for (MessageItem *item in wself.tableViewModel.modelItemArray)
+        {
+            if([item.messageContent.mid isEqualToString:messageItem.messageContent.mid])
+                [item.messageContent setMessageType:UUMessageTypeRevoked];
+        }
+        [wself.tableView reloadData];
+    } fail:^(NSString *errMsg) {
+        [ProgressHUD showHintText:errMsg];
+    }];
+}
+
+- (void)onDeleteMessage:(MessageItem *)messageItem
+{
+    __weak typeof(self) wself = self;
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"mid" : messageItem.messageContent.mid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        for (MessageItem *item in wself.tableViewModel.modelItemArray)
+        {
+            if([item.messageContent.mid isEqualToString:messageItem.messageContent.mid])
+            {
+                [wself.tableViewModel.modelItemArray removeObject:item];
+                [wself.tableView reloadData];
+                break;
+            }
+        }
+    } fail:^(NSString *errMsg) {
+        [ProgressHUD showHintText:errMsg];
+    }];
+}
+
 
 @end

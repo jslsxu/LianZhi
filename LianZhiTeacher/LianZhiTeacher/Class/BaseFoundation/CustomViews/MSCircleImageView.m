@@ -114,9 +114,34 @@
     if(self)
     {
         [self setContentMode:UIViewContentModeScaleAspectFill];
-        [self setImage:[UIImage imageNamed:(@"NoAvatarDefault.png")]];
+        [self setImage:[UIImage imageNamed:(@"NoAvatarDefault")]];
+        
+        _statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height - 13, self.width, 13)];
+        [_statusLabel setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7]];
+        [_statusLabel setTextColor:[UIColor whiteColor]];
+        [_statusLabel setFont:[UIFont systemFontOfSize:8]];
+        [_statusLabel setTextAlignment:NSTextAlignmentCenter];
+        [_statusLabel setHidden:YES];
+        [self addSubview:_statusLabel];
     }
     return self;
+}
+
+- (void)setStatus:(NSString *)status
+{
+    _status = status;
+    if(_status.length == 0)
+    {
+        [_statusLabel setHidden:YES];
+        
+    }
+    else
+    {
+        [self.layer setCornerRadius:self.width / 2];
+        [self.layer setMasksToBounds:YES];
+        [_statusLabel setText:_status];
+        [_statusLabel setHidden:NO];
+    }
 }
 
 - (void)setImageWithUrl:(NSURL *)url placeHolder:(UIImage *)placeHolder

@@ -38,6 +38,7 @@
     else if([_userInfo isKindOfClass:[StudentInfo class]])
         [_nameLabel setText:[(StudentInfo *)_userInfo name]];
     [_avatarView setImageWithUrl:[NSURL URLWithString:_userInfo.avatar]];
+    [_avatarView setStatus:_userInfo.activited ? nil : @"未开通"];
 }
 
 @end

@@ -17,6 +17,12 @@
 #define kMessageCellVMargin         10
 #define kFaceWith                   100
 #define kFaceHeight                 80
+
+@protocol MessageCellDelegate <NSObject>
+- (void)onRevokeMessage:(MessageItem *)messageItem;
+- (void)onDeleteMessage:(MessageItem *)messageItem;
+- (void)onAddToBlackList;
+@end
 @interface MessageCell : TNTableViewCell
 {
     UILabel*                    _timeLabel;
@@ -25,5 +31,8 @@
     UUMessageContentButton*     _contentButton;
     UILabel*                    _audioTimeLabel;
     ChatVoiceButton*          _playButton;
+    UILabel*                    _revokeMessageLabel;
 }
+@property (nonatomic, assign)ChatType chatType;
+@property (nonatomic, weak)id<MessageCellDelegate> delegate;
 @end

@@ -17,9 +17,7 @@
     if(self)
     {
         [self setBackgroundColor:[UIColor whiteColor]];
-        _logoView = [[LogoView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
-        [_logoView setBorderColor:[UIColor whiteColor]];
-        [_logoView setBorderWidth:2];
+        _logoView = [[AvatarView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
         [_logoView setCenter:CGPointMake(15 + _logoView.width / 2, 24)];
         [self addSubview:_logoView];
         
@@ -53,7 +51,7 @@
 {
     _teachInfo = teachInfo;
     [_logoView setImageWithUrl:[NSURL URLWithString:teachInfo.avatar]];
-    
+    [_logoView setStatus:_teachInfo.actived ? nil : @"未开通"];
     [_nameLabel setText:_teachInfo.teacherName];
     [_nameLabel sizeToFit];
     [_nameLabel setFrame:CGRectMake(_logoView.right + 15, (self.height - _nameLabel.height) / 2, _nameLabel.width, _nameLabel.height)];
@@ -69,7 +67,7 @@
     if(_studetsParentsCell)
     {
         [_logoView setImage:[UIImage imageNamed:@"StudentsParentContact"]];
-        
+        [_logoView setStatus:nil];
         [_nameLabel setText:@"班级同学家长"];
         [_nameLabel sizeToFit];
         [_nameLabel setOrigin:CGPointMake(_logoView.right + 15, (self.height - _nameLabel.height) / 2)];

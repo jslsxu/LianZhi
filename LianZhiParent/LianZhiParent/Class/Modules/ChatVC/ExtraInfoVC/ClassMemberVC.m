@@ -34,9 +34,15 @@
 {
     _userInfo = userInfo;
     if([_userInfo isKindOfClass:[TeacherInfo class]])
+    {
         [_nameLabel setText:[(TeacherInfo *)userInfo teacherName]];
+        [_avatarView setStatus:_userInfo.actived ? nil : @"未开通"];
+    }
     else if([_userInfo isKindOfClass:[ChildInfo class]])
+    {
         [_nameLabel setText:[(ChildInfo *)_userInfo name]];
+        [_avatarView setStatus:nil];
+    }
     [_avatarView setImageWithUrl:[NSURL URLWithString:_userInfo.avatar]];
 }
 
@@ -161,7 +167,10 @@
             [chatVC setTargetID:teacherInfo.uid];
             [chatVC setChatType:ChatTypeTeacher];
             [chatVC setMobile:teacherInfo.mobile];
-            [chatVC setTitle:teacherInfo.teacherName];
+            NSString *title = teacherInfo.teacherName;
+            if(teacherInfo.course)
+                title = [NSString stringWithFormat:@"%@(%@)",teacherInfo.teacherName, teacherInfo.course];
+            [chatVC setTitle:title];
             [ApplicationDelegate popAndPush:chatVC];
         }
     }

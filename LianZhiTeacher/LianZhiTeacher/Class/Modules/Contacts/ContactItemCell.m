@@ -52,9 +52,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
-        _avatar = [[MSCircleImageView alloc] initWithFrame:CGRectMake(0, 0, 36, 36)];
-        [_avatar setBorderColor:[UIColor whiteColor]];
-        [_avatar setBorderWidth:2];
+        _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(0, 0, 36, 36)];
         [_avatar setCenter:CGPointMake(15 + _avatar.width / 2, self.height / 2)];
         [self addSubview:_avatar];
         
@@ -92,7 +90,7 @@
 {
     _userInfo = userInfo;
     [_avatar setImageWithUrl:[NSURL URLWithString:userInfo.avatar] placeHolder:[UIImage imageNamed:(@"NoAvatarDefault.png")]];
-    
+    [_avatar setStatus:_userInfo.activited ? nil : @"未开通"];
     [_nameLabel setText:userInfo.name];
     [_nameLabel sizeToFit];
     [_nameLabel setFrame:CGRectMake(_avatar.right + 15, (self.height - _nameLabel.height) / 2, MIN(_nameLabel.width, _chatButton.left - _nameLabel.left - 10), _nameLabel.height)];

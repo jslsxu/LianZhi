@@ -21,7 +21,10 @@
 @end
 
 @interface AvatarView : MSCircleImageView
-
+{
+    UILabel*    _statusLabel;
+}
+@property (nonatomic, copy)NSString *status;
 @end
 
 @interface LogoView : MSCircleImageView

@@ -9,6 +9,8 @@
 #import "StudentParentsVC.h"
 #import "JSMessagesViewController.h"
 
+#define kCellHeight             46
+
 @implementation ContactGroup
 
 - (id)init
@@ -30,12 +32,20 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
+        _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(10, (kCellHeight - 36) / 2, 36, 36)];
+        [self addSubview:_avatarView];
+        
         _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_chatButton setUserInteractionEnabled:NO];
         [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
         [_chatButton setImage:[UIImage imageNamed:@"SingleChatNormal"] forState:UIControlStateNormal];
         [_chatButton setImage:[UIImage imageNamed:@"SignleChatHighlighted"] forState:UIControlStateHighlighted];
         [self addSubview:_chatButton];
+        
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(55, 0, _chatButton.left - 10 - 55, kCellHeight)];
+        [_nameLabel setFont:[UIFont systemFontOfSize:14]];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [self addSubview:_nameLabel];
         
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
         [_sepLine setBackgroundColor:kSepLineColor];
@@ -44,6 +54,14 @@
     return self;
 }
 
+- (void)setFamilyInfo:(FamilyInfo *)familyInfo
+{
+    _familyInfo = familyInfo;
+    [_avatarView setImageWithUrl:[NSURL URLWithString:_familyInfo.avatar]];
+    [_avatarView setStatus:_familyInfo.actived ? nil : @"未开通" ];
+    
+    [_nameLabel setText:_familyInfo.name];
+}
 
 @end
 
@@ -123,12 +141,10 @@
     if(nil == cell)
     {
         cell = [[StudentParentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
-        [cell.textLabel setFont:[UIFont systemFontOfSize:14]];
-        [cell.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
     }
     ContactGroup *group = [self.formatterMemberArray objectAtIndex:indexPath.section];
     FamilyInfo *familyInfo = group.contacts[indexPath.row];
-    [cell.textLabel setText:familyInfo.name];
+    [cell setFamilyInfo:familyInfo];
     return cell;
 }
 

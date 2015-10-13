@@ -10,7 +10,7 @@
 #import "UserCenter.h"
 @interface ContactItemCell : TNTableViewCell
 {
-    LogoView*           _logoView;
+    AvatarView*           _logoView;
     UILabel*            _nameLabel;
     UILabel*            _commentLabel;
     UIView*             _sepLine;

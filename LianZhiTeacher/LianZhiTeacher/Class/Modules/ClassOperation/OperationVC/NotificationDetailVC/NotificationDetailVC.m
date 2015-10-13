@@ -203,7 +203,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *reuseID = @"";
+    static NSString *reuseID = @"cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
     if(nil == cell)
     {
@@ -225,7 +225,7 @@
     {
         SentGroup *group = self.notificationItem.sentTarget.groupArray[row];
         [cell.textLabel setText:group.groupName];
-        [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld/%ld",group.sentNum, group.totalNum]];
+        [cell.detailTextLabel setText:kStringFromValue(group.sentNum)];
     }
 //    [cell.textLabel setText:];
     return cell;

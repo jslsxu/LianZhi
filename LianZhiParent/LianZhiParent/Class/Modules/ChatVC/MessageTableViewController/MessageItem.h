@@ -35,6 +35,7 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property (nonatomic, copy)NSString *text;
 @property (nonatomic, strong)PhotoItem *photoItem;
 @property (nonatomic, strong)AudioItem *audioItem;
+@property (nonatomic, assign)NSInteger timeInterval;
 @property (nonatomic, copy)NSString *ctime;
 @end
 

@@ -58,9 +58,9 @@
     if(groupsWrapper.count > 0)
     {
         NSMutableArray *groupArray = [NSMutableArray array];
-        for (NSInteger i = 0; i < classesWrapper.count; i++)
+        for (NSInteger i = 0; i < groupsWrapper.count; i++)
         {
-            TNDataWrapper *groupItemWrapper = [classesWrapper getDataWrapperForIndex:i];
+            TNDataWrapper *groupItemWrapper = [groupsWrapper getDataWrapperForIndex:i];
             SentGroup *groupInfo = [[SentGroup alloc] init];
             [groupInfo parseData:groupItemWrapper];
             [groupArray addObject:groupInfo];

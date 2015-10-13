@@ -205,8 +205,10 @@
         [chatVC setTo_objid:classInfo.schoolInfo.schoolID];
         [chatVC setTargetID:teacherInfo.uid];
         [chatVC setMobile:teacherInfo.mobile];
-        [chatVC setTitle:teacherInfo.teacherName];
-        [chatVC setChatType:ChatTypeTeacher];
+        NSString *title = teacherInfo.teacherName;
+        if(teacherInfo.course)
+            title = [NSString stringWithFormat:@"%@(%@)",teacherInfo.teacherName, teacherInfo.course];
+        [chatVC setTitle:title];
         [ApplicationDelegate popAndPush:chatVC];
     }
     else

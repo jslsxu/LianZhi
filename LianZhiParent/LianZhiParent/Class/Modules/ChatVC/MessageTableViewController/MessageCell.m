@@ -55,6 +55,16 @@
         _playButton = [[ChatVoiceButton alloc] init];
         [_playButton addTarget:self action:@selector(onAudioCLicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_playButton];
+        
+        _revokeMessageLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_revokeMessageLabel setTextAlignment:NSTextAlignmentCenter];
+        [_revokeMessageLabel setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.2]];
+        [_revokeMessageLabel setTextColor:[UIColor whiteColor]];
+        [_revokeMessageLabel setFont:[UIFont systemFontOfSize:13]];
+        [_revokeMessageLabel.layer setCornerRadius:4];
+        [_revokeMessageLabel.layer setMasksToBounds:YES];
+        [_revokeMessageLabel setHidden:YES];
+        [self addSubview:_revokeMessageLabel];
     }
     return self;
 }
@@ -99,6 +109,7 @@
     [_contentButton setHidden:NO];
     [_playButton setHidden:YES];
     [_audioTimeLabel setHidden:YES];
+    [_revokeMessageLabel setHidden:YES];
     MessageType type = messageItem.messageContent.messageType;
     if(type == UUMessageTypeText)
     {
@@ -148,7 +159,7 @@
             [_audioTimeLabel setOrigin:CGPointMake(_playButton.right + 10, _playButton.y + (_playButton.height - _audioTimeLabel.height) / 2)];
         }
     }
-    else//表情
+    else  if(type == UUMessageTypeFace)//表情
     {
         NSString *faceText = messageItem.messageContent.text;
         NSInteger index = [MFWFace indexForFace:faceText];
@@ -156,6 +167,14 @@
         [_contentButton setBackgroundImage:nil forState:UIControlStateHighlighted];
         [_contentButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"biaoqing%ld",(long)(index + 1)]] forState:UIControlStateNormal];
         [_contentButton setSize:CGSizeMake(kFaceWith, kFaceWith)];
+    }
+    else        //已撤销
+    {
+        _contentButton.hidden = YES;
+        _revokeMessageLabel.hidden = NO;
+        [_revokeMessageLabel setText:@"你撤回了一条消息"];
+        [_revokeMessageLabel sizeToFit];
+        [_revokeMessageLabel setFrame:CGRectMake((self.width - _revokeMessageLabel.width - 10) / 2, _nameLabel.bottom, _revokeMessageLabel.width + 10, _revokeMessageLabel.height + 4)];
     }
     if(UUMessageFromMe == messageItem.from)
     {
@@ -177,14 +196,35 @@
 - (void)onLongPress
 {
     MessageItem *messageItem = (MessageItem *)self.modelItem;
+    NSMutableArray *menuArray = [NSMutableArray array];
     if(messageItem.messageContent.messageType == UUMessageTypeText)
     {
-        [_contentButton becomeFirstResponder];
+        UIMenuItem *copyMenu = [[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copyMessage)];
+        [menuArray addObject:copyMenu];
+    }
+    NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
+    if(timeInterval - messageItem.messageContent.timeInterval < 30)
+    {
+        UIMenuItem *revokeMenu = [[UIMenuItem alloc] initWithTitle:@"撤销" action:@selector(revokeMessage)];
+        [menuArray addObject:revokeMenu];
+    }
+    
+    if(ChatTypeParents == self.chatType && messageItem.from == UUMessageFromOther)
+    {
+        UIMenuItem *blackMenu = [[UIMenuItem alloc] initWithTitle:@"拉黑" action:@selector(addToBlackList)];
+        [menuArray addObject:blackMenu];
+    }
+    UIMenuItem *deleteMenu = [[UIMenuItem alloc] initWithTitle:@"删除" action:@selector(deleteMessage)];
+    [menuArray addObject:deleteMenu];
+    
+    if(menuArray.count > 0)
+    {
+        [self becomeFirstResponder];
         UIMenuController *menu = [UIMenuController sharedMenuController];
+        [menu setMenuItems:menuArray];
         [menu setTargetRect:_contentButton.frame inView:self];
         [menu setMenuVisible:YES animated:YES];
     }
-
 }
 
 - (void)onContentButtonClicked
@@ -216,15 +256,46 @@
     return @([messageItem cellHeight]);
 }
 
--(BOOL)canPerformAction:(SEL)action withSender:(id)sender
+- (BOOL)canBecomeFirstResponder
 {
-    return (action == @selector(copy:));
+    return YES;
 }
 
--(void)copy:(id)sender
+- (BOOL)canPerformAction:(SEL)action
+              withSender:(id)sender
+{
+    if (action == @selector(copyMessage) ||
+        action == @selector(deleteMessage) ||
+        action == @selector(revokeMessage) ||
+        action == @selector(addToBlackList))
+        return YES;
+    
+    return NO;
+}
+
+-(void)copyMessage
 {
     MessageItem *messageItem = (MessageItem *)self.modelItem;
     UIPasteboard *pboard = [UIPasteboard generalPasteboard];
     pboard.string = messageItem.messageContent.text;
 }
+
+- (void)deleteMessage
+{
+    if([self.delegate respondsToSelector:@selector(onDeleteMessage:)])
+        [self.delegate onDeleteMessage:(MessageItem *)self.modelItem];
+}
+
+- (void)revokeMessage
+{
+    if([self.delegate respondsToSelector:@selector(onRevokeMessage:)])
+        [self.delegate onRevokeMessage:(MessageItem *)self.modelItem];
+}
+
+- (void)addToBlackList
+{
+    if([self.delegate respondsToSelector:@selector(onAddToBlackList)])
+        [self.delegate onAddToBlackList];
+}
+
 @end

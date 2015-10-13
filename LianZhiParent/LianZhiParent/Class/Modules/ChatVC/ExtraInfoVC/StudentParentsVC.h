@@ -16,10 +16,12 @@
 
 @interface StudentParentCell : TNTableViewCell
 {
+    AvatarView* _avatarView;
+    UILabel*    _nameLabel;
     UIButton*   _chatButton;
     UIView*     _sepLine;
 }
-
+@property (nonatomic, strong)FamilyInfo *familyInfo;
 @end
 
 @interface StudentParentsVC : TNBaseViewController
