@@ -16,8 +16,10 @@
 
 @interface ContactModel : NSObject
 @property (nonatomic, strong)NSMutableArray *classes;
+@property (nonatomic, strong)NSMutableArray *students;
 @property (nonatomic, strong)NSMutableArray *teachers;
 - (void)refresh;
 - (NSArray *)classKeys;
 - (NSArray *)teacherKeys;
+- (NSArray *)studentsKeys;
 @end

@@ -17,7 +17,7 @@
     UIButton*   _chatButton;
 }
 @property (nonatomic, strong)ClassInfo *classInfo;
-
+@property (nonatomic, readonly)UIButton *chatButton;
 @end
 
 @protocol ContactDelegate <NSObject>

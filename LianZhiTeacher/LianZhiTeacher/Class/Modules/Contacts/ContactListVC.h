@@ -21,6 +21,7 @@
 {
     UISegmentedControl *_segCtrl;
     UITableView*    _classesTableView;
+    UITableView*    _studentsTableView;
     UITableView*    _teacherTableView;
     ContactModel*   _contactModel;
 }

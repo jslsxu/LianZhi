@@ -37,14 +37,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSArray *classes = [UserCenter sharedInstance].curSchool.classes;
-    if(classes.count > 1)
-        self.title = @"新聊天";
-    else if(classes.count == 1)
-    {
-        ClassInfo *classInfo = classes[0];
-        self.title = classInfo.className;
-    }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onCurSchoolChanged) name:kUserInfoVCNeedRefreshNotificaiotn object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUserInfoChanged) name:kUserInfoChangedNotification object:nil];
@@ -52,7 +45,15 @@
     [self setupHeaderView:headerView];
     [self.view addSubview:headerView];
     
-    _classesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, headerView.bottom, self.view.width, self.view.height - headerView.height) style:UITableViewStyleGrouped];
+    if([UserCenter sharedInstance].curSchool.classes.count > 0)
+        self.title = @"新聊天";
+    else
+    {
+        ClassInfo *classInfo = [UserCenter sharedInstance].curSchool.classes[0];
+        self.title = classInfo.className;
+    }
+    
+    _classesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, headerView.bottom, self.view.width, self.view.height - headerView.height) style:UITableViewStylePlain];
     [_classesTableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [_classesTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_classesTableView setSectionIndexBackgroundColor:[UIColor clearColor]];
@@ -60,6 +61,15 @@
     [_classesTableView setDelegate:self];
     [_classesTableView setDataSource:self];
     [self.view addSubview:_classesTableView];
+    
+    _studentsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, headerView.bottom, self.view.width, self.view.height - headerView.height) style:UITableViewStylePlain];
+    [_studentsTableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    [_studentsTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [_studentsTableView setSectionIndexBackgroundColor:[UIColor clearColor]];
+    [_studentsTableView setSectionIndexColor:kCommonTeacherTintColor];
+    [_studentsTableView setDelegate:self];
+    [_studentsTableView setDataSource:self];
+    [self.view addSubview:_studentsTableView];
     
     _teacherTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, headerView.bottom, self.view.width, self.view.height - headerView.height) style:UITableViewStylePlain];
     [_teacherTableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
@@ -93,6 +103,7 @@
 {
     [_contactModel refresh];
     [_classesTableView reloadData];
+    [_studentsTableView reloadData];
     [_teacherTableView reloadData];
     [self setCurIndex:self.curIndex];
 }
@@ -116,12 +127,14 @@
     {
         if(_curIndex == 0)
         {
-            _classesTableView.hidden = NO;
+            _studentsTableView.hidden = (_contactModel.students.count == 0);
+            _classesTableView.hidden = (_contactModel.students.count > 0);
             _teacherTableView.hidden = YES;
         }
         else
         {
             _classesTableView.hidden = YES;
+            _studentsTableView.hidden = YES;
             _teacherTableView.hidden = NO;
         }
 
@@ -129,6 +142,7 @@
     else
     {
         _classesTableView.hidden = YES;
+        _studentsTableView.hidden = YES;
         _teacherTableView.hidden = NO;
     }
 }
@@ -138,22 +152,16 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if(tableView == _teacherTableView)
-        return 30;
-    else
-        return 15;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 0.1;
+    return 30;
 }
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if(tableView == _classesTableView)
-        return [UserCenter sharedInstance].curSchool.classes.count;
+        return _contactModel.classes.count;
+    else if(tableView == _studentsTableView)
+        return _contactModel.students.count + 1;
     else
         return _contactModel.teachers.count;
 }
@@ -162,8 +170,18 @@
 {
     if(tableView == _classesTableView)
     {
-        ClassInfo *classInfo = [UserCenter sharedInstance].curSchool.classes[section];
-        return classInfo.students.count + 1;
+        ContactGroup *group = [_contactModel.classes objectAtIndex:section];
+        return group.contacts.count;
+    }
+    else if(tableView == _studentsTableView)
+    {
+        if(section == 0)
+            return 1;
+        else
+        {
+            ContactGroup *group = [_contactModel.students objectAtIndex:section - 1];
+            return group.contacts.count;
+        }
     }
     else
     {
@@ -174,7 +192,39 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(tableView == _teacherTableView)
+    if(tableView == _studentsTableView)
+    {
+        if(indexPath.section == 0)
+        {
+            NSString *cellID = @"ClassItemCell";
+            ClassItemCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+            if(nil == cell)
+            {
+                cell = [[ClassItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+            }
+            NSArray *classes = [UserCenter sharedInstance].curSchool.classes;
+            ClassInfo *classInfo = nil;
+            if(classes.count > 0)
+                classInfo = classes[0];
+            [cell setClassInfo:classInfo];
+            return cell;
+        }
+        else
+        {
+            NSString *cellID = @"ContactItemCell";
+            ContactItemCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+            if(nil == cell)
+            {
+                cell = [[ContactItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+            }
+            [cell setDelegate:self];
+            ContactGroup *group = [_contactModel.students objectAtIndex:indexPath.section - 1];
+            UserInfo *userInfo = [[group contacts] objectAtIndex:indexPath.row];
+            [cell setUserInfo:userInfo];
+            return cell;
+        }
+    }
+    else if(tableView == _teacherTableView)
     {
         NSString *cellID = @"ContactItemCell";
         ContactItemCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
@@ -190,39 +240,38 @@
     }
     else
     {
-        if(indexPath.row == 0)
+        NSString *cellID = @"ClassItemCell";
+        ClassItemCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+        if(cell == nil)
         {
-            NSString *cellID = @"ClassItemCell";
-            ClassItemCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-            if(cell == nil)
-            {
-                cell = [[ClassItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-            }
-            NSArray *classes = [UserCenter sharedInstance].curSchool.classes;
-            ClassInfo *classInfo = classes[indexPath.section];
-            [cell setClassInfo:classInfo];
-            return cell;
+            cell = [[ClassItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         }
-        else
-        {
-            NSString *cellID = @"ContactItemCell";
-            ContactItemCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-            if(cell == nil)
-            {
-                cell = [[ContactItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
-            }
-            NSArray *classes = [UserCenter sharedInstance].curSchool.classes;
-            ClassInfo *classInfo = classes[indexPath.section];
-            [cell setUserInfo:classInfo.students[indexPath.row - 1]];
-            return cell;
-        }
+        [cell.chatButton setHidden:YES];
+        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+        ContactGroup *group = [_contactModel.classes objectAtIndex:indexPath.section];
+        ClassInfo *classInfo = [group.contacts objectAtIndex:indexPath.row];
+        [cell setClassInfo:classInfo];
+        return cell;
     }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if(tableView == _classesTableView)
     {
-        return nil;
+        ContactGroup *group = [_contactModel.classes objectAtIndex:section];
+        return group.key;
+    }
+    else if(tableView == _studentsTableView)
+    {
+        if(section == 0)
+        {
+            return @"群";
+        }
+        else
+        {
+            ContactGroup *group = [_contactModel.students objectAtIndex:section - 1];
+            return group.key;
+        }
     }
     else
     {
@@ -231,23 +280,32 @@
     }
     
 }
-
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    if(tableView == _classesTableView)
-        return nil;
-    else
-        return [_contactModel teacherKeys];
-}
+//
+//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+//    if(tableView == _classesTableView)
+//        return nil;
+//    else if(tableView == _studentsTableView)
+//        return [_contactModel studentsKeys];
+//    else
+//        return [_contactModel teacherKeys];
+//}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if(tableView == _classesTableView)
     {
-        NSArray *classes = [UserCenter sharedInstance].curSchool.classes;
-        if(indexPath.row == 0)
+        ContactGroup *group = [_contactModel.classes objectAtIndex:indexPath.section];
+        ClassInfo *classInfo = [group.contacts objectAtIndex:indexPath.row];
+        ContactStudentsVC *studentsVC = [[ContactStudentsVC alloc] init];
+        [studentsVC setClassInfo:classInfo];
+        [self.navigationController pushViewController:studentsVC animated:YES];
+    }
+    else if(tableView == _studentsTableView)
+    {
+        if(indexPath.section == 0)
         {
-            ClassInfo *classInfo = classes[indexPath.section];
+            ClassInfo *classInfo = [UserCenter sharedInstance].curSchool.classes[0];
             JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
             [chatVC setTo_objid:[UserCenter sharedInstance].curSchool.schoolID];
             [chatVC setTargetID:classInfo.classID];
@@ -257,10 +315,10 @@
         }
         else
         {
-            ClassInfo *classInfo = [classes objectAtIndex:indexPath.section];
-            StudentInfo *studentInfo = [classInfo.students objectAtIndex:indexPath.row];
+            ContactGroup *group = [_contactModel.students objectAtIndex:indexPath.section - 1];
+            StudentInfo *student = [group.contacts objectAtIndex:indexPath.row];
             ContactParentsVC *parentsVC = [[ContactParentsVC alloc] init];
-            [parentsVC setStudentInfo:studentInfo];
+            [parentsVC setStudentInfo:student];
             [self.navigationController pushViewController:parentsVC animated:YES];
         }
     }
@@ -272,12 +330,20 @@
         [chatVC setTo_objid:[UserCenter sharedInstance].curSchool.schoolID];
         [chatVC setTargetID:teacher.uid];
         [chatVC setChatType:ChatTypeTeacher];
-        [chatVC setMobile:teacher.mobile];
         [chatVC setTitle:teacher.name];
         [ApplicationDelegate popAndPush:chatVC];
     }
 }
 
+//#pragma mark - ContactDelegate
+//- (void)contactItemChatClicked:(UserInfo *)userInfo
+//{
+//    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+//    [chatVC setTargetID:userInfo.uid];
+//    [chatVC setChatType:ChatTypeTeacher];
+//    [chatVC setTitle:userInfo.name];
+//    [ApplicationDelegate popAndPush:chatVC];
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
