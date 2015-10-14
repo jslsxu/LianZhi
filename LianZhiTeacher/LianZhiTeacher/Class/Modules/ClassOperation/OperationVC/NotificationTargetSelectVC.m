@@ -360,15 +360,24 @@
     NotificationTargetCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
     if(nil == cell)
     {
-        cell = [[NotificationTargetCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+        cell = [[NotificationTargetCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseID];
+        [cell.detailTextLabel setFont:[UIFont systemFontOfSize:13]];
+        [cell.detailTextLabel setTextColor:[UIColor lightGrayColor]];
     }
     if(_segmentControl.selectedSegmentIndex == 0)
     {
         ClassInfo *classInfo = nil;
         if(indexPath.section == 1)
+        {
             classInfo = self.groupArray[indexPath.row];
+            [cell.detailTextLabel setText:kStringFromValue(classInfo.num)];
+        }
         else
+        {
             classInfo = self.classesArray[indexPath.row];
+            NSArray *selectedArray = _selectedStudentDic[classInfo.classID];
+            [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld/%ld",selectedArray.count,classInfo.students.count]];
+        }
         [cell.nameLabel setText:classInfo.className];
         [cell.checkButton setSelected:[_selectedStudentDic valueForKey:classInfo.classID]];
         [cell setAccessoryView:[[UIImageView alloc] initWithImage:indexPath.section == 0 ? [UIImage imageNamed:@"RightArrow"] : nil]];
@@ -378,6 +387,7 @@
         NotificationTeacherGroup *teacherGroup = self.teacherGroupArray[indexPath.row];
         [cell.nameLabel setText:teacherGroup.groupName];
         [cell.checkButton setSelected:[_selectedMateArray containsObject:teacherGroup]];
+        [cell.detailTextLabel setText:kStringFromValue(teacherGroup.teachers.count)];
         [cell setAccessoryView:nil];
     }
     return cell;

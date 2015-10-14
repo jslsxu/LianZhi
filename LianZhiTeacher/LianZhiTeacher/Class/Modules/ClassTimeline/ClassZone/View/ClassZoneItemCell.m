@@ -184,7 +184,10 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
 {
     ClassZoneItem *item = (ClassZoneItem *)self.modelItem;
     [_avatar setImageWithUrl:[NSURL URLWithString:item.userInfo.avatar]];
-    [_nameLabel setText:item.userInfo.title];
+    if([item.userInfo.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid])
+        [_nameLabel setText:@"我"];
+    else
+        [_nameLabel setText:item.userInfo.title];
     [_nameLabel sizeToFit];
     
     [_timeLabel setText:item.formatTime];
