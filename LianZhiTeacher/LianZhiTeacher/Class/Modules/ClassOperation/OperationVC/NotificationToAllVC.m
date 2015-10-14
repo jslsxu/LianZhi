@@ -38,20 +38,37 @@
 
 @implementation SentTarget
 
+- (BOOL)isInMyClass:(NSString *)classID
+{
+    NSArray *myClassArray = [UserCenter sharedInstance].curSchool.classes;
+    for (ClassInfo *classInfo in myClassArray)
+    {
+        if([classID isEqualToString:classInfo.classID])
+            return YES;
+    }
+    return NO;
+}
+
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
+    
     TNDataWrapper *classesWrapper = [dataWrapper getDataWrapperForKey:@"classes"];
     if(classesWrapper.count > 0)
     {
         NSMutableArray *classArray = [NSMutableArray array];
+        NSMutableArray *managedArray = [NSMutableArray array];
         for (NSInteger i = 0; i < classesWrapper.count; i++)
         {
             TNDataWrapper *classItemWrapper = [classesWrapper getDataWrapperForIndex:i];
             SentClassInfo *classInfo = [[SentClassInfo alloc] init];
             [classInfo parseData:classItemWrapper];
-            [classArray addObject:classInfo];
+            if([self isInMyClass:classInfo.classID])
+                [classArray addObject:classInfo];
+            else
+                [managedArray addObject:classInfo];
         }
         self.classArray = classArray;
+        self.managedClassArray = managedArray;
     }
     
     TNDataWrapper *groupsWrapper = [dataWrapper getDataWrapperForKey:@"groups"];
@@ -213,7 +230,7 @@
     self.title = @"发布通知";
     
     UIView *operationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 75)];
-    [operationView setBackgroundColor:kCommonTeacherTintColor];
+    [operationView setBackgroundColor:[UIColor colorWithHexString:@"0fabc1"]];
     [self setupHeaderView:operationView];
     [self.view addSubview:operationView];
     

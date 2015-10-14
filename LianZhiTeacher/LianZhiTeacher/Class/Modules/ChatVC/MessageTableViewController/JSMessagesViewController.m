@@ -2,10 +2,23 @@
 
 #import "JSMessagesViewController.h"
 #import "ClassMemberVC.h"
+
+static NSString *topChatID = nil;
+
 @implementation JSMessagesViewController
 
 
 #pragma mark - View lifecycle
+
++ (NSString *)curChatID
+{
+    return topChatID;
+}
+
+- (void)dealloc
+{
+    topChatID = nil;
+}
 
 - (void)viewDidDisappear:(BOOL)animated
 {
@@ -26,7 +39,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    topChatID = self.targetID;
     if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup)//群组或者班级
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MineProfile"] style:UIBarButtonItemStylePlain target:self action:@selector(onShowClassMembers)];

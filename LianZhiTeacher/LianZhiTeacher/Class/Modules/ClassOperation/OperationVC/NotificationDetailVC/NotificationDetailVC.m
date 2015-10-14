@@ -165,13 +165,15 @@
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(section == 0)
         return self.notificationItem.sentTarget.classArray.count;
+    else if(section == 1)
+        return self.notificationItem.sentTarget.managedClassArray.count;
     else
         return self.notificationItem.sentTarget.groupArray.count;
 }
@@ -195,8 +197,10 @@
     [titleLabel setFont:[UIFont systemFontOfSize:14]];
     if(section == 0)
         [titleLabel setText:@"我教授的班"];
-    else
+    else if(section == 1)
         [titleLabel setText:@"我管理的班"];
+    else
+        [titleLabel setText:@"同事组"];
     [headerView addSubview:titleLabel];
     return headerView;
 }
@@ -220,6 +224,12 @@
         SentClassInfo *classInfo = self.notificationItem.sentTarget.classArray[row];
         [cell.textLabel setText:classInfo.name];
         [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld/%ld",classInfo.sentNum, classInfo.totalNum]];
+    }
+    else if(section == 1)
+    {
+        SentClassInfo *classInfo = self.notificationItem.sentTarget.managedClassArray[row];
+        [cell.textLabel setText:classInfo.name];
+        [cell.detailTextLabel setText:kStringFromValue(classInfo.sentNum)];
     }
     else
     {

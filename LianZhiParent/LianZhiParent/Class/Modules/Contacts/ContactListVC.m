@@ -202,6 +202,7 @@
         NSInteger section = indexPath.section;
         ClassInfo *classInfo = [UserCenter sharedInstance].curChild.classes[section];
         JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+        [chatVC setChatType:ChatTypeTeacher];
         [chatVC setTo_objid:classInfo.schoolInfo.schoolID];
         [chatVC setTargetID:teacherInfo.uid];
         [chatVC setMobile:teacherInfo.mobile];

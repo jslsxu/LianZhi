@@ -13,7 +13,7 @@
 @property (nonatomic, copy)NSString *name;
 @property (nonatomic, assign)NSInteger sentNum;
 @property (nonatomic, assign)NSInteger totalNum;
-
+@property (nonatomic, copy)NSString *sendStr;
 @end
 
 @interface SentGroup : TNModelItem
@@ -21,12 +21,14 @@
 @property (nonatomic, copy)NSString *groupName;
 @property (nonatomic, assign)NSInteger sentNum;
 @property (nonatomic, assign)NSInteger totalNum;
+@property (nonatomic, copy)NSString *sendStr;
 @end
 
 @interface SentTarget : TNModelItem
 @property (nonatomic, strong)NSArray *classArray;
+@property (nonatomic, strong)NSArray *managedClassArray;
 @property (nonatomic, strong)NSArray *groupArray;
-
+@property (nonatomic, strong)NSArray *targetArray;
 @end
 
 @interface NotificationItem : TNModelItem

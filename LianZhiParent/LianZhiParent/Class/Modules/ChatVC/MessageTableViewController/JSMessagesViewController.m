@@ -2,11 +2,22 @@
 
 #import "JSMessagesViewController.h"
 #import "ClassMemberVC.h"
+
+static NSString *topChatID = nil;
 @implementation JSMessagesViewController
 
 
 #pragma mark - View lifecycle
 
++ (NSString *)curChatID
+{
+    return topChatID;
+}
+
+- (void)dealloc
+{
+    topChatID = nil;
+}
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
@@ -26,6 +37,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    topChatID = self.targetID;
     if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup)
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MineProfile"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickClassMember)];

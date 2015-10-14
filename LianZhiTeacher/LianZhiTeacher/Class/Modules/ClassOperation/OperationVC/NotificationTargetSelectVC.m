@@ -82,8 +82,8 @@
         [self addSubview:_checkButton];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_checkButton.right + 10, 0, 200, 50)];
-        [_nameLabel setTextColor:[UIColor colorWithHexString:@"767676"]];
-        [_nameLabel setFont:[UIFont systemFontOfSize:12]];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [self addSubview:_nameLabel];
 
         [self setSelectType:SelectTypeNone];

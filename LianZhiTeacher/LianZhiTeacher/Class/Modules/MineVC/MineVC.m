@@ -21,20 +21,21 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
-        _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(20, 10, 55, 55)];
+        _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(16, 10, 55, 55)];
         [self addSubview:_avatarView];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_nameLabel setTextColor:[UIColor grayColor]];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [self addSubview:_nameLabel];
         
         _genderView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [_genderView setContentMode:UIViewContentModeCenter];
         [self addSubview:_genderView];
         
         _idLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_idLabel setTextColor:[UIColor lightGrayColor]];
-        [_idLabel setFont:[UIFont systemFontOfSize:14]];
+        [_idLabel setFont:[UIFont systemFontOfSize:13]];
         [self addSubview:_idLabel];
     }
     return self;
@@ -45,18 +46,18 @@
     [_avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
     [_nameLabel setText:[UserCenter sharedInstance].userInfo.name];
     [_nameLabel sizeToFit];
-    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, 20)];
+    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, 18)];
     
     GenderType gender = [UserCenter sharedInstance].userInfo.gender;
     if(gender == GenderFemale)
         [_genderView setImage:[UIImage imageNamed:(@"GenderFemale")]];
     else
         [_genderView setImage:[UIImage imageNamed:(@"GenderMale")]];
-    [_genderView setFrame:CGRectMake(_nameLabel.right + 5, _nameLabel.y, 8, 14)];
+    [_genderView setFrame:CGRectMake(_nameLabel.right + 5, _nameLabel.y, 16, 16)];
     
     [_idLabel setText:[NSString stringWithFormat:@"连枝号:%@",[UserCenter sharedInstance].userInfo.uid]];
     [_idLabel sizeToFit];
-    [_idLabel setOrigin:CGPointMake(_avatarView.right + 10, kUserInfoCellHeight - 20 - _idLabel.height)];
+    [_idLabel setOrigin:CGPointMake(_avatarView.right + 10, kUserInfoCellHeight - 18 - _idLabel.height)];
 
 }
 @end

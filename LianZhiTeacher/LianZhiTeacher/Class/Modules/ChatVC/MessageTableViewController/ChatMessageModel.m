@@ -13,6 +13,18 @@
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
 {
     self.hasNew = NO;
+    
+    //获取原来消息列表别人发的最新的消息的id
+    NSString *originalLatestID = nil;
+    for (NSInteger i = self.modelItemArray.count - 1; i >=0; i--)
+    {
+        MessageItem *messageItem = self.modelItemArray[i];
+        if(messageItem.from == UUMessageFromOther)
+        {
+            originalLatestID = messageItem.messageContent.mid;
+            break;
+        }
+    }
     NSInteger originalNum = self.modelItemArray.count;
     TNDataWrapper *moreWrapper  =[data getDataWrapperForKey:@"more"];
     if(type == REQUEST_REFRESH)
@@ -59,6 +71,27 @@
             return [item1.messageContent.ctime compare:item2.messageContent.ctime];
         }];
     }
+    
+    //获取原来消息列表别人发的最新的消息的id
+    NSString *curLatestID = nil;
+    for (NSInteger i = self.modelItemArray.count - 1; i >=0; i--)
+    {
+        MessageItem *messageItem = self.modelItemArray[i];
+        if(messageItem.from == UUMessageFromOther)
+        {
+            curLatestID = messageItem.messageContent.mid;
+            break;
+        }
+    }
+    if([curLatestID compare:originalLatestID] == NSOrderedDescending)
+    {
+        //有新消息，播放声音
+        if([UserCenter sharedInstance].personalSetting.soundOn)
+            [ApplicationDelegate playSound];
+        if([UserCenter sharedInstance].personalSetting.shakeOn)
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    }
+    
     if(type == REQUEST_REFRESH)
     {
         MessageItem *firstItem = self.modelItemArray.firstObject;

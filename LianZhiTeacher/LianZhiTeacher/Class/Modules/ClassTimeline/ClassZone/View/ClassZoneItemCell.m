@@ -212,7 +212,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         NSInteger imageWidth = (row > 1) ? contentWidth : (itemWidth * imageCount + innerMargin * (imageCount - 1));
         [_collectionView setFrame:CGRectMake(kImageLeftMargin, spaceYStart, imageWidth, itemWidth * row + innerMargin * (row - 1))];
         [_collectionView reloadData];
-        spaceYStart += _collectionView.height + 10;
+        spaceYStart += _collectionView.height + 5;
     }
     else
     {
@@ -225,12 +225,11 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
             [_voiceButton setOrigin:CGPointMake(50, spaceYStart + 5)];
             [_spanLabel setY:_voiceButton.y];
             [_spanLabel setText:[Utility formatStringForTime:item.audioItem.timeSpan]];
-            spaceYStart += 45 + 15;
+            spaceYStart += 45 + 5;
         }
         else
         {
             _voiceButton.hidden = YES;
-            spaceYStart += 10;
         }
     }
     [_addressButton setTitle:item.position forState:UIControlStateNormal];
@@ -258,16 +257,14 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         NSInteger itemWidth = (bgWidth - kInnerMargin * 2) / 3;
         NSInteger row = (item.photos.count + 2) / 3;
         NSInteger innerMargin = (bgWidth - itemWidth * 3) / 2;
-        height += (itemWidth * row + innerMargin * (row - 1)) + 10;
+        height += (itemWidth * row + innerMargin * (row - 1)) + 5;
     }
     else
     {
         if(item.audioItem)
         {
-            height += 15 + 45;
+            height += 5 + 45;
         }
-        else
-            height += 10;
     }
     height += 20 + 10;
     NSInteger resposeHeight = [ResponseView responseHeightForResponse:item.responseModel forWidth:width - kImageLeftMargin - 10];
