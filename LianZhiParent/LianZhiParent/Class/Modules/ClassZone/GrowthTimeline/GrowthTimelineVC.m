@@ -14,22 +14,20 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(12, 12, 60, 60)];
+        _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(20, 10, 60, 60)];
         [_avatar setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar]];
-        [_avatar setBorderColor:[UIColor colorWithWhite:0 alpha:0.2]];
-        [_avatar setBorderWidth:2];
         [self addSubview:_avatar];
         
-        CGFloat width = 30;
+        CGFloat width = 20;
         
         _nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_nextButton setFrame:CGRectMake(self.width - 10 - width, (self.height - width) / 2, width, width)];
+        [_nextButton setFrame:CGRectMake(self.width - 10 - width, 36, width, width)];
         [_nextButton setImage:[UIImage imageNamed:@"DatePickerNextNormal"] forState:UIControlStateNormal];
         [_nextButton setImage:[UIImage imageNamed:@"DatePickerNextDisabled"] forState:UIControlStateDisabled];
         [_nextButton addTarget:self action:@selector(onNext) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_nextButton];
         
-        _curMonth = [[UILabel alloc] initWithFrame:CGRectMake(_nextButton.left - 90, 0, 90, self.height)];
+        _curMonth = [[UILabel alloc] initWithFrame:CGRectMake(_nextButton.left - 90, 36, 90, 20)];
         [_curMonth setTextAlignment:NSTextAlignmentCenter];
         [_curMonth setBackgroundColor:[UIColor clearColor]];
         [_curMonth setFont:[UIFont systemFontOfSize:16]];
@@ -37,7 +35,7 @@
         [self addSubview:_curMonth];
         
         _preButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_preButton setFrame:CGRectMake(_curMonth.left - width, (self.height - width) / 2, width, width)];
+        [_preButton setFrame:CGRectMake(_curMonth.left - width, 36, width, width)];
         [_preButton setImage:[UIImage imageNamed:@"DatePickerPreNormal"] forState:UIControlStateNormal];
         [_preButton setImage:[UIImage imageNamed:@"DatePickerPreDisabled"] forState:UIControlStateDisabled];
         [_preButton addTarget:self action:@selector(onPre) forControlEvents:UIControlEventTouchUpInside];
@@ -127,14 +125,16 @@
     self.title = @"成长手册";
     self.date = [NSDate date];
     
-    _verLine = [[UIView alloc] initWithFrame:CGRectMake(55, _headerView.height, 2, self.view.height - 64 - _headerView.height)];
+    _headerView = [[GrowthTimelineHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 70)];
+    [_headerView setDelegate:self];
+    [self.view addSubview:_headerView];
+    
+    _verLine = [[UIView alloc] initWithFrame:CGRectMake(50, _headerView.height, 2, self.view.height - 64 - _headerView.height)];
     [_verLine setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:_verLine];
     
-    _headerView = [[GrowthTimelineHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 80)];
-    [_headerView setDelegate:self];
-    [self.tableView setTableHeaderView:_headerView];
-
+    [self.view bringSubviewToFront:self.tableView];
+    [self.tableView setFrame:CGRectMake(0, _headerView.bottom, self.tableView.width, self.view.height - _headerView.bottom)];
     [self setShouldShowEmptyHint:YES];
     [self bindTableCell:@"GrowthTimelineCell" tableModel:@"GrowthTimelineModel"];
     [self setSupportPullUp:YES];
@@ -171,12 +171,12 @@
 }
 
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    CGPoint offset = scrollView.contentOffset;
-    CGFloat y = _headerView.height - offset.y;
-    [_verLine setFrame:CGRectMake(55, y, 2, self.view.height - y)];
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+//{
+//    CGPoint offset = scrollView.contentOffset;
+//    CGFloat y = _headerView.height - offset.y;
+//    [_verLine setFrame:CGRectMake(55, y, 2, self.view.height - y)];
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

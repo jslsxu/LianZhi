@@ -24,7 +24,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     { [self setBackgroundColor:[UIColor clearColor]];
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(10, 10, 35, 35)];
+        _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(12, 10, 35, 35)];
         [self addSubview:_avatar];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_avatar.right + 10, 10, 0, 15)];
@@ -239,7 +239,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     CGSize titleSize = [[_addressButton titleForState:UIControlStateNormal] sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12]}];
     [_addressButton setFrame:CGRectMake(kImageLeftMargin, spaceYStart, titleSize.width, 20)];
     [_actionButton setFrame:CGRectMake(self.width - 40, spaceYStart, 40, 20)];
-    spaceYStart += 20 + 10;
+    spaceYStart += 20 + 5;
     
     [_responseView setFrame:CGRectMake(kImageLeftMargin, spaceYStart, self.width - kImageLeftMargin - 10, 100)];
     [_responseView setResponseModel:item.responseModel];
@@ -269,7 +269,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
             height += 5 + 45;
         }
     }
-    height += 20 + 10;
+    height += 20 + 5;
     NSInteger resposeHeight = [ResponseView responseHeightForResponse:item.responseModel forWidth:width - kImageLeftMargin - 10];
     if(resposeHeight > 0)
         height += resposeHeight + 10;

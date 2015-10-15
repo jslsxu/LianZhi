@@ -64,7 +64,7 @@ static const char ActionItemKey;
         {
             UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kActionSheetHMargin, spaceYStart, _contentView.width - kActionSheetHMargin * 2, 0)];
             [titleLabel setBackgroundColor:[UIColor clearColor]];
-            [titleLabel setTextColor:[UIColor colorWithRed:165 / 255.0 green:75 / 255.0 blue:76 / 255.0 alpha:1.f]];
+            [titleLabel setTextColor:[UIColor colorWithHexString:@"777777"]];
             [titleLabel setTextAlignment:NSTextAlignmentCenter];
             [titleLabel setNumberOfLines:0];
             [titleLabel setFont:[UIFont systemFontOfSize:16]];
@@ -98,7 +98,7 @@ static const char ActionItemKey;
             [button setFrame:CGRectMake(kActionSheetHMargin, spaceYStart, _contentView.width - kActionSheetHMargin * 2, kActionSheetButtonHeight)];
             if(item == destructiveItem)
             {
-                [button setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"E82551"] size:button.size cornerRadius:5] forState:UIControlStateNormal];
+                [button setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"f13e64"] size:button.size cornerRadius:5] forState:UIControlStateNormal];
             }
             else
             {

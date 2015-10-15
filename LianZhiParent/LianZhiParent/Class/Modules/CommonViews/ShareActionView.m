@@ -44,7 +44,7 @@
         [_bgButton setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.6]];
         [self addSubview:_bgButton];
         
-        _contentView = [[UIView alloc] initWithFrame:CGRectMake(25, (self.height - 200) / 2, self.width - 25 * 2, 200)];
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake(25, (self.height - 220) / 2, self.width - 25 * 2, 220)];
         [_contentView setBackgroundColor:[UIColor whiteColor]];
         [_contentView.layer setCornerRadius:10];
         [_contentView.layer setMasksToBounds:YES];
@@ -54,7 +54,7 @@
         NSInteger vMargin = 20;
         NSInteger hMargin = 20;
         NSInteger itemWith = (_contentView.width - hMargin * 2 - innerMargin * 3) / 4;
-        NSInteger itemHeight = 65;
+        NSInteger itemHeight = 70;
         
         _shareArray = [NSMutableArray array];
         NSArray *titleArray = @[@"微信",@"朋友圈",@"QQ空间",@"QQ",@"微博",@"复制链接"];
@@ -78,7 +78,7 @@
         
         UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [cancelButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
-        [cancelButton setFrame:CGRectMake(hMargin, vMargin + itemHeight * 2, _contentView.width - hMargin * 2, 36)];
+        [cancelButton setFrame:CGRectMake(hMargin, _contentView.height - vMargin - 36, _contentView.width - hMargin * 2, 36)];
         [cancelButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"E82557"] size:cancelButton.size cornerRadius:18] forState:UIControlStateNormal];
         [cancelButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
         [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

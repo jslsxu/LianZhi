@@ -14,6 +14,9 @@
 #define kMaxResponseNum                     5
 #define kResponseItemCellMargin             3
 
+#define kTopUpArrowHeight                   5
+#define kResponseTableTopMargin             4
+
 @implementation CommentCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -135,6 +138,7 @@
     if(responseArray.count > 0)
     {
         NSInteger responseNum = MIN(kMaxResponseNum, responseArray.count);
+        tableHeight += kResponseTableTopMargin;
         for (NSInteger i = 0; i < responseNum; i++)
         {
             ResponseItem *responseItem = responseArray[i];
@@ -144,6 +148,8 @@
         tableHeight += kExtraHeight + kResponseItemCellMargin;
     }
     height += tableHeight;
+    if(height > 0)
+        height += kTopUpArrowHeight;
     return height;
 }
 
@@ -153,13 +159,20 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        [self setBackgroundColor:[UIColor colorWithHexString:@"F0F0F0"]];
-        [self.layer setCornerRadius:10];
-        [self.layer setMasksToBounds:YES];
+        [self setClipsToBounds:YES];
+        _arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ResponseUpArrow"]];
+        [_arrowImage setOrigin:CGPointMake(20, 0.5)];
+        [self addSubview:_arrowImage];
+        
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, kTopUpArrowHeight, self.width, 0)];
+        [_contentView setBackgroundColor:[UIColor colorWithHexString:@"f1f1f1"]];
+        [_contentView.layer setCornerRadius:10];
+        [_contentView.layer setMasksToBounds:YES];
+        [self addSubview:_contentView];
         
         _praiseView = [[PraiseView alloc] initWithFrame:CGRectMake(0, 0, self.width, kPraiseViewHeight)];
         [_praiseView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
-        [self addSubview:_praiseView];
+        [_contentView addSubview:_praiseView];
         
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, kPraiseViewHeight, self.width , 50 * 2 + 5 * 2) style:UITableViewStylePlain];
         [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
@@ -168,7 +181,7 @@
         [_tableView setDelegate:self];
         [_tableView setScrollEnabled:NO];
         [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-        [self addSubview:_tableView];
+        [_contentView addSubview:_tableView];
     }
     return self;
 }
@@ -200,12 +213,16 @@
         }
         tableHeight += kExtraHeight + kResponseItemCellMargin;
         [_tableView setHidden:NO];
-        [_tableView setFrame:CGRectMake(0, height, self.width, tableHeight)];
+        [_tableView setFrame:CGRectMake(0, height + kResponseTableTopMargin, self.width, tableHeight)];
         [_tableView reloadData];
+        tableHeight += kResponseTableTopMargin;
     }
     else
         [_tableView setHidden:YES];
     height += tableHeight;
+    if(height > 0)
+        height += kTopUpArrowHeight;
+    [_contentView setFrame:CGRectMake(0, kTopUpArrowHeight, self.width, height - kTopUpArrowHeight)];
     [self setHeight:height];
 }
 

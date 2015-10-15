@@ -41,9 +41,10 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         
         _shareToTreeHouseButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_shareToTreeHouseButton setImage:[UIImage imageNamed:@"ShareToTreeHouse"] forState:UIControlStateNormal];
+        [_shareToTreeHouseButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
         [_shareToTreeHouseButton addTarget:self action:@selector(onShareToTreeHouse) forControlEvents:UIControlEventTouchUpInside];
         [_shareToTreeHouseButton setSize:CGSizeMake(72, 20)];
-        [_shareToTreeHouseButton setOrigin:CGPointMake(self.width - 80, 10)];
+        [_shareToTreeHouseButton setOrigin:CGPointMake(self.width - 72 - 10, 10)];
         [self addSubview:_shareToTreeHouseButton];
         
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -90,6 +91,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         [self addSubview:_addressButton];
         
         _actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
         [_actionButton setImage:[UIImage imageNamed:@"TimelineAction"] forState:UIControlStateNormal];
         [_actionButton addTarget:self action:@selector(onActionClicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_actionButton];
@@ -215,7 +217,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         NSInteger imageWidth = (row > 1) ? contentWidth : (itemWidth * imageCount + innerMargin * (imageCount - 1));
         [_collectionView setFrame:CGRectMake(kImageLeftMargin, spaceYStart, imageWidth, itemWidth * row + innerMargin * (row - 1))];
         [_collectionView reloadData];
-        spaceYStart += _collectionView.height + 10;
+        spaceYStart += _collectionView.height + 5;
     }
     else
     {
@@ -228,18 +230,14 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
             [_voiceButton setY:spaceYStart + 5];
             [_spanLabel setText:[Utility formatStringForTime:item.audioItem.timeSpan]];
             [_spanLabel setY:_voiceButton.y];
-            spaceYStart += _voiceButton.height + 15;
-        }
-        else
-        {
-            spaceYStart += 10;
+            spaceYStart += _voiceButton.height + 10;
         }
     }
     [_addressButton setTitle:item.position forState:UIControlStateNormal];
     CGSize titleSize = [[_addressButton titleForState:UIControlStateNormal] sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12]}];
     [_addressButton setFrame:CGRectMake(kImageLeftMargin, spaceYStart, titleSize.width, titleSize.height)];
-    [_actionButton setFrame:CGRectMake(self.width - 40, spaceYStart, 40, 20)];
-    spaceYStart += 20 + 10;
+    [_actionButton setFrame:CGRectMake(self.width - 30 - 10, spaceYStart, 30, 20)];
+    spaceYStart += 20 + 5;
     
     [_responseView setFrame:CGRectMake(kImageLeftMargin, spaceYStart, self.width - kImageLeftMargin - 10, 100)];
     [_responseView setResponseModel:item.responseModel];
@@ -260,18 +258,16 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         NSInteger itemWidth = (bgWidth - kInnerMargin * 2) / 3;
         NSInteger row = (item.photos.count + 2) / 3;
         NSInteger innerMargin = (bgWidth - itemWidth * 3) / 2;
-        height += (itemWidth * row + innerMargin * (row - 1)) + 10;
+        height += (itemWidth * row + innerMargin * (row - 1)) + 5;
     }
     else
     {
         if(item.audioItem)
         {
-            height += 15 + 40;
+            height += 10 + 40;
         }
-        else
-            height += 10;
     }
-    height += 20 + 10;
+    height += 20 + 5;
     NSInteger resposeHeight = [ResponseView responseHeightForResponse:item.responseModel forWidth:width - 20 * 2 - 12 * 2];
     if(resposeHeight > 0)
         height += resposeHeight + 10;

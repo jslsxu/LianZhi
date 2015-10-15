@@ -42,7 +42,7 @@ static NSString *topChatID = nil;
     topChatID = self.targetID;
     if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup)//群组或者班级
     {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MineProfile"] style:UIBarButtonItemStylePlain target:self action:@selector(onShowClassMembers)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"GroupMemberIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(onShowClassMembers)];
     }
     else
     {

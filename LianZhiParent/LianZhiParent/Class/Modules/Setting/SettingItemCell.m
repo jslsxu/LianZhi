@@ -21,7 +21,7 @@
     if(self)
     {
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(35, 0, 60, self.height)];
-        [_titleLabel setFont:[UIFont systemFontOfSize:15]];
+        [_titleLabel setFont:[UIFont systemFontOfSize:16]];
         [_titleLabel setTextColor:[UIColor colorWithRed:73 / 255.0 green:73 / 255.0 blue:73 / 255.0 alpha:1.f]];
         [_titleLabel setHighlightedTextColor:[UIColor whiteColor]];
         [self addSubview:_titleLabel];

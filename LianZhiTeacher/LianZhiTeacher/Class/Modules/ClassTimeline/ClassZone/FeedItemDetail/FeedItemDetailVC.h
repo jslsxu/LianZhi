@@ -32,7 +32,7 @@
     FeedItemDetailHeaderView*   _headerView;
     PraiseListView*             _praiseView;
     UITableView*                _tableView;
-    UIToolbar*                  _toolBar;
+    UIView*                  _toolBar;
     NSMutableArray*             _buttonItems;
     ReplyBox*                   _replyBox;
 }

@@ -40,7 +40,7 @@ static NSString *topChatID = nil;
     topChatID = self.targetID;
     if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup)
     {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MineProfile"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickClassMember)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"GroupMemberIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickClassMember)];
     }
     else
     {

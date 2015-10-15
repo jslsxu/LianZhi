@@ -34,24 +34,14 @@
     [self requestData:REQUEST_REFRESH];
 }
 
-- (void)setupSubviews
-{
-    UIImageView *grayBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"GrayBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-    [grayBG setFrame:CGRectMake(12, 15, self.view.width - 12 * 2, self.view.height - 15 * 2)];
-    [self.view insertSubview:grayBG belowSubview:self.collectionView];
-    
-    UIImageView *whiteBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-    [whiteBG setFrame:CGRectMake(12, 15, grayBG.width - 12 * 2, grayBG.height - 15 * 2)];
-    [grayBG addSubview:whiteBG];
-}
-
 - (void)TNBaseCollectionViewControllerModifyLayout:(UICollectionViewLayout *)layout
 {
+    NSInteger itemSize = (self.view.width - 15 * 2 - 10 * 2) / 3;
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)layout;
-    [flowLayout setItemSize:CGSizeMake(70, 80)];
-    [flowLayout setMinimumInteritemSpacing:15];
-    [flowLayout setMinimumLineSpacing:15];
-    [flowLayout setSectionInset:UIEdgeInsetsMake(50, 40, 50, 40)];
+    [flowLayout setItemSize:CGSizeMake(itemSize, itemSize)];
+    [flowLayout setMinimumInteritemSpacing:10];
+    [flowLayout setMinimumLineSpacing:10];
+    [flowLayout setSectionInset:UIEdgeInsetsMake(15, 15, 15, 15)];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType

@@ -489,7 +489,8 @@
         else
         {
             FamilyInfo *familyInfo = childInfo.family[row];
-            [cell.logoView setHidden:YES];
+            [cell.logoView setImageWithUrl:[NSURL URLWithString:familyInfo.avatar]];
+            [cell.logoView setHidden:NO];
             [cell setText:[NSString stringWithFormat:@"%@(%@)",familyInfo.name,familyInfo.relation] extra:[NSString stringWithFormat:@"(%@)",familyInfo.mobile]];
         }
         [cell setDelegate:self];

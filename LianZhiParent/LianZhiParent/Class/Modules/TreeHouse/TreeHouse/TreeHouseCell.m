@@ -66,6 +66,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [_bgView addSubview:_addressButton];
         
         _trashButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_trashButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
         [_trashButton setImage:[UIImage imageNamed:@"TimelineTrash"] forState:UIControlStateNormal];
         [_trashButton addTarget:self action:@selector(onTrashClicked) forControlEvents:UIControlEventTouchUpInside];
         [_bgView addSubview:_trashButton];
@@ -80,14 +81,15 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         
         _infoLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_infoLabel setBackgroundColor:[UIColor clearColor]];
-        [_infoLabel setFont:[UIFont systemFontOfSize:16]];
-        [_infoLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
+        [_infoLabel setFont:[UIFont systemFontOfSize:14]];
+        [_infoLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_infoLabel setNumberOfLines:0];
         [_infoLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [_bgView addSubview:_infoLabel];
         
         _actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_actionButton setSize:CGSizeMake(40, 20)];
+        [_actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
         [_actionButton setImage:[UIImage imageNamed:@"TimelineAction"] forState:UIControlStateNormal];
         [_actionButton addTarget:self action:@selector(onActionClicked) forControlEvents:UIControlEventTouchUpInside];
         [_bgView addSubview:_actionButton];
@@ -161,19 +163,28 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(_authorLabel.right + 5, _authorLabel.bottom - _timeLabel.height)];
     
-    [_addressButton setTitle:item.position forState:UIControlStateNormal];
-    CGSize positionSize = [item.position sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12]}];
-    [_addressButton setFrame:CGRectMake(10, 27, positionSize.width, positionSize.height)];
-    
-    [_trashButton setFrame:CGRectMake(_bgView.width - 30 - 5, 5, 30, 30)];
+    [_trashButton setFrame:CGRectMake(_bgView.width - 30 - 10, 5, 30, 30)];
     [_trashButton setHidden:!item.canEdit];
     
-    
+    NSInteger spaceYStart ;
+    if(item.position.length > 0)
+    {
+        _addressButton.hidden = NO;
+        [_addressButton setTitle:item.position forState:UIControlStateNormal];
+        CGSize positionSize = [item.position sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12]}];
+        [_addressButton setFrame:CGRectMake(10, 27, positionSize.width, positionSize.height)];
+        spaceYStart = 45;
+    }
+    else
+    {
+        _addressButton.hidden = YES;
+        spaceYStart = 30;
+    }
+
     NSInteger bgWidth = self.width - 12 - 72 - 20;
     CGSize detailSize = [item.detail boundingRectWithSize:CGSizeMake(bgWidth, 0) andFont:[UIFont systemFontOfSize:16]];
 
     [_infoLabel setText:item.detail];
-    NSInteger spaceYStart = 45;
     [_infoLabel setFrame:CGRectMake(10, spaceYStart, detailSize.width, detailSize.height)];
     
     spaceYStart += detailSize.height;
@@ -345,6 +356,11 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     TreehouseItem *item = (TreehouseItem *)modelItem;
     CGFloat bgWidth = width - 12 - 72 - 20;
     CGSize detailSize = [item.detail boundingRectWithSize:CGSizeMake(bgWidth, 0) andFont:[UIFont systemFontOfSize:16]];
+    
+    NSInteger authHeight = 45;
+    if(item.position.length == 0)
+        authHeight = 30;
+    
     CGFloat extraHeight = 0;
     if(item.photos.count > 0)
     {
@@ -356,7 +372,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     else if(item.audioItem)
         extraHeight = 40 + 10;
     NSInteger resposeHeight = [ResponseView responseHeightForResponse:item.responseModel forWidth:bgWidth];
-    return @(5 + 45 + detailSize.height + 30 + extraHeight + resposeHeight + 10 + 10);
+    return @(5 + authHeight + detailSize.height + 30 + extraHeight + resposeHeight + 10 + 10);
 }
 
 #pragma mark - PhotoBrowserDelegate

@@ -120,7 +120,7 @@
     
     [self setupImageView];
     
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, _bgView.bottom + 20, _bgView.width, 60)];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, _bgView.bottom + 20, _bgView.width, 60)];
     [_textView setFont:[UIFont systemFontOfSize:16]];
     [_textView setDelegate:self];
     [_textView setPlaceholder:@"我发了一堆图片，快来看看吧"];

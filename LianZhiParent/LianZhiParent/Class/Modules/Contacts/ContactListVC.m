@@ -40,13 +40,13 @@
         
         _schoolLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_schoolLabel setBackgroundColor:[UIColor clearColor]];
-        [_schoolLabel setTextColor:[UIColor lightGrayColor]];
+        [_schoolLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
         [_schoolLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_schoolLabel];
         
         _numLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_numLabel setBackgroundColor:[UIColor clearColor]];
-        [_numLabel setTextColor:[UIColor lightGrayColor]];
+        [_numLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
         [_numLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_numLabel];
         
@@ -69,18 +69,18 @@
     _classInfo = classInfo;
     
     [_logoView setImageWithUrl:[NSURL URLWithString:classInfo.logo]];
-    
+    NSInteger vMargin = 12;
     [_classLabel setText:classInfo.className];
     [_classLabel sizeToFit];
-    [_classLabel setOrigin:CGPointMake(_logoView.right + 5, 7)];
+    [_classLabel setOrigin:CGPointMake(_logoView.right + 5, vMargin)];
     
     [_schoolLabel setText:self.classInfo.schoolInfo.schoolName];
     [_schoolLabel sizeToFit];
-    [_schoolLabel setOrigin:CGPointMake(_logoView.right + 5, self.height - _schoolLabel.height - 7)];
+    [_schoolLabel setOrigin:CGPointMake(_logoView.right + 5, self.height - _schoolLabel.height - vMargin)];
     
     [_numLabel setText:[NSString stringWithFormat:@"(共%ld位老师)",(long)_classInfo.teachers.count]];
     [_numLabel sizeToFit];
-    [_numLabel setOrigin:CGPointMake(_classLabel.right + 10, 8)];
+    [_numLabel setOrigin:CGPointMake(_classLabel.right + 10, _classLabel.y + (_classLabel.height - _numLabel.height) / 2)];
 }
 
 - (void)onChatClicked
@@ -145,7 +145,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 50;
+    return 60;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -154,7 +154,7 @@
     ContactListHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:reuseHeaderID];
     if(headerView == nil)
     {
-        headerView = [[ContactListHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 50)];
+        headerView = [[ContactListHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 60)];
     }
     ClassInfo *class = [UserCenter sharedInstance].curChild.classes[section];
     [headerView setClassInfo:class];
@@ -163,7 +163,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 48;
+    return 45;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

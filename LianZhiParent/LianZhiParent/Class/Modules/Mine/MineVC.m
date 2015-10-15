@@ -45,7 +45,7 @@
     [_avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
     [_nameLabel setText:[UserCenter sharedInstance].userInfo.name];
     [_nameLabel sizeToFit];
-    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, 20)];
+    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, 18)];
     GenderType gender = [UserCenter sharedInstance].userInfo.gender;
     if(gender == GenderFemale)
         [_genderView setImage:[UIImage imageNamed:@"GenderFemale"]];
@@ -54,7 +54,7 @@
     [_genderView setFrame:CGRectMake(_nameLabel.right + 5, _nameLabel.y, 15, 15)];
     [_idLabel setText:[NSString stringWithFormat:@"连枝号:%@",[UserCenter sharedInstance].userInfo.uid]];
     [_idLabel sizeToFit];
-    [_idLabel setOrigin:CGPointMake(_avatarView.right + 10, kUserInfoCellHeight - 20 - _idLabel.height)];
+    [_idLabel setOrigin:CGPointMake(_avatarView.right + 10, kUserInfoCellHeight - 18 - _idLabel.height)];
 }
 
 @end
@@ -107,12 +107,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 15;
+    return 0.1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 0.1;
+    return 15;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -147,7 +147,7 @@
         if(cell == nil)
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
-            [cell.textLabel setFont:[UIFont systemFontOfSize:15]];
+            [cell.textLabel setFont:[UIFont systemFontOfSize:14]];
             [cell.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
             [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
         }

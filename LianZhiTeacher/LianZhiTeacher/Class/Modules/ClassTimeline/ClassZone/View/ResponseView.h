@@ -32,6 +32,8 @@
 
 @interface ResponseView : UIView
 {
+    UIImageView*        _arrowImage;
+    UIView*             _contentView;
     PraiseView*         _praiseView;
     UITableView*        _tableView;
 }

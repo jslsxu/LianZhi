@@ -228,7 +228,7 @@
 {
     [super viewDidLoad];
     self.title = @"发布通知";
-    
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
     UIView *operationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 75)];
     [operationView setBackgroundColor:[UIColor colorWithHexString:@"0fabc1"]];
     [self setupHeaderView:operationView];

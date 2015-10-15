@@ -80,7 +80,7 @@
     
     UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [sendButton addTarget:self action:@selector(onSendButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [sendButton setFrame:CGRectMake(15, bgView.bottom + 20, self.view.width - 15 * 2, 36)];
+    [sendButton setFrame:CGRectMake(15, bgView.bottom + 33, self.view.width - 15 * 2, 36)];
     [sendButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"5ed016"] size:sendButton.size cornerRadius:18] forState:UIControlStateNormal];
     [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [sendButton.titleLabel setFont:[UIFont systemFontOfSize:16]];

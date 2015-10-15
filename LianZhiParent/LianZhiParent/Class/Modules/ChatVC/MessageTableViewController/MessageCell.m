@@ -28,12 +28,12 @@
         [_timeLabel.layer setMasksToBounds:YES];
         [self addSubview:_timeLabel];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(kAvatarHMargin, 5 + kTimeLabelHeight, kScreenWidth - kAvatarHMargin * 2, 10)];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(kAvatarHMargin, 10 + kTimeLabelHeight, kScreenWidth - kAvatarHMargin * 2, 10)];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"8f8f8f"]];
         [_nameLabel setFont:[UIFont systemFontOfSize:10]];
         [self addSubview:_nameLabel];
         
-        _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(0, _nameLabel.bottom, 32, 32)];
+        _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(0, _nameLabel.bottom + 5, 34, 34)];
         [self addSubview:_avatarView];
         
         _contentButton = [UUMessageContentButton buttonWithType:UIButtonTypeCustom];

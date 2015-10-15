@@ -35,7 +35,7 @@
         
         _idLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_idLabel setTextColor:[UIColor lightGrayColor]];
-        [_idLabel setFont:[UIFont systemFontOfSize:13]];
+        [_idLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_idLabel];
     }
     return self;
@@ -151,7 +151,7 @@
         {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
             [cell.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-            [cell.textLabel setFont:[UIFont systemFontOfSize:15]];
+            [cell.textLabel setFont:[UIFont systemFontOfSize:14]];
             [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
         }
         NSInteger row = indexPath.row;

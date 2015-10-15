@@ -22,7 +22,7 @@
     self.constellation = [dataWrapper getStringForKey:@"constellation"];
     self.email = [dataWrapper getStringForKey:@"email"];
     self.birthDay = [dataWrapper getStringForKey:@"birthday"];
-    self.actived = [dataWrapper getStringForKey:@"actived"];
+    self.actived = [dataWrapper getBoolForKey:@"actived"];
 }
 
 - (NSDictionary *)toDictionary

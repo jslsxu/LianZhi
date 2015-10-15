@@ -22,28 +22,18 @@
     if(self)
     {
         _bgView = [[UIView alloc] initWithFrame:self.bounds];
-        [_bgView setBackgroundColor:[UIColor colorWithHexString:@"D4D4D4"]];
+        [_bgView setBackgroundColor:[UIColor colorWithHexString:@"dbdbdb"]];
         [_bgView.layer setCornerRadius:10];
         [_bgView.layer setMasksToBounds:YES];
         [self addSubview:_bgView];
         
         _coverButton = [LZTabBarButton buttonWithType:UIButtonTypeCustom];
-        [_coverButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [_coverButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
         [_coverButton setSpacing:6];
         [_coverButton setUserInteractionEnabled:NO];
         [_coverButton setFrame:self.bounds];
         [_coverButton setTitleColor:[UIColor colorWithHexString:@"2c2c2c"] forState:UIControlStateNormal];
         [self addSubview:_coverButton];
-        
-//        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.width, 70)];
-//        [_imageView setContentMode:UIViewContentModeCenter];
-//        [self addSubview:_imageView];
-//        
-//        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 70, self.width, 15)];
-//        [_titleLabel setTextAlignment:NSTextAlignmentCenter];
-//        [_titleLabel setFont:[UIFont systemFontOfSize:12]];
-//        [_titleLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-//        [self addSubview:_titleLabel];
     }
     return self;
 }
@@ -92,7 +82,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     _layout = [[UICollectionViewFlowLayout alloc] init];
     [_layout setSectionInset:UIEdgeInsetsMake(15, 15, 15, 15)];
     NSInteger itemSize = (self.view.width - 15 * 2 - 10 * 2) / 3;

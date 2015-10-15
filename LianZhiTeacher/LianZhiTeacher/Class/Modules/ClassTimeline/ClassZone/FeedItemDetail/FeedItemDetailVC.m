@@ -220,7 +220,8 @@
     [_tableView setShowsVerticalScrollIndicator:NO];
     [self.view addSubview:_tableView];
     
-    _toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0,kScreenHeight - 64 - 50, self.view.width, 50)];
+    _toolBar = [[UIView alloc] initWithFrame:CGRectMake(0,kScreenHeight - 64 - 50, self.view.width, 50)];
+    [_toolBar setBackgroundColor:[UIColor whiteColor]];
     [self setupToolBar:_toolBar];
     [self.view addSubview:_toolBar];
     

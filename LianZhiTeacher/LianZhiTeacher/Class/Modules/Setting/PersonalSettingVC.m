@@ -24,6 +24,7 @@
         [self addSubview:_titleLabel];
         
         _switchCtl = [[UISwitch alloc] init];
+        [_switchCtl setOnTintColor:[UIColor colorWithHexString:@"95e065"]];
         [_switchCtl setCenter:CGPointMake(self.width - 30 , self.height / 2)];
         [_switchCtl setTransform:CGAffineTransformMakeScale(0.8, 0.8)];
         [_switchCtl addTarget:self action:@selector(onSwitch) forControlEvents:UIControlEventValueChanged];
@@ -85,7 +86,7 @@
     [logoutButton setTitle:@"退出登录" forState:UIControlStateNormal];
     [logoutButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16]];
     [logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [logoutButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"E82557"] size:CGSizeMake(30, 30) cornerRadius:15] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15)] forState:UIControlStateNormal];
+    [logoutButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"f13e64"] size:CGSizeMake(30, 30) cornerRadius:15] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15)] forState:UIControlStateNormal];
     [logoutButton setFrame:CGRectMake(15, (viewParent.height - 35) / 2, viewParent.width - 15 * 2, 35)];
     [viewParent addSubview:logoutButton];
 }

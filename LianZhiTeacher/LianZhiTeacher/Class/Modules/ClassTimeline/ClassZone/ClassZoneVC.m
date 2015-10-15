@@ -71,7 +71,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         [self setBackgroundColor:[UIColor whiteColor]];
         
         UIView *contentView = [[UIView alloc] initWithFrame:self.bounds];
-        [contentView setBackgroundColor:[UIColor colorWithRed:19 / 255.0 green:48 / 255.0 blue:43 / 255.0 alpha:1.f]];
+        [contentView setBackgroundColor:[UIColor colorWithHexString:@"173e39"]];
         [self addSubview:contentView];
         
         CGFloat buttonWidth = 40;
@@ -352,7 +352,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)setupSubviews
 {
-    _publishToolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.height - 49, self.view.width, 49)];
+    _publishToolBar = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 49, self.view.width, 49)];
+    [_publishToolBar setBackgroundColor:[UIColor whiteColor]];
 //    [self setupToolBar:_publishToolBar];
     [self.view addSubview:_publishToolBar];
     

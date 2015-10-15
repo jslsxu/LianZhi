@@ -64,7 +64,7 @@ static const char ActionItemKey;
         {
             UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kActionSheetHMargin, spaceYStart, _contentView.width - kActionSheetHMargin * 2, 0)];
             [titleLabel setBackgroundColor:[UIColor clearColor]];
-            [titleLabel setTextColor:[UIColor colorWithRed:165 / 255.0 green:75 / 255.0 blue:76 / 255.0 alpha:1.f]];
+            [titleLabel setTextColor:[UIColor colorWithHexString:@"777777"]];
             [titleLabel setTextAlignment:NSTextAlignmentCenter];
             [titleLabel setNumberOfLines:0];
             [titleLabel setFont:[UIFont systemFontOfSize:16]];

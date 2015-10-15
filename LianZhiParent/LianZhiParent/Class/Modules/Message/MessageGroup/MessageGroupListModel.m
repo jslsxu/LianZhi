@@ -72,20 +72,23 @@
             [item parseData:itemWrapper];
             [self.modelItemArray addObject:item];
             
-            BOOL isNewMessage = [self isNewMessage:item inArray:originalMessageArray];//是否是新的需要提醒的消息
-            if(isNewMessage)
-                hasNew = YES;
-            else
+            if(originalMessageArray.count > 0)
             {
-                //判断是否是原来的消息中，但是新消息数增加了
-                for (MessageGroupItem *groupItem in originalMessageArray)
+                BOOL isNewMessage = [self isNewMessage:item inArray:originalMessageArray];//是否是新的需要提醒的消息
+                if(isNewMessage)
+                    hasNew = YES;
+                else
                 {
-                    if([groupItem.fromInfo.uid isEqualToString:item.fromInfo.uid] && ![groupItem.fromInfo.uid isEqualToString:[JSMessagesViewController curChatID]])
+                    //判断是否是原来的消息中，但是新消息数增加了
+                    for (MessageGroupItem *groupItem in originalMessageArray)
                     {
-                        NSInteger originalNum = groupItem.msgNum;
-                        if(item.msgNum > originalNum && item.soundOn)
-                            hasNew = YES;
-                        break;
+                        if([groupItem.fromInfo.uid isEqualToString:item.fromInfo.uid] && ![groupItem.fromInfo.uid isEqualToString:[JSMessagesViewController curChatID]])
+                        {
+                            NSInteger originalNum = groupItem.msgNum;
+                            if(item.msgNum > originalNum && item.soundOn)
+                                hasNew = YES;
+                            break;
+                        }
                     }
                 }
             }
@@ -98,9 +101,7 @@
                 [ApplicationDelegate playSound];
             if([UserCenter sharedInstance].personalSetting.shakeOn)
                 AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-            
         }
-        
     }
     return parse;
 }

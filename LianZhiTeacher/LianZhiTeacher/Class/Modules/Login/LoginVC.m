@@ -40,7 +40,7 @@
     self.title = @"用户登录";
     [self.view setBackgroundColor:kCommonTeacherTintColor];
     
-    UIView *inputView = [[UIView alloc] initWithFrame:CGRectMake(20, 100, self.view.width - 20 * 2, 90)];
+    UIView *inputView = [[UIView alloc] initWithFrame:CGRectMake(20, 150, self.view.width - 20 * 2, 90)];
     [self setupInputView:inputView];
     [self.view addSubview:inputView];
     

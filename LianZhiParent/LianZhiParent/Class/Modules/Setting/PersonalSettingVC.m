@@ -24,6 +24,7 @@
         [self addSubview:_titleLabel];
         
         _switchCtl = [[UISwitch alloc] init];
+        [_switchCtl setOnTintColor:[UIColor colorWithHexString:@"95e065"]];
         [_switchCtl setCenter:CGPointMake(self.width - 30 , self.height / 2)];
         [_switchCtl setTransform:CGAffineTransformMakeScale(0.8, 0.8)];
         [_switchCtl addTarget:self action:@selector(onSwitch) forControlEvents:UIControlEventValueChanged];

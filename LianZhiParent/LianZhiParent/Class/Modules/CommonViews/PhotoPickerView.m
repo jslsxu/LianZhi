@@ -19,7 +19,7 @@
         _hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height / 6, self.width, 20)];
         [_hintLabel setTextColor:[UINavigationBar appearance].barTintColor];
         [_hintLabel setTextAlignment:NSTextAlignmentCenter];
-        [_hintLabel setFont:[UIFont systemFontOfSize:14]];
+        [_hintLabel setFont:[UIFont systemFontOfSize:15]];
         [_hintLabel setText:@"添加一张"];
         [_hintLabel sizeToFit];
         [self addSubview:_hintLabel];

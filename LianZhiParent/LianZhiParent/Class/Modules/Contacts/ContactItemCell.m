@@ -23,13 +23,13 @@
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_nameLabel setBackgroundColor:[UIColor clearColor]];
-        [_nameLabel setTextColor:[UIColor lightGrayColor]];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [self addSubview:_nameLabel];
         
         _commentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_commentLabel setBackgroundColor:[UIColor clearColor]];
-        [_commentLabel setTextColor:[UIColor colorWithRed:160 / 255.0 green:160 / 255.0 blue:160 / 255.0 alpha:1.f]];
+        [_commentLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
         [_commentLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_commentLabel];
         

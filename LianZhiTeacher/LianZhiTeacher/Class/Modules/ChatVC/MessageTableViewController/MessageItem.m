@@ -79,6 +79,6 @@
     }
     else if(self.messageContent.messageType == UUMessageTypeRevoked)
         height = 32;
-    return height + 10 + 15  + kTimeLabelHeight;
+    return height + 10 + 10 + 10 + 5 + kTimeLabelHeight;
 }
 @end

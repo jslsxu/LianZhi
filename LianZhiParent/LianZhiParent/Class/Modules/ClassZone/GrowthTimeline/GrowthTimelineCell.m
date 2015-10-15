@@ -8,6 +8,8 @@
 
 #import "GrowthTimelineCell.h"
 
+#define kBottomViewHeight               26
+
 @implementation GrowthTimelineCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -17,7 +19,7 @@
         [self setBackgroundColor:[UIColor clearColor]];
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        _dateLabel  =[[UILabel alloc] initWithFrame:CGRectMake(10, 10, 40, 20)];
+        _dateLabel  =[[UILabel alloc] initWithFrame:CGRectMake(10, 10, 35, 20)];
         [_dateLabel setTextAlignment:NSTextAlignmentRight];
         [_dateLabel setBackgroundColor:[UIColor clearColor]];
         [_dateLabel setFont:[UIFont systemFontOfSize:16]];
@@ -27,12 +29,12 @@
         [self addSubview:_dateLabel];
         
         _dot = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TimelinePoint.png"]];
-        [_dot setCenter:CGPointMake(56, _dateLabel.centerY)];
+        [_dot setCenter:CGPointMake(51, _dateLabel.centerY)];
         [self addSubview:_dot];
         
         _statusArray = [NSMutableArray array];
         self.width = kScreenWidth;
-        _bgView = [[UIView alloc] initWithFrame:CGRectMake(65, 0, self.width - 15 - 65, 0)];
+        _bgView = [[UIView alloc] initWithFrame:CGRectMake(60, 0, self.width - 15 - 60, 0)];
         [_bgView setBackgroundColor:[UIColor whiteColor]];
         [_bgView.layer setCornerRadius:10];
         [_bgView.layer setMasksToBounds:YES];
@@ -55,9 +57,9 @@
         }
         
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 60, _bgView.width - 10 * 2, 0)];
-        [_contentLabel setFont:[UIFont systemFontOfSize:14]];
+        [_contentLabel setFont:[UIFont systemFontOfSize:12]];
         [_contentLabel setBackgroundColor:[UIColor colorWithHexString:@"f1f1f1"]];
-        [_contentLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
+        [_contentLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_contentLabel setNumberOfLines:0];
         [_contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [_contentLabel.layer setCornerRadius:10];
@@ -69,14 +71,14 @@
         [_bgView addSubview:_sepLine];
         
         _authorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_authorLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-        [_authorLabel setFont:[UIFont systemFontOfSize:14]];
+        [_authorLabel setTextColor:[UIColor colorWithHexString:@"a9a9a9"]];
+        [_authorLabel setFont:[UIFont systemFontOfSize:10]];
         [_authorLabel setBackgroundColor:[UIColor clearColor]];
         [_bgView addSubview:_authorLabel];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_timeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-        [_timeLabel setFont:[UIFont systemFontOfSize:14]];
+        [_timeLabel setTextColor:[UIColor colorWithHexString:@"a9a9a9"]];
+        [_timeLabel setFont:[UIFont systemFontOfSize:12]];
         [_timeLabel setBackgroundColor:[UIColor clearColor]];
         [_bgView addSubview:_timeLabel];
         
@@ -180,9 +182,9 @@
     NSString *content = timelineItem.content;
     if(content.length > 0)
     {
-        CGSize contentSize = [content boundingRectWithSize:CGSizeMake(kScreenWidth - 15 - 65 - 15 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
+        CGSize contentSize = [content boundingRectWithSize:CGSizeMake(kScreenWidth - 15 - 60 - 15 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
         contentSize.height = contentSize.height + 20;
-        contentSize.width = kScreenWidth - 15 - 65 - 10 * 2;
+        contentSize.width = kScreenWidth - 15 - 60 - 10 * 2;
         [_contentLabel setText:content];
         [_contentLabel setSize:contentSize];
         spaceYStart += _contentLabel.height + 10;
@@ -196,12 +198,12 @@
     NSString *author = [NSString stringWithFormat:@"来自%@老师",timelineItem.teacherInfo.teacherName];
     [_authorLabel setText:author];
     [_authorLabel sizeToFit];
-    [_authorLabel setOrigin:CGPointMake(12, _sepLine.bottom + (30 - _authorLabel.height) / 2)];
+    [_authorLabel setOrigin:CGPointMake(15, _sepLine.bottom + (kBottomViewHeight - _authorLabel.height) / 2)];
     
     [_timeLabel setText:timelineItem.formatTime];
     [_timeLabel sizeToFit];
-    [_timeLabel setOrigin:CGPointMake(_bgView.width - _timeLabel.width, _sepLine.bottom + (30 - _authorLabel.height) / 2)];
-    [_bgView setHeight:spaceYStart + 30];
+    [_timeLabel setOrigin:CGPointMake(_bgView.width - _timeLabel.width - 10, _sepLine.bottom + (kBottomViewHeight - _authorLabel.height) / 2)];
+    [_bgView setHeight:spaceYStart + kBottomViewHeight];
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
@@ -211,10 +213,10 @@
     NSInteger contentHeight = 60;
     if([content length] > 0)
     {
-        CGSize contentSize = [content boundingRectWithSize:CGSizeMake(width - 15 - 65 - 15 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
+        CGSize contentSize = [content boundingRectWithSize:CGSizeMake(width - 15 - 60 - 15 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
         contentHeight += contentSize.height + 20 + 10;
     }
-    contentHeight += 30 + 20;
+    contentHeight += kBottomViewHeight + 10;
     return @(contentHeight);
 }
 @end

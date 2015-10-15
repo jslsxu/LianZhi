@@ -100,7 +100,8 @@
 {
     [_scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [_childButtonArray removeAllObjects];
-    CGFloat length = 32;
+    CGFloat length = 36;
+    NSInteger innerMargin = 5;
     NSArray *children = [UserCenter sharedInstance].children;
     NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:children];
     [tmpArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
@@ -120,14 +121,15 @@
     for (NSInteger i = 0; i < tmpArray.count; i++) {
         ChildInfo *childInfo = tmpArray[i];
         ChildInfoView *childInfoView = [[ChildInfoView alloc] initWithFrame:CGRectMake(spaceXStart, (self.height - length) / 2, length, length)];
-        spaceXStart += (length + 15);
+        spaceXStart += (length + innerMargin);
         [childInfoView addTarget:self action:@selector(onChildItemClicked:) forControlEvents:UIControlEventTouchUpInside];
         [childInfoView setChildInfo:childInfo];
         [childInfoView setChildSelected:i == 0];
+        [childInfoView setAlpha:i == 0 ? 1 : 0.7];
         [_scrollView addSubview:childInfoView];
         [_childButtonArray addObject:childInfoView];
     }
-    [_scrollView setContentSize:CGSizeMake((length + 15) * children.count, _scrollView.height)];
+    [_scrollView setContentSize:CGSizeMake((length + innerMargin) * children.count, _scrollView.height)];
 }
 
 - (void)onChildItemClicked:(ChildInfoView *)infoView
