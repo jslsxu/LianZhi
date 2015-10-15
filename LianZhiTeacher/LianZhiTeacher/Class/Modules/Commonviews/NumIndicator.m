@@ -33,7 +33,7 @@
     _indicator = indicator;
     [self setText:_indicator];
     [self sizeToFit];
-    [self setSize:CGSizeMake(MAX(kIndicatorHeight, self.width + 6), kIndicatorHeight)];
+    [self setSize:CGSizeMake(MAX(kIndicatorHeight, self.width + 4), kIndicatorHeight)];
 }
 
 @end

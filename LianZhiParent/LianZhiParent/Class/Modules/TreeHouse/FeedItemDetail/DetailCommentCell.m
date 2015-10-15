@@ -22,9 +22,9 @@
         [_commentImageView setOrigin:CGPointMake(6, 10)];
         [self addSubview:_commentImageView];
         
-        UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, kLineHeight)];
-        [topLine setBackgroundColor:[UIColor colorWithHexString:@"E0E0E0"]];
-        [self addSubview:topLine];
+         _topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, kLineHeight)];
+        [_topLine setBackgroundColor:[UIColor colorWithHexString:@"E0E0E0"]];
+        [self addSubview:_topLine];
         
         _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(30, 9, 22, 22)];
         [self addSubview:_avatarView];
@@ -48,6 +48,34 @@
         [self addSubview:_contentLabel];
     }
     return self;
+}
+
+- (void)setClips:(BOOL)clips
+{
+    _clips = clips;
+    if(_clips)
+    {
+        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        CGMutablePathRef path = CGPathCreateMutable();
+        CGPathMoveToPoint(path, NULL, 0, self.height);
+        CGPathAddLineToPoint(path, NULL, 0, 10);
+        CGPathAddArcToPoint(path, NULL, 0, 0, 10, 0, 10);
+        CGPathAddLineToPoint(path, NULL, self.width - 10, 0);
+        CGPathAddArcToPoint(path, NULL, self.width, 0, self.width, 10, 10);
+        CGPathAddLineToPoint(path, NULL, self.width, self.height);
+        CGPathAddLineToPoint(path, NULL, 0, self.height);
+        CGPathCloseSubpath(path);
+        [shapeLayer setPath:path];
+        CFRelease(path);
+        self.layer.mask = shapeLayer;
+        [self.layer setMasksToBounds:YES];
+    }
+    else
+    {
+        [self.layer setMask:nil];
+        [self.layer setMasksToBounds:NO];
+    }
+    [_topLine setHidden:_clips];
 }
 
 - (void)setResponseItem:(ResponseItem *)responseItem

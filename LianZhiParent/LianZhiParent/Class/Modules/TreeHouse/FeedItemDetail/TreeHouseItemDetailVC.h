@@ -33,6 +33,7 @@
 @interface TreeHouseItemDetailVC : TNBaseViewController
 {
     TreeHouseItemDetailHeaderView*   _headerView;
+    UIImageView*                _arrowImage;
     PraiseListView*             _praiseView;
     UITableView*                _tableView;
     UIToolbar*                  _toolBar;

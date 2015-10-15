@@ -10,6 +10,7 @@
 
 @interface DetailCommentCell : TNTableViewCell
 {
+    UIView*         _topLine;
     UIImageView*    _commentImageView;
     AvatarView* _avatarView;
     UILabel*    _nameLabel;
@@ -18,4 +19,5 @@
 }
 @property (nonatomic, assign)TableViewCellType cellType;
 @property (nonatomic, strong)ResponseItem *responseItem;
+@property (nonatomic, assign)BOOL clips;
 @end

@@ -182,7 +182,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     }
 
     NSInteger bgWidth = self.width - 12 - 72 - 20;
-    CGSize detailSize = [item.detail boundingRectWithSize:CGSizeMake(bgWidth, 0) andFont:[UIFont systemFontOfSize:16]];
+    CGSize detailSize = [item.detail boundingRectWithSize:CGSizeMake(bgWidth, 0) andFont:[UIFont systemFontOfSize:14]];
 
     [_infoLabel setText:item.detail];
     [_infoLabel setFrame:CGRectMake(10, spaceYStart, detailSize.width, detailSize.height)];
@@ -355,7 +355,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
 {
     TreehouseItem *item = (TreehouseItem *)modelItem;
     CGFloat bgWidth = width - 12 - 72 - 20;
-    CGSize detailSize = [item.detail boundingRectWithSize:CGSizeMake(bgWidth, 0) andFont:[UIFont systemFontOfSize:16]];
+    CGSize detailSize = [item.detail boundingRectWithSize:CGSizeMake(bgWidth, 0) andFont:[UIFont systemFontOfSize:14]];
     
     NSInteger authHeight = 45;
     if(item.position.length == 0)

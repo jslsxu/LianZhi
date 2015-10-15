@@ -49,7 +49,7 @@
     else
         [_numIndicator setHidden:YES];
     [_numIndicator setIndicator:_badgeValue];
-    [_numIndicator setCenter:CGPointMake(self.width / 2 + 15, _numIndicator.height / 2)];
+    [_numIndicator setCenter:CGPointMake(self.width / 2 + 15, _numIndicator.height / 2 + 5)];
 }
 
 - (void)setSpacing:(CGFloat)spacing

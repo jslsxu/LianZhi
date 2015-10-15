@@ -47,7 +47,23 @@
         [_avatarArray addObject:avatarView];
     }
     if(count > 0)
+    {
         [self setHeight:spaceYStart * 2 + itemWidth * maxRowNum + innerMargin * (maxRowNum - 1)];
+        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        CGMutablePathRef path = CGPathCreateMutable();
+        CGPathMoveToPoint(path, NULL, 0, self.height);
+        CGPathAddLineToPoint(path, NULL, 0, 10);
+        CGPathAddArcToPoint(path, NULL, 0, 0, 10, 0, 10);
+        CGPathAddLineToPoint(path, NULL, self.width - 10, 0);
+        CGPathAddArcToPoint(path, NULL, self.width, 0, self.width, 10, 10);
+        CGPathAddLineToPoint(path, NULL, self.width, self.height);
+        CGPathAddLineToPoint(path, NULL, 0, self.height);
+        CGPathCloseSubpath(path);
+        [shapeLayer setPath:path];
+        CFRelease(path);
+        self.layer.mask = shapeLayer;
+        [self.layer setMasksToBounds:YES];
+    }
     else
         [self setHeight:0];
 }

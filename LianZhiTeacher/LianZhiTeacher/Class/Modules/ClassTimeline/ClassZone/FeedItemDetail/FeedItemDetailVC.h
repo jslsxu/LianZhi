@@ -30,9 +30,10 @@
 @interface FeedItemDetailVC : TNBaseViewController
 {
     FeedItemDetailHeaderView*   _headerView;
+    UIImageView*                _arrowImage;
     PraiseListView*             _praiseView;
     UITableView*                _tableView;
-    UIView*                  _toolBar;
+    UIView*                     _toolBar;
     NSMutableArray*             _buttonItems;
     ReplyBox*                   _replyBox;
 }

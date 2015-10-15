@@ -93,7 +93,7 @@
 {
     _treeHouseItem = treeHouseItem;
     [_avatar setImageWithUrl:[NSURL URLWithString:_treeHouseItem.user.avatar]];
-    
+    [_deleteButon setHidden:!_treeHouseItem.canEdit];
     [_nameLabel setText:_treeHouseItem.user.name];
     [_nameLabel sizeToFit];
     
@@ -101,14 +101,18 @@
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(_nameLabel.right + 4, _nameLabel.y + (_nameLabel.height - _timeLabel.height) / 2)];
     
-    [_addressLabel setText:_treeHouseItem.position];
-    [_deleteButon setHidden:!_treeHouseItem.canEdit];
-    NSInteger spaceYStart = 55;
+    NSInteger spaceYStart = _addressLabel.y;
+    if(_treeHouseItem.position.length > 0)
+    {
+        [_addressLabel setText:_treeHouseItem.position];
+        spaceYStart = 55;
+    }
     NSString *content = _treeHouseItem.detail;
     if(content.length > 0)
     {
         CGSize contentSize = [content boundingRectWithSize:CGSizeMake(self.width - 45 - 10, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
         [_contentLabel setSize:CGSizeMake(self.width - 45 - 10, contentSize.height)];
+        [_contentLabel setY:spaceYStart];
         [_contentLabel setText:content];
         spaceYStart += contentSize.height + 10;
     }
@@ -155,7 +159,7 @@
         [attrTagStr setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:14],NSUnderlineColorAttributeName:[UIColor colorWithHexString:@"00a274"],NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle),NSForegroundColorAttributeName: [UIColor colorWithHexString:@"00a274"]} range:NSMakeRange(3, _treeHouseItem.tag.length)];
         [_tagLabel setAttributedText:attrTagStr];
         [_tagLabel sizeToFit];
-        [_tagLabel setFrame:CGRectMake(45, spaceYStart, _tagLabel.width, 30)];
+        [_tagLabel setFrame:CGRectMake(45, spaceYStart, _tagLabel.width, 20)];
         
         spaceYStart += _tagLabel.height + 10;
     }
@@ -353,6 +357,11 @@
     }];
     [_tableView setTableHeaderView:_headerView];
     
+    _arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ResponseUpArrow"]];
+    [_arrowImage setOrigin:CGPointMake(20, _headerView.height - _arrowImage.height)];
+    [_arrowImage setHidden:YES];
+    [_headerView addSubview:_arrowImage];
+    
     _praiseView = [[PraiseListView alloc] initWithFrame:CGRectMake(0, 0, _tableView.width, 0)];
     [_praiseView setPraiseArray:self.treeHouseItem.responseModel.praiseArray];
     
@@ -383,6 +392,12 @@
 
 - (void)setupToolBar:(UIView *)viewParent
 {
+    [viewParent setBackgroundColor:[UIColor whiteColor]];
+    
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewParent.width, kLineHeight)];
+    [topLine setBackgroundColor:[UIColor colorWithHexString:@"d7d7d7"]];
+    [viewParent addSubview:topLine];
+    
     [_buttonItems makeObjectsPerformSelector:@selector(removeFromSuperview)];
     if(_buttonItems == nil)
         _buttonItems = [NSMutableArray array];
@@ -531,7 +546,9 @@
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.treeHouseItem.responseModel.responseArray.count;
+    NSInteger responseCount = self.treeHouseItem.responseModel.responseArray.count;
+    [_arrowImage setHidden:responseCount + self.treeHouseItem.responseModel.praiseArray.count == 0];
+    return responseCount;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -559,6 +576,7 @@
         cell = [[DetailCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
     [cell setResponseItem:self.treeHouseItem.responseModel.responseArray[indexPath.row]];
+    [cell setClips:indexPath.row == 0 && self.treeHouseItem.responseModel.praiseArray.count == 0];
     if(indexPath.row == 0)
         [cell setCellType:TableViewCellTypeFirst];
     else

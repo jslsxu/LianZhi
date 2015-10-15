@@ -33,11 +33,6 @@
         [_timeLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_timeLabel];
         
-//        _deleteButon = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [_deleteButon setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-//        [_deleteButon addTarget:self action:@selector(onDeleteButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-//        [self addSubview:_deleteButon];
-        
         _addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 35, self.width - 10 - 45, 15)];
         [_addressLabel setTextColor:[UIColor colorWithHexString:@"cacaca"]];
         [_addressLabel setFont:[UIFont systemFontOfSize:12]];
@@ -92,14 +87,17 @@
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(_nameLabel.right + 4, _nameLabel.y + (_nameLabel.height - _timeLabel.height) / 2)];
     
-    [_addressLabel setText:_zoneItem.position];
-    
-    NSInteger spaceYStart = 55;
+    NSInteger spaceYStart = _addressLabel.y;
+    if(_zoneItem.position.length > 0)
+    {
+        [_addressLabel setText:_zoneItem.position];
+        spaceYStart = 55;
+    }
     NSString *content = _zoneItem.content;
     if(content.length > 0)
     {
         CGSize contentSize = [content boundingRectWithSize:CGSizeMake(_contentLabel.width, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
-        [_contentLabel setSize:CGSizeMake(self.width - 45 - 10, contentSize.height)];
+        [_contentLabel setFrame:CGRectMake(45, spaceYStart, self.width - 45 - 10, contentSize.height)];
         [_contentLabel setText:content];
         spaceYStart += contentSize.height + 10;
     }
@@ -202,12 +200,18 @@
     [_tableView setShowsVerticalScrollIndicator:NO];
     [self.view addSubview:_tableView];
     
-    _toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, kScreenHeight - 64 - 50, self.view.width, 50)];
+    _toolBar = [[UIView alloc] initWithFrame:CGRectMake(0, kScreenHeight - 64 - 50, self.view.width, 50)];
     [self setupToolBar:_toolBar];
     [self.view addSubview:_toolBar];
     
     _headerView = [[FeedItemDetailHeaderView alloc] initWithFrame:CGRectMake(0, 0, _tableView.width, 0)];
     [_headerView setZoneItem:self.zoneItem];
+    
+    _arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ResponseUpArrow"]];
+    [_arrowImage setOrigin:CGPointMake(20, _headerView.height - _arrowImage.height)];
+    [_arrowImage setHidden:YES];
+    [_headerView addSubview:_arrowImage];
+    
     [_tableView setTableHeaderView:_headerView];
     
     _praiseView = [[PraiseListView alloc] initWithFrame:CGRectMake(0, 0, _tableView.width, 0)];
@@ -222,6 +226,12 @@
 
 - (void)setupToolBar:(UIView *)viewParent
 {
+    [viewParent setBackgroundColor:[UIColor whiteColor]];
+    
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewParent.width, kLineHeight)];
+    [topLine setBackgroundColor:[UIColor colorWithHexString:@"d7d7d7"]];
+    [viewParent addSubview:topLine];
+    
     [_buttonItems makeObjectsPerformSelector:@selector(removeFromSuperview)];
     if(_buttonItems == nil)
         _buttonItems = [NSMutableArray array];
@@ -423,7 +433,9 @@
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.zoneItem.responseModel.responseArray.count;
+    NSInteger responseCount = self.zoneItem.responseModel.responseArray.count;
+    [_arrowImage setHidden:responseCount + self.zoneItem.responseModel.praiseArray.count == 0];
+    return responseCount;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -451,6 +463,7 @@
         cell = [[DetailCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
     [cell setResponseItem:self.zoneItem.responseModel.responseArray[indexPath.row]];
+    [cell setClips:indexPath.row == 0 && self.zoneItem.responseModel.praiseArray.count == 0];
     if(indexPath.row == 0)
         [cell setCellType:TableViewCellTypeFirst];
     else
