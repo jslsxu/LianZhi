@@ -88,18 +88,18 @@
     
     [self setupImageView];
     
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, _bgView.bottom + 20, _bgView.width, 60)];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, _bgView.bottom + 20, _bgView.width, 60)];
     [_textView setFont:[UIFont systemFontOfSize:16]];
     [_textView setDelegate:self];
     [_textView setPlaceholder:@"我发了一堆图片，快来看看吧"];
     [_textView setText:self.words];
     [_scrollView addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom, _textView.width, 1)];
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(kBorderMargin, _textView.bottom, _textView.width, 1)];
     [sepLine setBackgroundColor:kCommonParentTintColor];
     [_scrollView addSubview:sepLine];
     
-    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(10, sepLine.bottom, _bgView.width, 40)];
+    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(kBorderMargin, sepLine.bottom, _bgView.width, 40)];
     [_poiInfoView setParentVC:self];
     if(self.poiItem)
         [_poiInfoView setPoiItem:self.poiItem];

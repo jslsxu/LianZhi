@@ -22,7 +22,7 @@
     [_bgView setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:_bgView];
     
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, 10, _bgView.width - 10 * 2, _bgView.height - 10 - 5 - 20)];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, 10, _bgView.width - 10 * 2, _bgView.height - 10 - 10 - 20)];
     [_textView setDelegate:self];
     [_textView setFont:[UIFont systemFontOfSize:14]];
     [_textView setPlaceholder:@"请输入您要发布的内容"];

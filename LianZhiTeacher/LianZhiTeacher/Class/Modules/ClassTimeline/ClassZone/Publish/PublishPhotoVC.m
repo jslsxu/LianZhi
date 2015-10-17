@@ -90,7 +90,7 @@
     [_textView setPlaceholder:@"我发了一堆图片，快来看看吧"];
     [_scrollView addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom + 10, _textView.width, 1)];
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(kBorderMargin, _textView.bottom + 10, _textView.width, 1)];
     [sepLine setBackgroundColor:kCommonTeacherTintColor];
     [_scrollView addSubview:sepLine];
     

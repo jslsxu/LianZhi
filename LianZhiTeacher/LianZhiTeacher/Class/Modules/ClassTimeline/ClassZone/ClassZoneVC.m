@@ -313,19 +313,19 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     return self;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL classOperationShow = [[userDefaults valueForKey:kClassZoneShown] boolValue];
-    if(classOperationShow == NO)
-    {
-        [self addUserGuide];
-        classOperationShow = YES;
-        [userDefaults setValue:@(classOperationShow) forKey:kClassZoneShown];
-        [userDefaults synchronize];
-    }
-}
+//- (void)viewWillAppear:(BOOL)animated
+//{
+//    [super viewWillAppear:animated];
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    BOOL classOperationShow = [[userDefaults valueForKey:kClassZoneShown] boolValue];
+//    if(classOperationShow == NO)
+//    {
+//        [self addUserGuide];
+//        classOperationShow = YES;
+//        [userDefaults setValue:@(classOperationShow) forKey:kClassZoneShown];
+//        [userDefaults synchronize];
+//    }
+//}
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -384,6 +384,13 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         _buttonItems = [NSMutableArray array];
     else
         [_buttonItems removeAllObjects];
+    
+    [viewParent setBackgroundColor:[UIColor whiteColor]];
+    
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewParent.width, kLineHeight)];
+    [topLine setBackgroundColor:[UIColor colorWithHexString:@"d7d7d7"]];
+    [viewParent addSubview:topLine];
+    
     NSArray *titleArray = @[@"发文字",@"发照片",@"发语音",@"编辑板报"];
     NSArray *imageArray = @[@"PostText",@"PostPhoto",@"PostAudio",@"EditBlackBoard"];
     ClassZoneModel *zoneModel = (ClassZoneModel *)self.tableViewModel;

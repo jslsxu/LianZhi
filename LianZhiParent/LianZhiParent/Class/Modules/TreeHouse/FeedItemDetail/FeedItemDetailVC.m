@@ -226,17 +226,18 @@
 
 - (void)setupToolBar:(UIView *)viewParent
 {
+    [_buttonItems makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    if(_buttonItems == nil)
+        _buttonItems = [NSMutableArray array];
+    else
+        [_buttonItems removeAllObjects];
+    
     [viewParent setBackgroundColor:[UIColor whiteColor]];
     
     UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewParent.width, kLineHeight)];
     [topLine setBackgroundColor:[UIColor colorWithHexString:@"d7d7d7"]];
     [viewParent addSubview:topLine];
     
-    [_buttonItems makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    if(_buttonItems == nil)
-        _buttonItems = [NSMutableArray array];
-    else
-        [_buttonItems removeAllObjects];
     NSArray *titleArray = @[@"赞",@"评论",@"分享",@"转发到树屋"];
     NSArray *imageArray = @[@"DetailPraise",@"DetailResponse",@"DetailShare",@"DetailForward"];
     CGFloat tabWidth = self.view.width / titleArray.count;
