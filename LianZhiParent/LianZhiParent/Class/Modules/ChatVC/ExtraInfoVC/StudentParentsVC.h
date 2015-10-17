@@ -14,7 +14,7 @@
 
 @end
 
-@interface StudentParentCell : TNTableViewCell
+@interface StudentParentCell : DAContextMenuCell
 {
     AvatarView* _avatarView;
     UILabel*    _nameLabel;
@@ -22,11 +22,12 @@
     UIView*     _sepLine;
 }
 @property (nonatomic, strong)FamilyInfo *familyInfo;
+@property (nonatomic, assign)BOOL isInBlackList;
 @end
 
-@interface StudentParentsVC : TNBaseViewController
+@interface StudentParentsVC : DAContextMenuTableViewController
 {
-    UITableView*    _tableView;
+    
 }
 @property (nonatomic, strong)ChildInfo *childInfo;
 @end

@@ -282,7 +282,7 @@
     self.targetClassZoneItem = (ClassZoneItem *)cell.modelItem;
     self.targetResponseItem = nil;
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-    CGPoint point = [cell convertPoint:cell.actionButton.center toView:keyWindow];
+    CGPoint point = [cell.actionButton convertPoint:CGPointMake(0, cell.actionButton.height / 2) toView:keyWindow];
     __weak typeof(self) wself = self;
     BOOL praised = self.targetClassZoneItem.responseModel.praised;
     ActionView *actionView = [[ActionView alloc] initWithPoint:point praised:praised action:^(NSInteger index) {

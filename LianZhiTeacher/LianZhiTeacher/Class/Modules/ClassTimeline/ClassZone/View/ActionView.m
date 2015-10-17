@@ -28,7 +28,7 @@
         [_coverButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventAllEvents];
         [self addSubview:_coverButton];
         
-        _contentView = [[UIView alloc] initWithFrame:CGRectMake(point.x - kActionViewWidth - 10, point.y - kActionViewHeight / 2, kActionViewWidth, kActionViewHeight)];
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake(point.x - kActionViewWidth, point.y - kActionViewHeight / 2, kActionViewWidth, kActionViewHeight)];
         [_contentView setBackgroundColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_contentView.layer setCornerRadius:3];
         [_contentView.layer setMasksToBounds:YES];

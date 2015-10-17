@@ -238,7 +238,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     [_addressButton setTitle:item.position forState:UIControlStateNormal];
     CGSize titleSize = [[_addressButton titleForState:UIControlStateNormal] sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12]}];
     [_addressButton setFrame:CGRectMake(kImageLeftMargin, spaceYStart, titleSize.width, 20)];
-    [_actionButton setFrame:CGRectMake(self.width - 40, spaceYStart, 40, 20)];
+    [_actionButton setFrame:CGRectMake(self.width - 20 - 10, spaceYStart, 20, 20)];
     spaceYStart += 20 + 5;
     
     [_responseView setFrame:CGRectMake(kImageLeftMargin, spaceYStart, self.width - kImageLeftMargin - 10, 100)];

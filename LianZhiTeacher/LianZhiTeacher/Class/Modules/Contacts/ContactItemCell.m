@@ -19,8 +19,8 @@
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_logoView.right + 15, 0, self.width - _logoView.right - 30, self.height)];
         [_nameLabel setBackgroundColor:[UIColor clearColor]];
-        [_nameLabel setTextColor:[UIColor darkGrayColor]];
-        [_nameLabel setFont:[UIFont systemFontOfSize:15]];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [self addSubview:_nameLabel];
 
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 44 - 0.5, self.width, 0.5)];
@@ -58,14 +58,14 @@
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_nameLabel setBackgroundColor:[UIColor clearColor]];
-        [_nameLabel setTextColor:[UIColor lightGrayColor]];
-        [_nameLabel setFont:[UIFont systemFontOfSize:16]];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [self addSubview:_nameLabel];
         
         _commentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_commentLabel setBackgroundColor:[UIColor clearColor]];
         [_commentLabel setTextColor:[UIColor colorWithRed:160 / 255.0 green:160 / 255.0 blue:160 / 255.0 alpha:1.f]];
-        [_commentLabel setFont:[UIFont systemFontOfSize:14]];
+        [_commentLabel setFont:[UIFont systemFontOfSize:13]];
         [self addSubview:_commentLabel];
         
         _genderImageView = [[UIImageView alloc] initWithFrame:CGRectZero];

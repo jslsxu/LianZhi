@@ -239,6 +239,7 @@
         CGRect frame = CGRectMake(0., 0., 80, CGRectGetHeight(self.actualContentView.frame));
         _moreOptionsButton = [[UIButton alloc] initWithFrame:frame];
         _moreOptionsButton.backgroundColor = kCommonParentTintColor;
+        [_moreOptionsButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
         [self.contextMenuView addSubview:_moreOptionsButton];
         [_moreOptionsButton addTarget:self action:@selector(moreButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -251,6 +252,7 @@
         if (!_deleteButton) {
             CGRect frame = CGRectMake(0., 0., 80, CGRectGetHeight(self.actualContentView.frame));
             _deleteButton = [[UIButton alloc] initWithFrame:frame];
+            [_deleteButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
             _deleteButton.backgroundColor = [UIColor colorWithRed:251./255. green:34./255. blue:38./255. alpha:1.];
             [self.contextMenuView addSubview:_deleteButton];
             [_deleteButton addTarget:self action:@selector(deleteButtonTapped) forControlEvents:UIControlEventTouchUpInside];

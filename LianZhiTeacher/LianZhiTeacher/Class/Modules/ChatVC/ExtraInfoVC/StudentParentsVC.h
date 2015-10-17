@@ -10,10 +10,12 @@
 #import "ContactModel.h"
 @interface StudentParentCell : TNTableViewCell
 {
+    AvatarView* _avatar;
+    UILabel*    _nameLabel;
     UIButton*   _chatButton;
     UIView*     _sepLine;
 }
-
+@property (nonatomic, strong)FamilyInfo *familyInfo;
 @end
 
 @interface StudentParentsVC : TNBaseViewController

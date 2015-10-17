@@ -32,26 +32,34 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
+        self.width = kScreenWidth;
+        self.moreOptionsButtonTitle = nil;
         _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(10, (kCellHeight - 36) / 2, 36, 36)];
-        [self addSubview:_avatarView];
+        [self.actualContentView addSubview:_avatarView];
         
         _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_chatButton setUserInteractionEnabled:NO];
         [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
         [_chatButton setImage:[UIImage imageNamed:@"SingleChatNormal"] forState:UIControlStateNormal];
         [_chatButton setImage:[UIImage imageNamed:@"SignleChatHighlighted"] forState:UIControlStateHighlighted];
-        [self addSubview:_chatButton];
+        [self.actualContentView addSubview:_chatButton];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(55, 0, _chatButton.left - 10 - 55, kCellHeight)];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-        [self addSubview:_nameLabel];
+        [self.actualContentView addSubview:_nameLabel];
         
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
         [_sepLine setBackgroundColor:kSepLineColor];
-        [self addSubview:_sepLine];
+        [self.actualContentView addSubview:_sepLine];
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.moreOptionsButton.width = 0;
 }
 
 - (void)setFamilyInfo:(FamilyInfo *)familyInfo
@@ -63,9 +71,16 @@
     [_nameLabel setText:_familyInfo.name];
 }
 
+- (void)setIsInBlackList:(BOOL)isInBlackList
+{
+    _isInBlackList = isInBlackList;
+    self.deleteButtonTitle = _isInBlackList ? @"取消拉黑" : @"拉黑";
+    [self.deleteButton setBackgroundColor:_isInBlackList ? [UIColor colorWithHexString:@"999999"] : [UIColor colorWithRed:246 / 25.f green:82 / 255.f blue:114 / 255.f alpha:1.f]];
+}
+
 @end
 
-@interface StudentParentsVC ()<UITableViewDataSource, UITableViewDelegate>
+@interface StudentParentsVC ()
 @property (nonatomic, strong)NSArray *formatterMemberArray;
 @end
 
@@ -73,13 +88,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     self.title = self.childInfo.name;
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStylePlain];
-    [_tableView setDelegate:self];
-    [_tableView setDataSource:self];
-    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    [self.view addSubview:_tableView];
 }
 
 - (void)setChildInfo:(ChildInfo *)childInfo
@@ -145,6 +155,8 @@
     ContactGroup *group = [self.formatterMemberArray objectAtIndex:indexPath.section];
     FamilyInfo *familyInfo = group.contacts[indexPath.row];
     [cell setFamilyInfo:familyInfo];
+    [cell setDelegate:self];
+    [cell setIsInBlackList:YES];
     return cell;
 }
 
@@ -160,6 +172,11 @@
     [chatVC setMobile:familyInfo.mobile];
     [chatVC setTitle:familyInfo.name];
     [ApplicationDelegate popAndPush:chatVC];
+}
+
+- (void)contextMenuCellDidSelectDeleteOption:(DAContextMenuCell *)cell
+{
+    
 }
 
 - (void)didReceiveMemoryWarning {

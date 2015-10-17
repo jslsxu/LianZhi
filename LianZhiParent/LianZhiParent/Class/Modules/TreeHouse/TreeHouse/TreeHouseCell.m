@@ -88,7 +88,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [_bgView addSubview:_infoLabel];
         
         _actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_actionButton setSize:CGSizeMake(40, 20)];
+        [_actionButton setSize:CGSizeMake(20, 20)];
         [_actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
         [_actionButton setImage:[UIImage imageNamed:@"TimelineAction"] forState:UIControlStateNormal];
         [_actionButton addTarget:self action:@selector(onActionClicked) forControlEvents:UIControlEventTouchUpInside];
