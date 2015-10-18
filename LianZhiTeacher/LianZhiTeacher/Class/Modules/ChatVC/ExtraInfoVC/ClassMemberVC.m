@@ -53,14 +53,72 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStylePlain];
+    NSInteger spaceYStart = 0;
+    if(self.showSound)
+    {
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
+        [self setupHeaderView:headerView];
+        [self.view addSubview:headerView];
+        spaceYStart = 40;
+    }
+
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, spaceYStart, self.view.width, self.view.height - 64 - spaceYStart) style:UITableViewStylePlain];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_tableView setDataSource:self];
     [_tableView setDelegate:self];
     [self.view addSubview:_tableView];
     
     [self requestData];
+    if(self.showSound)
+        [self requestSoundStats];
+}
+
+- (void)setupHeaderView:(UIView *)viewParent
+{
+    [viewParent setBackgroundColor:kCommonTeacherTintColor];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 50, viewParent.height)];
+    [label setTextColor:[UIColor whiteColor]];
+    [label setFont:[UIFont systemFontOfSize:14]];
+    [label setText:@"静音"];
+    [viewParent addSubview:label];
+    
+    _soundSwitch = [[UISwitch alloc] init];
+    [_soundSwitch setTransform:CGAffineTransformMakeScale(0.8, 0.8)];
+    [_soundSwitch setOrigin:CGPointMake(viewParent.width - 15 - _soundSwitch.width, (viewParent.height - _soundSwitch.height) / 2)];
+    [_soundSwitch addTarget:self action:@selector(onSoundSwitchClicked) forControlEvents:UIControlEventValueChanged];
+    [_soundSwitch setTintColor:[UIColor colorWithHexString:@"95e065"]];
+    [viewParent addSubview:_soundSwitch];
+}
+
+- (void)onSoundSwitchClicked
+{
+    BOOL isOn = _soundSwitch.isOn;
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.classID forKey:@"from_id"];
+    [params setValue:kStringFromValue(ChatTypeClass) forKey:@"from_type"];
+    [params setValue:isOn ? @"open" : @"close" forKey:@"sound"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/set_thread" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        
+    } fail:^(NSString *errMsg) {
+        
+    }];
+}
+
+- (void)requestSoundStats
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.classID forKey:@"from_id"];
+    [params setValue:kStringFromValue(ChatTypeClass) forKey:@"from_type"];
+//    [params setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"objid"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/get_sound" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        NSString *status = [responseObject getStringForKey:@"sound"];
+        if([status isEqualToString:@"open"])
+            [_soundSwitch setOn:YES];
+        else
+            [_soundSwitch setOn:NO];
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (void)requestData

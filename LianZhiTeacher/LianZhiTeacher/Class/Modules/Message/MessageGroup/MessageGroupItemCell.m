@@ -123,12 +123,12 @@
     if([_messageItem.fromInfo isNotification])
     {
         [_notificationIndicator setHidden:NO];
-        [_contentLabel setFrame:CGRectMake(_notificationIndicator.right + 5, 32, _soundOff.left - 5 - (_notificationIndicator.right + 5), 20)];
+        [_contentLabel setFrame:CGRectMake(_notificationIndicator.right + 5, 30, _soundOff.left - 5 - (_notificationIndicator.right + 5), 20)];
     }
     else
     {
         [_notificationIndicator setHidden:YES];
-        [_contentLabel setFrame:CGRectMake(60, 32, _soundOff.left - 5 - 60, 20)];
+        [_contentLabel setFrame:CGRectMake(60, 30, _soundOff.left - 5 - 60, 20)];
     }
     
     if(_messageItem.msgNum > 0)

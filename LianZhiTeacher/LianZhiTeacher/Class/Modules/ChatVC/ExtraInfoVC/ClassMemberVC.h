@@ -21,7 +21,9 @@
 
 @interface ClassMemberVC : TNBaseViewController
 {
+    UISwitch*       _soundSwitch;
     UITableView*    _tableView;
 }
+@property (nonatomic, assign)BOOL showSound;
 @property (nonatomic, copy)NSString *classID;
 @end

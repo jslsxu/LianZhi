@@ -23,6 +23,7 @@
     self.email = [dataWrapper getStringForKey:@"email"];
     self.birthDay = [dataWrapper getStringForKey:@"birthday"];
     self.actived = [dataWrapper getBoolForKey:@"actived"];
+    self.blid = [dataWrapper getStringForKey:@"blid"];
 }
 
 - (NSDictionary *)toDictionary

@@ -21,5 +21,6 @@
 @property (nonatomic, copy)NSString *avatar;
 @property (nonatomic, copy)NSString *shortIndex;
 @property (nonatomic, assign)BOOL actived;
+@property (nonatomic, copy)NSString *blid;
 @end
 

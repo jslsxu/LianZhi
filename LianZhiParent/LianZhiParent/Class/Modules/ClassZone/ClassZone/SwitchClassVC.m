@@ -9,7 +9,6 @@
 #import "SwitchClassVC.h"
 
 @interface SwitchClassVC ()
-
 @end
 
 @implementation SwitchClassVC
@@ -23,6 +22,7 @@
     [_tableView setSeparatorColor:kSepLineColor];
     [self.view addSubview:_tableView];
 }
+
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

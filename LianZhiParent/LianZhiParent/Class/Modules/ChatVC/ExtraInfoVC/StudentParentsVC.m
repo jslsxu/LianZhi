@@ -81,6 +81,7 @@
 @end
 
 @interface StudentParentsVC ()
+@property (nonatomic, strong)NSMutableArray *blackList;
 @property (nonatomic, strong)NSArray *formatterMemberArray;
 @end
 
@@ -88,8 +89,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.blackList = [NSMutableArray array];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     self.title = self.childInfo.name;
+    [self requestBalckList];
 }
 
 - (void)setChildInfo:(ChildInfo *)childInfo
@@ -125,6 +128,38 @@
     self.formatterMemberArray = parentsArray;
 }
 
+- (void)requestBalckList
+{
+    __weak typeof(self) wself = self;
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/get_bl" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        if(responseObject.count > 0)
+        {
+            NSMutableArray *blackListArray = [NSMutableArray array];
+            for (NSInteger i = 0; i < responseObject.count; i++)
+            {
+                TNDataWrapper *userInfoWrapper = [responseObject getDataWrapperForIndex:i];
+                NSString *uid = [userInfoWrapper getStringForKey:@"uid"];
+                [blackListArray addObject:uid];
+            }
+            wself.blackList = blackListArray;
+        }
+        [wself.tableView reloadData];
+    } fail:^(NSString *errMsg) {
+        
+    }];
+}
+
+- (BOOL)isInBlackList:(NSString *)userID
+{
+    BOOL isIn = NO;
+    for (NSString *uid in self.blackList)
+    {
+        if([userID isEqualToString:uid])
+            isIn = YES;
+    }
+    return isIn;
+}
+
 #pragma mark -
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -156,7 +191,7 @@
     FamilyInfo *familyInfo = group.contacts[indexPath.row];
     [cell setFamilyInfo:familyInfo];
     [cell setDelegate:self];
-    [cell setIsInBlackList:YES];
+    [cell setIsInBlackList:[self isInBlackList:familyInfo.uid]];
     return cell;
 }
 
@@ -176,7 +211,38 @@
 
 - (void)contextMenuCellDidSelectDeleteOption:(DAContextMenuCell *)cell
 {
-    
+    StudentParentCell *contentCell = (StudentParentCell *)cell;
+    FamilyInfo *familyInfo = contentCell.familyInfo;
+    BOOL isInBlackList = contentCell.isInBlackList;
+    __weak typeof(self) wself = self;
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:kStringFromValue(ChatTypeParents) forKey:@"to_type"];
+    if(isInBlackList)
+    {
+            [params setValue:familyInfo.uid forKey:@"to_uid"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/del_bl" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            NSMutableArray *deletedArray = [NSMutableArray array];
+            for (NSString *uid in wself.blackList)
+            {
+                if([uid isEqualToString:familyInfo.uid])
+                    [deletedArray addObject:uid];
+            }
+            [wself.blackList removeObjectsInArray:deletedArray];
+            [wself.tableView reloadData];
+        } fail:^(NSString *errMsg) {
+            [wself.tableView reloadData];
+        }];
+    }
+    else
+    {
+        [params setValue:familyInfo.uid forKey:@"to_id"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/add_bl" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [wself.blackList addObject:familyInfo.uid];
+            [wself.tableView reloadData];
+        } fail:^(NSString *errMsg) {
+            [wself.tableView reloadData];
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

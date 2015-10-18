@@ -65,6 +65,7 @@ static NSString *topChatID = nil;
 - (void)onShowClassMembers
 {
     ClassMemberVC *classMemberVC = [[ClassMemberVC alloc] init];
+    [classMemberVC setShowSound:YES];
     [classMemberVC setClassID:self.targetID];
     [classMemberVC setTitle:self.title];
     [self.navigationController pushViewController:classMemberVC animated:YES];

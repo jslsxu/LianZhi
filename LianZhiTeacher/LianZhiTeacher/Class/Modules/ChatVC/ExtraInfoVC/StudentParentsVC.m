@@ -97,6 +97,7 @@
     self.formatterMemberArray = parentsArray;
 }
 
+
 #pragma mark -
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
