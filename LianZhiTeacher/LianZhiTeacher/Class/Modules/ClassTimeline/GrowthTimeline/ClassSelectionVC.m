@@ -7,9 +7,9 @@
 //
 
 #import "ClassSelectionVC.h"
-
+#import "ContactModel.h"
+#import "ContactItemCell.h"
 @interface ClassSelectionVC ()<UITableViewDataSource, UITableViewDelegate>
-
 @end
 
 @implementation ClassSelectionVC
@@ -17,7 +17,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [_tableView setSeparatorColor:kSepLineColor];
@@ -26,35 +27,55 @@
 }
 
 #pragma mark - UITableviewdele
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return [ContactModel sharedInstance].classKeys.count;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [UserCenter sharedInstance].curSchool.classes.count;
+    ContactGroup *group = [ContactModel sharedInstance].classes[section];
+    return group.contacts.count;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return [ContactModel sharedInstance].classKeys[section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *reuseID = @"ClassItemCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+    ClassItemCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
     if(nil == cell)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
-        [cell.textLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
-        [cell.textLabel setFont:[UIFont systemFontOfSize:16]];
+        cell = [[ClassItemCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseID];
+        [cell.chatButton setHidden:YES];
+        [cell.detailTextLabel setFont:[UIFont systemFontOfSize:13]];
+        [cell.detailTextLabel setTextColor:kCommonTeacherTintColor];
     }
-    ClassInfo *classInfo = [UserCenter sharedInstance].curSchool.classes[indexPath.row];
-    [cell.textLabel setText:classInfo.className];
-    NSString *imageStr = nil;
-    if([self.originalClassID isEqualToString:classInfo.classID])
-        imageStr = @"ControlSelectAll";
+    ContactGroup *group = [ContactModel sharedInstance].classes[indexPath.section];
+    ClassInfo *classInfo = group.contacts[indexPath.row];
+    [cell setClassInfo:classInfo];
+    BOOL isSelected = [self.originalClassID isEqualToString:classInfo.classID];
+    if(isSelected)
+    {
+        [cell.detailTextLabel setText:@"当前"];
+        [cell setAccessoryView:nil];
+    }
     else
-        imageStr = @"ControlDefault";
-    [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:imageStr]]];
+    {
+        [cell.detailTextLabel setText:nil];
+        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+    }
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ClassInfo *classInfo = [UserCenter sharedInstance].curSchool.classes[indexPath.row];
+    ContactGroup *group = [ContactModel sharedInstance].classes[indexPath.section];
+    ClassInfo *classInfo = group.contacts[indexPath.row];
     if(self.selection)
         self.selection(classInfo);
     [self.navigationController popViewControllerAnimated:YES];

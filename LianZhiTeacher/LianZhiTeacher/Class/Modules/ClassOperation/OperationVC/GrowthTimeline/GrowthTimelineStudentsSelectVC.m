@@ -8,7 +8,7 @@
 
 #import "GrowthTimelineStudentsSelectVC.h"
 #import "GrowthTimelineClassChangeVC.h"
-
+#import "GrowthTimelineModel.h"
 @implementation GrowthStudentItemCell
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -46,6 +46,12 @@
     [_nameLabel setText:_studentInfo.name];
 }
 
+- (void)setHasSend:(BOOL)hasSend
+{
+    _hasSend = hasSend;
+    [_avatarView setStatus:_hasSend ? @"已发" : nil];
+}
+
 - (void)setHasBeenSelected:(BOOL)hasBeenSelected
 {
     _hasBeenSelected = hasBeenSelected;
@@ -55,7 +61,7 @@
 @end
 
 @interface GrowthTimelineStudentsSelectVC ()
-
+@property (nonatomic, strong)NSMutableArray *recordList;
 @end
 
 @implementation GrowthTimelineStudentsSelectVC
@@ -84,6 +90,8 @@
     [bottomView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7]];
     [self setupBottomView:bottomView];
     [self.view addSubview:bottomView];
+    
+    [self requestData];
 }
 
 - (void)setupBottomView:(UIView *)viewParent
@@ -96,20 +104,44 @@
     [_selectAllButton setTitle:@"反选" forState:UIControlStateSelected];
     [_selectAllButton setFrame:CGRectMake(0, 0, 50, viewParent.height)];
     [viewParent addSubview:_selectAllButton];
-    
-//    _sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    [_sendButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
-//    [_sendButton setTitle:@"发送" forState:UIControlStateNormal];
-//    [_sendButton addTarget:self action:@selector(onSendButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-//    [_sendButton setFrame:CGRectMake(viewParent.width - 50, 0, 50, viewParent.height)];
-//    [viewParent addSubview:_sendButton];
+
     
 }
 
+- (BOOL)isHasSend:(NSString *)userId
+{
+    for (GrowthTimelineItem *timelineItem in self.recordList)
+    {
+        StudentInfo *studentInfo = timelineItem.student;
+        if([userId isEqualToString:studentInfo.uid])
+            return YES;
+    }
+    return NO;
+}
+
+//获取发送记录
 - (void)requestData
 {
-    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.classInfo.classID forKey:@"class_id"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/record_list" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        TNDataWrapper *listWrapper = [responseObject getDataWrapperForKey:@"list"];
+        if(listWrapper.count > 0)
+        {
+            NSMutableArray *recordList = [NSMutableArray array];
+            for (NSInteger i = 0; i < listWrapper.count; i++)
+            {
+                TNDataWrapper *recordItemWrapper = [listWrapper getDataWrapperForIndex:i];
+                GrowthTimelineItem *timelineItem = [[GrowthTimelineItem alloc] init];
+                [timelineItem parseData:recordItemWrapper];
+                [recordList addObject:timelineItem];
+            }
+            self.recordList = recordList;
+            [_collectionView reloadData];
+        }
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (void)onConfirm
@@ -123,9 +155,37 @@
 {
     _selectAllButton.selected = !_selectAllButton.selected;
     [_selectedArray removeAllObjects];
-    if(_selectAllButton.selected)
-        [_selectedArray addObjectsFromArray:self.classInfo.students];
-    [_collectionView reloadData];
+    if(!_selectAllButton.selected)
+    {
+        [_collectionView reloadData];
+    }
+    else
+    {
+        if(self.recordList.count == 0)
+        {
+            [_selectedArray addObjectsFromArray:self.classInfo.students];
+            [_collectionView reloadData];
+        }
+        else
+        {
+            TNButtonItem *allItem = [TNButtonItem itemWithTitle:@"全班学生" action:^{
+                [_selectedArray addObjectsFromArray:self.classInfo.students];
+                [_collectionView reloadData];
+            }];
+            TNButtonItem *notSentItem = [TNButtonItem itemWithTitle:@"今日未发" action:^{
+                for (StudentInfo *student in self.classInfo.students)
+                {
+                    if(![self isHasSend:student.uid])
+                        [_selectedArray addObject:student];
+                }
+                [_collectionView reloadData];
+            }];
+            
+            TNActionSheet *actionSheet = [[TNActionSheet alloc] initWithTitle:nil descriptionView:nil destructiveButton:nil cancelItem:nil otherItems:@[allItem, notSentItem]];
+            [actionSheet show];
+        }
+    }
+
 }
 
 - (void)onSendButtonClicked
@@ -146,6 +206,7 @@
     StudentInfo *studentInfo = self.classInfo.students[indexPath.row];
     [studentCell setStudentInfo:studentInfo];
     [studentCell setHasBeenSelected:[_selectedArray containsObject:studentInfo]];
+    [studentCell setHasSend:[self isHasSend:studentInfo.uid]];
     return studentCell;
 }
 

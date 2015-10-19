@@ -105,7 +105,7 @@
             break;
         }
     }
-    if(originalLatestID && [curLatestID compare:originalLatestID] == NSOrderedDescending)
+    if(originalLatestID && [curLatestID compare:originalLatestID] == NSOrderedDescending && !self.soundOff)
     {
         //有新消息，播放声音
         if([UserCenter sharedInstance].personalSetting.soundOn)

@@ -18,6 +18,7 @@
     UILabel*        _classNameLabel;
     UIButton*       _switchButton;
 }
+@property (nonatomic, strong)ChildInfo *curChild;
 @property (nonatomic, strong)ClassInfo *classInfo;
 @property (nonatomic, assign)id<ClassZoneSwitchDelegate> delegate;
 @end

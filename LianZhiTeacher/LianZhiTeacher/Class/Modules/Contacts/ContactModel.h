@@ -18,6 +18,7 @@
 @property (nonatomic, strong)NSMutableArray *classes;
 @property (nonatomic, strong)NSMutableArray *students;
 @property (nonatomic, strong)NSMutableArray *teachers;
+SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(ContactModel)
 - (void)refresh;
 - (NSArray *)classKeys;
 - (NSArray *)teacherKeys;

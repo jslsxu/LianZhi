@@ -123,7 +123,7 @@
     _contactButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_contactButton addTarget:self action:@selector(onContactButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [_contactButton setImage:[UIImage imageNamed:@"ControlDefault"] forState:UIControlStateNormal];
-    [_contactButton setImage:[UIImage imageNamed:@"ControlSelectPart"] forState:UIControlStateSelected];
+    [_contactButton setImage:[UIImage imageNamed:@"ControlSelectAll"] forState:UIControlStateSelected];
     [_contactButton setFrame:CGRectMake(margin - 4, textViewBG.bottom + 5, 20, 20)];
     [self.view addSubview:_contactButton];
     

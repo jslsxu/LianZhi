@@ -11,7 +11,6 @@
 
 #define kNewpaperMaxNum             70
 @interface PublishNewspaperVC()<UITextViewDelegate>
-@property (nonatomic, assign)BOOL sendNotification;
 @end
 
 @implementation PublishNewspaperVC
@@ -19,66 +18,58 @@
 {
     [super viewDidLoad];
     self.title = @"黑板报";
+    [self.view setBackgroundColor:kCommonBackgroundColor];
+    UIView* bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 200)];
+    [bgView setBackgroundColor:[UIColor whiteColor]];
+    [self.view addSubview:bgView];
     
-    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"GrayBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-    [bgImageView setUserInteractionEnabled:YES];
-    [bgImageView setFrame:CGRectMake(kBorderMargin, kBorderMargin, self.view.width - kBorderMargin * 2, 240)];
-    [self.view addSubview:bgImageView];
-    
-    CGFloat width = bgImageView.width - kBorderMargin * 3;
-    _notificationButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_notificationButton addTarget:self action:@selector(onNotificationClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_notificationButton setImage:[UIImage imageNamed:@"NotNotification.png"] forState:UIControlStateNormal];
-    [_notificationButton setFrame:CGRectMake(kBorderMargin, bgImageView.height - kBorderMargin - 45, width / 3, 45)];
-    [bgImageView addSubview:_notificationButton];
-    
-    
-    _publishButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_publishButton setFrame:CGRectMake(_notificationButton.right + kBorderMargin, _notificationButton.y, width * 2 / 3, 45)];
-    [_publishButton addTarget:self action:@selector(onPublishClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_publishButton setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:_publishButton.size cornerRadius:5] forState:UIControlStateNormal];
-    [_publishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_publishButton.titleLabel setFont:kButtonTextFont];
-    [_publishButton setTitle:@"写好了，公布" forState:UIControlStateNormal];
-    [bgImageView addSubview:_publishButton];
-    
-    UIImageView *textBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:(@"WhiteBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-    [textBG setUserInteractionEnabled:YES];
-    [textBG setFrame:CGRectMake(kBorderMargin, kBorderMargin, bgImageView.width - kBorderMargin * 2, bgImageView.height - kBorderMargin * 3 - _publishButton.height)];
-    [bgImageView addSubview:textBG];
-    
-    _textView = [[UITextView alloc] initWithFrame:CGRectMake(5, 5, textBG.width - 5 * 2, textBG.height - 5 - 20)];
+    _textView = [[UITextView alloc] initWithFrame:CGRectMake(10, 5, bgView.width - 10 * 2, bgView.height - 5 - 5 - 15)];
     [_textView setDelegate:self];
     [_textView setFont:[UIFont systemFontOfSize:14]];
     [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setText:self.newsPaper];
-    [textBG addSubview:_textView];
+    [bgView addSubview:_textView];
     
-    _numLabel = [[UILabel alloc] initWithFrame:CGRectMake(_textView.left, _textView.bottom, _textView.width, 20)];
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom + 5, _textView.width, kLineHeight)];
+    [sepLine setBackgroundColor:kCommonTeacherTintColor];
+    [bgView addSubview:sepLine];
+    
+    _numLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, sepLine.bottom, _textView.width, 15)];
     [_numLabel setTextColor:[UIColor lightGrayColor]];
-    [_numLabel setFont:[UIFont systemFontOfSize:14]];
+    [_numLabel setFont:[UIFont systemFontOfSize:12]];
     [_numLabel setTextAlignment:NSTextAlignmentRight];
     [_numLabel setText:kStringFromValue(kNewpaperMaxNum - _textView.text.length)];
-    [textBG addSubview:_numLabel];
+    [bgView addSubview:_numLabel];
     
-//    _placeHolder = [[UILabel alloc] initWithFrame:CGRectZero];
-//    [_placeHolder setUserInteractionEnabled:NO];
-//    [_placeHolder setBackgroundColor:[UIColor clearColor]];
-//    [_placeHolder setFont:_textView.font];
-//    [_placeHolder setTextColor:[UIColor lightGrayColor]];
-//    [_placeHolder setText:[NSString stringWithFormat:@"快为%@编写黑板报吧",self.classInfo.className]];
-//    [_placeHolder sizeToFit];
-//    [_placeHolder setOrigin:CGPointMake(2, 6)];
-//    [_textView addSubview:_placeHolder];
+    _contactButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_contactButton addTarget:self action:@selector(onContactButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [_contactButton setImage:[UIImage imageNamed:@"ControlDefault"] forState:UIControlStateNormal];
+    [_contactButton setImage:[UIImage imageNamed:@"ControlSelectAll"] forState:UIControlStateSelected];
+    [_contactButton setFrame:CGRectMake(10, bgView.bottom + 5, 20, 20)];
+    [self.view addSubview:_contactButton];
+    
+    _hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(_contactButton.right + 5, _contactButton.y, 120, 20)];
+    [_hintLabel setFont:[UIFont systemFontOfSize:12]];
+    [_hintLabel setTextColor:[UIColor colorWithHexString:@"8f8f8f"]];
+    [_hintLabel setText:@"需要客服与您联系"];
+    [self.view addSubview:_hintLabel];
+    
+    
+    _publishButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_publishButton setFrame:CGRectMake(20, bgView.bottom + 50, self.view.width - 20 * 2, 36)];
+    [_publishButton addTarget:self action:@selector(onPublishClicked) forControlEvents:UIControlEventTouchUpInside];
+    [_publishButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"9cfc5e"] size:_publishButton.size cornerRadius:18] forState:UIControlStateNormal];
+    [_publishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_publishButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
+    [_publishButton setTitle:@"写好了，公布" forState:UIControlStateNormal];
+    [self.view addSubview:_publishButton];
+    
+    [self textViewDidChange:_textView];
 }
 
-- (void)onNotificationClicked
+- (void)onContactButtonClicked
 {
-    self.sendNotification = !self.sendNotification;
-    if(self.sendNotification)
-        [_notificationButton setImage:[UIImage imageNamed:@"SendNotification.png"] forState:UIControlStateNormal];
-    else
-        [_notificationButton setImage:[UIImage imageNamed:@"NotNotification.png"] forState:UIControlStateNormal];
+    _contactButton.selected = !_contactButton.selected;
 }
 
 - (void)onPublishClicked
@@ -88,7 +79,7 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.classInfo.classID forKey:@"class_id"];
     [params setValue:publishText forKey:@"words"];
-    [params setValue:kStringFromValue(self.sendNotification) forKey:@"if_notice"];
+    [params setValue:kStringFromValue(_contactButton.selected) forKey:@"if_notice"];
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在发布" toView:self.view];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/update_newspaper" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         if([self.delegate respondsToSelector:@selector(publishNewsPaperFinished:)])

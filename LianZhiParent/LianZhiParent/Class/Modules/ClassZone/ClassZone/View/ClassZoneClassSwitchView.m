@@ -29,18 +29,22 @@
         [_switchButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"fa9c3f"] size:CGSizeMake(70, 20) cornerRadius:10] forState:UIControlStateNormal];
         [_switchButton addTarget:self action:@selector(onSwitchButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_switchButton];
-        
-        if([UserCenter sharedInstance].curChild.classes.count > 0)
-        {
-            [self setClassInfo:[UserCenter sharedInstance].curChild.classes[0]];
-        }
-        else
-        {
-            [self setClassInfo:nil];
-        }
-        [_switchButton setHidden:[UserCenter sharedInstance].curChild.classes.count == 1];
     }
     return self;
+}
+
+- (void)setCurChild:(ChildInfo *)curChild
+{
+    _curChild = curChild;
+    if(_curChild.classes.count > 0)
+    {
+        [self setClassInfo:_curChild.classes[0]];
+    }
+    else
+    {
+        [self setClassInfo:nil];
+    }
+    [_switchButton setHidden:_curChild.classes.count == 1];
 }
 
 - (void)setClassInfo:(ClassInfo *)classInfo

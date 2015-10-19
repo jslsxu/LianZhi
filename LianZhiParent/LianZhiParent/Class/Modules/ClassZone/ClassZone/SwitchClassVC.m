@@ -8,6 +8,39 @@
 
 #import "SwitchClassVC.h"
 
+@implementation ClassItemCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if(self)
+    {
+        _logoView = [[LogoView alloc] initWithFrame:CGRectMake(15, (self.height - 36) / 2, 36, 36)];
+        [self addSubview:_logoView];
+        
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_logoView.right + 15, 0, self.width - _logoView.right - 30, self.height)];
+        [_nameLabel setBackgroundColor:[UIColor clearColor]];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [_nameLabel setFont:[UIFont systemFontOfSize:14]];
+        [self addSubview:_nameLabel];
+        
+        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 44 - 0.5, self.width, 0.5)];
+        [_sepLine setBackgroundColor:kSepLineColor];
+        [self addSubview:_sepLine];
+    }
+    return self;
+}
+
+- (void)setClassInfo:(ClassInfo *)classInfo
+{
+    _classInfo = classInfo;
+    [_logoView setImageWithUrl:[NSURL URLWithString:_classInfo.logo]];
+    [_nameLabel setText:_classInfo.className];
+}
+
+
+@end
+
 @interface SwitchClassVC ()
 @end
 
@@ -32,20 +65,27 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *reuseID = @"SwitchClassCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+    ClassItemCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
     if(nil == cell)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseID];
-        [cell.textLabel setFont:[UIFont systemFontOfSize:15]];
-        [cell.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        cell = [[ClassItemCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseID];
+        
+        [cell.detailTextLabel setTextColor:kCommonParentTintColor];
+        [cell.detailTextLabel setFont:[UIFont systemFontOfSize:13]];
     }
     ClassInfo *classInfo = [UserCenter sharedInstance].curChild.classes[indexPath.row];
-    [cell.textLabel setText:classInfo.className];
-    if([self.classInfo.classID isEqualToString:classInfo.classID])
-        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ControlSelected"]]];
-    else
+    [cell setClassInfo:classInfo];
+    BOOL isSelected = [self.classInfo.classID isEqualToString:classInfo.classID];
+    if(isSelected)
+    {
+        [cell.detailTextLabel setText:@"当前"];
         [cell setAccessoryView:nil];
+    }
+    else
+    {
+        [cell.detailTextLabel setText:nil];
+        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+    }
     return cell;
 }
 

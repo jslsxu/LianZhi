@@ -96,7 +96,7 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.classID forKey:@"from_id"];
     [params setValue:kStringFromValue(ChatTypeClass) forKey:@"from_type"];
-    [params setValue:isOn ? @"open" : @"close" forKey:@"sound"];
+    [params setValue:isOn ? @"close" : @"open" forKey:@"sound"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/set_thread" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         
     } fail:^(NSString *errMsg) {
@@ -113,9 +113,9 @@
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/get_sound" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         NSString *status = [responseObject getStringForKey:@"sound"];
         if([status isEqualToString:@"open"])
-            [_soundSwitch setOn:YES];
-        else
             [_soundSwitch setOn:NO];
+        else
+            [_soundSwitch setOn:YES];
     } fail:^(NSString *errMsg) {
         
     }];

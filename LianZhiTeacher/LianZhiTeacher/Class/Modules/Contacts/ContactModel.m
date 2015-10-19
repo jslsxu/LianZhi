@@ -23,7 +23,7 @@
 @end
 
 @implementation ContactModel
-
+SYNTHESIZE_SINGLETON_FOR_CLASS(ContactModel)
 - (id)init
 {
     self = [super init];

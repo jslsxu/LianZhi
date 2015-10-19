@@ -126,26 +126,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//    BOOL classOperationShow = [[userDefaults valueForKey:kClassZoneShown] boolValue];
-//    if(classOperationShow == NO)
-//    {
-//        [self addUserGuide];
-//        classOperationShow = YES;
-//        [userDefaults setValue:@(classOperationShow) forKey:kClassZoneShown];
-//        [userDefaults synchronize];
-//    }
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor whiteColor]];
 //    self.title = @"班空间";
     self.shouldShowEmptyHint = YES;
     _switchView = [[ClassZoneClassSwitchView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 30)];
+    [_switchView setCurChild:[UserCenter sharedInstance].curChild];
     [_switchView setDelegate:self];
     [self.view addSubview:_switchView];
     [self.tableView setFrame:CGRectMake(0, _switchView.bottom, self.view.width, self.view.height - _switchView.bottom)];
@@ -213,9 +200,10 @@
 {
     if([UserCenter sharedInstance].curChild.classes.count > 0)
     {
+        [_switchView setCurChild:[UserCenter sharedInstance].curChild];
         ClassInfo *curClassInfo = [UserCenter sharedInstance].curChild.classes[0];
         [self setClassInfo:curClassInfo];
-        [_switchView setClassInfo:self.classInfo];
+        [self requestData:REQUEST_REFRESH];
     }
     else
     {

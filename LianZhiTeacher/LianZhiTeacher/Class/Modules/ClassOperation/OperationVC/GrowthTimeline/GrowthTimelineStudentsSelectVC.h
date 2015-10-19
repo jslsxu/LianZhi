@@ -15,7 +15,7 @@
     UIImageView*    _checkedImageView;
 }
 @property (nonatomic, strong)StudentInfo *studentInfo;
-@property (nonatomic, assign)NSInteger hasSend;
+@property (nonatomic, assign)BOOL hasSend;
 @property (nonatomic, assign)BOOL hasBeenSelected;
 @end
 

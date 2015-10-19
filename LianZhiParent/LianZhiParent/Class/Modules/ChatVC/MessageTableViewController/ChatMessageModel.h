@@ -13,5 +13,6 @@
 @property (nonatomic, copy)NSString *oldId;
 @property (nonatomic, copy)NSString *latestId;
 @property (nonatomic, assign)BOOL hasNew;
+@property (nonatomic, assign)BOOL soundOff;
 - (BOOL)canInsert:(MessageItem *)messageItem;
 @end

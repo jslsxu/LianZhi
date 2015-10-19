@@ -8,6 +8,15 @@
 
 #import "TNBaseViewController.h"
 
+@interface ClassItemCell : TNTableViewCell
+{
+    LogoView*   _logoView;
+    UILabel*    _nameLabel;
+    UIView*     _sepLine;
+}
+@property (nonatomic, strong)ClassInfo *classInfo;
+@end
+
 @interface SwitchClassVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
     UITableView*    _tableView;

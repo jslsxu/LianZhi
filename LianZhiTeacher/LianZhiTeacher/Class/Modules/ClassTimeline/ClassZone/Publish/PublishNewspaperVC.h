@@ -12,8 +12,8 @@
 {
     UITextView *    _textView;
     UILabel*        _numLabel;
-//    UILabel*        _placeHolder;
-    UIButton*       _notificationButton;
+    UIButton*       _contactButton;
+    UILabel*        _hintLabel;
     UIButton*       _publishButton;
 }
 @property (nonatomic, copy)NSString *newsPaper;
