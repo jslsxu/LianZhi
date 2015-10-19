@@ -255,7 +255,7 @@
         ClassZoneItem *zoneItem = (ClassZoneItem *)cell.modelItem;
         TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除评论" action:^{
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : zoneItem.itemID, @"types" : @"0"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                [ProgressHUD showHintText:@"删除成功"];
+                [ProgressHUD showSuccess:@"删除成功"];
                 [zoneItem.responseModel removeResponse:responseItem];
                 [self.tableView reloadData];
             } fail:^(NSString *errMsg) {
@@ -327,7 +327,9 @@
             NSString *imageUrl = nil;
             if(self.targetClassZoneItem.photos.count > 0)
                 imageUrl = [self.targetClassZoneItem.photos[0] thumbnailUrl];
-            [ShareActionView shareWithTitle:self.targetClassZoneItem.content content:nil image:nil imageUrl:imageUrl url:kParentClientAppStoreUrl];
+            if(imageUrl.length == 0)
+                imageUrl = self.classInfo.logo;
+            [ShareActionView shareWithTitle:self.targetClassZoneItem.content content:nil image:nil imageUrl:imageUrl url:[NSString stringWithFormat:@"http://m.edugate.cn/share/%@_%@.html",self.targetClassZoneItem.userInfo.uid,self.targetClassZoneItem.itemID]];
         }
     }];
     [actionView show];

@@ -181,7 +181,7 @@
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在发送" toView:self.view];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"setting/feedback" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:YES];
-        [ProgressHUD showHintText:@"提交客服成功"];
+        [ProgressHUD showSuccess:@"提交客服成功"];
         [self performSelector:@selector(dismiss) withObject:nil afterDelay:2];
     } fail:^(NSString *errMsg) {
         [hud hide:YES];

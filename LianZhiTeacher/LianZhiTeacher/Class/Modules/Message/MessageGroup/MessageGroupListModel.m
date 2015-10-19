@@ -111,7 +111,7 @@
                     //判断是否是原来的消息中，但是新消息数增加了
                     for (MessageGroupItem *groupItem in originalMessageArray)
                     {
-                        if([groupItem.fromInfo.uid isEqualToString:item.fromInfo.uid] && ![groupItem.fromInfo.uid isEqualToString:[JSMessagesViewController curChatID]])
+                        if(groupItem.fromInfo.type == item.fromInfo.type && [groupItem.fromInfo.uid isEqualToString:item.fromInfo.uid] && ![groupItem.fromInfo.uid isEqualToString:[JSMessagesViewController curChatID]])
                         {
                             NSInteger originalNum = groupItem.msgNum;
                             if(item.msgNum > originalNum && item.soundOn)

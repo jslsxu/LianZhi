@@ -10,6 +10,7 @@
 
 @interface AudioMessageSendVC : MessageSendVC<AudioRecordViewDelegate>
 {
+    UIScrollView*       _scrollView;
     AudioRecordView*            _recordView;
     UTPlaceholderTextView*        _textView;
 }

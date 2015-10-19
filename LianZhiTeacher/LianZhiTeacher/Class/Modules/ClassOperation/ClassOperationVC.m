@@ -254,7 +254,7 @@
     } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         if(notice)
             [[NSNotificationCenter defaultCenter] postNotificationName:kPublishPhotoItemFinishedNotification object:nil userInfo:nil];
-        [ProgressHUD showHintText:@"照片发送成功"];
+        [ProgressHUD showSuccess:@"照片发送成功"];
     } fail:^(NSString *errMsg) {
     }];
 

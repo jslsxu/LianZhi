@@ -323,7 +323,7 @@
         __weak typeof(self) wself = self;
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/delete_feed" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             [hud hide:NO];
-            [ProgressHUD showHintText:@"删除成功"];
+            [ProgressHUD showSuccess:@"删除成功"];
             if(wself.deleteCallBack)
                 wself.deleteCallBack();
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -385,7 +385,7 @@
         NSString *imageUrl = nil;
         if(self.zoneItem.photos.count > 0)
             imageUrl = [self.zoneItem.photos[0] thumbnailUrl];
-        [ShareActionView shareWithTitle:self.zoneItem.content content:nil image:nil imageUrl:imageUrl url:kTeacherClientAppStoreUrl];
+        [ShareActionView shareWithTitle:self.zoneItem.content content:nil image:nil imageUrl:imageUrl url:[NSString stringWithFormat:@"http://m.edugate.cn/share/%@_%@.html",self.zoneItem.userInfo.uid,self.zoneItem.itemID]];
     }
 }
 
@@ -480,7 +480,7 @@
         __weak typeof(self) wself = self;
         TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除" action:^{
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : self.zoneItem.itemID, @"types" : @"0"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                [ProgressHUD showHintText:@"删除成功"];
+                [ProgressHUD showSuccess:@"删除成功"];
                 [wself.zoneItem.responseModel removeResponse:responseItem];
                 [_praiseView setPraiseArray:wself.zoneItem.responseModel.praiseArray];
                 [_tableView reloadData];

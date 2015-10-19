@@ -63,8 +63,12 @@
     NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSTimeInterval animationDuration;
     [animationDurationValue getValue:&animationDuration];
+    NSInteger keyboardHeight = keyboardRect.size.height;
+    CGPoint textOrigin = [_textView convertPoint:CGPointZero toView:_scrollView];
     [UIView animateWithDuration:animationDuration animations:^{
-        [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, keyboardRect.size.height, 0)];
+        [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, keyboardHeight, 0)];
+        [_scrollView setContentOffset:CGPointMake(0, textOrigin.y + _textView.height + keyboardHeight - _scrollView.height)];
+    }completion:^(BOOL finished) {
     }];
 }
 
@@ -75,6 +79,8 @@
     NSTimeInterval animationDuration;
     [animationDurationValue getValue:&animationDuration];
     [UIView animateWithDuration:animationDuration animations:^{
+        [_scrollView setContentOffset:CGPointZero];
+    }completion:^(BOOL finished) {
         [_scrollView setContentInset:UIEdgeInsetsZero];
     }];
 }

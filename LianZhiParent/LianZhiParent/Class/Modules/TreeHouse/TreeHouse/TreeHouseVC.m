@@ -375,7 +375,9 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             NSString *imageUrl = nil;
             if(self.targetTreeHouseItem.photos.count > 0)
                 imageUrl = [self.targetTreeHouseItem.photos[0] thumbnailUrl];
-            [ShareActionView shareWithTitle:self.targetTreeHouseItem.detail content:nil image:nil imageUrl:imageUrl url:kParentClientAppStoreUrl];
+            if(imageUrl.length == 0)
+                imageUrl = [UserCenter sharedInstance].curChild.avatar;
+            [ShareActionView shareWithTitle:self.targetTreeHouseItem.detail content:nil image:nil imageUrl:imageUrl url:[NSString stringWithFormat:@"http://m.5tree.cn/share/%@_%@.html",self.targetTreeHouseItem.user.uid,self.targetTreeHouseItem.itemID]];
         }
     }];
     [actionView show];
@@ -389,7 +391,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         TreehouseItem *zoneItem = (TreehouseItem *)cell.modelItem;
         TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除评论" action:^{
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : zoneItem.itemID, @"types" : @"1"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                [ProgressHUD showHintText:@"删除成功"];
+                [ProgressHUD showSuccess:@"删除成功"];
                 [zoneItem.responseModel removeResponse:responseItem];
                 [self.tableView reloadData];
             } fail:^(NSString *errMsg) {

@@ -29,9 +29,10 @@
     
     self.timeInterval = [dataWrapper getIntegerForKey:@"ctime"];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MM月dd日 HH:mm:ss"];
+    [formatter setDateFormat:@"MM月dd日 HH:mm"];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:self.timeInterval];
     self.ctime = [formatter stringFromDate:date];
+
 }
 
 @end
@@ -79,6 +80,9 @@
     }
     else if(self.messageContent.messageType == UUMessageTypeRevoked)
         height = 32;
-    return height + 10 + 10 + 10 + 5 + kTimeLabelHeight;
+    if(self.messageContent.hideTime)
+        return height + 10 + 10 + 5;
+    else
+        return height + 10 + 10 + 10 + 5 + kTimeLabelHeight;
 }
 @end

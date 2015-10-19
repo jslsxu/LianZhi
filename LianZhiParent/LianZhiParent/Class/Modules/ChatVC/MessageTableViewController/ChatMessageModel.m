@@ -85,6 +85,15 @@
             return [item1.messageContent.ctime compare:item2.messageContent.ctime];
         }];
     }
+    
+    for (NSInteger i = 1; i < self.modelItemArray.count; i++)
+    {
+        MessageItem *preItem = self.modelItemArray[i - 1];
+        MessageItem *curItem = self.modelItemArray[i];
+        if([curItem.messageContent.ctime isEqualToString:preItem.messageContent.ctime])
+            curItem.messageContent.hideTime = YES;
+    }
+    
     //获取原来消息列表别人发的最新的消息的id
     NSString *curLatestID = nil;
     for (NSInteger i = self.modelItemArray.count - 1; i >=0; i--)

@@ -105,7 +105,7 @@
 //            [[UserCenter sharedInstance].userData setAccessToken:token];
 //            [[UserCenter sharedInstance] save];
             [hud hide:NO];
-            [ProgressHUD showHintText:@"密码修改成功，请重新登录"];
+            [ProgressHUD showSuccess:@"密码修改成功，请重新登录"];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [ApplicationDelegate logout];
             });

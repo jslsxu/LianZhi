@@ -226,9 +226,9 @@
             [chatVC setTargetID:teacherInfo.uid];
             [chatVC setChatType:ChatTypeTeacher];
             [chatVC setMobile:teacherInfo.mobile];
-            NSString *title = teacherInfo.teacherName;
+            NSString *title = [NSString stringWithFormat:@"%@老师",teacherInfo.teacherName];
             if(teacherInfo.course)
-                title = [NSString stringWithFormat:@"%@(%@)",teacherInfo.teacherName, teacherInfo.course];
+                title = [NSString stringWithFormat:@"%@(%@)",title, teacherInfo.course];
             [chatVC setTitle:title];
             [ApplicationDelegate popAndPush:chatVC];
         }

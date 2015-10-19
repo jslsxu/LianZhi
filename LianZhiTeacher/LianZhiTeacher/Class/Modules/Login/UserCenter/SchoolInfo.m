@@ -106,6 +106,7 @@
 @implementation FamilyInfo
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
+    [super parseData:dataWrapper];
     self.uid = [dataWrapper getStringForKey:@"id"];
     self.name = [dataWrapper getStringForKey:@"name"];
     self.mobile = [dataWrapper getStringForKey:@"mobile"];

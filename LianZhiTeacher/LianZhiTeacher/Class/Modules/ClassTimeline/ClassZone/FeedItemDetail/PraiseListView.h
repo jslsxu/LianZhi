@@ -10,6 +10,7 @@
 
 @interface  PraiseListView: UIView
 {
+    UILabel*        _extraLabel;
     UIImageView*    _imageView;
     NSMutableArray* _avatarArray;
 }

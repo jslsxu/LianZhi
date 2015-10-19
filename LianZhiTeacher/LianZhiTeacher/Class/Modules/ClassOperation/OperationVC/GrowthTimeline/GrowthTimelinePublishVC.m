@@ -116,7 +116,7 @@
     [params setValue:self.classInfo.classID forKey:@"class_id"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/record" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:YES];
-        [ProgressHUD showHintText:@"发送成功"];
+        [ProgressHUD showSuccess:@"发送成功"];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self cancel];
         });

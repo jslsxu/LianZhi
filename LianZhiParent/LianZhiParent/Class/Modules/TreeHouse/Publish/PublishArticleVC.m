@@ -82,11 +82,11 @@
                 
             }
             [hud hide:NO];
-            [ProgressHUD showHintText:@"发布成功"];
+            [ProgressHUD showSuccess:@"发布成功"];
             [self performSelector:@selector(onBack) withObject:nil afterDelay:2];
         } fail:^(NSString *errMsg) {
             [hud hide:NO];
-            [ProgressHUD showHintText:errMsg];
+            [ProgressHUD showError:errMsg];
         }];
     }
     else

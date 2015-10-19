@@ -37,6 +37,7 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property (nonatomic, strong)AudioItem *audioItem;
 @property (nonatomic, assign)NSInteger timeInterval;
 @property (nonatomic, copy)NSString *ctime;
+@property (nonatomic, assign)BOOL hideTime;
 @end
 
 @interface MessageItem : TNModelItem

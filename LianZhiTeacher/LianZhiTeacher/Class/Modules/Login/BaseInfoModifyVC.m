@@ -93,7 +93,7 @@
         TNDataWrapper *userWrapper = [responseObject getDataWrapperForKey:@"user"];
         [[UserCenter sharedInstance] updateUserInfoWithData:userWrapper];
         [hud hide:NO];
-        [ProgressHUD showHintText:@"修改成功"];
+        [ProgressHUD showSuccess:@"修改成功"];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self back];
         });

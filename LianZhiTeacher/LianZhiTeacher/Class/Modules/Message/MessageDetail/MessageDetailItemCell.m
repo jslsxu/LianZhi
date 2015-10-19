@@ -132,8 +132,8 @@
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     MessageDetailItem *item = (MessageDetailItem *)modelItem;
-    [_nameLabel setText:item.author];
-    [_logoView setImageWithUrl:[NSURL URLWithString:item.avatarUrl]];
+    [_nameLabel setText:item.author.name];
+    [_logoView setImageWithUrl:[NSURL URLWithString:item.author.avatar]];
     [_timeLabel setText:item.timeStr];
     [_timeLabel sizeToFit];
     [_timeLabel setFrame:CGRectMake(_bgView.width - kContentHMargin - _timeLabel.width, (kOperationHeight - _timeLabel.height) / 2, _timeLabel.width, _timeLabel.height)];

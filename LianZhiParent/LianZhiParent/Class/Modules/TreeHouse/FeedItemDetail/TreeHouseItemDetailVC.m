@@ -438,7 +438,7 @@
             [hud hide:NO];
             if(self.deleteCallBack)
                 self.deleteCallBack();
-            [ProgressHUD showHintText:@"删除成功"];
+            [ProgressHUD showSuccess:@"删除成功"];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self.navigationController popViewControllerAnimated:YES];
             });
@@ -499,7 +499,9 @@
         NSString *imageUrl = nil;
         if(self.treeHouseItem.photos.count > 0)
             imageUrl = [self.treeHouseItem.photos[0] thumbnailUrl];
-        [ShareActionView shareWithTitle:self.treeHouseItem.detail content:nil image:nil imageUrl:imageUrl url:kParentClientAppStoreUrl];
+        if(imageUrl.length == 0)
+            imageUrl = [UserCenter sharedInstance].curChild.avatar;
+        [ShareActionView shareWithTitle:self.treeHouseItem.detail content:nil image:nil imageUrl:imageUrl url:[NSString stringWithFormat:@"http://m.5tree.cn/share/%@_%@.html",self.treeHouseItem.user.uid,self.treeHouseItem.itemID]];
     }
 }
 
@@ -594,7 +596,7 @@
         __weak typeof(self) wself = self;
         TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除" action:^{
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : self.treeHouseItem.itemID, @"types" : @"1"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                [ProgressHUD showHintText:@"删除成功"];
+                [ProgressHUD showSuccess:@"删除成功"];
                 [wself.treeHouseItem.responseModel removeResponse:responseItem];
                 [_praiseView setPraiseArray:wself.treeHouseItem.responseModel.praiseArray];
                 [_tableView reloadData];

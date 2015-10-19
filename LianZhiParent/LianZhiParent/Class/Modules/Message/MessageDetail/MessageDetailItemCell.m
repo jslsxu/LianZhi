@@ -107,8 +107,8 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     MessageDetailItem *item = (MessageDetailItem *)modelItem;
-    [_logoView setImageWithUrl:[NSURL URLWithString:item.fromInfo.logoUrl]];
-    [_nameLabel setText:item.fromInfo.label];
+    [_logoView setImageWithUrl:[NSURL URLWithString:item.author.avatar]];
+    [_nameLabel setText:item.author.name];
     [_timeLabel setText:item.timeStr];
     [_timeLabel sizeToFit];
     [_timeLabel setFrame:CGRectMake(_bgView.width - kContentHMargin - _timeLabel.width, (kOperationHeight - _timeLabel.height) / 2, _timeLabel.width, _timeLabel.height)];

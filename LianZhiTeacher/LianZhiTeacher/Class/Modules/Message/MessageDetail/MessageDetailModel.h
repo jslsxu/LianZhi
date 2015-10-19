@@ -10,7 +10,7 @@
 
 @interface MessageDetailItem : TNModelItem
 @property (nonatomic, copy)NSString *msgID;
-@property (nonatomic, copy)NSString *author;
+@property (nonatomic, strong)UserInfo *author;
 @property (nonatomic, copy)NSString *avatarUrl;
 @property (nonatomic, copy)NSString *content;
 @property (nonatomic, strong)AudioItem *audioItem;

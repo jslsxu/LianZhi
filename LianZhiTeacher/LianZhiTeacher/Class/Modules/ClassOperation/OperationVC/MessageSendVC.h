@@ -13,4 +13,5 @@
 - (NSDictionary *)params;
 - (NSArray *)imageArray;
 - (NSData *)audioData;
+- (BOOL)validate;
 @end

@@ -112,7 +112,7 @@
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在提交" toView:self.view];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/record" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:NO];
-        [ProgressHUD showHintText:@"发送成功"];
+        [ProgressHUD showSuccess:@"发送成功"];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.navigationController popViewControllerAnimated:YES];
         });

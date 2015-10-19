@@ -46,7 +46,7 @@
     TNDataWrapper *listWrapper = [data getDataWrapperForKey:@"list"];
     if(listWrapper.count > 0)
     {
-        for (NSInteger i = 0; i < 10; i++) {
+        for (NSInteger i = 0; i < listWrapper.count; i++) {
             TNDataWrapper *wrapper = [listWrapper getDataWrapperForIndex:i];
             GrowthTimelineItem *item = [[GrowthTimelineItem alloc] init];
             [item parseData:wrapper];

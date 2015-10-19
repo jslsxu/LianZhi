@@ -315,7 +315,7 @@
         [_headerView reloadData];
         [_tableView reloadData];
         [hud hide:YES];
-        [ProgressHUD showHintText:@"修改信息成功"];
+        [ProgressHUD showSuccess:@"修改信息成功"];
     } fail:^(NSString *errMsg) {
         [hud hide:YES];
         [ProgressHUD showHintText:errMsg];

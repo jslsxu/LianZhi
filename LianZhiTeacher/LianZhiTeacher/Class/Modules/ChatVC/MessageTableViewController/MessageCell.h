@@ -10,7 +10,7 @@
 #import "UUMessageContentButton.h"
 #import "MessageItem.h"
 #import "ChatVoiceButton.h"
-#define kTimeLabelHeight            20
+#define kTimeLabelHeight            16
 #define kAvatarHMargin              8
 #define kMessageCellVMargin         10
 #define kFaceWith                   100

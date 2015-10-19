@@ -1,13 +1,12 @@
 //
 //  PraiseListView.m
-//  LianZhiTeacher
+//  LianZhiParent
 //
 //  Created by jslsxu on 15/10/2.
 //  Copyright (c) 2015年 jslsxu. All rights reserved.
 //
 
 #import "PraiseListView.h"
-
 @implementation PraiseListView
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -21,6 +20,16 @@
         [self addSubview:_imageView];
         
         _avatarArray = [NSMutableArray array];
+        
+        _extraLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_extraLabel setFont:[UIFont systemFontOfSize:13]];
+        [_extraLabel setTextAlignment:NSTextAlignmentCenter];
+        [_extraLabel setTextColor:[UIColor colorWithRed:26 / 255.0 green:194 / 255.0 blue:130 / 255.0 alpha:1.f]];
+        [_extraLabel setText:@"点了赞"];
+        [_extraLabel sizeToFit];
+        [_extraLabel setSize:CGSizeMake(_extraLabel.width + 10, 22)];
+        [_extraLabel setHidden:YES];
+        [self addSubview:_extraLabel];
     }
     return self;
 }
@@ -36,12 +45,14 @@
     NSInteger itemWidth = 22;
     NSInteger innerMargin = 4;
     NSInteger maxColumnNum = (self.width - spaceXStart ) / (itemWidth + innerMargin);
-    NSInteger maxRowNum = (count + maxColumnNum - 1) / maxColumnNum;
+//    NSInteger maxRowNum = (count + maxColumnNum - 1) / maxColumnNum;
+    NSInteger row = 0;
+    NSInteger column = 0;
     for (NSInteger i = 0; i < count; i++)
     {
         UserInfo *userInfo = _praiseArray[i];
-        NSInteger row = i / maxColumnNum;
-        NSInteger column = i % maxColumnNum;
+        row = i / maxColumnNum;
+        column = i % maxColumnNum;
         AvatarView *avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(spaceXStart + (itemWidth + innerMargin) * column, spaceYStart + (itemWidth + innerMargin) * row, 22, 22)];
         [avatarView setImageWithUrl:[NSURL URLWithString:userInfo.avatar]];
         [self addSubview:avatarView];
@@ -49,7 +60,23 @@
     }
     if(count > 0)
     {
-        [self setHeight:spaceYStart * 2 + itemWidth * maxRowNum + innerMargin * (maxRowNum - 1)];
+        _extraLabel.hidden = NO;
+        AvatarView *lastView = [_avatarArray lastObject];
+        if(lastView.right + _extraLabel.width <= self.width - spaceXStart)
+        {
+            [_extraLabel setOrigin:CGPointMake(lastView.right, lastView.y)];
+        }
+        else
+        {
+            [_extraLabel setOrigin:CGPointMake(spaceXStart, lastView.bottom + innerMargin)];
+        }
+    }
+    else
+        _extraLabel.hidden = YES;
+    
+    if(count > 0)
+    {
+        [self setHeight:spaceYStart + _extraLabel.bottom];
         CAShapeLayer *shapeLayer = [CAShapeLayer layer];
         CGMutablePathRef path = CGPathCreateMutable();
         CGPathMoveToPoint(path, NULL, 0, self.height);
@@ -70,3 +97,4 @@
 }
 
 @end
+

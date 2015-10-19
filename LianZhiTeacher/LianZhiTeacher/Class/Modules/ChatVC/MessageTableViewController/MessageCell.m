@@ -72,7 +72,12 @@
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     MessageItem *messageItem = (MessageItem *)modelItem;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:messageItem.userInfo.avatar]];
+    [_timeLabel setHidden:messageItem.messageContent.hideTime];
+    [_timeLabel setText:messageItem.messageContent.ctime];
+    
+    NSInteger spaceYStart = kTimeLabelHeight + 10;
+    if(messageItem.messageContent.hideTime)
+        spaceYStart = 0;
     if(messageItem.from == UUMessageFromMe)
     {
         [_nameLabel setTextAlignment:NSTextAlignmentRight];
@@ -99,9 +104,12 @@
         UserInfo *userInfo = messageItem.userInfo;
         [_nameLabel setText:userInfo.name];
     }
+    [_nameLabel setY:spaceYStart];
+    spaceYStart += _nameLabel.height + 5;
+    [_avatarView setImageWithUrl:[NSURL URLWithString:messageItem.userInfo.avatar]];
+    [_avatarView setY:spaceYStart];
     
-    [_timeLabel setText:messageItem.messageContent.ctime];
-    
+    [_contentButton setY:spaceYStart];
     [_contentButton setImage:nil forState:UIControlStateNormal];
     [_contentButton setTitle:nil forState:UIControlStateNormal];
     [_contentButton.backImageView setImage:nil];
@@ -132,8 +140,8 @@
     {
         AudioItem *audioItem = messageItem.messageContent.audioItem;
         NSInteger second = audioItem.timeSpan;
-        NSInteger maxWidth = kScreenWidth - 50 * 2;
-        NSInteger width = maxWidth * second / 60;
+        NSInteger maxWidth = kScreenWidth - 50 * 2 - 60;
+        NSInteger width = maxWidth * second / 120;
         if(width < 60)
             width = 60;
         else if(width > maxWidth)
@@ -177,11 +185,11 @@
     }
     if(UUMessageFromMe == messageItem.from)
     {
-        [_contentButton setOrigin:CGPointMake(kScreenWidth - 50 - _contentButton.width, _avatarView.y)];
+        [_contentButton setOrigin:CGPointMake(kScreenWidth - 50 - _contentButton.width, spaceYStart)];
     }
     else
     {
-        [_contentButton setOrigin:CGPointMake(50, _avatarView.y)];
+        [_contentButton setOrigin:CGPointMake(50, spaceYStart)];
     }
 }
 

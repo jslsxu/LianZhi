@@ -36,6 +36,14 @@
         }
         self.photos = photoArray;
     }
+    
+    TNDataWrapper *userWrapper = [dataWrapper getDataWrapperForKey:@"from_user"];
+    if(userWrapper.count > 0)
+    {
+        UserInfo *userInfo = [[UserInfo alloc] init];
+        [userInfo parseData:userWrapper];
+        self.author = userInfo;
+    }
 }
 
 
@@ -65,7 +73,6 @@
         MessageDetailItem *item = [[MessageDetailItem alloc] init];
         TNDataWrapper *detailWrapper = [listWrapper getDataWrapperForIndex:i];
         [item parseData:detailWrapper];
-        [item setAuthor:self.author];
         [item setAvatarUrl:self.avatarUrl];
         [self.modelItemArray addObject:item];
     }

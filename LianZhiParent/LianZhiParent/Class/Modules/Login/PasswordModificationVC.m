@@ -67,7 +67,7 @@
         [[UserCenter sharedInstance].userData setAccessToken:token];
         [[UserCenter sharedInstance] save];
         [hud hide:NO];
-        [ProgressHUD showHintText:@"密码设置成功"];
+        [ProgressHUD showSuccess:@"密码设置成功"];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             if(self.callback)
                 self.callback();

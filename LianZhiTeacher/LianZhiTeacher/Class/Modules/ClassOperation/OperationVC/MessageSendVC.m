@@ -14,6 +14,11 @@
 
 @implementation MessageSendVC
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -25,6 +30,11 @@
 - (void)cancel
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (BOOL)validate
+{
+    return YES;
 }
 
 - (NSDictionary *)params
@@ -44,11 +54,14 @@
 
 - (void)onNext
 {
-    NotificationTargetSelectVC *targetSelectVC = [[NotificationTargetSelectVC alloc] init];
-    [targetSelectVC setImageArray:[self imageArray]];
-    [targetSelectVC setAudioData:[self audioData]];
-    [targetSelectVC setParams:[self params]];
-    [self.navigationController pushViewController:targetSelectVC animated:YES];
+    if([self validate])
+    {
+        NotificationTargetSelectVC *targetSelectVC = [[NotificationTargetSelectVC alloc] init];
+        [targetSelectVC setImageArray:[self imageArray]];
+        [targetSelectVC setAudioData:[self audioData]];
+        [targetSelectVC setParams:[self params]];
+        [self.navigationController pushViewController:targetSelectVC animated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

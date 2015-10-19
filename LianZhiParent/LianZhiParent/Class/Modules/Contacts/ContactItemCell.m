@@ -33,7 +33,7 @@
         [_commentLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_commentLabel];
         
-        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 48 - 0.5, self.width, 0.5)];
+        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 45 - 0.5, self.width, 0.5)];
         [_sepLine setBackgroundColor:[UIColor colorWithRed:240 / 255.0 green:240 / 255.0 blue:240 / 255.0 alpha:1.f]];
         [self addSubview:_sepLine];
         

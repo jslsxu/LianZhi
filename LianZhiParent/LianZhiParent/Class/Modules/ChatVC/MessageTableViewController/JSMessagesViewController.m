@@ -42,11 +42,11 @@ static NSString *topChatID = nil;
     {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"GroupMemberIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(onClickClassMember)];
     }
-    else
-    {
-        if(self.mobile.length > 0)
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"CallMobile"] style:UIBarButtonItemStylePlain target:self action:@selector(onTelephoneClicked)];
-    }
+//    else
+//    {
+//        if(self.mobile.length > 0)
+//            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"CallMobile"] style:UIBarButtonItemStylePlain target:self action:@selector(onTelephoneClicked)];
+//    }
     
     _inputView = [[InputBarView alloc] init];
     [_inputView setInputDelegate:self];
@@ -297,7 +297,7 @@ static NSString *topChatID = nil;
 - (void)onAddToBlackList
 {
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/add_bl" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"to_id" : self.targetID,@"to_type" : kStringFromValue(self.chatType)} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        [ProgressHUD showHintText:@"添加黑名单成功"];
+        [ProgressHUD showSuccess:@"添加黑名单成功"];
     } fail:^(NSString *errMsg) {
         [ProgressHUD showHintText:errMsg];
     }];

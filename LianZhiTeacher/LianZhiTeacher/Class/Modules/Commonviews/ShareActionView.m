@@ -98,7 +98,7 @@
         [[SVShare sharedInstance] shareWithType:shareType text:self.content image:self.image imageUrl:self.imageUrl url:self.url title:self.title result:^(ShareType type, SVShareResultState state, NSString *errorMsg) {
             if(SVShareResultStateSuccess == state)
             {
-                [ProgressHUD showHintText:@"分享成功"];
+                [ProgressHUD showSuccess:@"分享成功"];
             }
             else if(errorMsg.length > 0)
                 [ProgressHUD showHintText:errorMsg];

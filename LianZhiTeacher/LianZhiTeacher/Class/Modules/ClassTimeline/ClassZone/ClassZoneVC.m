@@ -125,7 +125,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (void)setCommentItem:(TimelineCommentItem *)commentItem
 {
     _commentItem = commentItem;
-    BOOL hide = _commentItem == nil || _commentItem.alertInfo.num == 0;
+    BOOL hide = (_commentItem == nil || _commentItem.alertInfo.num == 0);
     [_msgIndicator setHidden:hide];
     if(!hide)
     {
@@ -668,7 +668,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         ClassZoneItem *zoneItem = (ClassZoneItem *)cell.modelItem;
         TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除" action:^{
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : zoneItem.itemID, @"types" : @"0"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                [ProgressHUD showHintText:@"删除成功"];
+                [ProgressHUD showSuccess:@"删除成功"];
                 [zoneItem.responseModel removeResponse:responseItem];
                 [self.tableView reloadData];
             } fail:^(NSString *errMsg) {
@@ -739,7 +739,9 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             NSString *imageUrl = nil;
             if(self.targetZoneItem.photos.count > 0)
                 imageUrl = [self.targetZoneItem.photos[0] thumbnailUrl];
-            [ShareActionView shareWithTitle:self.targetZoneItem.content content:nil image:nil imageUrl:imageUrl url:kTeacherClientAppStoreUrl];
+            if(imageUrl.length == 0)
+                imageUrl = self.classInfo.logoUrl;
+            [ShareActionView shareWithTitle:self.targetZoneItem.content content:nil image:nil imageUrl:imageUrl url:[NSString stringWithFormat:@"http://m.edugate.cn/share/%@_%@.html",self.targetZoneItem.userInfo.uid,self.targetZoneItem.itemID]];
         }
     }];
     [actionView show];

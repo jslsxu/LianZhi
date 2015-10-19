@@ -30,16 +30,16 @@
 #define HUD_STATUS_COLOR		[UIColor whiteColor]
 #define HUD_SPINNER_COLOR		[UIColor whiteColor]
 #define HUD_BACKGROUND_COLOR	[UIColor colorWithWhite:0 alpha:0.5]
-#define HUD_IMAGE_SUCCESS		[UIImage imageNamed:@"Resource.bundle/success-white.png"]
-#define HUD_IMAGE_ERROR			[UIImage imageNamed:@"Resource.bundle/error-white.png"]
+#define HUD_IMAGE_SUCCESS		[UIImage imageNamed:@"success-white"]
+#define HUD_IMAGE_ERROR			[UIImage imageNamed:@"error-white"]
 #endif
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 #ifdef sheme_black
 #define HUD_STATUS_COLOR		[UIColor blackColor]
 #define HUD_SPINNER_COLOR		[UIColor blackColor]
 #define HUD_BACKGROUND_COLOR	[UIColor colorWithWhite:0 alpha:0.5]
-#define HUD_IMAGE_SUCCESS		[UIImage imageNamed:@"Resource.bundle/success-black.png"]
-#define HUD_IMAGE_ERROR			[UIImage imageNamed:@"Resource.bundle/error-black.png"]
+#define HUD_IMAGE_SUCCESS		[UIImage imageNamed:@"success-black"]
+#define HUD_IMAGE_ERROR			[UIImage imageNamed:@"error-black"]
 #endif
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 

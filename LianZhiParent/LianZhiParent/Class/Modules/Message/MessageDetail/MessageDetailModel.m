@@ -35,6 +35,14 @@
         }
         self.pictureArray = pictures;
     }
+    
+    TNDataWrapper *userWrapper = [dataWrapper getDataWrapperForKey:@"from_user"];
+    if(userWrapper.count > 0)
+    {
+        UserInfo *userInfo = [[UserInfo alloc] init];
+        [userInfo parseData:userWrapper];
+        self.author = userInfo;
+    }
 }
 
 @end
