@@ -93,7 +93,7 @@
     _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, _bgView.bottom + 20, _bgView.width, 60)];
     [_textView setFont:[UIFont systemFontOfSize:16]];
     [_textView setDelegate:self];
-    [_textView setPlaceholder:@"我发了一堆图片，快来看看吧"];
+    [_textView setPlaceholder:@"我用连枝分享了这些照片，快来点击查看吧"];
     [_scrollView addSubview:_textView];
     
     UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(kBorderMargin, _textView.bottom + 10, _textView.width, 1)];

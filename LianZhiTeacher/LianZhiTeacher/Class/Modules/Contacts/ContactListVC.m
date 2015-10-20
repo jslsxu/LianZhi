@@ -37,7 +37,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onCurSchoolChanged) name:kUserInfoVCNeedRefreshNotificaiotn object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUserInfoChanged) name:kUserInfoChangedNotification object:nil];
@@ -60,6 +60,7 @@
     [_classesTableView setSectionIndexColor:kCommonTeacherTintColor];
     [_classesTableView setDelegate:self];
     [_classesTableView setDataSource:self];
+    [_classesTableView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:_classesTableView];
     
     _studentsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, headerView.bottom, self.view.width, self.view.height - headerView.height) style:UITableViewStylePlain];
@@ -69,6 +70,7 @@
     [_studentsTableView setSectionIndexColor:kCommonTeacherTintColor];
     [_studentsTableView setDelegate:self];
     [_studentsTableView setDataSource:self];
+    [_studentsTableView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:_studentsTableView];
     
     _teacherTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, headerView.bottom, self.view.width, self.view.height - headerView.height) style:UITableViewStylePlain];
@@ -78,6 +80,7 @@
     [_teacherTableView setSectionIndexColor:kCommonTeacherTintColor];
     [_teacherTableView setDelegate:self];
     [_teacherTableView setDataSource:self];
+    [_teacherTableView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:_teacherTableView];
     
     _contactModel = [[ContactModel alloc] init];
@@ -86,10 +89,11 @@
 
 - (void)setupHeaderView:(UIView *)viewParent
 {
+    [viewParent setBackgroundColor:[UIColor colorWithHexString:@"0fabc1"]];
     if([[UserCenter sharedInstance] teachAtCurSchool])
     {
         _segCtrl = [[UISegmentedControl alloc] initWithItems:@[@"家长",@"同事"]];
-        [_segCtrl setTintColor:kCommonTeacherTintColor];
+        [_segCtrl setTintColor:[UIColor colorWithHexString:@"96e065"]];
         [_segCtrl setWidth:160];
         [_segCtrl setOrigin:CGPointMake((viewParent.width - _segCtrl.width) / 2, (viewParent.height - _segCtrl.height) / 2)];
         [_segCtrl addTarget:self action:@selector(onSegmentValueChanged:) forControlEvents:UIControlEventValueChanged];

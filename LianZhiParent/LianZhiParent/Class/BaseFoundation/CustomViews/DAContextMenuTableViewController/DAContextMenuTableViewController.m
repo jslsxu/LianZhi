@@ -29,6 +29,9 @@
 {
     [super viewDidLoad];
     self.customEditing = self.customEditingAnimationInProgress = NO;
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+    [backItem setTitle:@"返回"];
+    self.navigationItem.backBarButtonItem = backItem;
 }
 
 #pragma mark - Private

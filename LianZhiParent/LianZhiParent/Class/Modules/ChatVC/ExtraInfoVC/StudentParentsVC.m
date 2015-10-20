@@ -89,6 +89,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"%ld人",self.childInfo.family.count] style:UIBarButtonItemStyleBordered target:self action:nil];
     self.blackList = [NSMutableArray array];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     self.title = self.childInfo.name;
@@ -205,7 +206,8 @@
     [chatVC setTargetID:familyInfo.uid];
     [chatVC setTo_objid:self.childInfo.uid];
     [chatVC setMobile:familyInfo.mobile];
-    [chatVC setTitle:familyInfo.name];
+//    [chatVC setTitle:familyInfo.name];
+    [chatVC setTitle:[NSString stringWithFormat:@"%@的%@",self.childInfo.name, familyInfo.relation]];
     [ApplicationDelegate popAndPush:chatVC];
 }
 

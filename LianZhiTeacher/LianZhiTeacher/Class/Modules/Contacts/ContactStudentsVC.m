@@ -20,15 +20,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     self.title = self.classInfo.className;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"%ld人",(unsigned long)self.classInfo.students.count] style:UIBarButtonItemStylePlain target:nil action:nil];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"%ld人",(unsigned long)self.classInfo.students.count] style:UIBarButtonItemStylePlain target:nil action:nil];
     
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    [_tableView setBackgroundColor:[UIColor clearColor]];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
-    [_tableView setSectionIndexColor:kCommonTeacherTintColor];
+    [_tableView setSectionIndexColor:[UIColor colorWithHexString:@"666666"]];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [self.view addSubview:_tableView];

@@ -136,7 +136,7 @@
     _sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_sendButton addTarget:self action:@selector(onSend) forControlEvents:UIControlEventTouchUpInside];
     [_sendButton setFrame:CGRectMake(margin, self.view.height - 35 - 55, self.view.width - margin * 2, 36)];
-    [_sendButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"E82550"] size:_sendButton.size cornerRadius:18] forState:UIControlStateNormal];
+    [_sendButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"f13e64"] size:_sendButton.size cornerRadius:18] forState:UIControlStateNormal];
     [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_sendButton setTitle:@"提交给客服处理" forState:UIControlStateNormal];
     [_sendButton.titleLabel setFont:[UIFont systemFontOfSize:16]];

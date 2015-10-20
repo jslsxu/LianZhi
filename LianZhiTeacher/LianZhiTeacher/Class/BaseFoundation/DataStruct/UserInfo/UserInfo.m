@@ -23,6 +23,7 @@
     self.email = [dataWrapper getStringForKey:@"email"];
     self.birthDay = [dataWrapper getStringForKey:@"birthday"];
     self.activited = [dataWrapper getBoolForKey:@"actived"];
+    self.shortIndex = [dataWrapper getStringForKey:@"first_letter"];
 }
 
 - (NSDictionary *)toDictionary
@@ -39,6 +40,7 @@
     [dictionary setValue:self.email forKey:@"email"];
     [dictionary setValue:self.birthDay forKey:@"birthday"];
     [dictionary setValue:kStringFromValue(self.activited) forKey:@"actived"];
+    [dictionary setValue:self.shortIndex forKey:@"first_letter"];
     return dictionary;
 }
 
@@ -57,7 +59,7 @@
         self.email = [aDecoder decodeObjectForKey:@"email"];
         self.birthDay = [aDecoder decodeObjectForKey:@"birthday"];
         self.activited = [aDecoder decodeBoolForKey:@"actived"];
-        
+        self.shortIndex = [aDecoder decodeObjectForKey:@"first_letter"];
     }
     return self;
 }
@@ -75,6 +77,7 @@
     [aCoder encodeObject:self.email forKey:@"email"];
     [aCoder encodeObject:self.birthDay forKey:@"birthday"];
     [aCoder encodeBool:self.activited forKey:@"actived"];
+    [aCoder encodeObject:self.shortIndex forKey:@"first_letter"];
 }
 
 @end

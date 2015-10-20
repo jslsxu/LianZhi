@@ -38,7 +38,7 @@
     {
         self.inputType = InputTypeNone;
         _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, kContentViewHeight)];
-        [_contentView setBackgroundColor:[UIColor colorWithHexString:@"c8d7e2"]];
+        [_contentView setBackgroundColor:[UIColor colorWithHexString:@"d3d3d4"]];
         UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, kLineHeight)];
         [topLine setBackgroundColor:[UIColor colorWithHexString:@"A4A4A4"]];
         [_contentView addSubview:topLine];

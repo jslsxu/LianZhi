@@ -200,7 +200,7 @@
         ChildInfo *childInfo = childrenArray[self.curIndex];
         PersonalInfoItem *nameItem = [[PersonalInfoItem alloc] initWithKey:@"姓名" value:childInfo.name canEdit:YES];
         [nameItem setRequestKey:@"name"];
-        PersonalInfoItem *genderItem = [[PersonalInfoItem alloc] initWithKey:@"性别" value:kStringFromValue(childInfo.gender) canEdit:YES];
+        PersonalInfoItem *genderItem = [[PersonalInfoItem alloc] initWithKey:@"性别" value:childInfo.gender == GenderFemale ? @"美女" : @"帅哥" canEdit:YES];
         [genderItem setRequestKey:@"sex"];
         PersonalInfoItem *birthDayItem = [[PersonalInfoItem alloc] initWithKey:@"出生日期" value:childInfo.birthday canEdit:NO];
         [birthDayItem setRequestKey:@"birthday"];
@@ -502,9 +502,30 @@
 {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    if(section == 0 && row == 0)
+    if(section == 0)
     {
-        [self modifyAvatar];
+        if(row == 0)
+            [self modifyAvatar];
+        if(row == 2)
+        {
+            
+        }
+        if(row == 3)
+        {
+            
+        }
+        if(row == 4)
+        {
+            
+        }
+        if(row == 5)
+        {
+            
+        }
+        if(row == 6)
+        {
+            
+        }
     }
 }
 

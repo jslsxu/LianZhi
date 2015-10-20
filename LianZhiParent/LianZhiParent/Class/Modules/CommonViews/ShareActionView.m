@@ -8,6 +8,9 @@
 
 #import "ShareActionView.h"
 
+#define kShareViewWidth             270
+#define kShareViewHeight            220
+
 @interface ShareActionView ()
 @property (nonatomic, strong)UIImage *image;
 @property (nonatomic, copy)NSString *imageUrl;
@@ -44,7 +47,7 @@
         [_bgButton setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.6]];
         [self addSubview:_bgButton];
         
-        _contentView = [[UIView alloc] initWithFrame:CGRectMake(25, (self.height - 220) / 2, self.width - 25 * 2, 220)];
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake((kScreenWidth - kShareViewWidth) / 2, (self.height - kShareViewHeight) / 2, kShareViewWidth, kShareViewHeight)];
         [_contentView setBackgroundColor:[UIColor whiteColor]];
         [_contentView.layer setCornerRadius:10];
         [_contentView.layer setMasksToBounds:YES];
@@ -79,7 +82,7 @@
         UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [cancelButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
         [cancelButton setFrame:CGRectMake(hMargin, _contentView.height - vMargin - 36, _contentView.width - hMargin * 2, 36)];
-        [cancelButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"E82557"] size:cancelButton.size cornerRadius:18] forState:UIControlStateNormal];
+        [cancelButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"f13e64"] size:cancelButton.size cornerRadius:18] forState:UIControlStateNormal];
         [cancelButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
         [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [cancelButton setTitle:@"取消" forState:UIControlStateNormal];

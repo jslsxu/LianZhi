@@ -464,11 +464,11 @@
         cell = [[DetailCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
     [cell setResponseItem:self.zoneItem.responseModel.responseArray[indexPath.row]];
-    [cell setClips:indexPath.row == 0 && self.zoneItem.responseModel.praiseArray.count == 0];
     if(indexPath.row == 0)
         [cell setCellType:TableViewCellTypeFirst];
     else
         [cell setCellType:TableViewCellTypeAny];
+    [cell setClips:indexPath.row == 0 && self.zoneItem.responseModel.praiseArray.count == 0];
     return cell;
 }
 

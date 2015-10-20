@@ -85,6 +85,10 @@
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [self addSubview:_nameLabel];
+        
+        UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
+        [sepLine setBackgroundColor:kSepLineColor];
+        [self addSubview:sepLine];
 
         [self setSelectType:SelectTypeNone];
     }
@@ -122,7 +126,7 @@
     _selectedMateArray = [NSMutableArray array];
     _selectedStudentDic = [NSMutableDictionary dictionary];
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
-    [headerView setBackgroundColor:kCommonTeacherTintColor];
+    [headerView setBackgroundColor:[UIColor colorWithHexString:@"0fabc1"]];
     [self.view addSubview:headerView];
     
     _segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"发给家长",@"发给同事"]];
@@ -133,6 +137,7 @@
     [_segmentControl setSelectedSegmentIndex:0];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, headerView.bottom, self.view.width, self.view.height - headerView.bottom - 64) style:UITableViewStyleGrouped];
+    [_tableView setBackgroundColor:[UIColor whiteColor]];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];

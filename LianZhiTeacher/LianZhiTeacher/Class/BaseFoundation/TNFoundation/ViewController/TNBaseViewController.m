@@ -50,7 +50,9 @@
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:kCommonBackgroundColor];
-//    [self.view setBackgroundColor:[UIColor whiteColor]];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+    [backItem setTitle:@"返回"];
+    self.navigationItem.backBarButtonItem = backItem;
     _loadingView = [[LoadingView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
     [_loadingView setUserInteractionEnabled:NO];
     [_loadingView setCenter:CGPointMake(self.view.width / 2, self.view.height / 2 - 30)];

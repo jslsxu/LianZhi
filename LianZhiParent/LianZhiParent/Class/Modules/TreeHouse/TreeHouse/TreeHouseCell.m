@@ -88,7 +88,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [_bgView addSubview:_infoLabel];
         
         _actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_actionButton setSize:CGSizeMake(20, 20)];
+        [_actionButton setSize:CGSizeMake(30, 25)];
         [_actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
         [_actionButton setImage:[UIImage imageNamed:@"TimelineAction"] forState:UIControlStateNormal];
         [_actionButton addTarget:self action:@selector(onActionClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -187,7 +187,38 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     [_infoLabel setText:item.detail];
     [_infoLabel setFrame:CGRectMake(10, spaceYStart, detailSize.width, detailSize.height)];
     
-    spaceYStart += detailSize.height;
+    spaceYStart += detailSize.height + 5;
+    
+    
+    [_collectionView setHidden:YES];
+    [_voiceButton setHidden:YES];
+    [_spanLabel setHidden:YES];
+    if(item.photos.count > 0)
+    {
+        NSInteger row = (item.photos.count + 2) / 3;
+        NSInteger itemWidth = _layout.itemSize.width;
+        NSInteger innerMargin = (bgWidth - itemWidth * 3) / 2;
+        [_collectionView setHidden:NO];
+        [_collectionView setFrame:CGRectMake(10, spaceYStart, bgWidth, itemWidth * row + innerMargin * (row - 1))];
+        [_collectionView reloadData];
+        
+        spaceYStart += _collectionView.height;
+    }
+    else
+    {
+        if(item.audioItem)
+        {
+            [_voiceButton setHidden:NO];
+            [_spanLabel setHidden:NO];
+            [_voiceButton setAudioItem:item.audioItem];
+            [_voiceButton setOrigin:CGPointMake(10, spaceYStart)];
+            [_spanLabel setText:[Utility formatStringForTime:item.audioItem.timeSpan]];
+            [_spanLabel setY:_voiceButton.y];
+            spaceYStart += _voiceButton.height;
+        }
+        else
+            [_voiceButton setHidden:YES];
+    }
     
     if(item.tag.length > 0)
     {
@@ -214,37 +245,8 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         _tagLabel.hidden = YES;
     
     [_tagButton setFrame:_tagLabel.frame];
-    [_actionButton setOrigin:CGPointMake(_bgView.width - 10 - _actionButton.width, spaceYStart + (30 - 20) / 2)];
+    [_actionButton setOrigin:CGPointMake(_bgView.width - 10 - _actionButton.width, spaceYStart + (30 - _actionButton.height) / 2)];
     spaceYStart += 30;
-    [_collectionView setHidden:YES];
-    [_voiceButton setHidden:YES];
-    [_spanLabel setHidden:YES];
-    if(item.photos.count > 0)
-    {
-        NSInteger row = (item.photos.count + 2) / 3;
-        NSInteger itemWidth = _layout.itemSize.width;
-         NSInteger innerMargin = (bgWidth - itemWidth * 3) / 2;
-        [_collectionView setHidden:NO];
-        [_collectionView setFrame:CGRectMake(10, spaceYStart, bgWidth, itemWidth * row + innerMargin * (row - 1))];
-        [_collectionView reloadData];
-        
-        spaceYStart += _collectionView.height + 10;
-    }
-    else
-    {
-        if(item.audioItem)
-        {
-            [_voiceButton setHidden:NO];
-            [_spanLabel setHidden:NO];
-            [_voiceButton setAudioItem:item.audioItem];
-            [_voiceButton setOrigin:CGPointMake(10, spaceYStart)];
-            [_spanLabel setText:[Utility formatStringForTime:item.audioItem.timeSpan]];
-            [_spanLabel setY:_voiceButton.y];
-            spaceYStart += _voiceButton.height + 10;
-        }
-        else
-            [_voiceButton setHidden:YES];
-    }
     
     [_responseView setResponseModel:item.responseModel];
     [_responseView setY:spaceYStart];
@@ -367,12 +369,12 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         NSInteger itemWidth = (bgWidth - kInnerMargin * 2) / 3;
         NSInteger row = (item.photos.count + 2) / 3;
         NSInteger innerMargin = (bgWidth - itemWidth * 3) / 2;
-        extraHeight = (itemWidth * row + innerMargin * (row - 1)) + 10;
+        extraHeight = (itemWidth * row + innerMargin * (row - 1));
     }
     else if(item.audioItem)
-        extraHeight = 40 + 10;
+        extraHeight = 40;
     NSInteger resposeHeight = [ResponseView responseHeightForResponse:item.responseModel forWidth:bgWidth];
-    return @(5 + authHeight + detailSize.height + 30 + extraHeight + resposeHeight + 10 + 10);
+    return @(5 + authHeight + detailSize.height + 5 + 30 + extraHeight + resposeHeight + 10 + 10);
 }
 
 #pragma mark - PhotoBrowserDelegate

@@ -18,7 +18,7 @@
     {
         self.width = kScreenWidth;
         [self setBackgroundColor:[UIColor whiteColor]];
-        [self.moreOptionsButton setBackgroundColor:kCommonParentTintColor];
+        [self.moreOptionsButton setBackgroundColor:[UIColor colorWithHexString:@"c7c7c7"]];
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(10, 8, 44, 44)];
         [self.actualContentView addSubview:_logoView];
         
@@ -41,7 +41,7 @@
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.right + 10, 10, self.width - 10 - (_nameLabel.right + 10), 18)];
         [_timeLabel setFont:[UIFont systemFontOfSize:10]];
-        [_timeLabel setTextColor:[UIColor colorWithHexString:@"cacaca"]];
+        [_timeLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
         [self.actualContentView addSubview:_timeLabel];
         
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, 0.5)];

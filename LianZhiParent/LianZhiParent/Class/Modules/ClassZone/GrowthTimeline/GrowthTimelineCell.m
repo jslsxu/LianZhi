@@ -56,15 +56,19 @@
             [_statusArray addObject:statusButton];
         }
         
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 60, _bgView.width - 10 * 2, 0)];
+        _contentBGView = [[UIView alloc] initWithFrame:CGRectMake(10, 60, _bgView.width - 10 * 2, 0)];
+        [_contentBGView setBackgroundColor:[UIColor colorWithHexString:@"f1f1f1"]];
+        [_contentBGView.layer setCornerRadius:10];
+        [_contentBGView.layer setMasksToBounds:YES];
+        [_bgView addSubview:_contentBGView];
+        
+        
+        _contentLabel = [[UILabel alloc] initWithFrame:_contentBGView.bounds];
         [_contentLabel setFont:[UIFont systemFontOfSize:12]];
-        [_contentLabel setBackgroundColor:[UIColor colorWithHexString:@"f1f1f1"]];
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_contentLabel setNumberOfLines:0];
         [_contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
-        [_contentLabel.layer setCornerRadius:10];
-        [_contentLabel.layer setMasksToBounds:YES];
-        [_bgView addSubview:_contentLabel];
+        [_contentBGView addSubview:_contentLabel];
         
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _bgView.width, kLineHeight)];
         [_sepLine setBackgroundColor:kSepLineColor];
@@ -124,7 +128,11 @@
         NSString *formmaterStr = [self formatterDateStr:timelineItem.date];
         if(formmaterStr)
         {
-            [_dateLabel setFont:[UIFont systemFontOfSize:14]];
+            if([formmaterStr isEqualToString:@"今天"])
+                [_dateLabel setTextColor:[UIColor colorWithHexString:@"03c994"]];
+            else
+                [_dateLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
+            [_dateLabel setFont:[UIFont systemFontOfSize:13]];
             [_dateLabel setText:formmaterStr];
         }
         else
@@ -135,13 +143,13 @@
             
             NSString *monthStr = [NSString stringWithFormat:@"%ld月",(long)month];
             NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n%@",date,monthStr]];
-            [attrStr setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:17],NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]} range:NSMakeRange(0, 3)];
+            [attrStr setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:15],NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]} range:NSMakeRange(0, 3)];
             [attrStr setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:10],NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]} range:NSMakeRange(3, attrStr.length - 3)];
             [_dateLabel setAttributedText:attrStr];
 
         }
         [_dateLabel sizeToFit];
-        [_dateLabel setOrigin:CGPointMake(20, 6)];
+        [_dateLabel setOrigin:CGPointMake(15, 6)];
     }
     else
         [_dateLabel setHidden:YES];
@@ -182,16 +190,18 @@
     NSString *content = timelineItem.content;
     if(content.length > 0)
     {
-        CGSize contentSize = [content boundingRectWithSize:CGSizeMake(kScreenWidth - 15 - 60 - 15 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
+        CGSize contentSize = [content boundingRectWithSize:CGSizeMake(kScreenWidth - 15 - 60 - 20 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
         contentSize.height = contentSize.height + 20;
         contentSize.width = kScreenWidth - 15 - 60 - 10 * 2;
         [_contentLabel setText:content];
-        [_contentLabel setSize:contentSize];
-        spaceYStart += _contentLabel.height + 10;
+        [_contentBGView setHeight:contentSize.height];
+        [_contentLabel setFrame:CGRectMake(10, 10, contentSize.width, contentSize.height - 20)];
+        spaceYStart += _contentBGView.height + 10;
     }
     else
     {
         _contentLabel.height = 0;
+        _contentBGView.hidden = 0;
     }
     _sepLine.y = spaceYStart;
     
@@ -213,7 +223,7 @@
     NSInteger contentHeight = 60;
     if([content length] > 0)
     {
-        CGSize contentSize = [content boundingRectWithSize:CGSizeMake(width - 15 - 60 - 15 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
+        CGSize contentSize = [content boundingRectWithSize:CGSizeMake(width - 15 - 60 - 20 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
         contentHeight += contentSize.height + 20 + 10;
     }
     contentHeight += kBottomViewHeight + 10;

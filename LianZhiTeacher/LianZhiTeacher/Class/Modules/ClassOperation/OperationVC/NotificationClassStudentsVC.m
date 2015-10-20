@@ -33,6 +33,7 @@
         [self addSubview:_infoLabel];
         
         _checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_checkButton setUserInteractionEnabled:NO];
         [_checkButton setFrame:CGRectMake(self.width - 20 - 20, (kCellHeight - 20) / 2, 20, 20)];
         [_checkButton setImage:[UIImage imageNamed:@"ControlDefault"] forState:UIControlStateNormal];
         [_checkButton setImage:[UIImage imageNamed:@"ControlSelectAll"] forState:UIControlStateSelected];

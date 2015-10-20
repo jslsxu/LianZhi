@@ -141,12 +141,8 @@
     {
         AudioItem *audioItem = messageItem.messageContent.audioItem;
         NSInteger second = audioItem.timeSpan;
-        NSInteger maxWidth = kScreenWidth - 50 * 2 - 60;
-        NSInteger width = maxWidth * second / 120;
-        if(width < 60)
-            width = 60;
-        else if(width > maxWidth)
-            width = maxWidth;
+        NSInteger maxWidth = kScreenWidth - 50 * 2 - 60 - 40;
+        NSInteger width = maxWidth * second / 120 + 40;
         [_contentButton setSize:CGSizeMake(width, 32)];
         [_contentButton setHidden:YES];
         [_playButton setHidden:NO];

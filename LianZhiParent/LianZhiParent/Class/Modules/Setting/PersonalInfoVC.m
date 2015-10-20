@@ -78,6 +78,9 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"个人账号";
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+    [backItem setTitle:@"返回"];
+    self.navigationItem.backBarButtonItem = backItem;
     _relationArray = @[@{@"name":@"爸爸",@"id":@"0"},@{@"name":@"妈妈",@"id":@"1"},@{@"name":@"爷爷",@"id":@"2"},@{@"name":@"奶奶",@"id":@"3"},@{@"name":@"外公",@"id":@"4"},@{@"name":@"外婆",@"id":@"5"},@{@"name":@"其他监护人",@"id":@"6"}];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     

@@ -15,6 +15,7 @@
     UIImageView*    _dot;
     UIView*         _bgView;
     UIView*         _statusView;
+    UIView*         _contentBGView;
     UILabel*        _contentLabel;
     NSMutableArray* _statusArray;
     UIView*         _sepLine;

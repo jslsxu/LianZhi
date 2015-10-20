@@ -145,6 +145,9 @@ static NSString *topChatID = nil;
             TNDataWrapper *messageItemWrapper = [response getDataWrapperForIndex:i];
             MessageItem *mesageItem = [[MessageItem alloc] init];
             [mesageItem parseData:messageItemWrapper];
+            MessageItem *preItem = [self.tableViewModel.modelItemArray lastObject];
+            if([mesageItem.messageContent.ctime isEqualToString:preItem.messageContent.ctime])
+                [mesageItem.messageContent setHideTime:YES];
             if([model canInsert:mesageItem])
                 [model.modelItemArray addObject:mesageItem];
         }

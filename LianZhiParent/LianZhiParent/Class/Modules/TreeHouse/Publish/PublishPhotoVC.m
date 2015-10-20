@@ -97,7 +97,7 @@
     _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, _bgView.bottom + 20, _bgView.width, 60)];
     [_textView setFont:[UIFont systemFontOfSize:16]];
     [_textView setDelegate:self];
-    [_textView setPlaceholder:@"我发了一堆图片，快来看看吧"];
+    [_textView setPlaceholder:@"我用连枝分享了这些照片，快来点击查看吧"];
     [_textView setText:self.words];
     [_scrollView addSubview:_textView];
     
@@ -234,7 +234,10 @@
     }
     [item setTime:[formatter stringFromDate:date]];
     [item setPhotos:photos];
-    [item setDetail:_textView.text];
+    NSString *detail = _textView.text;
+    if(detail.length == 0)
+        detail = _textView.placeholder;
+    [item setDetail:detail];
     [item setUser:[UserCenter sharedInstance].userInfo];
     [item setNewSend:YES];
     if([self.delegate respondsToSelector:@selector(publishTreeHouseSuccess:)])

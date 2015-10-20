@@ -331,7 +331,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     self.targetResponseItem = nil;
     __weak typeof(self) wself = self;
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-    CGPoint point = [cell.actionButton convertPoint:CGPointMake(0, cell.actionButton.height / 2) toView:keyWindow];
+    CGPoint point = [cell.actionButton convertPoint:CGPointMake(10, cell.actionButton.height / 2) toView:keyWindow];
     BOOL praised = self.targetTreeHouseItem.responseModel.praised;
     ActionView *actionView = [[ActionView alloc] initWithPoint:point praised:praised action:^(NSInteger index) {
         if(index == 0)

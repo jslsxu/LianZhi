@@ -199,7 +199,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     NSInteger contentWidth = self.width - kImageLeftMargin - kImageRightMargin;
     CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(contentWidth, 0) andFont:_contentLabel.font];
     [_contentLabel setText:item.content];
-    [_contentLabel setFrame:CGRectMake(kImageLeftMargin, 30, contentSize.width, contentSize.height)];
+    [_contentLabel setFrame:CGRectMake(kImageLeftMargin, 34, contentSize.width, contentSize.height)];
     
     CGFloat spaceYStart = _contentLabel.bottom + 5;
     _collectionView.hidden = YES;
@@ -238,8 +238,8 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     [_addressButton setTitle:item.position forState:UIControlStateNormal];
     CGSize titleSize = [[_addressButton titleForState:UIControlStateNormal] sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12]}];
     [_addressButton setFrame:CGRectMake(kImageLeftMargin, spaceYStart, titleSize.width, 20)];
-    [_actionButton setFrame:CGRectMake(self.width - 20 - 10, spaceYStart, 20, 20)];
-    spaceYStart += 20 + 5;
+    [_actionButton setFrame:CGRectMake(self.width - 30 - 10, spaceYStart, 30, 25)];
+    spaceYStart += 25;
     
     [_responseView setFrame:CGRectMake(kImageLeftMargin, spaceYStart, self.width - kImageLeftMargin - 10, 100)];
     [_responseView setResponseModel:item.responseModel];
@@ -250,7 +250,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
 {
-    CGFloat height = 30;
+    CGFloat height = 34;
     ClassZoneItem *item = (ClassZoneItem *)modelItem;
     CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(width - kImageLeftMargin - kImageRightMargin, 0) andFont:[UIFont systemFontOfSize:14]];
     height += contentSize.height + 5;

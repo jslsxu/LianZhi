@@ -17,7 +17,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     self.title = self.studentInfo.name;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"%ld人",(unsigned long)self.studentInfo.family.count] style:UIBarButtonItemStylePlain target:nil action:nil];
     if(self.presentedByClassOperation)
