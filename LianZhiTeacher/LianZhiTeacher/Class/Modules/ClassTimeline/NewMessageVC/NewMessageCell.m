@@ -63,7 +63,7 @@
         [_contentImageView sd_setImageWithURL:[NSURL URLWithString:messageItem.feedItem.feedPhoto] placeholderImage:nil];
     else if(messageItem.feedItem.feedType == FeedTypeAudio)
     {
-        [_contentImageView setImage:[UIImage imageNamed:@""]];
+        [_contentImageView setImage:[UIImage imageNamed:@"NewMessageAudio"]];
     }
     else
     {

@@ -86,7 +86,7 @@
 
 - (BOOL)validate
 {
-    if(_recordView.tmpAmrDuration == 0 || _recordView.tmpAmrData)
+    if(_recordView.tmpAmrDuration == 0 || _recordView.tmpAmrData.length == 0)
     {
         [ProgressHUD showHintText:@"请录制要发布的语音"];
         return NO;

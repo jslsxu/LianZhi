@@ -63,6 +63,7 @@ static SystemSoundID shake_sound_male_id = 0;
     [WelcomeView showWelcome];
     [self startReachability];
     [self expendOperationGuide];
+    [self checkNewVersion];
     return YES;
 }
 
@@ -131,18 +132,18 @@ static SystemSoundID shake_sound_male_id = 0;
 - (void)showNewEditionPreview
 {
     //重大版本才加
-//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//    NSDictionary *infoDictionary = [NSBundle mainBundle].infoDictionary;
-//    NSString *version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
-//    BOOL newEditionPreviewShown = [userDefaults boolForKey:version];
-//    if(!newEditionPreviewShown)
-//    {
-//        newEditionPreviewShown = YES;
-//        [userDefaults setBool:newEditionPreviewShown forKey:version];
-//        [userDefaults synchronize];
-//        NewEditionPreview *preview = [[NewEditionPreview alloc] initWithFrame:[UIScreen mainScreen].bounds];
-//        [preview show];
-//    }
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *infoDictionary = [NSBundle mainBundle].infoDictionary;
+    NSString *version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    BOOL newEditionPreviewShown = [userDefaults boolForKey:version];
+    if(!newEditionPreviewShown)
+    {
+        newEditionPreviewShown = YES;
+        [userDefaults setBool:newEditionPreviewShown forKey:version];
+        [userDefaults synchronize];
+        NewEditionPreview *preview = [[NewEditionPreview alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        [preview show];
+    }
 }
 
 - (void)loginSuccess
@@ -364,6 +365,28 @@ static SystemSoundID shake_sound_male_id = 0;
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)checkNewVersion
+{
+    NSString *urlBase = @"http://itunes.apple.com/lookup?country=%@&id=%@";
+    NSString *urlStr = [NSString stringWithFormat:urlBase, [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],kAppStoreId];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    AFHTTPRequestOperationManager *operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:url];
+    [operationManager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *result = [responseObject objectForKey:@"results"];
+        NSDictionary *info = result[0];
+        NSString *releaseNotes = info[@"releaseNotes"];
+        NSString *version = info[@"version"];
+        NSString *applicationVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+        if([applicationVersion compare:version] == NSOrderedAscending)
+        {
+            NewEditionPreview *preview = [[NewEditionPreview alloc] initWithVersion:version notes:releaseNotes];
+            [preview show];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 }
 
 @end

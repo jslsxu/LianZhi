@@ -50,34 +50,6 @@
     return self;
 }
 
-- (void)setClips:(BOOL)clips
-{
-    _clips = clips;
-    if(_clips)
-    {
-        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-        CGMutablePathRef path = CGPathCreateMutable();
-        CGPathMoveToPoint(path, NULL, 0, self.height);
-        CGPathAddLineToPoint(path, NULL, 0, 10);
-        CGPathAddArcToPoint(path, NULL, 0, 0, 10, 0, 10);
-        CGPathAddLineToPoint(path, NULL, self.width - 10, 0);
-        CGPathAddArcToPoint(path, NULL, self.width, 0, self.width, 10, 10);
-        CGPathAddLineToPoint(path, NULL, self.width, self.height);
-        CGPathAddLineToPoint(path, NULL, 0, self.height);
-        CGPathCloseSubpath(path);
-        [shapeLayer setPath:path];
-        CFRelease(path);
-        self.layer.mask = shapeLayer;
-        [self.layer setMasksToBounds:YES];
-    }
-    else
-    {
-        [self.layer setMask:nil];
-        [self.layer setMasksToBounds:NO];
-    }
-    [_topLine setHidden:_clips];
-}
-
 - (void)setResponseItem:(ResponseItem *)responseItem
 {
     _responseItem = responseItem;
@@ -96,12 +68,72 @@
     CGSize contentSize = [content boundingRectWithSize:CGSizeMake(_contentLabel.width, CGFLOAT_MAX) andFont:_contentLabel.font];
     [_contentLabel setHeight:contentSize.height];
     [_contentLabel setAttributedText:attributedStr];
+    [self setHeight:MAX(24 + contentSize.height + 8, 40)];
 }
 
 - (void)setCellType:(TableViewCellType)cellType
 {
     _cellType = cellType;
+    [_topLine setHidden:_cellType == TableViewCellTypeFirst || _cellType == TableViewCellTypeSingle];
     [_commentImageView setHidden:_cellType != TableViewCellTypeFirst];
+    if(_cellType == TableViewCellTypeMiddle)
+    {
+        [self.layer setMask:nil];
+        [self.layer setMasksToBounds:NO];
+    }
+    else if(_cellType == TableViewCellTypeFirst)
+    {
+        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        CGMutablePathRef path = CGPathCreateMutable();
+        CGPathMoveToPoint(path, NULL, 0, self.height);
+        CGPathAddLineToPoint(path, NULL, 0, 10);
+        CGPathAddArcToPoint(path, NULL, 0, 0, 10, 0, 10);
+        CGPathAddLineToPoint(path, NULL, self.width - 10, 0);
+        CGPathAddArcToPoint(path, NULL, self.width, 0, self.width, 10, 10);
+        CGPathAddLineToPoint(path, NULL, self.width, self.height);
+        CGPathAddLineToPoint(path, NULL, 0, self.height);
+        CGPathCloseSubpath(path);
+        [shapeLayer setPath:path];
+        CFRelease(path);
+        self.layer.mask = shapeLayer;
+        [self.layer setMasksToBounds:YES];
+    }
+    else if(_cellType == TableViewCellTypeLast)
+    {
+        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        CGMutablePathRef path = CGPathCreateMutable();
+        CGPathMoveToPoint(path, NULL, 0, 0);
+        CGPathAddLineToPoint(path, NULL, 0, self.height - 10);
+        CGPathAddArcToPoint(path, NULL, 0, self.height, 10, self.height, 10);
+        CGPathAddLineToPoint(path, NULL, self.width - 10, self.height);
+        CGPathAddArcToPoint(path, NULL, self.width, self.height, self.width, self.height - 10, 10);
+        CGPathAddLineToPoint(path, NULL, self.width, 0);
+        CGPathAddLineToPoint(path, NULL, 0, 0);
+        CGPathCloseSubpath(path);
+        [shapeLayer setPath:path];
+        CFRelease(path);
+        self.layer.mask = shapeLayer;
+        [self.layer setMasksToBounds:YES];
+    }
+    else if(_cellType == TableViewCellTypeSingle)
+    {
+        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        CGMutablePathRef path = CGPathCreateMutable();
+        CGPathMoveToPoint(path, NULL, 0, self.height - 10);
+        CGPathAddLineToPoint(path, NULL, 0, 10);
+        CGPathAddArcToPoint(path, NULL, 0, 0, 10, 0, 10);
+        CGPathAddLineToPoint(path, NULL, self.width - 10, 0);
+        CGPathAddArcToPoint(path, NULL, self.width, 0, self.width, 10, 10);
+        CGPathAddLineToPoint(path, NULL, self.width, self.height - 10);
+        CGPathAddArcToPoint(path, NULL, self.width, self.height, self.width - 10, self.height, 10);
+        CGPathAddLineToPoint(path, NULL, 10, self.height);
+        CGPathAddArcToPoint(path, NULL, 0, self.height, 0, self.height - 10, 10);
+        CGPathCloseSubpath(path);
+        [shapeLayer setPath:path];
+        CFRelease(path);
+        self.layer.mask = shapeLayer;
+        [self.layer setMasksToBounds:YES];
+    }
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
@@ -115,7 +147,7 @@
     }
     [content appendString:responseItem.commentItem.content];
     CGSize contentSize = [content boundingRectWithSize:CGSizeMake(width - 55 - 10, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:12]];
-    return @(24 + contentSize.height + 8);
+    return @(MAX(24 + contentSize.height + 8, 40));
 }
 
 @end

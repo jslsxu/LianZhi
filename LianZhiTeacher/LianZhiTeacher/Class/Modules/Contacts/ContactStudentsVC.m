@@ -71,7 +71,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 30;
+    return 25;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -120,15 +120,26 @@
     }
     
 }
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 25)];
+    [headerView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    NSString *title = nil;
     if(section == 0)
-        return @"群";
+        title = @"群";
     else
     {
         ContactGroup *group = [self.students objectAtIndex:section - 1];
-        return group.key;
+        title = group.key;
     }
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, headerView.width - 15, headerView.height)];
+    [titleLabel setTextColor:[UIColor colorWithHexString:@"8e8e8e"]];
+    [titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [titleLabel setText:title];
+    [headerView addSubview:titleLabel];
+    return headerView;
+
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView

@@ -246,6 +246,7 @@
     [_tableView setTableHeaderView:_headerView];
     
     _praiseView = [[PraiseListView alloc] initWithFrame:CGRectMake(0, 0, _tableView.width, 0)];
+    [_praiseView setIsSingle:self.zoneItem.responseModel.responseArray.count == 0];
     [_praiseView setPraiseArray:self.zoneItem.responseModel.praiseArray];
     
     _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - REPLY_BOX_HEIGHT, self.view.width, REPLY_BOX_HEIGHT)];
@@ -410,6 +411,7 @@
             ResponseItem *responseItem = [[ResponseItem alloc] init];
             [responseItem parseData:commentWrapper];
             [wself.zoneItem.responseModel addResponse:responseItem];
+            [_praiseView setIsSingle:wself.zoneItem.responseModel.responseArray.count == 0];
             [_praiseView setPraiseArray:wself.zoneItem.responseModel.praiseArray];
             [_tableView reloadData];
         }
@@ -461,12 +463,19 @@
     {
         cell = [[DetailCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
-    [cell setResponseItem:self.zoneItem.responseModel.responseArray[indexPath.row]];
-    [cell setClips:indexPath.row == 0 && self.zoneItem.responseModel.praiseArray.count == 0];
-    if(indexPath.row == 0)
-        [cell setCellType:TableViewCellTypeFirst];
+    NSArray *responseAray = self.zoneItem.responseModel.responseArray;
+    [cell setResponseItem:responseAray[indexPath.row]];
+    if(self.zoneItem.responseModel.praiseArray.count == 0)
+    {
+        [cell setCellType:[BGTableViewCell cellTypeForTableView:tableView atIndexPath:indexPath]];
+    }
     else
-        [cell setCellType:TableViewCellTypeAny];
+    {
+        if(indexPath.row < responseAray.count - 1)
+            [cell setCellType:TableViewCellTypeMiddle];
+        else
+            [cell setCellType:TableViewCellTypeLast];
+    }
     return cell;
 }
 
@@ -482,6 +491,7 @@
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : self.zoneItem.itemID, @"types" : @"0"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
                 [ProgressHUD showSuccess:@"删除成功"];
                 [wself.zoneItem.responseModel removeResponse:responseItem];
+                [_praiseView setIsSingle:wself.zoneItem.responseModel.responseArray.count == 0];
                 [_praiseView setPraiseArray:wself.zoneItem.responseModel.praiseArray];
                 [_tableView reloadData];
             } fail:^(NSString *errMsg) {

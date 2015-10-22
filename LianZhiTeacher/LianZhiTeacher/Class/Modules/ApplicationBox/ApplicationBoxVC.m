@@ -56,33 +56,35 @@
 
 @implementation ApplicationBoxVC
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if(self)
-    {
-        self.actionArray = @[@"NotificationToAllVC",@"ContactListVC",@"ClassZoneVC",@"PublishGrowthTimelineVC",@"TNBaseWebViewController"];
-        self.titleArray = @[@"发布通知",@"聊天空间",@"班博客",@"家园手册",@"校主页"];
-        self.imageArray = @[@"AppPublishNote",@"AppChat",@"AppClassZone",@"AppParent",@"AppSchoolHome"];
-//        self.actionArray = @[@"NotificationToAllVC",@"ContactListVC",@"ClassZoneVC",@"PublishGrowthTimelineVC",@"StudentAttendanceVC",@"MyAttendanceVC",@"HomeWordkVC",@"TNBaseWebViewController"];
-//        self.titleArray = @[@"发布通知",@"聊天空间",@"班博客",@"家园手册",@"学生考勤",@"我的考勤",@"作业练习",@"校主页"];
-//        self.imageArray = @[@"AppPublishNote",@"AppChat",@"AppClassZone",@"AppParent",@"AppStudentAttendance",@"AppMyAttendance",@"AppHomeWork",@"AppSchoolHome"];
-        self.appItems = [NSMutableArray array];
-        for (NSInteger i = 0; i < self.titleArray.count; i++)
-        {
-            ApplicationItem *item = [[ApplicationItem alloc] init];
-            [item setImageStr:self.imageArray[i]];
-            [item setTitle:self.titleArray[i]];
-            [self.appItems addObject:item];
-        }
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    if([UserCenter sharedInstance].userData.canPubish)
+    {
+        self.actionArray = @[@"NotificationToAllVC",@"ContactListVC",@"ClassZoneVC",@"PublishGrowthTimelineVC",@"TNBaseWebViewController"];
+        self.titleArray = @[@"发布通知",@"聊天空间",@"班博客",@"家园手册",@"校主页"];
+        self.imageArray = @[@"AppPublishNote",@"AppChat",@"AppClassZone",@"AppParent",@"AppSchoolHome"];
+    }
+    else
+    {
+        self.actionArray = @[@"ContactListVC",@"ClassZoneVC",@"PublishGrowthTimelineVC",@"TNBaseWebViewController"];
+        self.titleArray = @[@"聊天空间",@"班博客",@"家园手册",@"校主页"];
+        self.imageArray = @[@"AppChat",@"AppClassZone",@"AppParent",@"AppSchoolHome"];
+    }
+    //        self.actionArray = @[@"NotificationToAllVC",@"ContactListVC",@"ClassZoneVC",@"PublishGrowthTimelineVC",@"StudentAttendanceVC",@"MyAttendanceVC",@"HomeWordkVC",@"TNBaseWebViewController"];
+    //        self.titleArray = @[@"发布通知",@"聊天空间",@"班博客",@"家园手册",@"学生考勤",@"我的考勤",@"作业练习",@"校主页"];
+    //        self.imageArray = @[@"AppPublishNote",@"AppChat",@"AppClassZone",@"AppParent",@"AppStudentAttendance",@"AppMyAttendance",@"AppHomeWork",@"AppSchoolHome"];
+    self.appItems = [NSMutableArray array];
+    for (NSInteger i = 0; i < self.titleArray.count; i++)
+    {
+        ApplicationItem *item = [[ApplicationItem alloc] init];
+        [item setImageStr:self.imageArray[i]];
+        [item setTitle:self.titleArray[i]];
+        [self.appItems addObject:item];
+    }
+    
     _layout = [[UICollectionViewFlowLayout alloc] init];
     [_layout setSectionInset:UIEdgeInsetsMake(15, 15, 15, 15)];
     NSInteger itemSize = (self.view.width - 15 * 2 - 10 * 2) / 3;

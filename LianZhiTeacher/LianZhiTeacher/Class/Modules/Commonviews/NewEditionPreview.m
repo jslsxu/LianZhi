@@ -8,95 +8,80 @@
 
 #import "NewEditionPreview.h"
 
-static NSString *versionInfo = @"为了更好的方便您的使用，也为了孩子的老师识别您和您孩子的信息，请及时到设置中修改您的个人信息和您孩子的档案";
 #define kMargin         18
 
 @implementation NewEditionPreview
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithVersion:(NSString *)version notes:(NSString *)relaseNotes
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame:[UIScreen mainScreen].bounds];
     if(self)
     {
         _bgView = [[UIView alloc] initWithFrame:self.bounds];
-        [_bgView setBackgroundColor:[UIColor clearColor]];
+        [_bgView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.6]];
         [self addSubview:_bgView];
         
-        CGFloat height = MIN(self.bounds.size.height - 80 * 2, 8 * 2 + [self totalHeight] + 36 + kMargin);
+        UIImageView *mailImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ReleaseNoteBG"]];
+        [mailImageView setCenter:CGPointMake(self.width / 2, self.height / 2)];
+        [mailImageView setUserInteractionEnabled:YES];
+        [self addSubview:mailImageView];
         
-        _contentView = [[UIView alloc] initWithFrame:CGRectMake(12, (self.height - height) / 2, self.width - 12 * 2, height)];
-        [_contentView setBackgroundColor:[UIColor colorWithRed:0xcd / 255.0 green:0xca / 255.0 blue:0xca / 255.0 alpha:0.6]];
-        [_contentView.layer setCornerRadius:5];
-        [_contentView.layer setMasksToBounds:YES];
-        [self addSubview:_contentView];
+        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(30, 10, mailImageView.width - 30 * 2, 230)];
+        [mailImageView addSubview:_scrollView];
         
-        _rootView = [[UIView alloc] initWithFrame:CGRectInset(_contentView.bounds, 8, 8)];
-        [_rootView setBackgroundColor:[UIColor whiteColor]];
-        [_contentView addSubview:_rootView];
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _scrollView.width, 25)];
+        [titleLabel setFont:[UIFont systemFontOfSize:18]];
+        [titleLabel setTextColor:[UIColor colorWithHexString:@"02c994"]];
+        [titleLabel setText:[NSString stringWithFormat:@"连枝升级啦(v%@)",version]];
+        [_scrollView addSubview:titleLabel];
         
-        _confirmButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_confirmButton setFrame:CGRectMake(kMargin, _rootView.height - kMargin - 36, _rootView.width - kMargin * 2, 36)];
-        [_confirmButton setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:_confirmButton.size cornerRadius:5] forState:UIControlStateNormal];
-        [_confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_confirmButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
-        [_confirmButton setTitle:@"立即使用" forState:UIControlStateNormal];
-        [_confirmButton addTarget:self action:@selector(onConfirmButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_rootView addSubview:_confirmButton];
+        UILabel *notesLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, titleLabel.bottom + 10, _scrollView.width, 0)];
+        [notesLabel setFont:[UIFont systemFontOfSize:14]];
+        [notesLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [notesLabel setText:relaseNotes];
         
-        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, _rootView.width, _confirmButton.y )];
-        [self setupScrollView:_scrollView];
-        [_rootView addSubview:_scrollView];
+        CGSize notesSize = [relaseNotes boundingRectWithSize:CGSizeMake(notesLabel.width, CGFLOAT_MAX) andFont:notesLabel.font];
+        [notesLabel setHeight:notesSize.height];
+        [_scrollView addSubview:notesLabel];
+        
+        UILabel *hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, notesLabel.bottom + 30, _scrollView.width, 30)];
+        [hintLabel setTextAlignment:NSTextAlignmentCenter];
+        [hintLabel setText:@"建议在wifi下升级"];
+        [hintLabel setFont:[UIFont systemFontOfSize:14]];
+        [hintLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
+        [_scrollView addSubview:hintLabel];
+        
+        [_scrollView setContentSize:CGSizeMake(_scrollView.width, hintLabel.bottom + 20)];
+        
+        UIButton *updateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [updateButton setFrame:CGRectMake((mailImageView.width - 50) / 2, 250 - 25, 50, 50)];
+        [updateButton setImage:[UIImage imageNamed:@"UpdateButton"] forState:UIControlStateNormal];
+        [updateButton addTarget:self action:@selector(onUpdateButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [mailImageView addSubview:updateButton];
+        
+        UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [cancelButton setFrame:CGRectMake(100, 300, mailImageView.width - 100 * 2, 30)];
+        [cancelButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [cancelButton setTitleColor:[UIColor colorWithHexString:@"2c2c2c"] forState:UIControlStateNormal];
+        [cancelButton setTitle:@"以后再说" forState:UIControlStateNormal];
+        [cancelButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
+        [mailImageView addSubview:cancelButton];
     }
     return self;
 }
 
-- (CGFloat)totalHeight
+- (void)onUpdateButtonClicked
 {
-    CGFloat infoHeight = [versionInfo boundingRectWithSize:CGSizeMake(self.width - kMargin * 2 - (12 + 8) * 2, 0) andFont:[UIFont systemFontOfSize:14]].height;
-    return kMargin * 4 + 20 * 2 + infoHeight;
-}
-
-- (void)setupScrollView:(UIView *)viewParent
-{
-    CGFloat margin = kMargin;
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, margin, viewParent.width - margin * 2, 20)];
-    [titleLabel setFont:[UIFont systemFontOfSize:17]];
-    [titleLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
-    [titleLabel setText:[NSString stringWithFormat:@"欢迎使用连枝家长版"]];
-    [viewParent addSubview:titleLabel];
-    
-    UILabel*    subTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, titleLabel.bottom + margin, viewParent.width - margin * 2, 20)];
-    [subTitleLabel setFont:[UIFont systemFontOfSize:14]];
-    [subTitleLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
-    [subTitleLabel setText:@"温馨提示"];
-    [viewParent addSubview:subTitleLabel];
-    
-    UILabel*    contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, subTitleLabel.bottom + margin, subTitleLabel.width, 0)];
-    [contentLabel setNumberOfLines:0];
-    [contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
-    [contentLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-    [contentLabel setFont:[UIFont systemFontOfSize:14]];
-    [contentLabel setText:versionInfo];
-     [contentLabel sizeToFit];
-    [viewParent addSubview:contentLabel];
-    [_scrollView setContentSize:CGSizeMake(_scrollView.width, [self totalHeight])];
-}
-
-- (void)onConfirmButtonClicked
-{
-    [self dismiss];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kTeacherClientAppStoreUrl]];
 }
 
 - (void)show
 {
     UIView *viewParent = [UIApplication sharedApplication].keyWindow;
     [viewParent addSubview:self];
-    [self setCenter:CGPointMake(viewParent.width / 2, viewParent.height / 2)];
-    _contentView.transform = CGAffineTransformMakeScale(1.2, 1.2);
-    _contentView.alpha = 0.f;
+    self.alpha = 0.f;
     [UIView animateWithDuration:0.2 animations:^{
-        _contentView.alpha = 1.f;
-        _contentView.transform = CGAffineTransformIdentity;
+        self.alpha = 1.f;
     } completion:^(BOOL finished) {
         
     }];
@@ -106,7 +91,6 @@ static NSString *versionInfo = @"为了更好的方便您的使用，也为了�
 {
     [UIView animateWithDuration:0.2 animations:^{
         self.alpha = 0.f;
-        _contentView.transform = CGAffineTransformMakeScale(0.8, 0.8);
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
     }];

@@ -35,6 +35,16 @@ static NSString *topChatID = nil;
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
     [_timer fire];
     
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.targetID forKey:@"from_id"];
+    [params setValue:kStringFromValue(self.chatType) forKey:@"from_type"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/get_sound" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        NSString *status = [responseObject getStringForKey:@"sound"];
+        self.soundOn = [status isEqualToString:@"open"];
+        [self updateTitle];
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (void)viewDidLoad
@@ -61,6 +71,69 @@ static NSString *topChatID = nil;
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
     [_tableView addGestureRecognizer:tapGesture];
+}
+
+- (void)setSoundOn:(BOOL)soundOn
+{
+    _soundOn = soundOn;
+    ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
+    [messageModel setSoundOff:!_soundOn];
+}
+
+- (void)updateTitle
+{
+    BOOL earMode = [UserCenter sharedInstance].personalSetting.earPhone;
+    BOOL soundOn = self.soundOn;
+    
+    NSInteger maxWidth = self.view.width - 80 * 2;
+    
+    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, maxWidth, 40)];
+    NSInteger width = 0;
+    NSInteger spaceXEnd = titleView.width;
+    UIImageView *soundOffImageView = nil;
+    if(!soundOn)
+    {
+        soundOffImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TitleSoundOff"]];
+        [titleView addSubview:soundOffImageView];
+        [soundOffImageView setOrigin:CGPointMake(spaceXEnd - soundOffImageView.width, (titleView.height - soundOffImageView.height) / 2)];
+        width += soundOffImageView.width + 5;
+        spaceXEnd -= soundOffImageView.width + 5;
+    }
+    UIImageView *earPhoneImageView = nil;
+    if(earMode)
+    {
+        earPhoneImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"EarPhoneMode"]];
+        [titleView addSubview:earPhoneImageView];
+        width += earPhoneImageView.width + 5;
+        spaceXEnd -= earPhoneImageView.width + 5;
+    }
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
+    [titleLabel setTextColor:[UIColor whiteColor]];
+    [titleLabel setText:self.title];
+    [titleLabel sizeToFit];
+    [titleView addSubview:titleLabel];
+    width += titleLabel.width;
+    
+    if(width < maxWidth)
+    {
+        [titleLabel setOrigin:CGPointMake((titleView.width - width) / 2, (titleView.height - titleLabel.height) / 2)];
+        NSInteger spaceXStart = titleLabel.right + 5;
+        if(earMode)
+        {
+            [earPhoneImageView setOrigin:CGPointMake(spaceXStart, (titleView.height - earPhoneImageView.height) / 2)];
+            spaceXStart += earPhoneImageView.width + 5;
+        }
+        if(!soundOn)
+            [soundOffImageView setOrigin:CGPointMake(spaceXStart, (titleView.height - soundOffImageView.height) / 2)];
+    }
+    else
+    {
+        [titleLabel setFrame:CGRectMake(0, 0, spaceXEnd, titleView.height)];
+    }
+    
+    self.navigationItem.titleView = titleView;
 }
 
 - (void)onShowClassMembers

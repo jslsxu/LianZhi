@@ -33,19 +33,16 @@ static NSString *topChatID = nil;
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
     [_timer fire];
     
-    if(self.chatType == ChatTypeClass)
-    {
-        NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        [params setValue:self.targetID forKey:@"from_id"];
-        [params setValue:kStringFromValue(ChatTypeClass) forKey:@"from_type"];
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/get_sound" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-            NSString *status = [responseObject getStringForKey:@"sound"];
-            self.soundOn = [status isEqualToString:@"open"];
-            [self updateTitle];
-        } fail:^(NSString *errMsg) {
-            
-        }];
-    }
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.targetID forKey:@"from_id"];
+    [params setValue:kStringFromValue(self.chatType) forKey:@"from_type"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/get_sound" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        NSString *status = [responseObject getStringForKey:@"sound"];
+        self.soundOn = [status isEqualToString:@"open"];
+        [self updateTitle];
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (void)setSoundOn:(BOOL)soundOn

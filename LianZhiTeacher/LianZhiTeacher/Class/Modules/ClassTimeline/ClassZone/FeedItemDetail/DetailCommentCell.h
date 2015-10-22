@@ -19,5 +19,4 @@
 }
 @property (nonatomic, assign)TableViewCellType cellType;
 @property (nonatomic, strong)ResponseItem *responseItem;
-@property (nonatomic, assign)BOOL clips;
 @end

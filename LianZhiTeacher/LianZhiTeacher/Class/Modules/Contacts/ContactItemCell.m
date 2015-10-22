@@ -106,6 +106,10 @@
     }
     else
     {
+        StudentInfo *studentInfo = (StudentInfo *)userInfo;
+        [_commentLabel setText:[NSString stringWithFormat:@"(%ld位家长)",studentInfo.family.count]];
+        [_commentLabel sizeToFit];
+        [_commentLabel setOrigin:CGPointMake(_nameLabel.right + 15, (self.height - _commentLabel.height) / 2)];
         [_chatButton setHidden:YES];
         [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }

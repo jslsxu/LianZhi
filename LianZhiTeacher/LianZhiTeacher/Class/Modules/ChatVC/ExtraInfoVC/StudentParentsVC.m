@@ -58,6 +58,7 @@
 
     self.title = self.studentInfo.name;
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStylePlain];
+    [_tableView setBackgroundColor:[UIColor clearColor]];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
@@ -111,10 +112,22 @@
     return group.contacts.count;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 25;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     ContactGroup *group = [self.formatterMemberArray objectAtIndex:section];
-    return group.key;
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 25)];
+    [headerView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, headerView.width - 15, headerView.height)];
+    [titleLabel setTextColor:[UIColor colorWithHexString:@"8e8e8e"]];
+    [titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [titleLabel setText:group.key];
+    [headerView addSubview:titleLabel];
+    return headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

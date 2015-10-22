@@ -39,7 +39,6 @@ static SystemSoundID shake_sound_male_id = 0;
         self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:homeVC];
         [self.window setRootViewController:self.rootNavigation];
         self.homeVC = homeVC;
-        [self showNewEditionPreview];
     }
     else
     {
@@ -59,6 +58,7 @@ static SystemSoundID shake_sound_male_id = 0;
     [self startReachability];
     [[TaskUploadManager sharedInstance] start];
     [self expendOperationGuide];
+    [self checkNewVersion];
     return YES;
 }
 
@@ -199,21 +199,26 @@ static SystemSoundID shake_sound_male_id = 0;
     [self handleNotification:userInfo];
 }
 
-- (void)showNewEditionPreview
+- (void)checkNewVersion
 {
-    //重大版本才加
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *infoDictionary = [NSBundle mainBundle].infoDictionary;
-    NSString *version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
-    BOOL newEditionPreviewShown = [userDefaults boolForKey:version];
-    if(!newEditionPreviewShown)
-    {
-        newEditionPreviewShown = YES;
-        [userDefaults setBool:newEditionPreviewShown forKey:version];
-        [userDefaults synchronize];
-        NewEditionPreview *preview = [[NewEditionPreview alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        [preview show];
-    }
+    NSString *urlBase = @"http://itunes.apple.com/lookup?country=%@&id=%@";
+    NSString *urlStr = [NSString stringWithFormat:urlBase, [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],kAppStoreID];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    AFHTTPRequestOperationManager *operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:url];
+    [operationManager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *result = [responseObject objectForKey:@"results"];
+        NSDictionary *info = result[0];
+        NSString *releaseNotes = info[@"releaseNotes"];
+        NSString *version = info[@"version"];
+        NSString *applicationVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+        if([applicationVersion compare:version] == NSOrderedAscending)
+        {
+            NewEditionPreview *preview = [[NewEditionPreview alloc] initWithVersion:version notes:releaseNotes];
+            [preview show];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+    }];
 }
 
 - (void)loginSuccess
@@ -236,7 +241,6 @@ static SystemSoundID shake_sound_male_id = 0;
         }
         [self.window setRootViewController:self.rootNavigation];
         [self.window makeKeyAndVisible];
-        [self showNewEditionPreview];
     };
     
     if([UserCenter sharedInstance].userData.firstLogin)

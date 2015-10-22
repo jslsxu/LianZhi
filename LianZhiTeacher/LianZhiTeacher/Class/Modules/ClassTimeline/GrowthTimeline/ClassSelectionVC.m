@@ -39,9 +39,21 @@
     return group.contacts.count;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return [ContactModel sharedInstance].classKeys[section];
+    return 25;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 25)];
+    [headerView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, headerView.width - 15, headerView.height)];
+    [titleLabel setTextColor:[UIColor colorWithHexString:@"8e8e8e"]];
+    [titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [titleLabel setText:[ContactModel sharedInstance].classKeys[section]];
+    [headerView addSubview:titleLabel];
+    return headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

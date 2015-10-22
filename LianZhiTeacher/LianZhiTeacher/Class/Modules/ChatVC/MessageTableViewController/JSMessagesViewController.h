@@ -16,5 +16,6 @@
 @property (nonatomic, copy)NSString *userID;
 @property (nonatomic, copy)NSString *name;
 @property (nonatomic, copy)NSString *mobile;
+@property (nonatomic, assign)BOOL soundOn;
 + (NSString *)curChatID;//当前聊天页面id
 @end

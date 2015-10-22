@@ -383,6 +383,7 @@
 		37E93FC71A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FC01A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m */; };
 		37EAC9EA1B82446F007BFBA1 /* CommonInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9E91B82446F007BFBA1 /* CommonInputVC.m */; };
 		37EACA031B845B5F007BFBA1 /* PasswordConfirmVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EACA011B845B5F007BFBA1 /* PasswordConfirmVC.m */; };
+		37F206D81BD87A99006466F4 /* City.db in Resources */ = {isa = PBXBuildFile; fileRef = 37F206D71BD87A99006466F4 /* City.db */; };
 		37FD6DE71BAEE01C00C83AB4 /* ChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */; };
 		37FD6DE81BAEE01C00C83AB4 /* JSMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDE1BAEE01C00C83AB4 /* JSMessagesViewController.m */; };
 		37FD6DE91BAEE01C00C83AB4 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DE01BAEE01C00C83AB4 /* MessageCell.m */; };
@@ -1159,6 +1160,7 @@
 		37EAC9E91B82446F007BFBA1 /* CommonInputVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonInputVC.m; sourceTree = "<group>"; };
 		37EACA011B845B5F007BFBA1 /* PasswordConfirmVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordConfirmVC.m; sourceTree = "<group>"; };
 		37EACA021B845B5F007BFBA1 /* PasswordConfirmVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordConfirmVC.h; sourceTree = "<group>"; };
+		37F206D71BD87A99006466F4 /* City.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = City.db; sourceTree = "<group>"; };
 		37FD6DDB1BAEE01C00C83AB4 /* ChatMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessageModel.h; sourceTree = "<group>"; };
 		37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageModel.m; sourceTree = "<group>"; };
 		37FD6DDD1BAEE01C00C83AB4 /* JSMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSMessagesViewController.h; sourceTree = "<group>"; };
@@ -2492,6 +2494,7 @@
 		37C3568E1A3FE71000B948E6 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				37F206D71BD87A99006466F4 /* City.db */,
 				37FD70861BBCEEDE00C83AB4 /* Guide.zip */,
 				37FD6DFF1BB054D100C83AB4 /* WelcomeView */,
 				3725714E1A80B38C0087F178 /* Sound */,
@@ -3172,6 +3175,7 @@
 				3793FA621B7CFFF000501F77 /* zbar-help.html in Resources */,
 				3793FA651B7CFFF000501F77 /* ZBarSDK.zip in Resources */,
 				37FD6E591BBBDD7300C83AB4 /* small_guide3.png in Resources */,
+				37F206D81BD87A99006466F4 /* City.db in Resources */,
 				37FD6E5A1BBBDD7300C83AB4 /* small_guide4.png in Resources */,
 				3793FAC61B7CFFF000501F77 /* SenderVoiceNodePlaying000@2x.png in Resources */,
 				3793FABF1B7CFFF000501F77 /* ReceiverVoiceNodePlaying000@2x副本.png in Resources */,

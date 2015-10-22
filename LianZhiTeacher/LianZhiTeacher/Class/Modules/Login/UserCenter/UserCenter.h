@@ -23,7 +23,7 @@ extern NSString *const kPersonalSettingChangedNotification;
 @property (nonatomic, strong)LogConfig *config;
 @property (nonatomic, strong)NSArray*   schools;
 @property (nonatomic, assign)NSInteger curIndex;
-
+@property (nonatomic, assign)BOOL canPubish;
 @end
 
 

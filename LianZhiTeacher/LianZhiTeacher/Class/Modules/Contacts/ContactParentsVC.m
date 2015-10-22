@@ -24,6 +24,7 @@
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:(@"WhiteLeftArrow.png")] style:UIBarButtonItemStylePlain target:self action:@selector(onCancel)];
     
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    [_tableView setBackgroundColor:[UIColor clearColor]];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
@@ -74,7 +75,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 30;
+    return 25;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -102,11 +103,25 @@
     [cell setUserInfo:userInfo];
     return cell;
 }
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 25)];
+    [headerView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     ContactGroup *group = [self.parents objectAtIndex:section];
-    return group.key;
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, headerView.width - 15, headerView.height)];
+    [titleLabel setTextColor:[UIColor colorWithHexString:@"8e8e8e"]];
+    [titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [titleLabel setText:group.key];
+    [headerView addSubview:titleLabel];
+    return headerView;
+    
 }
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    ContactGroup *group = [self.parents objectAtIndex:section];
+//    return group.key;
+//}
 
 //- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 //{

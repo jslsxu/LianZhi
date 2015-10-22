@@ -15,4 +15,5 @@
     NSMutableArray* _avatarArray;
 }
 @property (nonatomic, strong)NSArray *praiseArray;
+@property (nonatomic, assign)BOOL isSingle;
 @end

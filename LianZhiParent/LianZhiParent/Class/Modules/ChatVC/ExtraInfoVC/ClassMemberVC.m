@@ -50,6 +50,7 @@
 
 @interface ClassMemberVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong)ClassInfo *classInfo;
+@property (nonatomic, strong)NSArray *students;
 @end
 
 @implementation ClassMemberVC
@@ -70,6 +71,8 @@
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_tableView setDataSource:self];
     [_tableView setDelegate:self];
+    [_tableView setSectionIndexColor:[UIColor colorWithHexString:@"666666"]];
+    [_tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:_tableView];
     
     [self requestData];
@@ -117,6 +120,33 @@
             ClassInfo *classInfo = [[ClassInfo alloc] init];
             [classInfo parseData:classWrapper];
             self.classInfo = classInfo;
+            NSMutableArray *students = [NSMutableArray array];
+            for (ChildInfo *childInfo in self.classInfo.students)
+            {
+                BOOL isIn = NO;
+                for (ContactGroup *group in students)
+                {
+                    if([group.key isEqualToString:childInfo.shortIndex])
+                    {
+                        isIn = YES;
+                        [group.contacts addObject:childInfo];
+                    }
+                }
+                if(!isIn)
+                {
+                    ContactGroup *group = [[ContactGroup alloc] init];
+                    [group setKey:childInfo.shortIndex];
+                    [group.contacts addObject:childInfo];
+                    [students addObject:group];
+                }
+            }
+            
+            [students sortUsingComparator:^NSComparisonResult(ContactGroup* obj1, ContactGroup* obj2) {
+                NSString *index1 = obj1.key;
+                NSString *index2 = obj2.key;
+                return [index1 compare:index2];
+            }];
+            self.students = students;
         }
         [_tableView reloadData];
     } fail:^(NSString *errMsg) {
@@ -146,35 +176,74 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if(self.showParentsOnly)
-        return 1;
-    return 2;
+        return self.students.count;
+    return 1 + self.students.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(self.showParentsOnly)
     {
-        return self.classInfo.students.count;
+        ContactGroup *group = self.students[section];
+        return group.contacts.count;
     }
     else
     {
         if(section == 0)
             return self.classInfo.teachers.count;
         else
-            return self.classInfo.students.count;
+        {
+            ContactGroup *group = self.students[section - 1];
+            return group.contacts.count;
+        }
     }
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (NSArray*)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
+    NSMutableArray *titleArray = [NSMutableArray array];
     if(!self.showParentsOnly)
+        [titleArray addObject:@"#"];
+    for (ContactGroup *group in self.students)
+    {
+        [titleArray addObject:group.key];
+    }
+    return titleArray;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 25;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 25)];
+    [headerView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    
+    NSString *title = nil;
+    if(self.showParentsOnly)
+    {
+        ContactGroup *group = self.students[section];
+        title = group.key;
+    }
+    else
     {
         if(section == 0)
-            return @"教师";
+            title = @"教师";
         else
-            return @"学生";
+        {
+            ContactGroup *group = self.students[section - 1];
+            title = group.key;
+        }
     }
-    return nil;
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, headerView.width - 15, headerView.height)];
+    [titleLabel setTextColor:[UIColor colorWithHexString:@"8e8e8e"]];
+    [titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [titleLabel setText:title];
+    [headerView addSubview:titleLabel];
+    return headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -187,7 +256,8 @@
     }
     if(self.showParentsOnly)
     {
-        [cell setUserInfo:self.classInfo.students[indexPath.row]];
+        ContactGroup *group = self.students[indexPath.section];
+        [cell setUserInfo:group.contacts[indexPath.row]];
         [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }
     else
@@ -199,7 +269,8 @@
         }
         else
         {
-            [cell setUserInfo:self.classInfo.students[indexPath.row]];
+            ContactGroup *group = self.students[indexPath.section - 1];
+            [cell setUserInfo:group.contacts[indexPath.row]];
             [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
         }
     }
@@ -213,7 +284,8 @@
     {
         if(indexPath.section == 1)
         {
-            ChildInfo *childInfo = self.classInfo.students[indexPath.row];
+            ContactGroup *group = self.students[indexPath.section - 1];
+            ChildInfo *childInfo = group.contacts[indexPath.row];
             StudentParentsVC *studentParentsVC = [[StudentParentsVC alloc] init];
             [studentParentsVC setChildInfo:childInfo];
             [CurrentROOTNavigationVC pushViewController:studentParentsVC animated:YES];
@@ -235,7 +307,8 @@
     }
     else
     {
-        ChildInfo *childInfo = self.classInfo.students[indexPath.row];
+        ContactGroup *group = self.students[indexPath.section];
+        ChildInfo *childInfo = group.contacts[indexPath.row];
         StudentParentsVC *studentParentsVC = [[StudentParentsVC alloc] init];
         [studentParentsVC setChildInfo:childInfo];
         [CurrentROOTNavigationVC pushViewController:studentParentsVC animated:YES];

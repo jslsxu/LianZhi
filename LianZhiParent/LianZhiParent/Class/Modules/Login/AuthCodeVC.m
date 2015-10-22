@@ -55,16 +55,16 @@
     [_retrieveButton setBackgroundImage:[[UIImage imageWithColor:kCommonParentTintColor size:CGSizeMake(30, 30) cornerRadius:5] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [self.view addSubview:_retrieveButton];
     
-    _nameField = [[LZTextField alloc] initWithFrame:CGRectMake(10, _authCodeField.bottom + 15, self.view.width - 10 * 2, 45)];
-    [_nameField setFont:[UIFont systemFontOfSize:16]];
-    [_nameField setTextColor:kCommonParentTintColor];
-    [_nameField setReturnKeyType:UIReturnKeyDone];
-    [_nameField setPlaceholder:@"请输入您的姓名"];
-    [_nameField setDelegate:self];
-    [self.view addSubview:_nameField];
+//    _nameField = [[LZTextField alloc] initWithFrame:CGRectMake(10, _authCodeField.bottom + 15, self.view.width - 10 * 2, 45)];
+//    [_nameField setFont:[UIFont systemFontOfSize:16]];
+//    [_nameField setTextColor:kCommonParentTintColor];
+//    [_nameField setReturnKeyType:UIReturnKeyDone];
+//    [_nameField setPlaceholder:@"请输入您的姓名"];
+//    [_nameField setDelegate:self];
+//    [self.view addSubview:_nameField];
     
     _nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_nextButton setFrame:CGRectMake(10, _nameField.bottom + 15, self.view.width - 10 * 2, 45)];
+    [_nextButton setFrame:CGRectMake(10, _retrieveButton.bottom + 15, self.view.width - 10 * 2, 45)];
     [_nextButton addTarget:self action:@selector(onNextClicked) forControlEvents:UIControlEventTouchUpInside];
     [_nextButton setBackgroundImage:[[UIImage imageWithColor:kCommonParentTintColor size:CGSizeMake(30, 30) cornerRadius:5] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [_nextButton.titleLabel setFont:[UIFont systemFontOfSize:16]];

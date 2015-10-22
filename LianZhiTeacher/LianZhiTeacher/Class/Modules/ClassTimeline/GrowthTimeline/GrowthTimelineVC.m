@@ -125,13 +125,14 @@
     {
         ClassInfo *classInfo = [UserCenter sharedInstance].curSchool.classes[0];
         self.classID = classInfo.classID;
+        self.title = classInfo.className;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"历史记录";
+
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"切换" style:UIBarButtonItemStylePlain target:self action:@selector(onSwitchClass)];
     self.date = [NSDate date];
     _headerView = [[GrowthTimelineHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 50)];
@@ -151,6 +152,7 @@
     [classSelectionVC setOriginalClassID:self.classID];
     [classSelectionVC setSelection:^(ClassInfo *classInfo) {
         wself.classID = classInfo.classID;
+        wself.title = classInfo.className;
         [wself requestData:REQUEST_REFRESH];
     }];
     [self.navigationController pushViewController:classSelectionVC animated:YES];

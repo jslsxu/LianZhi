@@ -11,11 +11,9 @@
 @interface NewEditionPreview : UIView
 {
     UIView*         _bgView;
-    UIView*         _contentView;
-    UIView*         _rootView;
     UIScrollView*   _scrollView;
-    UIButton*       _confirmButton;
 }
+- (instancetype)initWithVersion:(NSString *)version notes:(NSString *)relaseNotes;
 - (void)show;
 - (void)dismiss;
 @end

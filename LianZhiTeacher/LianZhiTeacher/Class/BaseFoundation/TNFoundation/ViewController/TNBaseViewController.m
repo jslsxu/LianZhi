@@ -49,7 +49,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view setBackgroundColor:kCommonBackgroundColor];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
     [backItem setTitle:@"返回"];
     self.navigationItem.backBarButtonItem = backItem;

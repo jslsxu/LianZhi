@@ -79,13 +79,24 @@
         [self setHeight:spaceYStart + _extraLabel.bottom];
         CAShapeLayer *shapeLayer = [CAShapeLayer layer];
         CGMutablePathRef path = CGPathCreateMutable();
-        CGPathMoveToPoint(path, NULL, 0, self.height);
+        CGPathMoveToPoint(path, NULL, 0, self.height - 10);
         CGPathAddLineToPoint(path, NULL, 0, 10);
         CGPathAddArcToPoint(path, NULL, 0, 0, 10, 0, 10);
         CGPathAddLineToPoint(path, NULL, self.width - 10, 0);
         CGPathAddArcToPoint(path, NULL, self.width, 0, self.width, 10, 10);
-        CGPathAddLineToPoint(path, NULL, self.width, self.height);
-        CGPathAddLineToPoint(path, NULL, 0, self.height);
+        if(self.isSingle)
+        {
+            CGPathAddLineToPoint(path, NULL, self.width, self.height - 10);
+            CGPathAddArcToPoint(path, NULL, self.width, self.height, self.width - 10, self.height, 10);
+            CGPathAddLineToPoint(path, NULL, 10, self.height);
+            CGPathAddArcToPoint(path, NULL, 0, self.height, 0, self.height - 10, 10);
+        }
+        else
+        {
+            CGPathAddLineToPoint(path, NULL, self.width, self.height);
+            CGPathAddLineToPoint(path, NULL, 0, self.height);
+            CGPathAddLineToPoint(path, NULL, 0, self.height - 10);
+        }
         CGPathCloseSubpath(path);
         [shapeLayer setPath:path];
         CFRelease(path);

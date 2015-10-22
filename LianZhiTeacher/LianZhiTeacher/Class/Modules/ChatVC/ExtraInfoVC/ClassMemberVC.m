@@ -63,7 +63,10 @@
     }
 
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, spaceYStart, self.view.width, self.view.height - 64 - spaceYStart) style:UITableViewStylePlain];
+    [_tableView setBackgroundColor:[UIColor clearColor]];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [_tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
+    [_tableView setSectionIndexColor:[UIColor colorWithHexString:@"666666"]];
     [_tableView setDataSource:self];
     [_tableView setDelegate:self];
     [self.view addSubview:_tableView];
@@ -163,7 +166,35 @@
                     [studentInfo parseData:studentItemWrapper];
                     [studentArray addObject:studentInfo];
                 }
-                self.studentArray = studentArray;
+                
+                NSMutableArray *students = [NSMutableArray array];
+                for (StudentInfo *childInfo in studentArray)
+                {
+                    BOOL isIn = NO;
+                    for (ContactGroup *group in students)
+                    {
+                        if([group.key isEqualToString:childInfo.shortIndex])
+                        {
+                            isIn = YES;
+                            [group.contacts addObject:childInfo];
+                        }
+                    }
+                    if(!isIn)
+                    {
+                        ContactGroup *group = [[ContactGroup alloc] init];
+                        [group setKey:childInfo.shortIndex];
+                        [group.contacts addObject:childInfo];
+                        [students addObject:group];
+                    }
+                }
+                
+                [students sortUsingComparator:^NSComparisonResult(ContactGroup* obj1, ContactGroup* obj2) {
+                    NSString *index1 = obj1.key;
+                    NSString *index2 = obj2.key;
+                    return [index1 compare:index2];
+                }];
+                self.studentArray = students;
+                
             }
             [_tableView reloadData];
         }
@@ -176,7 +207,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 1 + self.studentArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -184,15 +215,46 @@
     if(section == 0)
         return self.teacherArray.count;
     else
-        return self.studentArray.count;
+    {
+        ContactGroup *group = self.studentArray[section - 1];
+        return group.contacts.count;
+    }
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
+    NSMutableArray *titleArray = [NSMutableArray array];
+    [titleArray addObject:@"师"];
+    for (ContactGroup *group in self.studentArray)
+    {
+        [titleArray addObject:group.key];
+    }
+    return titleArray;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 25;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    NSString *title = nil;
     if(section == 0)
-        return @"教师";
+        title = @"教师";
     else
-        return @"学生";
+    {
+        ContactGroup *group = self.studentArray[section - 1];
+        title = group.key;
+    }
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 25)];
+    [headerView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, headerView.width - 15, headerView.height)];
+    [titleLabel setTextColor:[UIColor colorWithHexString:@"8e8e8e"]];
+    [titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [titleLabel setText:title];
+    [headerView addSubview:titleLabel];
+    return headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -210,7 +272,9 @@
     }
     else
     {
-        [cell setUserInfo:self.studentArray[indexPath.row]];
+        ContactGroup *group = self.studentArray[indexPath.section - 1];
+        StudentInfo *studentInfo = group.contacts[indexPath.row];
+        [cell setUserInfo:studentInfo];
         [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }
     return cell;
@@ -221,7 +285,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if(indexPath.section == 1)
     {
-        StudentInfo *studentInfo = self.studentArray[indexPath.row];
+        ContactGroup *group = self.studentArray[indexPath.section - 1];
+        StudentInfo *studentInfo = group.contacts[indexPath.row];
         StudentParentsVC *studentParentsVC = [[StudentParentsVC alloc] init];
         [studentParentsVC setStudentInfo:studentInfo];
         [CurrentROOTNavigationVC pushViewController:studentParentsVC animated:YES];

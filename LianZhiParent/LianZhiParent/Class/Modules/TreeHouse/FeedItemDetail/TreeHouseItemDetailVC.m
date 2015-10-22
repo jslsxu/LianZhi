@@ -363,6 +363,7 @@
     [_headerView addSubview:_arrowImage];
     
     _praiseView = [[PraiseListView alloc] initWithFrame:CGRectMake(0, 0, _tableView.width, 0)];
+    [_praiseView setIsSingle:self.treeHouseItem.responseModel.responseArray.count == 0];
     [_praiseView setPraiseArray:self.treeHouseItem.responseModel.praiseArray];
     
     _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - REPLY_BOX_HEIGHT, self.view.width, REPLY_BOX_HEIGHT)];
@@ -526,6 +527,7 @@
             ResponseItem *responseItem = [[ResponseItem alloc] init];
             [responseItem parseData:commentWrapper];
             [wself.treeHouseItem.responseModel addResponse:responseItem];
+            [_praiseView setIsSingle:wself.treeHouseItem.responseModel.responseArray.count == 0];
             [_praiseView setPraiseArray:wself.treeHouseItem.responseModel.praiseArray];
             [_tableView reloadData];
         }
@@ -577,12 +579,19 @@
     {
         cell = [[DetailCommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
-    [cell setResponseItem:self.treeHouseItem.responseModel.responseArray[indexPath.row]];
-    if(indexPath.row == 0)
-        [cell setCellType:TableViewCellTypeFirst];
+    NSArray *responseAray = self.treeHouseItem.responseModel.responseArray;
+    [cell setResponseItem:responseAray[indexPath.row]];
+    if(self.treeHouseItem.responseModel.praiseArray.count == 0)
+    {
+        [cell setCellType:[BGTableViewCell cellTypeForTableView:tableView atIndexPath:indexPath]];
+    }
     else
-        [cell setCellType:TableViewCellTypeAny];
-    [cell setClips:indexPath.row == 0 && self.treeHouseItem.responseModel.praiseArray.count == 0];
+    {
+        if(indexPath.row < responseAray.count - 1)
+            [cell setCellType:TableViewCellTypeMiddle];
+        else
+            [cell setCellType:TableViewCellTypeLast];
+    }
     return cell;
 }
 
@@ -598,6 +607,7 @@
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : self.treeHouseItem.itemID, @"types" : @"1"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
                 [ProgressHUD showSuccess:@"删除成功"];
                 [wself.treeHouseItem.responseModel removeResponse:responseItem];
+                [_praiseView setIsSingle:wself.treeHouseItem.responseModel.responseArray.count == 0];
                 [_praiseView setPraiseArray:wself.treeHouseItem.responseModel.praiseArray];
                 [_tableView reloadData];
             } fail:^(NSString *errMsg) {

@@ -168,6 +168,7 @@
 @implementation ChildInfo
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
+    [super parseData:dataWrapper];
     TNDataWrapper *classDataWrapper = [dataWrapper getDataWrapperForKey:@"classes"];
     if(classDataWrapper.count > 0)
     {

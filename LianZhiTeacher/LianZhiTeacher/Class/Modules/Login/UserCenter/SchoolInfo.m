@@ -77,19 +77,13 @@
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
     [super parseData:dataWrapper];
-    self.uid = [dataWrapper getStringForKey:@"id"];
-    self.shortIndex = [dataWrapper getStringForKey:@"first_letter"];
-    self.name = [dataWrapper getStringForKey:@"name"];
     self.course = [dataWrapper getStringForKey:@"course"];
-    self.mobile = [dataWrapper getStringForKey:@"mobile"];
-    self.avatar = [dataWrapper getStringForKey:@"head"];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     if(self = [super initWithCoder:aDecoder])
     {
-        self.shortIndex = [aDecoder decodeObjectForKey:@"first_letter"];
         self.course = [aDecoder decodeObjectForKey:@"course"];
     }
     return self;
@@ -98,7 +92,6 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:self.shortIndex forKey:@"first_letter"];
     [aCoder encodeObject:self.course forKey:@"course"];
 }
 @end
@@ -107,9 +100,6 @@
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
     [super parseData:dataWrapper];
-    self.uid = [dataWrapper getStringForKey:@"id"];
-    self.name = [dataWrapper getStringForKey:@"name"];
-    self.mobile = [dataWrapper getStringForKey:@"mobile"];
     self.relation = [dataWrapper getStringForKey:@"relation"];
 }
 
@@ -197,7 +187,6 @@
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
     [super parseData:dataWrapper];
-    self.shortIndex = [dataWrapper getStringForKey:@"first_letter"];
     TNDataWrapper *familyDataWrapper = [dataWrapper getDataWrapperForKey:@"family"];
     if(familyDataWrapper.count > 0)
     {
@@ -216,7 +205,6 @@
 {
     if(self = [super initWithCoder:aDecoder])
     {
-        self.shortIndex = [aDecoder decodeObjectForKey:@"first_letter"];
         self.family = [aDecoder decodeObjectForKey:@"family"];
     }
     return self;
@@ -224,10 +212,6 @@
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:self.uid forKey:@"id"];
-    [aCoder encodeObject:self.name forKey:@"name"];
-    [aCoder encodeObject:self.avatar forKey:@"head"];
-    [aCoder encodeInteger:self.gender forKey:@"sex"];
     [aCoder encodeObject:self.shortIndex forKey:@"first_letter"];
     [aCoder encodeObject:self.family forKey:@"family"];
 }
