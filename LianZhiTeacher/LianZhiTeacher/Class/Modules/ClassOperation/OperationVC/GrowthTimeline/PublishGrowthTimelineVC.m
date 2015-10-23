@@ -9,6 +9,7 @@
 #import "PublishGrowthTimelineVC.h"
 #import "GrowthTimelineVC.h"
 #import "GrowthTimelineClassChangeVC.h"
+#import "ClassSelectionVC.h"
 @interface PublishGrowthTimelineVC ()<UITextViewDelegate>
 @property (nonatomic, strong)ClassInfo *classInfo;
 @property (nonatomic, strong)NSArray *imageArray;
@@ -171,8 +172,31 @@
 
 - (void)showRecordHistory
 {
-    GrowthTimelineVC *growthTimelineVC = [[GrowthTimelineVC alloc] init];
-    [CurrentROOTNavigationVC pushViewController:growthTimelineVC animated:YES];
+    if([UserCenter sharedInstance].curSchool.classNum == 0)
+        return;
+    if([UserCenter sharedInstance].curSchool.classNum == 1)
+    {
+        ClassInfo *classInfo = nil;
+        if([UserCenter sharedInstance].curSchool.classes.count > 0)
+            classInfo = [UserCenter sharedInstance].curSchool.classes[0];
+        else if([UserCenter sharedInstance].curSchool.managedClasses.count > 0)
+            classInfo = [UserCenter sharedInstance].curSchool.managedClasses[0];
+        GrowthTimelineVC *growthTimelineVC = [[GrowthTimelineVC alloc] init];
+        [growthTimelineVC setClassID:classInfo.classID];
+        [growthTimelineVC setTitle:classInfo.className];
+        [CurrentROOTNavigationVC pushViewController:growthTimelineVC animated:YES];
+    }
+    else
+    {
+        ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
+        [selectionVC setSelection:^(ClassInfo *classInfo) {
+            GrowthTimelineVC *growthTimelineVC = [[GrowthTimelineVC alloc] init];
+            [growthTimelineVC setClassID:classInfo.classID];
+            [growthTimelineVC setTitle:classInfo.className];
+            [CurrentROOTNavigationVC pushViewController:growthTimelineVC animated:YES];
+        }];
+        [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];
+    }
 }
 
 - (void)onKeyboardWillShow:(NSNotification *)note

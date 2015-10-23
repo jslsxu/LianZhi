@@ -10,6 +10,8 @@
 #import "NotificationToAllVC.h"
 #import "PublishGrowthTimelineVC.h"
 #import "ContactListVC.h"
+#import "ClassSelectionVC.h"
+#import "GrowthTimelineVC.h"
 @implementation ApplicationItem
 
 
@@ -117,11 +119,25 @@
 {
     NSInteger row = indexPath.row;
     NSString *classStr = self.actionArray[row];
-    TNBaseViewController *vc = [[NSClassFromString(classStr) alloc] init];
-    if([vc isKindOfClass:[TNBaseWebViewController class]])
-        [(TNBaseWebViewController *)vc setUrl:[UserCenter sharedInstance].curSchool.schoolUrl];
-    if(vc)
-        [CurrentROOTNavigationVC pushViewController:vc animated:YES];
+    if(row == 3 /*&& [UserCenter sharedInstance].curSchool.classes.count == 0*/)
+    {
+        ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
+        [selectionVC setSelection:^(ClassInfo *classInfo) {
+            GrowthTimelineVC *growthTimelineVC = [[GrowthTimelineVC alloc] init];
+            [growthTimelineVC setClassID:classInfo.classID];
+            [growthTimelineVC setTitle:classInfo.className];
+            [CurrentROOTNavigationVC pushViewController:growthTimelineVC animated:YES];
+        }];
+        [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];
+    }
+    else
+    {
+        TNBaseViewController *vc = [[NSClassFromString(classStr) alloc] init];
+        if([vc isKindOfClass:[TNBaseWebViewController class]])
+            [(TNBaseWebViewController *)vc setUrl:[UserCenter sharedInstance].curSchool.schoolUrl];
+        if(vc)
+            [CurrentROOTNavigationVC pushViewController:vc animated:YES];
+    }
         
 }
 @end

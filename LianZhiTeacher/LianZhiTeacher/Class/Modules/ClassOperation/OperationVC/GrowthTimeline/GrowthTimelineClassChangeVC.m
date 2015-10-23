@@ -8,95 +8,63 @@
 
 #import "GrowthTimelineClassChangeVC.h"
 #import "GrowthTimelineStudentsSelectVC.h"
-@implementation GrowthClassCell
-
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if(self)
-    {
-        self.width = kScreenWidth;
-        _logoView = [[LogoView alloc] initWithFrame:CGRectMake(12, (self.height - 36) / 2, 36, 36)];
-        [self addSubview:_logoView];
-        
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_logoView.right + 10, 0, self.width - 50 - (_logoView.right + 10), self.height)];
-        [_nameLabel setFont:[UIFont systemFontOfSize:14]];
-        [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-        [self addSubview:_nameLabel];
-        
-        [self setSelectType:SelectTypeNone];
-    }
-    return self;
-}
-
-- (void)setClassInfo:(ClassInfo *)classInfo
-{
-    _classInfo = classInfo;
-    [_logoView setImageWithUrl:[NSURL URLWithString:_classInfo.logoUrl]];
-    [_nameLabel setText:_classInfo.className];
-}
-
-- (void)setSelectType:(SelectType)selectType
-{
-    _selectType = selectType;
-    UIImage *image = nil;
-    if(_selectType == SelectTypeAll)
-        image = [UIImage imageNamed:@"ControlSelectAll"];
-    else if(_selectType == SelectTypePart)
-        image = [UIImage imageNamed:@"ControlSelectPart"];
-    else
-        image = [UIImage imageNamed:@"ControlDefault"];
-    [self setAccessoryView:[[UIImageView alloc] initWithImage:image]];
-}
-
-@end
 
 @interface GrowthTimelineClassChangeVC ()
-
+@property (nonatomic, strong)NSArray *classArray;
 @end
 
 @implementation GrowthTimelineClassChangeVC
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (void)viewDidLoad
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if(self)
-    {
-        _paramsDic = [NSMutableDictionary dictionary];
-        for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
-        {
-            NSMutableArray *selectedArray = [NSMutableArray array];
-            [_paramsDic setValue:selectedArray forKey:classInfo.classID];
-        }
-    }
-    return self;
-}
-
-- (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"所有的班";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(onConfirm)];
     
-    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    NSMutableArray *classArray = [NSMutableArray array];
+    if([UserCenter sharedInstance].curSchool.classes.count > 0)
+    {
+        NSMutableDictionary *group = [NSMutableDictionary dictionary];
+        [group setValue:@"我教授的班" forKey:@"groupName"];
+        [group setValue:[NSArray arrayWithArray:[UserCenter sharedInstance].curSchool.classes] forKey:@"groupArray"];
+        [classArray addObject:group];
+    }
+    
+    if([UserCenter sharedInstance].curSchool.managedClasses.count > 0)
+    {
+        NSMutableDictionary *group = [NSMutableDictionary dictionary];
+        [group setValue:@"我管理的班" forKey:@"groupName"];
+        [group setValue:[NSArray arrayWithArray:[UserCenter sharedInstance].curSchool.managedClasses] forKey:@"groupArray"];
+        [classArray addObject:group];
+    }
+    
+    self.classArray = classArray;
+    
+    _selectedMateArray = [NSMutableArray array];
+    _selectedStudentDic = [NSMutableDictionary dictionary];
+    
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height  - 64) style:UITableViewStyleGrouped];
+    [_tableView setBackgroundColor:[UIColor whiteColor]];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
-    [_tableView setSeparatorColor:kSepLineColor];
+    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:_tableView];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(onSendClicked)];
 }
 
-- (void)onConfirm
+- (void)onSendClicked
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:[NSString stringWithJSONObject:self.record] forKey:@"record"];
     
+    
     NSMutableArray *classArray = [NSMutableArray array];
-    NSArray *keys = _paramsDic.allKeys;
+    NSArray *keys = _selectedStudentDic.allKeys;
     for (NSString *key in keys)
     {
         NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
         [classDic setValue:key forKey:@"classid"];
         NSMutableArray *studentArray = [NSMutableArray array];
-        for (StudentInfo *student in _paramsDic[key])
+        for (StudentInfo *student in _selectedStudentDic[key])
         {
             [studentArray addObject:student.uid];
         }
@@ -120,46 +88,89 @@
         [hud hide:NO];
         [ProgressHUD showHintText:errMsg];
     }];
+
+}
+#pragma mark - UITableViewDelegate
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return self.classArray.count;
 }
 
-#pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [UserCenter sharedInstance].curSchool.classes.count;
+    NSDictionary *group = self.classArray[section];
+    NSArray *groupArray = group[@"groupArray"];
+    return groupArray.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 50;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.1;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    NotificationGroupHeaderView *headerView = [[NotificationGroupHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 50)];
+    NSDictionary *groupDic = self.classArray[section];
+    [headerView.nameLabel setText:groupDic[@"groupName"]];
+    NSInteger selectNum = 0;
+    NSArray *groupArray = groupDic[@"groupArray"];
+    for (ClassInfo *classInfo in groupArray)
+    {
+        if([_selectedStudentDic valueForKey:classInfo.classID])
+            selectNum ++;
+    }
+    if(selectNum == 0)
+        [headerView setSelectType:SelectTypeNone];
+    else if(selectNum == groupArray.count)
+        [headerView setSelectType:SelectTypeAll];
+    else
+        [headerView setSelectType:SelectTypePart];
+    return headerView;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *reuseID = @"GrowthClassCell";
-    GrowthClassCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+    static NSString *reuseID = @"NotificationTargetCell";
+    NotificationTargetCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
     if(nil == cell)
     {
-        cell = [[GrowthClassCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+        cell = [[NotificationTargetCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseID];
+        [cell.detailTextLabel setFont:[UIFont systemFontOfSize:13]];
+        [cell.detailTextLabel setTextColor:[UIColor lightGrayColor]];
     }
-    ClassInfo *classInfo = [UserCenter sharedInstance].curSchool.classes[indexPath.row];
-    [cell setClassInfo:classInfo];
-    SelectType selectType = SelectTypeNone;
-    NSArray *studentArray = [_paramsDic valueForKey:classInfo.classID];
-    if(studentArray.count == 0)
-        selectType = SelectTypeNone;
-    else if(studentArray.count == classInfo.students.count)
-        selectType = SelectTypeAll;
-    else
-        selectType = SelectTypePart;
-    [cell setSelectType:selectType];
+    NSDictionary *groupDic = self.classArray[indexPath.section];
+    NSArray *groupArray = groupDic[@"groupArray"];
+    ClassInfo *classInfo = groupArray[indexPath.row];
+    NSArray *selectedArray = _selectedStudentDic[classInfo.classID];
+    [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld/%ld",(long)selectedArray.count,classInfo.students.count]];
+    [cell.nameLabel setText:classInfo.className];
+    [cell.checkButton setSelected:[_selectedStudentDic valueForKey:classInfo.classID]];
+    [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    ClassInfo *classInfo = [UserCenter sharedInstance].curSchool.classes[indexPath.row];
+    NSDictionary *groupDic = self.classArray[indexPath.section];
+    NSArray *groupArray = groupDic[@"groupArray"];
+    ClassInfo *classInfo = groupArray[indexPath.row];
     GrowthTimelineStudentsSelectVC *studentVC = [[GrowthTimelineStudentsSelectVC alloc] init];
     [studentVC setClassInfo:classInfo];
-    [studentVC setOriginalStudentArray:_paramsDic[classInfo.classID]];
+    [studentVC setOriginalStudentArray:_selectedStudentDic[classInfo.classID]];
     [studentVC setTitle:classInfo.className];
     [studentVC setCompletion:^(NSArray *studentArray) {
-        [_paramsDic setValue:studentArray forKey:classInfo.classID];
+        if(studentArray.count > 0)
+            [_selectedStudentDic setValue:studentArray forKey:classInfo.classID];
+        else
+            [_selectedStudentDic removeObjectForKey:classInfo.classID];
         [_tableView reloadData];
     }];
     [self.navigationController pushViewController:studentVC animated:YES];

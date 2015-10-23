@@ -34,11 +34,17 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"DetailShareNormal"] style:UIBarButtonItemStylePlain target:self action:@selector(onShare)];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"info/set_read" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"type": @"1"} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [[UserCenter sharedInstance].statusManager setFound:NO];
     } fail:^(NSString *errMsg) {
         
     }];
+}
+
+- (void)onShare
+{
+    [ShareActionView shareWithTitle:nil content:nil image:nil imageUrl:nil url:self.url];
 }
 
 - (void)viewDidLoad {

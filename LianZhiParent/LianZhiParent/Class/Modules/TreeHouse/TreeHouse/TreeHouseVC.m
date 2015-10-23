@@ -372,6 +372,11 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         }
         else
         {
+            if(self.targetTreeHouseItem.audioItem)
+            {
+                [ProgressHUD showHintText:@"努力开发中,敬请期待..."];
+                return;
+            }
             NSString *imageUrl = nil;
             if(self.targetTreeHouseItem.photos.count > 0)
                 imageUrl = [self.targetTreeHouseItem.photos[0] thumbnailUrl];

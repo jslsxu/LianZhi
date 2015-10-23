@@ -29,20 +29,23 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(onSave)];
     
-    UIView *bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 20, self.view.width, 45)];
-    [bgView setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:bgView];
-    
-    _textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 0, bgView.width - 10 * 2, bgView.height)];
+    _textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 20, self.view.width - 10 * 2, 40)];
     [_textField setClearButtonMode:UITextFieldViewModeWhileEditing];
     [_textField setBackgroundColor:[UIColor whiteColor]];
     [_textField setFont:[UIFont systemFontOfSize:14]];
     [_textField setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
     [_textField addTarget:self action:@selector(onTextFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
     [_textField setText:self.originalValue];
-    [bgView addSubview:_textField];
+    [self.view addSubview:_textField];
+    
+    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textField.bottom, _textField.width, 1)];
+    [bottomLine setBackgroundColor:kCommonTeacherTintColor];
+    [self.view addSubview:bottomLine];
+    
+    [_textField becomeFirstResponder];
 }
 
 - (void)onSave

@@ -78,7 +78,7 @@
 
 - (void)setupHeaderView:(UIView *)viewParent
 {
-    [viewParent setBackgroundColor:kCommonTeacherTintColor];
+    [viewParent setBackgroundColor:[UIColor colorWithHexString:@"0fabc1"]];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 50, viewParent.height)];
     [label setTextColor:[UIColor whiteColor]];
     [label setFont:[UIFont systemFontOfSize:14]];

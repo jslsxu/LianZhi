@@ -362,12 +362,9 @@
 #pragma mark - ChildrenExtraCellDelegate
 - (void)childrenExtraCellReport:(ChildrenExtraInfoCell *)cell
 {
-    NSIndexPath *index = [_tableView indexPathForCell:cell];
+//    NSIndexPath *index = [_tableView indexPathForCell:cell];
     ReportProblemVC *reportProblemVC = [[ReportProblemVC alloc] init];
-    if(index.section == 1)
-        [reportProblemVC setType:2];
-    else
-        [reportProblemVC setType:3];
+    [reportProblemVC setType:3];
     [CurrentROOTNavigationVC pushViewController:reportProblemVC animated:YES];
 }
 

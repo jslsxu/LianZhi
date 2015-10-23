@@ -314,8 +314,8 @@ static SystemSoundID shake_sound_male_id = 0;
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        NSString *codeDatabase = [path stringByAppendingPathComponent:@"Guide"];
-        if(![[NSFileManager defaultManager] fileExistsAtPath:codeDatabase])
+//        NSString *codeDatabase = [path stringByAppendingPathComponent:@"Guide"];
+//        if(![[NSFileManager defaultManager] fileExistsAtPath:codeDatabase])
         {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 NSString *originalPath = [[NSBundle mainBundle] pathForResource:@"Guide" ofType:@"zip"];
@@ -375,14 +375,17 @@ static SystemSoundID shake_sound_male_id = 0;
     AFHTTPRequestOperationManager *operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:url];
     [operationManager GET:urlStr parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *result = [responseObject objectForKey:@"results"];
-        NSDictionary *info = result[0];
-        NSString *releaseNotes = info[@"releaseNotes"];
-        NSString *version = info[@"version"];
-        NSString *applicationVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-        if([applicationVersion compare:version] == NSOrderedAscending)
+        if(result.count > 0)
         {
-            NewEditionPreview *preview = [[NewEditionPreview alloc] initWithVersion:version notes:releaseNotes];
-            [preview show];
+            NSDictionary *info = result[0];
+            NSString *releaseNotes = info[@"releaseNotes"];
+            NSString *version = info[@"version"];
+            NSString *applicationVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+            if([applicationVersion compare:version] == NSOrderedAscending)
+            {
+                NewEditionPreview *preview = [[NewEditionPreview alloc] initWithVersion:version notes:releaseNotes];
+                [preview show];
+            }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         

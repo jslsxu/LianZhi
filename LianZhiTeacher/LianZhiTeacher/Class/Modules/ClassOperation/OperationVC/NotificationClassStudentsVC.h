@@ -18,12 +18,11 @@
 @property (nonatomic, assign)BOOL checked;
 @end
 
-@interface StudentsModel : TNListModel
-
-@end
-
-@interface NotificationClassStudentsVC : TNBaseTableViewController
+@interface NotificationClassStudentsVC : TNBaseViewController
+{
+    UITableView*    _tableView;
+}
 @property (nonatomic, strong)NSArray *originalArray;
-@property (nonatomic, copy)NSString *classID;
+@property (nonatomic, strong)ClassInfo *classInfo;
 @property (nonatomic, copy)void (^selectedCompletion)(NSArray *studentArray);
 @end

@@ -7,15 +7,36 @@
 //
 
 #import "ClassSelectionVC.h"
-#import "ContactModel.h"
 #import "ContactItemCell.h"
+
+#define kSectionHeaderHeight                50
 @interface ClassSelectionVC ()<UITableViewDataSource, UITableViewDelegate>
+@property (nonatomic, strong)NSArray *classArray;
 @end
 
 @implementation ClassSelectionVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"我所有的班";
+    NSMutableArray *classArray = [NSMutableArray array];
+    if([UserCenter sharedInstance].curSchool.classes.count > 0)
+    {
+        NSMutableDictionary *group = [NSMutableDictionary dictionary];
+        [group setValue:@"我教授的班" forKey:@"groupName"];
+        [group setValue:[NSArray arrayWithArray:[UserCenter sharedInstance].curSchool.classes] forKey:@"groupArray"];
+        [classArray addObject:group];
+    }
+    
+    if([UserCenter sharedInstance].curSchool.managedClasses.count > 0)
+    {
+        NSMutableDictionary *group = [NSMutableDictionary dictionary];
+        [group setValue:@"我管理的班" forKey:@"groupName"];
+        [group setValue:[NSArray arrayWithArray:[UserCenter sharedInstance].curSchool.managedClasses] forKey:@"groupArray"];
+        [classArray addObject:group];
+    }
+    
+    self.classArray = classArray;
     
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
@@ -30,29 +51,37 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [ContactModel sharedInstance].classKeys.count;
+    return self.classArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    ContactGroup *group = [ContactModel sharedInstance].classes[section];
-    return group.contacts.count;
+    NSDictionary *dictionary = self.classArray[section];
+    NSArray *groupArray = dictionary[@"groupArray"];
+    return groupArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 25;
+    return kSectionHeaderHeight;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 25)];
-    [headerView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    NSDictionary *groupDic = self.classArray[section];
+    NSString *title = groupDic[@"groupName"];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, kSectionHeaderHeight)];
+    [headerView setBackgroundColor:[UIColor whiteColor]];
+
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, headerView.width - 15, headerView.height)];
     [titleLabel setTextColor:[UIColor colorWithHexString:@"8e8e8e"]];
     [titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [titleLabel setText:[ContactModel sharedInstance].classKeys[section]];
+    [titleLabel setText:title];
     [headerView addSubview:titleLabel];
+    
+    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, headerView.height - kLineHeight, headerView.width, kLineHeight)];
+    [bottomLine setBackgroundColor:kSepLineColor];
+    [headerView addSubview:bottomLine];
     return headerView;
 }
 
@@ -67,8 +96,10 @@
         [cell.detailTextLabel setFont:[UIFont systemFontOfSize:13]];
         [cell.detailTextLabel setTextColor:kCommonTeacherTintColor];
     }
-    ContactGroup *group = [ContactModel sharedInstance].classes[indexPath.section];
-    ClassInfo *classInfo = group.contacts[indexPath.row];
+    
+    NSDictionary *groupDic = self.classArray[indexPath.section];
+    NSArray *groupArray = groupDic[@"groupArray"];
+    ClassInfo *classInfo = groupArray[indexPath.row];
     [cell setClassInfo:classInfo];
     BOOL isSelected = [self.originalClassID isEqualToString:classInfo.classID];
     if(isSelected)
@@ -86,11 +117,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ContactGroup *group = [ContactModel sharedInstance].classes[indexPath.section];
-    ClassInfo *classInfo = group.contacts[indexPath.row];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSDictionary *groupDic = self.classArray[indexPath.section];
+    NSArray *groupArray = groupDic[@"groupArray"];
+    ClassInfo *classInfo = groupArray[indexPath.row];
+    self.originalClassID = classInfo.classID;
+    [tableView reloadData];
     if(self.selection)
         self.selection(classInfo);
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

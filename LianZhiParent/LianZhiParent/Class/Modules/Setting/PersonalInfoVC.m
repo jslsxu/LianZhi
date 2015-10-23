@@ -38,11 +38,29 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
         [self.detailTextLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
         [self.detailTextLabel setFont:[UIFont systemFontOfSize:12]];
         
+        _addButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_addButton setImage:[UIImage imageNamed:(@"Add.png")] forState:UIControlStateNormal];
+        [_addButton addTarget:self action:@selector(onAddButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_addButton setFrame:CGRectMake(self.width - 30, (self.height - 40) / 2, 30, 40)];
+        [_addButton setHidden:YES];
+        [self addSubview:_addButton];
+        
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 50 - kLineHeight, self.width, kLineHeight)];
         [_sepLine setBackgroundColor:kSepLineColor];
         [self addSubview:_sepLine];
     }
     return self;
+}
+
+- (void)setShowAdd:(BOOL)showAdd
+{
+    _showAdd = showAdd;
+    [_addButton setHidden:!_showAdd];
+}
+
+- (void)onAddButtonClicked
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAddRelationNotification object:nil userInfo:nil];
 }
 
 - (void)setInfoItem:(PersonalInfoItem *)infoItem

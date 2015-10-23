@@ -7,7 +7,6 @@
 //
 
 #import "TNTableViewCell.h"
-#import "ContactModel.h"
 #import "SchoolInfo.h"
 @interface ClassItemCell : TNTableViewCell
 {
@@ -20,10 +19,6 @@
 @property (nonatomic, readonly)UIButton *chatButton;
 @end
 
-@protocol ContactDelegate <NSObject>
-- (void)contactItemChatClicked:(UserInfo *)userInfo;
-
-@end
 
 @interface ContactItemCell : TNTableViewCell
 {
@@ -35,5 +30,4 @@
     UIButton*           _chatButton;
 }
 @property (nonatomic, strong)UserInfo *userInfo;
-@property (nonatomic, weak)id<ContactDelegate> delegate;
 @end

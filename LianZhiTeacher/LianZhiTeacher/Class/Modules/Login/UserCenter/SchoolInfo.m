@@ -29,6 +29,19 @@
         [self setClasses:classArray];
     }
     
+    TNDataWrapper *managedClassesWrapper = [dataWrapper getDataWrapperForKey:@"managed_classes"];
+    if(managedClassesWrapper.count > 0)
+    {
+        NSMutableArray *classArray = [[NSMutableArray alloc] initWithCapacity:0];
+        for (NSInteger i = 0; i < managedClassesWrapper.count; i++) {
+            TNDataWrapper *classItemData = [managedClassesWrapper getDataWrapperForIndex:i];
+            ClassInfo *classInfo = [[ClassInfo alloc] init];
+            [classInfo parseData:classItemData];
+            [classArray addObject:classInfo];
+        }
+        [self setManagedClasses:classArray];
+    }
+    
     TNDataWrapper *teachesDataWrapper = [dataWrapper getDataWrapperForKey:@"teachers"];
     if(teachesDataWrapper.count > 0)
     {
@@ -48,6 +61,32 @@
     }
 }
 
+- (NSInteger)classNum
+{
+    if(self.classes.count == 0)
+        return self.managedClasses.count;
+    else if(self.managedClasses.count == 0)
+    {
+        return self.classes.count;
+    }
+    else
+    {
+        NSInteger count = self.classes.count;
+        for (ClassInfo *managedClassInfo in self.managedClasses)
+        {
+            BOOL isIn = NO;
+            for (ClassInfo *classInfo in self.classes)
+            {
+                if([managedClassInfo.classID isEqualToString:classInfo.classID])
+                    isIn = YES;
+            }
+            if(!isIn)
+                count++;
+        }
+        return count;
+    }
+}
+
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     if(self = [super init])
@@ -56,6 +95,7 @@
         self.schoolName = [aDecoder decodeObjectForKey:@"name"];
         self.logoUrl = [aDecoder decodeObjectForKey:@"logo"];
         self.classes = [aDecoder decodeObjectForKey:@"classes"];
+        self.managedClasses = [aDecoder decodeObjectForKey:@"managed_classes"];
         self.teachers = [aDecoder decodeObjectForKey:@"teachers"];
         self.schoolUrl = [aDecoder decodeObjectForKey:@"url"];
     }
@@ -68,6 +108,7 @@
     [aCoder encodeObject:self.schoolName forKey:@"name"];
     [aCoder encodeObject:self.logoUrl forKey:@"logo"];
     [aCoder encodeObject:self.classes forKey:@"classes"];
+    [aCoder encodeObject:self.managedClasses forKey:@"managed_classes"];
     [aCoder encodeObject:self.teachers forKey:@"teachers"];
     [aCoder encodeObject:self.schoolUrl forKey:@"url"];
 }
@@ -212,7 +253,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject:self.shortIndex forKey:@"first_letter"];
+    [super encodeWithCoder:aCoder];
     [aCoder encodeObject:self.family forKey:@"family"];
 }
 @end

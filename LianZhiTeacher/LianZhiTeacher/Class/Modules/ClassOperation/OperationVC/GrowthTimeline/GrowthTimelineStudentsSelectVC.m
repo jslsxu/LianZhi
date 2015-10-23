@@ -197,7 +197,9 @@
 #pragma mark - UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.classInfo.students.count ;
+    NSInteger count = self.classInfo.students.count;
+    _selectAllButton.selected = (_selectedArray.count == count);
+    return count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath

@@ -7,8 +7,7 @@
 //
 
 #import "NotificationClassStudentsVC.h"
-
-#define kCellHeight                 50
+#import "ContactModel.h"
 
 @implementation NotificationStudentCell
 
@@ -19,7 +18,7 @@
     {
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(10, (kCellHeight - 32) / 2, 32, 32)];
+        _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(10, (self.height - 32) / 2, 32, 32)];
         [self addSubview:_avatarView];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_avatarView.right + 10, 0, 0, 0)];
@@ -34,12 +33,12 @@
         
         _checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_checkButton setUserInteractionEnabled:NO];
-        [_checkButton setFrame:CGRectMake(self.width - 20 - 20, (kCellHeight - 20) / 2, 20, 20)];
+        [_checkButton setFrame:CGRectMake(self.width - 20 - 20, (self.height - 20) / 2, 20, 20)];
         [_checkButton setImage:[UIImage imageNamed:@"ControlDefault"] forState:UIControlStateNormal];
         [_checkButton setImage:[UIImage imageNamed:@"ControlSelectAll"] forState:UIControlStateSelected];
         [self addSubview:_checkButton];
         
-        UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, kCellHeight - kLineHeight, self.width, kLineHeight)];
+        UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
         [sepLine setBackgroundColor:kSepLineColor];
         [self addSubview:sepLine];
         
@@ -53,10 +52,10 @@
     [_avatarView setImageWithUrl:[NSURL URLWithString:studentInfo.avatar]];
     [_nameLabel setText:studentInfo.name];
     [_nameLabel sizeToFit];
-    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, (kCellHeight - _nameLabel.height) / 2)];
+    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, (self.height - _nameLabel.height) / 2)];
     [_infoLabel setText:[NSString stringWithFormat:@"(%ld位家长)",(long)studentInfo.family.count]];
     [_infoLabel sizeToFit];
-    [_infoLabel setOrigin:CGPointMake(_nameLabel.right + 10, (kCellHeight - _infoLabel.height) / 2)];
+    [_infoLabel setOrigin:CGPointMake(_nameLabel.right + 10, (self.height - _infoLabel.height) / 2)];
 }
 
 - (void)setChecked:(BOOL)checked
@@ -65,36 +64,11 @@
     [_checkButton setSelected:_checked];
 }
 
-+ (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
-{
-    return @(kCellHeight);
-}
-
-@end
-
-@implementation StudentsModel
-- (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
-{
-    if(type == REQUEST_REFRESH)
-        [self.modelItemArray removeAllObjects];
-    TNDataWrapper *studentsWrapper = [data getDataWrapperForKey:@"students"];
-    if(studentsWrapper.count > 0)
-    {
-        for (NSInteger i = 0; i < studentsWrapper.count; i++)
-        {
-            TNDataWrapper *studentItemWrapper = [studentsWrapper getDataWrapperForIndex:i];
-            StudentInfo *studentInfo = [[StudentInfo alloc] init];
-            [studentInfo parseData:studentItemWrapper];
-            [self.modelItemArray addObject:studentInfo];
-        }
-    }
-    return YES;
-}
-
 @end
 
 @interface NotificationClassStudentsVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong)NSMutableArray *seletedArray;
+@property (nonatomic, strong)NSMutableArray *students;
 @end
 
 @implementation NotificationClassStudentsVC
@@ -103,25 +77,46 @@
     [super viewDidLoad];
     self.seletedArray = [NSMutableArray arrayWithArray:self.originalArray];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(onConfirm)];
-    [self bindTableCell:@"NotificationStudentCell" tableModel:@"StudentsModel"];
-    [self requestData:REQUEST_REFRESH];
+
+    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    [_tableView setDelegate:self];
+    [_tableView setDataSource:self];
+    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [self.view addSubview:_tableView];
     
 }
 
-- (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
+- (void)setClassInfo:(ClassInfo *)classInfo
 {
-    HttpRequestTask *task = [[HttpRequestTask alloc] init];
-    [task setRequestUrl:@"class/info"];
-    [task setRequestMethod:REQUEST_GET];
-    [task setRequestType:requestType];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:self.classID forKey:@"class_id"];
-    [task setParams:params];
-    [task setObserver:self];
-    return task;
-
+    _classInfo = classInfo;
+    NSMutableArray *studentArray = [[NSMutableArray alloc] initWithCapacity:0];
+    NSArray *students = classInfo.students;
+    NSMutableDictionary *studentDic = [[NSMutableDictionary alloc] initWithCapacity:0];
+    for (StudentInfo *student in students)
+    {
+        NSString *key = student.shortIndex;
+        ContactGroup *studentGroup = [studentDic objectForKey:key];
+        if(studentGroup == nil)
+        {
+            studentGroup = [[ContactGroup alloc] init];
+            [studentGroup setKey:key];
+            [studentDic setObject:studentGroup forKey:key];
+        }
+        [studentGroup.contacts addObject:student];
+    }
+    NSArray *allKeys = [studentDic allKeys];
+    for (NSString *key in allKeys) {
+        [studentArray addObject:[studentDic objectForKey:key]];
+    }
+    [studentArray sortUsingComparator:^NSComparisonResult(ContactGroup* obj1, ContactGroup* obj2) {
+        NSString *index1 = obj1.key;
+        NSString *index2 = obj2.key;
+        return [index1 compare:index2];
+        
+    }];
+    
+    self.students = studentArray;
 }
-
 - (BOOL)selectedForStudent:(StudentInfo *)studentInfo
 {
     BOOL selected = NO;
@@ -133,9 +128,57 @@
     return selected;
 }
 
-- (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
+#pragma mark - UItableVIewDelegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    StudentInfo *studentInfo = (StudentInfo *)modelItem;
+    return self.students.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    ContactGroup *group = self.students[section];
+    return group.contacts.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 25;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 25)];
+    [headerView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    NSString *title = nil;
+    ContactGroup *group = [self.students objectAtIndex:section];
+    title = group.key;
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, headerView.width - 15, headerView.height)];
+    [titleLabel setTextColor:[UIColor colorWithHexString:@"8e8e8e"]];
+    [titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [titleLabel setText:title];
+    [headerView addSubview:titleLabel];
+    return headerView;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *reuseID = @"NotificationStudentCell";
+    NotificationStudentCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+    if(cell == nil)
+    {
+        cell = [[NotificationStudentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+    }
+    ContactGroup *group = self.students[indexPath.section];
+    StudentInfo *studentInfo = group.contacts[indexPath.row];
+    [cell onReloadData:studentInfo];
+    [cell setChecked:[self selectedForStudent:studentInfo]];
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ContactGroup *group = self.students[indexPath.section];
+    StudentInfo *studentInfo = group.contacts[indexPath.row];
     if([self selectedForStudent:studentInfo])
         [self.seletedArray removeObject:studentInfo.uid];
     else
@@ -143,12 +186,6 @@
         [self.seletedArray addObject:studentInfo.uid];
     }
     [_tableView reloadData];
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NotificationStudentCell *studentCell = (NotificationStudentCell *)cell;
-    [studentCell setChecked:[self selectedForStudent:self.tableViewModel.modelItemArray[indexPath.row]]];
 }
 
 - (void)onConfirm

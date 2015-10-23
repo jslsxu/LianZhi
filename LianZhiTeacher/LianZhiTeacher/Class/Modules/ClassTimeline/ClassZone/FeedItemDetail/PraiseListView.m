@@ -24,7 +24,7 @@
         _extraLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_extraLabel setFont:[UIFont systemFontOfSize:13]];
         [_extraLabel setTextAlignment:NSTextAlignmentCenter];
-        [_extraLabel setTextColor:[UIColor colorWithRed:26 / 255.0 green:194 / 255.0 blue:130 / 255.0 alpha:1.f]];
+        [_extraLabel setTextColor:[UIColor colorWithHexString:@"0fabc1"]];
         [_extraLabel setText:@"点了赞"];
         [_extraLabel sizeToFit];
         [_extraLabel setSize:CGSizeMake(_extraLabel.width + 10, 22)];

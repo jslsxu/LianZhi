@@ -35,7 +35,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        self.titleArray = @[@[@"兴趣"],@[@"常见问题",@"操作指南"]];
+        self.titleArray = @[@[@"兴趣"],@[@"常见问题",@"连枝剧场"]];
         self.imageArray = @[@[@"icon_eye"],@[@"icon_often",@"icon_caozuo"]];
     }
     return self;

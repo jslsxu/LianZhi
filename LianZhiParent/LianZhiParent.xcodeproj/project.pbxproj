@@ -394,6 +394,7 @@
 		37EAC9ED1B82D165007BFBA1 /* CommonInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9EB1B82D165007BFBA1 /* CommonInputVC.m */; };
 		37EAC9F01B82DEE5007BFBA1 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */; };
 		37EAC9F31B8348EE007BFBA1 /* PasswordConfirmVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9F21B8348EE007BFBA1 /* PasswordConfirmVC.m */; };
+		37F206E31BDA374E006466F4 /* Guide.zip in Resources */ = {isa = PBXBuildFile; fileRef = 37F206E21BDA374E006466F4 /* Guide.zip */; };
 		37FD6DC11BAE7C5F00C83AB4 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DC01BAE7C5F00C83AB4 /* MessageCell.m */; };
 		37FD6DC41BAE7C7F00C83AB4 /* MessageItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DC31BAE7C7F00C83AB4 /* MessageItem.m */; };
 		37FD6DC71BAE800600C83AB4 /* ChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DC61BAE800600C83AB4 /* ChatMessageModel.m */; };
@@ -409,7 +410,6 @@
 		37FD6E6E1BBBDE3100C83AB4 /* small_guide2.png in Resources */ = {isa = PBXBuildFile; fileRef = 37FD6E641BBBDE3100C83AB4 /* small_guide2.png */; };
 		37FD6E6F1BBBDE3100C83AB4 /* small_guide1.png in Resources */ = {isa = PBXBuildFile; fileRef = 37FD6E651BBBDE3100C83AB4 /* small_guide1.png */; };
 		37FD6E7D1BBCE47600C83AB4 /* OperationGuideVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E7C1BBCE47600C83AB4 /* OperationGuideVC.m */; };
-		37FD70851BBCEEB000C83AB4 /* Guide.zip in Resources */ = {isa = PBXBuildFile; fileRef = 37FD70841BBCEEB000C83AB4 /* Guide.zip */; };
 		37FD70A71BBCF0F700C83AB4 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 37FD709D1BBCF0F700C83AB4 /* ioapi.c */; };
 		37FD70A81BBCF0F700C83AB4 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 37FD709F1BBCF0F700C83AB4 /* mztools.c */; };
 		37FD70A91BBCF0F700C83AB4 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70A11BBCF0F700C83AB4 /* unzip.c */; };
@@ -1175,6 +1175,7 @@
 		37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		37EAC9F11B8348EE007BFBA1 /* PasswordConfirmVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordConfirmVC.h; sourceTree = "<group>"; };
 		37EAC9F21B8348EE007BFBA1 /* PasswordConfirmVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordConfirmVC.m; sourceTree = "<group>"; };
+		37F206E21BDA374E006466F4 /* Guide.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Guide.zip; sourceTree = "<group>"; };
 		37FD6DBF1BAE7C5F00C83AB4 /* MessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
 		37FD6DC01BAE7C5F00C83AB4 /* MessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
 		37FD6DC21BAE7C7F00C83AB4 /* MessageItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageItem.h; sourceTree = "<group>"; };
@@ -1195,7 +1196,6 @@
 		37FD6E651BBBDE3100C83AB4 /* small_guide1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = small_guide1.png; sourceTree = "<group>"; };
 		37FD6E7B1BBCE47600C83AB4 /* OperationGuideVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OperationGuideVC.h; sourceTree = "<group>"; };
 		37FD6E7C1BBCE47600C83AB4 /* OperationGuideVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperationGuideVC.m; sourceTree = "<group>"; };
-		37FD70841BBCEEB000C83AB4 /* Guide.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Guide.zip; sourceTree = "<group>"; };
 		37FD709C1BBCF0F700C83AB4 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		37FD709D1BBCF0F700C83AB4 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		37FD709E1BBCF0F700C83AB4 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
@@ -2627,7 +2627,7 @@
 		37C356831A3FE6D600B948E6 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				37FD70841BBCEEB000C83AB4 /* Guide.zip */,
+				37F206E21BDA374E006466F4 /* Guide.zip */,
 				3728A6641B94205200310457 /* InputView */,
 				37C88F891A8445FA008E44DB /* WelcomeGuide */,
 				372571511A80B3AE0087F178 /* Sound */,
@@ -3144,6 +3144,7 @@
 				3793F7F51B7CFFD900501F77 /* ReceiverVoiceNodePlaying001@2x副本.png in Resources */,
 				37FD6E6C1BBBDE3100C83AB4 /* small_guide4.png in Resources */,
 				3728A6761B94205200310457 /* FaceIcon@2x.png in Resources */,
+				37F206E31BDA374E006466F4 /* Guide.zip in Resources */,
 				37FD6E6B1BBBDE3100C83AB4 /* small_guide5.png in Resources */,
 				3728A6771B94205200310457 /* GetHistoryMessageButton@2x.png in Resources */,
 				3793F7F81B7CFFD900501F77 /* ReceiverVoiceNodePlaying003@2x.png in Resources */,
@@ -3152,7 +3153,6 @@
 				3793F7F31B7CFFD900501F77 /* ReceiverVoiceNodePlaying000@2x副本.png in Resources */,
 				3728A6801B94205200310457 /* MessageTimeBG@2x.png in Resources */,
 				37FD6E6A1BBBDE3100C83AB4 /* guide5.png in Resources */,
-				37FD70851BBCEEB000C83AB4 /* Guide.zip in Resources */,
 				3728A6741B94205200310457 /* Checkmark@2x.png in Resources */,
 				37C356131A3FD67300B948E6 /* Images.xcassets in Resources */,
 				3793F7F21B7CFFD900501F77 /* ReceiverVoiceNodePlaying000@2x.png in Resources */,
@@ -3603,7 +3603,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3629,7 +3629,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7978f522-3d07-4c8c-844e-0e19b4151403";
+				PROVISIONING_PROFILE = "b0a45cd0-d146-4e14-8edc-7cccff49897d";
 			};
 			name = Debug;
 		};
@@ -3640,7 +3640,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3666,7 +3666,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7978f522-3d07-4c8c-844e-0e19b4151403";
+				PROVISIONING_PROFILE = "b0a45cd0-d146-4e14-8edc-7cccff49897d";
 			};
 			name = Release;
 		};

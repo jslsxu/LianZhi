@@ -81,37 +81,33 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ContactModel)
         [group.contacts addObject:teacher];
     }
     
-    NSArray *classes = schoolInfo.classes;
-    if(classes.count > 1)//多个班,按年级
+    NSInteger classNum = schoolInfo.classNum;
+    if(classNum > 1)//多个班,按年级
     {
-        NSMutableArray *allGradeSet = [[NSMutableArray alloc] init];
-        for (ClassInfo *classInfo in schoolInfo.classes) {
-            BOOL contains = NO;
-            for (NSString *key in allGradeSet) {
-                if([key isEqualToString:classInfo.grade])
-                    contains = YES;
-            }
-            if(!contains)
-                [allGradeSet addObject:classInfo.grade];
-        }
-        
-        for (NSString *key in allGradeSet) {
-            group = [[ContactGroup alloc] init];
-            [group setKey:key];
-            for (ClassInfo *classInfo in schoolInfo.classes) {
-                if([classInfo.grade isEqualToString:key])
-                {
-                    [group.contacts addObject:classInfo];
-                }
-            }
+        if([UserCenter sharedInstance].curSchool.classes.count > 0)
+        {
+            ContactGroup *group = [[ContactGroup alloc] init];
+            [group setKey:@"我教授的班"];
+            [group setContacts:[NSMutableArray arrayWithArray:[UserCenter sharedInstance].curSchool.classes]];
             [self.classes addObject:group];
         }
     
+        if([UserCenter sharedInstance].curSchool.managedClasses.count > 0)
+        {
+            ContactGroup *group = [[ContactGroup alloc] init];
+            [group setKey:@"我管理的班"];
+            [group setContacts:[NSMutableArray arrayWithArray:[UserCenter sharedInstance].curSchool.managedClasses]];
+            [self.classes addObject:group];
+        }
     }
     else//一个班的话则把所有的学生按音序分组
     {
         group = nil;
-        ClassInfo *classInfo = [classes objectAtIndex:0];
+        ClassInfo *classInfo = nil;
+        if([UserCenter sharedInstance].curSchool.classes.count > 0)
+            classInfo = [UserCenter sharedInstance].curSchool.classes[0];
+        else
+            classInfo = [UserCenter sharedInstance].curSchool.managedClasses[0];
         NSArray *students = classInfo.students;
         NSMutableDictionary *studentDic = [[NSMutableDictionary alloc] initWithCapacity:0];
         for (StudentInfo *student in students)

@@ -383,6 +383,11 @@
     }
     else
     {
+        if(self.zoneItem.audioItem)
+        {
+            [ProgressHUD showHintText:@"努力开发中,敬请期待..."];
+            return;
+        }
         NSString *imageUrl = nil;
         if(self.zoneItem.photos.count > 0)
             imageUrl = [self.zoneItem.photos[0] thumbnailUrl];

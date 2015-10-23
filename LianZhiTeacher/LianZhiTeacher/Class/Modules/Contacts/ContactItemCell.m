@@ -73,7 +73,6 @@
         
         _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
-        [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
         [_chatButton setImage:[UIImage imageNamed:@"ChatButtonNormal"] forState:UIControlStateNormal];
         [_chatButton setImage:[UIImage imageNamed:@"ChatButtonHighlighted"] forState:UIControlStateHighlighted];
         [self addSubview:_chatButton];
@@ -114,11 +113,4 @@
         [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }
 }
-
-- (void)onChatClicked
-{
-    if([self.delegate respondsToSelector:@selector(contactItemChatClicked:)])
-        [self.delegate contactItemChatClicked:self.userInfo];
-}
-
 @end

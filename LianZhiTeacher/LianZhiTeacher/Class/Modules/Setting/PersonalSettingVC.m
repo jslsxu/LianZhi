@@ -97,7 +97,7 @@
     TNButtonItem *confirmItem = [TNButtonItem itemWithTitle:@"确定" action:^{
         [ApplicationDelegate logout];
     }];
-    TNActionSheet *actionSheet = [[TNActionSheet alloc] initWithTitle:@"确定退出登录吗?" descriptionView:nil destructiveButton:nil cancelItem:cancelItem otherItems:@[confirmItem]];
+    TNActionSheet *actionSheet = [[TNActionSheet alloc] initWithTitle:@"确定退出登录吗?" descriptionView:nil destructiveButton:cancelItem cancelItem:nil otherItems:@[confirmItem]];
     [actionSheet show];
 }
 

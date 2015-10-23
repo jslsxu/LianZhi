@@ -82,7 +82,7 @@
 
 - (void)setupHeaderView:(UIView *)viewParent
 {
-    [viewParent setBackgroundColor:kCommonParentTintColor];
+    [viewParent setBackgroundColor:[UIColor colorWithHexString:@"04aa73"]];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, 50, viewParent.height)];
     [label setTextColor:[UIColor whiteColor]];
     [label setFont:[UIFont systemFontOfSize:14]];
@@ -282,15 +282,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if(!self.showParentsOnly)
     {
-        if(indexPath.section == 1)
-        {
-            ContactGroup *group = self.students[indexPath.section - 1];
-            ChildInfo *childInfo = group.contacts[indexPath.row];
-            StudentParentsVC *studentParentsVC = [[StudentParentsVC alloc] init];
-            [studentParentsVC setChildInfo:childInfo];
-            [CurrentROOTNavigationVC pushViewController:studentParentsVC animated:YES];
-        }
-        else
+        if(indexPath.section == 0)
         {
             TeacherInfo *teacherInfo = self.classInfo.teachers[indexPath.row];
             JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
@@ -303,6 +295,14 @@
                 title = [NSString stringWithFormat:@"%@(%@)",title, teacherInfo.course];
             [chatVC setTitle:title];
             [ApplicationDelegate popAndPush:chatVC];
+        }
+        else
+        {
+            ContactGroup *group = self.students[indexPath.section - 1];
+            ChildInfo *childInfo = group.contacts[indexPath.row];
+            StudentParentsVC *studentParentsVC = [[StudentParentsVC alloc] init];
+            [studentParentsVC setChildInfo:childInfo];
+            [CurrentROOTNavigationVC pushViewController:studentParentsVC animated:YES];
         }
     }
     else

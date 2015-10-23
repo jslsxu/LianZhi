@@ -1325,10 +1325,10 @@
 				37C01B101A6C245500C8F454 /* DatePickerView.m */,
 				3728A74A1B9EE5C400310457 /* PublishGrowthTimelineVC.h */,
 				3728A74B1B9EE5C400310457 /* PublishGrowthTimelineVC.m */,
-				3728A74D1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.h */,
-				3728A74E1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m */,
 				3728A7501B9F524000310457 /* GrowthTimelineClassChangeVC.h */,
 				3728A7511B9F524000310457 /* GrowthTimelineClassChangeVC.m */,
+				3728A74D1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.h */,
+				3728A74E1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m */,
 			);
 			path = GrowthTimeline;
 			sourceTree = "<group>";
@@ -3629,7 +3629,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					../BaseFoundation/3rdPart/AutoNavi,
@@ -3654,7 +3654,7 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/SVShare/ShareSDK/Extend/WeChatSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "72ffb7ff-6a30-4cbc-bc91-64fe85646ba9";
+				PROVISIONING_PROFILE = "309f869c-e642-40a5-b863-7a8e12cdd04a";
 			};
 			name = Debug;
 		};
@@ -3663,7 +3663,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					../BaseFoundation/3rdPart/AutoNavi,
@@ -3688,7 +3688,7 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/SVShare/ShareSDK/Extend/WeChatSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "72ffb7ff-6a30-4cbc-bc91-64fe85646ba9";
+				PROVISIONING_PROFILE = "309f869c-e642-40a5-b863-7a8e12cdd04a";
 			};
 			name = Release;
 		};

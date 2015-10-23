@@ -26,9 +26,11 @@ extern NSString *const kAddRelationNotification;
 
 @interface PersonalInfoCell : TNTableViewCell<UITextFieldDelegate>
 {
+    UIButton*       _addButton;
     UIView*         _sepLine;
 }
 @property (nonatomic, strong)PersonalInfoItem *infoItem;
+@property (nonatomic, assign)BOOL showAdd;
 @end
 
 

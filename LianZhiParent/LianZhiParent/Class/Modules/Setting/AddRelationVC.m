@@ -229,6 +229,19 @@
     return  _infoArray.count + 1;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row > 7)
+        return YES;
+    return NO;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [_infoArray removeObjectAtIndex:indexPath.row - 1];
+    [self.tableView reloadData];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
@@ -253,6 +266,10 @@
             cell = [[PersonalInfoCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseID];
         }
         [cell setInfoItem:_infoArray[row - 1]];
+        if(indexPath.row == _infoArray.count)
+            [cell setShowAdd:YES];
+        else
+            [cell setShowAdd:NO];
         return cell;
     }
 }

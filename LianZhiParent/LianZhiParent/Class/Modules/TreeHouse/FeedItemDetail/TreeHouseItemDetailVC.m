@@ -497,6 +497,11 @@
     }
     else
     {
+        if(self.treeHouseItem.audioItem)
+        {
+            [ProgressHUD showHintText:@"努力开发中,敬请期待..."];
+            return;
+        }
         NSString *imageUrl = nil;
         if(self.treeHouseItem.photos.count > 0)
             imageUrl = [self.treeHouseItem.photos[0] thumbnailUrl];

@@ -110,10 +110,9 @@
 
 @end
 
-@interface NotificationTargetSelectVC ()<UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic, strong)NSArray *groupArray;
-@property (nonatomic, strong)NSArray *classesArray;
+@interface NotificationTargetSelectVC ()
 @property (nonatomic, strong)NSArray *teacherGroupArray;
+@property (nonatomic, strong)NSArray *classArray;
 @end
 
 @implementation NotificationTargetSelectVC
@@ -122,7 +121,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"消息通知";
-    self.classesArray = [UserCenter sharedInstance].curSchool.classes;
+    
+    NSMutableArray *classArray = [NSMutableArray array];
+    if([UserCenter sharedInstance].curSchool.classes.count > 0)
+    {
+        NSMutableDictionary *group = [NSMutableDictionary dictionary];
+        [group setValue:@"我教授的班" forKey:@"groupName"];
+        [group setValue:[NSArray arrayWithArray:[UserCenter sharedInstance].curSchool.classes] forKey:@"groupArray"];
+        [classArray addObject:group];
+    }
+    
+    if([UserCenter sharedInstance].curSchool.managedClasses.count > 0)
+    {
+        NSMutableDictionary *group = [NSMutableDictionary dictionary];
+        [group setValue:@"我管理的班" forKey:@"groupName"];
+        [group setValue:[NSArray arrayWithArray:[UserCenter sharedInstance].curSchool.managedClasses] forKey:@"groupArray"];
+        [classArray addObject:group];
+    }
+    
+    self.classArray = classArray;
+    
     _selectedMateArray = [NSMutableArray array];
     _selectedStudentDic = [NSMutableDictionary dictionary];
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
@@ -223,38 +241,6 @@
 
 - (void)requestData
 {
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/get_publish_scope" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        TNDataWrapper *groupsWrapper = [responseObject getDataWrapperForKey:@"groups"];
-        if(groupsWrapper.count > 0)
-        {
-            NSMutableArray *groupArray = [NSMutableArray array];
-            for (NSInteger i = 0; i < groupsWrapper.count; i++)
-            {
-                TNDataWrapper *classWrapper = [groupsWrapper getDataWrapperForIndex:i];
-                ClassInfo *classInfo = [[ClassInfo alloc] init];
-                [classInfo parseData:classWrapper];
-                [groupArray addObject:classInfo];
-            }
-            self.groupArray = groupArray;
-        }
-        
-//        TNDataWrapper *classesWrapper = [responseObject getDataWrapperForKey:@"classes"];
-//        if(classesWrapper.count > 0)
-//        {
-//            NSMutableArray *groupArray = [NSMutableArray array];
-//            for (NSInteger i = 0; i < classesWrapper.count; i++)
-//            {
-//                TNDataWrapper *classWrapper = [classesWrapper getDataWrapperForIndex:i];
-//                ClassInfo *classInfo = [[ClassInfo alloc] init];
-//                [classInfo parseData:classWrapper];
-//                [groupArray addObject:classInfo];
-//            }
-//            self.classesArray = groupArray;
-//        }
-        [_tableView reloadData];
-    } fail:^(NSString *errMsg) {
-        
-    }];
     
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"app/groups" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         TNDataWrapper *groupsWrapper = [responseObject getDataWrapperForKey:@"list"];
@@ -283,7 +269,7 @@
 {
     if(_segmentControl.selectedSegmentIndex == 0)
     {
-        return 2;
+        return self.classArray.count;
     }
     else
         return 1;
@@ -292,10 +278,9 @@
 {
     if(_segmentControl.selectedSegmentIndex == 0)
     {
-        if(section == 1)
-            return self.groupArray.count;
-        else
-            return self.classesArray.count;
+        NSDictionary *group = self.classArray[section];
+        NSArray *groupArray = group[@"groupArray"];
+        return groupArray.count;
     }
     else
     {
@@ -321,38 +306,21 @@
     if(_segmentControl.selectedSegmentIndex == 0)
     {
         NotificationGroupHeaderView *headerView = [[NotificationGroupHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 50)];
-        if(section == 1)
+        NSDictionary *groupDic = self.classArray[section];
+        [headerView.nameLabel setText:groupDic[@"groupName"]];
+        NSInteger selectNum = 0;
+        NSArray *groupArray = groupDic[@"groupArray"];
+        for (ClassInfo *classInfo in groupArray)
         {
-            [headerView.nameLabel setText:@"我管理的班"];
-            NSInteger selectNum = 0;
-            for (ClassInfo *classInfo in self.groupArray)
-            {
-                if([_selectedStudentDic valueForKey:classInfo.classID])
-                    selectNum ++;
-            }
-            if(selectNum == 0)
-                [headerView setSelectType:SelectTypeNone];
-            else if(selectNum == self.groupArray.count)
-                [headerView setSelectType:SelectTypeAll];
-            else
-                [headerView setSelectType:SelectTypePart];
+            if([_selectedStudentDic valueForKey:classInfo.classID])
+                selectNum ++;
         }
+        if(selectNum == 0)
+            [headerView setSelectType:SelectTypeNone];
+        else if(selectNum == groupArray.count)
+            [headerView setSelectType:SelectTypeAll];
         else
-        {
-            [headerView.nameLabel setText:@"我教授的班"];
-            NSInteger selectNum = 0;
-            for (ClassInfo *classInfo in self.classesArray)
-            {
-                if([_selectedStudentDic valueForKey:classInfo.classID])
-                    selectNum ++;
-            }
-            if(selectNum == 0)
-                [headerView setSelectType:SelectTypeNone];
-            else if(selectNum == self.classesArray.count)
-                [headerView setSelectType:SelectTypeAll];
-            else
-                [headerView setSelectType:SelectTypePart];
-        }
+            [headerView setSelectType:SelectTypePart];
         return headerView;
     }
     else
@@ -371,21 +339,14 @@
     }
     if(_segmentControl.selectedSegmentIndex == 0)
     {
-        ClassInfo *classInfo = nil;
-        if(indexPath.section == 1)
-        {
-            classInfo = self.groupArray[indexPath.row];
-            [cell.detailTextLabel setText:kStringFromValue(classInfo.num)];
-        }
-        else
-        {
-            classInfo = self.classesArray[indexPath.row];
-            NSArray *selectedArray = _selectedStudentDic[classInfo.classID];
-            [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld/%ld",selectedArray.count,classInfo.students.count]];
-        }
+        NSDictionary *groupDic = self.classArray[indexPath.section];
+        NSArray *groupArray = groupDic[@"groupArray"];
+        ClassInfo *classInfo = groupArray[indexPath.row];
+        NSArray *selectedArray = _selectedStudentDic[classInfo.classID];
+        [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld/%ld",(long)selectedArray.count,classInfo.students.count]];
         [cell.nameLabel setText:classInfo.className];
         [cell.checkButton setSelected:[_selectedStudentDic valueForKey:classInfo.classID]];
-        [cell setAccessoryView:[[UIImageView alloc] initWithImage:indexPath.section == 0 ? [UIImage imageNamed:@"RightArrow"] : nil]];
+        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }
     else
     {
@@ -404,35 +365,22 @@
     {
         NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
-        ClassInfo *classInfo = nil;
-        if(section == 1)
-            classInfo = self.groupArray[row];
-        else
-            classInfo = self.classesArray[row];
-        if(section == 0)
-        {
-            NotificationClassStudentsVC *studentVC = [[NotificationClassStudentsVC alloc] init];
-            [studentVC setTitle:classInfo.className];
-            [studentVC setClassID:classInfo.classID];
-            [studentVC setOriginalArray:_selectedStudentDic[classInfo.classID]];
-            [studentVC setSelectedCompletion:^(NSArray *studentArray)
-             {
-                 if(studentArray.count > 0)
-                     [_selectedStudentDic setValue:studentArray forKey:classInfo.classID];
-                 else
-                     [_selectedStudentDic removeObjectForKey:classInfo.classID];
-                 [_tableView reloadData];
-             }];
-            [self.navigationController pushViewController:studentVC animated:YES];
-        }
-        else
-        {
-            if([_selectedStudentDic valueForKey:classInfo.classID])
-                [_selectedStudentDic removeObjectForKey:classInfo.classID];
-            else
-                [_selectedStudentDic setValue:@"" forKey:classInfo.classID];
-            [_tableView reloadData];
-        }
+        NSDictionary *groupDic = self.classArray[section];
+        NSArray *groupArray = groupDic[@"groupArray"];
+        ClassInfo *classInfo = groupArray[row];
+        NotificationClassStudentsVC *studentVC = [[NotificationClassStudentsVC alloc] init];
+        [studentVC setTitle:classInfo.className];
+        [studentVC setClassInfo:classInfo];
+        [studentVC setOriginalArray:_selectedStudentDic[classInfo.classID]];
+        [studentVC setSelectedCompletion:^(NSArray *studentArray)
+         {
+             if(studentArray.count > 0)
+                 [_selectedStudentDic setValue:studentArray forKey:classInfo.classID];
+             else
+                 [_selectedStudentDic removeObjectForKey:classInfo.classID];
+             [_tableView reloadData];
+         }];
+        [self.navigationController pushViewController:studentVC animated:YES];
     }
     else
     {

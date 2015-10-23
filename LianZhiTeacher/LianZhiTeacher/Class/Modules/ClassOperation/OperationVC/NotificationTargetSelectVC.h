@@ -42,13 +42,14 @@ typedef NS_ENUM(NSInteger, SelectType){
 @property (nonatomic, assign)NSInteger selectType;
 @end
 
-@interface NotificationTargetSelectVC : TNBaseViewController
+@interface NotificationTargetSelectVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
     NSMutableDictionary*     _selectedStudentDic;
     NSMutableArray*     _selectedMateArray;
     UISegmentedControl* _segmentControl;
     UITableView*        _tableView;
 }
+
 @property (nonatomic, strong)NSArray *imageArray;
 @property (nonatomic, strong)NSData *audioData;
 @property (nonatomic, strong)NSDictionary *params;

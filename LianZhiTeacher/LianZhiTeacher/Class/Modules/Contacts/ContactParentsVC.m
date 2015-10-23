@@ -97,7 +97,6 @@
     {
         cell = [[ContactItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
-    [cell setDelegate:self];
     ContactGroup *group = [self.parents objectAtIndex:indexPath.section];
     FamilyInfo *userInfo = [[group contacts] objectAtIndex:indexPath.row];
     [cell setUserInfo:userInfo];
@@ -156,15 +155,5 @@
     [ApplicationDelegate popAndPush:chatVC];
 }
 
-
-//#pragma mark - ContactDelegate
-//- (void)contactItemChatClicked:(UserInfo *)userInfo
-//{
-//    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-//    [chatVC setTargetID:userInfo.uid];
-//    [chatVC setChatType:ChatTypeParents];
-//    [chatVC setTitle:[NSString stringWithFormat:@"%@的%@",self.studentInfo.name,[(FamilyInfo *)userInfo relation]]];
-//    [ApplicationDelegate popAndPush:chatVC];
-//}
 
 @end

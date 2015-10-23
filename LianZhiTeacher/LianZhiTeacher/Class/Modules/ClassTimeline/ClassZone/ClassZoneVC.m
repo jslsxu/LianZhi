@@ -330,8 +330,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"切换班级" style:UIBarButtonItemStylePlain target:self action:@selector(onExchangeClass)];
+    if([[UserCenter sharedInstance].curSchool classNum] > 1)
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"切换班级" style:UIBarButtonItemStylePlain target:self action:@selector(onExchangeClass)];
     
 //    self.title = @"班空间";
     self.shouldShowEmptyHint = YES;
@@ -363,8 +363,12 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [_headerView setDelegate:self];
     [self.tableView setTableHeaderView:_headerView];
     
-    ClassInfo *curClassInfo = [UserCenter sharedInstance].curSchool.classes[0];
-    [self setClassInfo:curClassInfo];
+    ClassInfo *classInfo = nil;
+    if([UserCenter sharedInstance].curSchool.classes.count > 0)
+        classInfo = [UserCenter sharedInstance].curSchool.classes[0];
+    else if([UserCenter sharedInstance].curSchool.managedClasses.count > 0)
+        classInfo = [UserCenter sharedInstance].curSchool.managedClasses[0];
+    [self setClassInfo:classInfo];
     
     [self bindTableCell:@"ClassZoneItemCell" tableModel:@"ClassZoneModel"];
     [self setSupportPullDown:YES];
@@ -438,6 +442,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [classSelectionVC setOriginalClassID:self.classInfo.classID];
     [classSelectionVC setSelection:^(ClassInfo *classInfo) {
         [wself setClassInfo:classInfo];
+        [wself.navigationController popViewControllerAnimated:YES];
     }];
     [self.navigationController pushViewController:classSelectionVC animated:YES];
 }
@@ -736,12 +741,19 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         }
         else
         {
-            NSString *imageUrl = nil;
-            if(self.targetZoneItem.photos.count > 0)
-                imageUrl = [self.targetZoneItem.photos[0] thumbnailUrl];
-            if(imageUrl.length == 0)
-                imageUrl = self.classInfo.logoUrl;
-            [ShareActionView shareWithTitle:self.targetZoneItem.content content:nil image:nil imageUrl:imageUrl url:[NSString stringWithFormat:@"http://m.edugate.cn/share/%@_%@.html",self.targetZoneItem.userInfo.uid,self.targetZoneItem.itemID]];
+            if(self.targetZoneItem.audioItem)
+            {
+                [ProgressHUD showHintText:@"努力开发中,敬请期待..."];
+            }
+            else
+            {
+                NSString *imageUrl = nil;
+                if(self.targetZoneItem.photos.count > 0)
+                    imageUrl = [self.targetZoneItem.photos[0] thumbnailUrl];
+                if(imageUrl.length == 0)
+                    imageUrl = self.classInfo.logoUrl;
+                [ShareActionView shareWithTitle:self.targetZoneItem.content content:nil image:nil imageUrl:imageUrl url:[NSString stringWithFormat:@"http://m.edugate.cn/share/%@_%@.html",self.targetZoneItem.userInfo.uid,self.targetZoneItem.itemID]];
+            }
         }
     }];
     [actionView show];

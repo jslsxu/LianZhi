@@ -249,7 +249,7 @@ static NSString *topChatID = nil;
     } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [wself appendNewMessage:responseObject];
     } fail:^(NSString *errMsg) {
-        
+        [ProgressHUD showHintText:errMsg];
     }];
 }
 

@@ -45,11 +45,15 @@
     [self setupHeaderView:headerView];
     [self.view addSubview:headerView];
     
-    if([UserCenter sharedInstance].curSchool.classes.count > 0)
+    if([UserCenter sharedInstance].curSchool.classNum > 0)
         self.title = @"新聊天";
     else
     {
-        ClassInfo *classInfo = [UserCenter sharedInstance].curSchool.classes[0];
+        ClassInfo *classInfo = nil;
+        if([UserCenter sharedInstance].curSchool.classes.count > 0)
+            classInfo = [UserCenter sharedInstance].curSchool.classes[0];
+        else
+            classInfo = [UserCenter sharedInstance].curSchool.managedClasses[0];
         self.title = classInfo.className;
     }
     
@@ -221,7 +225,6 @@
             {
                 cell = [[ContactItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
             }
-            [cell setDelegate:self];
             ContactGroup *group = [_contactModel.students objectAtIndex:indexPath.section - 1];
             UserInfo *userInfo = [[group contacts] objectAtIndex:indexPath.row];
             [cell setUserInfo:userInfo];
@@ -236,7 +239,6 @@
         {
             cell = [[ContactItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         }
-        [cell setDelegate:self];
         ContactGroup *group = [_contactModel.teachers objectAtIndex:indexPath.section];
         UserInfo *userInfo = [[group contacts] objectAtIndex:indexPath.row];
         [cell setUserInfo:userInfo];
@@ -377,15 +379,6 @@
     }
 }
 
-//#pragma mark - ContactDelegate
-//- (void)contactItemChatClicked:(UserInfo *)userInfo
-//{
-//    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-//    [chatVC setTargetID:userInfo.uid];
-//    [chatVC setChatType:ChatTypeTeacher];
-//    [chatVC setTitle:userInfo.name];
-//    [ApplicationDelegate popAndPush:chatVC];
-//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

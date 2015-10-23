@@ -17,7 +17,7 @@
 @end
 
 
-@interface ContactListVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate, ContactDelegate>
+@interface ContactListVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
     UISegmentedControl *_segCtrl;
     UITableView*    _classesTableView;
