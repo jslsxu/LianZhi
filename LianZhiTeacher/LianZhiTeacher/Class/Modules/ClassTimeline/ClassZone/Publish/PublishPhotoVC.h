@@ -17,5 +17,6 @@
     UIView*             _bgView;
     NSMutableArray*     _imageItemViewArray;
     UTPlaceholderTextView*  _textView;
+    UIButton*           _sendButton;
 }
 @end

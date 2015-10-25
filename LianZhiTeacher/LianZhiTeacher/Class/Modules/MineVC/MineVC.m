@@ -96,6 +96,9 @@
     [_tableView setDataSource:self];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
     [self.view addSubview:_tableView];
+    
+    //加载设置
+    [[UserCenter sharedInstance] requestNoDisturbingTime];
 }
 
 #pragma mark - UITableViewDelegate

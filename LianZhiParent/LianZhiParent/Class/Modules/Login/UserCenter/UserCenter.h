@@ -41,4 +41,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(UserCenter)
 - (void)save;
 - (BOOL)hasLogin;
 - (void)logout;
+- (void)requestNoDisturbingTime;
+- (void)setNoDisturbindTime;
 @end

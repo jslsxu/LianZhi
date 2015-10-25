@@ -16,6 +16,11 @@
 
 @implementation PublishAudioVC
 
+- (void)dealloc
+{
+    [_recordView dismiss];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     

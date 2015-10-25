@@ -59,12 +59,10 @@
 @interface PersonalSettingVC ()
 @property (nonatomic, strong)NSArray *titleArray;
 @end
-
 @implementation PersonalSettingVC
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.titleArray = @[@[@"听筒模式"],@[@"仅WIFI下发送照片",@"自动省流量"],@[@"声音提醒",@"震动提醒"],@[@"免打扰模式",@"清除缓存"]];
     self.title = @"个性设置";
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [_tableView setSeparatorColor:[UIColor colorWithHexString:@"E0E0E0"]];
@@ -77,6 +75,17 @@
     UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 60)];
     [self setupBottomView:bottomView];
     [_tableView setTableFooterView:bottomView];
+    
+    [self reloadData];
+}
+
+- (void)reloadData
+{
+    if([UserCenter sharedInstance].personalSetting.noDisturbing)
+        self.titleArray = @[@[@"听筒模式"],@[@"仅WIFI下发送照片",@"自动省流量"],@[@"声音提醒",@"震动提醒"],@[@"免打扰模式",@"开始时间",@"结束时间"],@[@"清除缓存"]];
+    else
+        self.titleArray = @[@[@"听筒模式"],@[@"仅WIFI下发送照片",@"自动省流量"],@[@"声音提醒",@"震动提醒"],@[@"免打扰模式"],@[@"清除缓存"]];
+    [_tableView reloadData];
 }
 
 - (void)setupBottomView:(UIView *)viewParent
@@ -86,7 +95,7 @@
     [logoutButton setTitle:@"退出登录" forState:UIControlStateNormal];
     [logoutButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16]];
     [logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [logoutButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"f13e64"] size:CGSizeMake(30, 30) cornerRadius:15] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15)] forState:UIControlStateNormal];
+    [logoutButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"E82557"] size:CGSizeMake(30, 30) cornerRadius:15] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15)] forState:UIControlStateNormal];
     [logoutButton setFrame:CGRectMake(15, (viewParent.height - 35) / 2, viewParent.width - 15 * 2, 35)];
     [viewParent addSubview:logoutButton];
 }
@@ -132,19 +141,28 @@
 {
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    NSString *cellID = @"PersoanlSettingCell";
+    NSString *cellID = [NSString stringWithFormat:@"PersoanlSettingCell%ld-%ld",(long)indexPath.section,(long)indexPath.row];
     PersonalSettingCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if(cell == nil)
     {
         cell = [[PersonalSettingCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
     }
-    if(section == self.titleArray.count - 1 && row == 1)
+    if(section == self.titleArray.count - 1)
     {
         [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
         [cell.switchCtl setHidden:YES];
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         NSString *docDir = [paths objectAtIndex:0];
         [cell.extraLabel setText:[Utility sizeAtPath:docDir diskMode:YES]];
+    }
+    else if(section == 3 && row > 0)
+    {
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [cell.switchCtl setHidden:YES];
+        if(row == 1)
+            [cell.extraLabel setText:[UserCenter sharedInstance].personalSetting.startTime];
+        else if(row == 2)
+            [cell.extraLabel setText:[UserCenter sharedInstance].personalSetting.endTime];
     }
     else
     {
@@ -199,7 +217,7 @@
             personalSetting.noDisturbing = isOn;
         }
         [self saveSettings];
-        [_tableView reloadData];
+        [self reloadData];
     }];
     return cell;
     
@@ -208,7 +226,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if(indexPath.section == 3 && indexPath.row == 1)
+    if(indexPath.section == 4)
     {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         NSString *docDir = [paths objectAtIndex:0];
@@ -225,6 +243,24 @@
                 [ProgressHUD showHintText:@"清除缓存完成"];
             });
         });
+    }
+    else if (indexPath.section == 3 && indexPath.row > 0)
+    {
+        SettingDatePickerView *pickerView = [[SettingDatePickerView alloc] initWithType:SettingDatePickerTypeTime];
+        [pickerView setBlk:^(NSString *dateStr){
+            if(indexPath.row == 1)
+            {
+                [[UserCenter sharedInstance].personalSetting setStartTime:dateStr];
+            }
+            else
+            {
+                [[UserCenter sharedInstance].personalSetting setEndTime:dateStr];
+            }
+            [self saveSettings];
+            [[UserCenter sharedInstance] setNoDisturbindTime];
+            [self reloadData];
+        }];
+        [pickerView show];
     }
 }
 

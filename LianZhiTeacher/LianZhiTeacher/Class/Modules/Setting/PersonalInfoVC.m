@@ -57,6 +57,19 @@
 @end
 
 @implementation PersonalInfoVC
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self)
+    {
+        UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+        [backItem setTitle:@"返回"];
+        self.navigationItem.backBarButtonItem = backItem;
+    }
+    return self;
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
@@ -75,9 +88,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"个人账号";
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
-    [backItem setTitle:@"返回"];
-    self.navigationItem.backBarButtonItem = backItem;
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
     _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 114)];

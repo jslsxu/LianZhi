@@ -104,6 +104,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
             self.personalSetting = [NSKeyedUnarchiver unarchiveObjectWithData:personalSettingData];
         if(!self.personalSetting)
             self.personalSetting = [[PersonalSetting alloc] init];
+
         self.statusManager = [[StatusManager alloc] init];
     }
     return self;
@@ -184,5 +185,26 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
     [userDefaults synchronize];
 }
 
+- (void)requestNoDisturbingTime
+{
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"setting/get_personal" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        self.personalSetting.startTime = [responseObject getStringForKey:@"no_disturbing_begin"];
+        self.personalSetting.endTime = [responseObject getStringForKey:@"no_disturbing_end"];
+        [self save];
+    } fail:^(NSString *errMsg) {
+        
+    }];
+}
+
+- (void)setNoDisturbindTime
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.personalSetting.startTime forKey:@"no_disturbing_begin"];
+    [params setValue:self.personalSetting.endTime forKey:@"no_disturbing_end"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"setting/set_personal" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+    } fail:^(NSString *errMsg) {
+        
+    }];
+}
 
 @end

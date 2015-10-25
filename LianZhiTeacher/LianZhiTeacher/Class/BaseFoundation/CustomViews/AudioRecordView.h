@@ -40,4 +40,5 @@ typedef CF_ENUM(NSInteger, RecordType){
 - (NSData *)tmpAmrData;
 - (void)setTmpAmrData:(NSData *)amrData;
 - (NSInteger)tmpAmrDuration;
+- (void)dismiss;
 @end

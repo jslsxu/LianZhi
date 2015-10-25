@@ -104,7 +104,20 @@
     [_poiInfoView setParentVC:self];
     [_scrollView addSubview:_poiInfoView];
     
-    [_scrollView setContentSize:CGSizeMake(_scrollView.width, MAX(self.view.height - 64, _poiInfoView.bottom))];
+    _sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_sendButton setFrame:CGRectMake(0, _poiInfoView.bottom, 30, 30)];
+    [_sendButton setImage:[UIImage imageNamed:@"ControlDefault"] forState:UIControlStateNormal];
+    [_sendButton setImage:[UIImage imageNamed:@"ControlSelectAll"] forState:UIControlStateSelected];
+    [_sendButton addTarget:self action:@selector(onSendOptionClicked) forControlEvents:UIControlEventTouchUpInside];
+    [_scrollView addSubview:_sendButton];
+    
+    UILabel* optionLabel = [[UILabel alloc] initWithFrame:CGRectMake(_sendButton.right, _poiInfoView.bottom, _scrollView.width - _sendButton.right, 30)];
+    [optionLabel setFont:[UIFont systemFontOfSize:14]];
+    [optionLabel setText:@"发送图片通知给全班家长"];
+    [optionLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
+    [_scrollView addSubview:optionLabel];
+    
+    [_scrollView setContentSize:CGSizeMake(_scrollView.width, MAX(self.view.height - 64, _sendButton.bottom))];
 }
 
 - (void)setupImageView
@@ -150,6 +163,10 @@
     }
 }
 
+- (void)onSendOptionClicked
+{
+    _sendButton.selected = !_sendButton.selected;
+}
 
 - (void)onLongPressGesture:(UILongPressGestureRecognizer *)longGesture
 {
@@ -223,6 +240,7 @@
     }
     [params setValue:self.classInfo.classID forKey:@"class_id"];
     [params setValue:kStringFromValue([[NSDate date] timeIntervalSince1970]) forKey:@"onlywifi_time"];
+    [params setValue:kStringFromValue(_sendButton.selected) forKey:@"send_notice"];
     [item setParams:params];
     
     if([self.delegate respondsToSelector:@selector(publishZoneItemFinished:)])

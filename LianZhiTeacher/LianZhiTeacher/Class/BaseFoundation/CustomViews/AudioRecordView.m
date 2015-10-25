@@ -14,7 +14,8 @@
 @property (nonatomic, strong)AmrRecordWriter*   amrWriter;
 @property (nonatomic, strong)MLAudioPlayer*     player;
 @property (nonatomic, strong)AmrPlayerReader*   amrReader;
-
+@property (nonatomic, strong)NSTimer*           playTimer;
+@property (nonatomic, assign)NSInteger          playTimeInterval;
 @end
 
 @implementation AudioRecordView
@@ -25,6 +26,15 @@
     self.meterObserver.audioQueue = nil;
     [self.player stopPlaying];
     [self.recorder stopRecording];
+}
+
+- (void)dismiss
+{
+    if(self.playTimer)
+    {
+        [self.playTimer invalidate];
+        self.playTimer = nil;
+    }
 }
 
 - (NSData *)tmpAmrData
@@ -67,17 +77,17 @@
         _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_deleteButton setFrame:CGRectMake(10, 10, 40, 40)];
         [_deleteButton addTarget:self action:@selector(onDeleteAudioClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_deleteButton setImage:[UIImage imageNamed:(@"MessageTrash.png")] forState:UIControlStateNormal];
+        [_deleteButton setImage:[UIImage imageNamed:@"MessageTrash.png"] forState:UIControlStateNormal];
         [_deleteButton setHidden:YES];
         [self addSubview:_deleteButton];
         
-        _audioIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MicrophoneGray.png"]];
-         [_audioIndicator setOrigin:CGPointMake(self.width / 2 - _audioIndicator.width - 20, (self.height - _audioIndicator.height) / 2)];
+        _audioIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MicrophoneGray"]];
+        [_audioIndicator setOrigin:CGPointMake(self.width / 2 - _audioIndicator.width - 20, (self.height - _audioIndicator.height) / 2)];
         [self addSubview:_audioIndicator];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         [_timeLabel setBackgroundColor:[UIColor clearColor]];
-        [_timeLabel setFont:[UIFont boldSystemFontOfSize:32]];
+        [_timeLabel setFont:[UIFont boldSystemFontOfSize:28]];
         [_timeLabel setText:@"0:00"];
         [_timeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
         [_timeLabel setFrame:CGRectMake(self.width / 2 + 20, _audioIndicator.y, 110, _audioIndicator.height / 2)];
@@ -85,7 +95,7 @@
         
         _recordButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_recordButton setFrame:CGRectMake(self.width / 2 + 20, _timeLabel.bottom, 50, _audioIndicator.height  / 2)];
-        [_recordButton setImage:[UIImage imageNamed:@"StartRecord.png"] forState:UIControlStateNormal];
+        [_recordButton setImage:[UIImage imageNamed:@"StartRecord"] forState:UIControlStateNormal];
         [_recordButton addTarget:self action:@selector(onRecordButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_recordButton];
         
@@ -104,9 +114,9 @@
             NSString *imageStr = [NSString stringWithFormat:@"Recording%ld.png",(long)index];
             [_audioIndicator setImage:[UIImage imageNamed:(imageStr)]];
         };
-//        meterObserver.errorBlock = ^(NSError *error,MLAudioMeterObserver *meterObserver){
-//            [[[UIAlertView alloc]initWithTitle:@"错误" message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"知道了", nil]show];
-//        };
+        //        meterObserver.errorBlock = ^(NSError *error,MLAudioMeterObserver *meterObserver){
+        //            [[[UIAlertView alloc]initWithTitle:@"错误" message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"知道了", nil]show];
+        //        };
         self.meterObserver = meterObserver;
         
         MLAudioRecorder *recorder = [[MLAudioRecorder alloc]init];
@@ -142,7 +152,7 @@
         };
         self.player = player;
         self.amrReader = amrReader;
-
+        
     }
     return self;
 }
@@ -171,11 +181,37 @@
         self.amrReader.filePath = self.amrWriter.filePath;
         [self.player startPlaying];
         [self setRecordType:RecordTypeEndPlay];
+        
+        if(self.playTimer == nil)
+        {
+            self.playTimeInterval = 0;
+            [_timeLabel setText:[NSString stringWithFormat:@"%ld:%02ld",(long)self.playTimeInterval / 60, (long)self.playTimeInterval % 60]];
+            self.playTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onPlay:) userInfo:nil repeats:YES];
+            [[NSRunLoop currentRunLoop] addTimer:self.playTimer forMode:NSRunLoopCommonModes];
+        }
     }
     else
     {
         [self.player stopPlaying];
         [self setRecordType:RecordTypePlay];
+        [_timeLabel setText:[NSString stringWithFormat:@"%ld:%02ld",(long)self.duration / 60, (long)self.duration % 60]];
+        [self.playTimer invalidate];
+        self.playTimer = nil;
+    }
+}
+
+- (void)onPlay:(NSTimer *)timer
+{
+    if(self.playTimeInterval < self.tmpAmrDuration)
+    {
+        self.playTimeInterval ++;
+        [_timeLabel setText:[NSString stringWithFormat:@"%ld:%02ld",(long)self.playTimeInterval / 60, (long)self.playTimeInterval % 60]];
+    }
+    if(self.playTimeInterval == self.tmpAmrDuration)
+    {
+        [self setRecordType:RecordTypePlay];
+        [self.playTimer invalidate];
+        self.playTimer = nil;
     }
 }
 
@@ -222,14 +258,14 @@
 #pragma mark - MLAudioRecordDelegate
 - (void)audioRecorder:(MLAudioRecorder *)recorder recordTime:(NSInteger)timeInterval
 {
-//    self.duration = timeInterval;
+    //    self.duration = timeInterval;
     self.duration = self.amrWriter.recordedDuration;
     static BOOL changed = NO;
     if(self.duration > 110 && self.duration <= 119)
     {
         changed = !changed;
         [_timeLabel setTextColor:changed ? [UIColor colorWithRed:192 / 255.0 green:118 / 255.0 blue:119 / 255.0 alpha:1.f] : [UIColor colorWithRed:83 / 255.0 green:83 / 255.0 blue:83 / 255.0 alpha:1.f]];
-//        [_audioIndicator setImage:[UIImage imageNamed:MJRefreshSrcName(@"MicrophoneRed.png")]];
+        //        [_audioIndicator setImage:[UIImage imageNamed:@"MicrophoneRed.png")]];
     }
     else
         changed = NO;

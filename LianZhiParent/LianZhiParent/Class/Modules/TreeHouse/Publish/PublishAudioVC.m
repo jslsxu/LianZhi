@@ -15,6 +15,12 @@
 @end
 
 @implementation PublishAudioVC
+
+- (void)dealloc
+{
+    [_recordView dismiss];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardShow:) name:UIKeyboardWillShowNotification object:nil];

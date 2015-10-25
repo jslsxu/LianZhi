@@ -14,6 +14,8 @@
 @property (nonatomic, strong)AmrRecordWriter*   amrWriter;
 @property (nonatomic, strong)MLAudioPlayer*     player;
 @property (nonatomic, strong)AmrPlayerReader*   amrReader;
+@property (nonatomic, strong)NSTimer*           playTimer;
+@property (nonatomic, assign)NSInteger          playTimeInterval;
 @end
 
 @implementation AudioRecordView
@@ -24,6 +26,15 @@
     self.meterObserver.audioQueue = nil;
     [self.player stopPlaying];
     [self.recorder stopRecording];
+}
+
+- (void)dismiss
+{
+    if(self.playTimer)
+    {
+        [self.playTimer invalidate];
+        self.playTimer = nil;
+    }
 }
 
 - (NSData *)tmpAmrData
@@ -170,11 +181,37 @@
         self.amrReader.filePath = self.amrWriter.filePath;
         [self.player startPlaying];
         [self setRecordType:RecordTypeEndPlay];
+        
+        if(self.playTimer == nil)
+        {
+            self.playTimeInterval = 0;
+             [_timeLabel setText:[NSString stringWithFormat:@"%ld:%02ld",(long)self.playTimeInterval / 60, (long)self.playTimeInterval % 60]];
+            self.playTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onPlay:) userInfo:nil repeats:YES];
+            [[NSRunLoop currentRunLoop] addTimer:self.playTimer forMode:NSRunLoopCommonModes];
+        }
     }
     else
     {
         [self.player stopPlaying];
         [self setRecordType:RecordTypePlay];
+         [_timeLabel setText:[NSString stringWithFormat:@"%ld:%02ld",(long)self.duration / 60, (long)self.duration % 60]];
+        [self.playTimer invalidate];
+        self.playTimer = nil;
+    }
+}
+
+- (void)onPlay:(NSTimer *)timer
+{
+    if(self.playTimeInterval < self.tmpAmrDuration)
+    {
+        self.playTimeInterval ++;
+        [_timeLabel setText:[NSString stringWithFormat:@"%ld:%02ld",(long)self.playTimeInterval / 60, (long)self.playTimeInterval % 60]];
+    }
+    if(self.playTimeInterval == self.tmpAmrDuration)
+    {
+        [self setRecordType:RecordTypePlay];
+        [self.playTimer invalidate];
+        self.playTimer = nil;
     }
 }
 

@@ -10,7 +10,7 @@
 
 @interface RegisterVC : TNBaseViewController
 {
-    
+    UITextField*    _area;
 }
 @property (nonatomic, copy)void(^LoginCompletion)(BOOL loginSuccess, BOOL loginCancel);
 @end

@@ -384,6 +384,12 @@
 		37EAC9EA1B82446F007BFBA1 /* CommonInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9E91B82446F007BFBA1 /* CommonInputVC.m */; };
 		37EACA031B845B5F007BFBA1 /* PasswordConfirmVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EACA011B845B5F007BFBA1 /* PasswordConfirmVC.m */; };
 		37F206D81BD87A99006466F4 /* City.db in Resources */ = {isa = PBXBuildFile; fileRef = 37F206D71BD87A99006466F4 /* City.db */; };
+		37F206E61BDCB41E006466F4 /* CityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206E51BDCB41E006466F4 /* CityManager.m */; };
+		37F206F31BDCB5C9006466F4 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206E91BDCB5C9006466F4 /* FMDatabase.m */; };
+		37F206F41BDCB5C9006466F4 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206EB1BDCB5C9006466F4 /* FMDatabaseAdditions.m */; };
+		37F206F51BDCB5C9006466F4 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206ED1BDCB5C9006466F4 /* FMDatabasePool.m */; };
+		37F206F61BDCB5C9006466F4 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206EF1BDCB5C9006466F4 /* FMDatabaseQueue.m */; };
+		37F206F71BDCB5C9006466F4 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206F21BDCB5C9006466F4 /* FMResultSet.m */; };
 		37FD6DE71BAEE01C00C83AB4 /* ChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */; };
 		37FD6DE81BAEE01C00C83AB4 /* JSMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDE1BAEE01C00C83AB4 /* JSMessagesViewController.m */; };
 		37FD6DE91BAEE01C00C83AB4 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DE01BAEE01C00C83AB4 /* MessageCell.m */; };
@@ -1161,6 +1167,19 @@
 		37EACA011B845B5F007BFBA1 /* PasswordConfirmVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordConfirmVC.m; sourceTree = "<group>"; };
 		37EACA021B845B5F007BFBA1 /* PasswordConfirmVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordConfirmVC.h; sourceTree = "<group>"; };
 		37F206D71BD87A99006466F4 /* City.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = City.db; sourceTree = "<group>"; };
+		37F206E41BDCB41E006466F4 /* CityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityManager.h; sourceTree = "<group>"; };
+		37F206E51BDCB41E006466F4 /* CityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityManager.m; sourceTree = "<group>"; };
+		37F206E81BDCB5C9006466F4 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		37F206E91BDCB5C9006466F4 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		37F206EA1BDCB5C9006466F4 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		37F206EB1BDCB5C9006466F4 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		37F206EC1BDCB5C9006466F4 /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
+		37F206ED1BDCB5C9006466F4 /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
+		37F206EE1BDCB5C9006466F4 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
+		37F206EF1BDCB5C9006466F4 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		37F206F01BDCB5C9006466F4 /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
+		37F206F11BDCB5C9006466F4 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		37F206F21BDCB5C9006466F4 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
 		37FD6DDB1BAEE01C00C83AB4 /* ChatMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessageModel.h; sourceTree = "<group>"; };
 		37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageModel.m; sourceTree = "<group>"; };
 		37FD6DDD1BAEE01C00C83AB4 /* JSMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSMessagesViewController.h; sourceTree = "<group>"; };
@@ -1447,6 +1466,7 @@
 		3793F82C1B7CFFEF00501F77 /* 3rdPart */ = {
 			isa = PBXGroup;
 			children = (
+				37F206E71BDCB5C9006466F4 /* FMDB */,
 				37FD708A1BBCEF9800C83AB4 /* minizip */,
 				3793F82D1B7CFFEF00501F77 /* AutoNavi */,
 				3793F8311B7CFFEF00501F77 /* GifImage */,
@@ -2421,6 +2441,8 @@
 				37C88F6D1A827AD2008E44DB /* LogConfig.m */,
 				37C890171A89091A008E44DB /* PersonalSetting.h */,
 				37C890181A89091A008E44DB /* PersonalSetting.m */,
+				37F206E41BDCB41E006466F4 /* CityManager.h */,
+				37F206E51BDCB41E006466F4 /* CityManager.m */,
 			);
 			path = UserCenter;
 			sourceTree = "<group>";
@@ -2979,6 +3001,24 @@
 			path = PhotoBrowserViewController;
 			sourceTree = "<group>";
 		};
+		37F206E71BDCB5C9006466F4 /* FMDB */ = {
+			isa = PBXGroup;
+			children = (
+				37F206E81BDCB5C9006466F4 /* FMDatabase.h */,
+				37F206E91BDCB5C9006466F4 /* FMDatabase.m */,
+				37F206EA1BDCB5C9006466F4 /* FMDatabaseAdditions.h */,
+				37F206EB1BDCB5C9006466F4 /* FMDatabaseAdditions.m */,
+				37F206EC1BDCB5C9006466F4 /* FMDatabasePool.h */,
+				37F206ED1BDCB5C9006466F4 /* FMDatabasePool.m */,
+				37F206EE1BDCB5C9006466F4 /* FMDatabaseQueue.h */,
+				37F206EF1BDCB5C9006466F4 /* FMDatabaseQueue.m */,
+				37F206F01BDCB5C9006466F4 /* FMDB.h */,
+				37F206F11BDCB5C9006466F4 /* FMResultSet.h */,
+				37F206F21BDCB5C9006466F4 /* FMResultSet.m */,
+			);
+			path = FMDB;
+			sourceTree = "<group>";
+		};
 		37FD6DDA1BAEE01C00C83AB4 /* MessageTableViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -3268,12 +3308,14 @@
 				37E038E81A7386D3003A3A7F /* PublishNewspaperVC.m in Sources */,
 				3793FAB81B7CFFF000501F77 /* MLAudioMeterObserver.m in Sources */,
 				3728A73C1B9D376300310457 /* ReplyBox.m in Sources */,
+				37F206F41BDCB5C9006466F4 /* FMDatabaseAdditions.m in Sources */,
 				37FD6E161BB0584400C83AB4 /* ChatVoiceButton.m in Sources */,
 				37D6EEF61BCBA96D000994A2 /* RefuseVC.m in Sources */,
 				3793FA541B7CFFF000501F77 /* RELengthValidator.m in Sources */,
 				3793FAA61B7CFFF000501F77 /* UIColor+Addition.m in Sources */,
 				3793FAF31B7CFFF000501F77 /* Reachability+.m in Sources */,
 				37E93FC71A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m in Sources */,
+				37F206F71BDCB5C9006466F4 /* FMResultSet.m in Sources */,
 				37D8C7BA1A5986F000E5E2E4 /* ClassTableCell.m in Sources */,
 				3793FA691B7CFFF000501F77 /* AFHTTPSessionManager.m in Sources */,
 				370F33D91A78795000FED3C2 /* PersonalSettingVC.m in Sources */,
@@ -3375,6 +3417,7 @@
 				3793FAE21B7CFFF000501F77 /* MJRefreshFooterView.m in Sources */,
 				37FD70BE1BBDB7B400C83AB4 /* PraiseListView.m in Sources */,
 				3793FAF21B7CFFF000501F77 /* TaskUploadManager.m in Sources */,
+				37F206F51BDCB5C9006466F4 /* FMDatabasePool.m in Sources */,
 				3793FA831B7CFFF000501F77 /* ActionSelectView.m in Sources */,
 				3793FA961B7CFFF000501F77 /* SimpleImageScanView.m in Sources */,
 				37DEE4BC1A57C19C009A8771 /* MessageDetailItemCell.m in Sources */,
@@ -3410,6 +3453,7 @@
 				3793FA361B7CFFF000501F77 /* REBoolItem.m in Sources */,
 				37C88F771A8357E9008E44DB /* ExchangeSchoolVC.m in Sources */,
 				371C6E961A72217400FA4AEC /* MessageVoiceButton.m in Sources */,
+				37F206F61BDCB5C9006466F4 /* FMDatabaseQueue.m in Sources */,
 				3793FAF41B7CFFF000501F77 /* Reachability.m in Sources */,
 				3793FA6F1B7CFFF000501F77 /* AFURLResponseSerialization.m in Sources */,
 				37FD70961BBCEF9800C83AB4 /* ioapi.c in Sources */,
@@ -3447,6 +3491,7 @@
 				3793FA2D1B7CFFF000501F77 /* RETableViewFloatCell.m in Sources */,
 				3793FAD91B7CFFF000501F77 /* UIImageView+WebCache.m in Sources */,
 				3793FA5F1B7CFFF000501F77 /* split.c in Sources */,
+				37F206E61BDCB41E006466F4 /* CityManager.m in Sources */,
 				37C01B3E1A6CBAF600C8F454 /* GrowthTimelineModelItem.m in Sources */,
 				37D6EEEF1BCBA96D000994A2 /* MyAttendanceCell.m in Sources */,
 				3793FA971B7CFFF000501F77 /* UTPlaceholderTextView.m in Sources */,
@@ -3492,6 +3537,7 @@
 				37EAC9EA1B82446F007BFBA1 /* CommonInputVC.m in Sources */,
 				37CA18731AB70A2F00B49B55 /* PhotoPickerModel.m in Sources */,
 				37DEE4DA1A57C1D8009A8771 /* ClassAppModel.m in Sources */,
+				37F206F31BDCB5C9006466F4 /* FMDatabase.m in Sources */,
 				3793FA4C1B7CFFF000501F77 /* RETableViewOptionsController.m in Sources */,
 				370F33D81A78795000FED3C2 /* ContactServiceVC.m in Sources */,
 				3728A6A61B98B20700310457 /* ClassZoneItemCell.m in Sources */,

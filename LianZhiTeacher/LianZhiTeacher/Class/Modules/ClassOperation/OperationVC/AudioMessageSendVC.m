@@ -14,6 +14,11 @@
 
 @implementation AudioMessageSendVC
 
+- (void)dealloc
+{
+    [_recordView dismiss];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"语音通知";

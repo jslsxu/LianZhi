@@ -43,4 +43,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(UserCenter)
 - (void)changeCurSchool:(SchoolInfo *)schoolInfo;
 - (void)logout;
 - (BOOL)teachAtCurSchool;
+- (void)requestNoDisturbingTime;
+- (void)setNoDisturbindTime;
 @end

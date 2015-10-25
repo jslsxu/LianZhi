@@ -180,13 +180,15 @@
     [layout setMinimumLineSpacing:0];
     
     _headerView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, _tableView.width, 100) collectionViewLayout:layout];
+    [_headerView setAlwaysBounceHorizontal:YES];
     [_headerView setBackgroundColor:[UIColor clearColor]];
     [_headerView setDataSource:self];
     [_headerView setDelegate:self];
     [_headerView registerClass:[ChildrenItemView class] forCellWithReuseIdentifier:@"ChildrenItemView"];
     [headerView addSubview:_headerView];
     
-    [_tableView setTableHeaderView:headerView];
+    if([UserCenter sharedInstance].children.count > 1)
+        [_tableView setTableHeaderView:headerView];
     
     [self refreshData];
 }

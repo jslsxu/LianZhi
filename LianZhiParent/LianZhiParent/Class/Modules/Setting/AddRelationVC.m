@@ -125,12 +125,12 @@
 {
     NSInteger relationNum = 0;
     for (PersonalInfoItem *item in _infoArray) {
-        if([item.key isEqualToString:@"家长身份:"])
+        if([item.key isEqualToString:@"家长身份"])
             relationNum++;
     }
     if(relationNum < [UserCenter sharedInstance].children.count)
     {
-        PersonalInfoItem *addRelationItem = [[PersonalInfoItem alloc] initWithKey:@"家长身份:" value:nil canEdit:NO];
+        PersonalInfoItem *addRelationItem = [[PersonalInfoItem alloc] initWithKey:@"家长身份" value:nil canEdit:NO];
         [_infoArray addObject:addRelationItem];
         [self.tableView reloadData];
     }
@@ -266,8 +266,19 @@
             cell = [[PersonalInfoCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseID];
         }
         [cell setInfoItem:_infoArray[row - 1]];
+        
         if(indexPath.row == _infoArray.count)
-            [cell setShowAdd:YES];
+        {
+            NSInteger relationNum = 0;
+            for (PersonalInfoItem *item in _infoArray) {
+                if([item.key isEqualToString:@"家长身份"])
+                    relationNum++;
+            }
+            if(relationNum < [UserCenter sharedInstance].children.count)
+                [cell setShowAdd:YES];
+            else
+                [cell setShowAdd:NO];
+        }
         else
             [cell setShowAdd:NO];
         return cell;
@@ -323,7 +334,7 @@
         }];
         [datePicker show];
     }
-    else if(row == 7)
+    else if(row >= 7)
     {
         [self.view endEditing:YES];
         //家长身份

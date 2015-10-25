@@ -30,10 +30,10 @@
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [self.actualContentView addSubview:_nameLabel];
         
-        _schoolLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_schoolLabel setFont:[UIFont systemFontOfSize:12]];
-        [_schoolLabel setTextColor:[UIColor colorWithRed:86 / 255.0 green:86 / 255.0 blue:86 / 255.0 alpha:1.0]];
-        [self.actualContentView addSubview:_schoolLabel];
+//        _schoolLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+//        [_schoolLabel setFont:[UIFont systemFontOfSize:12]];
+//        [_schoolLabel setTextColor:[UIColor colorWithRed:86 / 255.0 green:86 / 255.0 blue:86 / 255.0 alpha:1.0]];
+//        [self.actualContentView addSubview:_schoolLabel];
         
         _massChatIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MassChatIndicator"]];
         [_massChatIndicator setHidden:YES];

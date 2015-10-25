@@ -8,8 +8,10 @@
 
 #import "RegisterVC.h"
 #import "RegisterAuthVC.h"
-@interface RegisterVC ()
+#import "CityManager.h"
+@interface RegisterVC ()<ActionSelectViewDelegate>
 @property (nonatomic, strong)NSMutableArray *feildArray;
+@property (nonatomic, strong)CityManager *cityManager;
 @end
 
 @implementation RegisterVC
@@ -21,6 +23,7 @@
     {
         self.hideNavigationBar = NO;
         self.feildArray = [NSMutableArray array];
+        self.cityManager = [[CityManager alloc] init];
     }
     return self;
 }
@@ -51,6 +54,15 @@
         [textField setFont:[UIFont systemFontOfSize:16]];
         [borderView addSubview:textField];
         
+        if(i == 3)
+        {
+            [textField setUserInteractionEnabled:NO];
+            _area = textField;
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            [button setFrame:textField.frame];
+            [button addTarget:self action:@selector(onAreaSelect) forControlEvents:UIControlEventTouchUpInside];
+            [borderView addSubview:button];
+        }
         [self.feildArray addObject:textField];
         spaceYStart += hMargin + itemHeight;
     }
@@ -72,6 +84,13 @@
     [contactButton setTitleColor:[UIColor colorWithHexString:@"999999"] forState:UIControlStateNormal];
     [contactButton setTitle:@"非天津的学校请直接致电：400-66-10016" forState:UIControlStateNormal];
     [self.view addSubview:contactButton];
+}
+
+- (void)onAreaSelect
+{
+    ActionSelectView *selectView = [[ActionSelectView alloc] init];
+    [selectView setDelegate:self];
+    [selectView show];
 }
 
 - (void)onAuthClicked
@@ -106,6 +125,72 @@
 - (void)contact
 {
     
+}
+
+#pragma mark - ActionSelect
+- (NSInteger)numberOfComponentsInPickerView:(ActionSelectView *)pickerView
+{
+    return 3;
+}
+- (NSInteger)pickerView:(ActionSelectView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if(component == 0)
+        return self.cityManager.provinceList.count;
+    else if(component == 1)
+    {
+        NSInteger row = [pickerView.pickerView selectedRowInComponent:0];
+        Province *province = self.cityManager.provinceList[row];
+        return province.cityList.count;
+    }
+    else
+    {
+        NSInteger firstRow = [pickerView.pickerView selectedRowInComponent:0];
+        Province *province = self.cityManager.provinceList[firstRow];
+        NSInteger secondRow = [pickerView.pickerView selectedRowInComponent:1];
+        City *city = province.cityList[secondRow];
+        return city.districtList.count;
+    }
+}
+- (NSString *)pickerView:(ActionSelectView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if(component == 0)
+    {
+        Province *province = self.cityManager.provinceList[row];
+        return province.provinceName;
+    }
+    else if(component == 1)
+    {
+        NSInteger firstRow = [pickerView.pickerView selectedRowInComponent:0];
+        Province *province = self.cityManager.provinceList[firstRow];
+        City *city = province.cityList[row];
+        return city.cityName;
+    }
+    else
+    {
+        NSInteger firstRow = [pickerView.pickerView selectedRowInComponent:0];
+        Province *province = self.cityManager.provinceList[firstRow];
+        NSInteger secondRow = [pickerView.pickerView selectedRowInComponent:1];
+        City *city = province.cityList[secondRow];
+        
+        District *district = city.districtList[row];
+        return district.districtName;
+    }
+}
+
+- (void)pickerView:(ActionSelectView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    [pickerView.pickerView reloadAllComponents];
+}
+
+- (void)pickerViewFinished:(ActionSelectView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    NSInteger firstRow = [pickerView.pickerView selectedRowInComponent:0];
+    NSInteger secondRow = [pickerView.pickerView selectedRowInComponent:1];
+    NSInteger thirdRow = [pickerView.pickerView selectedRowInComponent:2];
+    Province *province = self.cityManager.provinceList[firstRow];
+    City *city = province.cityList[secondRow];
+    District *distric = city.districtList[thirdRow];
+    [_area setText:[NSString stringWithFormat:@"%@ %@ %@",province.provinceName, city.cityName,distric.districtName]];
 }
 
 - (void)didReceiveMemoryWarning {

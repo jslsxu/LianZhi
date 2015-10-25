@@ -42,8 +42,6 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
         [_addButton setImage:[UIImage imageNamed:(@"Add.png")] forState:UIControlStateNormal];
         [_addButton addTarget:self action:@selector(onAddButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [_addButton setFrame:CGRectMake(self.width - 30, (self.height - 40) / 2, 30, 40)];
-        [_addButton setHidden:YES];
-        [self addSubview:_addButton];
         
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 50 - kLineHeight, self.width, kLineHeight)];
         [_sepLine setBackgroundColor:kSepLineColor];
@@ -55,7 +53,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
 - (void)setShowAdd:(BOOL)showAdd
 {
     _showAdd = showAdd;
-    [_addButton setHidden:!_showAdd];
+    [self setAccessoryView:_showAdd ? _addButton : nil];
 }
 
 - (void)onAddButtonClicked

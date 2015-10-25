@@ -13,14 +13,14 @@
 - (id)init
 {
     self = [super initWithStyle:UITableViewStylePlain];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+    [backItem setTitle:@"返回"];
+    self.navigationItem.backBarButtonItem = backItem;
     return self;
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
-    [backItem setTitle:@"返回"];
-    self.navigationItem.backBarButtonItem = backItem;
     _timelineArray = [[NSMutableArray alloc] initWithCapacity:0];
     for (NSInteger i = 0; i < self.students.count; i++) {
         GrowthTimelineModelItem *modelItem = [[GrowthTimelineModelItem alloc] init];

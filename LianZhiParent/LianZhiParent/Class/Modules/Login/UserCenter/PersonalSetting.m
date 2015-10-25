@@ -18,6 +18,8 @@ NSString *const kPersonalSettingKey = @"PersonalSettingKey";
     {
         self.wifiSend = YES;
         self.autoSave = YES;
+        self.startTime = @"08:00";
+        self.endTime = @"08:00";
     }
     return self;
 }

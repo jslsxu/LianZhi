@@ -25,13 +25,22 @@
 
 @implementation DAContextMenuTableViewController
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self)
+    {
+        UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+        [backItem setTitle:@"返回"];
+        self.navigationItem.backBarButtonItem = backItem;
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.customEditing = self.customEditingAnimationInProgress = NO;
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
-    [backItem setTitle:@"返回"];
-    self.navigationItem.backBarButtonItem = backItem;
 }
 
 #pragma mark - Private
