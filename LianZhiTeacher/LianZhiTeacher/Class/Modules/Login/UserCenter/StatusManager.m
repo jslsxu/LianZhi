@@ -50,6 +50,17 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
 
 @end
 
+@implementation ClassFeedNotice
+
+- (void)parseData:(TNDataWrapper *)dataWrapper
+{
+    self.schoolID = [dataWrapper getStringForKey:@"school_id"];
+    self.classID = [dataWrapper getStringForKey:@"class_id"];
+    self.num = [dataWrapper getIntegerForKey:@"num"];
+}
+
+@end
+
 @implementation StatusManager
 
 - (void)parseData:(TNDataWrapper *)dataWrapper

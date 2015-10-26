@@ -47,6 +47,16 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
 
 @end
 
+@implementation ClassFeedNotice
+
+- (void)parseData:(TNDataWrapper *)dataWrapper
+{
+    self.classID = [dataWrapper getStringForKey:@"class_id"];
+    self.num = [dataWrapper getIntegerForKey:@"num"];
+}
+
+@end
+
 @implementation StatusManager
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
@@ -60,8 +70,10 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
     {
         NSMutableArray *newFeedsArray = [[NSMutableArray alloc] initWithCapacity:0];
         for (NSInteger i = 0; i < newFeedWrapper.count; i++) {
-            NSString *classID = [newFeedWrapper getStringForIndex:i];
-            [newFeedsArray addObject:classID];
+            TNDataWrapper *feedItemWrapper = [newFeedWrapper getDataWrapperForIndex:i];
+            ClassFeedNotice *feedNotice = [[ClassFeedNotice alloc] init];
+            [feedNotice parseData:feedItemWrapper];
+            [newFeedsArray addObject:feedNotice];
         }
         self.feedClassesNew = newFeedsArray;
     }

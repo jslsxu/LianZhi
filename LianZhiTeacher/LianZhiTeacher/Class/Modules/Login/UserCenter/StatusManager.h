@@ -41,6 +41,13 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 
 @end
 
+@interface ClassFeedNotice : TNModelItem
+@property (nonatomic, copy)NSString *schoolID;
+@property (nonatomic, copy)NSString *classID;
+@property (nonatomic, assign)NSInteger num;
+
+@end
+
 @interface StatusManager : TNModelItem
 @property (nonatomic, assign)ChangedType changed;
 @property (nonatomic, assign)BOOL found;

@@ -85,7 +85,7 @@
 
 - (void)onAddActionClicked
 {
-    if(self.messageModel.canPublish)
+    if([UserCenter sharedInstance].curSchool.classes.count + [UserCenter sharedInstance].curSchool.managedClasses.count > 0)
     {
         ActionPopView *actionView = [[ActionPopView alloc] initWithFrame:CGRectMake(self.view.width - 140, 64, 140, 100)];
         [actionView setDelegate:self];
@@ -139,7 +139,6 @@
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     [_getMoreCell stopLoading];
     [self.messageModel parseData:responseData type:operation.requestType];
-    [[UserCenter sharedInstance].userData setCanPubish:self.messageModel.canPublish];
     [[UserCenter sharedInstance] save];
     [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
     [self setShowEmptyLabel:(self.messageModel.modelItemArray.count == 0)];
@@ -150,7 +149,6 @@
         });
     }
     [self.tableView reloadData];
-    [_noticeButton setHidden:!self.messageModel.canPublish];
     _isLoading = NO;
 }
 

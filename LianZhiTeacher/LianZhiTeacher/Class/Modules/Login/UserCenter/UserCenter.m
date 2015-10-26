@@ -68,7 +68,6 @@ NSString *const kPersonalSettingChangedNotification = @"PersonalSettingChangedNo
         self.curIndex = [aDecoder decodeIntegerForKey:@"curIndex"];
         self.config = [aDecoder decodeObjectForKey:@"config"];
         self.schools = [aDecoder decodeObjectForKey:@"schools"];
-        self.canPubish = [aDecoder decodeBoolForKey:@"can_publish"];
     }
     return self;
 }
@@ -81,7 +80,6 @@ NSString *const kPersonalSettingChangedNotification = @"PersonalSettingChangedNo
     [aCoder encodeInteger:self.curIndex forKey:@"curIndex"];
     [aCoder encodeObject:self.config forKey:@"config"];
     [aCoder encodeObject:self.schools forKey:@"schools"];
-    [aCoder encodeBool:self.canPubish forKey:@"can_publish"];
 }
 
 @end

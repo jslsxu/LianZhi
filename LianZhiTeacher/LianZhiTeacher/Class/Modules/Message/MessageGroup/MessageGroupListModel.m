@@ -89,7 +89,7 @@
     NSArray *originalMessageArray = [NSArray arrayWithArray:self.modelItemArray];
     if(type == REQUEST_REFRESH)
         [self.modelItemArray removeAllObjects];
-    self.canPublish = [data getBoolForKey:@"can_publish"];
+//    self.canPublish = [data getBoolForKey:@"can_publish"];
     TNDataWrapper *listWrapper = [data getDataWrapperForKey:@"list"];
     if(listWrapper.count > 0)
     {

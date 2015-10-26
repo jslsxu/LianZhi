@@ -51,6 +51,7 @@ static NSArray *tabDatas = nil;
         
         self.messageVC = subVCs[0];
         self.treeHouseVC = subVCs[2];
+        self.classZoneVC = subVCs[3];
     }
     return self;
 }
@@ -62,16 +63,36 @@ static NSArray *tabDatas = nil;
     [msgButton setBadgeValue:(newMsg > 0 ? kStringFromValue(newMsg) : nil)];
     
     NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+    NSInteger classZoneNum = 0;
+    LZTabBarButton *classTabButton = (LZTabBarButton *)_tabbarButtons[3];
     for (TimelineCommentItem *item in classNewCommentArray)
     {
         if([item.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
         {
-            LZTabBarButton *classTabButton = (LZTabBarButton *)_tabbarButtons[3];
-            NSInteger num = item.alertInfo.num;
-            [classTabButton setBadgeValue:num > 0 ? kStringFromValue(num) : nil];
+            classZoneNum= item.alertInfo.num;
             break;
         }
     }
+    if(classZoneNum > 0)
+        [classTabButton setBadgeValue:kStringFromValue(classZoneNum)];
+    else
+    {
+        ClassInfo *classInfo = self.classZoneVC.classInfo;
+        if(classInfo == nil)
+        {
+            classInfo = [UserCenter sharedInstance].curChild.classes[0];
+        }
+        for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.feedClassesNew)
+        {
+            if([notice.classID isEqualToString:classInfo.classID])
+                classZoneNum = notice.num;
+        }
+        if(classZoneNum > 0)
+            [classTabButton setBadgeValue:@""];
+        else
+            [classTabButton setBadgeValue:nil];
+    }
+    
     
     NSArray *treeNewCommentArray = [UserCenter sharedInstance].statusManager.treeNewCommentArray;
     for (TimelineCommentItem *item in treeNewCommentArray)

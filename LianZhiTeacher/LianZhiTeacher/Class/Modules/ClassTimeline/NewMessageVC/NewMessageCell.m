@@ -71,11 +71,12 @@
         [label setClipsToBounds:YES];
         [label setFont:[UIFont systemFontOfSize:10]];
         [label setLineBreakMode:NSLineBreakByWordWrapping];
+        [label setTextAlignment:NSTextAlignmentCenter];
         [label setNumberOfLines:0];
         [label setText:messageItem.feedItem.feedText];
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            UIGraphicsBeginImageContext(label.size);
+            UIGraphicsBeginImageContextWithOptions(label.size,NO,0);
             [label.layer renderInContext:UIGraphicsGetCurrentContext()];
             UIImage* image = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();

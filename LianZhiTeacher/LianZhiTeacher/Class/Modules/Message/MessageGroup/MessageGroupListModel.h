@@ -35,6 +35,6 @@ typedef NS_ENUM(NSInteger, MessageFromType){
 @end
 
 @interface MessageGroupListModel : TNListModel
-@property (nonatomic, assign)BOOL canPublish;
+//@property (nonatomic, assign)BOOL canPublish;
 @property (nonatomic, assign)BOOL playAlert;
 @end
