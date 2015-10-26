@@ -36,8 +36,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        self.titleArray = @[@[@"身边事",@"兴趣"],@[@"常见问题",@"连枝剧场"]];
-        self.imageArray = @[@[@"MineNear",@"icon_eye"],@[@"icon_often",@"icon_caozuo"]];
+        self.titleArray = @[@[@"兴趣"],@[@"常见问题",@"连枝剧场"]];
+        self.imageArray = @[@[@"icon_eye"],@[@"icon_often",@"icon_caozuo"]];
     }
     return self;
 }
@@ -100,17 +100,9 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if(indexPath.section == 0)
     {
-        if(indexPath.row == 0)
-        {
-            SurroundingVC *surroundingVC = [[SurroundingVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:surroundingVC animated:YES];
-        }
-        else
-        {
             InterestVC *interestVC = [[InterestVC alloc] init];
             [interestVC setTitle:@"兴趣"];
             [CurrentROOTNavigationVC pushViewController:interestVC animated:YES];
-        }
     }
     else
     {

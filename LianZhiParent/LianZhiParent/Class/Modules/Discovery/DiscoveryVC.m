@@ -35,8 +35,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        self.titleArray = @[@[@"身边事",@"兴趣"],@[@"常见问题",@"连枝剧场"]];
-        self.imageArray = @[@[@"icon_near",@"icon_eye"],@[@"icon_often",@"icon_caozuo"]];
+        self.titleArray = @[@[@"兴趣"],@[@"常见问题",@"连枝剧场"]];
+        self.imageArray = @[@[@"icon_eye"],@[@"icon_often",@"icon_caozuo"]];
     }
     return self;
 }
@@ -101,17 +101,9 @@
     NSInteger row = indexPath.row;
     if(indexPath.section == 0)
     {
-        if(row == 0)
-        {
-            SurroundingVC *surroudingVC = [[SurroundingVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:surroudingVC animated:YES];
-        }
-        else
-        {
-            InterestVC *interestVC = [[InterestVC alloc] init];
-            [interestVC setTitle:self.titleArray[section][row]];
-            [CurrentROOTNavigationVC pushViewController:interestVC animated:YES];
-        }
+        InterestVC *interestVC = [[InterestVC alloc] init];
+        [interestVC setTitle:self.titleArray[section][row]];
+        [CurrentROOTNavigationVC pushViewController:interestVC animated:YES];
     }
     else
     {
