@@ -122,36 +122,6 @@
     }
 }
 
-#pragma mark - QRcodeScanDelegate
-
-- (void)qrCodeScanVC:(QRCodeScanVC *)scanVC didFinish:(NSString *)info
-{
-    [scanVC dismissViewControllerAnimated:YES completion:^{
-        NSURL *url = [NSURL URLWithString:info];
-        NSString *scheme = [url scheme];
-        if(scheme)
-        {
-            TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-            [webVC setUrl:info];
-            [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
-        }
-        else
-        {
-            
-        }
-    }];
-}
-
-- (void)qrCodeScanVC:(QRCodeScanVC *)scanVC didFailWithError:(NSString *)error
-{
-    [scanVC dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)qrCodeScanVCDidCancel:(QRCodeScanVC *)scanVC
-{
-    [scanVC dismissViewControllerAnimated:YES completion:nil];
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

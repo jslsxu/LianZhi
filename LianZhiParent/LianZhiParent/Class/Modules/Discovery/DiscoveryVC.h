@@ -8,7 +8,6 @@
 
 #import "TNBaseViewController.h"
 #import "InterestVC.h"
-#import "QRCodeScanVC.h"
 
 @interface DiscoveryCell : UITableViewCell
 {
@@ -17,7 +16,7 @@
 @property (nonatomic, readonly)UIImageView *redDot;
 @end
 
-@interface DiscoveryVC : TNBaseViewController<UITableViewDelegate, UITableViewDataSource, QRCodeScanDelegate>
+@interface DiscoveryVC : TNBaseViewController<UITableViewDelegate, UITableViewDataSource>
 {
     UITableView*    _tableView;
 }

@@ -10,7 +10,6 @@
 #import "SettingDatePickerView.h"
 #import "PasswordModifyVC.h"
 #import "AvatarPickerVC.h"
-#import "QrCodeView.h"
 extern NSString *const kAddRelationNotification;
 
 @interface PersonalInfoItem : TNModelItem

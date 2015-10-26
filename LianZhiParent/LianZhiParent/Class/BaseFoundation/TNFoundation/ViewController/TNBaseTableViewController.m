@@ -35,13 +35,18 @@
 {
     [super viewDidLoad];
     
-    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:[self tableViewStyle]];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_tableView setBackgroundColor:[UIColor clearColor]];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [self.view addSubview:_tableView];
+}
+
+- (UITableViewStyle)tableViewStyle
+{
+    return UITableViewStylePlain;
 }
 
 - (void)bindTableCell:(NSString *)cellName tableModel:(NSString *)modelName

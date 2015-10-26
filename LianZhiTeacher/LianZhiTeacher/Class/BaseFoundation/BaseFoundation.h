@@ -9,11 +9,9 @@
 #import "SynthesizeSingleton.h"
 #import "Extends.h"
 #import "Utility.h"
-#import "ZBarSDK.h"
 #import "SVShare.h"
 #import <MAMapKit/MAMapKit.h> 
 #import <AMapSearchKit/AMapSearchAPI.h>
-#import "QRCodeGenerator.h"
 #import "Reachability.h"
 #import "Reachability+.h"
 #import "SFHFKeychainUtils.h"
@@ -86,5 +84,4 @@
 #import "TaskUploadManager.h"
 #import "POISelectVC.h"
 #import "PoiInfoView.h"
-#import "QRCodeScanVC.h"
 #endif
