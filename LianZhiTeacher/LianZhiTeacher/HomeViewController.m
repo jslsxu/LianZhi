@@ -51,7 +51,6 @@ static NSArray *tabDatas = nil;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        self.title = [UserCenter sharedInstance].curSchool.schoolName;
         self.edgesForExtendedLayout = UIRectEdgeNone;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNewMsgNumChanged) name:kNewMsgNumNotification object:nil];
@@ -74,6 +73,16 @@ static NSArray *tabDatas = nil;
         self.messageVC = subVCs[0];
     }
     return self;
+}
+
+- (void)updateTitleView
+{
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
+    [titleLabel setTextColor:[UIColor whiteColor]];
+    [titleLabel setText:[UserCenter sharedInstance].curSchool.schoolName];
+    [titleLabel sizeToFit];
+    self.navigationItem.titleView = titleLabel;
 }
 
 - (void)onStatusChanged
@@ -102,7 +111,7 @@ static NSArray *tabDatas = nil;
 
 - (void)onSchoolChanged
 {
-    self.title = [UserCenter sharedInstance].curSchool.schoolName;
+    [self updateTitleView];
 }
 
 - (MessageVC *)messageVC
@@ -147,6 +156,7 @@ static NSArray *tabDatas = nil;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self updateTitleView];
     if([UserCenter sharedInstance].userData.schools.count > 1)
     {
          _switchButton = [[SwitchSchoolButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];

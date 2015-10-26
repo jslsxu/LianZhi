@@ -164,6 +164,7 @@ static NSArray *tabDatas = nil;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     ChildrenSelectView *childrenView = [[ChildrenSelectView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
     [childrenView setDelegate:self];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:childrenView];

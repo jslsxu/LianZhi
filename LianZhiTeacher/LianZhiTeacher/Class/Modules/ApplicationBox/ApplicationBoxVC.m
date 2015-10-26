@@ -119,7 +119,7 @@
 {
     NSInteger row = indexPath.row;
     NSString *classStr = self.actionArray[row];
-    if(row == 3 /*&& [UserCenter sharedInstance].curSchool.classes.count == 0*/)
+    if(row == 3 && [UserCenter sharedInstance].curSchool.classes.count == 0)
     {
         ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
         [selectionVC setSelection:^(ClassInfo *classInfo) {
