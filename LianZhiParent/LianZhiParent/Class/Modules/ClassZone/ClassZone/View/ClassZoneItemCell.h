@@ -12,6 +12,7 @@
 #import "ResponseView.h"
 @class ClassZoneItemCell;
 @protocol ClassZoneItemCellDelegate <NSObject>
+@optional
 - (void)onShareToTreeHouse:(ClassZoneItem *)zoneItem;
 - (void)onActionClicked:(ClassZoneItemCell *)cell;
 - (void)onResponseClickedAtTarget:(ResponseItem *)responseItem cell:(ClassZoneItemCell *)cell;

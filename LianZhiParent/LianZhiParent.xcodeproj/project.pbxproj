@@ -355,8 +355,6 @@
 		37D6EECA1BCABF17000994A2 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6EEC91BCABF17000994A2 /* libstdc++.dylib */; };
 		37D6EECD1BCABF40000994A2 /* ShareActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EECB1BCABF40000994A2 /* ShareActionView.m */; };
 		37E7C9151B1613EC005D653F /* SurroundingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E7C9141B1613EC005D653F /* SurroundingVC.m */; };
-		37E7C9181B161403005D653F /* SurroundingItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E7C9171B161403005D653F /* SurroundingItemCell.m */; };
-		37E7C91B1B161418005D653F /* SurroundingItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E7C91A1B161418005D653F /* SurroundingItem.m */; };
 		37E7C92D1B162AF2005D653F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E7C92C1B162AF2005D653F /* CoreLocation.framework */; };
 		37E7C93F1B162C1A005D653F /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E7C93E1B162C19005D653F /* OpenGLES.framework */; };
 		37E7C9411B162C2D005D653F /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E7C9401B162C2D005D653F /* CoreTelephony.framework */; };
@@ -383,6 +381,7 @@
 		37F207071BDDD596006466F4 /* HomeWorkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207041BDDD596006466F4 /* HomeWorkCell.m */; };
 		37F207081BDDD596006466F4 /* HomeWorkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207061BDDD596006466F4 /* HomeWorkVC.m */; };
 		37F2070B1BDDD8C4006466F4 /* HomeWorkListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F2070A1BDDD8C4006466F4 /* HomeWorkListModel.m */; };
+		37F207131BDE0816006466F4 /* LZAccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207121BDE0816006466F4 /* LZAccountVC.m */; };
 		37FD6DC11BAE7C5F00C83AB4 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DC01BAE7C5F00C83AB4 /* MessageCell.m */; };
 		37FD6DC41BAE7C7F00C83AB4 /* MessageItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DC31BAE7C7F00C83AB4 /* MessageItem.m */; };
 		37FD6DC71BAE800600C83AB4 /* ChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DC61BAE800600C83AB4 /* ChatMessageModel.m */; };
@@ -1078,10 +1077,6 @@
 		37D6EECC1BCABF40000994A2 /* ShareActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareActionView.h; sourceTree = "<group>"; };
 		37E7C9131B1613EC005D653F /* SurroundingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurroundingVC.h; sourceTree = "<group>"; };
 		37E7C9141B1613EC005D653F /* SurroundingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurroundingVC.m; sourceTree = "<group>"; };
-		37E7C9161B161403005D653F /* SurroundingItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurroundingItemCell.h; sourceTree = "<group>"; };
-		37E7C9171B161403005D653F /* SurroundingItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurroundingItemCell.m; sourceTree = "<group>"; };
-		37E7C9191B161418005D653F /* SurroundingItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurroundingItem.h; sourceTree = "<group>"; };
-		37E7C91A1B161418005D653F /* SurroundingItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurroundingItem.m; sourceTree = "<group>"; };
 		37E7C92C1B162AF2005D653F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		37E7C93E1B162C19005D653F /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		37E7C9401B162C2D005D653F /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -1126,6 +1121,8 @@
 		37F207061BDDD596006466F4 /* HomeWorkVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkVC.m; sourceTree = "<group>"; };
 		37F207091BDDD8C4006466F4 /* HomeWorkListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkListModel.h; sourceTree = "<group>"; };
 		37F2070A1BDDD8C4006466F4 /* HomeWorkListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkListModel.m; sourceTree = "<group>"; };
+		37F207111BDE0816006466F4 /* LZAccountVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZAccountVC.h; sourceTree = "<group>"; };
+		37F207121BDE0816006466F4 /* LZAccountVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZAccountVC.m; sourceTree = "<group>"; };
 		37FD6DBF1BAE7C5F00C83AB4 /* MessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
 		37FD6DC01BAE7C5F00C83AB4 /* MessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
 		37FD6DC21BAE7C7F00C83AB4 /* MessageItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageItem.h; sourceTree = "<group>"; };
@@ -1498,6 +1495,7 @@
 			children = (
 				376605A41B75F2B000204DFD /* MineVC.h */,
 				376605A51B75F2B000204DFD /* MineVC.m */,
+				37F207101BDE0805006466F4 /* LZAccountVC */,
 			);
 			path = Mine;
 			sourceTree = "<group>";
@@ -2795,10 +2793,6 @@
 			children = (
 				37E7C9131B1613EC005D653F /* SurroundingVC.h */,
 				37E7C9141B1613EC005D653F /* SurroundingVC.m */,
-				37E7C9161B161403005D653F /* SurroundingItemCell.h */,
-				37E7C9171B161403005D653F /* SurroundingItemCell.m */,
-				37E7C9191B161418005D653F /* SurroundingItem.h */,
-				37E7C91A1B161418005D653F /* SurroundingItem.m */,
 			);
 			path = Surrounding;
 			sourceTree = "<group>";
@@ -2885,6 +2879,15 @@
 				37F207061BDDD596006466F4 /* HomeWorkVC.m */,
 			);
 			path = HomeWorkVC;
+			sourceTree = "<group>";
+		};
+		37F207101BDE0805006466F4 /* LZAccountVC */ = {
+			isa = PBXGroup;
+			children = (
+				37F207111BDE0816006466F4 /* LZAccountVC.h */,
+				37F207121BDE0816006466F4 /* LZAccountVC.m */,
+			);
+			path = LZAccountVC;
 			sourceTree = "<group>";
 		};
 		37FD709B1BBCF0F700C83AB4 /* minizip */ = {
@@ -3127,6 +3130,7 @@
 				37CA18861AB70BCC00B49B55 /* PhotoPickerModel.m in Sources */,
 				37D6EEBF1BCABED6000994A2 /* SVShare.m in Sources */,
 				3793F77F1B7CFFD900501F77 /* RETableViewManager.m in Sources */,
+				37F207131BDE0816006466F4 /* LZAccountVC.m in Sources */,
 				3793F7701B7CFFD900501F77 /* RELongTextItem.m in Sources */,
 				3793F7621B7CFFD900501F77 /* RETableViewInlineDatePickerCell.m in Sources */,
 				3793F80F1B7CFFD900501F77 /* BGTableViewCell.m in Sources */,
@@ -3154,7 +3158,6 @@
 				3728A5E91B9332FE00310457 /* ClassZoneModel.m in Sources */,
 				3720C1081A419EDC000357A5 /* AuthCodeVC.m in Sources */,
 				3793F7EF1B7CFFD900501F77 /* MLDataCache.m in Sources */,
-				37E7C9181B161403005D653F /* SurroundingItemCell.m in Sources */,
 				37FD70AA1BBCF0F700C83AB4 /* zip.c in Sources */,
 				3793F7C61B7CFFD900501F77 /* POIItemCell.m in Sources */,
 				3793F7B11B7CFFD900501F77 /* CTAssetsPickerController.m in Sources */,
@@ -3332,7 +3335,6 @@
 				37D6EE231BC90338000994A2 /* DestinationVC.m in Sources */,
 				3793F7A11B7CFFD900501F77 /* AFURLConnectionOperation.m in Sources */,
 				37FD6DC41BAE7C7F00C83AB4 /* MessageItem.m in Sources */,
-				37E7C91B1B161418005D653F /* SurroundingItem.m in Sources */,
 				3793F7631B7CFFD900501F77 /* RETableViewInlinePickerCell.m in Sources */,
 				37FD70BB1BBDB42A00C83AB4 /* TreeHouseItemDetailVC.m in Sources */,
 				372775CB1A6036AC00464461 /* ChildInfo.m in Sources */,
