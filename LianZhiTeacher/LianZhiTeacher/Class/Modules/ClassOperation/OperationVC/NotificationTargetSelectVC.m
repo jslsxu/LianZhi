@@ -234,9 +234,6 @@
         [hud hide:NO];
         [ProgressHUD showHintText:errMsg];
     }];
-    
-    
-
 }
 
 - (void)requestData
