@@ -74,8 +74,6 @@ static NSString *topChatID = nil;
     [self.tableView setHeight:self.view.height - _inputView.height];
     [self bindTableCell:@"MessageCell" tableModel:@"ChatMessageModel"];
     
-    [self requestData:REQUEST_GETMORE];
-    
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
     [_tableView addGestureRecognizer:tapGesture];
 }
@@ -344,10 +342,7 @@ static NSString *topChatID = nil;
 
 - (NSString *)cacheFileName
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *docDir = [paths objectAtIndex:0];
-    NSString *filePath = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%@_%@_%@_%@_%@",[self class],self.targetID,kStringFromValue(self.chatType),self.to_objid,[UserCenter sharedInstance].curChild.uid,[UserCenter sharedInstance].userInfo.uid]];
-    return filePath;
+    return [NSString stringWithFormat:@"%@_%@_%@_%@_%@_%@",[self class],self.targetID,kStringFromValue(self.chatType),self.to_objid,[UserCenter sharedInstance].curChild.uid,[UserCenter sharedInstance].userInfo.uid];
 }
 
 #pragma mark - InputDelegate

@@ -69,6 +69,7 @@ static NSString *topChatID = nil;
     [self.tableView setHeight:self.view.height - _inputView.height];
     [self bindTableCell:@"MessageCell" tableModel:@"ChatMessageModel"];
     
+    [self requestData:REQUEST_REFRESH];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
     [_tableView addGestureRecognizer:tapGesture];
 }
