@@ -69,6 +69,8 @@
         {
             [_tableViewModel parseData:[TNDataWrapper dataWrapperWithObject:responseObject] type:REQUEST_REFRESH];
             [self.tableView reloadData];
+            if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
+                [self TNBaseTableViewControllerRequestSuccess];
         }
     }
 }

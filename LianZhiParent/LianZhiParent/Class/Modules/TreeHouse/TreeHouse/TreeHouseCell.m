@@ -88,8 +88,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         [_bgView addSubview:_infoLabel];
         
         _actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_actionButton setSize:CGSizeMake(30, 25)];
-        [_actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+        [_actionButton setSize:CGSizeMake(40, 25)];
         [_actionButton setImage:[UIImage imageNamed:@"TimelineAction"] forState:UIControlStateNormal];
         [_actionButton addTarget:self action:@selector(onActionClicked) forControlEvents:UIControlEventTouchUpInside];
         [_bgView addSubview:_actionButton];
@@ -245,7 +244,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
         _tagLabel.hidden = YES;
     
     [_tagButton setFrame:_tagLabel.frame];
-    [_actionButton setOrigin:CGPointMake(_bgView.width - 10 - _actionButton.width, spaceYStart + (30 - _actionButton.height) / 2)];
+    [_actionButton setOrigin:CGPointMake(_bgView.width - _actionButton.width, spaceYStart + (30 - _actionButton.height) / 2)];
     spaceYStart += 30;
     
     [_responseView setResponseModel:item.responseModel];

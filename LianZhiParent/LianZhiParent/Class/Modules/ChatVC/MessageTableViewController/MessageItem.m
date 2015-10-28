@@ -11,6 +11,16 @@
 #define kPhotoMaxHeight         120
 
 @implementation MessageContent
+- (id)init
+{
+    self = [super init];
+    if(self)
+    {
+        NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
+        self.mid = kStringFromValue(timeInterval);
+    }
+    return self;
+}
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
     self.mid = [dataWrapper getStringForKey:@"mid"];
@@ -38,8 +48,20 @@
 @end
 
 @implementation MessageItem
+
+- (id)init
+{
+    self = [super init];
+    if(self)
+    {
+        NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
+        self.client_send_id = [NSString stringWithFormat:@"%@_%ld_%ld",[UserCenter sharedInstance].userInfo.uid, timeInterval, (long)arc4random() % 100000];
+    }
+    return self;
+}
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
+    self.client_send_id = [dataWrapper getStringForKey:@"client_send_id"];
     TNDataWrapper *userWrapper = [dataWrapper getDataWrapperForKey:@"user"];
     UserInfo *userInfo = [[UserInfo alloc] init];
     [userInfo parseData:userWrapper];

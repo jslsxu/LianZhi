@@ -21,7 +21,7 @@
 @interface PhotoOperationVC : MessageSendVC<PhotoPickerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,  PhotoPickerVCDelegate>
 {
     NSMutableArray*     _imageArray;
-    UIScrollView*       _scrollView;
+    UITouchScrollView*       _scrollView;
     PhotoPickerView*    _pickerView;
     UIView*             _bgView;
     NSMutableArray*     _imageItemViewArray;

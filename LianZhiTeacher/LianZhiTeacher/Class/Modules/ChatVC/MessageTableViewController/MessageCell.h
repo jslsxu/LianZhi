@@ -19,10 +19,13 @@
 @protocol MessageCellDelegate <NSObject>
 - (void)onRevokeMessage:(MessageItem *)messageItem;
 - (void)onDeleteMessage:(MessageItem *)messageItem;
+- (void)onResendMessage:(MessageItem *)messageItem;
 @end
 
 @interface MessageCell : TNTableViewCell
 {
+    UIActivityIndicatorView*    _indicatorView;
+    UIImageView*                _sendFailImageView;
     UILabel*                    _timeLabel;
     UILabel*                    _nameLabel;
     AvatarView*                 _avatarView;

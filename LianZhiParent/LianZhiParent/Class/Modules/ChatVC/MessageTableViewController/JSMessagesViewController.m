@@ -201,28 +201,36 @@ static NSString *topChatID = nil;
         _timer = nil;
     }
     else
-        [self requestData:REQUEST_GETMORE];
+        [self requestData:REQUEST_REFRESH];
 }
 
 
-- (void)appendNewMessage:(TNDataWrapper *)response
+- (void)appendNewMessage:(TNDataWrapper *)response replace:(MessageItem *)messageItem
 {
     if(response.count > 0)
     {
-        ChatMessageModel *model = (ChatMessageModel *)self.tableViewModel;
-        for (NSInteger i = 0; i < response.count; i++)
+        UIImage *image = messageItem.messageContent.photoItem.image;
+        TNDataWrapper *messageItemWrapper = [response getDataWrapperForIndex:0];
+        [messageItem parseData:messageItemWrapper];
+        messageItem.messageStatus = MessageStatusSuccess;
+        if(image)
         {
-            TNDataWrapper *messageItemWrapper = [response getDataWrapperForIndex:i];
-            MessageItem *mesageItem = [[MessageItem alloc] init];
-            [mesageItem parseData:messageItemWrapper];
-            MessageItem *preItem = [self.tableViewModel.modelItemArray lastObject];
-            if([mesageItem.messageContent.ctime isEqualToString:preItem.messageContent.ctime])
-                [mesageItem.messageContent setHideTime:YES];
-            if([model canInsert:mesageItem])
-                [model.modelItemArray addObject:mesageItem];
+            PhotoItem *photoItem = messageItem.messageContent.photoItem;
+            if(photoItem)
+            {
+                [[SDImageCache sharedImageCache] storeImage:image forKey:photoItem.thumbnailUrl toDisk:YES];
+                [[SDImageCache sharedImageCache] storeImage:image forKey:photoItem.originalUrl toDisk:YES];
+            }
         }
+        messageItem.isTmp = NO;
+        BOOL hideTime = NO;
+        for (MessageItem *item in self.tableViewModel.modelItemArray)
+        {
+            if(item != messageItem &&!item.isTmp && [item.messageContent.ctime isEqualToString:messageItem.messageContent.ctime])
+                hideTime = YES;
+        }
+        [messageItem.messageContent setHideTime:hideTime];
         [self.tableView reloadData];
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.tableViewModel.modelItemArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
 }
 
@@ -240,6 +248,50 @@ static NSString *topChatID = nil;
     MessageType messageType = [dic[@"type"] integerValue];
     UIImage *image = dic[@"picture"];
     NSData *voiceData = dic[@"voice"];
+    
+    MessageContent *messageContent = [[MessageContent alloc] init];
+    [messageContent setMessageType:messageType];
+    [messageContent setText:dic[@"strContent"]];
+    [messageContent setTimeInterval:[[NSDate date] timeIntervalSince1970]];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MM月dd日 HH:mm"];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:messageContent.timeInterval];
+    messageContent.ctime = [formatter stringFromDate:date];
+    
+    if(image)
+    {
+        PhotoItem *photoItem = [[PhotoItem alloc] init];
+        [photoItem setWidth:image.size.width];
+        [photoItem setHeight:image.size.height];
+        [photoItem setImage:image];
+        [messageContent setPhotoItem:photoItem];
+    }
+    
+    if(voiceData)
+    {
+        NSInteger timeSpan = [dic[@"strVoiceTime"] integerValue];
+        AudioItem *audioItem = [[AudioItem alloc] init];
+        [audioItem setTimeSpan:timeSpan];
+        [messageContent setAudioItem:audioItem];
+    }
+    
+    MessageItem *messageItem = [[MessageItem alloc] init];
+    [messageItem setMessageStatus:MessageStatusSending];
+    [messageItem setIsTmp:YES];
+    [messageItem setUserInfo:[UserCenter sharedInstance].userInfo];
+    [messageItem setFrom:UUMessageFromMe];
+    [messageItem setMessageContent:messageContent];
+    
+    MessageItem *preItem = [self.tableViewModel.modelItemArray lastObject];
+    if([messageItem.messageContent.ctime isEqualToString:preItem.messageContent.ctime])
+        [messageItem.messageContent setHideTime:YES];
+    [self.tableViewModel.modelItemArray addObject:messageItem];
+    [self.tableView reloadData];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.tableViewModel.modelItemArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    
+    
+    [messageParam setValue:messageItem.client_send_id forKey:@"client_send_id"];
+    
     __weak typeof(self) wself = self;
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/send" withParams:messageParam constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         if(messageType == UUMessageTypeVoice)
@@ -247,8 +299,10 @@ static NSString *topChatID = nil;
         else if(messageType == UUMessageTypePicture)
             [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.8) name:@"file" fileName:@"file" mimeType:@"image/jpeg"];
     } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        [wself appendNewMessage:responseObject];
+        [wself appendNewMessage:responseObject replace:messageItem];
     } fail:^(NSString *errMsg) {
+        messageItem.messageStatus = MessageStatusFailed;
+        [wself.tableView reloadData];
         [ProgressHUD showHintText:errMsg];
     }];
 }
@@ -279,9 +333,22 @@ static NSString *topChatID = nil;
 {
     ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
     if(messageModel.hasNew)
-        [self scrollToBottom];
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messageModel.modelItemArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 }
 
+#pragma mark - TNBaseTableViewDelegate
+- (BOOL)supportCache
+{
+    return YES;
+}
+
+- (NSString *)cacheFileName
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *docDir = [paths objectAtIndex:0];
+    NSString *filePath = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%@_%@_%@_%@_%@",[self class],self.targetID,kStringFromValue(self.chatType),self.to_objid,[UserCenter sharedInstance].curChild.uid,[UserCenter sharedInstance].userInfo.uid]];
+    return filePath;
+}
 
 #pragma mark - InputDelegate
 - (void)inputBarViewDidCommit:(NSString *)text

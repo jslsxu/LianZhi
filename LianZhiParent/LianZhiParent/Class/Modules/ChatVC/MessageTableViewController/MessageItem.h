@@ -7,6 +7,14 @@
 //
 
 #import "TNModelItem.h"
+
+typedef NS_ENUM(NSInteger, MessageStatus)
+{
+    MessageStatusSuccess = 0,
+    MessageStatusFailed,
+    MessageStatusSending
+};
+
 typedef NS_ENUM(NSInteger, MessageType) {
     UUMessageTypeText     = 1 , // 文字
     UUMessageTypeVoice    = 2 ,  // 语音
@@ -41,6 +49,9 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @end
 
 @interface MessageItem : TNModelItem
+@property (nonatomic, assign)MessageStatus messageStatus;
+@property (nonatomic, assign)BOOL isTmp;
+@property (nonatomic, copy)NSString *client_send_id;
 @property (nonatomic, assign)MessageFrom from;
 @property (nonatomic, strong)UserInfo *userInfo;
 @property (nonatomic, strong)MessageContent *messageContent;

@@ -52,7 +52,7 @@
         }
     }
     
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
+    _scrollView = [[UITouchScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
     [_scrollView setBounces:YES];
     [_scrollView setDelegate:self];
     [_scrollView setAlwaysBounceVertical:YES];
@@ -128,6 +128,7 @@
     [self setupImageView];
     
     _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, _bgView.bottom + 20, _bgView.width, 60)];
+    [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setFont:[UIFont systemFontOfSize:16]];
     [_textView setDelegate:self];
     [_textView setPlaceholder:@"我用连枝分享了这些照片，快来点击查看吧"];

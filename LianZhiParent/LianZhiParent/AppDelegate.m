@@ -329,7 +329,6 @@ static SystemSoundID shake_sound_male_id = 0;
     });
 }
 
-
 #pragma mark - Reachability
 - (void)startReachability
 {

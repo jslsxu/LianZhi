@@ -35,6 +35,7 @@
     _textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 20, self.view.width - 10 * 2, 40)];
     [_textField setClearButtonMode:UITextFieldViewModeWhileEditing];
     [_textField setBackgroundColor:[UIColor whiteColor]];
+    [_textField setReturnKeyType:UIReturnKeyDone];
     [_textField setFont:[UIFont systemFontOfSize:14]];
     [_textField setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
     [_textField addTarget:self action:@selector(onTextFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];

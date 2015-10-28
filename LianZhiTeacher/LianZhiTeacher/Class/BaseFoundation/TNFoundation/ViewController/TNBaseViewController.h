@@ -34,4 +34,5 @@
 - (void)addKeyboardNotifications;
 - (void)onKeyboardWillShow:(NSNotification *)note;
 - (void)onKeyboardWillHide:(NSNotification *)note;
+- (void)resignKeyboard;
 @end

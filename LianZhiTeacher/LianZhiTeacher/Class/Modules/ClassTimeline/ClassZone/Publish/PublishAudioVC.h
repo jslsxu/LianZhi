@@ -7,10 +7,10 @@
 //
 
 #import "PublishBaseVC.h"
-
+#import "UITouchScrollView.h"
 @interface PublishAudioVC : PublishBaseVC<AudioRecordViewDelegate>
 {
-    UIScrollView*               _scrollView;
+    UITouchScrollView*          _scrollView;
     AudioRecordView*            _recordView;
     UTPlaceholderTextView*      _textView;
 }

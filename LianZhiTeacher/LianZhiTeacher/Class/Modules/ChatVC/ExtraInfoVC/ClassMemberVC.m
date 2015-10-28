@@ -268,7 +268,8 @@
     if(indexPath.section == 0)
     {
         [cell setUserInfo:self.teacherArray[indexPath.row]];
-        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ChatButtonNormal"]]];
+//        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ChatButtonNormal"]]];
+        [cell setAccessoryView:nil];
     }
     else
     {

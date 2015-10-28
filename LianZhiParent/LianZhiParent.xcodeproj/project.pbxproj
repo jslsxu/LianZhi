@@ -382,6 +382,7 @@
 		37F207081BDDD596006466F4 /* HomeWorkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207061BDDD596006466F4 /* HomeWorkVC.m */; };
 		37F2070B1BDDD8C4006466F4 /* HomeWorkListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F2070A1BDDD8C4006466F4 /* HomeWorkListModel.m */; };
 		37F207131BDE0816006466F4 /* LZAccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207121BDE0816006466F4 /* LZAccountVC.m */; };
+		37F207191BE0C871006466F4 /* UITouchScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207181BE0C871006466F4 /* UITouchScrollView.m */; };
 		37FD6DC11BAE7C5F00C83AB4 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DC01BAE7C5F00C83AB4 /* MessageCell.m */; };
 		37FD6DC41BAE7C7F00C83AB4 /* MessageItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DC31BAE7C7F00C83AB4 /* MessageItem.m */; };
 		37FD6DC71BAE800600C83AB4 /* ChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DC61BAE800600C83AB4 /* ChatMessageModel.m */; };
@@ -1123,6 +1124,8 @@
 		37F2070A1BDDD8C4006466F4 /* HomeWorkListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkListModel.m; sourceTree = "<group>"; };
 		37F207111BDE0816006466F4 /* LZAccountVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZAccountVC.h; sourceTree = "<group>"; };
 		37F207121BDE0816006466F4 /* LZAccountVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZAccountVC.m; sourceTree = "<group>"; };
+		37F207171BE0C871006466F4 /* UITouchScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITouchScrollView.h; sourceTree = "<group>"; };
+		37F207181BE0C871006466F4 /* UITouchScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITouchScrollView.m; sourceTree = "<group>"; };
 		37FD6DBF1BAE7C5F00C83AB4 /* MessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
 		37FD6DC01BAE7C5F00C83AB4 /* MessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
 		37FD6DC21BAE7C7F00C83AB4 /* MessageItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageItem.h; sourceTree = "<group>"; };
@@ -1829,6 +1832,8 @@
 				3793F64A1B7CFFD900501F77 /* ActionSelectView.m */,
 				3793F64B1B7CFFD900501F77 /* AudioRecordView.h */,
 				3793F64C1B7CFFD900501F77 /* AudioRecordView.m */,
+				37F207171BE0C871006466F4 /* UITouchScrollView.h */,
+				37F207181BE0C871006466F4 /* UITouchScrollView.m */,
 				3793F64D1B7CFFD900501F77 /* BasicControls */,
 				3793F6501B7CFFD900501F77 /* BlockAlertView */,
 				3793F6571B7CFFD900501F77 /* CameraMaskView.h */,
@@ -3054,6 +3059,7 @@
 				3793F7CC1B7CFFD900501F77 /* TGRImageViewController.m in Sources */,
 				3793F7D51B7CFFD900501F77 /* NSObject+Print.m in Sources */,
 				3793F8021B7CFFD900501F77 /* SDWebImageCompat.m in Sources */,
+				37F207191BE0C871006466F4 /* UITouchScrollView.m in Sources */,
 				37FD6DC11BAE7C5F00C83AB4 /* MessageCell.m in Sources */,
 				3793F8001B7CFFD900501F77 /* NSData+ImageContentType.m in Sources */,
 				37E93FDD1A7E9CF200AD45A1 /* MJPhotoView.m in Sources */,
@@ -3457,7 +3463,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3483,7 +3489,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b0a45cd0-d146-4e14-8edc-7cccff49897d";
+				PROVISIONING_PROFILE = "7978f522-3d07-4c8c-844e-0e19b4151403";
 			};
 			name = Debug;
 		};
@@ -3494,7 +3500,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3520,7 +3526,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b0a45cd0-d146-4e14-8edc-7cccff49897d";
+				PROVISIONING_PROFILE = "7978f522-3d07-4c8c-844e-0e19b4151403";
 			};
 			name = Release;
 		};

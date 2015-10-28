@@ -43,6 +43,7 @@
     
     _nameField = [[UITextField alloc] initWithFrame:CGRectMake(65, 30, self.view.width - 10 - 65, 40)];
     [_nameField setDelegate:self];
+    [_nameField setReturnKeyType:UIReturnKeyDone];
     [_nameField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
     [_nameField setFont:[UIFont systemFontOfSize:16]];
     [_nameField setText:self.name];

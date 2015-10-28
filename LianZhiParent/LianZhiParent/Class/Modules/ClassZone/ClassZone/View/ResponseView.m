@@ -176,6 +176,9 @@
         [_praiseView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
         [_contentView addSubview:_praiseView];
         
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDetailClicked)];
+        [_praiseView addGestureRecognizer:tapGesture];
+        
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, kPraiseViewHeight, self.width , 50 * 2 + 5 * 2) style:UITableViewStylePlain];
         [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
         [_tableView setBackgroundColor:[UIColor clearColor]];

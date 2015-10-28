@@ -145,7 +145,8 @@
     {
         [content appendFormat:@"回复%@: ",toUser];
     }
-    [content appendString:responseItem.commentItem.content];
+    if(responseItem.commentItem.content)
+        [content appendString:responseItem.commentItem.content];
     CGSize contentSize = [content boundingRectWithSize:CGSizeMake(width - 55 - 10, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:12]];
     return @(MAX(24 + contentSize.height + 8, 40));
 }

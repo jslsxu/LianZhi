@@ -84,4 +84,5 @@
 #import "TaskUploadManager.h"
 #import "POISelectVC.h"
 #import "PoiInfoView.h"
+#import "UITouchScrollView.h"
 #endif

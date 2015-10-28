@@ -33,7 +33,7 @@
     [super viewDidLoad];
     self.title = @"发照片";
     
-    _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    _scrollView = [[UITouchScrollView alloc] initWithFrame:self.view.bounds];
     [_scrollView setBounces:YES];
     [_scrollView setAlwaysBounceVertical:YES];
     [_scrollView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
@@ -91,6 +91,7 @@
     [self setupImageView];
     
     _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, _bgView.bottom + 20, _bgView.width, 60)];
+    [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setFont:[UIFont systemFontOfSize:16]];
     [_textView setDelegate:self];
     [_textView setPlaceholder:@"我用连枝分享了这些照片，快来点击查看吧"];

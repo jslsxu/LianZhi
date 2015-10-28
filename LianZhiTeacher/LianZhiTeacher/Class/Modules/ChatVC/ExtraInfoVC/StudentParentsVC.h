@@ -12,7 +12,7 @@
 {
     AvatarView* _avatar;
     UILabel*    _nameLabel;
-    UIButton*   _chatButton;
+//    UIButton*   _chatButton;
     UIView*     _sepLine;
 }
 @property (nonatomic, strong)FamilyInfo *familyInfo;

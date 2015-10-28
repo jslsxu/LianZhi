@@ -50,6 +50,7 @@
         [borderView addSubview:imageView];
         
         UITextField* textField = [[UITextField alloc] initWithFrame:CGRectMake(imageView.right + 8, 0, borderView.width - 10 - (imageView.right + 8), borderView.height)];
+        [textField setReturnKeyType:UIReturnKeyDone];
         [textField setPlaceholder:placeholderArray[i]];
         [textField setFont:[UIFont systemFontOfSize:16]];
         [borderView addSubview:textField];

@@ -408,6 +408,18 @@
         [params setValue:self.targetResponseItem.commentItem.commentId forKey:@"comment_id"];
     }
     [params setValue:content forKey:@"content"];
+    
+    ResponseItem *tmpResponseItem = [[ResponseItem alloc] init];
+    tmpResponseItem.sendUser = [UserCenter sharedInstance].userInfo;
+    tmpResponseItem.isTmp = YES;
+    CommentItem *commentItem = [[CommentItem alloc] init];
+    [commentItem setContent:content];
+    if(self.targetResponseItem)
+        [commentItem setToUser:self.targetResponseItem.sendUser.name];
+    [tmpResponseItem setCommentItem:commentItem];
+    [self.zoneItem.responseModel addResponse:tmpResponseItem];
+    [_tableView reloadData];
+    
     __weak typeof(self) wself = self;
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         if(responseObject.count > 0)
@@ -415,7 +427,8 @@
             TNDataWrapper *commentWrapper  =[responseObject getDataWrapperForIndex:0];
             ResponseItem *responseItem = [[ResponseItem alloc] init];
             [responseItem parseData:commentWrapper];
-            [wself.zoneItem.responseModel addResponse:responseItem];
+            NSInteger index = [wself.zoneItem.responseModel.responseArray indexOfObject:tmpResponseItem];
+            [wself.zoneItem.responseModel.responseArray replaceObjectAtIndex:index withObject:responseItem];
             [_praiseView setIsSingle:wself.zoneItem.responseModel.responseArray.count == 0];
             [_praiseView setPraiseArray:wself.zoneItem.responseModel.praiseArray];
             [_tableView reloadData];

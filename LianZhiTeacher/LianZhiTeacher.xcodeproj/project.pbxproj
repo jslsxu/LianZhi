@@ -375,6 +375,7 @@
 		37F206F61BDCB5C9006466F4 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206EF1BDCB5C9006466F4 /* FMDatabaseQueue.m */; };
 		37F206F71BDCB5C9006466F4 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206F21BDCB5C9006466F4 /* FMResultSet.m */; };
 		37F2070F1BDE015D006466F4 /* SurroundingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F2070E1BDE015D006466F4 /* SurroundingVC.m */; };
+		37F207161BE0BBFF006466F4 /* UITouchScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207151BE0BBFF006466F4 /* UITouchScrollView.m */; };
 		37FD6DE71BAEE01C00C83AB4 /* ChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */; };
 		37FD6DE81BAEE01C00C83AB4 /* JSMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDE1BAEE01C00C83AB4 /* JSMessagesViewController.m */; };
 		37FD6DE91BAEE01C00C83AB4 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DE01BAEE01C00C83AB4 /* MessageCell.m */; };
@@ -1121,6 +1122,8 @@
 		37F206F21BDCB5C9006466F4 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
 		37F2070D1BDE015D006466F4 /* SurroundingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurroundingVC.h; sourceTree = "<group>"; };
 		37F2070E1BDE015D006466F4 /* SurroundingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurroundingVC.m; sourceTree = "<group>"; };
+		37F207141BE0BBFF006466F4 /* UITouchScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITouchScrollView.h; sourceTree = "<group>"; };
+		37F207151BE0BBFF006466F4 /* UITouchScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITouchScrollView.m; sourceTree = "<group>"; };
 		37FD6DDB1BAEE01C00C83AB4 /* ChatMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessageModel.h; sourceTree = "<group>"; };
 		37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageModel.m; sourceTree = "<group>"; };
 		37FD6DDD1BAEE01C00C83AB4 /* JSMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSMessagesViewController.h; sourceTree = "<group>"; };
@@ -1691,6 +1694,8 @@
 			children = (
 				3793F9151B7CFFEF00501F77 /* ActionSelectView.h */,
 				3793F9161B7CFFEF00501F77 /* ActionSelectView.m */,
+				37F207141BE0BBFF006466F4 /* UITouchScrollView.h */,
+				37F207151BE0BBFF006466F4 /* UITouchScrollView.m */,
 				3793F9171B7CFFEF00501F77 /* AudioRecordView.h */,
 				3793F9181B7CFFEF00501F77 /* AudioRecordView.m */,
 				3793F9191B7CFFEF00501F77 /* BasicControls */,
@@ -3070,6 +3075,7 @@
 				3793FAA51B7CFFF000501F77 /* NSString+Validate.m in Sources */,
 				37CA18701AB70A2F00B49B55 /* AlbumGroupView.m in Sources */,
 				37C01B0E1A6C210300C8F454 /* PhotoOperationVC.m in Sources */,
+				37F207161BE0BBFF006466F4 /* UITouchScrollView.m in Sources */,
 				3793FA4B1B7CFFF000501F77 /* RETableViewManager.m in Sources */,
 				3793FA741B7CFFF000501F77 /* ALAsset+assetType.m in Sources */,
 				3793FA461B7CFFF000501F77 /* REPlaceholderTextView.m in Sources */,
@@ -3501,7 +3507,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					../BaseFoundation/3rdPart/AutoNavi,
@@ -3526,7 +3532,7 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/SVShare/ShareSDK/Extend/WeChatSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "309f869c-e642-40a5-b863-7a8e12cdd04a";
+				PROVISIONING_PROFILE = "72ffb7ff-6a30-4cbc-bc91-64fe85646ba9";
 			};
 			name = Debug;
 		};
@@ -3535,7 +3541,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					../BaseFoundation/3rdPart/AutoNavi,
@@ -3560,7 +3566,7 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/SVShare/ShareSDK/Extend/WeChatSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "309f869c-e642-40a5-b863-7a8e12cdd04a";
+				PROVISIONING_PROFILE = "72ffb7ff-6a30-4cbc-bc91-64fe85646ba9";
 			};
 			name = Release;
 		};

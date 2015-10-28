@@ -48,7 +48,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"RecordHistory"] style:UIBarButtonItemStylePlain target:self action:@selector(showRecordHistory)];
     [self addKeyboardNotifications];
     
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
+    _scrollView = [[UITouchScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
     [_scrollView setAlwaysBounceVertical:YES];
     [self.view addSubview:_scrollView];
     
@@ -120,6 +120,7 @@
     
     _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectInset(inputBGView.bounds, 5, 5)];
     [_textView setDelegate:self];
+    [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setBackgroundColor:[UIColor clearColor]];
     [_textView setPlaceholder:@"写点什么"];
     [_textView setFont:[UIFont systemFontOfSize:14]];

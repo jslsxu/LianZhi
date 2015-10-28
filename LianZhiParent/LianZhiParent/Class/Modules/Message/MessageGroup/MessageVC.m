@@ -217,14 +217,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    MessageGroupItem *groupItem = [self.messageModel.modelItemArray objectAtIndex:indexPath.row];
+    [groupItem setMsgNum:0];
+    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     if([self.messageModel hasMoreData] && [self.messageModel.modelItemArray count] == indexPath.row)
     {
         [self requestData:REQUEST_GETMORE];
     }
     else
     {
-        MessageGroupItem *groupItem = [self.messageModel.modelItemArray objectAtIndex:indexPath.row];
         if([groupItem.fromInfo isNotification])
         {
             MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];

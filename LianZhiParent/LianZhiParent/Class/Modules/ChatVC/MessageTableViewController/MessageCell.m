@@ -18,6 +18,13 @@
     {
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
+        _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [_indicatorView setHidesWhenStopped:YES];
+        [self addSubview:_indicatorView];
+        
+        _sendFailImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SendFail"]];
+        [_sendFailImageView setHidden:YES];
+        [self addSubview:_sendFailImageView];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.width - 120) / 2, 5, 120, 15)];
         [_timeLabel setTextAlignment:NSTextAlignmentCenter];
@@ -74,6 +81,11 @@
     MessageItem *messageItem = (MessageItem *)modelItem;
     [_timeLabel setHidden:messageItem.messageContent.hideTime];
     [_timeLabel setText:messageItem.messageContent.ctime];
+    if(MessageStatusSending == messageItem.messageStatus)
+        [_indicatorView startAnimating];
+    else
+        [_indicatorView stopAnimating];
+    [_sendFailImageView setHidden:MessageStatusFailed != messageItem.messageStatus];
     NSInteger spaceYStart = kTimeLabelHeight + 10;
     if(messageItem.messageContent.hideTime)
         spaceYStart = 0;
@@ -134,7 +146,10 @@
             [_contentButton setSize:CGSizeMake(120, 120 * photoItem.height / photoItem.width)];
         else
             [_contentButton setSize:CGSizeMake(120 * photoItem.width / photoItem.height, 120)];
-        [_contentButton.backImageView sd_setImageWithURL:[NSURL URLWithString:photoItem.thumbnailUrl]];
+        if(photoItem.image)
+            [_contentButton.backImageView setImage:photoItem.image];
+        else
+            [_contentButton.backImageView sd_setImageWithURL:[NSURL URLWithString:photoItem.thumbnailUrl]];
         [self makeMaskView:_contentButton.backImageView withImage:[_contentButton backgroundImageForState:UIControlStateNormal]];
     }
     else if(type == UUMessageTypeVoice)
@@ -184,10 +199,12 @@
     if(UUMessageFromMe == messageItem.from)
     {
         [_contentButton setOrigin:CGPointMake(kScreenWidth - 50 - _contentButton.width, spaceYStart)];
+        [_indicatorView setCenter:CGPointMake(_contentButton.x - 30, _contentButton.centerY)];
     }
     else
     {
         [_contentButton setOrigin:CGPointMake(50, spaceYStart)];
+        [_indicatorView setCenter:CGPointMake(_contentButton.right + 30, _contentButton.centerY)];
     }
 }
 
@@ -207,11 +224,16 @@
         UIMenuItem *copyMenu = [[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copyMessage)];
         [menuArray addObject:copyMenu];
     }
-    NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
-    if(timeInterval - messageItem.messageContent.timeInterval < 30)
+    if(!messageItem.isTmp)
     {
-        UIMenuItem *revokeMenu = [[UIMenuItem alloc] initWithTitle:@"撤销" action:@selector(revokeMessage)];
-        [menuArray addObject:revokeMenu];
+        NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
+        if(timeInterval - messageItem.messageContent.timeInterval < 30)
+        {
+            UIMenuItem *revokeMenu = [[UIMenuItem alloc] initWithTitle:@"撤销" action:@selector(revokeMessage)];
+            [menuArray addObject:revokeMenu];
+        }
+        UIMenuItem *deleteMenu = [[UIMenuItem alloc] initWithTitle:@"删除" action:@selector(deleteMessage)];
+        [menuArray addObject:deleteMenu];
     }
     
     if(ChatTypeParents == self.chatType && messageItem.from == UUMessageFromOther)
@@ -219,8 +241,6 @@
         UIMenuItem *blackMenu = [[UIMenuItem alloc] initWithTitle:@"拉黑" action:@selector(addToBlackList)];
         [menuArray addObject:blackMenu];
     }
-    UIMenuItem *deleteMenu = [[UIMenuItem alloc] initWithTitle:@"删除" action:@selector(deleteMessage)];
-    [menuArray addObject:deleteMenu];
     
     if(menuArray.count > 0)
     {
@@ -242,7 +262,8 @@
         if(defaultImage)
         {
             PhotoItem *photoItem = [messageItem.messageContent photoItem];
-            [_contentButton.backImageView sd_setImageWithURL:[NSURL URLWithString:photoItem.originalUrl] placeholderImage:defaultImage];
+            if(photoItem.originalUrl.length > 0)
+                [_contentButton.backImageView sd_setImageWithURL:[NSURL URLWithString:photoItem.originalUrl] placeholderImage:defaultImage];
             [UUImageAvatarBrowser showImage:_contentButton.backImageView];
         }
     }

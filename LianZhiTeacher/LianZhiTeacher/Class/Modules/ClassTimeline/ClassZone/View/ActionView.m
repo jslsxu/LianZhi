@@ -8,8 +8,8 @@
 
 #import "ActionView.h"
 
-#define kActionViewWidth                210
-#define kActionViewHeight               30
+#define kActionViewWidth                240
+#define kActionViewHeight               36
 
 @interface ActionView ()
 @property (nonatomic, copy)Action action;
@@ -44,7 +44,7 @@
             [button setFrame:CGRectMake(itemWidth * i, 0, itemWidth, _contentView.height)];
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [button setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
-            [button.titleLabel setFont:[UIFont systemFontOfSize:13]];
+            [button.titleLabel setFont:[UIFont systemFontOfSize:14]];
             [button setTitle:titleArray[i] forState:UIControlStateNormal];
             [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Normal",imageArray[i]]] forState:UIControlStateNormal];
             [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Highlighted",imageArray[i]]] forState:UIControlStateHighlighted];

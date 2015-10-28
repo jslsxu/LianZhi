@@ -10,6 +10,17 @@
 
 @implementation CommentItem
 
+- (id)init
+{
+    self = [super init];
+    if(self)
+    {
+        NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
+        self.commentId = [NSString stringWithFormat:@"%ld_%ld",(long)timeInterval,(long)arc4random() % 10000];
+    }
+    return self;
+}
+
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
     self.commentId = [dataWrapper getStringForKey:@"id"];
@@ -21,6 +32,7 @@
 @end
 
 @implementation ResponseItem
+
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
     TNDataWrapper *userWrapper = [dataWrapper getDataWrapperForKey:@"user"];

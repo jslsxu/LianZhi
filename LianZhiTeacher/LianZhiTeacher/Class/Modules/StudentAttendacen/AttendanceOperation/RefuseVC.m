@@ -20,6 +20,7 @@
     [super viewDidLoad];
     self.title = _reasonType == ReasonTypeRefuse ? @"拒绝原因" : @"撤销原因";
     _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, 10, self.view.width - 10 * 2, 60)];
+    [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setDelegate:self];
     [_textView setFont:[UIFont systemFontOfSize:14]];
     [_textView setPlaceholder:[NSString stringWithFormat:@"请向家长说明%@",self.title]];

@@ -100,6 +100,7 @@ static NSArray *tabDatas = nil;
     NSInteger newMsg = [UserCenter sharedInstance].statusManager.msgNum;
     LZTabBarButton *msgButton = (LZTabBarButton *)_tabbarButtons[0];
     [msgButton setBadgeValue:(newMsg > 0 ? kStringFromValue(newMsg) : nil)];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:newMsg];
 }
 
 - (void)onFoundChanged

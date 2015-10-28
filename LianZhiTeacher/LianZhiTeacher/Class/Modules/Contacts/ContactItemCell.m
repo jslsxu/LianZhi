@@ -27,11 +27,11 @@
         [_sepLine setBackgroundColor:kSepLineColor];
         [self addSubview:_sepLine];
         
-        _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
-        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonNormal"] forState:UIControlStateNormal];
-        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonHighlighted"] forState:UIControlStateHighlighted];
-        [self addSubview:_chatButton];
+//        _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
+//        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonNormal"] forState:UIControlStateNormal];
+//        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonHighlighted"] forState:UIControlStateHighlighted];
+//        [self addSubview:_chatButton];
     }
     return self;
 }
@@ -71,11 +71,11 @@
         _genderImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         [self addSubview:_genderImageView];
         
-        _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
-        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonNormal"] forState:UIControlStateNormal];
-        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonHighlighted"] forState:UIControlStateHighlighted];
-        [self addSubview:_chatButton];
+//        _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
+//        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonNormal"] forState:UIControlStateNormal];
+//        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonHighlighted"] forState:UIControlStateHighlighted];
+//        [self addSubview:_chatButton];
         
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 44 - 0.5, self.width, 0.5)];
         [_sepLine setBackgroundColor:[UIColor colorWithRed:240 / 255.0 green:240 / 255.0 blue:240 / 255.0 alpha:1.f]];
@@ -92,11 +92,10 @@
     [_avatar setStatus:_userInfo.activited ? nil : @"未开通"];
     [_nameLabel setText:userInfo.name];
     [_nameLabel sizeToFit];
-    [_nameLabel setFrame:CGRectMake(_avatar.right + 15, (self.height - _nameLabel.height) / 2, MIN(_nameLabel.width, _chatButton.left - _nameLabel.left - 10), _nameLabel.height)];
+    [_nameLabel setFrame:CGRectMake(_avatar.right + 15, (self.height - _nameLabel.height) / 2, MIN(_nameLabel.width, self.width - _nameLabel.left - 10), _nameLabel.height)];
     
     if([userInfo isKindOfClass:[TeacherInfo class]] || [userInfo isKindOfClass:[FamilyInfo class]])
     {
-        [_chatButton setHidden:NO];
         TeacherInfo *teacher = (TeacherInfo *)userInfo;
         [_commentLabel setText:teacher.title];
         [_commentLabel sizeToFit];
@@ -109,7 +108,6 @@
         [_commentLabel setText:[NSString stringWithFormat:@"(%ld位家长)",studentInfo.family.count]];
         [_commentLabel sizeToFit];
         [_commentLabel setOrigin:CGPointMake(_nameLabel.right + 15, (self.height - _commentLabel.height) / 2)];
-        [_chatButton setHidden:YES];
         [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }
 }

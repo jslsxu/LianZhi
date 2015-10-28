@@ -627,24 +627,24 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-    ClassZoneItem *zoneItem = (ClassZoneItem *)modelItem;
-    if(!zoneItem.newSent)
-    {
-        FeedItemDetailVC *feedItemDetailVC = [[FeedItemDetailVC alloc] init];
-        [feedItemDetailVC setZoneItem:zoneItem];
-        [feedItemDetailVC setClassId:self.classInfo.classID];
-        [feedItemDetailVC setDeleteCallBack:^{
-            NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:modelItem];
-            if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
-            {
-                [self.tableViewModel.modelItemArray removeObject:modelItem];
-                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-                [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
-            }
-
-        }];
-        [self.navigationController pushViewController:feedItemDetailVC animated:YES];
-    }
+//    ClassZoneItem *zoneItem = (ClassZoneItem *)modelItem;
+//    if(!zoneItem.newSent)
+//    {
+//        FeedItemDetailVC *feedItemDetailVC = [[FeedItemDetailVC alloc] init];
+//        [feedItemDetailVC setZoneItem:zoneItem];
+//        [feedItemDetailVC setClassId:self.classInfo.classID];
+//        [feedItemDetailVC setDeleteCallBack:^{
+//            NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:modelItem];
+//            if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
+//            {
+//                [self.tableViewModel.modelItemArray removeObject:modelItem];
+//                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+//                [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
+//            }
+//
+//        }];
+//        [self.navigationController pushViewController:feedItemDetailVC animated:YES];
+//    }
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -699,7 +699,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     self.targetResponseItem = nil;
     self.targetZoneItem = (ClassZoneItem *)cell.modelItem;
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-    CGPoint point = [cell.actionButton convertPoint:CGPointMake(0, cell.actionButton.height / 2) toView:keyWindow];
+    CGPoint point = [cell.actionButton convertPoint:CGPointMake(8, cell.actionButton.height / 2) toView:keyWindow];
     __weak typeof(self) wself = self;
     BOOL praised = self.targetZoneItem.responseModel.praised;
     ActionView *actionView = [[ActionView alloc] initWithPoint:point praised:praised action:^(NSInteger index) {
@@ -803,6 +803,18 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         [params setValue:self.targetResponseItem.commentItem.commentId forKey:@"comment_id"];
     }
     [params setValue:content forKey:@"content"];
+    
+    ResponseItem *tmpResponseItem = [[ResponseItem alloc] init];
+    tmpResponseItem.sendUser = [UserCenter sharedInstance].userInfo;
+    tmpResponseItem.isTmp = YES;
+    CommentItem *commentItem = [[CommentItem alloc] init];
+    [commentItem setContent:content];
+    if(self.targetResponseItem)
+        [commentItem setToUser:self.targetResponseItem.sendUser.name];
+    [tmpResponseItem setCommentItem:commentItem];
+    [self.targetZoneItem.responseModel addResponse:tmpResponseItem];
+    [self.tableView reloadData];
+    
     __weak typeof(self) wself = self;
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         if(responseObject.count > 0)
@@ -810,7 +822,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             TNDataWrapper *commentWrapper  =[responseObject getDataWrapperForIndex:0];
             ResponseItem *responseItem = [[ResponseItem alloc] init];
             [responseItem parseData:commentWrapper];
-            [wself.targetZoneItem.responseModel addResponse:responseItem];
+            NSInteger index = [wself.targetZoneItem.responseModel.responseArray indexOfObject:tmpResponseItem];
+            [wself.targetZoneItem.responseModel.responseArray replaceObjectAtIndex:index withObject:responseItem];
             [wself.tableView reloadData];
         }
     } fail:^(NSString *errMsg) {

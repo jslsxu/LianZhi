@@ -13,7 +13,7 @@
     LogoView*   _logoView;
     UILabel*    _nameLabel;
     UIView*     _sepLine;
-    UIButton*   _chatButton;
+//    UIButton*   _chatButton;
 }
 @property (nonatomic, strong)ClassInfo *classInfo;
 @property (nonatomic, readonly)UIButton *chatButton;
@@ -27,7 +27,7 @@
     UILabel*            _commentLabel;
     UIImageView*        _genderImageView;
     UIView*             _sepLine;
-    UIButton*           _chatButton;
+//    UIButton*           _chatButton;
 }
 @property (nonatomic, strong)UserInfo *userInfo;
 @end

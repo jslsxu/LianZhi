@@ -119,6 +119,9 @@
     {
         if([item.messageContent.mid isEqualToString:messageItem.messageContent.mid])
             return NO;
+        NSString *clientID = messageItem.client_send_id;
+        if(clientID.length > 0 && ![clientID isEqualToString:@"0"] && [clientID isEqualToString:item.client_send_id])
+            return NO;
     }
     return YES;
 }

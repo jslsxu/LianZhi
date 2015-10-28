@@ -65,7 +65,7 @@
     _confirmButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_confirmButton setFrame:CGRectMake(bottomView.width - 100 - 15, (bottomView.height - 40) / 2, 100, 40)];
     [_confirmButton setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:_confirmButton.size cornerRadius:5] forState:UIControlStateNormal];
-    [_confirmButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"E0E0E0"] size:_confirmButton.size cornerRadius:5] forState:UIControlStateDisabled];
+    [_confirmButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"979797"] size:_confirmButton.size cornerRadius:5] forState:UIControlStateDisabled];
     [_confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_confirmButton setEnabled:NO];
     [_confirmButton.titleLabel setFont:[UIFont systemFontOfSize:16]];

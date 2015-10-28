@@ -454,6 +454,19 @@
         [params setValue:self.targetResponseItem.commentItem.commentId forKey:@"comment_id"];
     }
     [params setValue:content forKey:@"content"];
+    
+    ResponseItem *tmpResponseItem = [[ResponseItem alloc] init];
+    tmpResponseItem.sendUser = [UserCenter sharedInstance].userInfo;
+    tmpResponseItem.isTmp = YES;
+    CommentItem *commentItem = [[CommentItem alloc] init];
+    [commentItem setContent:content];
+    if(self.targetResponseItem)
+        [commentItem setToUser:self.targetResponseItem.sendUser.name];
+    [tmpResponseItem setCommentItem:commentItem];
+    [self.targetClassZoneItem.responseModel addResponse:tmpResponseItem];
+    [self.tableView reloadData];
+
+    
     __weak typeof(self) wself = self;
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/send" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         if(responseObject.count > 0)
@@ -461,7 +474,9 @@
             TNDataWrapper *commentWrapper  =[responseObject getDataWrapperForIndex:0];
             ResponseItem *responseItem = [[ResponseItem alloc] init];
             [responseItem parseData:commentWrapper];
-            [wself.targetClassZoneItem.responseModel addResponse:responseItem];
+            NSInteger index = [wself.targetClassZoneItem.responseModel.responseArray indexOfObject:tmpResponseItem];
+            [wself.targetClassZoneItem.responseModel.responseArray replaceObjectAtIndex:index withObject:responseItem];
+
             [wself.tableView reloadData];
         }
     } fail:^(NSString *errMsg) {
@@ -488,10 +503,10 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-    ClassZoneItem *item = (ClassZoneItem *)modelItem;
-    FeedItemDetailVC *itemDetailVC = [[FeedItemDetailVC alloc] init];
-    [itemDetailVC setZoneItem:item];
-    [self.navigationController pushViewController:itemDetailVC animated:YES];
+//    ClassZoneItem *item = (ClassZoneItem *)modelItem;
+//    FeedItemDetailVC *itemDetailVC = [[FeedItemDetailVC alloc] init];
+//    [itemDetailVC setZoneItem:item];
+//    [self.navigationController pushViewController:itemDetailVC animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

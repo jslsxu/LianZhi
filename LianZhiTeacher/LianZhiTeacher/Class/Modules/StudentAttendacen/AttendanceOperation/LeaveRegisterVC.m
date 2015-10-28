@@ -43,6 +43,7 @@
     [self.view addSubview:reasonView];
     
     _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectInset(reasonView.bounds, 10, 10)];
+    [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setFont:[UIFont systemFontOfSize:14]];
     [_textView setDelegate:self];
     [reasonView addSubview:_textView];

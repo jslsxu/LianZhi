@@ -64,6 +64,8 @@
         {
             [_tableViewModel parseData:[TNDataWrapper dataWrapperWithObject:responseObject] type:REQUEST_REFRESH];
             [self.tableView reloadData];
+            if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
+                [self TNBaseTableViewControllerRequestSuccess];
         }
     }
 }
@@ -156,7 +158,9 @@
     if([self supportCache] && operation.requestType == REQUEST_REFRESH)
     {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [responseData.data writeToFile:[self cacheFilePath] atomically:YES];
+            BOOL success = [responseData.data writeToFile:[self cacheFilePath] atomically:YES];
+            if(success)
+                NSLog(@"save success");
         });
     }
     [self.tableView reloadData];

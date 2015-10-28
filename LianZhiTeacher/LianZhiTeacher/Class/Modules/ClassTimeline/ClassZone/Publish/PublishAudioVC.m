@@ -63,17 +63,18 @@
 
 - (void)setupSubviews
 {
-    _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    _scrollView = [[UITouchScrollView alloc] initWithFrame:self.view.bounds];
     [_scrollView setBounces:YES];
     [_scrollView setAlwaysBounceVertical:YES];
     [_scrollView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:_scrollView];
-    
+
     _recordView = [[AudioRecordView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, (self.view.height - 64) / 2)];
     [_recordView setDelegate:self];
     [_scrollView addSubview:_recordView];
     
     _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(15, _recordView.bottom, self.view.width - 15 * 2, 60)];
+    [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setDelegate:self];
     [_textView setPlaceholder:@"给录音起个标题吧"];
     [_textView setFont:[UIFont systemFontOfSize:16]];

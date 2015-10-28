@@ -19,13 +19,13 @@
         _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(15, 6, 32, 32)];
         [self addSubview:_avatar];
         
-        _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_chatButton setUserInteractionEnabled:NO];
-        [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
-        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonNormal"] forState:UIControlStateNormal];
-        [self addSubview:_chatButton];
+//        _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_chatButton setUserInteractionEnabled:NO];
+//        [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
+//        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonNormal"] forState:UIControlStateNormal];
+//        [self addSubview:_chatButton];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(15 + _avatar.right, 0, _chatButton.left - 10 - (15 + _avatar.right), self.height)];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(15 + _avatar.right, 0, self.width - 10 - (15 + _avatar.right), self.height)];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [self addSubview:_nameLabel];

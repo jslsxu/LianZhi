@@ -17,6 +17,7 @@
 @end
 
 @interface ResponseItem : TNModelItem
+@property (nonatomic, assign)BOOL isTmp;
 @property (nonatomic, strong)UserInfo *sendUser;
 @property (nonatomic, strong)CommentItem *commentItem;
 @end

@@ -21,7 +21,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
     if(self)
     {
         _manager = [[AFHTTPRequestOperationManager alloc] init];
-        _manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
+        AFJSONResponseSerializer *jsonSerializer = (AFJSONResponseSerializer *)_manager.responseSerializer;
+        jsonSerializer.removesKeysWithNullValues = YES;
+        jsonSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
         _sessionManager = [[AFHTTPSessionManager alloc] init];
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     }

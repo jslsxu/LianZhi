@@ -91,7 +91,6 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
         [self addSubview:_addressButton];
         
         _actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_actionButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
         [_actionButton setImage:[UIImage imageNamed:@"TimelineAction"] forState:UIControlStateNormal];
         [_actionButton addTarget:self action:@selector(onActionClicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_actionButton];
@@ -236,7 +235,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     [_addressButton setTitle:item.position forState:UIControlStateNormal];
     CGSize titleSize = [[_addressButton titleForState:UIControlStateNormal] sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12]}];
     [_addressButton setFrame:CGRectMake(kImageLeftMargin, spaceYStart, titleSize.width, titleSize.height)];
-    [_actionButton setFrame:CGRectMake(self.width - 30 - 10, spaceYStart, 30, 25)];
+    [_actionButton setFrame:CGRectMake(self.width - 40, spaceYStart, 40, 25)];
     spaceYStart += 25;
     
     [_responseView setFrame:CGRectMake(kImageLeftMargin, spaceYStart, self.width - kImageLeftMargin - 10, 100)];
