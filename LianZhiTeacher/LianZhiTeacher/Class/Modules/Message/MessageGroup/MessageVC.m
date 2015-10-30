@@ -33,7 +33,19 @@
         [self.timer fire];
     }
     
-    [ApplicationDelegate homeVC].navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ActionAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddActionClicked)];
+    LZTabBarButton *addButton = [LZTabBarButton buttonWithType:UIButtonTypeCustom];
+    [addButton setImage:[UIImage imageNamed:@"ActionAdd"] forState:UIControlStateNormal];
+    [addButton addTarget:self action:@selector(onAddActionClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [addButton setSize:CGSizeMake(40, 40)];
+    
+    NSString *ActionAddKey = @"ActionAddKey";
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL actionAddNew = [userDefaults boolForKey:ActionAddKey];
+    if(!actionAddNew)
+    {
+        [addButton setBadgeValue:@""];
+    }
+    [ApplicationDelegate homeVC].navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -83,8 +95,14 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onPublishPhotoFinished:) name:kPublishPhotoItemFinishedNotification object:nil];
 }
 
-- (void)onAddActionClicked
+- (void)onAddActionClicked:(LZTabBarButton *)button
 {
+    NSString *ActionAddKey = @"ActionAddKey";
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setBool:YES forKey:ActionAddKey];
+    [userDefaults synchronize];
+    [button setBadgeValue:nil];
+
     if([UserCenter sharedInstance].curSchool.classes.count + [UserCenter sharedInstance].curSchool.managedClasses.count > 0)
     {
         ActionPopView *actionView = [[ActionPopView alloc] initWithFrame:CGRectMake(self.view.width - 140, 64, 140, 100)];

@@ -45,7 +45,7 @@
     _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, _recordView.bottom, self.view.width - 10 * 2, 60)];
     [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setDelegate:self];
-    [_textView setPlaceholder:@"给录音起个标题吧"];
+    [_textView setPlaceholder:@"\n给录音起个标题吧"];
     [_textView setFont:[UIFont systemFontOfSize:16]];
     [_textView setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
     [_textView setText:self.words];

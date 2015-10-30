@@ -199,7 +199,7 @@ static NSString *topChatID = nil;
         _timer = nil;
     }
     else
-        [self requestData:REQUEST_REFRESH];
+        [self requestData:REQUEST_GETMORE];
 }
 
 
@@ -330,7 +330,7 @@ static NSString *topChatID = nil;
 - (void)TNBaseTableViewControllerRequestSuccess
 {
     ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
-    if(messageModel.hasNew)
+    if(messageModel.hasNew && messageModel.modelItemArray.count > 0)
         [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messageModel.modelItemArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 }
 
@@ -442,5 +442,37 @@ static NSString *topChatID = nil;
         [ProgressHUD showHintText:errMsg];
     }];
 }
+
+- (void)onResendMessage:(MessageItem *)messageItem
+{
+    NSDictionary *dic = messageItem.params;
+    NSMutableDictionary *messageParam = [NSMutableDictionary dictionary];
+    [messageParam setValue:[UserCenter sharedInstance].curChild.uid forKey:@"objid"];
+    [messageParam setValue:self.to_objid forKey:@"to_objid"];
+    [messageParam setValue:self.targetID forKey:@"to_id"];
+    [messageParam setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
+    [messageParam setValue:dic[@"type"] forKey:@"content_type"];
+    [messageParam setValue:dic[@"strContent"] forKey:@"content"];
+    [messageParam setValue:dic[@"strVoiceTime"] forKey:@"voice_time"];
+    
+    MessageType messageType = [dic[@"type"] integerValue];
+    UIImage *image = dic[@"picture"];
+    NSData *voiceData = dic[@"voice"];
+    
+    [messageParam setValue:messageItem.client_send_id forKey:@"client_send_id"];
+    __weak typeof(self) wself = self;
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/send" withParams:messageParam constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        if(messageType == UUMessageTypeVoice)
+            [formData appendPartWithFileData:voiceData name:@"file" fileName:@"file" mimeType:@"audio/AMR"];
+        else if(messageType == UUMessageTypePicture)
+            [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.8) name:@"file" fileName:@"file" mimeType:@"image/jpeg"];
+    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [wself appendNewMessage:responseObject replace:messageItem];
+    } fail:^(NSString *errMsg) {
+        messageItem.messageStatus = MessageStatusFailed;
+        [wself.tableView reloadData];
+    }];
+}
+
 
 @end

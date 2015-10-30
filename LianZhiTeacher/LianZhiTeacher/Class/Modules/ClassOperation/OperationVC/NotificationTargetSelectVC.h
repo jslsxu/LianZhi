@@ -14,14 +14,6 @@ typedef NS_ENUM(NSInteger, SelectType){
     SelectTypeAll
 };
 
-@interface NotificationTeacherGroup : TNModelItem
-@property (nonatomic, copy)NSString *groupId;
-@property (nonatomic, copy)NSString *groupName;
-@property (nonatomic, copy)NSString *groupLogo;
-@property (nonatomic, strong)NSArray *teachers;
-
-@end
-
 @interface NotificationTargetCell : TNTableViewCell
 {
     UIButton*   _checkButton;
@@ -38,14 +30,15 @@ typedef NS_ENUM(NSInteger, SelectType){
     UIButton*   _checkButton;
     UILabel*    _nameLabel;
 }
+@property (nonatomic, readonly)UIButton *checkButton;
 @property (nonatomic, readonly)UILabel *nameLabel;
 @property (nonatomic, assign)NSInteger selectType;
 @end
 
 @interface NotificationTargetSelectVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
-    NSMutableDictionary*     _selectedStudentDic;
-    NSMutableArray*     _selectedMateArray;
+    NSMutableArray*     _selectedClassArray;
+    NSMutableArray*     _selectedGroupArray;
     UISegmentedControl* _segmentControl;
     UITableView*        _tableView;
 }

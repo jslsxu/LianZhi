@@ -335,7 +335,8 @@
         NSString *imageUrl = nil;
         if(self.zoneItem.photos.count > 0)
             imageUrl = [self.zoneItem.photos[0] thumbnailUrl];
-        [ShareActionView shareWithTitle:self.zoneItem.content content:nil image:nil imageUrl:imageUrl url:[NSString stringWithFormat:@"http://m.edugate.cn/share/%@_%@.html",self.zoneItem.userInfo.uid,self.zoneItem.itemID]];
+          NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kClassZoneShareUrl,self.zoneItem.userInfo.uid,self.zoneItem.itemID];
+        [ShareActionView shareWithTitle:self.zoneItem.content content:nil image:nil imageUrl:imageUrl url:url];
     }
     else
     {

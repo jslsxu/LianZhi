@@ -11,9 +11,9 @@
 
 @interface DiscoveryCell : UITableViewCell
 {
-    UIImageView*    _redDot;
+    UIView*    _redDot;
 }
-@property (nonatomic, readonly)UIImageView *redDot;
+@property (nonatomic, readonly)UIView *redDot;
 @end
 
 @interface DiscoveryVC : TNBaseViewController<UITableViewDelegate, UITableViewDataSource>

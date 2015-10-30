@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseViewController.h"
-
+#import "NotificationToAllVC.h"
 @interface NotificationStudentCell : TNTableViewCell
 {
     AvatarView* _avatarView;
@@ -22,7 +22,8 @@
 {
     UITableView*    _tableView;
 }
-@property (nonatomic, strong)NSArray *originalArray;
+@property (nonatomic, strong)NSArray *imageArray;
+@property (nonatomic, strong)NSData *audioData;
+@property (nonatomic, strong)NSDictionary *params;
 @property (nonatomic, strong)ClassInfo *classInfo;
-@property (nonatomic, copy)void (^selectedCompletion)(NSArray *studentArray);
 @end

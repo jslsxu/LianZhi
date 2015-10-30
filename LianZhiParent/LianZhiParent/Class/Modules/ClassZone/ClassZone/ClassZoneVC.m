@@ -322,7 +322,8 @@
                 imageUrl = [self.targetClassZoneItem.photos[0] thumbnailUrl];
             if(imageUrl.length == 0)
                 imageUrl = self.classInfo.logo;
-            [ShareActionView shareWithTitle:self.targetClassZoneItem.content content:nil image:nil imageUrl:imageUrl url:[NSString stringWithFormat:@"http://m.edugate.cn/share/%@_%@.html",self.targetClassZoneItem.userInfo.uid,self.targetClassZoneItem.itemID]];
+            NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kClassZoneShareUrl,self.targetClassZoneItem.userInfo.uid,self.targetClassZoneItem.itemID];
+            [ShareActionView shareWithTitle:self.targetClassZoneItem.content content:nil image:nil imageUrl:imageUrl url:url];
         }
     }];
     [actionView show];
@@ -499,6 +500,7 @@
 {
     NSString *newsPaper = [(ClassZoneModel *)self.tableViewModel newsPaper];
     [_headerView setNewsPaper:newsPaper];
+    [self onStatusChanged];
 }
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath

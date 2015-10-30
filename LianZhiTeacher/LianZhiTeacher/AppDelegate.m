@@ -42,7 +42,6 @@ static SystemSoundID shake_sound_male_id = 0;
         self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:homeVC];
         [self.window setRootViewController:self.rootNavigation];
         self.homeVC = homeVC;
-        [self showNewEditionPreview];
     }
     else
     {
@@ -176,8 +175,7 @@ static SystemSoundID shake_sound_male_id = 0;
             [self.rootNavigation pushViewController:baseInfoVC animated:NO];
         }
         [self.window setRootViewController:self.rootNavigation];
-        [self.window makeKeyAndVisible];
-        [self showNewEditionPreview];
+//        [self showNewEditionPreview];
     };
     
     if([UserCenter sharedInstance].userData.firstLogin)

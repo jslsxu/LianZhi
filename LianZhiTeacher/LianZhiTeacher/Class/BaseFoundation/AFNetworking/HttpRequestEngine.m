@@ -21,6 +21,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
     if(self)
     {
         _manager = [[AFHTTPRequestOperationManager alloc] init];
+        _manager.requestSerializer.timeoutInterval = 30;
         AFJSONResponseSerializer *jsonSerializer = (AFJSONResponseSerializer *)_manager.responseSerializer;
         jsonSerializer.removesKeysWithNullValues = YES;
         jsonSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html", nil];
@@ -81,6 +82,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
             }
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            if(fail)
+                fail(@"网络请求失败");
         }];
     else
     {
@@ -116,6 +119,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
             }
 
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            if(fail)
+                fail(@"网络请求失败");
         }];
     }
     
@@ -164,6 +169,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
         }
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if(fail)
+            fail(@"网络请求失败");
     }];
     return operation;
 }
@@ -207,6 +214,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
         }
 
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        if(fail)
+            fail(@"网络请求失败");
     }];
     return task;
 }

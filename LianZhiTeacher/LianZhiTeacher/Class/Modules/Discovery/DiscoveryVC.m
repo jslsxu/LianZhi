@@ -17,7 +17,16 @@
     if(self)
     {
         self.width = kScreenWidth;
+        [self.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [self.textLabel setFont:[UIFont systemFontOfSize:15]];
+        [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
         
+        _redDot = [[UIView alloc] initWithFrame:CGRectMake(self.width - 40, (self.height - 8) / 2, 8, 8)];
+        [_redDot setBackgroundColor:[UIColor colorWithHexString:@"F0003A"]];
+        [_redDot.layer setCornerRadius:4];
+        [_redDot.layer setMasksToBounds:YES];
+        [_redDot setHidden:YES];
+        [self addSubview:_redDot];
     }
     return self;
 }
@@ -84,14 +93,22 @@
     if(nil == cell)
     {
         cell = [[DiscoveryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
-        [cell.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-        [cell.textLabel setFont:[UIFont systemFontOfSize:15]];
-        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }
+    [cell.redDot setHidden:YES];
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
     [cell.imageView setImage:[UIImage imageNamed:self.imageArray[section][row]]];
     [cell.textLabel setText:self.titleArray[section][row]];
+    if(section == 1 && row == 1 )
+    {
+        NSString *guideCellKey = @"guideCellKey";
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        BOOL guideCellNew = [userDefaults boolForKey:guideCellKey];
+        if(!guideCellNew)
+        {
+            [cell.redDot setHidden:NO];
+        }
+    }
     return cell;
 }
 
@@ -115,6 +132,11 @@
         }
         else
         {
+            NSString *guideCellKey = @"guideCellKey";
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setBool:YES forKey:guideCellKey];
+            [userDefaults synchronize];
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
             OperationGuideVC *operationGuideVC = [[OperationGuideVC alloc] init];
             [CurrentROOTNavigationVC pushViewController:operationGuideVC animated:YES];
         }

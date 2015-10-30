@@ -95,16 +95,17 @@ static NSArray *tabDatas = nil;
     
     
     NSArray *treeNewCommentArray = [UserCenter sharedInstance].statusManager.treeNewCommentArray;
+    LZTabBarButton *treeTabButton = (LZTabBarButton *)_tabbarButtons[2];
+    NSInteger treeAlertNum = 0;
     for (TimelineCommentItem *item in treeNewCommentArray)
     {
         if([item.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
         {
-            LZTabBarButton *treeTabButton = (LZTabBarButton *)_tabbarButtons[2];
-            NSInteger num = item.alertInfo.num;
-            [treeTabButton setBadgeValue:num > 0 ? kStringFromValue(num) : nil];
+            treeAlertNum = item.alertInfo.num;
             break;
         }
     }
+    [treeTabButton setBadgeValue:treeAlertNum > 0 ? kStringFromValue(treeAlertNum) : nil];
 }
 
 - (void)onNewMsgNumChanged

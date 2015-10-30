@@ -55,5 +55,8 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property (nonatomic, assign)MessageFrom from;
 @property (nonatomic, strong)UserInfo *userInfo;
 @property (nonatomic, strong)MessageContent *messageContent;
+
+//
+@property (nonatomic, strong)NSDictionary *params;
 - (CGFloat)cellHeight;
 @end

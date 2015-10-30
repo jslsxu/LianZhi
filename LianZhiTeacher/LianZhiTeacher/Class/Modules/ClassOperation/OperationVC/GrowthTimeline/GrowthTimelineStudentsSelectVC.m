@@ -68,9 +68,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _selectedArray = [NSMutableArray array];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    _selectedArray = [NSMutableArray arrayWithArray:self.originalStudentArray];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(onConfirm)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(onSendClicked)];
     NSInteger itemWith = (self.view.width + 3) / 4;
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     [layout setItemSize:CGSizeMake(itemWith, itemWith)];
@@ -144,12 +144,50 @@
     }];
 }
 
-- (void)onConfirm
+- (void)onSendClicked
 {
-    if(self.completion)
-        self.completion(_selectedArray);
-    [self.navigationController popViewControllerAnimated:YES];
+    if(_selectedArray.count == 0)
+    {
+        [ProgressHUD showHintText:@"你还没有选择学生"];
+        return;
+    }
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:[NSString stringWithJSONObject:self.record] forKey:@"record"];
+    
+    NSMutableArray *studentArray = [NSMutableArray array];
+    for (StudentInfo *studentInfo in _selectedArray)
+    {
+        [studentArray addObject:studentInfo.uid];
+    }
+    NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
+    [classDic setValue:self.classInfo.classID forKey:@"classid"];
+    
+    [classDic setValue:studentArray forKey:@"students"];
+    [params setValue:[NSString stringWithJSONObject:@[classDic]] forKey:@"classes"];
+        
+    //转换
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在提交" toView:self.view];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/record" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [hud hide:NO];
+        [ProgressHUD showSuccess:@"发送成功"];
+        UIViewController *baseVC = nil;
+        for (UIViewController *vc in self.navigationController.viewControllers)
+        {
+            if([NSStringFromClass([vc class]) isEqualToString:@"PublishGrowthTimelineVC"])
+                baseVC = vc;
+        }
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if(baseVC)
+                [self.navigationController popToViewController:baseVC animated:YES];
+            
+        });
+    } fail:^(NSString *errMsg) {
+        [hud hide:NO];
+        [ProgressHUD showHintText:errMsg];
+    }];
+    
 }
+
 
 - (void)onSelectAllClicked
 {

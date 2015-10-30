@@ -11,6 +11,6 @@
 
 #define kParentUmengAppKey          @"55110007fd98c533b2000356"
 //#define kRootRequestUrl             @"http://p.lb.5tree.cn/"
-#define kRootRequestUrl             @"http://p.mapi.wangyichuan.cn"
-//#define kRootRequestUrl             @"p.test.lb.5tree.cn"
+//#define kRootRequestUrl             @"http://p.mapi.wangyichuan.cn"
+#define kRootRequestUrl             @"http://p.test.lb.5tree.cn"
 #endif

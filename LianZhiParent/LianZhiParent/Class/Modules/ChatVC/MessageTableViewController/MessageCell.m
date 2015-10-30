@@ -206,6 +206,7 @@
         [_contentButton setOrigin:CGPointMake(50, spaceYStart)];
         [_indicatorView setCenter:CGPointMake(_contentButton.right + 30, _contentButton.centerY)];
     }
+    [_sendFailImageView setCenter:_indicatorView.center];
 }
 
 - (void)onAudioCLicked
@@ -324,4 +325,9 @@
         [self.delegate onAddToBlackList];
 }
 
+- (void)onResendMessage
+{
+    if([self.delegate respondsToSelector:@selector(onResendMessage:)])
+        [self.delegate onResendMessage:(MessageItem *)self.modelItem];
+}
 @end

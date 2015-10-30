@@ -44,11 +44,12 @@
 
 @interface ChildrenItemView : UICollectionViewCell
 {
-    UIView*         _contentView;
+    UIView*         _mainContentView;
+    UIView*         _borderBG;
     AvatarView*     _avatar;
     UILabel*        _nameLabel;
 }
-@property (nonatomic, assign)BOOL curSelected;
+@property (nonatomic, assign)BOOL isFocused;
 @property (nonatomic, weak)ChildInfo *childInfo;
 @end
 

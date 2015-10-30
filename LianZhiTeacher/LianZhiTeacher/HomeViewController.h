@@ -15,7 +15,7 @@
 
 @interface SwitchSchoolButton : UIButton
 {
-    UIImageView*    _redDot;
+    NumIndicator*   _redDot;
 }
 @property (nonatomic, assign)BOOL hasNew;
 

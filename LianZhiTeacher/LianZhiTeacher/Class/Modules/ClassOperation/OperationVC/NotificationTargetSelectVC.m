@@ -9,30 +9,6 @@
 #import "NotificationTargetSelectVC.h"
 #import "NotificationClassStudentsVC.h"
 
-@implementation NotificationTeacherGroup
-
-- (void)parseData:(TNDataWrapper *)dataWrapper
-{
-    self.groupId = [dataWrapper getStringForKey:@"id"];
-    self.groupName = [dataWrapper getStringForKey:@"name"];
-    self.groupLogo = [dataWrapper getStringForKey:@"logo"];
-    TNDataWrapper *teacherArrayWrapper = [dataWrapper getDataWrapperForKey:@"teachers"];
-    if(teacherArrayWrapper.count > 0)
-    {
-        NSMutableArray *teacherArray = [NSMutableArray array];
-        for (NSInteger i = 0; i < teacherArrayWrapper.count; i++)
-        {
-            TeacherInfo *teacherInfo = [[TeacherInfo alloc] init];
-            TNDataWrapper *teacherWrapper = [teacherArrayWrapper getDataWrapperForIndex:i];
-            [teacherInfo parseData:teacherWrapper];
-            [teacherArray addObject:teacherInfo];
-        }
-        self.teachers = teacherArray;
-    }
-}
-
-@end
-
 @implementation NotificationTargetCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -111,7 +87,6 @@
 @end
 
 @interface NotificationTargetSelectVC ()
-@property (nonatomic, strong)NSArray *teacherGroupArray;
 @property (nonatomic, strong)NSArray *classArray;
 @end
 
@@ -141,8 +116,9 @@
     
     self.classArray = classArray;
     
-    _selectedMateArray = [NSMutableArray array];
-    _selectedStudentDic = [NSMutableDictionary dictionary];
+    _selectedClassArray = [NSMutableArray array];
+    _selectedGroupArray = [NSMutableArray array];
+    
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
     [headerView setBackgroundColor:[UIColor colorWithHexString:@"0fabc1"]];
     [self.view addSubview:headerView];
@@ -162,8 +138,6 @@
     [self.view addSubview:_tableView];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(onSendClicked)];
-    
-    [self requestData];
 }
 
 - (void)onSegmentChanged
@@ -177,25 +151,20 @@
     NSMutableString *targetStr = [[NSMutableString alloc] init];
     if(_segmentControl.selectedSegmentIndex == 0)
     {
-        NSArray *allKeys = [_selectedStudentDic allKeys];
-        if(allKeys.count > 0)
-        {
             NSMutableArray *classArray = [[NSMutableArray alloc] init];
-            for (NSString *key in allKeys)
+            for (ClassInfo *classInfo in _selectedClassArray)
             {
-                NSArray *studentArray = _selectedStudentDic[key];
-                NSDictionary *itemDic = @{@"classid" : key,@"students":studentArray};
+                NSDictionary *itemDic = @{@"classid" : classInfo.classID};
                 [classArray addObject:itemDic];
             }
             [targetStr appendString:[NSString stringWithJSONObject:classArray]];
             [params setValue:targetStr forKey:@"classes"];
-        }
     }
     else
     {
-        for (NotificationTeacherGroup *teacherInfo in _selectedMateArray)
+        for (TeacherGroup *teacherInfo in _selectedGroupArray)
         {
-            [targetStr appendFormat:@"%@,",teacherInfo.groupId];
+            [targetStr appendFormat:@"%@,",teacherInfo.groupID];
         }
         [params setValue:targetStr forKey:@"groups"];
     }
@@ -204,7 +173,6 @@
         [ProgressHUD showHintText:@"还没有选择发送对象"];
         return;
     }
-    
     if(self.imageArray.count > 0)
     {
         NSMutableString *picSeq = [[NSMutableString alloc] init];
@@ -215,50 +183,123 @@
         [params setValue:picSeq forKey:@"pic_seqs"];
     }
     
-    MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:self.view];
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/send" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        for (NSInteger i = 0; i < self.imageArray.count; i++)
-        {
-            NSString *filename = [NSString stringWithFormat:@"picture_%ld",(long)i];
-            [formData appendPartWithFileData:UIImageJPEGRepresentation(self.imageArray[i], 0.8) name:filename fileName:filename mimeType:@"image/jpeg"];
-        }
-        if(self.audioData)
-            [formData appendPartWithFileData:self.audioData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
-    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        [hud hide:NO];
-        [ProgressHUD showSuccess:@"发送成功"];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self dismissViewControllerAnimated:YES completion:nil];
-        });
-    } fail:^(NSString *errMsg) {
-        [hud hide:NO];
-        [ProgressHUD showHintText:errMsg];
-    }];
-}
-
-- (void)requestData
-{
-    
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"app/groups" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        TNDataWrapper *groupsWrapper = [responseObject getDataWrapperForKey:@"list"];
-        if(groupsWrapper.count > 0)
-        {
-            NSMutableArray *groupArray = [NSMutableArray array];
-            for (NSInteger i = 0; i < groupsWrapper.count; i++)
-            {
-                TNDataWrapper *groupWrapper = [groupsWrapper getDataWrapperForIndex:i];
-                NotificationTeacherGroup *group = [[NotificationTeacherGroup alloc] init];
-                [group parseData:groupWrapper];
-                [groupArray addObject:group];
-            }
-            self.teacherGroupArray = groupArray;
-        }
-        [_tableView reloadData];
-    } fail:^(NSString *errMsg) {
+    if(self.imageArray.count > 0)
+    {
+        NotificationItem *notificationItem = [[NotificationItem alloc] init];
+        [notificationItem setImageArray:self.imageArray];
+        [notificationItem setWords:self.params[@"words"]];
+        [notificationItem setParams:params];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationPublishNotification object:nil userInfo:@{@"item" : notificationItem}];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else
+    {
         
-    }];
-
+        MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:self.view];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/send" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+            for (NSInteger i = 0; i < self.imageArray.count; i++)
+            {
+                NSString *filename = [NSString stringWithFormat:@"picture_%ld",(long)i];
+                [formData appendPartWithFileData:UIImageJPEGRepresentation(self.imageArray[i], 0.8) name:filename fileName:filename mimeType:@"image/jpeg"];
+            }
+            if(self.audioData)
+                [formData appendPartWithFileData:self.audioData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
+        } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [hud hide:NO];
+            [ProgressHUD showSuccess:@"发送成功"];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self dismissViewControllerAnimated:YES completion:nil];
+            });
+        } fail:^(NSString *errMsg) {
+            [hud hide:NO];
+            [ProgressHUD showHintText:errMsg];
+        }];
+    }
 }
+
+- (void)onClassHeaderClicked:(UIButton *)button
+{
+    NotificationGroupHeaderView *headerView = (NotificationGroupHeaderView *)button.superview;
+    NSInteger section = headerView.tag - 1000;
+     NSArray *classArray = self.classArray[section][@"groupArray"];
+    if(headerView.selectType == SelectTypeAll)
+    {
+        headerView.selectType = SelectTypeNone;
+        //删除
+        [_selectedClassArray removeObjectsInArray:classArray];
+    }
+    else
+    {
+        headerView.selectType = SelectTypeAll;
+        //全选
+        for (ClassInfo *classInfo in classArray)
+        {
+            if(![_selectedClassArray containsObject:classInfo])
+                [_selectedClassArray addObject:classInfo];
+        }
+    }
+    [_tableView reloadData];
+}
+
+- (void)onClassCellClicked:(UIButton *)button
+{
+    NotificationTargetCell *cell = (NotificationTargetCell *)button.superview;
+    NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
+    if(_segmentControl.selectedSegmentIndex == 0)
+    {
+        NSArray *classArray = self.classArray[indexPath.section][@"groupArray"];
+        ClassInfo *classInfo = classArray[indexPath.row];
+        button.selected = !button.selected;
+        if(button.selected)
+        {
+            if(![_selectedClassArray containsObject:classInfo])
+                [_selectedClassArray addObject:classInfo];
+        }
+        else
+        {
+            if([_selectedClassArray containsObject:classInfo])
+                [_selectedClassArray removeObject:classInfo];
+        }
+    }
+    else
+    {
+        NSArray *groupArray = [UserCenter sharedInstance].curSchool.groups;
+        TeacherGroup  *group = groupArray[indexPath.row];
+        button.selected = !button.selected;
+        if(button.selected)
+        {
+            if(![_selectedGroupArray containsObject:group])
+                [_selectedGroupArray addObject:group];
+        }
+        else
+        {
+            if([_selectedGroupArray containsObject:group])
+                [_selectedGroupArray removeObject:group];
+        }
+    }
+    [_tableView reloadData];
+}
+//
+//- (void)onGroupCellClicked:(UIButton *)button
+//{
+//    NotificationTargetCell *cell = (NotificationTargetCell *)button.superview;
+//    NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
+//    NSArray *groupArray = [UserCenter sharedInstance].curSchool.groups;
+//    TeacherGroup  *group = groupArray[indexPath.row];
+//    button.selected = !button.selected;
+//    if(button.selected)
+//    {
+//        if(![_selectedGroupArray containsObject:group])
+//            [_selectedGroupArray addObject:group];
+//    }
+//    else
+//    {
+//        if([_selectedGroupArray containsObject:group])
+//            [_selectedGroupArray removeObject:group];
+//    }
+//    [_tableView reloadData];
+//}
+
 
 #pragma mark = UITableViewDelegate
 
@@ -281,7 +322,7 @@
     }
     else
     {
-        return self.teacherGroupArray.count;
+        return [UserCenter sharedInstance].curSchool.groups.count;
     }
 }
 
@@ -303,18 +344,21 @@
     if(_segmentControl.selectedSegmentIndex == 0)
     {
         NotificationGroupHeaderView *headerView = [[NotificationGroupHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 50)];
+        [headerView setTag:1000 + section];
+        [headerView.checkButton setUserInteractionEnabled:YES];
+        [headerView.checkButton addTarget:self action:@selector(onClassHeaderClicked:) forControlEvents:UIControlEventTouchUpInside];
         NSDictionary *groupDic = self.classArray[section];
         [headerView.nameLabel setText:groupDic[@"groupName"]];
         NSInteger selectNum = 0;
-        NSArray *groupArray = groupDic[@"groupArray"];
-        for (ClassInfo *classInfo in groupArray)
+        NSArray *classArray = groupDic[@"groupArray"];
+        for (ClassInfo *classInfo in classArray)
         {
-            if([_selectedStudentDic valueForKey:classInfo.classID])
+            if([_selectedClassArray containsObject:classInfo])
                 selectNum ++;
         }
         if(selectNum == 0)
             [headerView setSelectType:SelectTypeNone];
-        else if(selectNum == groupArray.count)
+        else if(selectNum == classArray.count)
             [headerView setSelectType:SelectTypeAll];
         else
             [headerView setSelectType:SelectTypePart];
@@ -333,23 +377,25 @@
         cell = [[NotificationTargetCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseID];
         [cell.detailTextLabel setFont:[UIFont systemFontOfSize:13]];
         [cell.detailTextLabel setTextColor:[UIColor lightGrayColor]];
+        [cell.checkButton setUserInteractionEnabled:YES];
+        [cell.checkButton addTarget:self action:@selector(onClassCellClicked:) forControlEvents:UIControlEventTouchUpInside];
     }
     if(_segmentControl.selectedSegmentIndex == 0)
     {
         NSDictionary *groupDic = self.classArray[indexPath.section];
         NSArray *groupArray = groupDic[@"groupArray"];
         ClassInfo *classInfo = groupArray[indexPath.row];
-        NSArray *selectedArray = _selectedStudentDic[classInfo.classID];
-        [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld/%ld",(long)selectedArray.count,classInfo.students.count]];
+        [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld",classInfo.students.count]];
         [cell.nameLabel setText:classInfo.className];
-        [cell.checkButton setSelected:[_selectedStudentDic valueForKey:classInfo.classID]];
+        [cell.checkButton setSelected:[_selectedClassArray containsObject:classInfo]];
         [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }
     else
     {
-        NotificationTeacherGroup *teacherGroup = self.teacherGroupArray[indexPath.row];
+//        [cell.checkButton addTarget:self action:@selector(onGroupCellClicked:) forControlEvents:UIControlEventTouchUpInside];
+        TeacherGroup *teacherGroup = [UserCenter sharedInstance].curSchool.groups[indexPath.row];
         [cell.nameLabel setText:teacherGroup.groupName];
-        [cell.checkButton setSelected:[_selectedMateArray containsObject:teacherGroup]];
+        [cell.checkButton setSelected:[_selectedGroupArray containsObject:teacherGroup]];
         [cell.detailTextLabel setText:kStringFromValue(teacherGroup.teachers.count)];
         [cell setAccessoryView:nil];
     }
@@ -368,25 +414,19 @@
         NotificationClassStudentsVC *studentVC = [[NotificationClassStudentsVC alloc] init];
         [studentVC setTitle:classInfo.className];
         [studentVC setClassInfo:classInfo];
-        [studentVC setOriginalArray:_selectedStudentDic[classInfo.classID]];
-        [studentVC setSelectedCompletion:^(NSArray *studentArray)
-         {
-             if(studentArray.count > 0)
-                 [_selectedStudentDic setValue:studentArray forKey:classInfo.classID];
-             else
-                 [_selectedStudentDic removeObjectForKey:classInfo.classID];
-             [_tableView reloadData];
-         }];
+        [studentVC setParams:self.params];
+        [studentVC setImageArray:self.imageArray];
+        [studentVC setAudioData:self.audioData];
         [self.navigationController pushViewController:studentVC animated:YES];
     }
     else
     {
-        NotificationTeacherGroup *teachergroup = self.teacherGroupArray[indexPath.row];
-        if([_selectedMateArray containsObject:teachergroup])
-            [_selectedMateArray removeObject:teachergroup];
-        else
-            [_selectedMateArray addObject:teachergroup];
-        [_tableView reloadData];
+//        TeacherGroup *teachergroup = [UserCenter sharedInstance].curSchool.groups[indexPath.row];
+//        if([_selectedGroupArray containsObject:teachergroup])
+//            [_selectedMateArray removeObject:teachergroup];
+//        else
+//            [_selectedMateArray addObject:teachergroup];
+//        [_tableView reloadData];
     }
 }
 

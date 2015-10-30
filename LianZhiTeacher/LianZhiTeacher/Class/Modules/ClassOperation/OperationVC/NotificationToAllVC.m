@@ -12,6 +12,8 @@
 #import "AudioMessageSendVC.h"
 #import "NotificationDetailVC.h"
 
+NSString * kNotificationPublishNotification = @"NotificationPublishNotification";
+
 @implementation SentClassInfo
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
@@ -89,8 +91,21 @@
 @end
 
 @implementation NotificationItem
+
+- (instancetype)init
+{
+    self = [super init];
+    if(self)
+    {
+        NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
+        self.tmpID = [NSString stringWithFormat:@"%ld_%ld",(long)timeInterval, (long)arc4random() % 10000];
+    }
+    return self;
+}
+
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
+    self.isFinished = YES;
     self.notificationID = [dataWrapper getStringForKey:@"id"];
     self.words = [dataWrapper getStringForKey:@"words"];
     self.ctime = [dataWrapper getStringForKey:@"created_time"];
@@ -169,8 +184,6 @@
     self = [super initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier];
     if(self)
     {
-        [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
-        
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_contentLabel setTextColor:self.textLabel.textColor];
         [_contentLabel setFont:[UIFont systemFontOfSize:13]];
@@ -198,7 +211,16 @@
     else
         imageStr = @"NotiRecordPhotoIcon";
     [self.imageView setImage:[UIImage imageNamed:imageStr]];
-    [_timeLabel setText:item.ctime];
+    if(item.isFinished)
+    {
+        [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+        [_timeLabel setText:item.ctime];
+    }
+    else
+    {
+        [self setAccessoryView:nil];
+        [_timeLabel setText:@"wifi下自动发送"];
+    }
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(self.width - 30 - _timeLabel.width, (self.height - _timeLabel.height) / 2)];
     [_contentLabel setText:item.words];
@@ -219,11 +241,11 @@
 
 @implementation NotificationToAllVC
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)dealloc
 {
-    [super viewWillAppear:animated];
-    [self requestData:REQUEST_REFRESH];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -246,9 +268,11 @@
     [headerView addSubview:titleLabel];
     [_tableView setTableHeaderView:headerView];
     [self bindTableCell:@"NotificationCell" tableModel:@"NotificationModel"];
-    [self setSupportPullDown:YES];
     [self setSupportPullUp:YES];
+    [self requestData:REQUEST_REFRESH];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNetworkStatusChanged) name:kReachabilityChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNotification:) name:kNotificationPublishNotification object:nil];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
@@ -308,12 +332,65 @@
     [self presentViewController:nav animated:YES completion:nil];
 }
 
+#pragma mark 
+
+- (void)startUploading:(NotificationItem *)notificationItem
+{
+    if(!notificationItem.isFinished && !notificationItem.isUploading)
+    {
+        notificationItem.isUploading = YES;
+        __weak typeof(self) wself = self;
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/send" withParams:notificationItem.params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+            for (NSInteger i = 0; i < notificationItem.imageArray.count; i++)
+            {
+                NSString *filename = [NSString stringWithFormat:@"picture_%ld",(long)i];
+                [formData appendPartWithFileData:UIImageJPEGRepresentation(notificationItem.imageArray[i], 0.8) name:filename fileName:filename mimeType:@"image/jpeg"];
+            }
+        } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [notificationItem parseData:responseObject];
+            [wself.tableView reloadData];
+        } fail:^(NSString *errMsg) {
+            [ProgressHUD showHintText:errMsg];
+        }];
+    }
+}
+
+- (void)addNotification:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    NotificationItem *notificationItem = userInfo[@"item"];
+    [self.tableViewModel.modelItemArray insertObject:notificationItem atIndex:0];
+    [self.tableView reloadData];
+    //直接发送
+    if([ApplicationDelegate.hostReach currentReachabilityStatus] == ReachableViaWiFi || ([ApplicationDelegate.hostReach currentReachabilityStatus] == ReachableViaWWAN && ![UserCenter sharedInstance].personalSetting.wifiSend))
+    {
+        [self startUploading:notificationItem];
+    }
+}
+
+- (void)onNetworkStatusChanged
+{
+    //对连接改变做出响应的处理动作。
+    NetworkStatus status = [ApplicationDelegate.hostReach currentReachabilityStatus];
+    if(status == ReachableViaWiFi || (status == ReachableViaWWAN && ![UserCenter sharedInstance].personalSetting.wifiSend))
+    {
+        for (NotificationItem *item in self.tableViewModel.modelItemArray)
+        {
+            [self startUploading:item];
+        }
+    }
+}
+
 #pragma mark - UITableViewDelegate
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-    NotificationDetailVC *notiDetailVC = [[NotificationDetailVC alloc] init];
-    [notiDetailVC setNotificationItem:(NotificationItem *)modelItem];
-    [self.navigationController pushViewController:notiDetailVC animated:YES];
+    NotificationItem *notificationItem = (NotificationItem *)modelItem;
+    if(notificationItem.isFinished)
+    {
+        NotificationDetailVC *notiDetailVC = [[NotificationDetailVC alloc] init];
+        [notiDetailVC setNotificationItem:notificationItem];
+        [self.navigationController pushViewController:notiDetailVC animated:YES];
+    }
 }
 
 @end

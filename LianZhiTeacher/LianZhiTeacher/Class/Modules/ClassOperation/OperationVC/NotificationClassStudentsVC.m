@@ -75,8 +75,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.seletedArray = [NSMutableArray arrayWithArray:self.originalArray];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(onConfirm)];
+    self.seletedArray = [NSMutableArray array];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(onSend)];
 
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStylePlain];
     [_tableView setDelegate:self];
@@ -188,11 +188,58 @@
     [_tableView reloadData];
 }
 
-- (void)onConfirm
+- (void)onSend
 {
-    if(self.selectedCompletion)
-        self.selectedCompletion(self.seletedArray);
-    [self.navigationController popViewControllerAnimated:YES];
+    if(self.seletedArray.count == 0)
+    {
+        [ProgressHUD showHintText:@"还没有选择发送对象"];
+        return;
+    }
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.params];
+    [params setValue:[NSString stringWithJSONObject:@[@{@"classid" : self.classInfo.classID,@"students":self.seletedArray}]] forKey:@"classes"];
+    if(self.imageArray.count > 0)
+    {
+        NSMutableString *picSeq = [[NSMutableString alloc] init];
+        for (NSInteger i = 0; i < self.imageArray.count; i++)
+        {
+            [picSeq appendFormat:@"picture_%ld,",(long)i];
+        }
+        [params setValue:picSeq forKey:@"pic_seqs"];
+    }
+    
+    if(self.imageArray.count > 0)
+    {
+        NotificationItem *notificationItem = [[NotificationItem alloc] init];
+        [notificationItem setImageArray:self.imageArray];
+        [notificationItem setWords:self.params[@"words"]];
+        [notificationItem setParams:params];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationPublishNotification object:nil userInfo:@{@"item" : notificationItem}];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else
+    {
+        
+        MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:self.view];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/send" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+            for (NSInteger i = 0; i < self.imageArray.count; i++)
+            {
+                NSString *filename = [NSString stringWithFormat:@"picture_%ld",(long)i];
+                [formData appendPartWithFileData:UIImageJPEGRepresentation(self.imageArray[i], 0.8) name:filename fileName:filename mimeType:@"image/jpeg"];
+            }
+            if(self.audioData)
+                [formData appendPartWithFileData:self.audioData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
+        } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [hud hide:NO];
+            [ProgressHUD showSuccess:@"发送成功"];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self dismissViewControllerAnimated:YES completion:nil];
+            });
+        } fail:^(NSString *errMsg) {
+            [hud hide:NO];
+            [ProgressHUD showHintText:errMsg];
+        }];
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {

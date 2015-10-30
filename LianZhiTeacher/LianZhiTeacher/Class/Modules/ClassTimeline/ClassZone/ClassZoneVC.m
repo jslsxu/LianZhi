@@ -752,7 +752,9 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
                     imageUrl = [self.targetZoneItem.photos[0] thumbnailUrl];
                 if(imageUrl.length == 0)
                     imageUrl = self.classInfo.logoUrl;
-                [ShareActionView shareWithTitle:self.targetZoneItem.content content:nil image:nil imageUrl:imageUrl url:[NSString stringWithFormat:@"http://m.edugate.cn/share/%@_%@.html",self.targetZoneItem.userInfo.uid,self.targetZoneItem.itemID]];
+                
+                NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kClassZoneShareUrl,self.targetZoneItem.userInfo.uid,self.targetZoneItem.itemID];
+                [ShareActionView shareWithTitle:self.targetZoneItem.content content:nil image:nil imageUrl:imageUrl url:url];
             }
         }
     }];

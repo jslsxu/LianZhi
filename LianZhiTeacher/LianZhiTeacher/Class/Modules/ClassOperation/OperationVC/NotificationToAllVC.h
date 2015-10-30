@@ -8,6 +8,8 @@
 
 #import "TNBaseViewController.h"
 
+extern NSString * kNotificationPublishNotification;
+
 @interface SentClassInfo : TNModelItem
 @property (nonatomic, copy)NSString *classID;
 @property (nonatomic, copy)NSString *name;
@@ -32,6 +34,9 @@
 @end
 
 @interface NotificationItem : TNModelItem
+@property (nonatomic, assign)BOOL isUploading;
+@property (nonatomic, copy)NSString *tmpID;
+@property (nonatomic, assign)BOOL isFinished;
 @property (nonatomic, copy)NSString *notificationID;
 @property (nonatomic, copy)NSString *words;
 @property (nonatomic, assign)NSInteger notificationType;
@@ -40,6 +45,10 @@
 @property (nonatomic, copy)NSString *ctime;
 @property (nonatomic, assign)NSInteger sentNum;
 @property (nonatomic, strong)SentTarget *sentTarget;
+
+//
+@property (nonatomic, strong)NSDictionary*  params;
+@property (nonatomic, strong)NSArray *imageArray;
 @end
 
 @interface NotificationModel : TNListModel

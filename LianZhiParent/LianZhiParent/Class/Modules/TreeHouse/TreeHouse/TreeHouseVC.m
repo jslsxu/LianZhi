@@ -167,6 +167,26 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     self.shouldShowEmptyHint = YES;
     //请求网络数据
     
+    CGFloat publishButtonWidth = 40;
+    _publishButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_publishButton setImage:[UIImage imageNamed:@"TreeHouseEdit.png"] forState:UIControlStateNormal];
+    [_publishButton addTarget:self action:@selector(onPublishButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_publishButton];
+    [_publishButton setFrame:CGRectMake(30, self.view.height - 64 - 50 - publishButtonWidth - 15, publishButtonWidth, publishButtonWidth)];
+    
+    UIView *whiteLine = [[UIView alloc] initWithFrame:CGRectMake((50 - 2 / 2), 0, 2, self.view.height)];
+    [whiteLine setBackgroundColor:[UIColor whiteColor]];
+    [self.view addSubview:whiteLine];
+    [self.view sendSubviewToBack:whiteLine];
+    
+    _headerView = [[TreeHouseHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 0)];
+    [self.tableView setTableHeaderView:_headerView];
+    
+    _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, kScreenHeight, self.view.width, REPLY_BOX_HEIGHT)];
+    [_replyBox setDelegate:self];
+    [[UIApplication sharedApplication].keyWindow addSubview:_replyBox];
+    _replyBox.hidden = YES;
+    
     [self bindTableCell:@"TreeHouseCell" tableModel:@"TreeHouseModel"];
     [self setSupportPullDown:YES];
     [self setSupportPullUp:YES];
@@ -187,28 +207,6 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kTaskItemSuccessNotification object:nil];
 }
 
-- (void)setupSubviews
-{
-    CGFloat publishButtonWidth = 40;
-    _publishButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_publishButton setImage:[UIImage imageNamed:@"TreeHouseEdit.png"] forState:UIControlStateNormal];
-    [_publishButton addTarget:self action:@selector(onPublishButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_publishButton];
-    [_publishButton setFrame:CGRectMake(30, self.view.height - publishButtonWidth - 15, publishButtonWidth, publishButtonWidth)];
-    
-    UIView *whiteLine = [[UIView alloc] initWithFrame:CGRectMake((50 - 2 / 2), 0, 2, self.view.height)];
-    [whiteLine setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:whiteLine];
-    [self.view sendSubviewToBack:whiteLine];
-    
-    _headerView = [[TreeHouseHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 0)];
-    [self.tableView setTableHeaderView:_headerView];
-    
-    _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, kScreenHeight, self.view.width, REPLY_BOX_HEIGHT)];
-    [_replyBox setDelegate:self];
-    [[UIApplication sharedApplication].keyWindow addSubview:_replyBox];
-    _replyBox.hidden = YES;
-}
 
 - (void)onNetworkStatusChanged
 {
@@ -397,7 +395,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
                 imageUrl = [self.targetTreeHouseItem.photos[0] thumbnailUrl];
             if(imageUrl.length == 0)
                 imageUrl = [UserCenter sharedInstance].curChild.avatar;
-            [ShareActionView shareWithTitle:self.targetTreeHouseItem.detail content:nil image:nil imageUrl:imageUrl url:[NSString stringWithFormat:@"http://m.5tree.cn/share/%@_%@.html",self.targetTreeHouseItem.user.uid,self.targetTreeHouseItem.itemID]];
+             NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kTreeHouseShareUrl,self.targetTreeHouseItem.user.uid,self.targetTreeHouseItem.itemID];
+            [ShareActionView shareWithTitle:self.targetTreeHouseItem.detail content:nil image:nil imageUrl:imageUrl url:url];
         }
     }];
     [actionView show];
@@ -470,6 +469,11 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     TreeHouseCell *treehouseCell = (TreeHouseCell *)cell;
     if([treehouseCell respondsToSelector:@selector(setDelegate:)])
         [treehouseCell setDelegate:self];
+}
+
+- (void)TNBaseTableViewControllerRequestSuccess
+{
+    [self onStatusChanged];
 }
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath

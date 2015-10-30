@@ -110,16 +110,23 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        _contentView = [[UIView alloc] initWithFrame:self.bounds];
-        [self addSubview:_contentView];
-        _avatar = [[AvatarView alloc] initWithFrame:CGRectMake((self.width - 60) / 2, 10, 60, 60)];
-        [_contentView addSubview:_avatar];
+        _mainContentView = [[UIView alloc] initWithFrame:self.bounds];
+        [self addSubview:_mainContentView];
+        
+        _borderBG = [[UIView alloc] initWithFrame:CGRectMake((self.width - 60) / 2, 10, 60, 60)];
+        [_borderBG.layer setCornerRadius:30];
+        [_borderBG.layer setBorderWidth:2];
+        [_borderBG.layer setBorderColor:[UIColor whiteColor].CGColor];
+        [_mainContentView addSubview:_borderBG];
+        
+        _avatar = [[AvatarView alloc] initWithFrame:CGRectInset(_borderBG.frame, 2, 2)];
+        [_mainContentView addSubview:_avatar];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _avatar.bottom + 5, self.width, 20)];
         [_nameLabel setTextColor:[UIColor whiteColor]];
         [_nameLabel setFont:[UIFont systemFontOfSize:13]];
         [_nameLabel setTextAlignment:NSTextAlignmentCenter];
-        [_contentView addSubview:_nameLabel];
+        [_mainContentView addSubview:_nameLabel];
     }
     return self;
 }
@@ -131,29 +138,19 @@
     [_nameLabel setText:_childInfo.name];
 }
 
-- (void)setCurSelected:(BOOL)curSelected
+- (void)setIsFocused:(BOOL)isFocused
 {
-    _curSelected = curSelected;
-    [_contentView setTransform:_curSelected ? CGAffineTransformIdentity : CGAffineTransformMakeScale(0.8, 0.8)];
-    if(_curSelected)
-    {
-        [_avatar.layer setCornerRadius:_avatar.height / 2];
-        [_avatar.layer setBorderWidth:2];
-        [_avatar.layer setBorderColor:[UIColor whiteColor].CGColor];
-        [_avatar.layer setMasksToBounds:YES];
-    }
-    else
-    {
-        [_avatar.layer setCornerRadius:0];
-        [_avatar.layer setBorderWidth:0];
-    }
-    [_contentView setAlpha:_curSelected ? 1.f : 0.6f];
+    _isFocused = isFocused;
+    [_mainContentView setAlpha:_isFocused ? 1.f : 0.6f];
+    [_mainContentView setTransform:_isFocused ? CGAffineTransformIdentity : CGAffineTransformMakeScale(0.8, 0.8)];
 }
+
 @end
 
 @interface ChildrenInfoVC ()<ChildrenExtraCellDelegate>
 @property (nonatomic, strong)UIImage *avatarImage;
 @property (nonatomic, strong)NSMutableArray *infoArray;
+@property (nonatomic, assign)BOOL scrolled;
 @end
 
 @implementation ChildrenInfoVC
@@ -173,13 +170,16 @@
     [headerView setImage:[UIImage imageNamed:@"ChildrenBG"]];
     [headerView setUserInteractionEnabled:YES];
     
+    NSInteger itemWidth = self.view.width / 3;
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-    [layout setItemSize:CGSizeMake(100, 100)];
+    [layout setItemSize:CGSizeMake(itemWidth, 100)];
+    [layout setSectionInset:UIEdgeInsetsMake(0, itemWidth, 0, itemWidth)];
     [layout setMinimumInteritemSpacing:0];
     [layout setMinimumLineSpacing:0];
     
     _headerView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, _tableView.width, 100) collectionViewLayout:layout];
+    [_headerView setShowsHorizontalScrollIndicator:NO];
     [_headerView setAlwaysBounceHorizontal:YES];
     [_headerView setBackgroundColor:[UIColor clearColor]];
     [_headerView setDataSource:self];
@@ -189,8 +189,7 @@
     
     if([UserCenter sharedInstance].children.count > 1)
         [_tableView setTableHeaderView:headerView];
-    
-    [self refreshData];
+    self.curIndex = 0;
 }
 
 - (void)refreshData
@@ -325,6 +324,15 @@
 
 }
 
+- (void)setCurIndex:(NSInteger)curIndex
+{
+    _curIndex = curIndex;
+    [_headerView reloadData];
+    NSInteger itemWidth = self.view.width / 3;
+    [_headerView setContentOffset:CGPointMake(itemWidth * _curIndex, 0) animated:YES];
+    [self refreshData];
+}
+
 #pragma mark - UIImagePickerController
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
@@ -350,16 +358,54 @@
 {
     ChildrenItemView *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ChildrenItemView" forIndexPath:indexPath];
     [cell setChildInfo:[UserCenter sharedInstance].children[indexPath.row]];
-    [cell setCurSelected:self.curIndex == indexPath.row];
+    [cell setIsFocused:indexPath.row == self.curIndex];
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+//    self.scrolled = NO;
     self.curIndex = indexPath.row;
-    [collectionView reloadData];
-    [self refreshData];
 }
+
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+//{
+//    NSInteger itemWidth = self.view.width / 3;
+//    NSArray *visibleCells = [_headerView visibleCells];
+//    NSInteger contentOffSetX = scrollView.contentOffset.x;
+//    for (ChildrenItemView *itemView in visibleCells)
+//    {
+//        NSInteger index = [_headerView indexPathForCell:itemView].row;
+//        NSInteger centerX = itemWidth * (index + 1.5);
+//        NSInteger offset = MIN(labs(centerX - contentOffSetX - itemWidth * 3 / 2), itemWidth);//相对偏移
+//        [itemView.mainContentView setAlpha:1.0 - 0.5 * offset / itemWidth];
+//        [itemView.mainContentView setTransform:CGAffineTransformMakeScale(1.0 - 0.2 * offset / itemWidth, 1.0 - 0.2 * offset / itemWidth)];
+//    }
+//}
+//
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+//{
+//    self.scrolled = YES;
+//}
+//
+//- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+//{
+//    NSInteger itemWidth = self.view.width / 3;
+//    NSInteger spaceX = scrollView.contentOffset.x;
+//    NSInteger index = (spaceX + itemWidth / 2) / itemWidth;
+//    [self setCurIndex:index];
+//}
+//
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+//{
+//    if(!self.scrolled)
+//    {
+//        NSInteger itemWidth = self.view.width / 3;
+//        NSInteger spaceX = scrollView.contentOffset.x;
+//        NSInteger index = (spaceX + itemWidth / 2) / itemWidth;
+//        [self setCurIndex:index];
+//    }
+//}
 
 #pragma mark - ChildrenExtraCellDelegate
 - (void)childrenExtraCellReport:(ChildrenExtraInfoCell *)cell

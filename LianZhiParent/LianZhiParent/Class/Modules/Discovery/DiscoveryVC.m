@@ -16,7 +16,16 @@
     if(self)
     {
         self.width = kScreenWidth;
+        [self.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [self.textLabel setFont:[UIFont systemFontOfSize:15]];
+        [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
         
+        _redDot = [[UIView alloc] initWithFrame:CGRectMake(self.width - 40, (self.height - 8) / 2, 8, 8)];
+        [_redDot setBackgroundColor:[UIColor colorWithHexString:@"F0003A"]];
+        [_redDot.layer setCornerRadius:4];
+        [_redDot.layer setMasksToBounds:YES];
+        [_redDot setHidden:YES];
+        [self addSubview:_redDot];
     }
     return self;
 }
@@ -91,6 +100,16 @@
     NSInteger row = indexPath.row;
     [cell.imageView setImage:[UIImage imageNamed:self.imageArray[section][row]]];
     [cell.textLabel setText:self.titleArray[section][row]];
+    if(section == 1 && row == 1 )
+    {
+        NSString *guideCellKey = @"guideCellKey";
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        BOOL guideCellNew = [userDefaults boolForKey:guideCellKey];
+        if(!guideCellNew)
+        {
+            [cell.redDot setHidden:NO];
+        }
+    }
     return cell;
 }
 
@@ -116,6 +135,11 @@
         }
         else
         {
+            NSString *guideCellKey = @"guideCellKey";
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            [userDefaults setBool:YES forKey:guideCellKey];
+            [userDefaults synchronize];
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
             OperationGuideVC *operationGuideVC = [[OperationGuideVC alloc] init];
             [CurrentROOTNavigationVC pushViewController:operationGuideVC animated:YES];
         }

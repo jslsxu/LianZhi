@@ -20,6 +20,7 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @property (nonatomic, copy)NSString *logoUrl;
 @property (nonatomic, strong)NSArray *classes;
 @property (nonatomic, strong)NSArray *managedClasses;
+@property (nonatomic, strong)NSArray *groups;
 @property (nonatomic, strong)NSArray *teachers;
 @property (nonatomic, copy)NSString *schoolUrl;
 @property (nonatomic, readonly)NSInteger classNum;
@@ -55,5 +56,12 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @property (nonatomic, assign)BOOL canSelected;
 @property (nonatomic, assign)BOOL selected;             //在班级操作中有用
 @property (nonatomic, assign)NSInteger num;
+
 @end
 
+
+@interface TeacherGroup : TNModelItem<NSCoding>
+@property (nonatomic, copy)NSString *groupID;
+@property (nonatomic, copy)NSString *groupName;
+@property (nonatomic, strong)NSArray *teachers;
+@end

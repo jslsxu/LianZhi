@@ -507,7 +507,8 @@
             imageUrl = [self.treeHouseItem.photos[0] thumbnailUrl];
         if(imageUrl.length == 0)
             imageUrl = [UserCenter sharedInstance].curChild.avatar;
-        [ShareActionView shareWithTitle:self.treeHouseItem.detail content:nil image:nil imageUrl:imageUrl url:[NSString stringWithFormat:@"http://m.5tree.cn/share/%@_%@.html",self.treeHouseItem.user.uid,self.treeHouseItem.itemID]];
+          NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kTreeHouseShareUrl,self.treeHouseItem.user.uid,self.treeHouseItem.itemID];
+        [ShareActionView shareWithTitle:self.treeHouseItem.detail content:nil image:nil imageUrl:imageUrl url:url];
     }
 }
 

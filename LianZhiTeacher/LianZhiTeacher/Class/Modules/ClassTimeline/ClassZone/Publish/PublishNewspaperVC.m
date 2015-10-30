@@ -42,23 +42,21 @@
     [bgView addSubview:_numLabel];
     
     _contactButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_contactButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
+    [_contactButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    [_contactButton setTitleColor:[UIColor colorWithHexString:@"8f8f8f"] forState:UIControlStateNormal];
+    [_contactButton setTitle:@"发通知" forState:UIControlStateNormal];
     [_contactButton addTarget:self action:@selector(onContactButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [_contactButton setImage:[UIImage imageNamed:@"ControlDefault"] forState:UIControlStateNormal];
     [_contactButton setImage:[UIImage imageNamed:@"ControlSelectAll"] forState:UIControlStateSelected];
-    [_contactButton setFrame:CGRectMake(10, bgView.bottom + 5, 20, 20)];
+    [_contactButton setFrame:CGRectMake(10, bgView.bottom, 70, 30)];
     [self.view addSubview:_contactButton];
-    
-    _hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(_contactButton.right + 5, _contactButton.y, 120, 20)];
-    [_hintLabel setFont:[UIFont systemFontOfSize:12]];
-    [_hintLabel setTextColor:[UIColor colorWithHexString:@"8f8f8f"]];
-    [_hintLabel setText:@"发通知"];
-    [self.view addSubview:_hintLabel];
     
     
     _publishButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_publishButton setFrame:CGRectMake(20, bgView.bottom + 50, self.view.width - 20 * 2, 36)];
     [_publishButton addTarget:self action:@selector(onPublishClicked) forControlEvents:UIControlEventTouchUpInside];
-    [_publishButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"5ed01"] size:_publishButton.size cornerRadius:18] forState:UIControlStateNormal];
+    [_publishButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"5ed015"] size:_publishButton.size cornerRadius:18] forState:UIControlStateNormal];
     [_publishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_publishButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [_publishButton setTitle:@"写好了，公布" forState:UIControlStateNormal];

@@ -11,8 +11,6 @@
 
 @interface GrowthTimelineClassChangeVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
-    NSMutableDictionary*     _selectedStudentDic;
-    NSMutableArray*     _selectedMateArray;
     UITableView*        _tableView;
 }
 @property (nonatomic, strong)NSMutableDictionary *record;

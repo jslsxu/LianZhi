@@ -203,13 +203,14 @@
     if(UUMessageFromMe == messageItem.from)
     {
         [_contentButton setOrigin:CGPointMake(kScreenWidth - 50 - _contentButton.width, spaceYStart)];
-        [_indicatorView setCenter:CGPointMake(_contentButton.x - 30, _contentButton.centerY)];
+        [_indicatorView setCenter:CGPointMake(_contentButton.x - 20, _contentButton.centerY)];
     }
     else
     {
         [_contentButton setOrigin:CGPointMake(50, spaceYStart)];
-        [_indicatorView setCenter:CGPointMake(_contentButton.right + 30, _contentButton.centerY)];
+        [_indicatorView setCenter:CGPointMake(_contentButton.right + 20, _contentButton.centerY)];
     }
+    [_sendFailImageView setCenter:_indicatorView.center];
 }
 
 - (void)onAudioCLicked
@@ -299,7 +300,8 @@
 {
     if (action == @selector(copyMessage) ||
         action == @selector(deleteMessage) ||
-        action == @selector(revokeMessage))
+        action == @selector(revokeMessage) ||
+        action == @selector(resendMessage))
         return YES;
     
     return NO;

@@ -16,6 +16,20 @@
     self.logoUrl = [dataWrapper getStringForKey:@"logo"];
     self.schoolUrl = [dataWrapper getStringForKey:@"url"];
     
+    TNDataWrapper *groupWrapper = [dataWrapper getDataWrapperForKey:@"groups"];
+    if(groupWrapper.count > 0)
+    {
+        NSMutableArray *groupArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < groupWrapper.count; i++)
+        {
+            TNDataWrapper *groupItemWrapper = [groupWrapper getDataWrapperForIndex:i];
+            TeacherGroup *group = [[TeacherGroup alloc] init];
+            [group parseData:groupItemWrapper];
+            [groupArray addObject:group];
+        }
+        self.groups = groupArray;
+    }
+    
     TNDataWrapper *classDataWrapper = [dataWrapper getDataWrapperForKey:@"classes"];
     if(classDataWrapper.count > 0)
     {
@@ -94,6 +108,7 @@
         self.schoolID = [aDecoder decodeObjectForKey:@"id"];
         self.schoolName = [aDecoder decodeObjectForKey:@"name"];
         self.logoUrl = [aDecoder decodeObjectForKey:@"logo"];
+        self.groups = [aDecoder decodeObjectForKey:@"groups"];
         self.classes = [aDecoder decodeObjectForKey:@"classes"];
         self.managedClasses = [aDecoder decodeObjectForKey:@"managed_classes"];
         self.teachers = [aDecoder decodeObjectForKey:@"teachers"];
@@ -107,6 +122,7 @@
     [aCoder encodeObject:self.schoolID forKey:@"id"];
     [aCoder encodeObject:self.schoolName forKey:@"name"];
     [aCoder encodeObject:self.logoUrl forKey:@"logo"];
+    [aCoder encodeObject:self.groups forKey:@"groups"];
     [aCoder encodeObject:self.classes forKey:@"classes"];
     [aCoder encodeObject:self.managedClasses forKey:@"managed_classes"];
     [aCoder encodeObject:self.teachers forKey:@"teachers"];
@@ -162,6 +178,17 @@
 @end
 
 @implementation ClassInfo
+
+- (BOOL)isEqual:(id)object
+{
+    if([object isKindOfClass:[self class]])
+    {
+        ClassInfo *classInfo = (ClassInfo *)object;
+        return ([classInfo.classID isEqualToString:self.classID] && [classInfo.className isEqualToString:self.className]);
+    }
+    return NO;
+}
+
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
     self.classID = [dataWrapper getStringForKey:@"id"];
@@ -255,5 +282,45 @@
 {
     [super encodeWithCoder:aCoder];
     [aCoder encodeObject:self.family forKey:@"family"];
+}
+@end
+
+@implementation TeacherGroup
+
+- (void)parseData:(TNDataWrapper *)dataWrapper
+{
+    self.groupID = [dataWrapper getStringForKey:@"id"];
+    self.groupName = [dataWrapper getStringForKey:@"name"];
+    TNDataWrapper *teacherWrapper = [dataWrapper getDataWrapperForKey:@"teachers"];
+    if(teacherWrapper.count > 0)
+    {
+        NSMutableArray *teacherArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < teacherWrapper.count; i++)
+        {
+            TNDataWrapper *teacherItemWrapper = [teacherWrapper getDataWrapperForIndex:i];
+            TeacherInfo *teacherInfo = [[TeacherInfo alloc] init];
+            [teacherInfo parseData:teacherItemWrapper];
+            [teacherArray addObject:teacherInfo];
+        }
+        self.teachers = teacherArray;
+    }
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if(self = [super init])
+    {
+        self.groupID = [aDecoder decodeObjectForKey:@"id"];
+        self.groupName = [aDecoder decodeObjectForKey:@"name"];
+        self.teachers = [aDecoder decodeObjectForKey:@"teachers"];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.groupID forKey:@"id"];
+    [aCoder encodeObject:self.groupName forKey:@"name"];
+    [aCoder encodeObject:self.teachers forKey:@"teachers"];
 }
 @end

@@ -18,7 +18,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.title = @"我所有的班";
     NSMutableArray *classArray = [NSMutableArray array];
     if([UserCenter sharedInstance].curSchool.classes.count > 0)
     {
@@ -38,9 +38,6 @@
     
     self.classArray = classArray;
     
-    _selectedMateArray = [NSMutableArray array];
-    _selectedStudentDic = [NSMutableDictionary dictionary];
-    
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height  - 64) style:UITableViewStyleGrouped];
     [_tableView setBackgroundColor:[UIColor whiteColor]];
     [_tableView setDelegate:self];
@@ -48,47 +45,7 @@
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:_tableView];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(onSendClicked)];
-}
-
-- (void)onSendClicked
-{
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:[NSString stringWithJSONObject:self.record] forKey:@"record"];
-    
-    
-    NSMutableArray *classArray = [NSMutableArray array];
-    NSArray *keys = _selectedStudentDic.allKeys;
-    for (NSString *key in keys)
-    {
-        NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
-        [classDic setValue:key forKey:@"classid"];
-        NSMutableArray *studentArray = [NSMutableArray array];
-        for (StudentInfo *student in _selectedStudentDic[key])
-        {
-            [studentArray addObject:student.uid];
-        }
-        [classDic setValue:studentArray forKey:@"students"];
-        if(studentArray.count > 0)
-            [classArray addObject:classDic];
-    }
-    if(classArray.count > 0)
-        [params setValue:[NSString stringWithJSONObject:classArray] forKey:@"classes"];
-    else
-        [ProgressHUD showHintText:@"没有选择班级"];
-    //转换
-    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在提交" toView:self.view];
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/record" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        [hud hide:NO];
-        [ProgressHUD showSuccess:@"发送成功"];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.navigationController popViewControllerAnimated:YES];
-        });
-    } fail:^(NSString *errMsg) {
-        [hud hide:NO];
-        [ProgressHUD showHintText:errMsg];
-    }];
-
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(onSendClicked)];
 }
 #pragma mark - UITableViewDelegate
 
@@ -119,19 +76,6 @@
     NotificationGroupHeaderView *headerView = [[NotificationGroupHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 50)];
     NSDictionary *groupDic = self.classArray[section];
     [headerView.nameLabel setText:groupDic[@"groupName"]];
-    NSInteger selectNum = 0;
-    NSArray *groupArray = groupDic[@"groupArray"];
-    for (ClassInfo *classInfo in groupArray)
-    {
-        if([_selectedStudentDic valueForKey:classInfo.classID])
-            selectNum ++;
-    }
-    if(selectNum == 0)
-        [headerView setSelectType:SelectTypeNone];
-    else if(selectNum == groupArray.count)
-        [headerView setSelectType:SelectTypeAll];
-    else
-        [headerView setSelectType:SelectTypePart];
     return headerView;
 }
 
@@ -148,10 +92,8 @@
     NSDictionary *groupDic = self.classArray[indexPath.section];
     NSArray *groupArray = groupDic[@"groupArray"];
     ClassInfo *classInfo = groupArray[indexPath.row];
-    NSArray *selectedArray = _selectedStudentDic[classInfo.classID];
-    [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld/%ld",(long)selectedArray.count,classInfo.students.count]];
+    [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld",classInfo.students.count]];
     [cell.nameLabel setText:classInfo.className];
-    [cell.checkButton setSelected:[_selectedStudentDic valueForKey:classInfo.classID]];
     [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     return cell;
 }
@@ -164,15 +106,8 @@
     ClassInfo *classInfo = groupArray[indexPath.row];
     GrowthTimelineStudentsSelectVC *studentVC = [[GrowthTimelineStudentsSelectVC alloc] init];
     [studentVC setClassInfo:classInfo];
-    [studentVC setOriginalStudentArray:_selectedStudentDic[classInfo.classID]];
+    [studentVC setRecord:self.record];
     [studentVC setTitle:classInfo.className];
-    [studentVC setCompletion:^(NSArray *studentArray) {
-        if(studentArray.count > 0)
-            [_selectedStudentDic setValue:studentArray forKey:classInfo.classID];
-        else
-            [_selectedStudentDic removeObjectForKey:classInfo.classID];
-        [_tableView reloadData];
-    }];
     [self.navigationController pushViewController:studentVC animated:YES];
 }
 

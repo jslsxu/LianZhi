@@ -17,7 +17,8 @@
     [super layoutSubviews];
     if(_redDot == nil)
     {
-        _redDot = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"RedDot.png")]];
+        _redDot = [[NumIndicator alloc] init];
+        [_redDot setIndicator:@""];
         [_redDot setHidden:YES];
         [self addSubview:_redDot];
     }

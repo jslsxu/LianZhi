@@ -54,6 +54,7 @@
 @property (nonatomic, strong)NSArray *imageArray;
 @property (nonatomic, strong)NSMutableArray *appItems;
 @property (nonatomic, strong)NSArray *actionArray;
+@property (nonatomic, strong)NotificationToAllVC *notificationVC;
 @end
 
 @implementation ApplicationBoxVC
@@ -119,24 +120,43 @@
 {
     NSInteger row = indexPath.row;
     NSString *classStr = self.actionArray[row];
-    if(row == 3 && [UserCenter sharedInstance].curSchool.classes.count == 0)
+    if([classStr isEqualToString:@"NotificationToAllVC"])
     {
-        ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
-        [selectionVC setSelection:^(ClassInfo *classInfo) {
-            GrowthTimelineVC *growthTimelineVC = [[GrowthTimelineVC alloc] init];
-            [growthTimelineVC setClassID:classInfo.classID];
-            [growthTimelineVC setTitle:classInfo.className];
-            [CurrentROOTNavigationVC pushViewController:growthTimelineVC animated:YES];
-        }];
-        [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];
+        if(self.notificationVC == nil)
+        {
+            self.notificationVC = [[NotificationToAllVC alloc] init];
+        }
+        [CurrentROOTNavigationVC pushViewController:self.notificationVC animated:YES];
+    }
+    else if([classStr isEqualToString:@"PublishGrowthTimelineVC"])
+    {
+        if([UserCenter sharedInstance].curSchool.classes.count == 0)
+        {
+            ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
+            [selectionVC setSelection:^(ClassInfo *classInfo) {
+                GrowthTimelineVC *growthTimelineVC = [[GrowthTimelineVC alloc] init];
+                [growthTimelineVC setClassID:classInfo.classID];
+                [growthTimelineVC setTitle:classInfo.className];
+                [CurrentROOTNavigationVC pushViewController:growthTimelineVC animated:YES];
+            }];
+            [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];
+        }
+        else
+        {
+            PublishGrowthTimelineVC *publishGrowthTimelineVC = [[PublishGrowthTimelineVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:publishGrowthTimelineVC animated:YES];
+        }
+    }
+    else if([classStr isEqualToString:@"TNBaseWebViewController"])
+    {
+        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+        [webVC setUrl:[UserCenter sharedInstance].curSchool.schoolUrl];
+        [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
     }
     else
     {
         TNBaseViewController *vc = [[NSClassFromString(classStr) alloc] init];
-        if([vc isKindOfClass:[TNBaseWebViewController class]])
-            [(TNBaseWebViewController *)vc setUrl:[UserCenter sharedInstance].curSchool.schoolUrl];
-        if(vc)
-            [CurrentROOTNavigationVC pushViewController:vc animated:YES];
+        [CurrentROOTNavigationVC pushViewController:vc animated:YES];
     }
         
 }

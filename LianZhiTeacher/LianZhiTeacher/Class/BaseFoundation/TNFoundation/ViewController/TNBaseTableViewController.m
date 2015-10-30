@@ -62,6 +62,7 @@
         id responseObject = [NSDictionary dictionaryWithContentsOfFile:[self cacheFilePath]];
         if(responseObject)
         {
+            NSLog(@"load success");
             [_tableViewModel parseData:[TNDataWrapper dataWrapperWithObject:responseObject] type:REQUEST_REFRESH];
             [self.tableView reloadData];
             if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
@@ -155,7 +156,7 @@
     [_tableViewModel parseData:responseData type:operation.requestType];
     if(self.shouldShowEmptyHint)
         [self showEmptyLabel:_tableViewModel.modelItemArray.count == 0];
-    if([self supportCache] && operation.requestType == REQUEST_REFRESH)
+     if([self supportCache] && (operation.requestType == REQUEST_REFRESH || (operation.requestType == REQUEST_GETMORE && [NSStringFromClass([self class]) isEqualToString:@"JSMessagesViewController"])))
     {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             BOOL success = [responseData.data writeToFile:[self cacheFilePath] atomically:YES];

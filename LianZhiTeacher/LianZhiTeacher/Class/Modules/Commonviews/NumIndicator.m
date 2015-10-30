@@ -28,12 +28,21 @@
     return self;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self.layer setCornerRadius:self.height / 2];
+}
+
 - (void)setIndicator:(NSString *)indicator
 {
     _indicator = indicator;
     [self setText:_indicator];
     [self sizeToFit];
-    [self setSize:CGSizeMake(MAX(kIndicatorHeight, self.width + 4), kIndicatorHeight)];
+    if(indicator.length > 0)
+        [self setSize:CGSizeMake(MAX(kIndicatorHeight, self.width + 6), kIndicatorHeight)];
+    else
+        [self setSize:CGSizeMake(8, 8)];
 }
 
 @end
