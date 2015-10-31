@@ -12,7 +12,7 @@
 #import "PublishHomeWorkPhotoVC.h"
 #import "PublishHomeWorkTextVC.h"
 #import "HomeWorkItemCell.h"
-@interface HomeWorkVC ()<ActionSelectViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, PublishHomeWorkDelegate>
+@interface HomeWorkVC ()<ActionSelectViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, PublishHomeWorkDelegate, HomeWorkItemCellDelegate>
 @property (nonatomic, strong)NSMutableArray *courseArray;
 @property (nonatomic, copy)NSString *course;
 @property (nonatomic, strong)NSMutableArray *homeWorkArray;
@@ -193,23 +193,43 @@
     
 }
 
+- (void)updateContentView
+{
+    NSInteger height = 0;
+    if(self.homeWorkArray.count == 0)
+    {
+        height = self.view.height - 20 - 36 - _headerView.bottom - 20;
+    }
+    else
+    {
+        for (HomeWorkItem *item in self.homeWorkArray)
+        {
+            height += [HomeWorkItemCell cellHeightForItem:item forWidth:_tableView.width];
+        }
+    }
+    [_contentView setHeight:height];
+    [_tableView setHeight:height];
+    [_tableView reloadData];
+}
+
+#pragma mark - HomeWorkItemCellDelegate
+- (void)homeWorkCellDidDelete:(HomeWorkItemCell *)cell
+{
+    HomeWorkItem *item = cell.homeWorkItem;
+    if(self.homeWorkArray.count > 0)
+    {
+        [self.homeWorkArray removeObject:item];
+        [self updateContentView];
+    }
+}
+
 #pragma mark - PublishHomeWorkDelegate
 - (void)publishHomeWorkFinished:(HomeWorkItem *)homeWorkItem
 {
     if(self.homeWorkArray.count < 3 && homeWorkItem)
     {
         [self.homeWorkArray addObject:homeWorkItem];
-        if(self.homeWorkArray.count > 0)
-        {
-            NSInteger height = 0;
-            for (HomeWorkItem *item in self.homeWorkArray)
-            {
-                height += [HomeWorkItemCell cellHeightForItem:item forWidth:_tableView.width];
-            }
-            [_contentView setHeight:height];
-            [_tableView setHeight:height];
-            [_tableView reloadData];
-        }
+        [self updateContentView];
     }
 }
 
@@ -233,6 +253,7 @@
     if(nil == cell)
     {
         cell = [[HomeWorkItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+        [cell setDelegate:self];
         [cell setWidth:tableView.width];
     }
     [cell setHomeWorkItem:self.homeWorkArray[indexPath.row]];
@@ -241,7 +262,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    HomeWorkItemCell *cell = (HomeWorkItemCell *)[tableView cellForRowAtIndexPath:indexPath];
+    [cell setFocused:!cell.focused];
 }
 
 #pragma mark - UIImagePickerControllerDelegate

@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "HomeWorkItem.h"
+@class HomeWorkItemCell;
+@protocol HomeWorkItemCellDelegate <NSObject>
+
+- (void)homeWorkCellDidDelete:(HomeWorkItemCell *)cell;
+
+@end
+
 @interface HomeWorkItemCell : UITableViewCell
 {
     UILabel*        _contentLabel;
@@ -15,8 +22,10 @@
     MessageVoiceButton* _voiceButton;
     UILabel*        _timeLabel;
     UIView*         _bottomLine;
+    UIButton*       _deleteButton;
 }
 @property (nonatomic, strong)HomeWorkItem *homeWorkItem;
-
+@property (nonatomic, assign)BOOL focused;
+@property (nonatomic, weak)id<HomeWorkItemCellDelegate> delegate;
 + (CGFloat)cellHeightForItem:(HomeWorkItem *)homeWorkItem forWidth:(NSInteger)width;
 @end

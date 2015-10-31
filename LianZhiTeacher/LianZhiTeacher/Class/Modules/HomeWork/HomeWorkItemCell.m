@@ -14,6 +14,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
+        [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_contentLabel setFont:[UIFont systemFontOfSize:12]];
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
@@ -38,6 +39,12 @@
         _bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height, self.width, kLineHeight)];
         [_bottomLine setBackgroundColor:kSepLineColor];
         [self addSubview:_bottomLine];
+        
+        _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_deleteButton addTarget:self action:@selector(onDeleteClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_deleteButton setHidden:YES];
+        [_deleteButton setImage:[UIImage imageNamed:@"HomeWorkPhotoDel"] forState:UIControlStateNormal];
+        [self addSubview:_deleteButton];
     }
     return self;
 }
@@ -77,6 +84,7 @@
     }
     height += 5;
     [_bottomLine setFrame:CGRectMake(0, height - kLineHeight, self.width, kLineHeight)];
+    [_deleteButton setFrame:CGRectMake(self.width - 40, 0, 40, 40)];
 }
 
 + (CGFloat)cellHeightForItem:(HomeWorkItem *)homeWorkItem forWidth:(NSInteger)width
@@ -101,14 +109,28 @@
     
 }
 
+- (void)onDeleteClicked
+{
+    if([self.delegate respondsToSelector:@selector(homeWorkCellDidDelete:)])
+        [self.delegate homeWorkCellDidDelete:self];
+}
+
 - (void)awakeFromNib {
     // Initialization code
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+- (void)setFocused:(BOOL)focused
+{
+    _focused = focused;
+    [_deleteButton setHidden:!_focused];
+    if(_focused)
+    {
+        UIView *bgView = [[UIView alloc] init];
+        [bgView setBackgroundColor:[UIColor colorWithHexString:@"d8d8d8"]];
+        [self setSelectedBackgroundView:bgView];
+    }
+    else
+        [self setSelectedBackgroundView:nil];
 }
 
 @end
