@@ -85,6 +85,9 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
+    CourseListVC *courseListVC = [[CourseListVC alloc] init];
+    [CurrentROOTNavigationVC pushViewController:courseListVC animated:YES];
+    return;
     ClassAppItem *appItem = (ClassAppItem *)modelItem;
     NSString *actionUrl = appItem.actionUrl;
     if([actionUrl length] > 0)

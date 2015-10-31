@@ -376,6 +376,12 @@
 		37F206F71BDCB5C9006466F4 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206F21BDCB5C9006466F4 /* FMResultSet.m */; };
 		37F2070F1BDE015D006466F4 /* SurroundingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F2070E1BDE015D006466F4 /* SurroundingVC.m */; };
 		37F207161BE0BBFF006466F4 /* UITouchScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207151BE0BBFF006466F4 /* UITouchScrollView.m */; };
+		37FB1C501BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C4F1BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.m */; };
+		37FB1C531BE3DECF004ECE2E /* PublishHomeWorkTextVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C521BE3DECF004ECE2E /* PublishHomeWorkTextVC.m */; };
+		37FB1C561BE3DEDF004ECE2E /* PublishHomeWorkPhotoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C551BE3DEDF004ECE2E /* PublishHomeWorkPhotoVC.m */; };
+		37FB1C591BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C581BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m */; };
+		37FB1C5C1BE4949F004ECE2E /* HomeWorkItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C5B1BE4949F004ECE2E /* HomeWorkItemCell.m */; };
+		37FB1C5F1BE4979B004ECE2E /* HomeWorkItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C5E1BE4979B004ECE2E /* HomeWorkItem.m */; };
 		37FD6DE71BAEE01C00C83AB4 /* ChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */; };
 		37FD6DE81BAEE01C00C83AB4 /* JSMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDE1BAEE01C00C83AB4 /* JSMessagesViewController.m */; };
 		37FD6DE91BAEE01C00C83AB4 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DE01BAEE01C00C83AB4 /* MessageCell.m */; };
@@ -1124,6 +1130,18 @@
 		37F2070E1BDE015D006466F4 /* SurroundingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurroundingVC.m; sourceTree = "<group>"; };
 		37F207141BE0BBFF006466F4 /* UITouchScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITouchScrollView.h; sourceTree = "<group>"; };
 		37F207151BE0BBFF006466F4 /* UITouchScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITouchScrollView.m; sourceTree = "<group>"; };
+		37FB1C4E1BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishHomeWorkBaseVC.h; sourceTree = "<group>"; };
+		37FB1C4F1BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishHomeWorkBaseVC.m; sourceTree = "<group>"; };
+		37FB1C511BE3DECF004ECE2E /* PublishHomeWorkTextVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishHomeWorkTextVC.h; sourceTree = "<group>"; };
+		37FB1C521BE3DECF004ECE2E /* PublishHomeWorkTextVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishHomeWorkTextVC.m; sourceTree = "<group>"; };
+		37FB1C541BE3DEDF004ECE2E /* PublishHomeWorkPhotoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishHomeWorkPhotoVC.h; sourceTree = "<group>"; };
+		37FB1C551BE3DEDF004ECE2E /* PublishHomeWorkPhotoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishHomeWorkPhotoVC.m; sourceTree = "<group>"; };
+		37FB1C571BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishHomeWorkAudioVC.h; sourceTree = "<group>"; };
+		37FB1C581BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishHomeWorkAudioVC.m; sourceTree = "<group>"; };
+		37FB1C5A1BE4949F004ECE2E /* HomeWorkItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkItemCell.h; sourceTree = "<group>"; };
+		37FB1C5B1BE4949F004ECE2E /* HomeWorkItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkItemCell.m; sourceTree = "<group>"; };
+		37FB1C5D1BE4979B004ECE2E /* HomeWorkItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkItem.h; sourceTree = "<group>"; };
+		37FB1C5E1BE4979B004ECE2E /* HomeWorkItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkItem.m; sourceTree = "<group>"; };
 		37FD6DDB1BAEE01C00C83AB4 /* ChatMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessageModel.h; sourceTree = "<group>"; };
 		37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageModel.m; sourceTree = "<group>"; };
 		37FD6DDD1BAEE01C00C83AB4 /* JSMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSMessagesViewController.h; sourceTree = "<group>"; };
@@ -2507,6 +2525,11 @@
 			children = (
 				37D6EECF1BCBA96D000994A2 /* HomeWorkVC.h */,
 				37D6EED01BCBA96D000994A2 /* HomeWorkVC.m */,
+				37FB1C5A1BE4949F004ECE2E /* HomeWorkItemCell.h */,
+				37FB1C5B1BE4949F004ECE2E /* HomeWorkItemCell.m */,
+				37FB1C5D1BE4979B004ECE2E /* HomeWorkItem.h */,
+				37FB1C5E1BE4979B004ECE2E /* HomeWorkItem.m */,
+				37FB1C4D1BE3DE99004ECE2E /* PublishHomeWorkVC */,
 			);
 			path = HomeWork;
 			sourceTree = "<group>";
@@ -2864,6 +2887,21 @@
 			path = SurroundingVC;
 			sourceTree = "<group>";
 		};
+		37FB1C4D1BE3DE99004ECE2E /* PublishHomeWorkVC */ = {
+			isa = PBXGroup;
+			children = (
+				37FB1C4E1BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.h */,
+				37FB1C4F1BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.m */,
+				37FB1C511BE3DECF004ECE2E /* PublishHomeWorkTextVC.h */,
+				37FB1C521BE3DECF004ECE2E /* PublishHomeWorkTextVC.m */,
+				37FB1C541BE3DEDF004ECE2E /* PublishHomeWorkPhotoVC.h */,
+				37FB1C551BE3DEDF004ECE2E /* PublishHomeWorkPhotoVC.m */,
+				37FB1C571BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.h */,
+				37FB1C581BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m */,
+			);
+			path = PublishHomeWorkVC;
+			sourceTree = "<group>";
+		};
 		37FD6DDA1BAEE01C00C83AB4 /* MessageTableViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -3156,11 +3194,13 @@
 				37F206F71BDCB5C9006466F4 /* FMResultSet.m in Sources */,
 				37D8C7BA1A5986F000E5E2E4 /* ClassTableCell.m in Sources */,
 				3793FA691B7CFFF000501F77 /* AFHTTPSessionManager.m in Sources */,
+				37FB1C591BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m in Sources */,
 				370F33D91A78795000FED3C2 /* PersonalSettingVC.m in Sources */,
 				3728A7371B9D376300310457 /* FunctionView.m in Sources */,
 				3793FAD31B7CFFF000501F77 /* SDWebImagePrefetcher.m in Sources */,
 				37DEE4D91A57C1D8009A8771 /* ClassAppCell.m in Sources */,
 				3793FA521B7CFFF000501F77 /* REValidator.m in Sources */,
+				37FB1C5F1BE4979B004ECE2E /* HomeWorkItem.m in Sources */,
 				3793FA731B7CFFF000501F77 /* ALAsset+accessibilityLabel.m in Sources */,
 				37E93FC21A7E9CC600AD45A1 /* MJPhotoBrowser.m in Sources */,
 				37C355D91A3FD5CF00B948E6 /* AppDelegate.m in Sources */,
@@ -3223,10 +3263,12 @@
 				37D8C7B71A5986D800E5E2E4 /* StudentGridView.m in Sources */,
 				3793FA8E1B7CFFF000501F77 /* LimitedTextField.m in Sources */,
 				3793FA8D1B7CFFF000501F77 /* DAOverlayView.m in Sources */,
+				37FB1C531BE3DECF004ECE2E /* PublishHomeWorkTextVC.m in Sources */,
 				3728A73E1B9D376300310457 /* UUProgressHUD.m in Sources */,
 				371C6DAC1A7015AF00FA4AEC /* PublishAudioVC.m in Sources */,
 				372ED8231B81795A00D07344 /* InterestVC.m in Sources */,
 				3793FA991B7CFFF000501F77 /* TGRImageZoomAnimationController.m in Sources */,
+				37FB1C561BE3DEDF004ECE2E /* PublishHomeWorkPhotoVC.m in Sources */,
 				3793FA851B7CFFF000501F77 /* LZBadgeLabel.m in Sources */,
 				3793FAEA1B7CFFF000501F77 /* TNListModel.m in Sources */,
 				3793FAA41B7CFFF000501F77 /* NSString+StringSize.m in Sources */,
@@ -3234,6 +3276,7 @@
 				3705FF8E1BA1974500F0C6F6 /* MessageSendVC.m in Sources */,
 				3793FAF91B7D081900501F77 /* PhotoPickerView.m in Sources */,
 				37E93F991A7DC48200AD45A1 /* TNActionSheet.m in Sources */,
+				37FB1C5C1BE4949F004ECE2E /* HomeWorkItemCell.m in Sources */,
 				3793FA671B7CFFF000501F77 /* AFHTTPRequestOperation.m in Sources */,
 				37FD6E381BB6F53800C83AB4 /* RegisterAuthVC.m in Sources */,
 				3728A7481B9D37AF00310457 /* NSDate+Utils.m in Sources */,
@@ -3354,6 +3397,7 @@
 				37D6EEEE1BCBA96D000994A2 /* AttendanceDatePickerView.m in Sources */,
 				3793FAA21B7CFFF000501F77 /* NSObject+UnifiedPerformSelector.m in Sources */,
 				3793FA2C1B7CFFF000501F77 /* RETableViewDateTimeCell.m in Sources */,
+				37FB1C501BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.m in Sources */,
 				3728A74F1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m in Sources */,
 				3793FAEC1B7CFFF000501F77 /* TNBaseCollectionViewController.m in Sources */,
 				3793FA7D1B7CFFF000501F77 /* CTAssetsPickerController.m in Sources */,
@@ -3507,7 +3551,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					../BaseFoundation/3rdPart/AutoNavi,
@@ -3532,7 +3576,7 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/SVShare/ShareSDK/Extend/WeChatSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "309f869c-e642-40a5-b863-7a8e12cdd04a";
+				PROVISIONING_PROFILE = "72ffb7ff-6a30-4cbc-bc91-64fe85646ba9";
 			};
 			name = Debug;
 		};
@@ -3541,7 +3585,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					../BaseFoundation/3rdPart/AutoNavi,
@@ -3566,7 +3610,7 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/SVShare/ShareSDK/Extend/WeChatSDK",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "309f869c-e642-40a5-b863-7a8e12cdd04a";
+				PROVISIONING_PROFILE = "72ffb7ff-6a30-4cbc-bc91-64fe85646ba9";
 			};
 			name = Release;
 		};
