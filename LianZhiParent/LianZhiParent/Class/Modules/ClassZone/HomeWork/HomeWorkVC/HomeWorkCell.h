@@ -10,7 +10,10 @@
 
 @interface HomeWorkCell : TNTableViewCell
 {
-    UILabel*    _contentLabel;
+    UILabel*        _contentLabel;
     UIImageView*    _photoView;
+    MessageVoiceButton* _voiceButton;
+    UILabel*        _timeLabel;
+    UIView*         _bottomLine;
 }
 @end
