@@ -45,6 +45,7 @@
         [_deleteButton setHidden:YES];
         [_deleteButton setImage:[UIImage imageNamed:@"HomeWorkPhotoDel"] forState:UIControlStateNormal];
         [self addSubview:_deleteButton];
+
     }
     return self;
 }

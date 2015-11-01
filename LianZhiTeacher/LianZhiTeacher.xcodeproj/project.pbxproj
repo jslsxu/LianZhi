@@ -382,6 +382,9 @@
 		37FB1C591BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C581BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m */; };
 		37FB1C5C1BE4949F004ECE2E /* HomeWorkItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C5B1BE4949F004ECE2E /* HomeWorkItemCell.m */; };
 		37FB1C5F1BE4979B004ECE2E /* HomeWorkItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C5E1BE4979B004ECE2E /* HomeWorkItem.m */; };
+		37FB1C631BE4C368004ECE2E /* HomeWorkHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C621BE4C368004ECE2E /* HomeWorkHistoryVC.m */; };
+		37FB1C661BE4C50D004ECE2E /* HomeWorkHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C651BE4C50D004ECE2E /* HomeWorkHistoryModel.m */; };
+		37FB1C691BE4C596004ECE2E /* HomeWorkHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C681BE4C596004ECE2E /* HomeWorkHistoryCell.m */; };
 		37FD6DE71BAEE01C00C83AB4 /* ChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */; };
 		37FD6DE81BAEE01C00C83AB4 /* JSMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDE1BAEE01C00C83AB4 /* JSMessagesViewController.m */; };
 		37FD6DE91BAEE01C00C83AB4 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DE01BAEE01C00C83AB4 /* MessageCell.m */; };
@@ -1142,6 +1145,12 @@
 		37FB1C5B1BE4949F004ECE2E /* HomeWorkItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkItemCell.m; sourceTree = "<group>"; };
 		37FB1C5D1BE4979B004ECE2E /* HomeWorkItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkItem.h; sourceTree = "<group>"; };
 		37FB1C5E1BE4979B004ECE2E /* HomeWorkItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkItem.m; sourceTree = "<group>"; };
+		37FB1C611BE4C368004ECE2E /* HomeWorkHistoryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkHistoryVC.h; sourceTree = "<group>"; };
+		37FB1C621BE4C368004ECE2E /* HomeWorkHistoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkHistoryVC.m; sourceTree = "<group>"; };
+		37FB1C641BE4C50D004ECE2E /* HomeWorkHistoryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkHistoryModel.h; sourceTree = "<group>"; };
+		37FB1C651BE4C50D004ECE2E /* HomeWorkHistoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkHistoryModel.m; sourceTree = "<group>"; };
+		37FB1C671BE4C596004ECE2E /* HomeWorkHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkHistoryCell.h; sourceTree = "<group>"; };
+		37FB1C681BE4C596004ECE2E /* HomeWorkHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkHistoryCell.m; sourceTree = "<group>"; };
 		37FD6DDB1BAEE01C00C83AB4 /* ChatMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessageModel.h; sourceTree = "<group>"; };
 		37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageModel.m; sourceTree = "<group>"; };
 		37FD6DDD1BAEE01C00C83AB4 /* JSMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSMessagesViewController.h; sourceTree = "<group>"; };
@@ -2529,6 +2538,7 @@
 				37FB1C5B1BE4949F004ECE2E /* HomeWorkItemCell.m */,
 				37FB1C5D1BE4979B004ECE2E /* HomeWorkItem.h */,
 				37FB1C5E1BE4979B004ECE2E /* HomeWorkItem.m */,
+				37FB1C601BE4C354004ECE2E /* HomeWorkHistory */,
 				37FB1C4D1BE3DE99004ECE2E /* PublishHomeWorkVC */,
 			);
 			path = HomeWork;
@@ -2902,6 +2912,19 @@
 			path = PublishHomeWorkVC;
 			sourceTree = "<group>";
 		};
+		37FB1C601BE4C354004ECE2E /* HomeWorkHistory */ = {
+			isa = PBXGroup;
+			children = (
+				37FB1C611BE4C368004ECE2E /* HomeWorkHistoryVC.h */,
+				37FB1C621BE4C368004ECE2E /* HomeWorkHistoryVC.m */,
+				37FB1C641BE4C50D004ECE2E /* HomeWorkHistoryModel.h */,
+				37FB1C651BE4C50D004ECE2E /* HomeWorkHistoryModel.m */,
+				37FB1C671BE4C596004ECE2E /* HomeWorkHistoryCell.h */,
+				37FB1C681BE4C596004ECE2E /* HomeWorkHistoryCell.m */,
+			);
+			path = HomeWorkHistory;
+			sourceTree = "<group>";
+		};
 		37FD6DDA1BAEE01C00C83AB4 /* MessageTableViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -3126,6 +3149,7 @@
 				3793FA281B7CFFF000501F77 /* MBProgressHUD.m in Sources */,
 				3793FAD41B7CFFF000501F77 /* UIButton+WebCache.m in Sources */,
 				37D6EEED1BCBA96D000994A2 /* HomeWorkVC.m in Sources */,
+				37FB1C661BE4C50D004ECE2E /* HomeWorkHistoryModel.m in Sources */,
 				3793FA6C1B7CFFF000501F77 /* AFSecurityPolicy.m in Sources */,
 				379947EA1A66B430008E4B4F /* PhotoFlowModel.m in Sources */,
 				37B485061A65853C00C412D8 /* SchoolInfo.m in Sources */,
@@ -3226,6 +3250,7 @@
 				3793FAF01B7CFFF000501F77 /* TNBaseWebViewController.m in Sources */,
 				3793FA501B7CFFF000501F77 /* REFormattedNumberField.m in Sources */,
 				3793FA441B7CFFF000501F77 /* REActionBar.m in Sources */,
+				37FB1C631BE4C368004ECE2E /* HomeWorkHistoryVC.m in Sources */,
 				37FD6E301BB4817900C83AB4 /* NewMessageCell.m in Sources */,
 				3728A6A81B98B20700310457 /* ClassZoneModel.m in Sources */,
 				3793FAF11B7CFFF000501F77 /* TaskItem.m in Sources */,
@@ -3343,6 +3368,7 @@
 				3793FA2F1B7CFFF000501F77 /* RETableViewInlinePickerCell.m in Sources */,
 				3793FA371B7CFFF000501F77 /* RECreditCardItem.m in Sources */,
 				37D6EEF71BCBA96D000994A2 /* StudentAttendanceCell.m in Sources */,
+				37FB1C691BE4C596004ECE2E /* HomeWorkHistoryCell.m in Sources */,
 				37FD6DEC1BAEE01C00C83AB4 /* UUMessageContentButton.m in Sources */,
 				3793FABD1B7CFFF000501F77 /* MLPlayVoiceButton.m in Sources */,
 				3793FA3B1B7CFFF000501F77 /* REInlinePickerItem.m in Sources */,

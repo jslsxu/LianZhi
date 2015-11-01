@@ -12,10 +12,10 @@
 @protocol HomeWorkItemCellDelegate <NSObject>
 
 - (void)homeWorkCellDidDelete:(HomeWorkItemCell *)cell;
-
+- (void)homeWorkCellDidShare:(HomeWorkItemCell *)cell;
 @end
 
-@interface HomeWorkItemCell : UITableViewCell
+@interface HomeWorkItemCell : TNTableViewCell
 {
     UILabel*        _contentLabel;
     UIImageView*    _photoView;
