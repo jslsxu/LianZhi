@@ -385,6 +385,7 @@
 		37FB1C631BE4C368004ECE2E /* HomeWorkHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C621BE4C368004ECE2E /* HomeWorkHistoryVC.m */; };
 		37FB1C661BE4C50D004ECE2E /* HomeWorkHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C651BE4C50D004ECE2E /* HomeWorkHistoryModel.m */; };
 		37FB1C691BE4C596004ECE2E /* HomeWorkHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C681BE4C596004ECE2E /* HomeWorkHistoryCell.m */; };
+		37FB1C6F1BE73A67004ECE2E /* AccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C6E1BE73A67004ECE2E /* AccountVC.m */; };
 		37FD6DE71BAEE01C00C83AB4 /* ChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */; };
 		37FD6DE81BAEE01C00C83AB4 /* JSMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDE1BAEE01C00C83AB4 /* JSMessagesViewController.m */; };
 		37FD6DE91BAEE01C00C83AB4 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DE01BAEE01C00C83AB4 /* MessageCell.m */; };
@@ -1151,6 +1152,8 @@
 		37FB1C651BE4C50D004ECE2E /* HomeWorkHistoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkHistoryModel.m; sourceTree = "<group>"; };
 		37FB1C671BE4C596004ECE2E /* HomeWorkHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkHistoryCell.h; sourceTree = "<group>"; };
 		37FB1C681BE4C596004ECE2E /* HomeWorkHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkHistoryCell.m; sourceTree = "<group>"; };
+		37FB1C6D1BE73A67004ECE2E /* AccountVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountVC.h; sourceTree = "<group>"; };
+		37FB1C6E1BE73A67004ECE2E /* AccountVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountVC.m; sourceTree = "<group>"; };
 		37FD6DDB1BAEE01C00C83AB4 /* ChatMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessageModel.h; sourceTree = "<group>"; };
 		37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageModel.m; sourceTree = "<group>"; };
 		37FD6DDD1BAEE01C00C83AB4 /* JSMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSMessagesViewController.h; sourceTree = "<group>"; };
@@ -1387,6 +1390,8 @@
 			children = (
 				3793F50E1B7B286700501F77 /* MineVC.h */,
 				3793F50F1B7B286700501F77 /* MineVC.m */,
+				37FB1C6D1BE73A67004ECE2E /* AccountVC.h */,
+				37FB1C6E1BE73A67004ECE2E /* AccountVC.m */,
 			);
 			path = MineVC;
 			sourceTree = "<group>";
@@ -3478,6 +3483,7 @@
 				37B485051A65853C00C412D8 /* PhoneLoginVC.m in Sources */,
 				37C88F7F1A83D43D008E44DB /* ReportProblemVC.m in Sources */,
 				3793FA761B7CFFF000501F77 /* ALAssetsGroup+isEqual.m in Sources */,
+				37FB1C6F1BE73A67004ECE2E /* AccountVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,6 +12,7 @@
 #import "RelatedInfoVC.h"
 #import "PersonalSettingVC.h"
 #import "AboutVC.h"
+#import "AccountVC.h"
 #define kUserInfoCellHeight                     75
 
 @implementation UserInfoCell
@@ -74,8 +75,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        self.titleArray = @[@[@"我的学校",@"系统设置"],@[@"关于连枝",@"联系客服"]];
-        self.imageArray = @[@[@"IconMySchool",@"IconSetting"],@[@"IconAbout",@"IconContact"]];
+        self.titleArray = @[@[@"连枝账户",@"我的学校",@"系统设置"],@[@"关于连枝",@"联系客服"]];
+        self.imageArray = @[@[@"IconAccount",@"IconMySchool",@"IconSetting"],@[@"IconAbout",@"IconContact"]];
     }
     return self;
 }
@@ -104,14 +105,18 @@
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 1 + self.titleArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(section == 0)
         return 1;
-    return 2;
+    else
+    {
+        NSArray *titleArray = self.titleArray[section];
+        return titleArray.count;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -182,10 +187,15 @@
     {
         if(row == 0)
         {
+            AccountVC *accountVC = [[AccountVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:accountVC animated:YES];
+        }
+        else if(row == 1)
+        {
             RelatedInfoVC *relatedInfoVC = [[RelatedInfoVC alloc] init];
             [CurrentROOTNavigationVC pushViewController:relatedInfoVC animated:YES];
         }
-        else if(row == 1)
+        else if(row == 2)
         {
             PersonalSettingVC *settingsVC = [[PersonalSettingVC alloc] init];
             [CurrentROOTNavigationVC pushViewController:settingsVC animated:YES];
