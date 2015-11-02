@@ -94,6 +94,42 @@ static NSArray *tabDatas = nil;
             hasNew = YES;
     }
     [_switchButton setHasNew:hasNew];
+    
+    LZTabBarButton *discoveryButon = _tabbarButtons[2];
+    DiscoveryVC *discoveryVC = [self.viewControllers objectAtIndex:2];
+    [discoveryButon setBadgeValue:discoveryVC.hasNew ? @"" : nil];
+    
+    LZTabBarButton *appTabButton = _tabbarButtons[1];
+    //新动态
+    NSArray *newCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+    NSInteger commentNum = 0;
+    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
+    {
+        for (TimelineCommentItem *commentItem in newCommentArray)
+        {
+            if([commentItem.classID isEqualToString:classInfo.classID] && commentItem.alertInfo.num > 0)
+                commentNum += commentItem.alertInfo.num;
+        }
+    }
+    if(commentNum > 0)
+        [appTabButton setBadgeValue:kStringFromValue(commentNum)];
+    else
+    {
+        //新日志
+        NSArray *newFeedArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
+        NSInteger num = 0;
+        for (ClassFeedNotice *noticeItem in newFeedArray)
+        {
+            if([noticeItem.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID])
+            {
+                num += noticeItem.num;
+            }
+        }
+        if(num > 0)
+            [appTabButton setBadgeValue:@""];
+        else
+            [appTabButton setBadgeValue:nil];
+    }
 }
 
 - (void)onNewMsgNumChanged

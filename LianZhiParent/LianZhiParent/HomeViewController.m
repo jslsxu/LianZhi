@@ -77,6 +77,8 @@ static NSArray *tabDatas = nil;
         [classTabButton setBadgeValue:kStringFromValue(classZoneNum)];
     else
     {
+        
+        
         ClassInfo *classInfo = self.classZoneVC.classInfo;
         if(classInfo == nil)
         {
@@ -85,8 +87,16 @@ static NSArray *tabDatas = nil;
         for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.feedClassesNew)
         {
             if([notice.classID isEqualToString:classInfo.classID])
-                classZoneNum = notice.num;
+                classZoneNum += notice.num;
         }
+        
+        //成长记录
+        for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.classRecordArray)
+        {
+            if([notice.classID isEqualToString:classInfo.classID])
+                classZoneNum += notice.num;
+        }
+        
         if(classZoneNum > 0)
             [classTabButton setBadgeValue:@""];
         else
@@ -106,6 +116,10 @@ static NSArray *tabDatas = nil;
         }
     }
     [treeTabButton setBadgeValue:treeAlertNum > 0 ? kStringFromValue(treeAlertNum) : nil];
+    
+    LZTabBarButton *discoveryButton = _tabbarButtons[4];
+    DiscoveryVC *discoveryVC = self.viewControllers[4];
+    [discoveryButton setBadgeValue:discoveryVC.hasNew ? @"" : nil];
 }
 
 - (void)onNewMsgNumChanged

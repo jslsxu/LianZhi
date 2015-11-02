@@ -36,6 +36,9 @@
         [_coverButton setFrame:self.bounds];
         [_coverButton setTitleColor:[UIColor colorWithHexString:@"2c2c2c"] forState:UIControlStateNormal];
         [self addSubview:_coverButton];
+        
+        _indicator = [[NumIndicator alloc] initWithFrame:CGRectMake(0, 0, 8, 8)];
+        [self addSubview:_indicator];
     }
     return self;
 }
@@ -47,6 +50,13 @@
     [_coverButton setTitle:_appItem.title forState:UIControlStateNormal];
 }
 
+- (void)setBadge:(NSString *)badge
+{
+    _badge = badge;
+    [_indicator setOrigin:CGPointMake(_coverButton.imageView.right, _coverButton.imageView.y)];
+    [_indicator setHidden:!_badge];
+    [_indicator setIndicator:_badge];
+}
 @end
 
 @interface ApplicationBoxVC ()
@@ -59,6 +69,10 @@
 
 @implementation ApplicationBoxVC
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)viewDidLoad
 {
@@ -101,6 +115,13 @@
     [_collectionView setDataSource:self];
     [_collectionView registerClass:[ApplicationItemCell class] forCellWithReuseIdentifier:@"ApplicationItemCell"];
     [self.view addSubview:_collectionView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
+}
+
+- (void)onStatusChanged
+{
+    [_collectionView reloadData];
 }
 
 #pragma mark - UICollectionView
@@ -112,7 +133,43 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     ApplicationItemCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ApplicationItemCell" forIndexPath:indexPath];
-    [cell setAppItem:self.appItems[indexPath.row]];
+    ApplicationItem *item = self.appItems[indexPath.row];
+    [cell setAppItem:item];
+    if([item.title isEqualToString:@"班博客"])
+    {
+        //新动态
+        NSArray *newCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+        NSInteger commentNum = 0;
+        for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
+        {
+            for (TimelineCommentItem *commentItem in newCommentArray)
+            {
+                if([commentItem.classID isEqualToString:classInfo.classID] && commentItem.alertInfo.num > 0)
+                    commentNum += commentItem.alertInfo.num;
+            }
+        }
+        if(commentNum > 0)
+            [cell setBadge:kStringFromValue(commentNum)];
+        else
+        {
+            //新日志
+            NSArray *newFeedArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
+            NSInteger num = 0;
+            for (ClassFeedNotice *noticeItem in newFeedArray)
+            {
+                if([noticeItem.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID])
+                {
+                    num += noticeItem.num;
+                }
+            }
+            if(num > 0)
+                [cell setBadge:@""];
+            else
+                [cell setBadge:nil];
+        }
+    }
+    else
+        [cell setBadge:nil];
     return cell;
 }
 

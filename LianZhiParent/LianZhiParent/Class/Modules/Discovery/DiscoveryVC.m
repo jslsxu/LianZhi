@@ -39,6 +39,11 @@
 
 @implementation DiscoveryVC
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -59,6 +64,22 @@
     [_tableView setDataSource:self];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
     [self.view addSubview:_tableView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
+}
+
+- (void)onStatusChanged
+{
+    
+}
+
+- (BOOL)hasNew
+{
+    NSString *guideCellKey = @"guideCellKey";
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL hasNewGuide = [userDefaults boolForKey:guideCellKey];
+    BOOL hasNewMsg = [UserCenter sharedInstance].statusManager.found || [UserCenter sharedInstance].statusManager.faq || !hasNewGuide;
+    return hasNewMsg;
 }
 
 #pragma mark - UITableViewDelegate
@@ -100,22 +121,33 @@
     NSInteger row = indexPath.row;
     [cell.imageView setImage:[UIImage imageNamed:self.imageArray[section][row]]];
     [cell.textLabel setText:self.titleArray[section][row]];
-    if(section == 1 && row == 1 )
+    BOOL redDotHidden = YES;
+    if(section == 0)
     {
-        NSString *guideCellKey = @"guideCellKey";
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        BOOL guideCellNew = [userDefaults boolForKey:guideCellKey];
-        if(!guideCellNew)
+        redDotHidden = ![UserCenter sharedInstance].statusManager.found;
+    }
+    else if(section == 1)
+    {
+        if(row == 0)
         {
-            [cell.redDot setHidden:NO];
+            redDotHidden = ![UserCenter sharedInstance].statusManager.faq;
+        }
+        else
+        {
+            NSString *guideCellKey = @"guideCellKey";
+            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            redDotHidden = [userDefaults boolForKey:guideCellKey];
         }
     }
+     [cell.redDot setHidden:redDotHidden];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    DiscoveryCell *cell = (DiscoveryCell *)[tableView cellForRowAtIndexPath:indexPath];
+    [cell.redDot setHidden:YES];
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
     if(indexPath.section == 0)
@@ -123,6 +155,7 @@
         InterestVC *interestVC = [[InterestVC alloc] init];
         [interestVC setTitle:self.titleArray[section][row]];
         [CurrentROOTNavigationVC pushViewController:interestVC animated:YES];
+        [self setRead:1];
     }
     else
     {
@@ -132,6 +165,7 @@
             [webVC setTitle:self.titleArray[section][row]];
             [webVC setUrl:[UserCenter sharedInstance].userData.config.faqUrl];
             [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
+            [self setRead:2];
         }
         else
         {
@@ -140,10 +174,22 @@
             [userDefaults setBool:YES forKey:guideCellKey];
             [userDefaults synchronize];
             [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kStatusChangedNotification object:nil];
             OperationGuideVC *operationGuideVC = [[OperationGuideVC alloc] init];
             [CurrentROOTNavigationVC pushViewController:operationGuideVC animated:YES];
         }
     }
+}
+
+- (void)setRead:(NSInteger)type
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:kStringFromValue(type) forKey:@"type"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"info/set_read" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

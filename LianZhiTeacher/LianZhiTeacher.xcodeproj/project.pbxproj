@@ -376,6 +376,7 @@
 		37F206F71BDCB5C9006466F4 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206F21BDCB5C9006466F4 /* FMResultSet.m */; };
 		37F2070F1BDE015D006466F4 /* SurroundingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F2070E1BDE015D006466F4 /* SurroundingVC.m */; };
 		37F207161BE0BBFF006466F4 /* UITouchScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207151BE0BBFF006466F4 /* UITouchScrollView.m */; };
+		37FB1C6C1BE6FE24004ECE2E /* NotificationGroupMemberVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C6B1BE6FE24004ECE2E /* NotificationGroupMemberVC.m */; };
 		37FD6DE71BAEE01C00C83AB4 /* ChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */; };
 		37FD6DE81BAEE01C00C83AB4 /* JSMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDE1BAEE01C00C83AB4 /* JSMessagesViewController.m */; };
 		37FD6DE91BAEE01C00C83AB4 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DE01BAEE01C00C83AB4 /* MessageCell.m */; };
@@ -1124,6 +1125,8 @@
 		37F2070E1BDE015D006466F4 /* SurroundingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurroundingVC.m; sourceTree = "<group>"; };
 		37F207141BE0BBFF006466F4 /* UITouchScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITouchScrollView.h; sourceTree = "<group>"; };
 		37F207151BE0BBFF006466F4 /* UITouchScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITouchScrollView.m; sourceTree = "<group>"; };
+		37FB1C6A1BE6FE24004ECE2E /* NotificationGroupMemberVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationGroupMemberVC.h; sourceTree = "<group>"; };
+		37FB1C6B1BE6FE24004ECE2E /* NotificationGroupMemberVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationGroupMemberVC.m; sourceTree = "<group>"; };
 		37FD6DDB1BAEE01C00C83AB4 /* ChatMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessageModel.h; sourceTree = "<group>"; };
 		37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageModel.m; sourceTree = "<group>"; };
 		37FD6DDD1BAEE01C00C83AB4 /* JSMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSMessagesViewController.h; sourceTree = "<group>"; };
@@ -2235,6 +2238,8 @@
 				3705FF8A1BA1954400F0C6F6 /* NotificationTargetSelectVC.m */,
 				3705FF8F1BA2A1F800F0C6F6 /* NotificationClassStudentsVC.h */,
 				3705FF901BA2A1F800F0C6F6 /* NotificationClassStudentsVC.m */,
+				37FB1C6A1BE6FE24004ECE2E /* NotificationGroupMemberVC.h */,
+				37FB1C6B1BE6FE24004ECE2E /* NotificationGroupMemberVC.m */,
 				372774E21A5D94A900464461 /* GrowthTimeline */,
 			);
 			path = OperationVC;
@@ -3140,6 +3145,7 @@
 				3728A6AB1B98B22700310457 /* ResponseModel.m in Sources */,
 				3793FA891B7CFFF000501F77 /* CameraMaskView.m in Sources */,
 				3793FA9C1B7CFFF000501F77 /* AudioItem.m in Sources */,
+				37FB1C6C1BE6FE24004ECE2E /* NotificationGroupMemberVC.m in Sources */,
 				37FD6DE91BAEE01C00C83AB4 /* MessageCell.m in Sources */,
 				3793FA871B7CFFF000501F77 /* UIActionSheet+Blocks.m in Sources */,
 				3793FAEB1B7CFFF000501F77 /* TNModelItem.m in Sources */,

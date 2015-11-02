@@ -8,7 +8,7 @@
 
 #import "NotificationTargetSelectVC.h"
 #import "NotificationClassStudentsVC.h"
-
+#import "NotificationGroupMemberVC.h"
 @implementation NotificationTargetCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -119,18 +119,24 @@
     _selectedClassArray = [NSMutableArray array];
     _selectedGroupArray = [NSMutableArray array];
     
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
-    [headerView setBackgroundColor:[UIColor colorWithHexString:@"0fabc1"]];
-    [self.view addSubview:headerView];
+    NSInteger spaceYStart = 0;
+    if(self.classArray.count > 0 && [UserCenter sharedInstance].curSchool.groups.count > 0)
+    {
+        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
+        [headerView setBackgroundColor:[UIColor colorWithHexString:@"0fabc1"]];
+        [self.view addSubview:headerView];
+        
+        _segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"发给家长",@"发给同事"]];
+        [_segmentControl setTintColor:[UIColor colorWithHexString:@"87de53"]];
+        [_segmentControl setFrame:CGRectMake((headerView.width - 160) / 2, (headerView.height - 30) / 2, 160, 30)];
+        [_segmentControl addTarget:self action:@selector(onSegmentChanged) forControlEvents:UIControlEventValueChanged];
+        [headerView addSubview:_segmentControl];
+        [_segmentControl setSelectedSegmentIndex:0];
+        
+        spaceYStart = headerView.height;
+    }
     
-    _segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"发给家长",@"发给同事"]];
-    [_segmentControl setTintColor:[UIColor colorWithHexString:@"87de53"]];
-    [_segmentControl setFrame:CGRectMake((headerView.width - 160) / 2, (headerView.height - 30) / 2, 160, 30)];
-    [_segmentControl addTarget:self action:@selector(onSegmentChanged) forControlEvents:UIControlEventValueChanged];
-    [headerView addSubview:_segmentControl];
-    [_segmentControl setSelectedSegmentIndex:0];
-    
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, headerView.bottom, self.view.width, self.view.height - headerView.bottom - 64) style:UITableViewStyleGrouped];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, spaceYStart, self.view.width, self.view.height - spaceYStart - 64) style:UITableViewStyleGrouped];
     [_tableView setBackgroundColor:[UIColor whiteColor]];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
@@ -279,7 +285,7 @@
     }
     [_tableView reloadData];
 }
-//
+
 //- (void)onGroupCellClicked:(UIButton *)button
 //{
 //    NotificationTargetCell *cell = (NotificationTargetCell *)button.superview;
@@ -421,12 +427,13 @@
     }
     else
     {
-//        TeacherGroup *teachergroup = [UserCenter sharedInstance].curSchool.groups[indexPath.row];
-//        if([_selectedGroupArray containsObject:teachergroup])
-//            [_selectedMateArray removeObject:teachergroup];
-//        else
-//            [_selectedMateArray addObject:teachergroup];
-//        [_tableView reloadData];
+        TeacherGroup *teachergroup = [UserCenter sharedInstance].curSchool.groups[indexPath.row];
+        NotificationGroupMemberVC *groupMemberVC = [[NotificationGroupMemberVC alloc] init];
+        [groupMemberVC setTeacherGorup:teachergroup];
+        [groupMemberVC setImageArray:self.imageArray];
+        [groupMemberVC setAudioData:self.audioData];
+        [groupMemberVC setParams:self.params];
+        [self.navigationController pushViewController:groupMemberVC animated:YES];
     }
 }
 

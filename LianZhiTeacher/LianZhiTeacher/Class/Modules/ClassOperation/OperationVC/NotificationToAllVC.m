@@ -347,7 +347,7 @@ NSString * kNotificationPublishNotification = @"NotificationPublishNotification"
                 [formData appendPartWithFileData:UIImageJPEGRepresentation(notificationItem.imageArray[i], 0.8) name:filename fileName:filename mimeType:@"image/jpeg"];
             }
         } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-            [notificationItem parseData:responseObject];
+            [notificationItem parseData:[responseObject getDataWrapperForKey:@"info"]];
             [wself.tableView reloadData];
         } fail:^(NSString *errMsg) {
             [ProgressHUD showHintText:errMsg];

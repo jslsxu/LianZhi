@@ -67,6 +67,7 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
 {
     self.changed = [dataWrapper getIntegerForKey:@"changed"];
     self.found = [dataWrapper getBoolForKey:@"found"];
+    self.faq = [dataWrapper getBoolForKey:@"faq"];
     TNDataWrapper *newFeedWrapper = [dataWrapper getDataWrapperForKey:@"new_class_feed"];
     if(newFeedWrapper.count == 0)
         self.feedClassesNew = nil;
@@ -74,8 +75,10 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
     {
         NSMutableArray *newFeedsArray = [[NSMutableArray alloc] initWithCapacity:0];
         for (NSInteger i = 0; i < newFeedWrapper.count; i++) {
-            NSString *classID = [newFeedWrapper getStringForIndex:i];
-            [newFeedsArray addObject:classID];
+            TNDataWrapper *feedItemWrapper = [newFeedWrapper getDataWrapperForIndex:i];
+            ClassFeedNotice *feedNotice = [[ClassFeedNotice alloc] init];
+            [feedNotice parseData:feedItemWrapper];
+            [newFeedsArray addObject:feedNotice];
         }
         self.feedClassesNew = newFeedsArray;
     }

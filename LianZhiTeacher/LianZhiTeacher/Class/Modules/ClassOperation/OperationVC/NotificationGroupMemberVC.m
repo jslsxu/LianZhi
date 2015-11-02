@@ -1,106 +1,29 @@
 //
-//  NotificationClassStudentsVC.m
+//  NotificationGroupMemberVC.m
 //  LianZhiTeacher
 //
-//  Created by jslsxu on 15/9/11.
+//  Created by jslsxu on 15/11/2.
 //  Copyright (c) 2015年 jslsxu. All rights reserved.
 //
 
-#import "NotificationClassStudentsVC.h"
+#import "NotificationGroupMemberVC.h"
 #import "ContactModel.h"
-
-@implementation NotificationStudentCell
-
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if(self)
-    {
-        [self setSelectionStyle:UITableViewCellSelectionStyleNone];
-        
-        _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(10, (self.height - 32) / 2, 32, 32)];
-        [self addSubview:_avatarView];
-        
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_avatarView.right + 10, 0, 0, 0)];
-        [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-        [_nameLabel setFont:[UIFont systemFontOfSize:14]];
-        [self addSubview:_nameLabel];
-        
-        _infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(_avatarView.right + 10, 0, 0, 0)];
-        [_infoLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
-        [_infoLabel setFont:[UIFont systemFontOfSize:10]];
-        [self addSubview:_infoLabel];
-        
-        _checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_checkButton setUserInteractionEnabled:NO];
-        [_checkButton setFrame:CGRectMake(self.width - 20 - 20, (self.height - 20) / 2, 20, 20)];
-        [_checkButton setImage:[UIImage imageNamed:@"ControlDefault"] forState:UIControlStateNormal];
-        [_checkButton setImage:[UIImage imageNamed:@"ControlSelectAll"] forState:UIControlStateSelected];
-        [self addSubview:_checkButton];
-        
-        UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
-        [sepLine setBackgroundColor:kSepLineColor];
-        [self addSubview:sepLine];
-        
-    }
-    return self;
-}
-
-- (void)onReloadData:(TNModelItem *)modelItem
-{
-    if([modelItem isKindOfClass:[StudentInfo class]])
-    {
-        StudentInfo *studentInfo = (StudentInfo *)modelItem;
-        [_avatarView setImageWithUrl:[NSURL URLWithString:studentInfo.avatar]];
-        [_nameLabel setText:studentInfo.name];
-        [_nameLabel sizeToFit];
-        [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, (self.height - _nameLabel.height) / 2)];
-        [_infoLabel setText:[NSString stringWithFormat:@"(%ld位家长)",(long)studentInfo.family.count]];
-        [_infoLabel sizeToFit];
-        [_infoLabel setOrigin:CGPointMake(_nameLabel.right + 10, (self.height - _infoLabel.height) / 2)];
-    }
-    else
-    {
-        TeacherInfo *teacherInfo = (TeacherInfo *)modelItem;
-        [_avatarView setImageWithUrl:[NSURL URLWithString:teacherInfo.avatar]];
-        [_nameLabel setText:teacherInfo.name];
-        [_nameLabel sizeToFit];
-        [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, (self.height - _nameLabel.height) / 2)];
-    }
-}
-
-- (void)setChecked:(BOOL)checked
-{
-    _checked = checked;
-    [_checkButton setSelected:_checked];
-}
+@interface NotificationGroupMemberVC ()
 
 @end
 
-@interface NotificationClassStudentsVC ()
-
-@end
-
-@implementation NotificationClassStudentsVC
+@implementation NotificationGroupMemberVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.seletedArray = [NSMutableArray array];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(onSend)];
-
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStylePlain];
-    [_tableView setDelegate:self];
-    [_tableView setDataSource:self];
-    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    [self.view addSubview:_tableView];
-    
+    // Do any additional setup after loading the view.
 }
 
-- (void)setClassInfo:(ClassInfo *)classInfo
+- (void)setTeacherGorup:(TeacherGroup *)teacherGorup
 {
-    _classInfo = classInfo;
+    _teacherGorup = teacherGorup;
     NSMutableArray *studentArray = [[NSMutableArray alloc] initWithCapacity:0];
-    NSArray *students = classInfo.students;
+    NSArray *students = _teacherGorup.teachers;
     NSMutableDictionary *studentDic = [[NSMutableDictionary alloc] initWithCapacity:0];
     for (StudentInfo *student in students)
     {
@@ -127,16 +50,17 @@
     
     self.students = studentArray;
 }
-- (BOOL)selectedForStudent:(StudentInfo *)studentInfo
+- (BOOL)selectedForStudent:(TeacherInfo *)teacherInfo
 {
     BOOL selected = NO;
     for (NSString *studentId in self.seletedArray)
     {
-        if([studentId isEqualToString:studentInfo.uid])
+        if([studentId isEqualToString:teacherInfo.uid])
             selected = YES;
     }
     return selected;
 }
+
 
 #pragma mark - UItableVIewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -179,21 +103,21 @@
         cell = [[NotificationStudentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
     ContactGroup *group = self.students[indexPath.section];
-    StudentInfo *studentInfo = group.contacts[indexPath.row];
-    [cell onReloadData:studentInfo];
-    [cell setChecked:[self selectedForStudent:studentInfo]];
+    TeacherInfo *teacherInfo = group.contacts[indexPath.row];
+    [cell onReloadData:teacherInfo];
+    [cell setChecked:[self selectedForStudent:teacherInfo]];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ContactGroup *group = self.students[indexPath.section];
-    StudentInfo *studentInfo = group.contacts[indexPath.row];
-    if([self selectedForStudent:studentInfo])
-        [self.seletedArray removeObject:studentInfo.uid];
+    TeacherInfo *teacherInfo = group.contacts[indexPath.row];
+    if([self selectedForStudent:teacherInfo])
+        [self.seletedArray removeObject:teacherInfo.uid];
     else
     {
-        [self.seletedArray addObject:studentInfo.uid];
+        [self.seletedArray addObject:teacherInfo.uid];
     }
     [_tableView reloadData];
 }
@@ -206,7 +130,7 @@
         return;
     }
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.params];
-    [params setValue:[NSString stringWithJSONObject:@[@{@"classid" : self.classInfo.classID,@"students":self.seletedArray}]] forKey:@"classes"];
+    [params setValue:[NSString stringWithJSONObject:@[@{@"id" : self.teacherGorup.groupID,@"teachers":self.seletedArray}]] forKey:@"groups"];
     if(self.imageArray.count > 0)
     {
         NSMutableString *picSeq = [[NSMutableString alloc] init];
@@ -249,8 +173,9 @@
             [ProgressHUD showHintText:errMsg];
         }];
     }
-
+    
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

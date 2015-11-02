@@ -31,7 +31,7 @@
         [_albumButton setFrame:CGRectMake(self.width - buttonWidth, self.height - 40 - buttonWidth, buttonWidth, buttonWidth)];
         [self addSubview:_albumButton];
         
-        _appButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _appButton = [[LZTabBarButton alloc] init];
         [_appButton addTarget:self action:@selector(onAppButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [_appButton setImage:[UIImage imageNamed:@"ZoneApp"] forState:UIControlStateNormal];
         [_appButton setFrame:CGRectMake(self.width - buttonWidth, _albumButton.top - buttonWidth, buttonWidth, buttonWidth)];
@@ -194,6 +194,20 @@
     }
     [_headerView setCommentItem:curAlert];
     [_tableView setTableHeaderView:_headerView];
+    
+    NSArray *classRecordArray = [UserCenter sharedInstance].statusManager.classRecordArray;
+    ClassFeedNotice *notice = nil;
+    for (ClassFeedNotice *noticeItem in classRecordArray)
+    {
+        if([notice.classID isEqualToString:self.classInfo.classID])
+        {
+            notice = noticeItem;
+        }
+    }
+    if(notice && notice.num > 0)
+        [_headerView.appButton setBadgeValue:@""];
+    else
+        [_headerView.appButton setBadgeValue:nil];
 }
 
 - (void)onCurChildChanged
