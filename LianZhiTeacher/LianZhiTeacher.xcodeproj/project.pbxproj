@@ -385,7 +385,9 @@
 		37FB1C631BE4C368004ECE2E /* HomeWorkHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C621BE4C368004ECE2E /* HomeWorkHistoryVC.m */; };
 		37FB1C661BE4C50D004ECE2E /* HomeWorkHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C651BE4C50D004ECE2E /* HomeWorkHistoryModel.m */; };
 		37FB1C691BE4C596004ECE2E /* HomeWorkHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C681BE4C596004ECE2E /* HomeWorkHistoryCell.m */; };
-		37FB1C6F1BE73A67004ECE2E /* AccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C6E1BE73A67004ECE2E /* AccountVC.m */; };
+		37FB1C731BE74BD5004ECE2E /* AccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C721BE74BD5004ECE2E /* AccountVC.m */; };
+		37FB1C761BE74BF6004ECE2E /* AwardVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C751BE74BF6004ECE2E /* AwardVC.m */; };
+		37FB1C791BE74F15004ECE2E /* MyGiftVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C781BE74F15004ECE2E /* MyGiftVC.m */; };
 		37FD6DE71BAEE01C00C83AB4 /* ChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */; };
 		37FD6DE81BAEE01C00C83AB4 /* JSMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDE1BAEE01C00C83AB4 /* JSMessagesViewController.m */; };
 		37FD6DE91BAEE01C00C83AB4 /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DE01BAEE01C00C83AB4 /* MessageCell.m */; };
@@ -1152,8 +1154,12 @@
 		37FB1C651BE4C50D004ECE2E /* HomeWorkHistoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkHistoryModel.m; sourceTree = "<group>"; };
 		37FB1C671BE4C596004ECE2E /* HomeWorkHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkHistoryCell.h; sourceTree = "<group>"; };
 		37FB1C681BE4C596004ECE2E /* HomeWorkHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkHistoryCell.m; sourceTree = "<group>"; };
-		37FB1C6D1BE73A67004ECE2E /* AccountVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountVC.h; sourceTree = "<group>"; };
-		37FB1C6E1BE73A67004ECE2E /* AccountVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountVC.m; sourceTree = "<group>"; };
+		37FB1C711BE74BD5004ECE2E /* AccountVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountVC.h; sourceTree = "<group>"; };
+		37FB1C721BE74BD5004ECE2E /* AccountVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountVC.m; sourceTree = "<group>"; };
+		37FB1C741BE74BF6004ECE2E /* AwardVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AwardVC.h; sourceTree = "<group>"; };
+		37FB1C751BE74BF6004ECE2E /* AwardVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwardVC.m; sourceTree = "<group>"; };
+		37FB1C771BE74F15004ECE2E /* MyGiftVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyGiftVC.h; sourceTree = "<group>"; };
+		37FB1C781BE74F15004ECE2E /* MyGiftVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyGiftVC.m; sourceTree = "<group>"; };
 		37FD6DDB1BAEE01C00C83AB4 /* ChatMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessageModel.h; sourceTree = "<group>"; };
 		37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageModel.m; sourceTree = "<group>"; };
 		37FD6DDD1BAEE01C00C83AB4 /* JSMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSMessagesViewController.h; sourceTree = "<group>"; };
@@ -1390,8 +1396,7 @@
 			children = (
 				3793F50E1B7B286700501F77 /* MineVC.h */,
 				3793F50F1B7B286700501F77 /* MineVC.m */,
-				37FB1C6D1BE73A67004ECE2E /* AccountVC.h */,
-				37FB1C6E1BE73A67004ECE2E /* AccountVC.m */,
+				37FB1C701BE74BD5004ECE2E /* Account */,
 			);
 			path = MineVC;
 			sourceTree = "<group>";
@@ -2930,6 +2935,17 @@
 			path = HomeWorkHistory;
 			sourceTree = "<group>";
 		};
+		37FB1C701BE74BD5004ECE2E /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				37FB1C711BE74BD5004ECE2E /* AccountVC.h */,
+				37FB1C721BE74BD5004ECE2E /* AccountVC.m */,
+				37FB1C741BE74BF6004ECE2E /* AwardVC.h */,
+				37FB1C751BE74BF6004ECE2E /* AwardVC.m */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
 		37FD6DDA1BAEE01C00C83AB4 /* MessageTableViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2947,6 +2963,8 @@
 				37FD6DE41BAEE01C00C83AB4 /* UUImageAvatarBrowser.m */,
 				37FD6DE51BAEE01C00C83AB4 /* UUMessageContentButton.h */,
 				37FD6DE61BAEE01C00C83AB4 /* UUMessageContentButton.m */,
+				37FB1C771BE74F15004ECE2E /* MyGiftVC.h */,
+				37FB1C781BE74F15004ECE2E /* MyGiftVC.m */,
 			);
 			path = MessageTableViewController;
 			sourceTree = "<group>";
@@ -3151,6 +3169,7 @@
 				37DEE4C11A57C19C009A8771 /* MessageVC.m in Sources */,
 				37DEE4FE1A57C2C0009A8771 /* ContactListVC.m in Sources */,
 				3793FA791B7CFFF000501F77 /* CTAssetsGroupViewCell.m in Sources */,
+				37FB1C791BE74F15004ECE2E /* MyGiftVC.m in Sources */,
 				3793FA281B7CFFF000501F77 /* MBProgressHUD.m in Sources */,
 				3793FAD41B7CFFF000501F77 /* UIButton+WebCache.m in Sources */,
 				37D6EEED1BCBA96D000994A2 /* HomeWorkVC.m in Sources */,
@@ -3197,6 +3216,7 @@
 				37FD6E351BB69AFE00C83AB4 /* RegisterVC.m in Sources */,
 				3793FA751B7CFFF000501F77 /* ALAsset+isEqual.m in Sources */,
 				3793FAD21B7CFFF000501F77 /* SDWebImageManager.m in Sources */,
+				37FB1C761BE74BF6004ECE2E /* AwardVC.m in Sources */,
 				37FD6DEA1BAEE01C00C83AB4 /* MessageItem.m in Sources */,
 				3793FAE51B7CFFF000501F77 /* UIScrollView+MJRefresh.m in Sources */,
 				373528771AD6557800C0F326 /* BaseInfoModifyVC.m in Sources */,
@@ -3483,7 +3503,7 @@
 				37B485051A65853C00C412D8 /* PhoneLoginVC.m in Sources */,
 				37C88F7F1A83D43D008E44DB /* ReportProblemVC.m in Sources */,
 				3793FA761B7CFFF000501F77 /* ALAssetsGroup+isEqual.m in Sources */,
-				37FB1C6F1BE73A67004ECE2E /* AccountVC.m in Sources */,
+				37FB1C731BE74BD5004ECE2E /* AccountVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

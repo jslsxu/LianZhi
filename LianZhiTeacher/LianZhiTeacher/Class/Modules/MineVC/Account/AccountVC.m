@@ -7,10 +7,12 @@
 //
 
 #import "AccountVC.h"
+#import "AwardVC.h"
 
 @interface AccountVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong)NSArray *titleArray;
 @property (nonatomic, strong)NSArray *imageArray;
+@property (nonatomic, strong)NSArray *actionVCArray;
 @end
 
 @implementation AccountVC
@@ -20,6 +22,7 @@
     self.title = @"连枝账户";
     self.titleArray = @[@"奖励任务",@"派送抽奖",@"兑换活动"];
     self.imageArray = @[@"",@"",@""];
+    self.actionVCArray = @[@"",@"",@""];
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
@@ -29,6 +32,20 @@
     [_tableView setTableHeaderView:headerView];
 }
 
+- (void)reloadData
+{
+    UIView* headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 160)];
+    [self setupHeaderView:headerView];
+    [_tableView setTableHeaderView:headerView];
+    
+    
+    [_tableView reloadData];
+}
+
+- (void)setupHeaderView:(UIView *)viewParent
+{
+    
+}
 #pragma mark - UITableViewDelegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -45,10 +62,19 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
         [cell.textLabel setFont:[UIFont systemFontOfSize:14]];
         [cell.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }
     [cell.imageView setImage:[UIImage imageNamed:self.imageArray[indexPath.row]]];
     [cell.textLabel setText:self.titleArray[indexPath.row]];
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    TNBaseViewController *vc = [[NSClassFromString(self.actionVCArray[indexPath.row]) alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

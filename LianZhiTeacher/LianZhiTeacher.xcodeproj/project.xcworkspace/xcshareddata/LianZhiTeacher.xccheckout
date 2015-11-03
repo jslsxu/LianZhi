@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>F63C3C59-78A1-4CF9-90D2-124E5E77694B</string>
 	<key>IDESourceControlProjectName</key>
-	<string>LianZhiTeacher</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>6D852BA0ACEF52C067326419733E775644441EF0</key>
 		<string>https://github.com/jslsxu/LianZhi.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>LianZhiTeacher/LianZhiTeacher.xcodeproj</string>
+	<string>LianZhiTeacher/LianZhiTeacher.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>6D852BA0ACEF52C067326419733E775644441EF0</key>
