@@ -1,0 +1,32 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "6D852BA0ACEF52C067326419733E775644441EF0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "d527bfd2-f195-11dd-984d-ab748d24aa7e++1904" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "6D852BA0ACEF52C067326419733E775644441EF0" : 0,
+    "d527bfd2-f195-11dd-984d-ab748d24aa7e++1904" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "F63C3C59-78A1-4CF9-90D2-124E5E77694B",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "6D852BA0ACEF52C067326419733E775644441EF0" : "LianZhi\/",
+    "d527bfd2-f195-11dd-984d-ab748d24aa7e++1904" : "LianZhi\/LianZhiTeacher\/LianZhiTeacher\/Class\/BaseFoundation\/3rdPart\/minizip\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "LianZhiTeacher",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "LianZhiTeacher\/LianZhiTeacher.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jslsxu\/LianZhi.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6D852BA0ACEF52C067326419733E775644441EF0"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/ziparchive.googlecode.com\/svn",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "d527bfd2-f195-11dd-984d-ab748d24aa7e++1904"
+    }
+  ]
+}

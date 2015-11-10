@@ -210,7 +210,7 @@
                 [_selectedArray addObjectsFromArray:self.classInfo.students];
                 [_collectionView reloadData];
             }];
-            TNButtonItem *notSentItem = [TNButtonItem itemWithTitle:@"今日未发" action:^{
+            TNButtonItem *notSentItem = [TNButtonItem itemWithTitle:@"未发学生" action:^{
                 for (StudentInfo *student in self.classInfo.students)
                 {
                     if(![self isHasSend:student.uid])

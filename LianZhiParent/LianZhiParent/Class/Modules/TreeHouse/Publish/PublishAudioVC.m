@@ -78,20 +78,19 @@
     [_recordView setDelegate:self];
     [_scrollView addSubview:_recordView];
     
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(15, _recordView.bottom, self.view.width - 15 * 2, 60)];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(15, _recordView.bottom, self.view.width - 15 * 2, 100)];
+    [_textView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    [_textView.layer setCornerRadius:10];
+    [_textView.layer setMasksToBounds:YES];
     [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setDelegate:self];
-    [_textView setPlaceholder:@"\n给录音起个标题吧"];
+    [_textView setPlaceholder:[NSString stringWithFormat:@"快为%@记录下美好时光",[UserCenter sharedInstance].curChild.name]];
     [_textView setText:self.words];
-    [_textView setFont:[UIFont systemFontOfSize:16]];
+    [_textView setFont:[UIFont systemFontOfSize:14]];
     [_textView setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
     [_scrollView addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(15, _textView.bottom, _textView.width, 1)];
-    [sepLine setBackgroundColor:kCommonParentTintColor];
-    [_scrollView addSubview:sepLine];
-    
-    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(20, sepLine.bottom, self.view.width - 20 * 2, 40)];
+    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(20, _textView.bottom, self.view.width - 20 * 2, 40)];
     [_poiInfoView setParentVC:self];
     if(self.poiItem)
         [_poiInfoView setPoiItem:self.poiItem];

@@ -10,7 +10,6 @@
 #import "PoiInfoView.h"
 @interface PublishArticleVC : PublishBaseVC
 {
-    UIView*                 _bgView;
     UTPlaceholderTextView*  _textView;
     UILabel*                _numLabel;
 }

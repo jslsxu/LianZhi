@@ -10,7 +10,6 @@
 
 @interface TextMessageSendVC : MessageSendVC<UITextViewDelegate, AudioRecordViewDelegate>
 {
-    UIView*                 _bgView;
     UTPlaceholderTextView*  _textView;
     UILabel*                _numLabel;
 //    UIButton*               _checkButton;

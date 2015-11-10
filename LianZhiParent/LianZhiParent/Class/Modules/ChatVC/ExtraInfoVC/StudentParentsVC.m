@@ -66,7 +66,7 @@
 {
     _familyInfo = familyInfo;
     [_avatarView setImageWithUrl:[NSURL URLWithString:_familyInfo.avatar]];
-    [_avatarView setStatus:_familyInfo.actived ? nil : @"未开通" ];
+    [_avatarView setStatus:_familyInfo.actived ? nil : @"未下载" ];
     
     [_nameLabel setText:_familyInfo.name];
 }

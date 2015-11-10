@@ -9,7 +9,7 @@
 #import "RegisterVC.h"
 #import "RegisterAuthVC.h"
 #import "CityManager.h"
-@interface RegisterVC ()<ActionSelectViewDelegate>
+@interface RegisterVC ()<ActionSelectViewDelegate, UITextFieldDelegate>
 @property (nonatomic, strong)NSMutableArray *feildArray;
 @property (nonatomic, strong)CityManager *cityManager;
 @end
@@ -50,6 +50,7 @@
         [borderView addSubview:imageView];
         
         UITextField* textField = [[UITextField alloc] initWithFrame:CGRectMake(imageView.right + 8, 0, borderView.width - 10 - (imageView.right + 8), borderView.height)];
+        [textField setDelegate:self];
         [textField setReturnKeyType:UIReturnKeyDone];
         [textField setPlaceholder:placeholderArray[i]];
         [textField setFont:[UIFont systemFontOfSize:16]];
@@ -89,6 +90,7 @@
 
 - (void)onAreaSelect
 {
+    [self.view endEditing:YES];
     ActionSelectView *selectView = [[ActionSelectView alloc] init];
     [selectView setDelegate:self];
     [selectView show];
@@ -126,6 +128,16 @@
 - (void)contact
 {
     
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if([string isEqualToString:@"\n"])
+    {
+        [textField resignFirstResponder];
+        return NO;
+    }
+    return YES;
 }
 
 #pragma mark - ActionSelect

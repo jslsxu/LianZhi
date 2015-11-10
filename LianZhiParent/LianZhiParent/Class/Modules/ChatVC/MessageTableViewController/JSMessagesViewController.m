@@ -274,6 +274,7 @@ static NSString *topChatID = nil;
     }
     
     MessageItem *messageItem = [[MessageItem alloc] init];
+    [messageItem setParams:dic];
     [messageItem setMessageStatus:MessageStatusSending];
     [messageItem setIsTmp:YES];
     [messageItem setUserInfo:[UserCenter sharedInstance].userInfo];

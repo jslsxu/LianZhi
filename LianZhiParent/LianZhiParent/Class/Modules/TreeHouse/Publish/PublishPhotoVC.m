@@ -94,19 +94,18 @@
     
     [self setupImageView];
     
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, _bgView.bottom + 20, _bgView.width, 65)];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, _bgView.bottom + 20, _bgView.width, 100)];
+    [_textView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    [_textView.layer setCornerRadius:10];
+    [_textView.layer setMasksToBounds:YES];
     [_textView setReturnKeyType:UIReturnKeyDone];
-    [_textView setFont:[UIFont systemFontOfSize:16]];
+    [_textView setFont:[UIFont systemFontOfSize:14]];
     [_textView setDelegate:self];
-    [_textView setPlaceholder:@"\n我用连枝分享了这些照片，快来点击查看吧"];
+    [_textView setPlaceholder:[NSString stringWithFormat:@"快为%@记录下美好时光",[UserCenter sharedInstance].curChild.name]];
     [_textView setText:self.words];
     [_scrollView addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(kBorderMargin, _textView.bottom, _textView.width, 1)];
-    [sepLine setBackgroundColor:kCommonParentTintColor];
-    [_scrollView addSubview:sepLine];
-    
-    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(kBorderMargin, sepLine.bottom, _bgView.width, 40)];
+    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(kBorderMargin, _textView.bottom, _bgView.width, 40)];
     [_poiInfoView setParentVC:self];
     if(self.poiItem)
         [_poiInfoView setPoiItem:self.poiItem];

@@ -13,6 +13,7 @@
 #import "NotificationDetailVC.h"
 
 NSString * kNotificationPublishNotification = @"NotificationPublishNotification";
+NSString * kNotificationPublishSuccessNotification = @"NotificationPublishSuccessNotification";
 
 @implementation SentClassInfo
 
@@ -22,6 +23,18 @@ NSString * kNotificationPublishNotification = @"NotificationPublishNotification"
     self.sentNum = [dataWrapper getIntegerForKey:@"sent_num"];
     self.name = [dataWrapper getStringForKey:@"name"];
     self.totalNum = [dataWrapper getIntegerForKey:@"students_num"];
+    
+    TNDataWrapper *studentsWrapper =[dataWrapper getDataWrapperForKey:@"students"];
+    if(studentsWrapper.count > 0)
+    {
+        NSMutableArray *studentsArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < studentsWrapper.count; i ++)
+        {
+            NSString *studentID = [studentsWrapper getStringForIndex:i];
+            [studentsArray addObject:studentID];
+        }
+        self.sendStudents = studentsArray;
+    }
 }
 
 @end
@@ -34,6 +47,18 @@ NSString * kNotificationPublishNotification = @"NotificationPublishNotification"
     self.groupName = [dataWrapper getStringForKey:@"name"];
     self.sentNum = [dataWrapper getIntegerForKey:@"sent_num"];
     self.totalNum = [dataWrapper getIntegerForKey:@"students_num"];
+    
+    TNDataWrapper *teacherWrapper =[dataWrapper getDataWrapperForKey:@"teachers"];
+    if(teacherWrapper.count > 0)
+    {
+        NSMutableArray *teacherArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < teacherWrapper.count; i ++)
+        {
+            NSString *studentID = [teacherWrapper getStringForIndex:i];
+            [teacherArray addObject:studentID];
+        }
+        self.sendTeachers = teacherArray;
+    }
 }
 
 @end
@@ -273,6 +298,12 @@ NSString * kNotificationPublishNotification = @"NotificationPublishNotification"
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNetworkStatusChanged) name:kReachabilityChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNotification:) name:kNotificationPublishNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kNotificationPublishSuccessNotification object:nil];
+}
+
+- (void)refresh
+{
+    [self requestData:REQUEST_REFRESH];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType

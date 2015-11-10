@@ -46,8 +46,17 @@
     [self setupInputView:inputView];
     [self.view addSubview:inputView];
     
+    UIButton *activateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [activateButton setFrame:CGRectMake(20, inputView.bottom + 20, (self.view.width - 20 * 3) / 2 , 40)];
+    [activateButton addTarget:self action:@selector(onActivateButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [activateButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"fd8582"] size:CGSizeMake(20, 20) cornerRadius:5] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
+    [activateButton.titleLabel setFont:kButtonTextFont];
+    [activateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [activateButton setTitle:@"新用户激活" forState:UIControlStateNormal];
+    [self.view addSubview:activateButton];
+    
     UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [loginButton setFrame:CGRectMake(20, inputView.bottom + 20, inputView.width, 40)];
+    [loginButton setFrame:CGRectMake(activateButton.right + 20, inputView.bottom + 20, activateButton.width, 40)];
     [loginButton addTarget:self action:@selector(onLoginClicked) forControlEvents:UIControlEventTouchUpInside];
     [loginButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"9cfc5e"] size:CGSizeMake(20, 20) cornerRadius:5] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [loginButton setTitleColor:kCommonParentTintColor forState:UIControlStateNormal];
@@ -62,14 +71,6 @@
     [retriveButton setTitle:@"忘记密码?" forState:UIControlStateNormal];
     [retriveButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [self.view addSubview:retriveButton];
-    
-    UIButton *activateButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [activateButton setFrame:CGRectMake(self.view.width - 20 - 75, loginButton.bottom + 10, 75, 20)];
-    [activateButton addTarget:self action:@selector(onActivateButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [activateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [activateButton setTitle:@"新用户激活" forState:UIControlStateNormal];
-    [activateButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [self.view addSubview:activateButton];
     
     UILabel*    hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.height - 80, self.view.width, 80)];
     [hintLabel setFont:[UIFont systemFontOfSize:12]];

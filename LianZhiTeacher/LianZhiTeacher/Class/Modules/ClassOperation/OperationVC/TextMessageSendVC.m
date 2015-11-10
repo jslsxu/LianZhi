@@ -15,30 +15,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view setBackgroundColor:kCommonBackgroundColor];
     self.title = @"消息通知";
     
-    _bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 140)];
-    [_bgView setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:_bgView];
-    
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, 10, _bgView.width - 10 * 2, _bgView.height - 10 - 10 - 20)];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, 10, self.view.width - 10 * 2, 100)];
+    [_textView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    [_textView.layer setCornerRadius:10];
+    [_textView.layer setMasksToBounds:YES];
     [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setDelegate:self];
     [_textView setFont:[UIFont systemFontOfSize:14]];
     [_textView setPlaceholder:@"请输入您要发布的内容"];
-    [_bgView addSubview:_textView];
+    [self.view addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom + 10, _textView.width, 1)];
-    [sepLine setBackgroundColor:kCommonTeacherTintColor];
-    [_bgView addSubview:sepLine];
-    
-    _numLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, sepLine.bottom, sepLine.width, 20)];
+    _numLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, _textView.bottom, _textView.width, 20)];
     [_numLabel setFont:[UIFont systemFontOfSize:14]];
     [_numLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
     [_numLabel setTextAlignment:NSTextAlignmentRight];
     [_numLabel setText:kStringFromValue(kReportContentMaxNum)];
-    [_bgView addSubview:_numLabel];
+    [self.view addSubview:_numLabel];
     
     [_textView setText:self.words];
     [self textViewDidChange:_textView];
@@ -74,6 +68,17 @@
     [dic setValue:[_textView text] forKey:@"words"];
     return dic;
 }
+
+- (BOOL)validate
+{
+    if([_textView.text length] == 0)
+    {
+        [ProgressHUD showHintText:@"请输入您要发布的内容"];
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark - UITextViewDelegate
 - (void)textViewDidChange:(UITextView *)textView
 {

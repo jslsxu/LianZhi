@@ -25,7 +25,11 @@
         
         _sendFailImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SendFail"]];
         [_sendFailImageView setHidden:YES];
+        [_sendFailImageView setUserInteractionEnabled:YES];
         [self addSubview:_sendFailImageView];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resendMessage)];
+        [_sendFailImageView addGestureRecognizer:tapGesture];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.width - 120) / 2, 5, 120, 15)];
         [_timeLabel setTextAlignment:NSTextAlignmentCenter];
@@ -192,13 +196,17 @@
         [_contentButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"biaoqing%ld",(long)(index + 1)]] forState:UIControlStateNormal];
         [_contentButton setSize:CGSizeMake(kFaceWith, kFaceHeight)];
     }
-    else        //已撤销
+    else if(type == UUMessageTypeRevoked)      //已撤销
     {
         _contentButton.hidden = YES;
         _revokeMessageLabel.hidden = NO;
         [_revokeMessageLabel setText:@"你撤回了一条消息"];
         [_revokeMessageLabel sizeToFit];
         [_revokeMessageLabel setFrame:CGRectMake((self.width - _revokeMessageLabel.width - 10) / 2, _nameLabel.bottom, _revokeMessageLabel.width + 10, _revokeMessageLabel.height + 4)];
+    }
+    else
+    {
+        _contentButton.hidden = YES;
     }
     if(UUMessageFromMe == messageItem.from)
     {
@@ -245,7 +253,7 @@
     {
         if(messageItem.messageStatus == MessageStatusFailed)
         {
-            UIMenuItem *resendItem = [[UIMenuItem alloc] initWithTitle:@"重试" action:@selector(resendMessage)];
+            UIMenuItem *resendItem = [[UIMenuItem alloc] initWithTitle:@"重发" action:@selector(resendMessage)];
             [menuArray addObject:resendItem];
         }
     }

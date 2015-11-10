@@ -127,19 +127,18 @@
     
     [self setupImageView];
     
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, _bgView.bottom + 20, _bgView.width, 65)];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, _bgView.bottom + 20, _bgView.width, 100)];
+    [_textView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    [_textView.layer setCornerRadius:10];
+    [_textView.layer setMasksToBounds:YES];
     [_textView setReturnKeyType:UIReturnKeyDone];
-    [_textView setFont:[UIFont systemFontOfSize:16]];
+    [_textView setFont:[UIFont systemFontOfSize:14]];
     [_textView setDelegate:self];
-    [_textView setPlaceholder:@"\n我用连枝分享了这些照片，快来点击查看吧"];
+    [_textView setPlaceholder:@"请输入您要发布的内容"];
     [_textView setText:self.words];
     [_scrollView addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(kBorderMargin, _textView.bottom + 10, _textView.width, 1)];
-    [sepLine setBackgroundColor:kCommonTeacherTintColor];
-    [_scrollView addSubview:sepLine];
-    
-    [_scrollView setContentSize:CGSizeMake(_scrollView.width, MAX(self.view.height - 64, sepLine.bottom))];
+    [_scrollView setContentSize:CGSizeMake(_scrollView.width, MAX(self.view.height - 64, _textView.bottom))];
 }
 
 - (void)setupImageView
@@ -211,6 +210,16 @@
     UIImageView *targetView = (UIImageView *)tapGesture.view;
     SimpleImageScanView *scanView = [[SimpleImageScanView alloc] initWithSourceImage:targetView.image];
     [scanView showFromTargetFrame:[targetView convertRect:targetView.bounds toView:rootView]];
+}
+
+- (BOOL)validate
+{
+    if(self.imageArray.count == 0)
+    {
+        [ProgressHUD showHintText:@"请选择要发送的图片"];
+        return NO;
+    }
+    return YES;
 }
 
 

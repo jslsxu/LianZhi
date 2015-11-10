@@ -213,6 +213,7 @@
         } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             [hud hide:NO];
             [ProgressHUD showSuccess:@"发送成功"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationPublishSuccessNotification object:nil];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self dismissViewControllerAnimated:YES completion:nil];
             });

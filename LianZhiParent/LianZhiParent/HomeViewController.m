@@ -127,7 +127,7 @@ static NSArray *tabDatas = nil;
     NSInteger newMsg = [UserCenter sharedInstance].statusManager.msgNum;
     LZTabBarButton *msgButton = (LZTabBarButton *)_tabbarButtons[0];
     [msgButton setBadgeValue:(newMsg > 0 ? kStringFromValue(newMsg) : nil)];
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:newMsg];
+//    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:newMsg];
 }
 
 //- (void)onFoundChanged
@@ -185,7 +185,7 @@ static NSArray *tabDatas = nil;
     [childrenView setDelegate:self];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:childrenView];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MineProfile"] style:UIBarButtonItemStylePlain target:self action:@selector(onSettingClicked)];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MineProfile"] style:UIBarButtonItemStylePlain target:self action:@selector(onSettingClicked)];
     
 }
 
@@ -213,12 +213,12 @@ static NSArray *tabDatas = nil;
     }
 }
 
-#pragma mark Actions
-- (void)onSettingClicked
-{
-    MineVC *mineVC = [[MineVC alloc] init];
-    [self.navigationController pushViewController:mineVC animated:YES];
-}
+//#pragma mark Actions
+//- (void)onSettingClicked
+//{
+//    MineVC *mineVC = [[MineVC alloc] init];
+//    [self.navigationController pushViewController:mineVC animated:YES];
+//}
 
 #pragma mark - ChildIconAction
 - (void)childrenSelectFinished:(ChildInfo *)childInfo

@@ -156,7 +156,7 @@
     [_tableViewModel parseData:responseData type:operation.requestType];
     if(self.shouldShowEmptyHint)
         [self showEmptyLabel:_tableViewModel.modelItemArray.count == 0];
-     if([self supportCache] && (operation.requestType == REQUEST_REFRESH || (operation.requestType == REQUEST_GETMORE && [NSStringFromClass([self class]) isEqualToString:@"JSMessagesViewController"])))
+     if([self supportCache] && (operation.requestType == REQUEST_REFRESH || (operation.requestType == REQUEST_GETMORE && [NSStringFromClass([self class]) isEqualToString:@"JSMessagesViewController"] && responseData.count > 0 )))
     {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             BOOL success = [responseData.data writeToFile:[self cacheFilePath] atomically:YES];

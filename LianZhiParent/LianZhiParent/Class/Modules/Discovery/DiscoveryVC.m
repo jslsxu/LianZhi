@@ -9,6 +9,7 @@
 #import "DiscoveryVC.h"
 #import "OperationGuideVC.h"
 #import "SurroundingVC.h"
+#import "MineVC.h"
 @implementation DiscoveryCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -49,8 +50,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        self.titleArray = @[@[@"兴趣"],@[@"常见问题",@"连枝剧场"]];
-        self.imageArray = @[@[@"icon_eye"],@[@"icon_often",@"icon_caozuo"]];
+        self.titleArray = @[@[@"兴趣"],@[@"常见问题",@"连枝剧场"],@[@"个人设置"]];
+        self.imageArray = @[@[@"icon_eye"],@[@"icon_often",@"icon_caozuo"],@[@"icon-grsz"]];
     }
     return self;
 }
@@ -86,14 +87,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return self.titleArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(section == 0)
-        return 1;
-    return 2;
+    NSArray *array = [self.titleArray objectAtIndex:section];
+    return array.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -157,7 +157,7 @@
         [CurrentROOTNavigationVC pushViewController:interestVC animated:YES];
         [self setRead:1];
     }
-    else
+    else if(indexPath.section == 1)
     {
         if(indexPath.row == 0)
         {
@@ -178,6 +178,11 @@
             OperationGuideVC *operationGuideVC = [[OperationGuideVC alloc] init];
             [CurrentROOTNavigationVC pushViewController:operationGuideVC animated:YES];
         }
+    }
+    else
+    {
+        MineVC *mineVC = [[MineVC alloc] init];
+        [self.navigationController pushViewController:mineVC animated:YES];
     }
 }
 

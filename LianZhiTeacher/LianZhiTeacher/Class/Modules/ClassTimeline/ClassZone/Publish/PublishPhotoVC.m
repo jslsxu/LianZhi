@@ -90,18 +90,17 @@
     
     [self setupImageView];
     
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, _bgView.bottom + 20, _bgView.width, 65)];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, _bgView.bottom + 20, _bgView.width, 100)];
+    [_textView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    [_textView.layer setCornerRadius:10];
+    [_textView.layer setMasksToBounds:YES];
     [_textView setReturnKeyType:UIReturnKeyDone];
-    [_textView setFont:[UIFont systemFontOfSize:16]];
+    [_textView setFont:[UIFont systemFontOfSize:14]];
     [_textView setDelegate:self];
-    [_textView setPlaceholder:@"\n我用连枝分享了这些照片，快来点击查看吧"];
+    [_textView setPlaceholder:@"记录下与学生们美好的回忆"];
     [_scrollView addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(kBorderMargin, _textView.bottom + 10, _textView.width, 1)];
-    [sepLine setBackgroundColor:kCommonTeacherTintColor];
-    [_scrollView addSubview:sepLine];
-    
-    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(10, sepLine.bottom, _bgView.width, 40)];
+    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(10, _textView.bottom, _bgView.width, 40)];
     [_poiInfoView setParentVC:self];
     [_scrollView addSubview:_poiInfoView];
     
