@@ -13,8 +13,10 @@
     LogoView*   _logoView;
     UILabel*    _nameLabel;
     UIView*     _sepLine;
+    UIView*     _redDot;
 //    UIButton*   _chatButton;
 }
+@property (nonatomic, readonly)UIView *redDot;
 @property (nonatomic, strong)ClassInfo *classInfo;
 @property (nonatomic, readonly)UIButton *chatButton;
 @end

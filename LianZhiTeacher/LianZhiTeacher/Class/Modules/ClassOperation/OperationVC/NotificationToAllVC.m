@@ -131,6 +131,7 @@ NSString * kNotificationPublishSuccessNotification = @"NotificationPublishSucces
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
     self.isFinished = YES;
+    self.isUploading = NO;
     self.notificationID = [dataWrapper getStringForKey:@"id"];
     self.words = [dataWrapper getStringForKey:@"words"];
     self.ctime = [dataWrapper getStringForKey:@"created_time"];
@@ -185,7 +186,15 @@ NSString * kNotificationPublishSuccessNotification = @"NotificationPublishSucces
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
 {
     if(type == REQUEST_REFRESH)
-        [self.modelItemArray removeAllObjects];
+    {
+        NSMutableArray *deleteArray = [NSMutableArray array];
+        for (NotificationItem *item in self.modelItemArray)
+        {
+            if(item.isFinished && !item.isUploading)
+                [deleteArray addObject:item];
+        }
+        [self.modelItemArray removeObjectsInArray:deleteArray];
+    }
     TNDataWrapper *listWrapper = [data getDataWrapperForKey:@"list"];
     if(listWrapper.count > 0)
     {
@@ -266,6 +275,7 @@ NSString * kNotificationPublishSuccessNotification = @"NotificationPublishSucces
 
 @implementation NotificationToAllVC
 
+SYNTHESIZE_SINGLETON_FOR_CLASS(NotificationToAllVC)
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -293,6 +303,7 @@ NSString * kNotificationPublishSuccessNotification = @"NotificationPublishSucces
     [headerView addSubview:titleLabel];
     [_tableView setTableHeaderView:headerView];
     [self bindTableCell:@"NotificationCell" tableModel:@"NotificationModel"];
+    [self setSupportPullDown:YES];
     [self setSupportPullUp:YES];
     [self requestData:REQUEST_REFRESH];
 

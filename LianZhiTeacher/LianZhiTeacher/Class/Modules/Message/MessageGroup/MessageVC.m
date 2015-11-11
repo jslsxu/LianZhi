@@ -283,8 +283,7 @@
 {
     if(index == 0)
     {
-        NotificationToAllVC *notificationToAllVC = [[NotificationToAllVC alloc] init];
-        [self.navigationController pushViewController:notificationToAllVC animated:YES];
+        [self.navigationController pushViewController:[NotificationToAllVC sharedInstance] animated:YES];
     }
     else
     {

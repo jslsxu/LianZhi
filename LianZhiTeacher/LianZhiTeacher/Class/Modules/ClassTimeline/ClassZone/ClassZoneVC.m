@@ -171,6 +171,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 @end
 
 @interface ClassZoneVC ()<PublishSelectDelegate>
+@property (nonatomic, strong)UIButton *exchangeButton;
+@property (nonatomic, strong)UIView*    redDot;
 @property (nonatomic, strong)ClassZoneItem *targetZoneItem;
 @property (nonatomic, strong)ResponseItem* targetResponseItem;
 @end
@@ -331,7 +333,23 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
     if([[UserCenter sharedInstance].curSchool classNum] > 1)
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"切换班级" style:UIBarButtonItemStylePlain target:self action:@selector(onExchangeClass)];
+    {
+        UIButton *exchangeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [exchangeButton setTitle:@"切换班级" forState:UIControlStateNormal];
+        [exchangeButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
+        [exchangeButton sizeToFit];
+        [exchangeButton addTarget:self action:@selector(onExchangeClass) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIView *redDot = [[UIView alloc] initWithFrame:CGRectMake(exchangeButton.right - 2, 2, 8, 8)];
+        [redDot.layer setCornerRadius:4];
+        [redDot.layer setMasksToBounds:YES];
+        [redDot setBackgroundColor:[UIColor colorWithHexString:@"F0003A"]];
+        [exchangeButton addSubview:redDot];
+        self.redDot = redDot;
+        
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:exchangeButton];
+        self.exchangeButton = exchangeButton;
+    }
     
 //    self.title = @"班空间";
     self.shouldShowEmptyHint = YES;
@@ -440,6 +458,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     __weak typeof(self) wself = self;
     ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
     [classSelectionVC setOriginalClassID:self.classInfo.classID];
+    [classSelectionVC setShowNew:YES];
     [classSelectionVC setSelection:^(ClassInfo *classInfo) {
         [wself setClassInfo:classInfo];
         [wself.navigationController popViewControllerAnimated:YES];
@@ -490,6 +509,38 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)onStatusChanged
 {
+    BOOL otherHasNew = NO;
+    //新动态
+    NSArray *newCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+    NSInteger commentNum = 0;
+    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
+    {
+        for (TimelineCommentItem *commentItem in newCommentArray)
+        {
+            if([commentItem.classID isEqualToString:classInfo.classID] && commentItem.alertInfo.num > 0 && ![commentItem.classID isEqualToString:self.classInfo.classID])
+                commentNum += commentItem.alertInfo.num;
+        }
+    }
+    if(commentNum > 0)
+        otherHasNew = YES;
+    else
+    {
+        //新日志
+        NSArray *newFeedArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
+        NSInteger num = 0;
+        for (ClassFeedNotice *noticeItem in newFeedArray)
+        {
+            if([noticeItem.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID] && ![noticeItem.classID isEqualToString:self.classInfo.classID])
+            {
+                num += noticeItem.num;
+            }
+        }
+        if(num > 0)
+            otherHasNew = YES;
+    }
+    
+    [self.redDot setHidden:!otherHasNew];
+    
     NSArray *commentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
     TimelineCommentItem *curAlert = nil;
     for (TimelineCommentItem *alertInfo in commentArray)
@@ -754,7 +805,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
                     imageUrl = self.classInfo.logoUrl;
                 
                 NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kClassZoneShareUrl,self.targetZoneItem.userInfo.uid,self.targetZoneItem.itemID];
-                [ShareActionView shareWithTitle:self.targetZoneItem.content content:nil image:nil imageUrl:imageUrl url:url];
+                [ShareActionView shareWithTitle:self.targetZoneItem.content content:nil image:[UIImage imageNamed:@"ClassZone"] imageUrl:imageUrl url:url];
             }
         }
     }];

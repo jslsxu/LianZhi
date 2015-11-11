@@ -13,15 +13,12 @@
  *    用于第三方组件引用的头文件
  */
 
-#import "ISVShareUserInfo.h"
-#import "ISVShareCredentialInfo.h"
-#import "ISVShareManager.h"
-
 #define Is_IPAD  ([[UIDevice currentDevice] respondsToSelector:@selector(userInterfaceIdiom)] &&[[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
 /**
  *  ShareSDK
  */
-#define AppKey_ShareSDK @"881df198516f"
+#define AppKey_ShareSDK         @"c2faf2d09804"
+#define AppSecret_ShareSDK      @"7dff49cedbabf2e38357f1b27ccd60fa"
 
 /**
  *  Weixin
@@ -32,8 +29,8 @@
 /**
  *  SinaWeibo
  */
-#define AppKey_SinaWeibo @"251515278"
-#define AppSecret_SinaWeibo @"d2b44c001606017236c18c4048768228"
+#define AppKey_SinaWeibo @"460455511"
+#define AppSecret_SinaWeibo @"62c3d7036d6c96c9a9a1080b0c2aecbc"
 //#define kSinaWeiboSourceApplication @"com.sina.weibo"
 #define kSinaWeiboRedirectURI @"http://www.sina.com"
 

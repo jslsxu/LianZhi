@@ -337,7 +337,7 @@
             if(imageUrl.length == 0)
                 imageUrl = self.classInfo.logo;
             NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kClassZoneShareUrl,self.targetClassZoneItem.userInfo.uid,self.targetClassZoneItem.itemID];
-            [ShareActionView shareWithTitle:self.targetClassZoneItem.content content:nil image:nil imageUrl:imageUrl url:url];
+            [ShareActionView shareWithTitle:self.targetClassZoneItem.content content:nil image:[UIImage imageNamed:@"ClassZone"] imageUrl:imageUrl url:url];
         }
     }];
     [actionView show];

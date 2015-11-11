@@ -396,7 +396,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             if(imageUrl.length == 0)
                 imageUrl = [UserCenter sharedInstance].curChild.avatar;
              NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kTreeHouseShareUrl,self.targetTreeHouseItem.user.uid,self.targetTreeHouseItem.itemID];
-            [ShareActionView shareWithTitle:self.targetTreeHouseItem.detail content:nil image:nil imageUrl:imageUrl url:url];
+            [ShareActionView shareWithTitle:self.targetTreeHouseItem.detail content:nil image:[UIImage imageNamed:@"TreeHouse"] imageUrl:imageUrl url:url];
         }
     }];
     [actionView show];

@@ -64,7 +64,6 @@
 @property (nonatomic, strong)NSArray *imageArray;
 @property (nonatomic, strong)NSMutableArray *appItems;
 @property (nonatomic, strong)NSArray *actionArray;
-@property (nonatomic, strong)NotificationToAllVC *notificationVC;
 @end
 
 @implementation ApplicationBoxVC
@@ -179,11 +178,7 @@
     NSString *classStr = self.actionArray[row];
     if([classStr isEqualToString:@"NotificationToAllVC"])
     {
-        if(self.notificationVC == nil)
-        {
-            self.notificationVC = [[NotificationToAllVC alloc] init];
-        }
-        [CurrentROOTNavigationVC pushViewController:self.notificationVC animated:YES];
+        [CurrentROOTNavigationVC pushViewController:[NotificationToAllVC sharedInstance] animated:YES];
     }
     else if([classStr isEqualToString:@"PublishGrowthTimelineVC"])
     {

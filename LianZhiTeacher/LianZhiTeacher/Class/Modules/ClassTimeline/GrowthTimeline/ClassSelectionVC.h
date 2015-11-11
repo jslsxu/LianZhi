@@ -12,6 +12,7 @@
 {
     UITableView*    _tableView;
 }
+@property (nonatomic, assign)BOOL showNew;
 @property (nonatomic, copy)NSString *originalClassID;
 @property (nonatomic, copy)void (^selection)(ClassInfo *classInfo);
 @end

@@ -70,4 +70,5 @@ extern NSString * kNotificationPublishSuccessNotification;
 {
     
 }
+SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(NotificationToAllVC)
 @end
