@@ -48,7 +48,9 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 @interface StatusManager : TNModelItem
 @property (nonatomic, assign)ChangedType changed;
 @property (nonatomic, assign)BOOL found;
+@property (nonatomic, assign)BOOL faq;
 @property (nonatomic, strong)NSArray *notice;
+@property (nonatomic, strong)NSArray *classRecordArray;
 @property (nonatomic, strong)NSArray *feedClassesNew;
 @property (nonatomic, strong)NSArray *classNewCommentArray;
 @property (nonatomic, strong)NSArray *treeNewCommentArray;

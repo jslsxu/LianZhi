@@ -63,6 +63,7 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
 {
     self.changed = [dataWrapper getIntegerForKey:@"changed"];
     self.found = [dataWrapper getBoolForKey:@"found"];
+    self.faq = [dataWrapper getBoolForKey:@"faq"];
     TNDataWrapper *newFeedWrapper = [dataWrapper getDataWrapperForKey:@"new_class_feed"];
     if(newFeedWrapper.count == 0)
         self.feedClassesNew = nil;
@@ -77,6 +78,22 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
         }
         self.feedClassesNew = newFeedsArray;
     }
+    
+    TNDataWrapper *newClassRecordWrapper = [dataWrapper getDataWrapperForKey:@"new_class_record"];
+    if(newClassRecordWrapper.count > 0)
+    {
+        NSMutableArray *newClassRecordArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < newClassRecordWrapper.count; i++)
+        {
+            TNDataWrapper *classRecordItemWrapper = [newClassRecordWrapper getDataWrapperForIndex:i];
+            ClassFeedNotice *recordItem = [[ClassFeedNotice alloc] init];
+            [recordItem parseData:classRecordItemWrapper];
+            [newClassRecordArray addObject:recordItem];
+        }
+        self.classRecordArray = newClassRecordArray;
+    }
+    else
+        self.classRecordArray = nil;
     
     TNDataWrapper *commentArray = [dataWrapper getDataWrapperForKey:@"new_tree_fc"];
     TNDataWrapper *classCommentWrapper = [commentArray getDataWrapperForKey:@"class"];

@@ -75,6 +75,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     {
         item.isUploading = YES;
         NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:item];
+        if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:item.params];
         [params setValue:item.detail forKey:@"words"];
@@ -396,7 +397,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             if(imageUrl.length == 0)
                 imageUrl = [UserCenter sharedInstance].curChild.avatar;
              NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kTreeHouseShareUrl,self.targetTreeHouseItem.user.uid,self.targetTreeHouseItem.itemID];
-            [ShareActionView shareWithTitle:self.targetTreeHouseItem.detail content:nil image:nil imageUrl:imageUrl url:url];
+            [ShareActionView shareWithTitle:self.targetTreeHouseItem.detail content:nil image:[UIImage imageNamed:@"TreeHouse"] imageUrl:imageUrl url:url];
         }
     }];
     [actionView show];

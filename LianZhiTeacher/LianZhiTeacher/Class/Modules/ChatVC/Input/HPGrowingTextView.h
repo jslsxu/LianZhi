@@ -75,6 +75,7 @@
 	BOOL editable;
 	UIDataDetectorTypes dataDetectorTypes;
 	UIReturnKeyType returnKeyType;
+	UIKeyboardType keyboardType;
     
     UIEdgeInsets contentInset;
 }
@@ -101,9 +102,14 @@
 @property(nonatomic,getter=isEditable) BOOL editable;
 @property(nonatomic) UIDataDetectorTypes dataDetectorTypes __OSX_AVAILABLE_STARTING(__MAC_NA, __IPHONE_3_0);
 @property (nonatomic) UIReturnKeyType returnKeyType;
+@property (nonatomic) UIKeyboardType keyboardType;
 @property (assign) UIEdgeInsets contentInset;
 @property (nonatomic) BOOL isScrollable;
 @property(nonatomic) BOOL enablesReturnKeyAutomatically;
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 70000
+- (id)initWithFrame:(CGRect)frame textContainer:(NSTextContainer *)textContainer;
+#endif
 
 //uitextview methods
 //need others? use .internalTextView
@@ -116,5 +122,5 @@
 
 // call to force a height change (e.g. after you change max/min lines)
 - (void)refreshHeight;
-- (void)backspace;
+
 @end

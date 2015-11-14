@@ -73,19 +73,18 @@
     [_recordView setDelegate:self];
     [_scrollView addSubview:_recordView];
     
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(15, _recordView.bottom, self.view.width - 15 * 2, 60)];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(15, _recordView.bottom, self.view.width - 15 * 2, 100)];
+    [_textView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    [_textView.layer setCornerRadius:10];
+    [_textView.layer setMasksToBounds:YES];
     [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setDelegate:self];
-    [_textView setPlaceholder:@"\n给录音起个标题吧"];
-    [_textView setFont:[UIFont systemFontOfSize:16]];
+    [_textView setPlaceholder:@"记录下与学生们美好的回忆"];
+    [_textView setFont:[UIFont systemFontOfSize:14]];
     [_textView setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
     [_scrollView addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(15, _textView.bottom + 10, _textView.width, 1)];
-    [sepLine setBackgroundColor:kCommonTeacherTintColor];
-    [_scrollView addSubview:sepLine];
-    
-    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(20, sepLine.bottom, self.view.width - 20 * 2, 40)];
+    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(10, _textView.bottom, self.view.width - 10 * 2, 40)];
     [_poiInfoView setParentVC:self];
     [_scrollView addSubview:_poiInfoView];
     

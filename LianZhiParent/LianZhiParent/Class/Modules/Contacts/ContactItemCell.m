@@ -51,7 +51,7 @@
 {
     _teachInfo = teachInfo;
     [_logoView setImageWithUrl:[NSURL URLWithString:teachInfo.avatar]];
-    [_logoView setStatus:_teachInfo.actived ? nil : @"未开通"];
+    [_logoView setStatus:_teachInfo.actived ? nil : @"未下载"];
     [_nameLabel setText:_teachInfo.teacherName];
     [_nameLabel sizeToFit];
     [_nameLabel setFrame:CGRectMake(_logoView.right + 15, (self.height - _nameLabel.height) / 2, _nameLabel.width, _nameLabel.height)];

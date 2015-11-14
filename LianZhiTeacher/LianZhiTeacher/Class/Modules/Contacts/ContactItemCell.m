@@ -22,6 +22,13 @@
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [self addSubview:_nameLabel];
+        
+        _redDot = [[UIView alloc] initWithFrame:CGRectMake(self.width - 40, (self.height - 8) / 2, 8, 8)];
+        [_redDot setBackgroundColor:[UIColor colorWithHexString:@"F0003A"]];
+        [_redDot.layer setCornerRadius:4];
+        [_redDot.layer setMasksToBounds:YES];
+        [self addSubview:_redDot];
+        [_redDot setHidden:YES];
 
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 44 - 0.5, self.width, 0.5)];
         [_sepLine setBackgroundColor:kSepLineColor];
@@ -89,7 +96,7 @@
 {
     _userInfo = userInfo;
     [_avatar setImageWithUrl:[NSURL URLWithString:userInfo.avatar] placeHolder:[UIImage imageNamed:(@"NoAvatarDefault.png")]];
-    [_avatar setStatus:_userInfo.activited ? nil : @"未开通"];
+    [_avatar setStatus:_userInfo.activited ? nil : @"未下载"];
     [_nameLabel setText:userInfo.name];
     [_nameLabel sizeToFit];
     [_nameLabel setFrame:CGRectMake(_avatar.right + 15, (self.height - _nameLabel.height) / 2, MIN(_nameLabel.width, self.width - _nameLabel.left - 10), _nameLabel.height)];

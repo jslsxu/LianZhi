@@ -19,41 +19,36 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"发文字";
-    [self.view setBackgroundColor:kCommonBackgroundColor];
 }
 
 - (void)setupSubviews
 {
-    _bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 180)];
-    [_bgView setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:_bgView];
     
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, 10, _bgView.width - 10 * 2, _bgView.height - 10 - 5 - 20 - 40)];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, 10, self.view.width - 10 * 2, 100)];
+    [_textView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    [_textView.layer setCornerRadius:10];
+    [_textView.layer setMasksToBounds:YES];
     [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setDelegate:self];
     [_textView setFont:[UIFont systemFontOfSize:14]];
-    [_textView setPlaceholder:@"请输入您要发布的内容"];
-    [_bgView addSubview:_textView];
+    [_textView setPlaceholder:[NSString stringWithFormat:@"快为%@记录下美好时光",[UserCenter sharedInstance].curChild.name]];
+    [self.view addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom + 5, _textView.width, 1)];
-    [sepLine setBackgroundColor:kCommonParentTintColor];
-    [_bgView addSubview:sepLine];
-    
-    _numLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, sepLine.bottom, sepLine.width, 20)];
+    _numLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.width - 10 - 60, _textView.bottom, 60, 40)];
     [_numLabel setFont:[UIFont systemFontOfSize:14]];
     [_numLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
     [_numLabel setTextAlignment:NSTextAlignmentRight];
     [_numLabel setText:kStringFromValue(kCommonMaxNum)];
-    [_bgView addSubview:_numLabel];
+    [self.view addSubview:_numLabel];
     
     [_textView setText:self.words];
     [self textViewDidChange:_textView];
     
-    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(0, _numLabel.bottom, _bgView.width, 40)];
+    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(0, _textView.bottom, _numLabel.x, 40)];
     [_poiInfoView setParentVC:self];
     if(self.poiItem)
         [_poiInfoView setPoiItem:self.poiItem];
-    [_bgView addSubview:_poiInfoView];
+    [self.view addSubview:_poiInfoView];
 }
 
 - (void)onSendClicked

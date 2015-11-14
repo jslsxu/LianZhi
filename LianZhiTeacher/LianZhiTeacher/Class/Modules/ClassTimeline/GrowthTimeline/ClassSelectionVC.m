@@ -38,7 +38,7 @@
     
     self.classArray = classArray;
     
-    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStylePlain];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
@@ -104,11 +104,44 @@
     BOOL isSelected = [self.originalClassID isEqualToString:classInfo.classID];
     if(isSelected)
     {
+        [cell.redDot setHidden:YES];
         [cell.detailTextLabel setText:@"当前"];
         [cell setAccessoryView:nil];
     }
     else
     {
+        if(self.showNew)
+        {
+            NSArray *newCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+            NSInteger commentNum = 0;
+            for (TimelineCommentItem *commentItem in newCommentArray)
+            {
+                if([commentItem.classID isEqualToString:classInfo.classID] && commentItem.alertInfo.num > 0)
+                    commentNum += commentItem.alertInfo.num;
+            }
+            if(commentNum > 0)
+                [cell.redDot setHidden:NO];
+            else
+            {
+                //新日志
+                NSArray *newFeedArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
+                NSInteger num = 0;
+                for (ClassFeedNotice *noticeItem in newFeedArray)
+                {
+                    if([noticeItem.classID isEqualToString:classInfo.classID])
+                    {
+                        num += noticeItem.num;
+                    }
+                }
+                if(num > 0)
+                    [cell.redDot setHidden:NO];
+                else
+                    [cell.redDot setHidden:YES];
+            }
+        }
+        else
+            [cell.redDot setHidden:YES];
+        
         [cell.detailTextLabel setText:nil];
         [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }

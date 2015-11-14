@@ -26,8 +26,7 @@ static SystemSoundID shake_sound_male_id = 0;
     [self setupCommonAppearance];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setBackgroundColor:kCommonBackgroundColor];
-    [self.window makeKeyAndVisible];
-    [[SVShare sharedInstance] initialize];
+    [[SVShareManager sharedInstance] initialize];
     [self setupCommonHandler];
     [self registerThirdParty];
     [self registerRemoteNotification];
@@ -51,14 +50,17 @@ static SystemSoundID shake_sound_male_id = 0;
         }];
         self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:loginVC];
         [self.window setRootViewController:self.rootNavigation];
-    }    NSDictionary *notificationInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
+    }
+    NSDictionary *notificationInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
     if(notificationInfo)
         [self handleNotification:notificationInfo];
+    [self.window makeKeyAndVisible];
     [WelcomeView showWelcome];
     [self startReachability];
     [[TaskUploadManager sharedInstance] start];
     [self expendOperationGuide];
     [self checkNewVersion];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     return YES;
 }
 
@@ -151,7 +153,7 @@ static SystemSoundID shake_sound_male_id = 0;
 
 - (void)handleNotification:(NSDictionary *)userInfo
 {
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:-1];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     NSDictionary *action = [userInfo objectForKey:@"action"];
     if([action isKindOfClass:[NSDictionary class]])
     {
@@ -347,6 +349,7 @@ static SystemSoundID shake_sound_male_id = 0;
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
 }
 

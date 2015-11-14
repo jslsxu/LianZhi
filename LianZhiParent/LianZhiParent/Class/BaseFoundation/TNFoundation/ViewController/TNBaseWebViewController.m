@@ -35,7 +35,7 @@
     [_indicator setHidesWhenStopped:YES];
     [self.view addSubview:_indicator];
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.url]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.url] cachePolicy:NSURLRequestReloadRevalidatingCacheData timeoutInterval:10];
     [_webView loadRequest:request];
 }
 
@@ -49,7 +49,7 @@
     _url = url;
     if(_webView)
     {
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.url]];
+         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.url] cachePolicy:NSURLRequestReloadRevalidatingCacheData timeoutInterval:10];
         [_webView loadRequest:request];
     }
 }

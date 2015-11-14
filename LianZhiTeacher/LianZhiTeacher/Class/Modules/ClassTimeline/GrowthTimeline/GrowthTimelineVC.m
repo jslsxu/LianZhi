@@ -156,6 +156,19 @@
     [self.navigationController pushViewController:classSelectionVC animated:YES];
 }
 
+- (BOOL)supportCache
+{
+    return YES;
+}
+
+- (NSString *)cacheFileName
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *dateStr = [formatter stringFromDate:self.date];
+    return [NSString stringWithFormat:@"%@_%@_%@_%@",[self class],[UserCenter sharedInstance].curSchool.schoolID,self.classID,dateStr];
+}
+
 #pragma mark - GrowthDatePickerDelegate
 - (void)growthDatePickerFinished:(NSDate *)date
 {

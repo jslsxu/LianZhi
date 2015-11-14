@@ -27,8 +27,7 @@ static SystemSoundID shake_sound_male_id = 0;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setBackgroundColor:[UIColor whiteColor]];
-    [self.window makeKeyAndVisible];
-    [[SVShare sharedInstance] initialize];
+    [[SVShareManager sharedInstance] initialize];
     [[TaskUploadManager sharedInstance] start];
     [MAMapServices sharedServices].apiKey = kAutoNaviApiKey;
     [self setupCommonHandler];
@@ -59,6 +58,7 @@ static SystemSoundID shake_sound_male_id = 0;
     NSDictionary *notificationInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
     if(notificationInfo)
         [self handleNotification:notificationInfo];
+    [self.window makeKeyAndVisible];
     [WelcomeView showWelcome];
     [self startReachability];
     [self expendOperationGuide];
@@ -352,6 +352,7 @@ static SystemSoundID shake_sound_male_id = 0;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/check_status" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         
     } fail:^(NSString *errMsg) {

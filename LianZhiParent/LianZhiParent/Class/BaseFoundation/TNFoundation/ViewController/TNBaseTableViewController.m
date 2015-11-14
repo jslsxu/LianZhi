@@ -160,7 +160,7 @@
     [_tableViewModel parseData:responseData type:operation.requestType];
     if(self.shouldShowEmptyHint)
         [self showEmptyLabel:_tableViewModel.modelItemArray.count == 0];
-    if([self supportCache] && (operation.requestType == REQUEST_REFRESH || (operation.requestType == REQUEST_GETMORE && [NSStringFromClass([self class]) isEqualToString:@"JSMessagesViewController"])))
+    if([self supportCache] && (operation.requestType == REQUEST_REFRESH || (operation.requestType == REQUEST_GETMORE && [NSStringFromClass([self class]) isEqualToString:@"JSMessagesViewController"] && responseData.count > 0)))
     {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [responseData.data writeToFile:[self cacheFilePath] atomically:YES];
@@ -175,7 +175,8 @@
 
 - (void)onRequestFail:(NSString *)errMsg
 {
-    [ProgressHUD showHintText:errMsg];
+    if(![self hideErrorAlert])
+        [ProgressHUD showHintText:errMsg];
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     [_getMoreCell stopLoading];
     _isLoading = NO;
@@ -191,6 +192,11 @@
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
 {
     return nil;//子类覆盖
+}
+
+- (BOOL)hideErrorAlert
+{
+    return NO;
 }
 
 #pragma mark - 

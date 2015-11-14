@@ -78,12 +78,14 @@ static NSArray *tabDatas = nil;
 
 - (void)updateTitleView
 {
-    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-    [titleLabel setTextColor:[UIColor whiteColor]];
-    [titleLabel setText:[UserCenter sharedInstance].curSchool.schoolName];
-    [titleLabel sizeToFit];
-    self.navigationItem.titleView = titleLabel;
+    Reachability* curReach = ApplicationDelegate.hostReach;
+    NetworkStatus status = [curReach currentReachabilityStatus];
+    if(status == NotReachable)
+    {
+        self.title = @"网络不可用";
+    }
+    else
+        self.title = [UserCenter sharedInstance].curSchool.schoolName;
 }
 
 - (void)onStatusChanged
@@ -94,14 +96,51 @@ static NSArray *tabDatas = nil;
             hasNew = YES;
     }
     [_switchButton setHasNew:hasNew];
+    
+    LZTabBarButton *discoveryButon = _tabbarButtons[2];
+    DiscoveryVC *discoveryVC = [self.viewControllers objectAtIndex:2];
+    [discoveryButon setBadgeValue:discoveryVC.hasNew ? @"" : nil];
+    
+    LZTabBarButton *appTabButton = _tabbarButtons[1];
+    //新动态
+    NSArray *newCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+    NSInteger commentNum = 0;
+    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
+    {
+        for (TimelineCommentItem *commentItem in newCommentArray)
+        {
+            if([commentItem.classID isEqualToString:classInfo.classID] && commentItem.alertInfo.num > 0)
+                commentNum += commentItem.alertInfo.num;
+        }
+    }
+    if(commentNum > 0)
+        [appTabButton setBadgeValue:kStringFromValue(commentNum)];
+    else
+    {
+        //新日志
+        NSArray *newFeedArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
+        NSInteger num = 0;
+        for (ClassFeedNotice *noticeItem in newFeedArray)
+        {
+            if([noticeItem.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID])
+            {
+                num += noticeItem.num;
+            }
+        }
+        if(num > 0)
+            [appTabButton setBadgeValue:@""];
+        else
+            [appTabButton setBadgeValue:nil];
+    }
 }
+
 
 - (void)onNewMsgNumChanged
 {
     NSInteger newMsg = [UserCenter sharedInstance].statusManager.msgNum;
     LZTabBarButton *msgButton = (LZTabBarButton *)_tabbarButtons[0];
     [msgButton setBadgeValue:(newMsg > 0 ? kStringFromValue(newMsg) : nil)];
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:newMsg];
+//    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:newMsg];
 }
 
 - (void)onFoundChanged
@@ -167,6 +206,9 @@ static NSArray *tabDatas = nil;
         
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_switchButton];
     }
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+    [backItem setTitle:@"返回"];
+    self.navigationItem.backBarButtonItem = backItem;
 }
 
 - (void)onTabButtonClicked:(UIButton *)button

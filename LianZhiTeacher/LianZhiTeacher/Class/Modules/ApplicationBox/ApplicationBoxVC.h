@@ -17,8 +17,10 @@
 {
     UIView*         _bgView;
     LZTabBarButton*       _coverButton;
+    NumIndicator*         _indicator;
 }
 @property (nonatomic, weak)ApplicationItem *appItem;
+@property (nonatomic, copy)NSString *badge;
 @end
 
 @interface ApplicationBoxVC : TNBaseViewController<UICollectionViewDataSource, UICollectionViewDelegate>

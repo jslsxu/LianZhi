@@ -57,7 +57,7 @@
         [_confirmButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
         [_contentView addSubview:_confirmButton];
         
-        _pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 36, self.width, 0)];
+        _pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 36, self.width, 200)];
         [_pickerView setShowsSelectionIndicator:NO];
         [_pickerView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
         [_pickerView setDelegate:self];

@@ -19,6 +19,7 @@
 #import "BaseFoundation.h"
 #import "ParentDefine.h"
 #import "AppDelegate.h"
+#import "SVShareManager.h"
 #import "UserCenter.h"
 #import "LoginVC.h"
 #import "JSMessagesViewController.h"

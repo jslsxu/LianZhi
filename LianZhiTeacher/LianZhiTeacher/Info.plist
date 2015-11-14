@@ -37,8 +37,24 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>2.0.1</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>wechat</string>
+		<string>weixin</string>
+		<string>mqq</string>
+		<string>mqqapi</string>
+		<string>sinaweibosso</string>
+		<string>sinaweibo</string>
+		<string>mqonze</string>
+		<string>mqqopensdkapiV2</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>使用定位获取附近信息，为您提供更精准的本地服务</string>
 	<key>UIRequiredDeviceCapabilities</key>

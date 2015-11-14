@@ -12,6 +12,9 @@
 #import "TextMessageSendVC.h"
 #import "PhotoOperationVC.h"
 #import "AudioMessageSendVC.h"
+#import "NotificationClassStudentsVC.h"
+#import "NotificationGroupMemberVC.h"
+#import "NotificationTargetVC.h"
 @interface NotificationDetailVC ()<UICollectionViewDataSource, UICollectionViewDelegate>
 
 @end
@@ -245,6 +248,29 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+    NotificationTargetVC *notificationTargetVC = [[NotificationTargetVC alloc] init];
+    if(section == 0)
+    {
+        SentClassInfo *classInfo = self.notificationItem.sentTarget.classArray[row];
+        [notificationTargetVC setSelectedArray:classInfo.sendStudents];
+        [notificationTargetVC setGroupID:classInfo.classID];
+    }
+    else if(section == 1)
+    {
+        SentClassInfo *classInfo = self.notificationItem.sentTarget.managedClassArray[row];
+        [notificationTargetVC setSelectedArray:classInfo.sendStudents];
+        [notificationTargetVC setGroupID:classInfo.classID];
+    }
+    else
+    {
+        SentGroup *group = self.notificationItem.sentTarget.groupArray[row];
+        [notificationTargetVC setGroupID:group.groupID];
+        [notificationTargetVC setSelectedArray:group.sendTeachers];
+    }
+    [self.navigationController pushViewController:notificationTargetVC animated:YES];
 }
 
 #pragma mark - UICollectionViewDelegate

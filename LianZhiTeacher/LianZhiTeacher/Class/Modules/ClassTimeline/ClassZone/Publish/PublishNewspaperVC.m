@@ -18,28 +18,23 @@
 {
     [super viewDidLoad];
     self.title = @"黑板报";
-    [self.view setBackgroundColor:kCommonBackgroundColor];
-    UIView* bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 200)];
-    [bgView setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:bgView];
     
-    _textView = [[UITextView alloc] initWithFrame:CGRectMake(10, 5, bgView.width - 10 * 2, bgView.height - 5 - 5 - 15)];
+    _textView = [[UITextView alloc] initWithFrame:CGRectMake(10, 5, self.view.width - 10 * 2, 100)];
+    [_textView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    [_textView.layer setCornerRadius:10];
+    [_textView.layer setMasksToBounds:YES];
     [_textView setDelegate:self];
     [_textView setFont:[UIFont systemFontOfSize:14]];
     [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setText:self.newsPaper];
-    [bgView addSubview:_textView];
+    [self.view addSubview:_textView];
     
-    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, _textView.bottom + 5, _textView.width, kLineHeight)];
-    [sepLine setBackgroundColor:kCommonTeacherTintColor];
-    [bgView addSubview:sepLine];
-    
-    _numLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, sepLine.bottom, _textView.width, 15)];
+    _numLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.width - 10 - 60, _textView.bottom, 60, 30)];
     [_numLabel setTextColor:[UIColor lightGrayColor]];
     [_numLabel setFont:[UIFont systemFontOfSize:12]];
     [_numLabel setTextAlignment:NSTextAlignmentRight];
     [_numLabel setText:kStringFromValue(kNewpaperMaxNum - _textView.text.length)];
-    [bgView addSubview:_numLabel];
+    [self.view addSubview:_numLabel];
     
     _contactButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_contactButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
@@ -49,12 +44,12 @@
     [_contactButton addTarget:self action:@selector(onContactButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [_contactButton setImage:[UIImage imageNamed:@"ControlDefault"] forState:UIControlStateNormal];
     [_contactButton setImage:[UIImage imageNamed:@"ControlSelectAll"] forState:UIControlStateSelected];
-    [_contactButton setFrame:CGRectMake(10, bgView.bottom, 70, 30)];
+    [_contactButton setFrame:CGRectMake(10, _textView.bottom, 70, 30)];
     [self.view addSubview:_contactButton];
     
     
     _publishButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_publishButton setFrame:CGRectMake(20, bgView.bottom + 50, self.view.width - 20 * 2, 36)];
+    [_publishButton setFrame:CGRectMake(20, _textView.bottom + 50, self.view.width - 20 * 2, 36)];
     [_publishButton addTarget:self action:@selector(onPublishClicked) forControlEvents:UIControlEventTouchUpInside];
     [_publishButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"5ed015"] size:_publishButton.size cornerRadius:18] forState:UIControlStateNormal];
     [_publishButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

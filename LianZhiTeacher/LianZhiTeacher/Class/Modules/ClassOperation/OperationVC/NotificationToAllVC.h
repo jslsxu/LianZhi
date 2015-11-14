@@ -9,10 +9,12 @@
 #import "TNBaseViewController.h"
 
 extern NSString * kNotificationPublishNotification;
+extern NSString * kNotificationPublishSuccessNotification;
 
 @interface SentClassInfo : TNModelItem
 @property (nonatomic, copy)NSString *classID;
 @property (nonatomic, copy)NSString *name;
+@property (nonatomic, strong)NSArray *sendStudents;
 @property (nonatomic, assign)NSInteger sentNum;
 @property (nonatomic, assign)NSInteger totalNum;
 @property (nonatomic, copy)NSString *sendStr;
@@ -21,6 +23,7 @@ extern NSString * kNotificationPublishNotification;
 @interface SentGroup : TNModelItem
 @property (nonatomic, copy)NSString *groupID;
 @property (nonatomic, copy)NSString *groupName;
+@property (nonatomic, strong)NSArray *sendTeachers;
 @property (nonatomic, assign)NSInteger sentNum;
 @property (nonatomic, assign)NSInteger totalNum;
 @property (nonatomic, copy)NSString *sendStr;
@@ -67,4 +70,5 @@ extern NSString * kNotificationPublishNotification;
 {
     
 }
+SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(NotificationToAllVC)
 @end

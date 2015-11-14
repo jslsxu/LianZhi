@@ -94,19 +94,21 @@
 - (void)onActionButtonClicked:(LZTabBarButton *)button
 {
     NSInteger index = [_shareArray indexOfObject:button];
-    NSArray *typeArray = @[@(ShareTypeWeixiSession),@(ShareTypeWeixiTimeline),@(ShareTypeQQSpace),@(ShareTypeQQ),@(ShareTypeSinaWeibo), @(ShareTypeCopy)];
-    ShareType shareType = (ShareType)[typeArray[index] integerValue];
-    if(shareType != ShareTypeCopy)
+    NSArray *typeArray = @[@(SSDKPlatformSubTypeWechatSession),@(SSDKPlatformSubTypeWechatTimeline),@(SSDKPlatformSubTypeQZone),@(SSDKPlatformSubTypeQQFriend),@(SSDKPlatformTypeSinaWeibo), @(SSDKPlatformTypeCopy)];
+    SSDKPlatformType shareType = (SSDKPlatformType)[typeArray[index] integerValue];
+    if(shareType != SSDKPlatformTypeCopy)
     {
-        [[SVShare sharedInstance] shareWithType:shareType text:self.content image:self.image imageUrl:self.imageUrl url:self.url title:self.title result:^(ShareType type, SVShareResultState state, NSString *errorMsg) {
-            if(SVShareResultStateSuccess == state)
+        UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:self.imageUrl];
+        if(!image)
+            image = self.image;
+        [[SVShareManager sharedInstance] shareWithType:shareType image:image imageUrl:self.imageUrl title:self.title content:self.content url:self.url result:^(SSDKPlatformType type, SSDKResponseState state, NSString *errorMsg) {
+            if(SSDKResponseStateSuccess == state)
             {
                 [ProgressHUD showSuccess:@"分享成功"];
             }
             else if(errorMsg.length > 0)
                 [ProgressHUD showHintText:errorMsg];
         }];
-        
     }
     else
     {

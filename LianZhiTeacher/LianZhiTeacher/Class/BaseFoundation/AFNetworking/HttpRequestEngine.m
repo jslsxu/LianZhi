@@ -65,7 +65,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
                 }
                 else
                 {
-                    if(fail)
+                    if(fail && ![urlStr isEqualToString:@"sms/get"])
                     {
                         NSString *errmsg = [responseWrapper getStringForKey:@"err_msg"];
                         fail(errmsg);
@@ -74,7 +74,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
             }
             else
             {
-                if(fail)
+                if(fail && ![urlStr isEqualToString:@"sms/get"])
                 {
                     NSString *errmsg = [responseWrapper getStringForKey:@"err_msg"];
                     fail(errmsg);

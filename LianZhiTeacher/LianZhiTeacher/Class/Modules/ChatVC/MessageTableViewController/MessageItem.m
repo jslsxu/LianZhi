@@ -105,6 +105,8 @@
     }
     else if(self.messageContent.messageType == UUMessageTypeRevoked)
         height = 32;
+    else
+        height = 32;
     if(self.messageContent.hideTime)
         return height + 10 + 10 + 5;
     else

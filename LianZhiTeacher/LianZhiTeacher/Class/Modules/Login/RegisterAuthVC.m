@@ -87,7 +87,7 @@
     if([mobile isPhoneNumberValidate])
     {
         MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:self.view];
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_sms_code" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"mobile":mobile} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper* responseObject) {
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_sms_code" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"mobile":mobile,@"no_check" : @"1"} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper* responseObject) {
             [hud hide:YES];
             [MBProgressHUD showSuccess:@"验证码已经发送" toView:self.view];
             [self startTimer];
@@ -95,6 +95,10 @@
             [hud hide:YES];
             [ProgressHUD showHintText:errMsg];
         }];
+    }
+    else
+    {
+        [ProgressHUD showHintText:@"手机号不正确"];
     }
 }
 

@@ -16,9 +16,6 @@
     if(self)
     {
         [self setBackgroundColor:[UIColor clearColor]];
-        UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, 0.5)];
-        [sepLine setBackgroundColor:[UIColor colorWithHexString:@"D8D8D8"]];
-        [self addSubview:sepLine];
         
         UIImageView*    locationImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"LocationIcon")]];
         [locationImage setCenter:CGPointMake(self.height / 2, self.height / 2)];

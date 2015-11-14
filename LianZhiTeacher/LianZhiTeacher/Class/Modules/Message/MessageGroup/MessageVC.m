@@ -175,7 +175,7 @@
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     [_getMoreCell stopLoading];
     _isLoading = NO;
-    [ProgressHUD showHintText:errMsg];
+//    [ProgressHUD showHintText:errMsg];
 }
 
 - (NSInteger)newMessageNum
@@ -283,8 +283,7 @@
 {
     if(index == 0)
     {
-        NotificationToAllVC *notificationToAllVC = [[NotificationToAllVC alloc] init];
-        [self.navigationController pushViewController:notificationToAllVC animated:YES];
+        [self.navigationController pushViewController:[NotificationToAllVC sharedInstance] animated:YES];
     }
     else
     {

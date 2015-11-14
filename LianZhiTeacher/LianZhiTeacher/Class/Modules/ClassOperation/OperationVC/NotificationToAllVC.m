@@ -13,6 +13,7 @@
 #import "NotificationDetailVC.h"
 
 NSString * kNotificationPublishNotification = @"NotificationPublishNotification";
+NSString * kNotificationPublishSuccessNotification = @"NotificationPublishSuccessNotification";
 
 @implementation SentClassInfo
 
@@ -22,6 +23,18 @@ NSString * kNotificationPublishNotification = @"NotificationPublishNotification"
     self.sentNum = [dataWrapper getIntegerForKey:@"sent_num"];
     self.name = [dataWrapper getStringForKey:@"name"];
     self.totalNum = [dataWrapper getIntegerForKey:@"students_num"];
+    
+    TNDataWrapper *studentsWrapper =[dataWrapper getDataWrapperForKey:@"students"];
+    if(studentsWrapper.count > 0)
+    {
+        NSMutableArray *studentsArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < studentsWrapper.count; i ++)
+        {
+            NSString *studentID = [studentsWrapper getStringForIndex:i];
+            [studentsArray addObject:studentID];
+        }
+        self.sendStudents = studentsArray;
+    }
 }
 
 @end
@@ -34,6 +47,18 @@ NSString * kNotificationPublishNotification = @"NotificationPublishNotification"
     self.groupName = [dataWrapper getStringForKey:@"name"];
     self.sentNum = [dataWrapper getIntegerForKey:@"sent_num"];
     self.totalNum = [dataWrapper getIntegerForKey:@"students_num"];
+    
+    TNDataWrapper *teacherWrapper =[dataWrapper getDataWrapperForKey:@"teachers"];
+    if(teacherWrapper.count > 0)
+    {
+        NSMutableArray *teacherArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < teacherWrapper.count; i ++)
+        {
+            NSString *studentID = [teacherWrapper getStringForIndex:i];
+            [teacherArray addObject:studentID];
+        }
+        self.sendTeachers = teacherArray;
+    }
 }
 
 @end
@@ -106,6 +131,7 @@ NSString * kNotificationPublishNotification = @"NotificationPublishNotification"
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
     self.isFinished = YES;
+    self.isUploading = NO;
     self.notificationID = [dataWrapper getStringForKey:@"id"];
     self.words = [dataWrapper getStringForKey:@"words"];
     self.ctime = [dataWrapper getStringForKey:@"created_time"];
@@ -160,7 +186,15 @@ NSString * kNotificationPublishNotification = @"NotificationPublishNotification"
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
 {
     if(type == REQUEST_REFRESH)
-        [self.modelItemArray removeAllObjects];
+    {
+        NSMutableArray *deleteArray = [NSMutableArray array];
+        for (NotificationItem *item in self.modelItemArray)
+        {
+            if(item.isFinished && !item.isUploading)
+                [deleteArray addObject:item];
+        }
+        [self.modelItemArray removeObjectsInArray:deleteArray];
+    }
     TNDataWrapper *listWrapper = [data getDataWrapperForKey:@"list"];
     if(listWrapper.count > 0)
     {
@@ -241,6 +275,7 @@ NSString * kNotificationPublishNotification = @"NotificationPublishNotification"
 
 @implementation NotificationToAllVC
 
+SYNTHESIZE_SINGLETON_FOR_CLASS(NotificationToAllVC)
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -268,11 +303,18 @@ NSString * kNotificationPublishNotification = @"NotificationPublishNotification"
     [headerView addSubview:titleLabel];
     [_tableView setTableHeaderView:headerView];
     [self bindTableCell:@"NotificationCell" tableModel:@"NotificationModel"];
+    [self setSupportPullDown:YES];
     [self setSupportPullUp:YES];
     [self requestData:REQUEST_REFRESH];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNetworkStatusChanged) name:kReachabilityChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNotification:) name:kNotificationPublishNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kNotificationPublishSuccessNotification object:nil];
+}
+
+- (void)refresh
+{
+    [self requestData:REQUEST_REFRESH];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
@@ -288,6 +330,16 @@ NSString * kNotificationPublishNotification = @"NotificationPublishNotification"
     [task setParams:params];
     [task setObserver:self];
     return task;
+}
+
+- (BOOL)supportCache
+{
+    return YES;
+}
+
+- (NSString *)cacheFileName
+{
+    return [NSString stringWithFormat:@"%@_%@_%@",[self class],[UserCenter sharedInstance].curSchool.schoolID,[UserCenter sharedInstance].userInfo.uid];
 }
 
 - (void)setupHeaderView:(UIView *)viewParent
@@ -347,7 +399,7 @@ NSString * kNotificationPublishNotification = @"NotificationPublishNotification"
                 [formData appendPartWithFileData:UIImageJPEGRepresentation(notificationItem.imageArray[i], 0.8) name:filename fileName:filename mimeType:@"image/jpeg"];
             }
         } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-            [notificationItem parseData:responseObject];
+            [notificationItem parseData:[responseObject getDataWrapperForKey:@"info"]];
             [wself.tableView reloadData];
         } fail:^(NSString *errMsg) {
             [ProgressHUD showHintText:errMsg];

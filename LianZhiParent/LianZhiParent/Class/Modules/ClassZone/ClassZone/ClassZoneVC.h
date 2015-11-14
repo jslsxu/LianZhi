@@ -13,6 +13,7 @@
 #import "ReplyBox.h"
 #import "StatusManager.h"
 #import "TreeHouseHeaderView.h"
+#import "LZTabBarButton.h"
 @protocol ClassZoneHeaderDelegate <NSObject>
 @optional
 - (void)classZoneAppClicked;
@@ -24,12 +25,13 @@
     UIImageView*            _imageView;
     UIImageView*            _newpaperImageView;
     UILabel*                _contentLabel;
-    UIButton*               _appButton;
+    LZTabBarButton*         _appButton;
     UIButton*               _albumButton;
     UIImageView*            _brashImage;
     UIView*                 _bottomView;
     NewMessageIndicator*    _msgIndicator;
 }
+@property (nonatomic, readonly)LZTabBarButton *appButton;
 @property (nonatomic, copy)NSString *newsPaper;
 @property (nonatomic, weak)id<ClassZoneHeaderDelegate> delegate;
 @property (nonatomic, strong)TimelineCommentItem *commentItem;

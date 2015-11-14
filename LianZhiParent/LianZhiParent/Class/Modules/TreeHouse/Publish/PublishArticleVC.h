@@ -10,7 +10,6 @@
 
 @interface PublishArticleVC : PublishBaseVC
 {
-    UIView*                 _bgView;
     UTPlaceholderTextView*  _textView;
     UILabel*                _numLabel;
 }

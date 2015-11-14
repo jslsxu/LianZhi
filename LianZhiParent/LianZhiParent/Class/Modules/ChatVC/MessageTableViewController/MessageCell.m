@@ -23,8 +23,12 @@
         [self addSubview:_indicatorView];
         
         _sendFailImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SendFail"]];
+        [_sendFailImageView setUserInteractionEnabled:YES];
         [_sendFailImageView setHidden:YES];
         [self addSubview:_sendFailImageView];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onResendMessage)];
+        [_sendFailImageView addGestureRecognizer:tapGesture];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.width - 120) / 2, 5, 120, 15)];
         [_timeLabel setTextAlignment:NSTextAlignmentCenter];
@@ -188,13 +192,17 @@
         [_contentButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"biaoqing%ld",(long)(index + 1)]] forState:UIControlStateNormal];
         [_contentButton setSize:CGSizeMake(kFaceWith, kFaceWith)];
     }
-    else        //已撤销
+    else if(type == UUMessageTypeRevoked)      //已撤销
     {
         _contentButton.hidden = YES;
         _revokeMessageLabel.hidden = NO;
         [_revokeMessageLabel setText:@"你撤回了一条消息"];
         [_revokeMessageLabel sizeToFit];
         [_revokeMessageLabel setFrame:CGRectMake((self.width - _revokeMessageLabel.width - 10) / 2, _nameLabel.bottom, _revokeMessageLabel.width + 10, _revokeMessageLabel.height + 4)];
+    }
+    else
+    {
+        _contentButton.hidden = YES;
     }
     if(UUMessageFromMe == messageItem.from)
     {
@@ -235,6 +243,14 @@
         }
         UIMenuItem *deleteMenu = [[UIMenuItem alloc] initWithTitle:@"删除" action:@selector(deleteMessage)];
         [menuArray addObject:deleteMenu];
+    }
+    else
+    {
+        if(messageItem.messageStatus == MessageStatusFailed)
+        {
+            UIMenuItem *resendItem = [[UIMenuItem alloc] initWithTitle:@"重发" action:@selector(onResendMessage)];
+            [menuArray addObject:resendItem];
+        }
     }
     
     if(ChatTypeParents == self.chatType && messageItem.from == UUMessageFromOther)
@@ -294,7 +310,8 @@
     if (action == @selector(copyMessage) ||
         action == @selector(deleteMessage) ||
         action == @selector(revokeMessage) ||
-        action == @selector(addToBlackList))
+        action == @selector(addToBlackList) ||
+        action == @selector(onResendMessage))
         return YES;
     
     return NO;

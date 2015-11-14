@@ -18,4 +18,5 @@
 {
     UITableView*    _tableView;
 }
+- (BOOL)hasNew;
 @end

@@ -38,7 +38,7 @@
     else if([_userInfo isKindOfClass:[StudentInfo class]])
         [_nameLabel setText:[(StudentInfo *)_userInfo name]];
     [_avatarView setImageWithUrl:[NSURL URLWithString:_userInfo.avatar]];
-    [_avatarView setStatus:_userInfo.activited ? nil : @"未开通"];
+    [_avatarView setStatus:_userInfo.activited ? nil : @"未下载"];
 }
 
 @end
@@ -159,7 +159,7 @@
             if(studentArrayWrapper.count > 0)
             {
                 NSMutableArray *studentArray = [NSMutableArray array];
-                for (NSInteger i = 0; i < teacherArrayWrapper.count; i++)
+                for (NSInteger i = 0; i < studentArrayWrapper.count; i++)
                 {
                     TNDataWrapper *studentItemWrapper = [studentArrayWrapper getDataWrapperForIndex:i];
                     StudentInfo *studentInfo = [[StudentInfo alloc] init];

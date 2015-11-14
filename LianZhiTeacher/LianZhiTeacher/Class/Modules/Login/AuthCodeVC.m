@@ -54,16 +54,16 @@
     [_retrieveButton setBackgroundImage:[[UIImage imageWithColor:kCommonTeacherTintColor size:CGSizeMake(30, 30) cornerRadius:5] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [self.view addSubview:_retrieveButton];
     
-    _nameField = [[LZTextField alloc] initWithFrame:CGRectMake(10, _authCodeField.bottom + 15, self.view.width - 10 * 2, 45)];
-    [_nameField setFont:[UIFont systemFontOfSize:16]];
-    [_nameField setTextColor:kCommonTeacherTintColor];
-    [_nameField setReturnKeyType:UIReturnKeyDone];
-    [_nameField setPlaceholder:@"请输入您的姓名"];
-    [_nameField setDelegate:self];
-    [self.view addSubview:_nameField];
+//    _nameField = [[LZTextField alloc] initWithFrame:CGRectMake(10, _authCodeField.bottom + 15, self.view.width - 10 * 2, 45)];
+//    [_nameField setFont:[UIFont systemFontOfSize:16]];
+//    [_nameField setTextColor:kCommonTeacherTintColor];
+//    [_nameField setReturnKeyType:UIReturnKeyDone];
+//    [_nameField setPlaceholder:@"请输入您的姓名"];
+//    [_nameField setDelegate:self];
+//    [self.view addSubview:_nameField];
     
     _nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_nextButton setFrame:CGRectMake(10, _nameField.bottom + 15, self.view.width - 10 * 2, 45)];
+    [_nextButton setFrame:CGRectMake(10, _retrieveButton.bottom + 15, self.view.width - 10 * 2, 45)];
     [_nextButton addTarget:self action:@selector(onNextClicked) forControlEvents:UIControlEventTouchUpInside];
     [_nextButton setBackgroundImage:[[UIImage imageWithColor:kCommonTeacherTintColor size:CGSizeMake(30, 30) cornerRadius:5] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
     [_nextButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
@@ -94,14 +94,14 @@
     [self.view endEditing:YES];
     NSString *mobile = _mobileField.text;
     NSString *authCode = _authCodeField.text;
-    NSString *name = _nameField.text;
+//    NSString *name = _nameField.text;
     NSString *errMsg = nil;
     if(mobile.length == 0)
         errMsg = @"手机号不能为空";
     else if(authCode.length == 0)
         errMsg = @"请输入验证码";
-    else if (name.length == 0)
-        errMsg = @"请输入您的姓名";
+//    else if (name.length == 0)
+//        errMsg = @"请输入您的姓名";
     if(errMsg)
     {
         [ProgressHUD showHintText:errMsg];
@@ -110,7 +110,7 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:mobile forKey:@"mobile"];
     [params setValue:authCode forKey:@"code"];
-    [params setValue:name forKey:@"name"];
+//    [params setValue:name forKey:@"name"];
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:[UIApplication sharedApplication].keyWindow];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/login_mobile" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:NO];

@@ -26,13 +26,15 @@ static __strong UIWindow *welcomeWindow = nil;
     if(self)
     {
         [self setBackgroundColor:[UIColor whiteColor]];
+        UIViewController *rootVC = [[UIViewController alloc] init];
+        self.rootViewController = rootVC;
         _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
         [_scrollView setPagingEnabled:YES];
         [_scrollView setBounces:NO];
         [_scrollView setDelegate:self];
         [_scrollView setContentSize:CGSizeMake(_scrollView.width * kWelcomePhotoNum, _scrollView.height)];
         [_scrollView setShowsHorizontalScrollIndicator:NO];
-        [self addSubview:_scrollView];
+        [rootVC.view addSubview:_scrollView];
         
         for (NSInteger i = 0; i < kWelcomePhotoNum; i++) {
             UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * _scrollView.width, 0, _scrollView.width, _scrollView.height)];
@@ -62,7 +64,7 @@ static __strong UIWindow *welcomeWindow = nil;
         [_pageControl setNumberOfPages:kWelcomePhotoNum];
         [_pageControl setCurrentPage:0];
         [_pageControl setCenter:CGPointMake(self.width / 2, self.height - 20 * self.height / 480)];
-        [self addSubview:_pageControl];
+        [rootVC.view addSubview:_pageControl];
     }
     return self;
 }

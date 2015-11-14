@@ -36,7 +36,7 @@
     if([_userInfo isKindOfClass:[TeacherInfo class]])
     {
         [_nameLabel setText:[(TeacherInfo *)userInfo teacherName]];
-        [_avatarView setStatus:_userInfo.actived ? nil : @"未开通"];
+        [_avatarView setStatus:_userInfo.actived ? nil : @"未下载"];
     }
     else if([_userInfo isKindOfClass:[ChildInfo class]])
     {

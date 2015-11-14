@@ -48,14 +48,25 @@
 
 - (void)onReloadData:(TNModelItem *)modelItem
 {
-    StudentInfo *studentInfo = (StudentInfo *)modelItem;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:studentInfo.avatar]];
-    [_nameLabel setText:studentInfo.name];
-    [_nameLabel sizeToFit];
-    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, (self.height - _nameLabel.height) / 2)];
-    [_infoLabel setText:[NSString stringWithFormat:@"(%ld位家长)",(long)studentInfo.family.count]];
-    [_infoLabel sizeToFit];
-    [_infoLabel setOrigin:CGPointMake(_nameLabel.right + 10, (self.height - _infoLabel.height) / 2)];
+    if([modelItem isKindOfClass:[StudentInfo class]])
+    {
+        StudentInfo *studentInfo = (StudentInfo *)modelItem;
+        [_avatarView setImageWithUrl:[NSURL URLWithString:studentInfo.avatar]];
+        [_nameLabel setText:studentInfo.name];
+        [_nameLabel sizeToFit];
+        [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, (self.height - _nameLabel.height) / 2)];
+        [_infoLabel setText:[NSString stringWithFormat:@"(%ld位家长)",(long)studentInfo.family.count]];
+        [_infoLabel sizeToFit];
+        [_infoLabel setOrigin:CGPointMake(_nameLabel.right + 10, (self.height - _infoLabel.height) / 2)];
+    }
+    else
+    {
+        TeacherInfo *teacherInfo = (TeacherInfo *)modelItem;
+        [_avatarView setImageWithUrl:[NSURL URLWithString:teacherInfo.avatar]];
+        [_nameLabel setText:teacherInfo.name];
+        [_nameLabel sizeToFit];
+        [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, (self.height - _nameLabel.height) / 2)];
+    }
 }
 
 - (void)setChecked:(BOOL)checked
@@ -66,9 +77,8 @@
 
 @end
 
-@interface NotificationClassStudentsVC ()<UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic, strong)NSMutableArray *seletedArray;
-@property (nonatomic, strong)NSMutableArray *students;
+@interface NotificationClassStudentsVC ()
+
 @end
 
 @implementation NotificationClassStudentsVC
@@ -231,6 +241,7 @@
         } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             [hud hide:NO];
             [ProgressHUD showSuccess:@"发送成功"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationPublishSuccessNotification object:nil];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self dismissViewControllerAnimated:YES completion:nil];
             });

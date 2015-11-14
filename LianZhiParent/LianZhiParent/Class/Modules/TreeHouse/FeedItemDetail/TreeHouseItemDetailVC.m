@@ -508,7 +508,7 @@
         if(imageUrl.length == 0)
             imageUrl = [UserCenter sharedInstance].curChild.avatar;
           NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kTreeHouseShareUrl,self.treeHouseItem.user.uid,self.treeHouseItem.itemID];
-        [ShareActionView shareWithTitle:self.treeHouseItem.detail content:nil image:nil imageUrl:imageUrl url:url];
+        [ShareActionView shareWithTitle:self.treeHouseItem.detail content:nil image:[UIImage imageNamed:@"TreeHouse"] imageUrl:imageUrl url:url];
     }
 }
 

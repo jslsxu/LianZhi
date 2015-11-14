@@ -94,14 +94,11 @@
     [self.view endEditing:YES];
     NSString *mobile = [_mobileField text];
     NSString *authCode = [_authCodeField text];
-    NSString *name = [_nameField text];
     NSString *msg = nil;
     if(![self checkPhoneNumber:mobile])
         msg = @"请输入正确的手机号";
     else if(authCode.length == 0)
         msg = @"请输入验证码";
-    else if(name.length == 0)
-        msg = @"请输入孩子姓名";
     if(msg)
     {
         [ProgressHUD showHintText:msg];
@@ -110,7 +107,6 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:mobile forKey:@"mobile"];
     [params setValue:authCode forKey:@"code"];
-    [params setValue:name forKey:@"name"];
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:[UIApplication sharedApplication].keyWindow];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/login_mobile" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:NO];
