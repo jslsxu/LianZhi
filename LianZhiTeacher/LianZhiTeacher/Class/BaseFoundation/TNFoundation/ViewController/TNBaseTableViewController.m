@@ -172,7 +172,8 @@
 
 - (void)onRequestFail:(NSString *)errMsg
 {
-    [ProgressHUD showHintText:errMsg];
+    if(![self hideErrorAlert])
+        [ProgressHUD showHintText:errMsg];
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
     [_getMoreCell stopLoading];
     _isLoading = NO;
@@ -188,6 +189,11 @@
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
 {
     return nil;//子类覆盖
+}
+
+- (BOOL)hideErrorAlert
+{
+    return NO;
 }
 
 #pragma mark - 

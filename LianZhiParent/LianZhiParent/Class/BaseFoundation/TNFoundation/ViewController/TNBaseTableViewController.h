@@ -30,7 +30,7 @@
 - (void)loadCache;
 - (void)requestData:(REQUEST_TYPE)requestType;
 - (void)cancelRequest;
-
+- (BOOL)hideErrorAlert;
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType;
 //缓存文件
 - (BOOL)supportCache;

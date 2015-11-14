@@ -78,12 +78,14 @@ static NSArray *tabDatas = nil;
 
 - (void)updateTitleView
 {
-    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-    [titleLabel setTextColor:[UIColor whiteColor]];
-    [titleLabel setText:[UserCenter sharedInstance].curSchool.schoolName];
-    [titleLabel sizeToFit];
-    self.navigationItem.titleView = titleLabel;
+    Reachability* curReach = ApplicationDelegate.hostReach;
+    NetworkStatus status = [curReach currentReachabilityStatus];
+    if(status == NotReachable)
+    {
+        self.title = @"网络不可用";
+    }
+    else
+        self.title = [UserCenter sharedInstance].curSchool.schoolName;
 }
 
 - (void)onStatusChanged
@@ -131,6 +133,7 @@ static NSArray *tabDatas = nil;
             [appTabButton setBadgeValue:nil];
     }
 }
+
 
 - (void)onNewMsgNumChanged
 {
@@ -203,6 +206,9 @@ static NSArray *tabDatas = nil;
         
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_switchButton];
     }
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+    [backItem setTitle:@"返回"];
+    self.navigationItem.backBarButtonItem = backItem;
 }
 
 - (void)onTabButtonClicked:(UIButton *)button

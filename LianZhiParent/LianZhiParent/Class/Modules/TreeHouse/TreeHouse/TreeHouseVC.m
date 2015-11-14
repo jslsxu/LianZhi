@@ -75,6 +75,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     {
         item.isUploading = YES;
         NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:item];
+        if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:item.params];
         [params setValue:item.detail forKey:@"words"];

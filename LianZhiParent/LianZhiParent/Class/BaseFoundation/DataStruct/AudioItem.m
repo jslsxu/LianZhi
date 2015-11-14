@@ -12,10 +12,13 @@
 
 - (void)dealloc
 {
-    NSString *filePath = [NSURL fileURLWithPath:[[MLDataCache shareInstance] filePathForKey:self.audioUrl]].absoluteString;
-    if([filePath isEqualToString:[MLAmrPlayer shareInstance].filePath.absoluteString])
+    if(self.audioUrl)
     {
-        [[MLAmrPlayer shareInstance] stopPlaying];
+        NSString *filePath = [NSURL fileURLWithPath:[[MLDataCache shareInstance] filePathForKey:self.audioUrl]].absoluteString;
+        if([filePath isEqualToString:[MLAmrPlayer shareInstance].filePath.absoluteString])
+        {
+            [[MLAmrPlayer shareInstance] stopPlaying];
+        }
     }
 }
 

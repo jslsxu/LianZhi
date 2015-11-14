@@ -141,6 +141,19 @@
     [self requestData:REQUEST_REFRESH];
 }
 
+- (BOOL)supportCache
+{
+    return YES;
+}
+
+- (NSString *)cacheFileName
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM"];
+    NSString *str = [formatter stringFromDate:self.date];
+    return [NSString stringWithFormat:@"%@_%@_%@",[self class],[UserCenter sharedInstance].curChild.uid,str];
+}
+
 #pragma mark - GrowthDatePickerDelegate
 - (void)growthDatePickerFinished:(NSDate *)date
 {

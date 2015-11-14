@@ -38,7 +38,7 @@
     
     self.classArray = classArray;
     
-    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStylePlain];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];

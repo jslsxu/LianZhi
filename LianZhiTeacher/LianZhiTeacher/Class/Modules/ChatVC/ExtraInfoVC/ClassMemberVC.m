@@ -159,7 +159,7 @@
             if(studentArrayWrapper.count > 0)
             {
                 NSMutableArray *studentArray = [NSMutableArray array];
-                for (NSInteger i = 0; i < teacherArrayWrapper.count; i++)
+                for (NSInteger i = 0; i < studentArrayWrapper.count; i++)
                 {
                     TNDataWrapper *studentItemWrapper = [studentArrayWrapper getDataWrapperForIndex:i];
                     StudentInfo *studentInfo = [[StudentInfo alloc] init];

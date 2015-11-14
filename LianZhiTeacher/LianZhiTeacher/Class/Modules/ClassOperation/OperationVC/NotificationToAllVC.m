@@ -332,6 +332,16 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(NotificationToAllVC)
     return task;
 }
 
+- (BOOL)supportCache
+{
+    return YES;
+}
+
+- (NSString *)cacheFileName
+{
+    return [NSString stringWithFormat:@"%@_%@_%@",[self class],[UserCenter sharedInstance].curSchool.schoolID,[UserCenter sharedInstance].userInfo.uid];
+}
+
 - (void)setupHeaderView:(UIView *)viewParent
 {
     NSInteger itemWidth = 50;
