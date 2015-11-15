@@ -381,6 +381,7 @@
 		37EAC9ED1B82D165007BFBA1 /* CommonInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9EB1B82D165007BFBA1 /* CommonInputVC.m */; };
 		37EAC9F01B82DEE5007BFBA1 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */; };
 		37EAC9F31B8348EE007BFBA1 /* PasswordConfirmVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9F21B8348EE007BFBA1 /* PasswordConfirmVC.m */; };
+		37EC48481BF72A6C00A5D1D6 /* AttendanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EC48471BF72A6C00A5D1D6 /* AttendanceVC.m */; };
 		37F206E31BDA374E006466F4 /* Guide.zip in Resources */ = {isa = PBXBuildFile; fileRef = 37F206E21BDA374E006466F4 /* Guide.zip */; };
 		37F206FB1BDDCAF1006466F4 /* CourseListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206FA1BDDCAF1006466F4 /* CourseListVC.m */; };
 		37F207071BDDD596006466F4 /* HomeWorkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207041BDDD596006466F4 /* HomeWorkCell.m */; };
@@ -1127,6 +1128,8 @@
 		37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		37EAC9F11B8348EE007BFBA1 /* PasswordConfirmVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordConfirmVC.h; sourceTree = "<group>"; };
 		37EAC9F21B8348EE007BFBA1 /* PasswordConfirmVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordConfirmVC.m; sourceTree = "<group>"; };
+		37EC48461BF72A6C00A5D1D6 /* AttendanceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceVC.h; sourceTree = "<group>"; };
+		37EC48471BF72A6C00A5D1D6 /* AttendanceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceVC.m; sourceTree = "<group>"; };
 		37F206E21BDA374E006466F4 /* Guide.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Guide.zip; sourceTree = "<group>"; };
 		37F206F91BDDCAF1006466F4 /* CourseListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseListVC.h; sourceTree = "<group>"; };
 		37F206FA1BDDCAF1006466F4 /* CourseListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseListVC.m; sourceTree = "<group>"; };
@@ -2388,6 +2391,7 @@
 		37C316351A5636AC002E847D /* ClassApp */ = {
 			isa = PBXGroup;
 			children = (
+				37EC48451BF72A5A00A5D1D6 /* AttendanceVC */,
 				37C53AA51B14E39800C3ED69 /* VacationHistory */,
 				37C53A8D1B14774600C3ED69 /* VacationManaerVC */,
 				37C316431A56372D002E847D /* ClassAppVC.h */,
@@ -2886,6 +2890,15 @@
 			path = PhotoBrowserViewController;
 			sourceTree = "<group>";
 		};
+		37EC48451BF72A5A00A5D1D6 /* AttendanceVC */ = {
+			isa = PBXGroup;
+			children = (
+				37EC48461BF72A6C00A5D1D6 /* AttendanceVC.h */,
+				37EC48471BF72A6C00A5D1D6 /* AttendanceVC.m */,
+			);
+			path = AttendanceVC;
+			sourceTree = "<group>";
+		};
 		37F206F81BDDCADF006466F4 /* HomeWork */ = {
 			isa = PBXGroup;
 			children = (
@@ -2978,7 +2991,7 @@
 		37C355FA1A3FD67300B948E6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = jslsxu;
 				TargetAttributes = {
 					37C356011A3FD67300B948E6 = {
@@ -3187,6 +3200,7 @@
 				3793F81E1B7CFFD900501F77 /* TNListModel.m in Sources */,
 				3728A5E91B9332FE00310457 /* ClassZoneModel.m in Sources */,
 				3720C1081A419EDC000357A5 /* AuthCodeVC.m in Sources */,
+				37EC48481BF72A6C00A5D1D6 /* AttendanceVC.m in Sources */,
 				3793F7EF1B7CFFD900501F77 /* MLDataCache.m in Sources */,
 				37FD70AA1BBCF0F700C83AB4 /* zip.c in Sources */,
 				3793F7C61B7CFFD900501F77 /* POIItemCell.m in Sources */,
@@ -3413,6 +3427,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3476,7 +3491,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3508,8 +3523,9 @@
 					"$(PROJECT_DIR)/LianZhiParent/Class/BaseFoundation/SVShare/SVSDK/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.Parent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7978f522-3d07-4c8c-844e-0e19b4151403";
+				PROVISIONING_PROFILE = "dde38db0-35f3-4220-ba79-3958cca57f5a";
 			};
 			name = Debug;
 		};
@@ -3520,7 +3536,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3552,8 +3568,9 @@
 					"$(PROJECT_DIR)/LianZhiParent/Class/BaseFoundation/SVShare/SVSDK/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.Parent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7978f522-3d07-4c8c-844e-0e19b4151403";
+				PROVISIONING_PROFILE = "dde38db0-35f3-4220-ba79-3958cca57f5a";
 			};
 			name = Release;
 		};

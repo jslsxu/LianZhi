@@ -223,7 +223,7 @@
         return FOOTERVIEW_HEIGHT;
     }
     
-    TNModelItem* item = [modelItemArray objectAtIndex:indexPath.row];
+    TNModelItem *item = [_tableViewModel itemForIndexPath:indexPath];
     NSNumber* (*action)(id, SEL, id,NSInteger) = (NSNumber* (*)(id, SEL,id, NSInteger)) objc_msgSend;
     NSNumber* height = action([NSClassFromString(self.cellName) class], NSSelectorFromString(CELL_HEIGHT_SEL), item, (int) _tableView.frame.size.width);
     return [height floatValue];

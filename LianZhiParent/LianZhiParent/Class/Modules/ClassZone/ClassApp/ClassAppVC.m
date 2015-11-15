@@ -10,6 +10,7 @@
 #import "GrowthTimelineVC.h"
 #import "ContactListVC.h"
 #import "CourseListVC.h"
+#import "VacationHistoryVC.h"
 @interface ClassAppVC ()
 
 @end
@@ -85,8 +86,8 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-    CourseListVC *courseListVC = [[CourseListVC alloc] init];
-    [CurrentROOTNavigationVC pushViewController:courseListVC animated:YES];
+    VacationHistoryVC *vacationVC = [[VacationHistoryVC alloc] init];
+    [CurrentROOTNavigationVC pushViewController:vacationVC animated:YES];
     return;
     ClassAppItem *appItem = (ClassAppItem *)modelItem;
     NSString *actionUrl = appItem.actionUrl;
