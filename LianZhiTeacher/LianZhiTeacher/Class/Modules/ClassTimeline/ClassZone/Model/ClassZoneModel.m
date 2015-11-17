@@ -49,6 +49,7 @@
     }
     self.responseModel = [[ResponseModel alloc] init];
     [self.responseModel parseData:dataWrapper];
+    self.newSent = NO;
 }
 
 - (BOOL)canSendDirectly

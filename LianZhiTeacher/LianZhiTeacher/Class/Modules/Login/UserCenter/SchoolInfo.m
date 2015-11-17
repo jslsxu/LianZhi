@@ -291,6 +291,7 @@
 {
     self.groupID = [dataWrapper getStringForKey:@"id"];
     self.groupName = [dataWrapper getStringForKey:@"name"];
+    self.canNotice = [dataWrapper getBoolForKey:@"can_notice"];
     TNDataWrapper *teacherWrapper = [dataWrapper getDataWrapperForKey:@"teachers"];
     if(teacherWrapper.count > 0)
     {
@@ -312,6 +313,7 @@
     {
         self.groupID = [aDecoder decodeObjectForKey:@"id"];
         self.groupName = [aDecoder decodeObjectForKey:@"name"];
+        self.canNotice = [aDecoder decodeBoolForKey:@"can_notice"];
         self.teachers = [aDecoder decodeObjectForKey:@"teachers"];
     }
     return self;
@@ -321,6 +323,7 @@
 {
     [aCoder encodeObject:self.groupID forKey:@"id"];
     [aCoder encodeObject:self.groupName forKey:@"name"];
+    [aCoder encodeBool:self.canNotice forKey:@"can_notice"];
     [aCoder encodeObject:self.teachers forKey:@"teachers"];
 }
 @end

@@ -28,7 +28,7 @@
         
         _infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(_avatarView.right + 10, 0, 0, 0)];
         [_infoLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
-        [_infoLabel setFont:[UIFont systemFontOfSize:10]];
+        [_infoLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_infoLabel];
         
         _checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -66,6 +66,16 @@
         [_nameLabel setText:teacherInfo.name];
         [_nameLabel sizeToFit];
         [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, (self.height - _nameLabel.height) / 2)];
+        
+        if(teacherInfo.label.length > 0)
+        {
+            [_infoLabel setHidden:NO];
+            [_infoLabel setText:teacherInfo.label];
+            [_infoLabel sizeToFit];
+            [_infoLabel setOrigin:CGPointMake(_nameLabel.right + 10, (self.height - _infoLabel.height) / 2)];
+        }
+        else
+            [_infoLabel setHidden:YES];
     }
 }
 

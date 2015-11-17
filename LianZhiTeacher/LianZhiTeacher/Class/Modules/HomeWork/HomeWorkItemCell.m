@@ -27,7 +27,7 @@
         [_photoView setContentMode:UIViewContentModeScaleAspectFill];
         [self addSubview:_photoView];
         
-        _voiceButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _voiceButton = [MessageVoiceButton buttonWithType:UIButtonTypeCustom];
         [_voiceButton addTarget:self action:@selector(onVoiceButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_voiceButton];
         

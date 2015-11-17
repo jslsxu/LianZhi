@@ -54,6 +54,7 @@
     [self.responseModel parseData:dataWrapper];
     
     self.hasMore = [dataWrapper getBoolForKey:@"comment_more"];
+    self.newSend = NO;
 }
 
 - (TagPrivilege)tagPrivilege

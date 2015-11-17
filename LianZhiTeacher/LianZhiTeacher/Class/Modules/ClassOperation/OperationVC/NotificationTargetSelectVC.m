@@ -88,6 +88,7 @@
 
 @interface NotificationTargetSelectVC ()
 @property (nonatomic, strong)NSArray *classArray;
+@property (nonatomic, strong)NSArray *groupArray;
 @end
 
 @implementation NotificationTargetSelectVC
@@ -116,11 +117,19 @@
     
     self.classArray = classArray;
     
+    NSMutableArray *groupArray = [NSMutableArray array];
+    for (TeacherGroup *teacherGroup in [UserCenter sharedInstance].curSchool.groups)
+    {
+        if(teacherGroup.canNotice)
+            [groupArray addObject:teacherGroup];
+    }
+    self.groupArray = groupArray;
+    
     _selectedClassArray = [NSMutableArray array];
     _selectedGroupArray = [NSMutableArray array];
     
     NSInteger spaceYStart = 0;
-    if(self.classArray.count > 0 && [UserCenter sharedInstance].curSchool.groups.count > 0)
+    if(self.classArray.count > 0 && self.groupArray.count > 0)
     {
         UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
         [headerView setBackgroundColor:[UIColor colorWithHexString:@"0fabc1"]];
@@ -157,6 +166,8 @@
     NSMutableString *targetStr = [[NSMutableString alloc] init];
     if(_segmentControl.selectedSegmentIndex == 0)
     {
+        if(_selectedClassArray.count > 0)
+        {
             NSMutableArray *classArray = [[NSMutableArray alloc] init];
             for (ClassInfo *classInfo in _selectedClassArray)
             {
@@ -165,19 +176,28 @@
             }
             [targetStr appendString:[NSString stringWithJSONObject:classArray]];
             [params setValue:targetStr forKey:@"classes"];
+        }
+        else
+        {
+            [ProgressHUD showHintText:@"还没有选择发送对象"];
+            return;
+        }
     }
     else
     {
-        for (TeacherGroup *teacherInfo in _selectedGroupArray)
+        if(_selectedGroupArray.count > 0)
         {
-            [targetStr appendFormat:@"%@,",teacherInfo.groupID];
+            for (TeacherGroup *teacherInfo in _selectedGroupArray)
+            {
+                [targetStr appendFormat:@"%@,",teacherInfo.groupID];
+            }
+            [params setValue:targetStr forKey:@"groups"];
         }
-        [params setValue:targetStr forKey:@"groups"];
-    }
-    if(targetStr.length == 0)
-    {
-        [ProgressHUD showHintText:@"还没有选择发送对象"];
-        return;
+        else
+        {
+            [ProgressHUD showHintText:@"还没有选择发送对象"];
+            return;
+        }
     }
     if(self.imageArray.count > 0)
     {
@@ -270,7 +290,7 @@
     }
     else
     {
-        NSArray *groupArray = [UserCenter sharedInstance].curSchool.groups;
+        NSArray *groupArray = self.groupArray;
         TeacherGroup  *group = groupArray[indexPath.row];
         button.selected = !button.selected;
         if(button.selected)
@@ -329,7 +349,7 @@
     }
     else
     {
-        return [UserCenter sharedInstance].curSchool.groups.count;
+        return self.groupArray.count;
     }
 }
 
@@ -400,7 +420,7 @@
     else
     {
 //        [cell.checkButton addTarget:self action:@selector(onGroupCellClicked:) forControlEvents:UIControlEventTouchUpInside];
-        TeacherGroup *teacherGroup = [UserCenter sharedInstance].curSchool.groups[indexPath.row];
+        TeacherGroup *teacherGroup = self.groupArray[indexPath.row];
         [cell.nameLabel setText:teacherGroup.groupName];
         [cell.checkButton setSelected:[_selectedGroupArray containsObject:teacherGroup]];
         [cell.detailTextLabel setText:kStringFromValue(teacherGroup.teachers.count)];
@@ -428,7 +448,7 @@
     }
     else
     {
-        TeacherGroup *teachergroup = [UserCenter sharedInstance].curSchool.groups[indexPath.row];
+        TeacherGroup *teachergroup = self.groupArray[indexPath.row];
         NotificationGroupMemberVC *groupMemberVC = [[NotificationGroupMemberVC alloc] init];
         [groupMemberVC setTeacherGorup:teachergroup];
         [groupMemberVC setImageArray:self.imageArray];

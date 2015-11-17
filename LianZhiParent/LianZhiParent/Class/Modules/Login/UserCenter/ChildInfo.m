@@ -48,7 +48,7 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-    if(self = [super init])
+    if(self = [super initWithCoder:aDecoder])
     {
         self.uid = [aDecoder decodeObjectForKey:@"id"];
         self.teacherName = [aDecoder decodeObjectForKey:@"name"];
@@ -61,6 +61,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
+    [super encodeWithCoder:aCoder];
     [aCoder encodeObject:self.uid forKey:@"id"];
     [aCoder encodeObject:self.teacherName forKey:@"name"];
     [aCoder encodeObject:self.course forKey:@"course"];
@@ -143,7 +144,7 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-    if(self = [super init])
+    if(self = [super initWithCoder:aDecoder])
     {
         self.uid = [aDecoder decodeObjectForKey:@"id"];
         self.name = [aDecoder decodeObjectForKey:@"name"];
@@ -156,6 +157,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
+    [super encodeWithCoder:aCoder];
     [aCoder encodeObject:self.uid forKey:@"id"];
     [aCoder encodeObject:self.name forKey:@"name"];
     [aCoder encodeObject:self.mobile forKey:@"mobile"];
@@ -208,7 +210,7 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-    if(self = [super init])
+    if(self = [super initWithCoder:aDecoder])
     {
         self.uid = [aDecoder decodeObjectForKey:@"id"];
         self.name = [aDecoder decodeObjectForKey:@"name"];
@@ -227,6 +229,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
+    [super encodeWithCoder:aCoder];
     [aCoder encodeObject:self.uid forKey:@"id"];
     [aCoder encodeObject:self.name forKey:@"name"];
     [aCoder encodeObject:self.avatar forKey:@"head"];

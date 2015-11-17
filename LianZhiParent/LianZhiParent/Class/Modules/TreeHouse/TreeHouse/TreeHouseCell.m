@@ -245,6 +245,10 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     
     [_tagButton setFrame:_tagLabel.frame];
     [_actionButton setOrigin:CGPointMake(_bgView.width - _actionButton.width, spaceYStart + (30 - _actionButton.height) / 2)];
+    if(item.newSend || item.isUploading)
+        [_actionButton setHidden:YES];
+    else
+        [_actionButton setHidden:NO];
     spaceYStart += 30;
     
     [_responseView setResponseModel:item.responseModel];

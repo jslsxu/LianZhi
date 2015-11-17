@@ -196,6 +196,7 @@
     }
     
     TreehouseItem *item = [[TreehouseItem alloc] init];
+    [item setCanEdit:YES];
     NSMutableArray *photos = [[NSMutableArray alloc] initWithCapacity:0];
     for (NSInteger i = 0; i < [_imageArray count];i++) {
         PublishImageItem *imageItem = _imageArray[i];
@@ -365,6 +366,7 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
+    self.words = textView.text;
     if([text isEqualToString:@"\n"])
     {
         [textView resignFirstResponder];
