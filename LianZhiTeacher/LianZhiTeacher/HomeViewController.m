@@ -56,6 +56,7 @@ static NSArray *tabDatas = nil;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNewMsgNumChanged) name:kNewMsgNumNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFoundChanged) name:kFoundNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTitleView) name:kReachabilityChangedNotification object:nil];
         //监听学校变化
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initialViewControllers) name:kUserCenterSchoolSchemeChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
@@ -145,9 +146,9 @@ static NSArray *tabDatas = nil;
 
 - (void)onFoundChanged
 {
-    BOOL foundNew = [UserCenter sharedInstance].statusManager.found;
-    LZTabBarButton *msgButton = [_tabbarButtons lastObject];
-    [msgButton setBadgeValue:(foundNew > 0 ? kStringFromValue(foundNew) : nil)];
+//    BOOL foundNew = [UserCenter sharedInstance].statusManager.found;
+//    LZTabBarButton *msgButton = [_tabbarButtons lastObject];
+//    [msgButton setBadgeValue:(foundNew > 0 ? kStringFromValue(foundNew) : nil)];
 }
 
 - (void)onSchoolChanged

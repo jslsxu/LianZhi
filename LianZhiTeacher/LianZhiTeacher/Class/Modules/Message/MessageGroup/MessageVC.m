@@ -272,7 +272,10 @@
             [chatVC setTargetID:groupItem.fromInfo.uid];
             [chatVC setTo_objid:groupItem.fromInfo.from_obj_id];
             [chatVC setMobile:groupItem.fromInfo.mobile];
-            [chatVC setTitle:groupItem.fromInfo.name];
+            NSString *title = groupItem.fromInfo.name;
+            if(groupItem.fromInfo.label.length > 0 && groupItem.fromInfo.type != ChatTypeParents)
+                title = [NSString stringWithFormat:@"%@(%@)",groupItem.fromInfo.name, groupItem.fromInfo.label];
+            [chatVC setTitle:title];
             [self.navigationController pushViewController:chatVC animated:YES];
         }
     }

@@ -334,8 +334,6 @@
             NSString *imageUrl = nil;
             if(self.targetClassZoneItem.photos.count > 0)
                 imageUrl = [self.targetClassZoneItem.photos[0] thumbnailUrl];
-            if(imageUrl.length == 0)
-                imageUrl = self.classInfo.logo;
             NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kClassZoneShareUrl,self.targetClassZoneItem.userInfo.uid,self.targetClassZoneItem.itemID];
             [ShareActionView shareWithTitle:self.targetClassZoneItem.content content:nil image:[UIImage imageNamed:@"ClassZone"] imageUrl:imageUrl url:url];
         }
@@ -367,7 +365,6 @@
             [publishImageItem setOriginalUrl:photoItem.originalUrl];
             [photoArray addObject:publishImageItem];
         }
-        [publishPhotoVC setForward:YES];
         [publishPhotoVC setOriginalImageArray:photoArray];
         [publishPhotoVC setDelegate:ApplicationDelegate.homeVC.treeHouseVC];
         
@@ -380,9 +377,34 @@
         [publishAudioVC setWords:zoneItem.content];
         [publishAudioVC setDuration:audioItem.timeSpan];
         
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:audioItem.audioUrl]];
-        [publishAudioVC setAmrData:[[MLDataCache shareInstance] cachedDataForRequest:request]];
-        publishVC = publishAudioVC;
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:audioItem.audioUrl]];
+        [request setTimeoutInterval:10];
+         NSData* data = [[MLDataCache shareInstance] cachedDataForRequest:request];
+        if(data == nil)
+        {
+            MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:[UIApplication sharedApplication].keyWindow];
+             static MLPlayVoiceButton *button = nil;
+            if(button == nil)
+                button = [[MLPlayVoiceButton alloc] init];
+            [button setVoiceWithURL:[NSURL URLWithString:audioItem.audioUrl] success:^(NSURLRequest *request, NSHTTPURLResponse *response, NSURL *voicePath) {
+                [hud hide:NO];
+                NSData *amrData = [[MLDataCache shareInstance] cachedDataForRequest:request];
+                PublishAudioVC *publishAudioVC = [[PublishAudioVC alloc] init];
+                [publishAudioVC setWords:zoneItem.content];
+                [publishAudioVC setDuration:audioItem.timeSpan];
+                [publishAudioVC setAmrData:amrData];
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:publishAudioVC];
+                [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                [hud hide:NO];
+            }];
+            return;
+        }
+        else
+        {
+            [publishAudioVC setAmrData:data];
+            publishVC = publishAudioVC;
+        }
     }
     else
     {

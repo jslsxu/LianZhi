@@ -90,8 +90,10 @@
 - (void)onConfirmButtonClicked
 {
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:self.view];
-    
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"setting/set_user_info" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"name" : self.name, @"sex" : kStringFromValue(self.genderType)} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.name forKey:@"name"];
+    [params setValue:kStringFromValue(self.genderType) forKey:@"sex"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"setting/set_user_info" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [[UserCenter sharedInstance] updateUserInfo:[responseObject getDataWrapperForKey:@"user"]];
         [[UserCenter sharedInstance] save];
         [hud hide:NO];

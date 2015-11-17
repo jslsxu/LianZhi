@@ -246,7 +246,6 @@
     if([self.delegate respondsToSelector:@selector(publishZoneItemFinished:)])
         [self.delegate publishZoneItemFinished:item];
     [self onBack];
-    return;
 }
 
 #pragma mark - PhotoPickerDelegate

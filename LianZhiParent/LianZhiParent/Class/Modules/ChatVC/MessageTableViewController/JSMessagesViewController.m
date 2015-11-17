@@ -58,7 +58,7 @@ static NSString *topChatID = nil;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNetworkStatusChanged) name:kReachabilityChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTitle) name:kReachabilityChangedNotification object:nil];
     topChatID = self.targetID;
     if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup)
     {
@@ -361,17 +361,7 @@ static NSString *topChatID = nil;
     return YES;
 }
 
-- (void)onNetworkStatusChanged
-{
-    Reachability* curReach = ApplicationDelegate.hostReach;
-    NetworkStatus status = [curReach currentReachabilityStatus];
-    if(status == NotReachable)
-    {
-        self.title = @"网络不可用";
-    }
-    else
-        self.title = nil;
-}
+
 
 #pragma mark - TNBaseTableViewDelegate
 - (BOOL)supportCache

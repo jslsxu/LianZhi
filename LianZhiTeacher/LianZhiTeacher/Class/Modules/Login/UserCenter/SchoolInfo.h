@@ -63,5 +63,6 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @interface TeacherGroup : TNModelItem<NSCoding>
 @property (nonatomic, copy)NSString *groupID;
 @property (nonatomic, copy)NSString *groupName;
+@property (nonatomic, assign)BOOL canNotice;
 @property (nonatomic, strong)NSArray *teachers;
 @end

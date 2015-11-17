@@ -92,7 +92,7 @@
     
     MessageFromType fromType = _messageItem.fromInfo.type;
     NSString *name = _messageItem.fromInfo.name;
-    if(fromType != MessageFromTypeFromClass)
+    if(fromType != MessageFromTypeFromClass && fromType != MessageFromTypeFromParents)
     {
         if(_messageItem.fromInfo.label.length > 0)
             name = [NSString stringWithFormat:@"%@(%@)",name,_messageItem.fromInfo.label];
