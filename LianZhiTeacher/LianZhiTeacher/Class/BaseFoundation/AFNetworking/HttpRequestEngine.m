@@ -123,7 +123,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
                 fail(@"网络请求失败");
         }];
     }
-    
+    DLOG(@"%@",operation.request);
     [operation setObserver:observer];
     [operation setRequestMethod:method];
     [operation setRequestType:type];
