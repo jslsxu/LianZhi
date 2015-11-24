@@ -263,7 +263,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     HomeWorkItemCell *cell = (HomeWorkItemCell *)[tableView cellForRowAtIndexPath:indexPath];
-    [cell setFocused:!cell.focused];
+    [cell setCurSelected:!cell.curSelected];
 }
 
 #pragma mark - UIImagePickerControllerDelegate

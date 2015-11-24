@@ -25,7 +25,7 @@
     UIButton*       _deleteButton;
 }
 @property (nonatomic, strong)HomeWorkItem *homeWorkItem;
-@property (nonatomic, assign)BOOL focused;
+@property (nonatomic, assign)BOOL curSelected;
 @property (nonatomic, weak)id<HomeWorkItemCellDelegate> delegate;
 + (CGFloat)cellHeightForItem:(HomeWorkItem *)homeWorkItem forWidth:(NSInteger)width;
 @end

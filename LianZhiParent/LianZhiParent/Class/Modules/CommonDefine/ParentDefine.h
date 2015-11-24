@@ -13,4 +13,5 @@
 //#define kRootRequestUrl             @"http://p.lb.5tree.cn/"
 //#define kRootRequestUrl             @"http://p.mapi.wangyichuan.cn"
 #define kRootRequestUrl             @"http://p.test.lb.5tree.cn"
+//#define kRootRequestUrl             @"http://p.v2.lb.5tree.cn"
 #endif

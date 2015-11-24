@@ -26,7 +26,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SVShareManager)
                              [ShareSDKConnector connectQQ:[QQApiInterface class] tencentOAuthClass:[TencentOAuth class]];
                              break;
                          case SSDKPlatformTypeSinaWeibo:
-                             [ShareSDKConnector connectWeibo:[WeiboSDK class]];
+//                             [ShareSDKConnector connectWeibo:[WeiboSDK class]];
                              break;
                         default:
                              break;

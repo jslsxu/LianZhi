@@ -21,7 +21,7 @@
 //libsqlite3.dylib
 
 //新浪微博SDK头文件
-#import "WeiboSDK.h"
+//#import "WeiboSDK.h"
 @interface SVShareManager : NSObject
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(SVShareManager)
 - (void)initialize;

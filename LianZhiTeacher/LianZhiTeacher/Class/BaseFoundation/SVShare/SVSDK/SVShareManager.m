@@ -14,7 +14,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SVShareManager)
     [ShareSDK registerApp:AppKey_ShareSDK
           activePlatforms:@[@(SSDKPlatformTypeSinaWeibo),
                             @(SSDKPlatformTypeWechat),
-                            @(SSDKPlatformTypeQQ),]
+                            @(SSDKPlatformTypeQQ)]
                  onImport:^(SSDKPlatformType platformType) {
                      switch (platformType)
                      {
@@ -26,7 +26,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SVShareManager)
                              [ShareSDKConnector connectQQ:[QQApiInterface class] tencentOAuthClass:[TencentOAuth class]];
                              break;
                          case SSDKPlatformTypeSinaWeibo:
-                             [ShareSDKConnector connectWeibo:[WeiboSDK class]];
+//                             [ShareSDKConnector connectWeibo:[WeiboSDK class]];
                              break;
                         default:
                              break;

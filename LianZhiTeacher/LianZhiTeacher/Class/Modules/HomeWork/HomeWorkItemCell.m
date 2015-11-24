@@ -120,11 +120,11 @@
     // Initialization code
 }
 
-- (void)setFocused:(BOOL)focused
+- (void)setCurSelected:(BOOL)curSelected
 {
-    _focused = focused;
-    [_deleteButton setHidden:!_focused];
-    if(_focused)
+    _curSelected = curSelected;
+    [_deleteButton setHidden:!_curSelected];
+    if(_curSelected)
     {
         UIView *bgView = [[UIView alloc] init];
         [bgView setBackgroundColor:[UIColor colorWithHexString:@"d8d8d8"]];
