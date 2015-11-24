@@ -75,8 +75,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        self.titleArray = @[@[@"连枝账户",@"我的学校",@"系统设置"],@[@"关于连枝",@"联系客服"]];
-        self.imageArray = @[@[@"IconAccount",@"IconMySchool",@"IconSetting"],@[@"IconAbout",@"IconContact"]];
+        self.titleArray = @[@[@"我的学校",@"连枝账户",@"系统设置"],@[@"关于连枝",@"联系客服"]];
+        self.imageArray = @[@[@"IconMySchool",@"IconAccount",@"IconSetting"],@[@"IconAbout",@"IconContact"]];
     }
     return self;
 }
@@ -114,7 +114,7 @@
         return 1;
     else
     {
-        NSArray *titleArray = self.titleArray[section];
+        NSArray *titleArray = self.titleArray[section - 1];
         return titleArray.count;
     }
 }
@@ -187,13 +187,13 @@
     {
         if(row == 0)
         {
-            AccountVC *accountVC = [[AccountVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:accountVC animated:YES];
+            RelatedInfoVC *relatedInfoVC = [[RelatedInfoVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:relatedInfoVC animated:YES];
         }
         else if(row == 1)
         {
-            RelatedInfoVC *relatedInfoVC = [[RelatedInfoVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:relatedInfoVC animated:YES];
+            AccountVC *accountVC = [[AccountVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:accountVC animated:YES];
         }
         else if(row == 2)
         {
