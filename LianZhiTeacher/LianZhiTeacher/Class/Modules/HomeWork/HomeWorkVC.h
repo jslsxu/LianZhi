@@ -7,14 +7,30 @@
 //
 
 #import "TNBaseViewController.h"
-@interface HomeWorkVC : TNBaseViewController
+
+@protocol CourseViewDelegate <NSObject>
+
+- (void)courseViewDidChange;
+
+@end
+
+@interface CourseView : UIView<ReplyBoxDelegate>
 {
-    UIView*     _headerView;
-    UIButton*   _addButton;
-    UIView*     _typeView;
-    UILabel*    _courseLabel;
-    UIView*     _contentView;
-    UITableView*    _tableView;
-    UILabel*    _hintLabel;
+    NSMutableArray*     _deleteButtons;
+    BOOL                _edit;
+    UILabel*            _nameLabel;
+    NSMutableArray*     _courseArray;
+    ReplyBox*           _replyBox;
+}
+@property (nonatomic, copy)NSString *course;
+@property (nonatomic, weak)id<CourseViewDelegate> delegate;
+@end
+
+@interface HomeWorkVC : TNBaseViewController<CourseViewDelegate>
+{
+    UIScrollView*           _scrollView;
+    UIView*                 _contentView;
+    UTPlaceholderTextView*  _textView;
+    CourseView*             _courseView;
 }
 @end

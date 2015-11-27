@@ -2,25 +2,11 @@
 //  MyGiftVC.m
 //  LianZhiTeacher
 //
-//  Created by jslsxu on 15/11/2.
-//  Copyright (c) 2015年 jslsxu. All rights reserved.
+//  Created by jslsxu on 15/11/24.
+//  Copyright © 2015年 jslsxu. All rights reserved.
 //
 
 #import "MyGiftVC.h"
-
-@implementation GiftCell
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if(self)
-    {
-        
-    }
-    return self;
-}
-
-@end
 
 @interface MyGiftVC ()
 
@@ -28,9 +14,16 @@
 
 @implementation MyGiftVC
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.title = @"礼物";
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(onCancel)];
+}
+
+- (void)onCancel
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

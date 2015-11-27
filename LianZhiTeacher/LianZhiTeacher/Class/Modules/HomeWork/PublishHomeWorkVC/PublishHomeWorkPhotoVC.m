@@ -116,7 +116,6 @@
     }
     HomeWorkItem *homeWorkItem = [[HomeWorkItem alloc] init];
     [homeWorkItem setContent:_textView.text];
-    [homeWorkItem setImage:self.image];
     if([self.delegate respondsToSelector:@selector(publishHomeWorkFinished:)])
         [self.delegate publishHomeWorkFinished:homeWorkItem];
     [self dismissViewControllerAnimated:YES completion:nil];

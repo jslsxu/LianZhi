@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3705FF971BA2CCEF00F0C6F6 /* NumIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3705FF951BA2CCEF00F0C6F6 /* NumIndicator.m */; };
 		3705FF9A1BA2D65600F0C6F6 /* SwitchClassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3705FF991BA2D65600F0C6F6 /* SwitchClassVC.m */; };
+		3707E66E1C041E6E00944B8D /* MyGiftVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3707E66D1C041E6E00944B8D /* MyGiftVC.m */; };
 		370F33C81A780E8900FED3C2 /* ContactServiceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33C71A780E8900FED3C2 /* ContactServiceVC.m */; };
 		370F33D01A78140B00FED3C2 /* AboutVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33CF1A78140B00FED3C2 /* AboutVC.m */; };
 		3719A7471AA2C47800FBDC2A /* NewEditionPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = 3719A7451AA2C47800FBDC2A /* NewEditionPreview.m */; };
@@ -427,6 +428,8 @@
 		3705FF961BA2CCEF00F0C6F6 /* NumIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumIndicator.h; sourceTree = "<group>"; };
 		3705FF981BA2D65600F0C6F6 /* SwitchClassVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchClassVC.h; sourceTree = "<group>"; };
 		3705FF991BA2D65600F0C6F6 /* SwitchClassVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchClassVC.m; sourceTree = "<group>"; };
+		3707E66C1C041E6E00944B8D /* MyGiftVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyGiftVC.h; sourceTree = "<group>"; };
+		3707E66D1C041E6E00944B8D /* MyGiftVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyGiftVC.m; sourceTree = "<group>"; };
 		370F33C61A780E8900FED3C2 /* ContactServiceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactServiceVC.h; sourceTree = "<group>"; };
 		370F33C71A780E8900FED3C2 /* ContactServiceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactServiceVC.m; sourceTree = "<group>"; };
 		370F33CE1A78140B00FED3C2 /* AboutVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutVC.h; sourceTree = "<group>"; };
@@ -1443,6 +1446,8 @@
 				3728A6981B98A67800310457 /* ReplyBox.m */,
 				3728A6EE1B9C2A0100310457 /* UUProgressHUD.h */,
 				3728A6EF1B9C2A0100310457 /* UUProgressHUD.m */,
+				3707E66C1C041E6E00944B8D /* MyGiftVC.h */,
+				3707E66D1C041E6E00944B8D /* MyGiftVC.m */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -3270,6 +3275,7 @@
 				37C6B3F71BF2E0040001D54F /* SVShareManager.m in Sources */,
 				3793F7871B7CFFD900501F77 /* REEmailValidator.m in Sources */,
 				3766099E1A6828F700E4B4E2 /* ChildrenInfoVC.m in Sources */,
+				3707E66E1C041E6E00944B8D /* MyGiftVC.m in Sources */,
 				3793F7C81B7CFFD900501F77 /* POISelectVC.m in Sources */,
 				3728A5FF1B93EB8D00310457 /* JSMessagesViewController.m in Sources */,
 				3793F8281B7CFFD900501F77 /* Reachability.m in Sources */,

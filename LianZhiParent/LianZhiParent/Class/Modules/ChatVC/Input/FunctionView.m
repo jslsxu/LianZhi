@@ -7,7 +7,7 @@
 //
 
 #import "FunctionView.h"
-
+#import "MyGiftVC.h"
 @implementation FunctionItemCell
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -57,8 +57,8 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        self.titleArray = @[@"发照片",@"拍摄"];
-        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera"];
+        self.titleArray = @[@"发照片",@"拍摄",@"礼物"];
+        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera",@"FunctionGift"];
         NSInteger itemWIdth = 80;
         UICollectionViewFlowLayout *_layout = [[UICollectionViewFlowLayout alloc] init];
         [_layout setItemSize:CGSizeMake(80, 90)];

@@ -20,6 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"连枝账户";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"消息" style:UIBarButtonItemStylePlain target:self action:@selector(onMessageClicked)];
     self.titleArray = @[@"奖励任务",@"派送抽奖",@"兑换活动"];
     self.imageArray = @[@"",@"",@""];
     self.actionVCArray = @[@"",@"",@""];
@@ -40,6 +41,11 @@
     
     
     [_tableView reloadData];
+}
+
+- (void)onMessageClicked
+{
+    
 }
 
 - (void)setupHeaderView:(UIView *)viewParent

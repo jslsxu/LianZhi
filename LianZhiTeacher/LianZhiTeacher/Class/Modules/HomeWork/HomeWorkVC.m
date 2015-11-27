@@ -12,13 +12,220 @@
 #import "PublishHomeWorkPhotoVC.h"
 #import "PublishHomeWorkTextVC.h"
 #import "HomeWorkItemCell.h"
-@interface HomeWorkVC ()<ActionSelectViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, PublishHomeWorkDelegate, HomeWorkItemCellDelegate>
+#import "MyHomeworkList.h"
+#define kCourseCacheKey          @"CourseCache"
+
+@implementation CourseView
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if(self)
+    {
+        _deleteButtons = [NSMutableArray array];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSArray *courseArray = [userDefaults objectForKey:kCourseCacheKey];
+        _courseArray = [NSMutableArray arrayWithArray:courseArray];
+
+        [self setupSubviews];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
+        [self addGestureRecognizer:tapGesture];
+    }
+    return self;
+}
+
+- (void)setupSubviews
+{
+    [_deleteButtons removeAllObjects];
+    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    if(_courseArray.count == 0)
+    {
+        UILabel *hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 0, 0)];
+        [hintLabel setFont:[UIFont systemFontOfSize:14]];
+        [hintLabel setTextColor:[UIColor colorWithHexString:@"b1b1b1"]];
+        [hintLabel setText:@"添加作业所属科目"];
+        [hintLabel sizeToFit];
+        [hintLabel setOrigin:CGPointMake(10, 10)];
+        [self addSubview:hintLabel];
+        
+        UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"EmptyCourse"]];
+        [imageView setOrigin:CGPointMake(hintLabel.right + 3, 10)];
+        [imageView setCenterY:hintLabel.centerY];
+        [self addSubview:imageView];
+        
+        UIButton *addButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [addButton addTarget:self action:@selector(onAddButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [addButton setFrame:CGRectMake(imageView.right + 3, imageView.y + (imageView.height - 30) / 2, 60, 30)];
+        [addButton setCenterY:imageView.centerY];
+        [addButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"AAAAAA"] size:addButton.size cornerRadius:15] forState:UIControlStateNormal];
+        [addButton setImage:[UIImage imageNamed:@"AddCourse"] forState:UIControlStateNormal];
+        [self addSubview:addButton];
+    }
+    else
+    {
+        NSInteger spaceXStart = 0;
+        NSInteger spaceYStart = 0;
+        NSInteger innerMargin = 15;
+        for (NSInteger i = 0; i < _courseArray.count + 1; i++)
+        {
+            if(i < _courseArray.count)
+            {
+                NSString *course = _courseArray[i];
+                
+                NSInteger buttonWidth = [course sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14]}].width + 30;
+                if(spaceXStart + buttonWidth > self.width)
+                {
+                    spaceXStart = 0;
+                    spaceYStart = spaceYStart + 30 + 10;
+                }
+                UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+                [button addTarget:self action:@selector(onCourseButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+                [button.titleLabel setFont:[UIFont systemFontOfSize:14]];
+                [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                [button setTitle:course forState:UIControlStateNormal];
+                [button setFrame:CGRectMake(spaceXStart, spaceYStart, buttonWidth, 30)];
+                if([self.course isEqualToString:course])
+                {
+                    [button setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"F53757"] size:button.size cornerRadius:15] forState:UIControlStateNormal];
+                }
+                else
+                {
+                    [button setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"AAAAAA"] size:button.size cornerRadius:15] forState:UIControlStateNormal];
+                }
+                
+                [self addSubview:button];
+                
+                if(_edit)
+                {
+                    UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                    [deleteButton setFrame:CGRectMake(button.right - 9, button.y - 9, 18, 18)];
+                    [deleteButton setImage:[UIImage imageNamed:@"DeleteCourse"] forState:UIControlStateNormal];
+                    [deleteButton addTarget:self action:@selector(onDeleteClicked:) forControlEvents:UIControlEventTouchUpInside];
+                    [self addSubview:deleteButton];
+                    [_deleteButtons addObject:deleteButton];
+                }
+                
+                UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPress:)];
+                [longPress setMinimumPressDuration:2];
+                [button addGestureRecognizer:longPress];
+                
+                spaceXStart += innerMargin + buttonWidth;
+            }
+            else
+            {
+                if(spaceXStart + 60 > self.width)
+                {
+                    spaceXStart = 0;
+                    spaceYStart += 30 + 10;
+                }
+                UIButton *addButton = [UIButton buttonWithType:UIButtonTypeCustom];
+                [addButton addTarget:self action:@selector(onAddButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+                [addButton setFrame:CGRectMake(spaceXStart, spaceYStart, 60, 30)];
+                [addButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"AAAAAA"] size:addButton.size cornerRadius:15] forState:UIControlStateNormal];
+                [addButton setImage:[UIImage imageNamed:@"AddCourse"] forState:UIControlStateNormal];
+                [self addSubview:addButton];
+                spaceXStart += innerMargin + 60;
+            }
+        }
+        [self setHeight:MAX(self.height, spaceYStart + 30 + innerMargin)];
+        if([self.delegate respondsToSelector:@selector(courseViewDidChange)])
+            [self.delegate courseViewDidChange];
+    }
+}
+
+- (void)onTap
+{
+    if(_edit)
+    {
+        _edit = NO;
+        [self setupSubviews];
+    }
+}
+
+- (void)onLongPress:(UILongPressGestureRecognizer *)longPress
+{
+    if(!_edit)
+    {
+        _edit = YES;
+        [self setupSubviews];
+    }
+}
+
+- (void)onCourseButtonClicked:(UIButton *)button
+{
+    if(!_edit)
+    {
+        NSString *course = [button titleForState:UIControlStateNormal];
+        [self setCourse:course];
+        [self setupSubviews];
+    }
+}
+
+- (void)onDeleteClicked:(UIButton *)button
+{
+    NSInteger index = [_deleteButtons indexOfObject:button];
+    NSString *course = [_courseArray objectAtIndex:index];
+    [_courseArray removeObject:course];
+    if(_courseArray.count == 0)
+        _edit = NO;
+    [self setupSubviews];
+}
+
+- (void)onAddButtonClicked
+{
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, keyWindow.height - REPLY_BOX_HEIGHT, keyWindow.width, REPLY_BOX_HEIGHT)];
+    [_replyBox setDelegate:self];
+    [keyWindow addSubview:_replyBox];
+    [_replyBox assignFocus];
+}
+
+- (void)onActionViewCommit:(NSString *)content
+{
+    if(content.length > 0)
+    {
+        BOOL contain = NO;
+        for (NSString *course in _courseArray)
+        {
+            if([course isEqualToString:content])
+                contain = YES;
+        }
+        if(!contain)
+        {
+            [_courseArray insertObject:content atIndex:0];
+            NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+            [userdefaults setObject:_courseArray forKey:kCourseCacheKey];
+        }
+        [self setCourse:content];
+        [self setupSubviews];
+    }
+    [_replyBox resignFocus];
+    [_replyBox removeFromSuperview];
+    _replyBox = nil;
+}
+
+- (void)onActionViewCancel
+{
+    [_replyBox resignFocus];
+    [_replyBox removeFromSuperview];
+    _replyBox = nil;
+}
+
+@end
+@interface HomeWorkVC ()<ActionSelectViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate>
 @property (nonatomic, strong)NSMutableArray *courseArray;
 @property (nonatomic, copy)NSString *course;
 @property (nonatomic, strong)NSMutableArray *homeWorkArray;
+@property (nonatomic, strong)HomeWorkItem *homeWorkItem;
 @end
 
 @implementation HomeWorkVC
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -26,285 +233,149 @@
     if(self)
     {
         self.homeWorkArray = [NSMutableArray array];
+        [self addKeyboardNotifications];
     }
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = @"作业练习";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"RecordHistory"] style:UIBarButtonItemStylePlain target:self action:@selector(onShowHistory)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStylePlain target:self action:@selector(onNext)];
     self.courseArray = [NSMutableArray array];
-    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
-    {
-        BOOL isIn = NO;
-        for (NSString * course in self.courseArray)
-        {
-            if([course isEqualToString:classInfo.course])
-                isIn = YES;
-        }
-        if(!isIn)
-            [self.courseArray addObject:classInfo.course];
-    }
-    if(self.courseArray.count > 0)
-        self.course = self.courseArray[0];
     
-    _headerView = [[UIView alloc] initWithFrame:CGRectMake(10, 0, self.view.width - 10 * 2, 70)];
-    [self setupHeaderView:_headerView];
-    [self.view addSubview:_headerView];
+    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
+    [_scrollView setShowsVerticalScrollIndicator:NO];
+    [self.view addSubview:_scrollView];
     
-    UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [sendButton setFrame:CGRectMake(10, self.view.height - 64 - 20 - 36, self.view.width - 10 * 2, 36)];
-    [sendButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"5ed016"] size:sendButton.size cornerRadius:18] forState:UIControlStateNormal];
-    [sendButton setTitle:@"选择学生并发送" forState:UIControlStateNormal];
-    [sendButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
-    [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [sendButton addTarget:self action:@selector(onSendClicked) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:sendButton];
+    UIButton *selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [selectButton setFrame:CGRectMake(10, 25, self.view.width - 10 * 2, 30)];
+    [selectButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"5ed016"] size:selectButton.size cornerRadius:15] forState:UIControlStateNormal];
+    [selectButton setTitle:@"从我的作业库选择" forState:UIControlStateNormal];
+    [selectButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
+    [selectButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [selectButton addTarget:self action:@selector(onSelectFromHistory) forControlEvents:UIControlEventTouchUpInside];
+    [_scrollView addSubview:selectButton];
     
     
-    _contentView = [[UIView alloc] initWithFrame:CGRectMake(10, _headerView.bottom, self.view.width - 10 * 2, sendButton.y - 20 - _headerView.bottom)];
+    _contentView = [[UIView alloc] initWithFrame:CGRectMake(10, selectButton.bottom + 10, self.view.width - 10 * 2, _scrollView.height - (selectButton.bottom + 10) - 64 - 80)];
     [_contentView setBackgroundColor:[UIColor whiteColor]];
     [_contentView.layer setCornerRadius:10];
     [_contentView.layer setMasksToBounds:YES];
-    [self.view addSubview:_contentView];
+    [self setupContentView:_contentView];
+    [_scrollView addSubview:_contentView];
     
-    _tableView = [[UITableView alloc] initWithFrame:_contentView.bounds style:UITableViewStylePlain];
-    [_tableView setScrollEnabled:NO];
-    [_tableView setDelegate:self];
-    [_tableView setDataSource:self];
-    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    [_contentView addSubview:_tableView];
+    _courseView = [[CourseView alloc] initWithFrame:CGRectMake(10, _contentView.bottom + 10, self.view.width - 10 * 2, 60)];
+    [_courseView setDelegate:self];
+    [_scrollView setContentSize:CGSizeMake(self.view.width, MAX(_scrollView.height, _courseView.bottom))];
+    [_scrollView addSubview:_courseView];
+}
+
+- (void)setupContentView:(UIView *)viewParent
+{
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, 10, viewParent.width - 10 * 2, viewParent.height - 45 - 10)];
+    [_textView setReturnKeyType:UIReturnKeyDone];
+    [_textView setDelegate:self];
+    [_textView setFont:[UIFont systemFontOfSize:14]];
+    [_textView setPlaceholder:@"请输入文字内容"];
+    [viewParent addSubview:_textView];
     
-    _hintLabel = [[UILabel alloc] initWithFrame:CGRectInset(_contentView.bounds, 30, 30)];
-    [_hintLabel setTextAlignment:NSTextAlignmentCenter];
-    [_hintLabel setNumberOfLines:0];
-    [_hintLabel setLineBreakMode:NSLineBreakByWordWrapping];
-    [_hintLabel setFont:[UIFont systemFontOfSize:14]];
-    [_hintLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-    [_hintLabel setText:@"每组小练习最多支持3道题。可以是文字，语音，图片任何形式。\n您也可以针对不同徐鞥生学习特点发送针对性的习题。\n快快点击上方的加号开始吧！"];
-    [_contentView addSubview:_hintLabel];
-}
-
-- (void)setupHeaderView:(UIView *)viewParent
-{
-    _addButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_addButton setFrame:CGRectMake(0, 15, 40, 40)];
-    [_addButton setImage:[UIImage imageNamed:@"AddHomeWork"] forState:UIControlStateNormal];
-    [_addButton setImage:[UIImage imageNamed:@"AddHomeWorkCancel"] forState:UIControlStateSelected];
-    [_addButton addTarget:self action:@selector(onAddButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [viewParent addSubview:_addButton];
+    UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, viewParent.height - 45, viewParent.width, kLineHeight)];
+    [sepLine setBackgroundColor:kSepLineColor];
+    [viewParent addSubview:sepLine];
     
-    _typeView = [[UIView alloc] initWithFrame:CGRectMake(_addButton.right, 0, 190, viewParent.height)];
-    [_typeView setHidden:YES];
-    [viewParent addSubview:_typeView];
+    UIView* extraView = [[UIView alloc] initWithFrame:CGRectMake(0, sepLine.bottom, viewParent.width, 45)];
+    [self setupExtraView:extraView];
+    [viewParent addSubview:extraView];
+}
+
+- (void)setupExtraView:(UIView *)viewParent
+{
+    UILabel *hintLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    [hintLabel setFont:[UIFont systemFontOfSize:14]];
+    [hintLabel setText:@"添加附件"];
+    [hintLabel sizeToFit];
+    [hintLabel setOrigin:CGPointMake(10, (viewParent.height - hintLabel.height) / 2)];
+    [viewParent addSubview:hintLabel];
     
-    NSArray *imageArray = @[@"HomeWorkText",@"HomeWorkCamera",@"HomeWorkPhoto",@"HomeWorkAudio"];
-    NSArray *colorArray = @[@"c785fb",@"fecf3c",@"02ca94",@"6ca3fb"];
-    for (NSInteger i = 0; i < 4; i++)
-    {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [button addTarget:self action:@selector(onTypeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [button setTag:1000 + i];
-        [button setFrame:CGRectMake((40 + 10) * i, 15, 40, 40)];
-        [button setImage:[UIImage imageNamed:imageArray[i]] forState:UIControlStateNormal];
-        [button setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:colorArray[i]] size:button.size cornerRadius:20] forState:UIControlStateNormal];
-        [_typeView addSubview:button];
-    }
+    UIButton*  addAudioButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [addAudioButton setFrame:CGRectMake(viewParent.width - 45, 0, 45, 45)];
+    [addAudioButton setImage:[UIImage imageNamed:@"HomeWorkAddAudio"] forState:UIControlStateNormal];
+    [addAudioButton addTarget:self action:@selector(onAddAudio) forControlEvents:UIControlEventTouchUpInside];
+    [viewParent addSubview:addAudioButton];
     
-    _courseLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [_courseLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-    [_courseLabel setFont:[UIFont systemFontOfSize:14]];
-    [_courseLabel setTextAlignment:NSTextAlignmentCenter];
-    [_courseLabel setText:self.course];
-    [viewParent addSubview:_courseLabel];
-    
-    if(self.courseArray.count == 1)
-    {
-        [_courseLabel setFrame:CGRectMake(viewParent.width - 10 - 50, (viewParent.height - 16) / 2, 50, 16)];
-    }
-    else
-    {
-        [_courseLabel setFrame:CGRectMake(viewParent.width - 10 - 50, 16, 50, 16)];
-        UIButton *courseButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [courseButton addTarget:self action:@selector(onCourseButtonCLicked) forControlEvents:UIControlEventTouchUpInside];
-        [courseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [courseButton.titleLabel setFont:[UIFont systemFontOfSize:9]];
-        [courseButton setTitle:@"选择科目" forState:UIControlStateNormal];
-        [courseButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"28c4d8"] size:CGSizeMake(16, 16) cornerRadius:8] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 8, 0, 8)] forState:UIControlStateNormal];
-        [courseButton setFrame:CGRectMake(viewParent.width - 10 - 50, viewParent.height - 16 - 16, 50, 16)];
-        [viewParent addSubview:courseButton];
-    }
+    UIButton*  addPhotoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [addPhotoButton setFrame:CGRectMake(addAudioButton.left - 45, 0, 45, 45)];
+    [addPhotoButton setImage:[UIImage imageNamed:@"HomeWorkAddPhoto"] forState:UIControlStateNormal];
+    [addPhotoButton addTarget:self action:@selector(onAddPhoto) forControlEvents:UIControlEventTouchUpInside];
+    [viewParent addSubview:addPhotoButton];
 }
 
-- (void)onTypeButtonClicked:(UIButton *)button
+- (void)onKeyboardWillShow:(NSNotification *)note
 {
-    NSInteger index = button.tag - 1000;
-    PublishHomeWorkBaseVC *publishVC = nil;
-    UIImagePickerController *imagePicker = nil;
-    if(index == 0 || index == 3)
-    {
-        if(index == 0)
-            publishVC = [[PublishHomeWorkTextVC alloc] init];
-        else
-            publishVC = [[PublishHomeWorkAudioVC alloc] init];
-        [publishVC setDelegate:self];
-        TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:publishVC];
-        [self presentViewController:nav animated:YES completion:nil];
-    }
-    else
-    {
-        imagePicker = [[UIImagePickerController alloc] init];
-        [imagePicker setAllowsEditing:YES];
-        [imagePicker setDelegate:self];
-        if(index == 1)
-        {
-            [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-        }
-        else
-        {
-            [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-        }
-        [self presentViewController:imagePicker animated:YES completion:nil];
-    }
+    CGRect keyboardBounds;
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    [UIView animateWithDuration:[duration floatValue] delay:0 options:curve.integerValue animations:^{
+        [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, keyboardBounds.size.height, 0)];
+    } completion:nil];
 }
 
-- (void)onShowHistory
+- (void)onKeyboardWillHide:(NSNotification *)note
 {
-    
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    [UIView animateWithDuration:[duration floatValue] delay:0 options:curve.integerValue animations:^{
+        [_scrollView setContentInset:UIEdgeInsetsZero];
+    } completion:nil];
 }
 
-- (void)onSendClicked
+- (void)onSelectFromHistory
 {
-    
-}
-
-- (void)onAddButtonClicked
-{
-    _addButton.selected = !_addButton.selected;
-    [_typeView setHidden:!_addButton.selected];
-}
-
-- (void)onCourseButtonCLicked
-{
-    ActionSelectView *selectView  =[[ActionSelectView alloc] init];
-    [selectView setDelegate:self];
-    [selectView show];
-    
-}
-
-- (void)updateContentView
-{
-    NSInteger height = 0;
-    if(self.homeWorkArray.count == 0)
-    {
-        height = self.view.height - 20 - 36 - _headerView.bottom - 20;
-    }
-    else
-    {
-        for (HomeWorkItem *item in self.homeWorkArray)
-        {
-            height += [HomeWorkItemCell cellHeightForItem:item forWidth:_tableView.width];
-        }
-    }
-    [_contentView setHeight:height];
-    [_tableView setHeight:height];
-    [_tableView reloadData];
-}
-
-#pragma mark - HomeWorkItemCellDelegate
-- (void)homeWorkCellDidDelete:(HomeWorkItemCell *)cell
-{
-    HomeWorkItem *item = cell.homeWorkItem;
-    if(self.homeWorkArray.count > 0)
-    {
-        [self.homeWorkArray removeObject:item];
-        [self updateContentView];
-    }
-}
-
-#pragma mark - PublishHomeWorkDelegate
-- (void)publishHomeWorkFinished:(HomeWorkItem *)homeWorkItem
-{
-    if(self.homeWorkArray.count < 3 && homeWorkItem)
-    {
-        [self.homeWorkArray addObject:homeWorkItem];
-        [self updateContentView];
-    }
-}
-
-#pragma mark - UITableViewDelegate
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    _hintLabel.hidden = (self.homeWorkArray.count > 0);
-    return self.homeWorkArray.count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    HomeWorkItem *homeWorkItem = self.homeWorkArray[indexPath.row];
-    return [HomeWorkItemCell cellHeightForItem:homeWorkItem forWidth:tableView.width];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *reuseID = @"HomeWorkItemCell";
-    HomeWorkItemCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
-    if(nil == cell)
-    {
-        cell = [[HomeWorkItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
-        [cell setDelegate:self];
-        [cell setWidth:tableView.width];
-    }
-    [cell setHomeWorkItem:self.homeWorkArray[indexPath.row]];
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    HomeWorkItemCell *cell = (HomeWorkItemCell *)[tableView cellForRowAtIndexPath:indexPath];
-    [cell setCurSelected:!cell.curSelected];
-}
-
-#pragma mark - UIImagePickerControllerDelegate
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    [picker dismissViewControllerAnimated:YES completion:^{
-        UIImage *image = info[UIImagePickerControllerEditedImage];
-        PublishHomeWorkPhotoVC *publishPhotoVC = [[PublishHomeWorkPhotoVC alloc] init];
-        [publishPhotoVC setImage:image];
-        [publishPhotoVC setDelegate:self];
-        TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:publishPhotoVC];
-        [self presentViewController:navVC animated:YES completion:nil];
+    MyHomeworkList *homeWorkListVC = [[MyHomeworkList alloc] init];
+    [homeWorkListVC setCompletion:^(HomeWorkHistoryItem *homeWorkItem)
+     {
+        
     }];
+    [self.navigationController pushViewController:homeWorkListVC animated:YES];
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+- (void)onNext
 {
-    [picker dismissViewControllerAnimated:YES completion:nil];
+    
 }
 
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+- (void)onAddPhoto
 {
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:animated];
+    
 }
 
-#pragma mark - ActionSelectDelegate
-- (NSInteger)pickerView:(ActionSelectView *)pickerView numberOfRowsInComponent:(NSInteger)component
+- (void)onAddAudio
 {
-    return self.courseArray.count;
+    PublishHomeWorkAudioVC *publishAudioVC = [[PublishHomeWorkAudioVC alloc] init];
+    TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:publishAudioVC];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
-- (NSString *)pickerView:(ActionSelectView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+#pragma mark - CourseViewDelegate
+- (void)courseViewDidChange
 {
-    return self.courseArray[row];
+    [_scrollView setContentSize:CGSizeMake(_scrollView.width, MAX(_scrollView.height, _courseView.bottom))];
 }
 
-- (void)pickerViewFinished:(ActionSelectView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+#pragma mark - UITextViewDelegate
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-    self.course = self.courseArray[row];
-    [_courseLabel setText:self.course];
+    if([text isEqualToString:@"\n"])
+    {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    return YES;
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

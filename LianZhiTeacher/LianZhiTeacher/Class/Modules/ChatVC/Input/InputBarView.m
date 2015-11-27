@@ -7,7 +7,7 @@
 //
 
 #import "InputBarView.h"
-
+#import "MyGiftVC.h"
 #define kContentViewHeight                  48
 #define kButtonWidth                        30
 #define kButtonHeight                       30
@@ -297,10 +297,19 @@
 #pragma mark - FUnctionViewDelegate
 - (void)functionViewDidSelectAtIndex:(NSInteger)index
 {
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    [imagePicker setDelegate:self];
-    [imagePicker setSourceType:index == 0 ? UIImagePickerControllerSourceTypePhotoLibrary : UIImagePickerControllerSourceTypeCamera];
-    [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
+    if(index <= 1)
+    {
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        [imagePicker setDelegate:self];
+        [imagePicker setSourceType:index == 0 ? UIImagePickerControllerSourceTypePhotoLibrary : UIImagePickerControllerSourceTypeCamera];
+        [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
+    }
+    else
+    {
+        MyGiftVC *myGiftVC = [[MyGiftVC alloc] init];
+        TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:myGiftVC];
+        [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:nil];
+    }
 }
 
 #pragma mark - UIImagePickerControllerDelegate

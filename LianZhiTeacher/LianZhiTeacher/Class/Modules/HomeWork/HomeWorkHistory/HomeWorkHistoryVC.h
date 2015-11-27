@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseTableViewController.h"
-
+#import "HomeWorkHistoryModel.h"
 @interface HomeWorkHistoryVC : TNBaseTableViewController
 
 @end

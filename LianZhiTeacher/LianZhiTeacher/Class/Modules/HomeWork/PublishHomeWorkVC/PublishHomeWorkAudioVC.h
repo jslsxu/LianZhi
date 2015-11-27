@@ -12,7 +12,5 @@
 {
     UITouchScrollView*  _scrollView;
     AudioRecordView*    _recordView;
-    UTPlaceholderTextView*  _textView;
-    UILabel*            _numLabel;
 }
 @end
