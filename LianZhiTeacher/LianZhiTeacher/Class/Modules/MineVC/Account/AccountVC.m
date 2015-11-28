@@ -8,7 +8,7 @@
 
 #import "AccountVC.h"
 #import "AwardVC.h"
-
+#import "AccountMsgVC.h"
 @interface AccountVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong)NSArray *titleArray;
 @property (nonatomic, strong)NSArray *imageArray;
@@ -45,7 +45,8 @@
 
 - (void)onMessageClicked
 {
-    
+    AccountMsgVC *accountMsgVC = [[AccountMsgVC alloc] init];
+    [self.navigationController pushViewController:accountMsgVC animated:YES];
 }
 
 - (void)setupHeaderView:(UIView *)viewParent

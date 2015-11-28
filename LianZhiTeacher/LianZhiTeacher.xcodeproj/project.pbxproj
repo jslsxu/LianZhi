@@ -61,6 +61,8 @@
 		376FC6BB1B01EFCB00289DC2 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6BA1B01EFCB00289DC2 /* CoreMedia.framework */; };
 		376FC6BD1B01EFD100289DC2 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6BC1B01EFD100289DC2 /* CoreVideo.framework */; };
 		378C78431AA43D6C00E171E2 /* PreviewMessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 378C78421AA43D6C00E171E2 /* PreviewMessageVC.m */; };
+		378DA1471C09957C00301C26 /* HomeWorkDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 378DA1461C09957C00301C26 /* HomeWorkDetailVC.m */; };
+		378DA14A1C09BC8300301C26 /* AccountMsgVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 378DA1491C09BC8300301C26 /* AccountMsgVC.m */; };
 		3793F5041B7B27C100501F77 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3793F5031B7B27C100501F77 /* CoreLocation.framework */; };
 		3793F5061B7B27DC00501F77 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3793F5051B7B27DC00501F77 /* CoreTelephony.framework */; };
 		3793F5081B7B27E400501F77 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3793F5071B7B27E400501F77 /* SystemConfiguration.framework */; };
@@ -532,6 +534,10 @@
 		376FC6BC1B01EFD100289DC2 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		378C78411AA43D6C00E171E2 /* PreviewMessageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewMessageVC.h; sourceTree = "<group>"; };
 		378C78421AA43D6C00E171E2 /* PreviewMessageVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewMessageVC.m; sourceTree = "<group>"; };
+		378DA1451C09957C00301C26 /* HomeWorkDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkDetailVC.h; sourceTree = "<group>"; };
+		378DA1461C09957C00301C26 /* HomeWorkDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkDetailVC.m; sourceTree = "<group>"; };
+		378DA1481C09BC8300301C26 /* AccountMsgVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountMsgVC.h; sourceTree = "<group>"; };
+		378DA1491C09BC8300301C26 /* AccountMsgVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountMsgVC.m; sourceTree = "<group>"; };
 		3793F5031B7B27C100501F77 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3793F5051B7B27DC00501F77 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3793F5071B7B27E400501F77 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -1417,6 +1423,15 @@
 				372C75371C0802CC00A1D90B /* HomeWorkCollectionModel.m */,
 			);
 			path = HomeWorkCollection;
+			sourceTree = "<group>";
+		};
+		378DA1441C09956C00301C26 /* HomeWorkDetail */ = {
+			isa = PBXGroup;
+			children = (
+				378DA1451C09957C00301C26 /* HomeWorkDetailVC.h */,
+				378DA1461C09957C00301C26 /* HomeWorkDetailVC.m */,
+			);
+			path = HomeWorkDetail;
 			sourceTree = "<group>";
 		};
 		3793F50D1B7B285700501F77 /* MineVC */ = {
@@ -2537,6 +2552,7 @@
 				37FB1C5B1BE4949F004ECE2E /* HomeWorkItemCell.m */,
 				37FB1C5D1BE4979B004ECE2E /* HomeWorkItem.h */,
 				37FB1C5E1BE4979B004ECE2E /* HomeWorkItem.m */,
+				378DA1441C09956C00301C26 /* HomeWorkDetail */,
 				372C75321C07FFD600A1D90B /* HomeWorkCollection */,
 				372C752E1C07FF8500A1D90B /* MyHomeworkList */,
 				37FB1C601BE4C354004ECE2E /* HomeWorkHistory */,
@@ -2933,6 +2949,8 @@
 			children = (
 				37FB1C711BE74BD5004ECE2E /* AccountVC.h */,
 				37FB1C721BE74BD5004ECE2E /* AccountVC.m */,
+				378DA1481C09BC8300301C26 /* AccountMsgVC.h */,
+				378DA1491C09BC8300301C26 /* AccountMsgVC.m */,
 				37FB1C741BE74BF6004ECE2E /* AwardVC.h */,
 				37FB1C751BE74BF6004ECE2E /* AwardVC.m */,
 			);
@@ -3205,6 +3223,7 @@
 				3793FA481B7CFFF000501F77 /* RETableViewCellStyle.m in Sources */,
 				3793FA7A1B7CFFF000501F77 /* CTAssetsGroupViewController.m in Sources */,
 				3793FAE11B7CFFF000501F77 /* MJRefreshConst.m in Sources */,
+				378DA14A1C09BC8300301C26 /* AccountMsgVC.m in Sources */,
 				37FD6E351BB69AFE00C83AB4 /* RegisterVC.m in Sources */,
 				3793FA751B7CFFF000501F77 /* ALAsset+isEqual.m in Sources */,
 				3793FAD21B7CFFF000501F77 /* SDWebImageManager.m in Sources */,
@@ -3471,6 +3490,7 @@
 				3793FA3A1B7CFFF000501F77 /* REInlineDatePickerItem.m in Sources */,
 				3793FA9A1B7CFFF000501F77 /* UIImage+AspectFit.m in Sources */,
 				3793FACE1B7CFFF000501F77 /* SDWebImageCompat.m in Sources */,
+				378DA1471C09957C00301C26 /* HomeWorkDetailVC.m in Sources */,
 				37FD6E311BB4817900C83AB4 /* NewMessageModel.m in Sources */,
 				3728A7361B9D376300310457 /* FaceSelectView.m in Sources */,
 				3793FA921B7CFFF000501F77 /* POIItemCell.m in Sources */,

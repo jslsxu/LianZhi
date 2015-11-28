@@ -69,7 +69,7 @@
     [_photoView setHidden:YES];
     [_voiceButton setHidden:YES];
     [_timeLabel setHidden:YES];
-    if(_homeWorkItem.photos.count > 0)
+    if(_homeWorkItem.photoArray.count > 0)
     {
         [_photoView setHidden:NO];
         [_photoView setFrame:CGRectMake(16, height, self.width - 16 * 2, 100)];
@@ -97,7 +97,7 @@
         height += contentSize.height + 10;
     }
     
-    if(homeWorkItem.photos.count > 0)
+    if(homeWorkItem.photoArray.count > 0)
         height += 100 + 10;
     else if(homeWorkItem.audioItem)
         height += 34 + 10;

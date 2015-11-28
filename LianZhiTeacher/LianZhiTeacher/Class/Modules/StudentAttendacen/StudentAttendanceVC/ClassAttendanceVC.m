@@ -21,7 +21,7 @@
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_logoView.right + 10, 0, 100, 50)];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [_nameLabel setTextColor:[UIColor grayColor]];
-        
+        [self addSubview:_nameLabel];
         [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }
     return self;
@@ -80,6 +80,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     StudentAttendanceVC *studentAttendanceVC = [[StudentAttendanceVC alloc] init];
+    [studentAttendanceVC setClassInfo:[UserCenter sharedInstance].curSchool.classes[indexPath.row]];
     [self.navigationController pushViewController:studentAttendanceVC animated:YES];
 }
 

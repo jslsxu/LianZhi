@@ -36,7 +36,7 @@
         height += contentSize.height + 10;
     }
     
-    if(homeWorkItem.photos.count > 0)
+    if(homeWorkItem.photoArray.count > 0)
         height += 100 + 10;
     else if(homeWorkItem.audioItem)
         height += 34 + 10;

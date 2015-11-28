@@ -337,9 +337,10 @@
     MyHomeworkList *homeWorkListVC = [[MyHomeworkList alloc] init];
     [homeWorkListVC setCompletion:^(HomeWorkHistoryItem *homeWorkItem)
      {
-        
-    }];
-    [self.navigationController pushViewController:homeWorkListVC animated:YES];
+         
+     }];
+    TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:homeWorkListVC];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)onNext
