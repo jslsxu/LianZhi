@@ -370,7 +370,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
             if(row == 3)
             {
                 validate = [value isEmailAddress];
-                [ProgressHUD showHintText:@"邮箱格式不正确"];
+                
             }
             if(validate)
             {
@@ -378,6 +378,8 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
                 [self onSaveButtonClicked];
                 [self.tableView reloadData];
             }
+            else
+                [ProgressHUD showHintText:@"邮箱格式不正确"];
         }];
         [CurrentROOTNavigationVC pushViewController:commonInputVC animated:YES];
     }
