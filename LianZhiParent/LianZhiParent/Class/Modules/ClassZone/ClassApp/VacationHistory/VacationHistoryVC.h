@@ -7,7 +7,12 @@
 //
 
 #import "TNBaseTableViewController.h"
-
+#import "MonthIndicatorView.h"
+#import "CalendarView.h"
 @interface VacationHistoryVC : TNBaseTableViewController
-
+{
+    UILabel*            _descLabel;
+    MonthIndicatorView* _monthIndicator;
+    CalendarView*       _calendarView;
+}
 @end

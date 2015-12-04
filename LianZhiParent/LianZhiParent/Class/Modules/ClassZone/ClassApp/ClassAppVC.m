@@ -11,6 +11,7 @@
 #import "ContactListVC.h"
 #import "CourseListVC.h"
 #import "VacationHistoryVC.h"
+#import "HomeWorkVC.h"
 @interface ClassAppVC ()
 
 @end
@@ -86,8 +87,8 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-    VacationHistoryVC *vacationVC = [[VacationHistoryVC alloc] init];
-    [CurrentROOTNavigationVC pushViewController:vacationVC animated:YES];
+    VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
+    [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
     return;
     ClassAppItem *appItem = (ClassAppItem *)modelItem;
     NSString *actionUrl = appItem.actionUrl;

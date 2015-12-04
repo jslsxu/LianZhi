@@ -19,116 +19,81 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"考勤请假";
-}
-
-- (void)setupSubviews
-{
+    self.title = [UserCenter sharedInstance].curChild.name;
     
-    UIImageView *maskView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
-    [maskView setImage:[[UIImage imageNamed:@"GrayBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
+    UIView* bgView = [[UIView alloc] initWithFrame:CGRectMake(10, 10, self.view.width - 10 * 2, 80)];
+    [bgView setBackgroundColor:[UIColor whiteColor]];
+    [bgView.layer setCornerRadius:40];
+    [bgView.layer setMasksToBounds:YES];
+    [self.view addSubview:bgView];
     
-    UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
-    [avatarView.layer setMask:maskView.layer];
-    [avatarView.layer setMasksToBounds:YES];
-    [avatarView sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar] placeholderImage:[UIImage imageNamed:@"NoAvatarDefault.png"]];
-    [self.view addSubview:avatarView];
+    AvatarView *avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
+    [avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar]];
+    [bgView addSubview:avatarView];
     
-    UILabel *nickLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, avatarView.bottom + 5, avatarView.width, 20)];
-    [nickLabel setTextAlignment:NSTextAlignmentCenter];
-    [nickLabel setFont:[UIFont systemFontOfSize:14]];
-    [nickLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
-    [nickLabel setText:[UserCenter sharedInstance].curChild.nickName];
-    [self.view addSubview:nickLabel];
-    
-    CGFloat width = 35;
-    _startField = [[LZTextField alloc] initWithFrame:CGRectMake(80, 10, self.view.width - 10 - 80, width)];
-    [_startField setUserInteractionEnabled:NO];
-    [_startField setFont:[UIFont systemFontOfSize:12]];
-    [self.view addSubview:_startField];
+    _startLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarView.right + 10, 10, bgView.width - 50 - (avatarView.right + 20), 30)];
+    [_startLabel setTextAlignment:NSTextAlignmentCenter];
+    [_startLabel setFont:[UIFont systemFontOfSize:15]];
+    [bgView addSubview:_startLabel];
     
     UIButton *startButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [startButton setImage:[UIImage imageNamed:@"VacationDateModify"] forState:UIControlStateNormal];
     [startButton addTarget:self action:@selector(onStartButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [startButton setFrame:CGRectMake(_startField.right - width, _startField.top, width, width)];
+    [startButton setFrame:_startLabel.frame];
     [self.view addSubview:startButton];
     
-    _endField = [[LZTextField alloc] initWithFrame:CGRectMake(80, _startField.bottom + 10, self.view.width - 10 - 80, width)];
-    [_endField setUserInteractionEnabled:NO];
-    [_endField setFont:[UIFont systemFontOfSize:12]];
-    [self.view addSubview:_endField];
+    _endLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarView.right + 10, _startLabel.bottom, bgView.width - 50 - (avatarView.right + 20), 30)];
+    [_endLabel setTextAlignment:NSTextAlignmentCenter];
+    [_endLabel setFont:[UIFont systemFontOfSize:15]];
+    [bgView addSubview:_endLabel];
     
     UIButton *endButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [endButton setImage:[UIImage imageNamed:@"VacationDateModify"] forState:UIControlStateNormal];
     [endButton addTarget:self action:@selector(onEndButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [endButton setFrame:CGRectMake(_endField.right - width, _endField.top, width, width)];
+    [endButton setFrame:_endLabel.frame];
     [self.view addSubview:endButton];
     
-    UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"事假",@"病假"]];
-    [segmentControl setSelectedSegmentIndex:0];
-    [segmentControl setTintColor:kCommonParentTintColor];
-    [segmentControl setFrame:CGRectMake(10, _endField.bottom + 20, self.view.width - 10 * 2, 30)];
-    [segmentControl addTarget:self action:@selector(onSegmentChanged:) forControlEvents:UIControlEventValueChanged];
-    [self.view addSubview:segmentControl];
     
-    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 60, self.view.width, 60)];
-    [self setupBottomView:bottomView];
-    [self.view addSubview:bottomView];
+    UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [sendButton setFrame:CGRectMake(kMargin , self.view.height - 15 - 36 - 64, self.view.width - kMargin * 2 , 36)];
+    [sendButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [sendButton setTitle:@"发送假条" forState:UIControlStateNormal];
+    [sendButton addTarget:self action:@selector(onSend) forControlEvents:UIControlEventTouchUpInside];
+    [sendButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"5ed115"] size:sendButton.size cornerRadius:18] forState:UIControlStateNormal];
+    [self.view addSubview:sendButton];
     
-    UIImageView *textViewBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"GrayBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-    [textViewBG setUserInteractionEnabled:YES];
-    [textViewBG setFrame:CGRectMake(10, segmentControl.bottom + 20, self.view.width - 10 * 2, bottomView.top - (segmentControl.bottom + 20))];
-    [self.view addSubview:textViewBG];
+    UIView* contentView = [[UIView alloc] initWithFrame:CGRectMake(10, bgView.bottom + 20, self.view.width - 10 * 2, sendButton.y - 20 - (bgView.bottom + 20))];
+    [contentView setBackgroundColor:[UIColor whiteColor]];
+    [contentView.layer setCornerRadius:10];
+    [contentView.layer setMasksToBounds:YES];
+    [self.view addSubview:contentView];
     
-    UIImageView *innerTextViewBG = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WhiteBG.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)]];
-    [innerTextViewBG setUserInteractionEnabled:YES];
-    [innerTextViewBG setFrame:CGRectInset(textViewBG.bounds, kMargin, kMargin)];
-    [textViewBG addSubview:innerTextViewBG];
-    
-    UITextView* textView = [[UITextView alloc] initWithFrame:CGRectInset(innerTextViewBG.bounds, 5, 5)];
+    UTPlaceholderTextView* textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectInset(contentView.bounds, 10, 10)];
+    [textView setPlaceholder:@"请输入请假原因"];
     [textView setFont:[UIFont systemFontOfSize:15]];
     [textView setTextColor:[UIColor darkGrayColor]];
     [textView setDelegate:self];
-    [innerTextViewBG addSubview:textView];
+    [contentView addSubview:textView];
 }
-
-- (void)setupBottomView:(UIView *)viewParent
-{
-//    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [cancelButton setFrame:CGRectMake(kMargin, (viewParent.height - 30) / 2, 100, 30)];
-//    [cancelButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
-//    [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
-//    [cancelButton addTarget:self action:@selector(onCancel) forControlEvents:UIControlEventTouchUpInside];
-//    [cancelButton setBackgroundImage:[[UIImage imageNamed:@"GreenBG.png")] resizableImageWithCapInsets:UIEdgeInsetsMake(kMargin, kMargin, kMargin, kMargin)] forState:UIControlStateNormal];
-//    [viewParent addSubview:cancelButton];
-    
-    UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [sendButton setFrame:CGRectMake(kMargin , (viewParent.height - 36) / 2, viewParent.width - kMargin * 2 , 36)];
-    [sendButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [sendButton setTitle:@"发送给班主任" forState:UIControlStateNormal];
-    [sendButton addTarget:self action:@selector(onSend) forControlEvents:UIControlEventTouchUpInside];
-    [sendButton setBackgroundImage:[UIImage imageWithColor:kCommonParentTintColor size:sendButton.size cornerRadius:5] forState:UIControlStateNormal];
-    [viewParent addSubview:sendButton];
-}
-
 - (void)setStartDate:(NSDate *)startDate
 {
     _startDate = startDate;
     NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
-    [formmater setDateFormat:@"yy年MM月dd日 EEEE a HH:mm"];
+    [formmater setDateFormat:@"yy-MM-dd HH:mm"];
     NSString *dateStr = [formmater stringFromDate:_startDate];
-    _startField.text = dateStr;
+    NSMutableAttributedString *startStr = [[NSMutableAttributedString alloc] initWithString:@"自 " attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"9e9e9e"]}];
+    [startStr appendAttributedString:[[NSAttributedString alloc] initWithString:dateStr attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"2c2c2c"]}]];
+    [_startLabel setAttributedText:startStr];
 }
 
 - (void)setEndDate:(NSDate *)endDate
 {
     _endDate = endDate;
     NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
-    [formmater setDateFormat:@"yy年MM月dd日 EEEE a HH:mm"];
+    [formmater setDateFormat:@"yy-MM-dd HH:mm"];
     NSString *dateStr = [formmater stringFromDate:_endDate];
-    _endField.text = dateStr;
+    NSMutableAttributedString *endStr = [[NSMutableAttributedString alloc] initWithString:@"至 " attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"9e9e9e"]}];
+    [endStr appendAttributedString:[[NSAttributedString alloc] initWithString:dateStr attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"2c2c2c"]}]];
+    [_endLabel setAttributedText:endStr];
 }
 
 #pragma mark - UITextViewDelegate
@@ -159,11 +124,6 @@
         self.endDate = date;
     }];
     [datePicker show];
-}
-
-- (void)onSegmentChanged:(UISegmentedControl *)segment
-{
-    
 }
 
 - (void)onCancel

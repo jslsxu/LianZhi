@@ -11,4 +11,10 @@
 @interface Utility : NSObject
 + (NSString *)formatStringForTime:(NSInteger)timeInterval;
 + (NSString *)sizeAtPath:(NSString *)filePath diskMode:(BOOL)diskMode;
++ (NSString *)weekdayNameForIndex:(NSInteger)day;
++ (NSString *)weekdayStrForSelectedArray:(NSArray *)selectedArray;
++ (NSString *)timeForOffsetTimeInterval:(NSInteger)timeInterval;
++ (NSString *)md5String:(NSString *)str;
++ (NSString *)formatStringWithTimeInterval:(NSInteger)timeInterval;
++ (BOOL)isPhotoLibraryActive;
 @end

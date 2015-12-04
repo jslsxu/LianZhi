@@ -10,7 +10,7 @@
 #import "VacationDatePickerView.h"
 @interface RequestVacationVC : TNBaseViewController
 {
-    LZTextField*    _startField;
-    LZTextField*    _endField;
+    UILabel*    _startLabel;
+    UILabel*    _endLabel;
 }
 @end

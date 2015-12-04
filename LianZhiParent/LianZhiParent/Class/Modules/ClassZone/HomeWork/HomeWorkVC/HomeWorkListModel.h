@@ -15,12 +15,6 @@
 
 @end
 
-@interface HomeWorkGroup : TNModelItem
-@property (nonatomic, copy)NSString *dateStr;
-@property (nonatomic, strong)NSArray *homeWorkArray;
-
-@end
-
 @interface HomeWorkListModel : TNListModel
 
 @end

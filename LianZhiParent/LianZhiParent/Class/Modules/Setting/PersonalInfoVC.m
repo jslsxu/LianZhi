@@ -291,6 +291,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
             }
         }
         [[UserCenter sharedInstance] save];
+        [self.tableView reloadData];
         [hud hide:NO];
         [MBProgressHUD showSuccess:@"修改成功" toView:self.view];
     } fail:^(NSString *errMsg) {

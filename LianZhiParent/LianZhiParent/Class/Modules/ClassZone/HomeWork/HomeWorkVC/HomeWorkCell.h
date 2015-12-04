@@ -10,10 +10,15 @@
 
 @interface HomeWorkCell : TNTableViewCell
 {
+    UILabel*        _dateLabel;
+    UILabel*        _courseLabel;
+    UIView*         _bgView;
     UILabel*        _contentLabel;
-    UIImageView*    _photoView;
+    NSMutableArray* _photoViewArray;
     MessageVoiceButton* _voiceButton;
+    UILabel*        _timespanLabel;
     UILabel*        _timeLabel;
     UIView*         _bottomLine;
+    UILabel*        _fromLabel;
 }
 @end
