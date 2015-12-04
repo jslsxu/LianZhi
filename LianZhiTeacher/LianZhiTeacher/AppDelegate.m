@@ -23,13 +23,23 @@ static SystemSoundID shake_sound_male_id = 0;
 
 @implementation AppDelegate
 
+- (NSString *)curAutoNaviKey
+{
+    NSString *bundleID = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
+    if([bundleID isEqualToString:@"cn.edugate.EdugateAppTeacher"])
+        return kAutoNaviApiKey;
+    else if([bundleID isEqualToString:@"cn.edugate.inhouse.cn.edugate.EdugateAppTeacher"])
+        return kAutoNaviApiInhouseKey;
+    return nil;
+}
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setBackgroundColor:[UIColor whiteColor]];
     [[SVShareManager sharedInstance] initialize];
     [[TaskUploadManager sharedInstance] start];
-    [MAMapServices sharedServices].apiKey = kAutoNaviApiKey;
+    [MAMapServices sharedServices].apiKey = [self curAutoNaviKey];
     [self setupCommonHandler];
     [self registerSound];           //注册声音
     [self setupCommonAppearance];

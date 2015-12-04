@@ -19,5 +19,6 @@
 - (void)playSound;
 - (void)logout;
 - (void)popAndPush:(UIViewController *)viewController;
+- (NSString *)curAutoNaviKey;
 @end
 
