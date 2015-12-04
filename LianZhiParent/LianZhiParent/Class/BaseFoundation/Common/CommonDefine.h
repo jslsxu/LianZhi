@@ -48,8 +48,8 @@
 #define kParentClientAppStoreUrl            @"https://itunes.apple.com/us/app/lian-zhi-jia-zhang-ban/id967746596?l=zh&ls=1&mt=8"
 
 
-//#define kAutoNaviApiKey                     @"a9e57a78a98c9f0fbb2bfb7ac390b96e"         //normal
-#define kAutoNaviApiKey                     @"32aefdf31d77f1d31770b07bf3ab68ab"         //inhouse
+#define kAutoNaviApiKey                     @"a9e57a78a98c9f0fbb2bfb7ac390b96e"         //normal
+#define kAutoNaviApiInhouseKey                     @"32aefdf31d77f1d31770b07bf3ab68ab"         //inhouse
 
 #define kClassZoneShareUrl                  @"http://m.edugate.cn/share/teacher/index.html"
 #define kTreeHouseShareUrl                  @"http://m.5tree.cn/share/parent/index.html"  //正式环境

@@ -20,7 +20,15 @@ static SystemSoundID shake_sound_male_id = 0;
 @end
 
 @implementation AppDelegate
-
+- (NSString *)curAutoNaviKey
+{
+    NSString *bundleID = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
+    if([bundleID isEqualToString:@"cn.edugate.EdugateAppTeacher"])
+        return kAutoNaviApiKey;
+    else if([bundleID isEqualToString:@"cn.edugate.inhouse.cn.edugate.EdugateAppTeacher"])
+        return kAutoNaviApiInhouseKey;
+    return nil;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [self setupCommonAppearance];
@@ -77,7 +85,7 @@ static SystemSoundID shake_sound_male_id = 0;
 
 - (void)registerThirdParty
 {
-    [MAMapServices sharedServices].apiKey = kAutoNaviApiKey;
+    [MAMapServices sharedServices].apiKey = [self curAutoNaviKey];
 }
 
 - (void)setupCommonHandler
