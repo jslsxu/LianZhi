@@ -9,6 +9,8 @@
 #import "ChildrenInfoVC.h"
 #import "AddRelationVC.h"
 #import "ReportProblemVC.h"
+#import "CommonInputVC.h"
+#import "ActionSelectView.h"
 #define kChildInfoCellAvatarNotificaton         @"kChildInfoCellAvatarNotificaton"
 #define kChildInfoCellKey                       @"ChildInfoCellKey"
 
@@ -147,7 +149,7 @@
 
 @end
 
-@interface ChildrenInfoVC ()<ChildrenExtraCellDelegate>
+@interface ChildrenInfoVC ()<ChildrenExtraCellDelegate, ActionSelectViewDelegate>
 @property (nonatomic, strong)UIImage *avatarImage;
 @property (nonatomic, strong)NSMutableArray *infoArray;
 @property (nonatomic, assign)BOOL scrolled;
@@ -263,6 +265,8 @@
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     for (PersonalInfoItem *item in infoArray) {
         [params setValue:item.value forKey:item.requestKey];
+        if([item.requestKey isEqualToString:@"sex"])
+            [params setValue:kStringFromValue([item.value isEqualToString:@"美女"] ? GenderFemale : GenderMale) forKey:@"sex"];
         if([item.requestKey isEqualToString:@"nick"])
         {
             if(item.value.length > 8)
@@ -551,28 +555,53 @@
     {
         if(row == 0)
             [self modifyAvatar];
-        if(row == 2)
+        else if(row == 2)//性别
         {
-            
+            ActionSelectView *selectView = [[ActionSelectView alloc] init];
+            [selectView setDelegate:self];
+            [selectView show];
         }
-        if(row == 3)
+        else if(row == 3)//出生日期
         {
-            
+            SettingDatePickerView *datePicker = [[SettingDatePickerView alloc] initWithType:SettingDatePickerTypeDate];
+            [datePicker setBlk:^(NSString *dateStr){
+                PersonalInfoItem *birthdayItem = [_infoArray objectAtIndex:2];
+                [birthdayItem setValue:dateStr];
+                [self saveInfo];
+                [tableView reloadData];
+            }];
+            [datePicker show];
         }
-        if(row == 4)
+        else
         {
-            
-        }
-        if(row == 5)
-        {
-            
-        }
-        if(row == 6)
-        {
-            
+            PersonalInfoItem *infoItem = self.infoArray[row - 1];
+            CommonInputVC *inputVC = [[CommonInputVC alloc] initWithOriginal:infoItem.value forKey:infoItem.key completion:^(NSString *value) {
+                infoItem.value = value;
+                [self saveInfo];
+                [tableView reloadData];
+            }];
+            [self.navigationController pushViewController:inputVC animated:YES];
         }
     }
 }
 
+#pragma mark - ActionSelectViewDelegate
+- (NSInteger)pickerView:(ActionSelectView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return 2;
+}
+
+- (NSString *)pickerView:(ActionSelectView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return row == 0 ? @"美女" : @"帅哥";
+}
+
+- (void)pickerViewFinished:(ActionSelectView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    PersonalInfoItem *genderItem = self.infoArray[1];
+    genderItem.value = ((row + 1) == GenderFemale) ? @"美女" : @"帅哥";
+    [self saveInfo];
+    [_tableView reloadData];
+}
 
 @end

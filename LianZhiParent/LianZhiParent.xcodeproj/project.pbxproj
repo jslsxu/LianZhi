@@ -60,6 +60,7 @@
 		3728A7021B9C711D00310457 /* UUImageAvatarBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A7011B9C711D00310457 /* UUImageAvatarBrowser.m */; };
 		372BFC441BA6B343006DBCCC /* ClassMemberVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372BFC431BA6B343006DBCCC /* ClassMemberVC.m */; };
 		372BFC471BA70E00006DBCCC /* StudentParentsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372BFC461BA70E00006DBCCC /* StudentParentsVC.m */; };
+		3731D0911C1D94EF003E17A6 /* ActionPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3731D0901C1D94EE003E17A6 /* ActionPopView.m */; };
 		3732A4611AFC6B24006DE05C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3732A4601AFC6B24006DE05C /* UIKit.framework */; };
 		3732A4631AFC6B30006DE05C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3732A4621AFC6B2F006DE05C /* QuartzCore.framework */; };
 		3732A4651AFC6B35006DE05C /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3732A4641AFC6B35006DE05C /* CoreVideo.framework */; };
@@ -519,6 +520,8 @@
 		372BFC431BA6B343006DBCCC /* ClassMemberVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassMemberVC.m; sourceTree = "<group>"; };
 		372BFC451BA70E00006DBCCC /* StudentParentsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentParentsVC.h; sourceTree = "<group>"; };
 		372BFC461BA70E00006DBCCC /* StudentParentsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentParentsVC.m; sourceTree = "<group>"; };
+		3731D08F1C1D94EE003E17A6 /* ActionPopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionPopView.h; sourceTree = "<group>"; };
+		3731D0901C1D94EE003E17A6 /* ActionPopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionPopView.m; sourceTree = "<group>"; };
 		3732A4601AFC6B24006DE05C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3732A4621AFC6B2F006DE05C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3732A4641AFC6B35006DE05C /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
@@ -2705,6 +2708,8 @@
 				37CBAF221A4724F20063F395 /* TreeHouseCell.m */,
 				37CCE2431B886BCD007BFA4F /* ActionView.h */,
 				37CCE2441B886BCD007BFA4F /* ActionView.m */,
+				3731D08F1C1D94EE003E17A6 /* ActionPopView.h */,
+				3731D0901C1D94EE003E17A6 /* ActionPopView.m */,
 				37CBAF241A4725200063F395 /* TreeHouseModel.h */,
 				37CBAF251A4725200063F395 /* TreeHouseModel.m */,
 				37E93F831A7A919C00AD45A1 /* TreeHouseAlbumVC.h */,
@@ -2955,6 +2960,7 @@
 				TargetAttributes = {
 					37C356011A3FD67300B948E6 = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = JRFF54BK3W;
 					};
 				};
 			};
@@ -3318,6 +3324,7 @@
 				3793F8181B7CFFD900501F77 /* UIScrollView+MJExtension.m in Sources */,
 				3793F76E1B7CFFD900501F77 /* REInlineDatePickerItem.m in Sources */,
 				3793F7641B7CFFD900501F77 /* RETableViewLongTextCell.m in Sources */,
+				3731D0911C1D94EF003E17A6 /* ActionPopView.m in Sources */,
 				3728A5E61B9332FE00310457 /* ClassZoneClassSwitchView.m in Sources */,
 				37FD70AB1BBCF0F700C83AB4 /* ZipArchive.mm in Sources */,
 				3793F7A61B7CFFD900501F77 /* UrlHandler.m in Sources */,
@@ -3453,7 +3460,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3485,9 +3492,9 @@
 					"$(PROJECT_DIR)/LianZhiParent/Class/BaseFoundation/SVShare/SVSDK/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.Parent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "dde38db0-35f3-4220-ba79-3958cca57f5a";
+				PROVISIONING_PROFILE = "7978f522-3d07-4c8c-844e-0e19b4151403";
 			};
 			name = Debug;
 		};
@@ -3498,7 +3505,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3530,9 +3537,9 @@
 					"$(PROJECT_DIR)/LianZhiParent/Class/BaseFoundation/SVShare/SVSDK/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.Parent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "dde38db0-35f3-4220-ba79-3958cca57f5a";
+				PROVISIONING_PROFILE = "7978f522-3d07-4c8c-844e-0e19b4151403";
 			};
 			name = Release;
 		};

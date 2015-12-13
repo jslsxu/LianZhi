@@ -38,7 +38,7 @@
 //    [_scrollView addSubview:sepLine];
     
     UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [sendButton setTitle:@"确认添加" forState:UIControlStateNormal];
+    [sendButton setTitle:@"完成" forState:UIControlStateNormal];
     [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [sendButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
     [sendButton addTarget:self action:@selector(onSendButtonClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -58,9 +58,8 @@
         [ProgressHUD showHintText:@"你还有录制语音"];
         return;
     }
-    HomeWorkItem *homeWorkItem = [[HomeWorkItem alloc] init];
-    if([self.delegate respondsToSelector:@selector(publishHomeWorkFinished:)])
-        [self.delegate publishHomeWorkFinished:homeWorkItem];
+    if(self.completion)
+        self.completion(audioData, timeSpan);
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

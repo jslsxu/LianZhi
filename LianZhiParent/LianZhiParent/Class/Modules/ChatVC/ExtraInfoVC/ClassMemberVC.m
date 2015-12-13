@@ -116,39 +116,45 @@
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"contact/list" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         if(responseObject.count > 0)
         {
-            TNDataWrapper *classWrapper = [responseObject getDataWrapperForIndex:0];
-            ClassInfo *classInfo = [[ClassInfo alloc] init];
-            [classInfo parseData:classWrapper];
-            self.classInfo = classInfo;
-            NSMutableArray *students = [NSMutableArray array];
-            for (ChildInfo *childInfo in self.classInfo.students)
+            for (NSInteger i = 0; i < responseObject.count; i++)
             {
-                BOOL isIn = NO;
-                for (ContactGroup *group in students)
+                TNDataWrapper *classWrapper = [responseObject getDataWrapperForIndex:i];
+                ClassInfo *classInfo = [[ClassInfo alloc] init];
+                [classInfo parseData:classWrapper];
+                if([classInfo.classID isEqualToString:self.classID])
                 {
-                    if([group.key isEqualToString:childInfo.shortIndex])
+                    self.classInfo = classInfo;
+                    NSMutableArray *students = [NSMutableArray array];
+                    for (ChildInfo *childInfo in self.classInfo.students)
                     {
-                        isIn = YES;
-                        [group.contacts addObject:childInfo];
+                        BOOL isIn = NO;
+                        for (ContactGroup *group in students)
+                        {
+                            if([group.key isEqualToString:childInfo.shortIndex])
+                            {
+                                isIn = YES;
+                                [group.contacts addObject:childInfo];
+                            }
+                        }
+                        if(!isIn)
+                        {
+                            ContactGroup *group = [[ContactGroup alloc] init];
+                            [group setKey:childInfo.shortIndex];
+                            [group.contacts addObject:childInfo];
+                            [students addObject:group];
+                        }
                     }
+                    
+                    [students sortUsingComparator:^NSComparisonResult(ContactGroup* obj1, ContactGroup* obj2) {
+                        NSString *index1 = obj1.key;
+                        NSString *index2 = obj2.key;
+                        return [index1 compare:index2];
+                    }];
+                    self.students = students;
                 }
-                if(!isIn)
-                {
-                    ContactGroup *group = [[ContactGroup alloc] init];
-                    [group setKey:childInfo.shortIndex];
-                    [group.contacts addObject:childInfo];
-                    [students addObject:group];
-                }
+                [_tableView reloadData];
             }
-            
-            [students sortUsingComparator:^NSComparisonResult(ContactGroup* obj1, ContactGroup* obj2) {
-                NSString *index1 = obj1.key;
-                NSString *index2 = obj2.key;
-                return [index1 compare:index2];
-            }];
-            self.students = students;
         }
-        [_tableView reloadData];
     } fail:^(NSString *errMsg) {
         
     }];

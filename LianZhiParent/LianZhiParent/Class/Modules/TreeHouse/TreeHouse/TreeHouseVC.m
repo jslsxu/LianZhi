@@ -9,9 +9,10 @@
 #import "TreeHouseVC.h"
 #import "PublishSelectionView.h"
 #import "TreeHouseItemDetailVC.h"
+#import "ActionPopView.h"
 NSString *const kPublishPhotoItemFinishedNotification = @"PublishPhotoItemFinishedNotification";
 NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
-@interface TreeHouseVC ()<PublishSelectDelegate, ActionSelectViewDelegate>
+@interface TreeHouseVC ()<PublishSelectDelegate, ActionSelectViewDelegate, ActionPopViewDelegate>
 @property (nonatomic, weak)TreehouseItem *itemForTag;
 @property (nonatomic, strong)NSArray *tagSourceArray;
 @property (nonatomic, strong)TreehouseItem *targetTreeHouseItem;
@@ -160,6 +161,13 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 {
     [super viewWillAppear:animated];
 //    [self requestData:REQUEST_REFRESH];
+    [ApplicationDelegate.homeVC.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ActionAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(onPublishButtonClicked)]];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [ApplicationDelegate.homeVC.navigationItem setRightBarButtonItem:nil];
 }
 
 - (void)viewDidLoad {
@@ -168,12 +176,12 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     self.shouldShowEmptyHint = YES;
     //请求网络数据
     
-    CGFloat publishButtonWidth = 40;
-    _publishButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_publishButton setImage:[UIImage imageNamed:@"TreeHouseEdit.png"] forState:UIControlStateNormal];
-    [_publishButton addTarget:self action:@selector(onPublishButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_publishButton];
-    [_publishButton setFrame:CGRectMake(30, self.view.height - 64 - 50 - publishButtonWidth - 15, publishButtonWidth, publishButtonWidth)];
+//    CGFloat publishButtonWidth = 40;
+//    _publishButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [_publishButton setImage:[UIImage imageNamed:@"TreeHouseEdit.png"] forState:UIControlStateNormal];
+//    [_publishButton addTarget:self action:@selector(onPublishButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:_publishButton];
+//    [_publishButton setFrame:CGRectMake(30, self.view.height - 64 - 50 - publishButtonWidth - 15, publishButtonWidth, publishButtonWidth)];
     
     UIView *whiteLine = [[UIView alloc] initWithFrame:CGRectMake((50 - 2 / 2), 0, 2, self.view.height)];
     [whiteLine setBackgroundColor:[UIColor whiteColor]];
@@ -255,12 +263,16 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)onPublishButtonClicked
 {
-    [UIView animateWithDuration:0.3 animations:^{
-        [_publishButton setAlpha:0.f];
-    }];
-    PublishSelectionView *selectionView = [[PublishSelectionView alloc] initWithFrame:self.view.bounds];
-    [selectionView setDelegate:self];
-    [selectionView show];
+//    [UIView animateWithDuration:0.3 animations:^{
+//        [_publishButton setAlpha:0.f];
+//    }];
+//    PublishSelectionView *selectionView = [[PublishSelectionView alloc] initWithFrame:self.view.bounds];
+//    [selectionView setDelegate:self];
+//    [selectionView show];
+    
+    ActionPopView *actionView = [[ActionPopView alloc] initWithFrame:CGRectMake(self.view.width - 140, 64, 140, 140)];
+    [actionView setDelegate:self];
+    [actionView show];
 }
 
 - (void)onCurChildChanged
@@ -496,6 +508,30 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 //        }];
 //        [self.navigationController pushViewController:detailVC animated:YES];
 //    }
+}
+
+#pragma mark - ActionPopViewDelegate
+- (void)popActionViewDidSelectedAtIndex:(NSInteger)index
+{
+    PublishBaseVC *publishVC = nil;
+    if(index == 0)
+    {
+        publishVC = [[PublishArticleVC alloc] init];
+    }
+    else if(index == 1)
+    {
+        publishVC = [[PublishPhotoVC alloc] init];
+    }
+    else
+    {
+        publishVC = [[PublishAudioVC alloc] init];
+    }
+    [publishVC setDelegate:self];
+    TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:publishVC];
+    [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:^{
+        
+    }];
+
 }
 
 #pragma mark - PublishTreeItemDelegate

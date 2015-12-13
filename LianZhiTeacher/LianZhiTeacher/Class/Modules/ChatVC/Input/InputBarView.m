@@ -19,7 +19,7 @@
 
 #define kTextFont                           [UIFont systemFontOfSize:15]
 
-@interface InputBarView ()
+@interface InputBarView ()<PhotoPickerVCDelegate>
 @property (nonatomic,assign)NSInteger targetHeight;
 @end
 
@@ -299,10 +299,21 @@
 {
     if(index <= 1)
     {
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-        [imagePicker setDelegate:self];
-        [imagePicker setSourceType:index == 0 ? UIImagePickerControllerSourceTypePhotoLibrary : UIImagePickerControllerSourceTypeCamera];
-        [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
+        if(index == 1)
+        {
+            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+            [imagePicker setDelegate:self];
+            [imagePicker setSourceType: UIImagePickerControllerSourceTypeCamera];
+            [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
+        }
+        else
+        {
+            PhotoPickerVC *photoPickerVC = [[PhotoPickerVC alloc] init];
+            [photoPickerVC setMaxToSelected:9];
+            [photoPickerVC setDelegate:self];
+            TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:photoPickerVC];
+            [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
+        }
     }
     else
     {
@@ -310,6 +321,26 @@
         TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:myGiftVC];
         [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:nil];
     }
+}
+
+#pragma mark - PhotoPickerVCDelegate
+- (void)photoPickerVC:(PhotoPickerVC *)photoPickerVC didFinished:(NSArray *)selectedArray
+{
+    [photoPickerVC dismissViewControllerAnimated:YES completion:nil];
+    NSMutableArray *photoArray = [NSMutableArray array];
+    for (PublishImageItem *imageItem in selectedArray)
+    {
+        [photoArray addObject:imageItem.image];
+    }
+    if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendPhotoArray:)])
+    {
+        [self.inputDelegate inputBarViewDidSendPhotoArray:photoArray];
+    }
+}
+
+- (void)photoPickerVCDidCancel:(PhotoPickerVC *)photoPickerVC
+{
+    [photoPickerVC dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UIImagePickerControllerDelegate

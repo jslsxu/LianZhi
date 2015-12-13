@@ -10,7 +10,7 @@
 
 @interface HomeWorkItem : NSObject
 @property (nonatomic, copy)NSString *content;
-@property (nonatomic, strong)NSArray *photoArray;
+@property (nonatomic, strong)NSMutableArray *photoArray;
 @property (nonatomic, strong)AudioItem* audioItem;
 @property (nonatomic, copy)NSString *ctime;
 @end

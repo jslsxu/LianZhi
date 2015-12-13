@@ -60,6 +60,9 @@
 		376FC6B91B01EFC500289DC2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B81B01EFC500289DC2 /* AVFoundation.framework */; };
 		376FC6BB1B01EFCB00289DC2 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6BA1B01EFCB00289DC2 /* CoreMedia.framework */; };
 		376FC6BD1B01EFD100289DC2 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6BC1B01EFD100289DC2 /* CoreVideo.framework */; };
+		378436AB1C1536E2009CBBA0 /* HomeWorkAudioView.m in Sources */ = {isa = PBXBuildFile; fileRef = 378436AA1C1536E2009CBBA0 /* HomeWorkAudioView.m */; };
+		378436AE1C153B31009CBBA0 /* CourseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 378436AD1C153B31009CBBA0 /* CourseView.m */; };
+		378436B11C153BD6009CBBA0 /* HomeWorkPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 378436B01C153BD6009CBBA0 /* HomeWorkPhotoView.m */; };
 		378C78431AA43D6C00E171E2 /* PreviewMessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 378C78421AA43D6C00E171E2 /* PreviewMessageVC.m */; };
 		378DA1471C09957C00301C26 /* HomeWorkDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 378DA1461C09957C00301C26 /* HomeWorkDetailVC.m */; };
 		378DA14A1C09BC8300301C26 /* AccountMsgVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 378DA1491C09BC8300301C26 /* AccountMsgVC.m */; };
@@ -532,6 +535,12 @@
 		376FC6B81B01EFC500289DC2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		376FC6BA1B01EFCB00289DC2 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		376FC6BC1B01EFD100289DC2 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		378436A91C1536E2009CBBA0 /* HomeWorkAudioView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkAudioView.h; sourceTree = "<group>"; };
+		378436AA1C1536E2009CBBA0 /* HomeWorkAudioView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkAudioView.m; sourceTree = "<group>"; };
+		378436AC1C153B31009CBBA0 /* CourseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseView.h; sourceTree = "<group>"; };
+		378436AD1C153B31009CBBA0 /* CourseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseView.m; sourceTree = "<group>"; };
+		378436AF1C153BD6009CBBA0 /* HomeWorkPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkPhotoView.h; sourceTree = "<group>"; };
+		378436B01C153BD6009CBBA0 /* HomeWorkPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkPhotoView.m; sourceTree = "<group>"; };
 		378C78411AA43D6C00E171E2 /* PreviewMessageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewMessageVC.h; sourceTree = "<group>"; };
 		378C78421AA43D6C00E171E2 /* PreviewMessageVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewMessageVC.m; sourceTree = "<group>"; };
 		378DA1451C09957C00301C26 /* HomeWorkDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkDetailVC.h; sourceTree = "<group>"; };
@@ -2548,6 +2557,12 @@
 			children = (
 				37D6EECF1BCBA96D000994A2 /* HomeWorkVC.h */,
 				37D6EED01BCBA96D000994A2 /* HomeWorkVC.m */,
+				378436A91C1536E2009CBBA0 /* HomeWorkAudioView.h */,
+				378436AA1C1536E2009CBBA0 /* HomeWorkAudioView.m */,
+				378436AC1C153B31009CBBA0 /* CourseView.h */,
+				378436AD1C153B31009CBBA0 /* CourseView.m */,
+				378436AF1C153BD6009CBBA0 /* HomeWorkPhotoView.h */,
+				378436B01C153BD6009CBBA0 /* HomeWorkPhotoView.m */,
 				37FB1C5A1BE4949F004ECE2E /* HomeWorkItemCell.h */,
 				37FB1C5B1BE4949F004ECE2E /* HomeWorkItemCell.m */,
 				37FB1C5D1BE4979B004ECE2E /* HomeWorkItem.h */,
@@ -3172,6 +3187,7 @@
 				37CA18701AB70A2F00B49B55 /* AlbumGroupView.m in Sources */,
 				37C01B0E1A6C210300C8F454 /* PhotoOperationVC.m in Sources */,
 				37F207161BE0BBFF006466F4 /* UITouchScrollView.m in Sources */,
+				378436AE1C153B31009CBBA0 /* CourseView.m in Sources */,
 				3793FA4B1B7CFFF000501F77 /* RETableViewManager.m in Sources */,
 				3793FA741B7CFFF000501F77 /* ALAsset+assetType.m in Sources */,
 				3793FA461B7CFFF000501F77 /* REPlaceholderTextView.m in Sources */,
@@ -3218,6 +3234,7 @@
 				37CCE2561B8B0649007BFA4F /* ActionPopView.m in Sources */,
 				3793FA351B7CFFF000501F77 /* RETableViewTextCell.m in Sources */,
 				3793FAE01B7CFFF000501F77 /* MJRefreshBaseView.m in Sources */,
+				378436AB1C1536E2009CBBA0 /* HomeWorkAudioView.m in Sources */,
 				3793FA311B7CFFF000501F77 /* RETableViewNumberCell.m in Sources */,
 				37EACA031B845B5F007BFBA1 /* PasswordConfirmVC.m in Sources */,
 				3793FA481B7CFFF000501F77 /* RETableViewCellStyle.m in Sources */,
@@ -3462,6 +3479,7 @@
 				3793FAA71B7CFFF000501F77 /* UIImage+Utility.m in Sources */,
 				37D6EEEE1BCBA96D000994A2 /* AttendanceDatePickerView.m in Sources */,
 				3793FAA21B7CFFF000501F77 /* NSObject+UnifiedPerformSelector.m in Sources */,
+				378436B11C153BD6009CBBA0 /* HomeWorkPhotoView.m in Sources */,
 				3793FA2C1B7CFFF000501F77 /* RETableViewDateTimeCell.m in Sources */,
 				37FB1C501BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.m in Sources */,
 				3728A74F1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m in Sources */,
@@ -3608,7 +3626,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3640,8 +3658,9 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/SVShare/SVSDK/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = " -all_load";
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "fefdb4b8-36b2-4e89-a528-55bb5b19c18d";
+				PROVISIONING_PROFILE = "72ffb7ff-6a30-4cbc-bc91-64fe85646ba9";
 			};
 			name = Debug;
 		};
@@ -3650,7 +3669,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3682,8 +3701,9 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/SVShare/SVSDK/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = " -all_load";
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "fefdb4b8-36b2-4e89-a528-55bb5b19c18d";
+				PROVISIONING_PROFILE = "72ffb7ff-6a30-4cbc-bc91-64fe85646ba9";
 			};
 			name = Release;
 		};

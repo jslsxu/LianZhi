@@ -13,4 +13,5 @@
     UITouchScrollView*  _scrollView;
     AudioRecordView*    _recordView;
 }
+@property (nonatomic, copy)void (^completion)(NSData *amrData, NSInteger timeSpan);
 @end

@@ -407,6 +407,14 @@ static NSString *topChatID = nil;
     [self dealTheFunctionData:dic];
 }
 
+- (void)inputBarViewDidSendPhotoArray:(NSArray *)photoArry
+{
+    for (UIImage *image in photoArry)
+    {
+        [self inputBarViewDidSendPhoto:image];
+    }
+}
+
 - (void)inputBarViewDidSendVoice:(NSData *)amrData time:(NSInteger)time
 {
     if(time < 2)
