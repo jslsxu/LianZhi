@@ -25,7 +25,7 @@ static SystemSoundID shake_sound_male_id = 0;
     NSString *bundleID = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
     if([bundleID isEqualToString:@"cn.edugate.EdugateAppParent"])
         return kAutoNaviApiKey;
-    else if([bundleID isEqualToString:@"cn.edugate.inhouse.cn.edugate.EdugateAppParent"])
+    else if([bundleID isEqualToString:@"cn.edugate.inhouse.EdugateAppParent"])
         return kAutoNaviApiInhouseKey;
     return nil;
 }
