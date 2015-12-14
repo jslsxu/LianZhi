@@ -19,24 +19,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"我所有的班";
-    NSMutableArray *classArray = [NSMutableArray array];
-    if([UserCenter sharedInstance].curSchool.classes.count > 0)
-    {
-        NSMutableDictionary *group = [NSMutableDictionary dictionary];
-        [group setValue:@"我教授的班" forKey:@"groupName"];
-        [group setValue:[NSArray arrayWithArray:[UserCenter sharedInstance].curSchool.classes] forKey:@"groupArray"];
-        [classArray addObject:group];
-    }
     
-    if([UserCenter sharedInstance].curSchool.managedClasses.count > 0)
-    {
-        NSMutableDictionary *group = [NSMutableDictionary dictionary];
-        [group setValue:@"我管理的班" forKey:@"groupName"];
-        [group setValue:[NSArray arrayWithArray:[UserCenter sharedInstance].curSchool.managedClasses] forKey:@"groupArray"];
-        [classArray addObject:group];
-    }
-    
-    self.classArray = classArray;
+    self.classArray = [UserCenter sharedInstance].curSchool.allClasses;
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStylePlain];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
@@ -49,41 +33,34 @@
 
 #pragma mark - UITableviewdele
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.classArray.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    NSDictionary *dictionary = self.classArray[section];
-    NSArray *groupArray = dictionary[@"groupArray"];
-    return groupArray.count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return kSectionHeaderHeight;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    NSDictionary *groupDic = self.classArray[section];
-    NSString *title = groupDic[@"groupName"];
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, kSectionHeaderHeight)];
-    [headerView setBackgroundColor:[UIColor whiteColor]];
-
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, headerView.width - 15, headerView.height)];
-    [titleLabel setTextColor:[UIColor colorWithHexString:@"8e8e8e"]];
-    [titleLabel setFont:[UIFont systemFontOfSize:14]];
-    [titleLabel setText:title];
-    [headerView addSubview:titleLabel];
-    
-    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, headerView.height - kLineHeight, headerView.width, kLineHeight)];
-    [bottomLine setBackgroundColor:kSepLineColor];
-    [headerView addSubview:bottomLine];
-    return headerView;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return kSectionHeaderHeight;
+//}
+//
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    NSDictionary *groupDic = self.classArray[section];
+//    NSString *title = groupDic[@"groupName"];
+//    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, kSectionHeaderHeight)];
+//    [headerView setBackgroundColor:[UIColor whiteColor]];
+//
+//    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, headerView.width - 15, headerView.height)];
+//    [titleLabel setTextColor:[UIColor colorWithHexString:@"8e8e8e"]];
+//    [titleLabel setFont:[UIFont systemFontOfSize:14]];
+//    [titleLabel setText:title];
+//    [headerView addSubview:titleLabel];
+//    
+//    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, headerView.height - kLineHeight, headerView.width, kLineHeight)];
+//    [bottomLine setBackgroundColor:kSepLineColor];
+//    [headerView addSubview:bottomLine];
+//    return headerView;
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -97,9 +74,7 @@
         [cell.detailTextLabel setTextColor:kCommonTeacherTintColor];
     }
     
-    NSDictionary *groupDic = self.classArray[indexPath.section];
-    NSArray *groupArray = groupDic[@"groupArray"];
-    ClassInfo *classInfo = groupArray[indexPath.row];
+    ClassInfo *classInfo = self.classArray[indexPath.row];
     [cell setClassInfo:classInfo];
     BOOL isSelected = [self.originalClassID isEqualToString:classInfo.classID];
     if(isSelected)
@@ -151,9 +126,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSDictionary *groupDic = self.classArray[indexPath.section];
-    NSArray *groupArray = groupDic[@"groupArray"];
-    ClassInfo *classInfo = groupArray[indexPath.row];
+    ClassInfo *classInfo = self.classArray[indexPath.row];
     self.originalClassID = classInfo.classID;
     [tableView reloadData];
     if(self.selection)

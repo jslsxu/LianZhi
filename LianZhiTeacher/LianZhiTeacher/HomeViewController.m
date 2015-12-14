@@ -62,7 +62,7 @@ static NSArray *tabDatas = nil;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
         
         NSMutableArray *subVCs = [[NSMutableArray alloc] initWithCapacity:0];
-        NSArray *subVCArray = @[@"MessageVC",@"ApplicationBoxVC",@"DiscoveryVC",@"MineVC"];
+        NSArray *subVCArray = @[@"MessageVC",@"ContactListVC",@"ApplicationBoxVC",@"DiscoveryVC",@"MineVC"];
         
         for (NSInteger i = 0; i < subVCArray.count; i++)
         {
@@ -98,11 +98,11 @@ static NSArray *tabDatas = nil;
     }
     [_switchButton setHasNew:hasNew];
     
-    LZTabBarButton *discoveryButon = _tabbarButtons[2];
-    DiscoveryVC *discoveryVC = [self.viewControllers objectAtIndex:2];
+    LZTabBarButton *discoveryButon = _tabbarButtons[3];
+    DiscoveryVC *discoveryVC = [self.viewControllers objectAtIndex:3];
     [discoveryButon setBadgeValue:discoveryVC.hasNew ? @"" : nil];
     
-    LZTabBarButton *appTabButton = _tabbarButtons[1];
+    LZTabBarButton *appTabButton = _tabbarButtons[2];
     //新动态
     NSArray *newCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
     NSInteger commentNum = 0;
@@ -176,7 +176,7 @@ static NSArray *tabDatas = nil;
             view.hidden = YES;
         }
     }];
-    NSArray *tabItemTitleArray = @[@"消息",@"应用盒",@"发现",@"我"];
+    NSArray *tabItemTitleArray = @[@"消息",@"联系人",@"应用盒",@"发现",@"我"];
     CGFloat tabWidth = self.view.width / tabItemTitleArray.count;
     for (NSInteger i = 0; i < tabItemTitleArray.count; i++)
     {
@@ -221,7 +221,7 @@ static NSArray *tabDatas = nil;
 - (void)selectAtIndex:(NSInteger)index
 {
     self.selectedIndex = index;
-    NSArray *tabImageNameArray = @[@"HomeTabMessage",@"HomeTabApplications",@"HomeTabDiscovery",@"HomeTabMine"];
+    NSArray *tabImageNameArray = @[@"HomeTabMessage",@"HomeTabContacts",@"HomeTabApplications",@"HomeTabDiscovery",@"HomeTabMine"];
     for (NSInteger i = 0; i < _tabbarButtons.count; i++)
     {
         LZTabBarButton *barButton = _tabbarButtons[i];

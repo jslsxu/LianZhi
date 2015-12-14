@@ -12,6 +12,7 @@
 @interface GrowthTimelineClassChangeVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
     UITableView*        _tableView;
+    UIButton*           _selectAllButton;
 }
 @property (nonatomic, strong)NSMutableDictionary *record;
 @end

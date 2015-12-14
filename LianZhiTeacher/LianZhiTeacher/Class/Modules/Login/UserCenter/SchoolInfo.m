@@ -128,6 +128,25 @@
     [aCoder encodeObject:self.teachers forKey:@"teachers"];
     [aCoder encodeObject:self.schoolUrl forKey:@"url"];
 }
+
+- (NSArray *)allClasses
+{
+    NSMutableArray *classArray = [NSMutableArray arrayWithArray:self.classes];
+    for (ClassInfo *classInfo in self.managedClasses)
+    {
+        BOOL isIn = NO;
+        for (ClassInfo *teachClass in classArray)
+        {
+            if([teachClass.classID isEqualToString:classInfo.classID])
+                isIn = YES;
+        }
+        if(!isIn)
+            [classArray addObject:classInfo];
+    }
+    if(classArray.count > 0)
+        return classArray;
+    return nil;
+}
 @end
 
 @implementation TeacherInfo

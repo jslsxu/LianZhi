@@ -24,6 +24,7 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @property (nonatomic, strong)NSArray *teachers;
 @property (nonatomic, copy)NSString *schoolUrl;
 @property (nonatomic, readonly)NSInteger classNum;
+- (NSArray *)allClasses;
 @end
 
 @interface TeacherInfo : UserInfo

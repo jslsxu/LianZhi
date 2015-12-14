@@ -199,6 +199,16 @@
             [CurrentROOTNavigationVC pushViewController:publishGrowthTimelineVC animated:YES];
         }
     }
+    else if([classStr isEqualToString:@"ClassZoneVC"])
+    {
+        ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
+        [selectionVC setSelection:^(ClassInfo *classInfo) {
+            ClassZoneVC *classZoneVC = [[ClassZoneVC alloc] init];
+            [classZoneVC setClassInfo:classInfo];
+            [CurrentROOTNavigationVC pushViewController:classZoneVC animated:YES];
+        }];
+        [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];
+    }
     else if([classStr isEqualToString:@"TNBaseWebViewController"])
     {
         TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];

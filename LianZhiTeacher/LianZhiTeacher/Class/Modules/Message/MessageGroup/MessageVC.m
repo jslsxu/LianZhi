@@ -189,8 +189,9 @@
 
 - (void)onNewChat
 {
-    ContactListVC *contactListVC = [[ContactListVC alloc] init];
-    [CurrentROOTNavigationVC pushViewController:contactListVC animated:YES];
+    [ApplicationDelegate.homeVC selectAtIndex:1];
+//    ContactListVC *contactListVC = [[ContactListVC alloc] init];
+//    [CurrentROOTNavigationVC pushViewController:contactListVC animated:YES];
 }
 #pragma mark - UITableViewDelegate
 

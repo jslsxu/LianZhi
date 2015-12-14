@@ -41,6 +41,7 @@ typedef NS_ENUM(NSInteger, SelectType){
     NSMutableArray*     _selectedGroupArray;
     UISegmentedControl* _segmentControl;
     UITableView*        _tableView;
+    UIButton*           _selectAllButton;
 }
 
 @property (nonatomic, strong)NSArray *imageArray;

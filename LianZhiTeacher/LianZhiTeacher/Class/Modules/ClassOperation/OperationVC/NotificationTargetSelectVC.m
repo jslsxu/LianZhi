@@ -18,8 +18,7 @@
     {
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         _checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_checkButton setFrame:CGRectMake(30, 0, 20, self.height)];
-        [_checkButton setUserInteractionEnabled:NO];
+        [_checkButton setFrame:CGRectMake(20, 0, 20, self.height)];
         [_checkButton setImage:[UIImage imageNamed:@"ControlDefault"] forState:UIControlStateNormal];
         [_checkButton setImage:[UIImage imageNamed:@"ControlSelectAll"] forState:UIControlStateSelected];
         [self addSubview:_checkButton];
@@ -97,25 +96,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"消息通知";
+//    
+//    NSMutableArray *classArray = [NSMutableArray array];
+//    if([UserCenter sharedInstance].curSchool.classes.count > 0)
+//    {
+//        NSMutableDictionary *group = [NSMutableDictionary dictionary];
+//        [group setValue:@"我教授的班" forKey:@"groupName"];
+//        [group setValue:[NSArray arrayWithArray:[UserCenter sharedInstance].curSchool.classes] forKey:@"groupArray"];
+//        [classArray addObject:group];
+//    }
+//    
+//    if([UserCenter sharedInstance].curSchool.managedClasses.count > 0)
+//    {
+//        NSMutableDictionary *group = [NSMutableDictionary dictionary];
+//        [group setValue:@"我管理的班" forKey:@"groupName"];
+//        [group setValue:[NSArray arrayWithArray:[UserCenter sharedInstance].curSchool.managedClasses] forKey:@"groupArray"];
+//        [classArray addObject:group];
+//    }
     
-    NSMutableArray *classArray = [NSMutableArray array];
-    if([UserCenter sharedInstance].curSchool.classes.count > 0)
-    {
-        NSMutableDictionary *group = [NSMutableDictionary dictionary];
-        [group setValue:@"我教授的班" forKey:@"groupName"];
-        [group setValue:[NSArray arrayWithArray:[UserCenter sharedInstance].curSchool.classes] forKey:@"groupArray"];
-        [classArray addObject:group];
-    }
-    
-    if([UserCenter sharedInstance].curSchool.managedClasses.count > 0)
-    {
-        NSMutableDictionary *group = [NSMutableDictionary dictionary];
-        [group setValue:@"我管理的班" forKey:@"groupName"];
-        [group setValue:[NSArray arrayWithArray:[UserCenter sharedInstance].curSchool.managedClasses] forKey:@"groupArray"];
-        [classArray addObject:group];
-    }
-    
-    self.classArray = classArray;
+    self.classArray = [UserCenter sharedInstance].curSchool.allClasses;
     
     NSMutableArray *groupArray = [NSMutableArray array];
     for (TeacherGroup *teacherGroup in [UserCenter sharedInstance].curSchool.groups)
@@ -129,35 +128,76 @@
     _selectedGroupArray = [NSMutableArray array];
     
     NSInteger spaceYStart = 0;
-    if(self.classArray.count > 0 && self.groupArray.count > 0)
-    {
-        UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
-        [headerView setBackgroundColor:[UIColor colorWithHexString:@"0fabc1"]];
-        [self.view addSubview:headerView];
-        
-        _segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"发给家长",@"发给同事"]];
-        [_segmentControl setTintColor:[UIColor colorWithHexString:@"87de53"]];
-        [_segmentControl setFrame:CGRectMake((headerView.width - 160) / 2, (headerView.height - 30) / 2, 160, 30)];
-        [_segmentControl addTarget:self action:@selector(onSegmentChanged) forControlEvents:UIControlEventValueChanged];
-        [headerView addSubview:_segmentControl];
-        [_segmentControl setSelectedSegmentIndex:0];
-        
-        spaceYStart = headerView.height;
-    }
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
+    [headerView setBackgroundColor:[UIColor colorWithHexString:@"0fabc1"]];
+    [self.view addSubview:headerView];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, spaceYStart, self.view.width, self.view.height - spaceYStart - 64) style:UITableViewStyleGrouped];
+    _segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"发给家长",@"发给同事"]];
+    [_segmentControl setTintColor:[UIColor colorWithHexString:@"87de53"]];
+    [_segmentControl setFrame:CGRectMake((headerView.width - 160) / 2, (headerView.height - 30) / 2, 160, 30)];
+    [_segmentControl addTarget:self action:@selector(onSegmentChanged) forControlEvents:UIControlEventValueChanged];
+    [headerView addSubview:_segmentControl];
+    [_segmentControl setSelectedSegmentIndex:0];
+    
+    spaceYStart = headerView.height;
+    
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, spaceYStart, self.view.width, self.view.height - spaceYStart - 64 - 45) style:UITableViewStylePlain];
     [_tableView setBackgroundColor:[UIColor whiteColor]];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:_tableView];
     
+    UIView* bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 64 - 45, self.view.width, 45)];
+    [bottomView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7]];
+    [self setupBottomView:bottomView];
+    [self.view addSubview:bottomView];
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(onSendClicked)];
+}
+
+- (void)setupBottomView:(UIView *)viewParent
+{
+    _selectAllButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_selectAllButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_selectAllButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
+    [_selectAllButton addTarget:self action:@selector(onSelectAllClicked) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton setTitle:@"全选" forState:UIControlStateNormal];
+    [_selectAllButton setTitle:@"反选" forState:UIControlStateSelected];
+    [_selectAllButton setFrame:CGRectMake(0, 0, 50, viewParent.height)];
+    [viewParent addSubview:_selectAllButton];
+}
+
+- (void)onSelectAllClicked
+{
+    _selectAllButton.selected = !_selectAllButton.selected;
+    if(_segmentControl.selectedSegmentIndex == 0)
+    {
+        [_selectedClassArray removeAllObjects];
+        if(_selectAllButton.selected)
+            [_selectedClassArray addObjectsFromArray:self.classArray];
+        [_tableView reloadData];
+    }
+    else
+    {
+        [_selectedGroupArray removeAllObjects];
+        if(_selectAllButton.selected)
+            [_selectedGroupArray addObjectsFromArray:self.groupArray];
+        [_tableView reloadData];
+    }
 }
 
 - (void)onSegmentChanged
 {
     [_tableView reloadData];
+    if(_segmentControl.selectedSegmentIndex == 0)
+    {
+        _selectAllButton.selected = (self.classArray.count == _selectedClassArray.count) && self.classArray.count > 0;
+    }
+    else
+    {
+        _selectAllButton.selected = (self.groupArray.count == _selectedGroupArray.count) && self.groupArray.count > 0;
+    }
 }
 
 - (void)onSendClicked
@@ -274,8 +314,7 @@
     NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
     if(_segmentControl.selectedSegmentIndex == 0)
     {
-        NSArray *classArray = self.classArray[indexPath.section][@"groupArray"];
-        ClassInfo *classInfo = classArray[indexPath.row];
+        ClassInfo *classInfo = self.classArray[indexPath.row];
         button.selected = !button.selected;
         if(button.selected)
         {
@@ -330,22 +369,11 @@
 
 #pragma mark = UITableViewDelegate
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    if(_segmentControl.selectedSegmentIndex == 0)
-    {
-        return self.classArray.count;
-    }
-    else
-        return 1;
-}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if(_segmentControl.selectedSegmentIndex == 0)
     {
-        NSDictionary *group = self.classArray[section];
-        NSArray *groupArray = group[@"groupArray"];
-        return groupArray.count;
+        return self.classArray.count;
     }
     else
     {
@@ -353,47 +381,35 @@
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if(_segmentControl.selectedSegmentIndex == 0)
-        return 50;
-    else
-        return 0.1;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 0.1;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if(_segmentControl.selectedSegmentIndex == 0)
-    {
-        NotificationGroupHeaderView *headerView = [[NotificationGroupHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 50)];
-        [headerView setTag:1000 + section];
-        [headerView.checkButton setUserInteractionEnabled:YES];
-        [headerView.checkButton addTarget:self action:@selector(onClassHeaderClicked:) forControlEvents:UIControlEventTouchUpInside];
-        NSDictionary *groupDic = self.classArray[section];
-        [headerView.nameLabel setText:groupDic[@"groupName"]];
-        NSInteger selectNum = 0;
-        NSArray *classArray = groupDic[@"groupArray"];
-        for (ClassInfo *classInfo in classArray)
-        {
-            if([_selectedClassArray containsObject:classInfo])
-                selectNum ++;
-        }
-        if(selectNum == 0)
-            [headerView setSelectType:SelectTypeNone];
-        else if(selectNum == classArray.count)
-            [headerView setSelectType:SelectTypeAll];
-        else
-            [headerView setSelectType:SelectTypePart];
-        return headerView;
-    }
-    else
-        return nil;
-}
+//
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    if(_segmentControl.selectedSegmentIndex == 0)
+//    {
+//        NotificationGroupHeaderView *headerView = [[NotificationGroupHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 50)];
+//        [headerView setTag:1000 + section];
+//        [headerView.checkButton setUserInteractionEnabled:YES];
+//        [headerView.checkButton addTarget:self action:@selector(onClassHeaderClicked:) forControlEvents:UIControlEventTouchUpInside];
+//        NSDictionary *groupDic = self.classArray[section];
+//        [headerView.nameLabel setText:groupDic[@"groupName"]];
+//        NSInteger selectNum = 0;
+//        NSArray *classArray = groupDic[@"groupArray"];
+//        for (ClassInfo *classInfo in classArray)
+//        {
+//            if([_selectedClassArray containsObject:classInfo])
+//                selectNum ++;
+//        }
+//        if(selectNum == 0)
+//            [headerView setSelectType:SelectTypeNone];
+//        else if(selectNum == classArray.count)
+//            [headerView setSelectType:SelectTypeAll];
+//        else
+//            [headerView setSelectType:SelectTypePart];
+//        return headerView;
+//    }
+//    else
+//        return nil;
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -409,9 +425,9 @@
     }
     if(_segmentControl.selectedSegmentIndex == 0)
     {
-        NSDictionary *groupDic = self.classArray[indexPath.section];
-        NSArray *groupArray = groupDic[@"groupArray"];
-        ClassInfo *classInfo = groupArray[indexPath.row];
+//        NSDictionary *groupDic = self.classArray[indexPath.section];
+//        NSArray *groupArray = groupDic[@"groupArray"];
+        ClassInfo *classInfo = self.classArray[indexPath.row];
         [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld",classInfo.students.count]];
         [cell.nameLabel setText:classInfo.className];
         [cell.checkButton setSelected:[_selectedClassArray containsObject:classInfo]];
@@ -435,9 +451,9 @@
     {
         NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
-        NSDictionary *groupDic = self.classArray[section];
-        NSArray *groupArray = groupDic[@"groupArray"];
-        ClassInfo *classInfo = groupArray[row];
+//        NSDictionary *groupDic = self.classArray[section];
+//        NSArray *groupArray = groupDic[@"groupArray"];
+        ClassInfo *classInfo = self.classArray[row];
         NotificationClassStudentsVC *studentVC = [[NotificationClassStudentsVC alloc] init];
         [studentVC setTitle:classInfo.className];
         [studentVC setClassInfo:classInfo];

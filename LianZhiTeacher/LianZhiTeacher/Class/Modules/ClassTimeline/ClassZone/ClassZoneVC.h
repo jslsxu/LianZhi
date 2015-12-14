@@ -59,5 +59,5 @@ extern NSString *const kPublishPhotoItemKey;
     NSMutableArray*                 _buttonItems;
     ReplyBox*                       _replyBox;
 }
-@property (nonatomic, copy)ClassInfo *classInfo;
+@property (nonatomic, strong)ClassInfo *classInfo;
 @end

@@ -45,17 +45,17 @@
     [self setupHeaderView:headerView];
     [self.view addSubview:headerView];
     
-    if([UserCenter sharedInstance].curSchool.classNum > 0)
-        self.title = @"新聊天";
-    else
-    {
-        ClassInfo *classInfo = nil;
-        if([UserCenter sharedInstance].curSchool.classes.count > 0)
-            classInfo = [UserCenter sharedInstance].curSchool.classes[0];
-        else
-            classInfo = [UserCenter sharedInstance].curSchool.managedClasses[0];
-        self.title = classInfo.className;
-    }
+//    if([UserCenter sharedInstance].curSchool.classNum > 0)
+//        self.title = @"新聊天";
+//    else
+//    {
+//        ClassInfo *classInfo = nil;
+//        if([UserCenter sharedInstance].curSchool.classes.count > 0)
+//            classInfo = [UserCenter sharedInstance].curSchool.classes[0];
+//        else
+//            classInfo = [UserCenter sharedInstance].curSchool.managedClasses[0];
+//        self.title = classInfo.className;
+//    }
     
     _classesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, headerView.bottom, self.view.width, self.view.height - headerView.height) style:UITableViewStylePlain];
     [_classesTableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
@@ -160,6 +160,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if(tableView == _classesTableView)
+        return 0;
     return 25;
 }
 
@@ -167,7 +169,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if(tableView == _classesTableView)
-        return _contactModel.classes.count;
+        return 1;
     else if(tableView == _studentsTableView)
         return _contactModel.students.count + 1;
     else
@@ -178,8 +180,7 @@
 {
     if(tableView == _classesTableView)
     {
-        ContactGroup *group = [_contactModel.classes objectAtIndex:section];
-        return group.contacts.count;
+        return _contactModel.classes.count;
     }
     else if(tableView == _studentsTableView)
     {
@@ -254,8 +255,7 @@
         }
         [cell.chatButton setHidden:YES];
         [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
-        ContactGroup *group = [_contactModel.classes objectAtIndex:indexPath.section];
-        ClassInfo *classInfo = [group.contacts objectAtIndex:indexPath.row];
+        ClassInfo *classInfo = [_contactModel.classes objectAtIndex:indexPath.row];
         [cell setClassInfo:classInfo];
         return cell;
     }
@@ -269,8 +269,7 @@
     NSString *title = nil;
     if(tableView == _classesTableView)
     {
-        ContactGroup *group = [_contactModel.classes objectAtIndex:section];
-        title = group.key;
+        
     }
     else if(tableView == _studentsTableView)
     {
@@ -338,8 +337,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if(tableView == _classesTableView)
     {
-        ContactGroup *group = [_contactModel.classes objectAtIndex:indexPath.section];
-        ClassInfo *classInfo = [group.contacts objectAtIndex:indexPath.row];
+        ClassInfo *classInfo = [_contactModel.classes objectAtIndex:indexPath.row];
         ContactStudentsVC *studentsVC = [[ContactStudentsVC alloc] init];
         [studentsVC setClassInfo:classInfo];
         [self.navigationController pushViewController:studentsVC animated:YES];

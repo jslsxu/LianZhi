@@ -10,6 +10,7 @@
 #import "GrowthTimelineStudentsSelectVC.h"
 
 @interface GrowthTimelineClassChangeVC ()
+@property (nonatomic, strong)NSMutableArray *selectedArray;
 @property (nonatomic, strong)NSArray *classArray;
 @end
 
@@ -19,65 +20,136 @@
 {
     [super viewDidLoad];
     self.title = @"我所有的班";
-    NSMutableArray *classArray = [NSMutableArray array];
-    if([UserCenter sharedInstance].curSchool.classes.count > 0)
-    {
-        NSMutableDictionary *group = [NSMutableDictionary dictionary];
-        [group setValue:@"我教授的班" forKey:@"groupName"];
-        [group setValue:[NSArray arrayWithArray:[UserCenter sharedInstance].curSchool.classes] forKey:@"groupArray"];
-        [classArray addObject:group];
-    }
+    self.selectedArray = [NSMutableArray array];
+    self.classArray = [UserCenter sharedInstance].curSchool.allClasses;
     
-    if([UserCenter sharedInstance].curSchool.managedClasses.count > 0)
-    {
-        NSMutableDictionary *group = [NSMutableDictionary dictionary];
-        [group setValue:@"我管理的班" forKey:@"groupName"];
-        [group setValue:[NSArray arrayWithArray:[UserCenter sharedInstance].curSchool.managedClasses] forKey:@"groupArray"];
-        [classArray addObject:group];
-    }
-    
-    self.classArray = classArray;
-    
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height  - 64) style:UITableViewStyleGrouped];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height  - 64 - 45) style:UITableViewStylePlain];
     [_tableView setBackgroundColor:[UIColor whiteColor]];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.view addSubview:_tableView];
     
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(onSendClicked)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(onSendClicked)];
+    
+    UIView* bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 64 - 45, self.view.width, 45)];
+    [bottomView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7]];
+    [self setupBottomView:bottomView];
+    [self.view addSubview:bottomView];
 }
+
+- (void)setupBottomView:(UIView *)viewParent
+{
+    _selectAllButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_selectAllButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_selectAllButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
+    [_selectAllButton addTarget:self action:@selector(onSelectAllClicked) forControlEvents:UIControlEventTouchUpInside];
+    [_selectAllButton setTitle:@"全选" forState:UIControlStateNormal];
+    [_selectAllButton setTitle:@"反选" forState:UIControlStateSelected];
+    [_selectAllButton setFrame:CGRectMake(0, 0, 50, viewParent.height)];
+    [viewParent addSubview:_selectAllButton];
+}
+
+- (void)onSelectAllClicked
+{
+    _selectAllButton.selected = !_selectAllButton.selected;
+    [_selectedArray removeAllObjects];
+   if(_selectAllButton.selected)
+   {
+       for (ClassInfo *classInfo in self.classArray) {
+           [_selectedArray addObject:classInfo.classID];
+       }
+   }
+    [_tableView reloadData];
+}
+
+- (BOOL)hasBeenSelected:(NSString *)classID
+{
+    for (NSString *selectedClassID in self.selectedArray)
+    {
+        if([classID isEqualToString:selectedClassID])
+            return YES;
+    }
+    return NO;
+}
+
+- (void)onCheckClicked:(UIButton *)button
+{
+    NotificationTargetCell *cell = (NotificationTargetCell*)[button superview];
+    NSIndexPath *indexPath = [_tableView indexPathForCell:cell];
+    ClassInfo *classInfo = self.classArray[indexPath.row];
+    if([self hasBeenSelected:classInfo.classID])
+        [self.selectedArray removeObject:classInfo.classID];
+    else
+        [self.selectedArray addObject:classInfo.classID];
+    [_tableView reloadData];
+}
+
+- (void)onSendClicked
+{
+    if(_selectedArray.count == 0)
+    {
+        [ProgressHUD showHintText:@"你还没有选择班级"];
+        return;
+    }
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:[NSString stringWithJSONObject:self.record] forKey:@"record"];
+    
+    NSMutableArray *sendTargetArray = [NSMutableArray array];
+    for (NSString *classID in _selectedArray)
+    {
+        NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
+        [classDic setValue:classID forKey:@"classid"];
+        [sendTargetArray addObject:classDic];
+    }
+    [params setValue:[NSString stringWithJSONObject:sendTargetArray] forKey:@"classes"];
+    
+    //转换
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在提交" toView:self.view];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/record" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [hud hide:NO];
+        [ProgressHUD showSuccess:@"发送成功"];
+        UIViewController *baseVC = nil;
+        for (UIViewController *vc in self.navigationController.viewControllers)
+        {
+            if([NSStringFromClass([vc class]) isEqualToString:@"PublishGrowthTimelineVC"])
+                baseVC = vc;
+        }
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if(baseVC)
+                [self.navigationController popToViewController:baseVC animated:YES];
+            
+        });
+    } fail:^(NSString *errMsg) {
+        [hud hide:NO];
+        [ProgressHUD showHintText:errMsg];
+    }];
+}
+
 #pragma mark - UITableViewDelegate
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.classArray.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    NSDictionary *group = self.classArray[section];
-    NSArray *groupArray = group[@"groupArray"];
-    return groupArray.count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 50;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 0.1;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    NotificationGroupHeaderView *headerView = [[NotificationGroupHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 50)];
-    NSDictionary *groupDic = self.classArray[section];
-    [headerView.nameLabel setText:groupDic[@"groupName"]];
-    return headerView;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return 50;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//{
+//    return 0.1;
+//}
+//
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    NotificationGroupHeaderView *headerView = [[NotificationGroupHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 50)];
+//    NSDictionary *groupDic = self.classArray[section];
+//    [headerView.nameLabel setText:groupDic[@"groupName"]];
+//    return headerView;
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -89,21 +161,19 @@
         [cell.detailTextLabel setFont:[UIFont systemFontOfSize:13]];
         [cell.detailTextLabel setTextColor:[UIColor lightGrayColor]];
     }
-    NSDictionary *groupDic = self.classArray[indexPath.section];
-    NSArray *groupArray = groupDic[@"groupArray"];
-    ClassInfo *classInfo = groupArray[indexPath.row];
+    ClassInfo *classInfo = self.classArray[indexPath.row];
     [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld",classInfo.students.count]];
     [cell.nameLabel setText:classInfo.className];
     [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+    [cell.checkButton setSelected:[self hasBeenSelected:classInfo.classID]];
+    [cell.checkButton addTarget:self action:@selector(onCheckClicked:) forControlEvents:UIControlEventTouchUpInside];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSDictionary *groupDic = self.classArray[indexPath.section];
-    NSArray *groupArray = groupDic[@"groupArray"];
-    ClassInfo *classInfo = groupArray[indexPath.row];
+    ClassInfo *classInfo = self.classArray[indexPath.row];
     GrowthTimelineStudentsSelectVC *studentVC = [[GrowthTimelineStudentsSelectVC alloc] init];
     [studentVC setClassInfo:classInfo];
     [studentVC setRecord:self.record];

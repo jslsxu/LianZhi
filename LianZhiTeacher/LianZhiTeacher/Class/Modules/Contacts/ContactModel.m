@@ -84,21 +84,22 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ContactModel)
     NSInteger classNum = schoolInfo.classNum;
     if(classNum > 1)//多个班,按年级
     {
-        if([UserCenter sharedInstance].curSchool.classes.count > 0)
-        {
-            ContactGroup *group = [[ContactGroup alloc] init];
-            [group setKey:@"我教授的班"];
-            [group setContacts:[NSMutableArray arrayWithArray:[UserCenter sharedInstance].curSchool.classes]];
-            [self.classes addObject:group];
-        }
-    
-        if([UserCenter sharedInstance].curSchool.managedClasses.count > 0)
-        {
-            ContactGroup *group = [[ContactGroup alloc] init];
-            [group setKey:@"我管理的班"];
-            [group setContacts:[NSMutableArray arrayWithArray:[UserCenter sharedInstance].curSchool.managedClasses]];
-            [self.classes addObject:group];
-        }
+        [self.classes addObjectsFromArray:[UserCenter sharedInstance].curSchool.allClasses];
+//        if([UserCenter sharedInstance].curSchool.classes.count > 0)
+//        {
+//            ContactGroup *group = [[ContactGroup alloc] init];
+//            [group setKey:@"我教授的班"];
+//            [group setContacts:[NSMutableArray arrayWithArray:[UserCenter sharedInstance].curSchool.classes]];
+//            [self.classes addObject:group];
+//        }
+//    
+//        if([UserCenter sharedInstance].curSchool.managedClasses.count > 0)
+//        {
+//            ContactGroup *group = [[ContactGroup alloc] init];
+//            [group setKey:@"我管理的班"];
+//            [group setContacts:[NSMutableArray arrayWithArray:[UserCenter sharedInstance].curSchool.managedClasses]];
+//            [self.classes addObject:group];
+//        }
     }
     else//一个班的话则把所有的学生按音序分组
     {

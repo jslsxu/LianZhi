@@ -332,24 +332,6 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
-    if([[UserCenter sharedInstance].curSchool classNum] > 1)
-    {
-        UIButton *exchangeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [exchangeButton setTitle:@"切换班级" forState:UIControlStateNormal];
-        [exchangeButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
-        [exchangeButton sizeToFit];
-        [exchangeButton addTarget:self action:@selector(onExchangeClass) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIView *redDot = [[UIView alloc] initWithFrame:CGRectMake(exchangeButton.right - 2, 2, 8, 8)];
-        [redDot.layer setCornerRadius:4];
-        [redDot.layer setMasksToBounds:YES];
-        [redDot setBackgroundColor:[UIColor colorWithHexString:@"F0003A"]];
-        [exchangeButton addSubview:redDot];
-        self.redDot = redDot;
-        
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:exchangeButton];
-        self.exchangeButton = exchangeButton;
-    }
     
 //    self.title = @"班空间";
     self.shouldShowEmptyHint = YES;
@@ -366,10 +348,14 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [_replyBox setDelegate:self];
     [self.view addSubview:_replyBox];
     _replyBox.hidden = YES;
+    
+    
 }
 
 - (void)setupSubviews
 {
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ActionAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddClicked)];
+    
     _publishToolBar = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 49, self.view.width, 49)];
     [_publishToolBar setBackgroundColor:[UIColor whiteColor]];
 //    [self setupToolBar:_publishToolBar];
@@ -381,22 +367,16 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [_headerView setDelegate:self];
     [self.tableView setTableHeaderView:_headerView];
     
-    ClassInfo *classInfo = nil;
-    if([UserCenter sharedInstance].curSchool.classes.count > 0)
-        classInfo = [UserCenter sharedInstance].curSchool.classes[0];
-    else if([UserCenter sharedInstance].curSchool.managedClasses.count > 0)
-        classInfo = [UserCenter sharedInstance].curSchool.managedClasses[0];
-    [self setClassInfo:classInfo];
-    
     [self bindTableCell:@"ClassZoneItemCell" tableModel:@"ClassZoneModel"];
     [self setSupportPullDown:YES];
     [self setSupportPullUp:YES];
-    if(self.classInfo)
-        [self requestData:REQUEST_REFRESH];
-
+    
+    [_headerView setClassInfo:_classInfo];
+    [self setTitle:_classInfo.className];
     ClassZoneModel *model = (ClassZoneModel *)self.tableViewModel;
     [model setClassID:self.classInfo.classID];
-
+    [self loadCache];
+    [self requestData:REQUEST_REFRESH];
 }
 
 - (void)setupToolBar:(UIView *)viewParent
@@ -450,6 +430,11 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     UIImageView *image2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"ClassZoneSwipe.png")]];
     [image2 setOrigin:CGPointMake((self.view.width - image2.width) / 2, image1.bottom + 100)];
     [coverButton addSubview:image2];
+    
+}
+
+- (void)onAddClicked
+{
     
 }
 
@@ -705,16 +690,6 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         [itemCell setDelegate:self];
 }
 
-- (void)setClassInfo:(ClassInfo *)classInfo
-{
-    _classInfo = classInfo;
-    [_headerView setClassInfo:_classInfo];
-    [self setTitle:_classInfo.className];
-    ClassZoneModel *model = (ClassZoneModel *)self.tableViewModel;
-    [model setClassID:self.classInfo.classID];
-    [self loadCache];
-    [self requestData:REQUEST_REFRESH];
-}
 
 #pragma mark - ClassZoneItemCellDelegate
 - (void)onResponseClickedAtTarget:(ResponseItem *)responseItem cell:(ClassZoneItemCell *)cell
