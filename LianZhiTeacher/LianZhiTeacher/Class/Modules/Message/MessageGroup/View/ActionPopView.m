@@ -13,9 +13,9 @@ static UIButton *coverButton = nil;
 
 @implementation ActionPopView
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithImageArray:(NSArray *)imageArray titleArray:(NSArray *)titleArray
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame:CGRectMake(kScreenWidth - 140, 64, 140, imageArray.count * 50)];
     if(self)
     {
         _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"ActionBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 5, 5, 35)]];
@@ -27,10 +27,8 @@ static UIButton *coverButton = nil;
         [_contentView setBackgroundColor:[UIColor clearColor]];
         [_bgImageView addSubview:_contentView];
         
-        NSInteger itemHeight = _contentView.height / 2;
-        NSArray *titleArray = @[@"发通知",@"新聊天"];
-        NSArray *imageArray = @[@"PopActionNotification",@"PopActionNewChat"];
-        for (NSInteger i = 0; i < 2; i++)
+        NSInteger itemHeight = _contentView.height / imageArray.count;
+        for (NSInteger i = 0; i < imageArray.count; i++)
         {
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             [button setTag:i + 1];
@@ -43,11 +41,14 @@ static UIButton *coverButton = nil;
             [button setImage:[UIImage imageNamed:imageArray[i]] forState:UIControlStateNormal];
             [button setTitle:titleArray[i] forState:UIControlStateNormal];
             [_contentView addSubview:button];
+            
+            if(i < imageArray.count - 1)
+            {
+                UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, itemHeight * (i + 1), _contentView.width, 0.5)];
+                [sepLine setBackgroundColor:[UIColor darkGrayColor]];
+                [_contentView addSubview:sepLine];
+            }
         }
-        
-        UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, _contentView.height / 2, _contentView.width, 0.5)];
-        [sepLine setBackgroundColor:[UIColor darkGrayColor]];
-        [_contentView addSubview:sepLine];
     }
     return self;
 }

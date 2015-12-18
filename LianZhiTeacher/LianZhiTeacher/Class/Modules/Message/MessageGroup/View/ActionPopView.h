@@ -16,6 +16,7 @@
     UIImageView*    _bgImageView;
     UIView*         _contentView;
 }
+- (instancetype)initWithImageArray:(NSArray *)imageArray titleArray:(NSArray *)titleArray;
 @property (nonatomic, weak)id<ActionPopViewDelegate> delegate;
 - (void)show;
 @end

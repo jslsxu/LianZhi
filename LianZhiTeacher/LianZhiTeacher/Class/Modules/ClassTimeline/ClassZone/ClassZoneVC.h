@@ -41,7 +41,6 @@ extern NSString *const kPublishPhotoItemKey;
     UIImageView*            _imageView;
     UIImageView*            _newpaperImageView;
     UILabel*                _contentLabel;
-    UIButton*               _albumButton;
     UIImageView*            _brashImage;
     UIView*                 _bottomView;
      NewMessageIndicator*    _msgIndicator;

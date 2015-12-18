@@ -12,6 +12,7 @@
 #import "ContactListVC.h"
 #import "ClassSelectionVC.h"
 #import "GrowthTimelineVC.h"
+#import "PhotoFlowVC.h"
 @implementation ApplicationItem
 
 
@@ -89,9 +90,9 @@
 //        self.titleArray = @[@"聊天空间",@"班博客",@"家园手册",@"校主页"];
 //        self.imageArray = @[@"AppChat",@"AppClassZone",@"AppParent",@"AppSchoolHome"];
 //    }
-    self.actionArray = @[@"NotificationToAllVC",@"ContactListVC",@"ClassZoneVC",@"PublishGrowthTimelineVC",@"ClassAttendanceVC",@"MyAttendanceVC",@"HomeWorkVC",@"TNBaseWebViewController"];
-    self.titleArray = @[@"发布通知",@"聊天空间",@"班博客",@"家园手册",@"学生考勤",@"我的考勤",@"作业练习",@"校主页"];
-    self.imageArray = @[@"AppPublishNote",@"AppChat",@"AppClassZone",@"AppParent",@"AppStudentAttendance",@"AppMyAttendance",@"AppHomeWork",@"AppSchoolHome"];
+    self.actionArray = @[@"NotificationToAllVC",@"ContactListVC",@"ClassZoneVC",@"PhotoFlowVC",@"PublishGrowthTimelineVC",@"ClassAttendanceVC",@"MyAttendanceVC",@"HomeWorkVC",@"TNBaseWebViewController"];
+    self.titleArray = @[@"发布通知",@"聊天空间",@"班博客",@"班相册",@"家园手册",@"学生考勤",@"我的考勤",@"作业练习",@"校主页"];
+    self.imageArray = @[@"AppPublishNote",@"AppChat",@"AppClassZone",@"AppAlbum",@"AppParent",@"AppStudentAttendance",@"AppMyAttendance",@"AppHomeWork",@"AppSchoolHome"];
     self.appItems = [NSMutableArray array];
     for (NSInteger i = 0; i < self.titleArray.count; i++)
     {
@@ -206,6 +207,16 @@
             ClassZoneVC *classZoneVC = [[ClassZoneVC alloc] init];
             [classZoneVC setClassInfo:classInfo];
             [CurrentROOTNavigationVC pushViewController:classZoneVC animated:YES];
+        }];
+        [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];
+    }
+    else if([classStr isEqualToString:@"PhotoFlowVC"])
+    {
+        ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
+        [selectionVC setSelection:^(ClassInfo *classInfo) {
+            PhotoFlowVC *albumVC = [[PhotoFlowVC alloc] init];
+            [albumVC setClassID:classInfo.classID];
+            [CurrentROOTNavigationVC pushViewController:albumVC animated:YES];
         }];
         [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];
     }

@@ -12,6 +12,7 @@
 #import "ClassSelectionVC.h"
 #import "NewMessageVC.h"
 #import "FeedItemDetailVC.h"
+#import "ActionPopView.h"
 
 #define kClassZoneShown         @"ClassZoneShown"
 
@@ -74,19 +75,12 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         [contentView setBackgroundColor:[UIColor colorWithHexString:@"173e39"]];
         [self addSubview:contentView];
         
-        CGFloat buttonWidth = 40;
-        _albumButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_albumButton addTarget:self action:@selector(onAlbumButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_albumButton setImage:[UIImage imageNamed:(@"ClassAlbum.png")] forState:UIControlStateNormal];
-        [_albumButton setFrame:CGRectMake(self.width - buttonWidth, self.height - 60 - buttonWidth, buttonWidth, buttonWidth)];
-        [self addSubview:_albumButton];
-        
         _newpaperImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"BlackboardText.png")]];
         [_newpaperImageView setOrigin:CGPointMake(20, 10)];
         [self addSubview:_newpaperImageView];
         
         
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 25, self.width - 30 - 40, self.height - 30 - 25)];
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 25, self.width - 30 - 30, self.height - 30 - 25)];
         [_contentLabel setUserInteractionEnabled:YES];
         [_contentLabel setTextColor:[UIColor whiteColor]];
         [_contentLabel setFont:[UIFont systemFontOfSize:16]];
@@ -170,7 +164,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 @end
 
-@interface ClassZoneVC ()<PublishSelectDelegate>
+@interface ClassZoneVC ()<PublishSelectDelegate, ActionPopViewDelegate>
 @property (nonatomic, strong)UIButton *exchangeButton;
 @property (nonatomic, strong)UIView*    redDot;
 @property (nonatomic, strong)ClassZoneItem *targetZoneItem;
@@ -354,14 +348,16 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)setupSubviews
 {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ActionAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddClicked)];
+    BOOL teach = NO;
+    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
+    {
+        if([classInfo.classID isEqualToString:self.classInfo.classID])
+            teach = YES;
+    }
+    if(teach)
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ActionAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddClicked)];
     
-    _publishToolBar = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 49, self.view.width, 49)];
-    [_publishToolBar setBackgroundColor:[UIColor whiteColor]];
-//    [self setupToolBar:_publishToolBar];
-    [self.view addSubview:_publishToolBar];
-    
-    [self.tableView setHeight:self.view.height - 49];
+    [self.tableView setHeight:self.view.height];
     
     _headerView = [[ClassZoneHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 160)];
     [_headerView setDelegate:self];
@@ -435,7 +431,13 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)onAddClicked
 {
-    
+    ClassZoneModel *zoneModel = (ClassZoneModel *)self.tableViewModel;
+    NSInteger actionCount = zoneModel.canEdit ? 4 : 3;
+    NSArray *titleArray = @[@"发文字",@"发照片",@"发语音",@"编辑板报"];
+    NSArray *imageArray = @[@"ClassZoneText",@"ClassZonePhoto",@"ClassZoneAudio",@"ClassZoneNewspapper"];
+    ActionPopView *actionPopView = [[ActionPopView alloc] initWithImageArray:[imageArray subarrayWithRange:NSMakeRange(0, actionCount)] titleArray:[titleArray subarrayWithRange:NSMakeRange(0, actionCount)]];
+    [actionPopView setDelegate:self];
+    [actionPopView show];
 }
 
 - (void)onExchangeClass
@@ -616,6 +618,48 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"是否确认删除日记?" buttonItems:@[cancelItem, confirmItem]];
         [alertView show];
     }
+}
+
+#pragma mark - ActionPopView
+- (void)popActionViewDidSelectedAtIndex:(NSInteger)index
+{
+    PublishBaseVC *publishVC = nil;
+    if(index == 0)
+    {
+        publishVC = [[PublishArticleVC alloc] init];
+    }
+    else if(index == 1)
+    {
+        publishVC = [[PublishPhotoVC alloc] init];
+    }
+    else if(index == 2)
+    {
+        publishVC = [[PublishAudioVC alloc] init];
+    }
+    else
+    {
+        ClassZoneModel *zoneModel = (ClassZoneModel *)self.tableViewModel;
+        if(zoneModel.canEdit)
+        {
+            PublishNewspaperVC *newspaperVC = [[PublishNewspaperVC alloc] init];
+            [newspaperVC setDelegate:self];
+            [newspaperVC setClassInfo:self.classInfo];
+            [newspaperVC setNewsPaper:zoneModel.newsPaper];
+            publishVC = newspaperVC;
+        }
+        else
+        {
+            [ProgressHUD showHintText:@"只有班主任才能修改黑板报"];
+            return;
+        }
+    }
+    [publishVC setDelegate:self];
+    [publishVC setClassInfo:self.classInfo];
+    TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:publishVC];
+    [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:^{
+        
+    }];
+
 }
 
 #pragma mark TNBaseViewController

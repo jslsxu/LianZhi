@@ -285,6 +285,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(NotificationToAllVC)
 {
     [super viewDidLoad];
     self.title = @"发布通知";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"RecordHistory"] style:UIBarButtonItemStylePlain target:self action:@selector(onShowHistory)];
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
     UIView *operationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 75)];
     [operationView setBackgroundColor:[UIColor colorWithHexString:@"0fabc1"]];
@@ -382,6 +383,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(NotificationToAllVC)
     AudioMessageSendVC *messageOperationVC = [[AudioMessageSendVC alloc] init];
     TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:messageOperationVC];
     [self presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)onShowHistory
+{
+    
 }
 
 #pragma mark 

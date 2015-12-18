@@ -105,7 +105,7 @@
 
     if([UserCenter sharedInstance].curSchool.classes.count + [UserCenter sharedInstance].curSchool.managedClasses.count > 0)
     {
-        ActionPopView *actionView = [[ActionPopView alloc] initWithFrame:CGRectMake(self.view.width - 140, 64, 140, 100)];
+        ActionPopView *actionView = [[ActionPopView alloc] initWithImageArray:@[@"PopActionNotification",@"PopActionNewChat"] titleArray:@[@"发通知",@"新聊天"]];
         [actionView setDelegate:self];
         [actionView show];
     }

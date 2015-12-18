@@ -55,6 +55,8 @@
 		372ED8231B81795A00D07344 /* InterestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372ED8221B81795A00D07344 /* InterestVC.m */; };
 		373528771AD6557800C0F326 /* BaseInfoModifyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 373528751AD6557800C0F326 /* BaseInfoModifyVC.m */; };
 		373B9D1A1BEF8B6000FE89CA /* NotificationTargetVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 373B9D191BEF8B6000FE89CA /* NotificationTargetVC.m */; };
+		375819C81C22AA29002C9B85 /* NotificationTargetSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 375819C71C22AA29002C9B85 /* NotificationTargetSelectVC.m */; };
+		375819CB1C22AA3E002C9B85 /* NotificationHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 375819CA1C22AA3E002C9B85 /* NotificationHistoryVC.m */; };
 		376FC6B51B01EFB500289DC2 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B41B01EFB500289DC2 /* libiconv.dylib */; };
 		376FC6B71B01EFBF00289DC2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B61B01EFBF00289DC2 /* CoreGraphics.framework */; };
 		376FC6B91B01EFC500289DC2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B81B01EFC500289DC2 /* AVFoundation.framework */; };
@@ -530,6 +532,10 @@
 		373528761AD6557800C0F326 /* BaseInfoModifyVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseInfoModifyVC.h; sourceTree = "<group>"; };
 		373B9D181BEF8B6000FE89CA /* NotificationTargetVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationTargetVC.h; sourceTree = "<group>"; };
 		373B9D191BEF8B6000FE89CA /* NotificationTargetVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationTargetVC.m; sourceTree = "<group>"; };
+		375819C61C22AA29002C9B85 /* NotificationTargetSelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationTargetSelectVC.h; sourceTree = "<group>"; };
+		375819C71C22AA29002C9B85 /* NotificationTargetSelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationTargetSelectVC.m; sourceTree = "<group>"; };
+		375819C91C22AA3E002C9B85 /* NotificationHistoryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationHistoryVC.h; sourceTree = "<group>"; };
+		375819CA1C22AA3E002C9B85 /* NotificationHistoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationHistoryVC.m; sourceTree = "<group>"; };
 		376FC6B41B01EFB500289DC2 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		376FC6B61B01EFBF00289DC2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		376FC6B81B01EFC500289DC2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -1434,6 +1440,17 @@
 			path = HomeWorkCollection;
 			sourceTree = "<group>";
 		};
+		375819C51C22A9F2002C9B85 /* NotificationHistory */ = {
+			isa = PBXGroup;
+			children = (
+				375819C61C22AA29002C9B85 /* NotificationTargetSelectVC.h */,
+				375819C71C22AA29002C9B85 /* NotificationTargetSelectVC.m */,
+				375819C91C22AA3E002C9B85 /* NotificationHistoryVC.h */,
+				375819CA1C22AA3E002C9B85 /* NotificationHistoryVC.m */,
+			);
+			path = NotificationHistory;
+			sourceTree = "<group>";
+		};
 		378DA1441C09956C00301C26 /* HomeWorkDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -2326,6 +2343,7 @@
 				3705FF901BA2A1F800F0C6F6 /* NotificationClassStudentsVC.m */,
 				37FB1C6A1BE6FE24004ECE2E /* NotificationGroupMemberVC.h */,
 				37FB1C6B1BE6FE24004ECE2E /* NotificationGroupMemberVC.m */,
+				375819C51C22A9F2002C9B85 /* NotificationHistory */,
 				372774E21A5D94A900464461 /* GrowthTimeline */,
 			);
 			path = OperationVC;
@@ -3268,6 +3286,7 @@
 				37D6EEF61BCBA96D000994A2 /* RefuseVC.m in Sources */,
 				372C75311C07FFA400A1D90B /* MyHomeworkList.m in Sources */,
 				3793FA541B7CFFF000501F77 /* RELengthValidator.m in Sources */,
+				375819CB1C22AA3E002C9B85 /* NotificationHistoryVC.m in Sources */,
 				3793FAA61B7CFFF000501F77 /* UIColor+Addition.m in Sources */,
 				3793FAF31B7CFFF000501F77 /* Reachability+.m in Sources */,
 				37E93FC71A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m in Sources */,
@@ -3290,6 +3309,7 @@
 				3793FA451B7CFFF000501F77 /* RECommonFunctions.m in Sources */,
 				379947E91A66B430008E4B4F /* PhotoFlowCell.m in Sources */,
 				37FD6E321BB4817900C83AB4 /* NewMessageVC.m in Sources */,
+				375819C81C22AA29002C9B85 /* NotificationTargetSelectVC.m in Sources */,
 				3793FA841B7CFFF000501F77 /* AudioRecordView.m in Sources */,
 				3793FA9D1B7CFFF000501F77 /* PhotoItem.m in Sources */,
 				37DEE4BF1A57C19C009A8771 /* MessageGroupItemCell.m in Sources */,
