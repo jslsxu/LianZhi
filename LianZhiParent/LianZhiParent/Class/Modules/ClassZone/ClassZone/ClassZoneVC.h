@@ -25,8 +25,8 @@
     UIImageView*            _imageView;
     UIImageView*            _newpaperImageView;
     UILabel*                _contentLabel;
-    LZTabBarButton*         _appButton;
-    UIButton*               _albumButton;
+//    LZTabBarButton*         _appButton;
+//    UIButton*               _albumButton;
     UIImageView*            _brashImage;
     UIView*                 _bottomView;
     NewMessageIndicator*    _msgIndicator;
@@ -40,7 +40,7 @@
 
 @interface ClassZoneVC : TNBaseTableViewController<ClassZoneSwitchDelegate, ClassZoneHeaderDelegate, ReplyBoxDelegate>
 {
-    ClassZoneClassSwitchView*       _switchView;
+//    ClassZoneClassSwitchView*       _switchView;
     ClassZoneHeaderView*            _headerView;
     ReplyBox*                       _replyBox;
 }

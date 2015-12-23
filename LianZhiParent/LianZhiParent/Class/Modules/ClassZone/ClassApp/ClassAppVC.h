@@ -10,5 +10,4 @@
 #import "ClassAppModel.h"
 #import "RequestVacationVC.h"
 @interface ClassAppVC : TNBaseCollectionViewController
-@property (nonatomic, strong)ClassInfo *classInfo;
 @end

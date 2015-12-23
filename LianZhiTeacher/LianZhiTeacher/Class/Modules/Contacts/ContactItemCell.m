@@ -95,27 +95,39 @@
 - (void)setUserInfo:(UserInfo *)userInfo
 {
     _userInfo = userInfo;
-    [_avatar setImageWithUrl:[NSURL URLWithString:userInfo.avatar] placeHolder:[UIImage imageNamed:(@"NoAvatarDefault.png")]];
-    [_avatar setStatus:_userInfo.activited ? nil : @"未下载"];
-    [_nameLabel setText:userInfo.name];
-    [_nameLabel sizeToFit];
-    [_nameLabel setFrame:CGRectMake(_avatar.right + 15, (self.height - _nameLabel.height) / 2, MIN(_nameLabel.width, self.width - _nameLabel.left - 10), _nameLabel.height)];
-    
-    if([userInfo isKindOfClass:[TeacherInfo class]] || [userInfo isKindOfClass:[FamilyInfo class]])
+    if([_userInfo isKindOfClass:[TeacherGroup class]])
     {
-        TeacherInfo *teacher = (TeacherInfo *)userInfo;
-        [_commentLabel setText:teacher.title];
-        [_commentLabel sizeToFit];
-        [_commentLabel setOrigin:CGPointMake(_nameLabel.right + 15, (self.height - _commentLabel.height) / 2)];
-        [self setAccessoryView:nil];
+        [_avatar setImageWithUrl:nil placeHolder:[UIImage imageNamed:@"NoLogoDefault"]];
+        [_commentLabel setText:nil];
+        TeacherGroup *teacherGroup = (TeacherGroup *)userInfo;
+        [_nameLabel setText:teacherGroup.groupName];
+        [_nameLabel sizeToFit];
+        [_nameLabel setFrame:CGRectMake(_avatar.right + 15, (self.height - _nameLabel.height) / 2, MIN(_nameLabel.width, self.width - _nameLabel.left - 10), _nameLabel.height)];
     }
     else
     {
-        StudentInfo *studentInfo = (StudentInfo *)userInfo;
-        [_commentLabel setText:[NSString stringWithFormat:@"(%ld位家长)",studentInfo.family.count]];
-        [_commentLabel sizeToFit];
-        [_commentLabel setOrigin:CGPointMake(_nameLabel.right + 15, (self.height - _commentLabel.height) / 2)];
-        [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+        [_avatar setImageWithUrl:[NSURL URLWithString:userInfo.avatar] placeHolder:[UIImage imageNamed:(@"NoAvatarDefault.png")]];
+        [_avatar setStatus:_userInfo.activited ? nil : @"未下载"];
+        [_nameLabel setText:userInfo.name];
+        [_nameLabel sizeToFit];
+        [_nameLabel setFrame:CGRectMake(_avatar.right + 15, (self.height - _nameLabel.height) / 2, MIN(_nameLabel.width, self.width - _nameLabel.left - 10), _nameLabel.height)];
+        
+        if([userInfo isKindOfClass:[TeacherInfo class]] || [userInfo isKindOfClass:[FamilyInfo class]])
+        {
+            TeacherInfo *teacher = (TeacherInfo *)userInfo;
+            [_commentLabel setText:teacher.title];
+            [_commentLabel sizeToFit];
+            [_commentLabel setOrigin:CGPointMake(_nameLabel.right + 15, (self.height - _commentLabel.height) / 2)];
+            [self setAccessoryView:nil];
+        }
+        else
+        {
+            StudentInfo *studentInfo = (StudentInfo *)userInfo;
+            [_commentLabel setText:[NSString stringWithFormat:@"(%ld位家长)",studentInfo.family.count]];
+            [_commentLabel sizeToFit];
+            [_commentLabel setOrigin:CGPointMake(_nameLabel.right + 15, (self.height - _commentLabel.height) / 2)];
+            [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+        }
     }
 }
 @end

@@ -10,6 +10,17 @@
 #import "OperationGuideVC.h"
 #import "SurroundingVC.h"
 #import "MineVC.h"
+#define kDiscoveryCachePath             @"DiscoveryCache"
+@implementation DiscoveryItem
+- (void)parseData:(TNDataWrapper *)dataWrapper
+{
+    self.name = [dataWrapper getStringForKey:@"name"];
+    self.icon = [dataWrapper getStringForKey:@"icon"];
+    self.url = [dataWrapper getStringForKey:@"url"];
+}
+
+@end
+
 @implementation DiscoveryCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -17,8 +28,16 @@
     if(self)
     {
         self.width = kScreenWidth;
-        [self.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-        [self.textLabel setFont:[UIFont systemFontOfSize:15]];
+        _icon = [[UIImageView alloc] initWithFrame:CGRectMake(15, 10, 24, 24)];
+        [_icon setContentMode:UIViewContentModeScaleAspectFit];
+        [self addSubview:_icon];
+        
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(45, 0, self.width - 40 - 45, self.height)];
+        [_titleLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [_titleLabel setFont:[UIFont systemFontOfSize:15]];
+        [self addSubview:_titleLabel];
+
+        
         [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
         
         _redDot = [[UIView alloc] initWithFrame:CGRectMake(self.width - 40, (self.height - 8) / 2, 8, 8)];
@@ -30,12 +49,16 @@
     }
     return self;
 }
-
+- (void)setDiscoveryItem:(DiscoveryItem *)discoveryItem
+{
+    _discoveryItem = discoveryItem;
+    [_icon sd_setImageWithURL:[NSURL URLWithString:_discoveryItem.icon] placeholderImage:nil];
+    [_titleLabel setText:_discoveryItem.name];
+}
 @end
 
 @interface DiscoveryVC ()
-@property (nonatomic, strong)NSArray *titleArray;
-@property (nonatomic, strong)NSArray *imageArray;
+@property (nonatomic, strong)NSArray *itemArray;
 @end
 
 @implementation DiscoveryVC
@@ -45,16 +68,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if(self)
-    {
-        self.titleArray = @[@[@"兴趣"],@[@"常见问题",@"连枝剧场"],@[@"个人设置"]];
-        self.imageArray = @[@[@"icon_eye"],@[@"icon_often",@"icon_caozuo"],@[@"icon-grsz"]];
-    }
-    return self;
-}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -67,11 +81,72 @@
     [self.view addSubview:_tableView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
+    
+    id responseObject = [NSDictionary dictionaryWithContentsOfFile:[self cachePath]];
+    if(responseObject)
+    {
+        TNDataWrapper *dataWrapper = [TNDataWrapper dataWrapperWithObject:responseObject];
+        [self onSuccessWithResponse:dataWrapper];
+    }
 }
 
 - (void)onStatusChanged
 {
     
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self requestData];
+}
+
+- (void)onSuccessWithResponse:(TNDataWrapper *)responseWrapper
+{
+    TNDataWrapper *sectionWrapper = [responseWrapper getDataWrapperForKey:@"sections"];
+    if(sectionWrapper.count > 0)
+    {
+        NSMutableArray *sectionArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < sectionWrapper.count; i++)
+        {
+            TNDataWrapper *sectionItemWrapper = [sectionWrapper getDataWrapperForIndex:i];
+            if(sectionItemWrapper.count > 0)
+            {
+                NSMutableArray *itemArray = [NSMutableArray array];
+                for (NSInteger j = 0; j < sectionItemWrapper.count; j++)
+                {
+                    TNDataWrapper *itemWrapper = [sectionItemWrapper getDataWrapperForIndex:j];
+                    DiscoveryItem *item = [[DiscoveryItem alloc] init];
+                    [item parseData:itemWrapper];
+                    [itemArray addObject:item];
+                }
+                [sectionArray addObject:itemArray];
+            }
+        }
+        self.itemArray = sectionArray;
+    }
+    [_tableView reloadData];
+}
+
+- (void)requestData
+{
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"info/find" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"child_id" : [UserCenter sharedInstance].curChild.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        NSDictionary *data = responseObject.data;
+        [data writeToFile:[self cachePath] atomically:YES];
+        [self onSuccessWithResponse:responseObject];
+    } fail:^(NSString *errMsg) {
+        
+    }];
+}
+
+- (NSString *)cachePath
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *docDir = [paths objectAtIndex:0];
+    NSString *commonCacheRoot = [HttpRequestEngine sharedInstance].commonCacheRoot;
+    NSString *filePath = docDir;
+    filePath = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@_%@",commonCacheRoot,kDiscoveryCachePath,[UserCenter sharedInstance].curChild.uid]];
+    return filePath;
 }
 
 - (BOOL)hasNew
@@ -87,12 +162,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.titleArray.count;
+    return self.itemArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *array = [self.titleArray objectAtIndex:section];
+    NSArray *array = [self.itemArray objectAtIndex:section];
     return array.count;
 }
 
@@ -119,26 +194,24 @@
     }
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    [cell.imageView setImage:[UIImage imageNamed:self.imageArray[section][row]]];
-    [cell.textLabel setText:self.titleArray[section][row]];
+    DiscoveryItem *item = self.itemArray[section][row];
+    [cell setDiscoveryItem:item];
     BOOL redDotHidden = YES;
-    if(section == 0)
+    if([item.name isEqualToString:@"兴趣"])
     {
         redDotHidden = ![UserCenter sharedInstance].statusManager.found;
     }
-    else if(section == 1)
+    else if([item.name isEqualToString:@"常见问题"])
     {
-        if(row == 0)
-        {
-            redDotHidden = ![UserCenter sharedInstance].statusManager.faq;
-        }
-        else
-        {
-            NSString *guideCellKey = @"guideCellKey";
-            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-            redDotHidden = [userDefaults boolForKey:guideCellKey];
-        }
+        redDotHidden = ![UserCenter sharedInstance].statusManager.faq;
     }
+    else if([item.name isEqualToString:@"连枝剧场"])
+    {
+        NSString *guideCellKey = @"guideCellKey";
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        redDotHidden = [userDefaults boolForKey:guideCellKey];
+    }
+
      [cell.redDot setHidden:redDotHidden];
     return cell;
 }
@@ -150,39 +223,44 @@
     [cell.redDot setHidden:YES];
     NSInteger section = indexPath.section;
     NSInteger row = indexPath.row;
-    if(indexPath.section == 0)
+    DiscoveryItem *item = self.itemArray[section][row];
+    if([item.name isEqualToString:@"兴趣"])
     {
         InterestVC *interestVC = [[InterestVC alloc] init];
-        [interestVC setTitle:self.titleArray[section][row]];
+        [interestVC setTitle:item.name];
         [CurrentROOTNavigationVC pushViewController:interestVC animated:YES];
         [self setRead:1];
     }
-    else if(indexPath.section == 1)
+    else if([item.name isEqualToString:@"常见问题"])
     {
-        if(indexPath.row == 0)
-        {
-            TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-            [webVC setTitle:self.titleArray[section][row]];
-            [webVC setUrl:[UserCenter sharedInstance].userData.config.faqUrl];
-            [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
-            [self setRead:2];
-        }
-        else
-        {
-            NSString *guideCellKey = @"guideCellKey";
-            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-            [userDefaults setBool:YES forKey:guideCellKey];
-            [userDefaults synchronize];
-            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kStatusChangedNotification object:nil];
-            OperationGuideVC *operationGuideVC = [[OperationGuideVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:operationGuideVC animated:YES];
-        }
+        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+        [webVC setTitle:item.name];
+        [webVC setUrl:[UserCenter sharedInstance].userData.config.faqUrl];
+        [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
+        [self setRead:2];
     }
-    else
+    else if([item.name isEqualToString:@"连枝剧场"])
+    {
+        NSString *guideCellKey = @"guideCellKey";
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setBool:YES forKey:guideCellKey];
+        [userDefaults synchronize];
+        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kStatusChangedNotification object:nil];
+        OperationGuideVC *operationGuideVC = [[OperationGuideVC alloc] init];
+        [CurrentROOTNavigationVC pushViewController:operationGuideVC animated:YES];
+    }
+    else if([item.name isEqualToString:@"个人设置"])
     {
         MineVC *mineVC = [[MineVC alloc] init];
         [self.navigationController pushViewController:mineVC animated:YES];
+    }
+    else
+    {
+        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+        [webVC setTitle:item.name];
+        [webVC setUrl:item.url];
+        [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
     }
 }
 

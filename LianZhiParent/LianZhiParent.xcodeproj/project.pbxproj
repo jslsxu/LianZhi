@@ -269,6 +269,7 @@
 		379947DF1A66B403008E4B4F /* PhotoFlowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 379947DA1A66B403008E4B4F /* PhotoFlowCell.m */; };
 		379947E01A66B403008E4B4F /* PhotoFlowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 379947DC1A66B403008E4B4F /* PhotoFlowModel.m */; };
 		379947E11A66B403008E4B4F /* PhotoFlowVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 379947DE1A66B403008E4B4F /* PhotoFlowVC.m */; };
+		379B7B161C29738F0052F563 /* ClassSelectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 379B7B151C29738F0052F563 /* ClassSelectionVC.m */; };
 		37B52A1A1A73C24B005F80F2 /* LogConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B52A191A73C24B005F80F2 /* LogConfig.m */; };
 		37B5D3E71A57B23A003CA877 /* PersonalInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B5D3E61A57B23A003CA877 /* PersonalInfoVC.m */; };
 		37B7044F1A4410CD0025D684 /* PasswordModificationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B7044E1A4410CD0025D684 /* PasswordModificationVC.m */; };
@@ -925,6 +926,8 @@
 		379947DC1A66B403008E4B4F /* PhotoFlowModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFlowModel.m; sourceTree = "<group>"; };
 		379947DD1A66B403008E4B4F /* PhotoFlowVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoFlowVC.h; sourceTree = "<group>"; };
 		379947DE1A66B403008E4B4F /* PhotoFlowVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFlowVC.m; sourceTree = "<group>"; };
+		379B7B141C29738F0052F563 /* ClassSelectionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassSelectionVC.h; sourceTree = "<group>"; };
+		379B7B151C29738F0052F563 /* ClassSelectionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassSelectionVC.m; sourceTree = "<group>"; };
 		37B52A181A73C24B005F80F2 /* LogConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogConfig.h; sourceTree = "<group>"; };
 		37B52A191A73C24B005F80F2 /* LogConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogConfig.m; sourceTree = "<group>"; };
 		37B5D3E51A57B23A003CA877 /* PersonalInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalInfoVC.h; sourceTree = "<group>"; };
@@ -2412,6 +2415,8 @@
 				37C316471A568617002E847D /* ClassAppCell.m */,
 				37C316491A568658002E847D /* ClassAppModel.h */,
 				37C3164A1A568658002E847D /* ClassAppModel.m */,
+				379B7B141C29738F0052F563 /* ClassSelectionVC.h */,
+				379B7B151C29738F0052F563 /* ClassSelectionVC.m */,
 			);
 			path = ClassApp;
 			sourceTree = "<group>";
@@ -3210,6 +3215,7 @@
 				3793F8241B7CFFD900501F77 /* TNBaseWebViewController.m in Sources */,
 				3793F7771B7CFFD900501F77 /* NSString+RETableViewManagerAdditions.m in Sources */,
 				3793F7D61B7CFFD900501F77 /* NSObject+UnifiedPerformSelector.m in Sources */,
+				379B7B161C29738F0052F563 /* ClassSelectionVC.m in Sources */,
 				3728A61E1B93F36B00310457 /* MFWFace.m in Sources */,
 				3793F7E71B7CFFD900501F77 /* AmrPlayerReader.m in Sources */,
 				3793F79F1B7CFFD900501F77 /* AFNetworkReachabilityManager.m in Sources */,
@@ -3460,7 +3466,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3492,9 +3498,9 @@
 					"$(PROJECT_DIR)/LianZhiParent/Class/BaseFoundation/SVShare/SVSDK/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7978f522-3d07-4c8c-844e-0e19b4151403";
+				PROVISIONING_PROFILE = "b0a45cd0-d146-4e14-8edc-7cccff49897d";
 			};
 			name = Debug;
 		};
@@ -3505,7 +3511,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3537,9 +3543,9 @@
 					"$(PROJECT_DIR)/LianZhiParent/Class/BaseFoundation/SVShare/SVSDK/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7978f522-3d07-4c8c-844e-0e19b4151403";
+				PROVISIONING_PROFILE = "b0a45cd0-d146-4e14-8edc-7cccff49897d";
 			};
 			name = Release;
 		};

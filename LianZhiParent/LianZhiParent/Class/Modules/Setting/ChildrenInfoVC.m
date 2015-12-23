@@ -576,9 +576,22 @@
         {
             PersonalInfoItem *infoItem = self.infoArray[row - 1];
             CommonInputVC *inputVC = [[CommonInputVC alloc] initWithOriginal:infoItem.value forKey:infoItem.key completion:^(NSString *value) {
-                infoItem.value = value;
-                [self saveInfo];
-                [tableView reloadData];
+                BOOL validate = YES;
+                if(row == 5 || row == 6)
+                {
+                    if([value floatValue] == 0)
+                        validate = NO;
+                }
+                if(validate)
+                {
+                    infoItem.value = value;
+                    [self saveInfo];
+                    [tableView reloadData];
+                }
+                else
+                {
+                    [ProgressHUD showHintText:@"输入不正确"];
+                }
             }];
             [self.navigationController pushViewController:inputVC animated:YES];
         }

@@ -38,7 +38,7 @@ static NSArray *tabDatas = nil;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onChildInfoChanged) name:kChildInfoChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
         NSMutableArray *subVCs = [[NSMutableArray alloc] initWithCapacity:0];
-        NSArray *subVCArray = @[@"MessageVC",@"ContactListVC",@"TreeHouseVC",@"ClassZoneVC",@"DiscoveryVC"];
+        NSArray *subVCArray = @[@"MessageVC",@"ContactListVC",@"TreeHouseVC",@"ClassAppVC",@"DiscoveryVC"];
         
         for (NSInteger i = 0; i < subVCArray.count; i++)
         {
@@ -51,7 +51,7 @@ static NSArray *tabDatas = nil;
         
         self.messageVC = subVCs[0];
         self.treeHouseVC = subVCs[2];
-        self.classZoneVC = subVCs[3];
+        self.classAppVC = subVCs[3];
     }
     return self;
 }
@@ -77,23 +77,14 @@ static NSArray *tabDatas = nil;
         [classTabButton setBadgeValue:kStringFromValue(classZoneNum)];
     else
     {
-        
-        
-        ClassInfo *classInfo = self.classZoneVC.classInfo;
-        if(classInfo == nil)
-        {
-            classInfo = [UserCenter sharedInstance].curChild.classes[0];
-        }
         for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.feedClassesNew)
         {
-            if([notice.classID isEqualToString:classInfo.classID])
                 classZoneNum += notice.num;
         }
         
         //成长记录
         for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.classRecordArray)
         {
-            if([notice.classID isEqualToString:classInfo.classID])
                 classZoneNum += notice.num;
         }
         
@@ -159,7 +150,7 @@ static NSArray *tabDatas = nil;
             view.hidden = YES;
         }
     }];
-    NSArray *tabItemTitleArray = @[@"消息",@"联系人",@"树屋",@"班博客",@"发现"];
+    NSArray *tabItemTitleArray = @[@"消息",@"联系人",@"树屋",@"班应用",@"发现"];
     CGFloat tabWidth = self.view.width / tabItemTitleArray.count;
     for (NSInteger i = 0; i < tabItemTitleArray.count; i++)
     {

@@ -10,6 +10,7 @@
 #import "PublishSelectionView.h"
 #import "TreeHouseItemDetailVC.h"
 #import "ActionPopView.h"
+#import "ClassZoneItemCell.h"
 NSString *const kPublishPhotoItemFinishedNotification = @"PublishPhotoItemFinishedNotification";
 NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 @interface TreeHouseVC ()<PublishSelectDelegate, ActionSelectViewDelegate, ActionPopViewDelegate>

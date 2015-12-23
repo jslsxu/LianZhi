@@ -18,7 +18,7 @@
 {
     [super viewDidLoad];
     self.title = @"黑板报";
-    
+    self.navigationItem.rightBarButtonItem = nil;
     _textView = [[UITextView alloc] initWithFrame:CGRectMake(10, 5, self.view.width - 10 * 2, 100)];
     [_textView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     [_textView.layer setCornerRadius:10];

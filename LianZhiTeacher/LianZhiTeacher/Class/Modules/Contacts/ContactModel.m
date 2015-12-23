@@ -70,7 +70,27 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ContactModel)
     [self.teachers removeAllObjects];
     [self.classes removeAllObjects];
     SchoolInfo *schoolInfo = [UserCenter sharedInstance].curSchool;
+    
     ContactGroup *group = nil;
+    BOOL canChat = NO;
+    for (TeacherGroup *teacherGroup in schoolInfo.groups)
+    {
+        if(teacherGroup.canChat)
+            canChat = YES;
+    }
+    
+    if(schoolInfo.groups.count > 0 && canChat)
+    {
+        group = [[ContactGroup alloc] init];
+        [self.teachers addObject:group];
+        [group setKey:@"组"];
+        for (TeacherGroup *teacherGroup in schoolInfo.groups)
+        {
+            if(teacherGroup.canChat)
+                [group.contacts addObject:teacherGroup];
+        }
+    }
+    
     for (TeacherInfo *teacher in schoolInfo.teachers) {
         if(![teacher.shortIndex isEqualToString:group.key])
         {

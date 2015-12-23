@@ -145,20 +145,28 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 60;
+    ClassInfo *class = [UserCenter sharedInstance].curChild.classes[section];
+    if(class.schoolInfo.classIMEnaled)
+        return 60;
+    return 0.1;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    static NSString *reuseHeaderID = @"HeaderView";
-    ContactListHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:reuseHeaderID];
-    if(headerView == nil)
-    {
-        headerView = [[ContactListHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 60)];
-    }
     ClassInfo *class = [UserCenter sharedInstance].curChild.classes[section];
-    [headerView setClassInfo:class];
-    return headerView;
+    if(class.schoolInfo.classIMEnaled)
+    {
+        static NSString *reuseHeaderID = @"HeaderView";
+        ContactListHeaderView *headerView = (ContactListHeaderView *)[tableView dequeueReusableHeaderFooterViewWithIdentifier:reuseHeaderID];
+        if(headerView == nil)
+        {
+            headerView = [[ContactListHeaderView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 60)];
+        }
+        [headerView setClassInfo:class];
+        return headerView;
+    }
+    else
+        return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

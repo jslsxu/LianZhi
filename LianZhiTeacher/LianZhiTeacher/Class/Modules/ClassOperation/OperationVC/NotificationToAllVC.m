@@ -273,9 +273,21 @@ NSString * kNotificationPublishSuccessNotification = @"NotificationPublishSucces
 
 @end
 
+static NotificationToAllVC *notificationVC = nil;
 @implementation NotificationToAllVC
 
-SYNTHESIZE_SINGLETON_FOR_CLASS(NotificationToAllVC)
++ (NotificationToAllVC *)sharedInstance
+{
+    if(notificationVC == nil)
+        notificationVC = [[NotificationToAllVC alloc] init];
+    return notificationVC;
+}
+
++ (void)clean
+{
+    notificationVC = nil;
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -285,7 +297,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(NotificationToAllVC)
 {
     [super viewDidLoad];
     self.title = @"发布通知";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"RecordHistory"] style:UIBarButtonItemStylePlain target:self action:@selector(onShowHistory)];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"RecordHistory"] style:UIBarButtonItemStylePlain target:self action:@selector(onShowHistory)];
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"ffffff"]];
     UIView *operationView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 75)];
     [operationView setBackgroundColor:[UIColor colorWithHexString:@"0fabc1"]];

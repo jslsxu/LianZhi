@@ -369,13 +369,23 @@
         TeacherInfo *teacher = [group.contacts objectAtIndex:indexPath.row];
         JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
         [chatVC setTo_objid:[UserCenter sharedInstance].curSchool.schoolID];
-        [chatVC setTargetID:teacher.uid];
-        [chatVC setChatType:ChatTypeTeacher];
-        [chatVC setMobile:teacher.mobile];
-        NSString *title = teacher.name;
-        if(teacher.title.length)
-            title = [NSString stringWithFormat:@"%@(%@)",title,teacher.title];
-        [chatVC setTitle:title];
+        if([teacher isKindOfClass:[TeacherInfo class]])
+        {
+            [chatVC setTargetID:teacher.uid];
+            [chatVC setChatType:ChatTypeTeacher];
+            [chatVC setMobile:teacher.mobile];
+            NSString *title = teacher.name;
+            if(teacher.title.length)
+                title = [NSString stringWithFormat:@"%@(%@)",title,teacher.title];
+            [chatVC setTitle:title];
+        }
+        else if([teacher isKindOfClass:[TeacherGroup class]])
+        {
+            TeacherGroup *group = (TeacherGroup *)teacher;
+            [chatVC setTargetID:group.groupID];
+            [chatVC setChatType:ChatTypeGroup];
+            [chatVC setTitle:group.groupName];
+        }
         [ApplicationDelegate popAndPush:chatVC];
     }
 }

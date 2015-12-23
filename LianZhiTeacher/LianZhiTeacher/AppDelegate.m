@@ -16,6 +16,7 @@
 #import "PasswordModificationVC.h"
 #include "BaseInfoModifyVC.h"
 #import "RelatedInfoVC.h"
+#import "NotificationToAllVC.h"
 static SystemSoundID shake_sound_male_id = 0;
 @interface AppDelegate ()<WelComeViewDelegate>
 
@@ -45,24 +46,31 @@ static SystemSoundID shake_sound_male_id = 0;
     [self setupCommonAppearance];
     [self registerRemoteNotification];
     
-    if([[UserCenter sharedInstance] hasLogin])
+    if([self isNewVersion])
     {
-        HomeViewController *homeVC = [[HomeViewController alloc] init];
-        self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:homeVC];
-        [self.window setRootViewController:self.rootNavigation];
-        self.homeVC = homeVC;
+        [self logout];
     }
     else
     {
-        LoginVC *loginVC = [[LoginVC alloc] init];
-        [loginVC setCompletion:^(BOOL loginSuccess, BOOL loginCancel) {
-            if(loginSuccess)
-            {
-                [self loginSuccess];
-            }
-        }];
-        self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:loginVC];
-        [self.window setRootViewController:self.rootNavigation];
+        if([[UserCenter sharedInstance] hasLogin])
+        {
+            HomeViewController *homeVC = [[HomeViewController alloc] init];
+            self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:homeVC];
+            [self.window setRootViewController:self.rootNavigation];
+            self.homeVC = homeVC;
+        }
+        else
+        {
+            LoginVC *loginVC = [[LoginVC alloc] init];
+            [loginVC setCompletion:^(BOOL loginSuccess, BOOL loginCancel) {
+                if(loginSuccess)
+                {
+                    [self loginSuccess];
+                }
+            }];
+            self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:loginVC];
+            [self.window setRootViewController:self.rootNavigation];
+        }
     }
     
     NSDictionary *notificationInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
@@ -207,6 +215,7 @@ static SystemSoundID shake_sound_male_id = 0;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[TaskUploadManager sharedInstance] cleanTask];
     });
+    [NotificationToAllVC clean];;
     [self.homeVC.messageVC invalidate];
     LoginVC *loginVC = [[LoginVC alloc] init];
     [loginVC setCompletion:^(BOOL loginSuccess, BOOL loginCancel) {
@@ -338,6 +347,19 @@ static SystemSoundID shake_sound_male_id = 0;
             });
         }
     });
+}
+
+- (BOOL)isNewVersion
+{
+    NSString *applicationVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if(![userDefaults boolForKey:applicationVersion])
+    {
+        [userDefaults setBool:YES forKey:applicationVersion];
+        [userDefaults synchronize];
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - Reachability

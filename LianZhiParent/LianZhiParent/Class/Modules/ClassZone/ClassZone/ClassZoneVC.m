@@ -24,25 +24,25 @@
         [bgView setBackgroundColor:[UIColor colorWithHexString:@"173e39"]];
         [self addSubview:bgView];
         
-        CGFloat buttonWidth = 40;
-        _albumButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_albumButton addTarget:self action:@selector(onAlbumButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_albumButton setImage:[UIImage imageNamed:@"ZoneAlbum"] forState:UIControlStateNormal];
-        [_albumButton setFrame:CGRectMake(self.width - buttonWidth, self.height - 40 - buttonWidth, buttonWidth, buttonWidth)];
-        [self addSubview:_albumButton];
+//        CGFloat buttonWidth = 40;
+//        _albumButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_albumButton addTarget:self action:@selector(onAlbumButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+//        [_albumButton setImage:[UIImage imageNamed:@"ZoneAlbum"] forState:UIControlStateNormal];
+//        [_albumButton setFrame:CGRectMake(self.width - buttonWidth, self.height - 40 - buttonWidth, buttonWidth, buttonWidth)];
+//        [self addSubview:_albumButton];
         
-        _appButton = [[LZTabBarButton alloc] init];
-        [_appButton addTarget:self action:@selector(onAppButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_appButton setImage:[UIImage imageNamed:@"ZoneApp"] forState:UIControlStateNormal];
-        [_appButton setFrame:CGRectMake(self.width - buttonWidth, _albumButton.top - buttonWidth, buttonWidth, buttonWidth)];
-        [self addSubview:_appButton];
+//        _appButton = [[LZTabBarButton alloc] init];
+//        [_appButton addTarget:self action:@selector(onAppButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+//        [_appButton setImage:[UIImage imageNamed:@"ZoneApp"] forState:UIControlStateNormal];
+//        [_appButton setFrame:CGRectMake(self.width - buttonWidth, _albumButton.top - buttonWidth, buttonWidth, buttonWidth)];
+//        [self addSubview:_appButton];
         
         _newpaperImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BlackboardText.png"]];
         [_newpaperImageView setOrigin:CGPointMake(20, 10)];
         [self addSubview:_newpaperImageView];
         
         
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 30, self.width - 30 - 40, self.height - 30 - 30)];
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 30, self.width - 30 - 30, self.height - 30 - 30)];
         [_contentLabel setUserInteractionEnabled:YES];
         [_contentLabel setTextColor:[UIColor whiteColor]];
         [_contentLabel setFont:[UIFont systemFontOfSize:16]];
@@ -131,11 +131,11 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
 //    self.title = @"班空间";
     self.shouldShowEmptyHint = YES;
-    _switchView = [[ClassZoneClassSwitchView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 30)];
-    [_switchView setCurChild:[UserCenter sharedInstance].curChild];
-    [_switchView setDelegate:self];
-    [self.view addSubview:_switchView];
-    [self.tableView setFrame:CGRectMake(0, _switchView.bottom, self.view.width, self.view.height - _switchView.bottom)];
+//    _switchView = [[ClassZoneClassSwitchView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 30)];
+//    [_switchView setCurChild:[UserCenter sharedInstance].curChild];
+//    [_switchView setDelegate:self];
+//    [self.view addSubview:_switchView];
+//    [self.tableView setFrame:CGRectMake(0, _switchView.bottom, self.view.width, self.view.height - _switchView.bottom)];
     [self onCurChildChanged];
     
     _headerView = [[ClassZoneHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 160)];
@@ -214,7 +214,6 @@
 {
     if([UserCenter sharedInstance].curChild.classes.count > 0)
     {
-        [_switchView setCurChild:[UserCenter sharedInstance].curChild];
         ClassInfo *curClassInfo = [UserCenter sharedInstance].curChild.classes[0];
         [self setClassInfo:curClassInfo];
         [self requestData:REQUEST_REFRESH];
@@ -449,7 +448,6 @@
     [switchClassVC setClassInfo:self.classInfo];
     [switchClassVC setCompletion:^(ClassInfo *classInfo) {
         wself.classInfo = classInfo;
-        [_switchView setClassInfo:wself.classInfo];
         [wself requestData:REQUEST_REFRESH];
     }];
     [self.navigationController pushViewController:switchClassVC animated:YES];
@@ -465,9 +463,9 @@
 
 - (void)classZoneAppClicked
 {
-    ClassAppVC *appVC = [[ClassAppVC alloc] init];
-    [appVC setClassInfo:self.classInfo];
-    [CurrentROOTNavigationVC pushViewController:appVC animated:YES];
+//    ClassAppVC *appVC = [[ClassAppVC alloc] init];
+//    [appVC setClassInfo:self.classInfo];
+//    [CurrentROOTNavigationVC pushViewController:appVC animated:YES];
 }
 
 - (void)classNewCommentClicked

@@ -14,6 +14,7 @@
     self.schoolID = [dataWrapper getStringForKey:@"id"];
     self.schoolName = [dataWrapper getStringForKey:@"name"];
     self.logo = [dataWrapper getStringForKey:@"logo"];
+    self.classIMEnaled = [dataWrapper getBoolForKey:@"enabled_class_im"];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -23,6 +24,10 @@
         self.schoolID = [aDecoder decodeObjectForKey:@"id"];
         self.schoolName = [aDecoder decodeObjectForKey:@"name"];
         self.logo = [aDecoder decodeObjectForKey:@"logo"];
+        if([aDecoder containsValueForKey:@"enabled_class_im"])
+            self.classIMEnaled = [aDecoder decodeBoolForKey:@"enabled_class_im"];
+        else
+            self.classIMEnaled = YES;
     }
     return self;
 }
@@ -32,6 +37,7 @@
     [aCoder encodeObject:self.schoolID forKey:@"id"];
     [aCoder encodeObject:self.schoolName forKey:@"name"];
     [aCoder encodeObject:self.logo forKey:@"logo"];
+    [aCoder encodeBool:self.classIMEnaled forKey:@"enabled_class_im"];
 }
 @end
 

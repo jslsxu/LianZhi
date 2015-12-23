@@ -90,9 +90,9 @@
     [_timeLabel sizeToFit];
     [_timeLabel setRight:self.width - 10];
     
-    MessageFromType fromType = _messageItem.fromInfo.type;
+    ChatType fromType = _messageItem.fromInfo.type;
     NSString *name = _messageItem.fromInfo.name;
-    if(fromType != MessageFromTypeFromClass && fromType != MessageFromTypeFromParents)
+    if(fromType != ChatTypeClass && fromType != ChatTypeParents)
     {
         if(_messageItem.fromInfo.label.length > 0)
             name = [NSString stringWithFormat:@"%@(%@)",name,_messageItem.fromInfo.label];
@@ -102,7 +102,7 @@
     [_nameLabel setWidth:MIN(_timeLabel.left - _nameLabel.left - 40, nameSize.width)];
     
     //群聊图标
-    if(fromType == MessageFromTypeFromClass)
+    if(fromType == ChatTypeClass || fromType == ChatTypeGroup)
     {
         [_massChatIndicator setHidden:NO];
         [_massChatIndicator setOrigin:CGPointMake(_nameLabel.right + 10, _nameLabel.y + (_nameLabel.height - _massChatIndicator.height) / 2)];

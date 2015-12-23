@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ClassZoneVC.h"
+#import "ClassAppVC.h"
 #import "ContactListVC.h"
 #import "DiscoveryVC.h"
 #import "MessageVC.h"
@@ -22,7 +22,7 @@ extern NSString *const kCurrentChildInfoChangedNotification;
     NSMutableArray* _tabbarButtons;
 }
 @property (nonatomic, strong)AvatarView* avatar;
-@property (nonatomic, strong)ClassZoneVC *classZoneVC;
+@property (nonatomic, strong)ClassAppVC *classAppVC;
 @property (nonatomic, strong)ContactListVC *contactListVC;
 @property (nonatomic, strong)DiscoveryVC *discoveryVC;
 @property (nonatomic, strong)MessageVC *messageVC;

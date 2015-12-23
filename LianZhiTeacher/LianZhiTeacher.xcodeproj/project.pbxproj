@@ -55,7 +55,7 @@
 		372ED8231B81795A00D07344 /* InterestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372ED8221B81795A00D07344 /* InterestVC.m */; };
 		373528771AD6557800C0F326 /* BaseInfoModifyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 373528751AD6557800C0F326 /* BaseInfoModifyVC.m */; };
 		373B9D1A1BEF8B6000FE89CA /* NotificationTargetVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 373B9D191BEF8B6000FE89CA /* NotificationTargetVC.m */; };
-		375819C81C22AA29002C9B85 /* NotificationTargetSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 375819C71C22AA29002C9B85 /* NotificationTargetSelectVC.m */; };
+		375819C81C22AA29002C9B85 /* NotificationHistoryTargetSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 375819C71C22AA29002C9B85 /* NotificationHistoryTargetSelectVC.m */; };
 		375819CB1C22AA3E002C9B85 /* NotificationHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 375819CA1C22AA3E002C9B85 /* NotificationHistoryVC.m */; };
 		376FC6B51B01EFB500289DC2 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B41B01EFB500289DC2 /* libiconv.dylib */; };
 		376FC6B71B01EFBF00289DC2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B61B01EFBF00289DC2 /* CoreGraphics.framework */; };
@@ -532,8 +532,8 @@
 		373528761AD6557800C0F326 /* BaseInfoModifyVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseInfoModifyVC.h; sourceTree = "<group>"; };
 		373B9D181BEF8B6000FE89CA /* NotificationTargetVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationTargetVC.h; sourceTree = "<group>"; };
 		373B9D191BEF8B6000FE89CA /* NotificationTargetVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationTargetVC.m; sourceTree = "<group>"; };
-		375819C61C22AA29002C9B85 /* NotificationTargetSelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationTargetSelectVC.h; sourceTree = "<group>"; };
-		375819C71C22AA29002C9B85 /* NotificationTargetSelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationTargetSelectVC.m; sourceTree = "<group>"; };
+		375819C61C22AA29002C9B85 /* NotificationHistoryTargetSelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationHistoryTargetSelectVC.h; sourceTree = "<group>"; };
+		375819C71C22AA29002C9B85 /* NotificationHistoryTargetSelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationHistoryTargetSelectVC.m; sourceTree = "<group>"; };
 		375819C91C22AA3E002C9B85 /* NotificationHistoryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationHistoryVC.h; sourceTree = "<group>"; };
 		375819CA1C22AA3E002C9B85 /* NotificationHistoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationHistoryVC.m; sourceTree = "<group>"; };
 		376FC6B41B01EFB500289DC2 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
@@ -1443,8 +1443,8 @@
 		375819C51C22A9F2002C9B85 /* NotificationHistory */ = {
 			isa = PBXGroup;
 			children = (
-				375819C61C22AA29002C9B85 /* NotificationTargetSelectVC.h */,
-				375819C71C22AA29002C9B85 /* NotificationTargetSelectVC.m */,
+				375819C61C22AA29002C9B85 /* NotificationHistoryTargetSelectVC.h */,
+				375819C71C22AA29002C9B85 /* NotificationHistoryTargetSelectVC.m */,
 				375819C91C22AA3E002C9B85 /* NotificationHistoryVC.h */,
 				375819CA1C22AA3E002C9B85 /* NotificationHistoryVC.m */,
 			);
@@ -3125,6 +3125,7 @@
 				TargetAttributes = {
 					37C355CF1A3FD5CF00B948E6 = {
 						CreatedOnToolsVersion = 6.1;
+						DevelopmentTeam = JRFF54BK3W;
 					};
 				};
 			};
@@ -3309,7 +3310,7 @@
 				3793FA451B7CFFF000501F77 /* RECommonFunctions.m in Sources */,
 				379947E91A66B430008E4B4F /* PhotoFlowCell.m in Sources */,
 				37FD6E321BB4817900C83AB4 /* NewMessageVC.m in Sources */,
-				375819C81C22AA29002C9B85 /* NotificationTargetSelectVC.m in Sources */,
+				375819C81C22AA29002C9B85 /* NotificationHistoryTargetSelectVC.m in Sources */,
 				3793FA841B7CFFF000501F77 /* AudioRecordView.m in Sources */,
 				3793FA9D1B7CFFF000501F77 /* PhotoItem.m in Sources */,
 				37DEE4BF1A57C19C009A8771 /* MessageGroupItemCell.m in Sources */,
@@ -3646,7 +3647,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3678,9 +3679,9 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/SVShare/SVSDK/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = " -all_load";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "72ffb7ff-6a30-4cbc-bc91-64fe85646ba9";
+				PROVISIONING_PROFILE = "309f869c-e642-40a5-b863-7a8e12cdd04a";
 			};
 			name = Debug;
 		};
@@ -3689,7 +3690,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3721,9 +3722,9 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/SVShare/SVSDK/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = " -all_load";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "72ffb7ff-6a30-4cbc-bc91-64fe85646ba9";
+				PROVISIONING_PROFILE = "309f869c-e642-40a5-b863-7a8e12cdd04a";
 			};
 			name = Release;
 		};

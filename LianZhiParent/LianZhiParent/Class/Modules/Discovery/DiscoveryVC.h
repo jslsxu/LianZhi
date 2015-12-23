@@ -9,11 +9,20 @@
 #import "TNBaseViewController.h"
 #import "InterestVC.h"
 
+@interface DiscoveryItem : TNModelItem
+@property (nonatomic, copy)NSString *name;
+@property (nonatomic, copy)NSString *icon;
+@property (nonatomic, copy)NSString *url;
+@end
+
 @interface DiscoveryCell : UITableViewCell
 {
-    UIView*    _redDot;
+    UIImageView*    _icon;
+    UILabel*        _titleLabel;
+    UIView*         _redDot;
 }
 @property (nonatomic, readonly)UIView *redDot;
+@property (nonatomic, strong)DiscoveryItem *discoveryItem;
 @end
 
 @interface DiscoveryVC : TNBaseViewController<UITableViewDelegate, UITableViewDataSource>

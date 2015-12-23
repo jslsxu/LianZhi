@@ -56,7 +56,8 @@ NSString *const kChildInfoChangedNotification = @"ChildInfoChangedNotification";
         [config parseData:configWrapper];
         [self setConfig:config];
     }
-
+    
+    self.curChildIndex = 0;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -69,6 +70,7 @@ NSString *const kChildInfoChangedNotification = @"ChildInfoChangedNotification";
         self.config = [aDecoder decodeObjectForKey:@"config"];
         NSArray *childrenArray = [aDecoder decodeObjectForKey:@"children"];
         self.children = [[NSMutableArray alloc] initWithArray:childrenArray];
+        self.curChildIndex = [aDecoder decodeIntegerForKey:@"curChildIndex"];
     }
     return self;
 }
@@ -80,6 +82,7 @@ NSString *const kChildInfoChangedNotification = @"ChildInfoChangedNotification";
     [aCoder encodeObject:self.accessToken forKey:@"verify"];
     [aCoder encodeObject:self.config forKey:@"config"];
     [aCoder encodeObject:self.children forKey:@"children"];
+    [aCoder encodeInteger:self.curChildIndex forKey:@"curChildIndex"];
 }
 
 @end
@@ -147,18 +150,25 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
 
 - (ChildInfo *)curChild
 {
-    if(self.userData.children.count >= 1)
-        return self.userData.children[0];
+    if( self.userData.curChildIndex < self.userData.children.count)
+        return self.userData.children[self.userData.curChildIndex];
     return nil;
 }
 
 - (void)setCurChild:(ChildInfo *)curChild
 {
-    NSInteger index = [self.userData.children indexOfObject:curChild];
-    if(index != 0)
+    NSInteger index = -1;
+    for (NSInteger i = 0; i < self.userData.children.count; i++)
     {
-        [self.userData.children removeObject:curChild];
-        [self.userData.children insertObject:curChild atIndex:0];
+        ChildInfo *child = self.userData.children[i];
+        if([curChild.uid isEqualToString:child.uid])
+        {
+            index = i;
+        }
+    }
+    if(index >=0 && index < self.userData.children.count)
+    {
+        [self.userData setCurChildIndex:index];
         [[NSNotificationCenter defaultCenter] postNotificationName:kUserCenterChangedCurChildNotification object:self userInfo:nil];
         [self save];
     }

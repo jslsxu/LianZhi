@@ -15,7 +15,7 @@
     self.schoolName = [dataWrapper getStringForKey:@"name"];
     self.logoUrl = [dataWrapper getStringForKey:@"logo"];
     self.schoolUrl = [dataWrapper getStringForKey:@"url"];
-    
+    self.classIMEnabled = [dataWrapper getBoolForKey:@"enabled_class_im"];
     TNDataWrapper *groupWrapper = [dataWrapper getDataWrapperForKey:@"groups"];
     if(groupWrapper.count > 0)
     {
@@ -113,6 +113,10 @@
         self.managedClasses = [aDecoder decodeObjectForKey:@"managed_classes"];
         self.teachers = [aDecoder decodeObjectForKey:@"teachers"];
         self.schoolUrl = [aDecoder decodeObjectForKey:@"url"];
+        if([aDecoder containsValueForKey:@"enabled_class_im"])
+            self.classIMEnabled = [aDecoder decodeBoolForKey:@"enabled_class_im"];
+        else
+            self.classIMEnabled = YES;
     }
     return self;
 }
@@ -127,6 +131,7 @@
     [aCoder encodeObject:self.managedClasses forKey:@"managed_classes"];
     [aCoder encodeObject:self.teachers forKey:@"teachers"];
     [aCoder encodeObject:self.schoolUrl forKey:@"url"];
+    [aCoder encodeBool:self.classIMEnabled forKey:@"enabled_class_im"];
 }
 
 - (NSArray *)allClasses
@@ -310,6 +315,7 @@
 {
     self.groupID = [dataWrapper getStringForKey:@"id"];
     self.groupName = [dataWrapper getStringForKey:@"name"];
+    self.logo = [dataWrapper getStringForKey:@"logo"];
     self.canNotice = [dataWrapper getBoolForKey:@"can_notice"];
     TNDataWrapper *teacherWrapper = [dataWrapper getDataWrapperForKey:@"teachers"];
     if(teacherWrapper.count > 0)
@@ -326,12 +332,23 @@
     }
 }
 
+- (BOOL)canChat
+{
+    for (TeacherInfo *teacherInfo in self.teachers)
+    {
+        if([teacherInfo.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid])
+            return YES;
+    }
+    return NO;
+}
+
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     if(self = [super init])
     {
         self.groupID = [aDecoder decodeObjectForKey:@"id"];
         self.groupName = [aDecoder decodeObjectForKey:@"name"];
+        self.logo = [aDecoder decodeObjectForKey:@"logo"];
         self.canNotice = [aDecoder decodeBoolForKey:@"can_notice"];
         self.teachers = [aDecoder decodeObjectForKey:@"teachers"];
     }
@@ -342,6 +359,7 @@
 {
     [aCoder encodeObject:self.groupID forKey:@"id"];
     [aCoder encodeObject:self.groupName forKey:@"name"];
+    [aCoder encodeObject:self.logo forKey:@"logo"];
     [aCoder encodeBool:self.canNotice forKey:@"can_notice"];
     [aCoder encodeObject:self.teachers forKey:@"teachers"];
 }

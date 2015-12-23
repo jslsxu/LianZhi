@@ -103,29 +103,16 @@
     CGFloat length = 36;
     NSInteger innerMargin = 5;
     NSArray *children = [UserCenter sharedInstance].children;
-    NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:children];
-    [tmpArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        ChildInfo *childInfo1 = (ChildInfo *)obj1;
-        ChildInfo *childInfo2 = (ChildInfo *)obj2;
-        return [childInfo1.birthday compare:childInfo2.birthday];
-    }];
-    for (ChildInfo *childInfo in tmpArray) {
-        if(childInfo == [UserCenter sharedInstance].curChild)
-        {
-            [tmpArray removeObject:childInfo];
-            [tmpArray insertObject:childInfo atIndex:0];
-            break;
-        }
-    }
     CGFloat spaceXStart = 0;
-    for (NSInteger i = 0; i < tmpArray.count; i++) {
-        ChildInfo *childInfo = tmpArray[i];
+    for (NSInteger i = 0; i < children.count; i++) {
+        ChildInfo *childInfo = children[i];
         ChildInfoView *childInfoView = [[ChildInfoView alloc] initWithFrame:CGRectMake(spaceXStart, (self.height - length) / 2, length, length)];
         spaceXStart += (length + innerMargin);
         [childInfoView addTarget:self action:@selector(onChildItemClicked:) forControlEvents:UIControlEventTouchUpInside];
         [childInfoView setChildInfo:childInfo];
-        [childInfoView setChildSelected:i == 0];
-        [childInfoView setAlpha:i == 0 ? 1 : 0.7];
+        BOOL isCur = [[UserCenter sharedInstance].curChild.uid isEqualToString:childInfo.uid];
+        [childInfoView setChildSelected:isCur];
+        [childInfoView setAlpha:isCur ? 1 : 0.7];
         [_scrollView addSubview:childInfoView];
         [_childButtonArray addObject:childInfoView];
     }

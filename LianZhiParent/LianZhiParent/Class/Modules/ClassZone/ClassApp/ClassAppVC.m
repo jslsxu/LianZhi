@@ -12,9 +12,10 @@
 #import "CourseListVC.h"
 #import "VacationHistoryVC.h"
 #import "HomeWorkVC.h"
-@interface ClassAppVC ()
+#import "ClassZoneVC.h"
+#import "ClassAlbumVC.h"
+#import "ClassSelectionVC.h"
 
-@end
 
 @implementation ClassAppVC
 
@@ -25,6 +26,7 @@
     {
         [self setCellName:@"ClassAppCell"];
         [self setModelName:@"ClassAppModel"];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurChildChanged) name:kUserCenterChangedCurChildNotification object:nil];
     }
     return self;
 }
@@ -32,8 +34,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = @"班应用";
-    [self.collectionView setScrollEnabled:NO];
+    [self setSupportPullDown:YES];
+    [self requestData:REQUEST_REFRESH];
+}
+
+- (void)onCurChildChanged
+{
     [self requestData:REQUEST_REFRESH];
 }
 
@@ -50,12 +56,9 @@
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
 {
     HttpRequestTask *task = [[HttpRequestTask alloc] init];
-    [task setRequestUrl:@"class/app_list"];
+    [task setRequestUrl:@"class/app_list_all"];
     [task setRequestMethod:REQUEST_GET];
     [task setRequestType:requestType];
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setValue:self.classInfo.classID forKey:@"class_id"];
-    [task setParams:params];
     [task setObserver:self];
     return task;
 }
@@ -67,7 +70,7 @@
 
 - (NSString *)cacheFileName
 {
-    return [NSString stringWithFormat:@"%@_%@",NSStringFromClass([self class]),self.classInfo.classID];
+    return [NSString stringWithFormat:@"%@_%@",NSStringFromClass([self class]),[UserCenter sharedInstance].curChild.uid];
 }
 
 - (void)TNBaseTableViewControllerRequestStart
@@ -87,9 +90,9 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-    VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
-    [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
-    return;
+//    VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
+//    [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
+//    return;
     ClassAppItem *appItem = (ClassAppItem *)modelItem;
     NSString *actionUrl = appItem.actionUrl;
     if([actionUrl length] > 0)
@@ -108,27 +111,59 @@
             }
             else if([scheme isEqualToString:@"lianzhi"])
             {
-                if([host isEqualToString:@"contact"])
+                NSArray *classArray = [UserCenter sharedInstance].curChild.classes;
+                if(classArray.count == 0)
+                    [ProgressHUD showHintText:@"孩子不在任何班级"];
+                else if(classArray.count == 1)
                 {
-                    ContactListVC *contactVC = [[ContactListVC alloc] init];
-                    [self.navigationController pushViewController:contactVC animated:YES];
+                    ClassInfo *classInfo = classArray[0];
+                    if([appItem.appName isEqualToString:@"班博客"])
+                    {
+                        ClassZoneVC *classZoneVC = [[ClassZoneVC alloc] init];
+                        [classZoneVC setClassInfo:classInfo];
+                        [CurrentROOTNavigationVC pushViewController:classZoneVC animated:YES];
+                    }
+                    else if([appItem.appName isEqualToString:@"班相册"])
+                    {
+                        ClassAlbumVC *photoBrowser = [[ClassAlbumVC alloc] init];
+                        [photoBrowser setShouldShowEmptyHint:YES];
+                        [photoBrowser setClassID:classInfo.classID];
+                        [CurrentROOTNavigationVC pushViewController:photoBrowser animated:YES];
+                    }
+                    else if([appItem.appName isEqualToString:@"家园手册"])
+                    {
+                        GrowthTimelineVC *growthTimeLineVC = [[GrowthTimelineVC alloc] init];
+                        [growthTimeLineVC setClassInfo:classInfo];
+                        [CurrentROOTNavigationVC pushViewController:growthTimeLineVC animated:YES];
+                    }
                 }
-                else if([host isEqualToString:@"record"])
+                else
                 {
-                    GrowthTimelineVC *recordVC = [[GrowthTimelineVC alloc] init];
-                    [recordVC setClassInfo:self.classInfo];
-                    [self.navigationController pushViewController:recordVC animated:YES];
+                    ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
+                    [classSelectionVC setSelection:^(ClassInfo *classInfo) {
+                        if([appItem.appName isEqualToString:@"班博客"])
+                        {
+                            ClassZoneVC *classZoneVC = [[ClassZoneVC alloc] init];
+                            [classZoneVC setClassInfo:classInfo];
+                            [CurrentROOTNavigationVC pushViewController:classZoneVC animated:YES];
+                        }
+                        else if([appItem.appName isEqualToString:@"班相册"])
+                        {
+                            ClassAlbumVC *photoBrowser = [[ClassAlbumVC alloc] init];
+                            [photoBrowser setShouldShowEmptyHint:YES];
+                            [photoBrowser setClassID:classInfo.classID];
+                            [CurrentROOTNavigationVC pushViewController:photoBrowser animated:YES];
+                        }
+                        else if([appItem.appName isEqualToString:@"家园手册"])
+                        {
+                            GrowthTimelineVC *growthTimeLineVC = [[GrowthTimelineVC alloc] init];
+                            [growthTimeLineVC setClassInfo:classInfo];
+                            [CurrentROOTNavigationVC pushViewController:growthTimeLineVC animated:YES];
+                        }
+                    }];
+                    [CurrentROOTNavigationVC pushViewController:classSelectionVC animated:YES];
                 }
-//                else if ([host isEqualToString:@"vacation"])
-//                {
-//                    RequestVacationVC *vacationVC = [[RequestVacationVC alloc] init];
-//                    [self.navigationController pushViewController:vacationVC animated:YES];
-//                }
-//                else if([host isEqualToString:@"homework"])
-//                {
-//                    CourseListVC *courseListVC = [[CourseListVC alloc] init];
-//                    [self.navigationController pushViewController:courseListVC animated:YES];
-//                }
+                
             }
         }
     }

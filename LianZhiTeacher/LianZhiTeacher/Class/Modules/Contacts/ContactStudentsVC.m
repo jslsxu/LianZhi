@@ -157,12 +157,19 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if(indexPath.section == 0)
     {
-        JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-        [chatVC setTo_objid:[UserCenter sharedInstance].curSchool.schoolID];
-        [chatVC setTargetID:self.classInfo.classID];
-        [chatVC setChatType:ChatTypeClass];
-        [chatVC setTitle:self.classInfo.className];
-        [ApplicationDelegate popAndPush:chatVC];
+        if([UserCenter sharedInstance].curSchool.classIMEnabled)
+        {
+            JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+            [chatVC setTo_objid:[UserCenter sharedInstance].curSchool.schoolID];
+            [chatVC setTargetID:self.classInfo.classID];
+            [chatVC setChatType:ChatTypeClass];
+            [chatVC setTitle:self.classInfo.className];
+            [ApplicationDelegate popAndPush:chatVC];
+        }
+        else
+        {
+            [ProgressHUD showHintText:@"该群组不支持群聊"];
+        }
     }
     else
     {

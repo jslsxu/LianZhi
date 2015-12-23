@@ -1,6 +1,5 @@
 //
 //  ClassSelectionVC.m
-#define kSectionHea
 //  LianZhiTeacher
 //
 //  Created by jslsxu on 15/9/24.
@@ -8,7 +7,6 @@
 //
 
 #import "ClassSelectionVC.h"
-#import "ContactItemCell.h"
 
 @interface ClassSelectionVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong)NSArray *classArray;
@@ -20,7 +18,7 @@
     [super viewDidLoad];
     self.title = @"我所有的班";
     
-    self.classArray = [UserCenter sharedInstance].curSchool.allClasses;
+    self.classArray = [UserCenter sharedInstance].curChild.classes;
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStylePlain];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
@@ -55,7 +53,7 @@
 //    [titleLabel setFont:[UIFont systemFontOfSize:14]];
 //    [titleLabel setText:title];
 //    [headerView addSubview:titleLabel];
-//    
+//
 //    UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, headerView.height - kLineHeight, headerView.width, kLineHeight)];
 //    [bottomLine setBackgroundColor:kSepLineColor];
 //    [headerView addSubview:bottomLine];
@@ -64,62 +62,17 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *reuseID = @"ClassItemCell";
-    ClassItemCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+    static NSString *reuseID = @"";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
     if(nil == cell)
     {
-        cell = [[ClassItemCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseID];
-        [cell.chatButton setHidden:YES];
-        [cell.detailTextLabel setFont:[UIFont systemFontOfSize:13]];
-        [cell.detailTextLabel setTextColor:kCommonTeacherTintColor];
-    }
-    
-    ClassInfo *classInfo = self.classArray[indexPath.row];
-    [cell setClassInfo:classInfo];
-    BOOL isSelected = [self.originalClassID isEqualToString:classInfo.classID];
-    if(isSelected)
-    {
-        [cell.redDot setHidden:YES];
-        [cell.detailTextLabel setText:@"当前"];
-        [cell setAccessoryView:nil];
-    }
-    else
-    {
-        if(self.showNew)
-        {
-            NSArray *newCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
-            NSInteger commentNum = 0;
-            for (TimelineCommentItem *commentItem in newCommentArray)
-            {
-                if([commentItem.classID isEqualToString:classInfo.classID] && commentItem.alertInfo.num > 0)
-                    commentNum += commentItem.alertInfo.num;
-            }
-            if(commentNum > 0)
-                [cell.redDot setHidden:NO];
-            else
-            {
-                //新日志
-                NSArray *newFeedArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
-                NSInteger num = 0;
-                for (ClassFeedNotice *noticeItem in newFeedArray)
-                {
-                    if([noticeItem.classID isEqualToString:classInfo.classID])
-                    {
-                        num += noticeItem.num;
-                    }
-                }
-                if(num > 0)
-                    [cell.redDot setHidden:NO];
-                else
-                    [cell.redDot setHidden:YES];
-            }
-        }
-        else
-            [cell.redDot setHidden:YES];
-        
-        [cell.detailTextLabel setText:nil];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+        [cell.textLabel setFont:[UIFont systemFontOfSize:15]];
+        [cell.textLabel setTextColor:kCommonParentTintColor];
         [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }
+    ClassInfo *classInfo = self.classArray[indexPath.row];
+    [cell.textLabel setText:classInfo.className];
     return cell;
 }
 

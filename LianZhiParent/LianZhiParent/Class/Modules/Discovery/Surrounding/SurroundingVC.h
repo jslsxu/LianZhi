@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseTableViewController.h"
-
+#import "ClassZoneItemCell.h"
 @interface SurroundingListModel : TNListModel
 
 @end

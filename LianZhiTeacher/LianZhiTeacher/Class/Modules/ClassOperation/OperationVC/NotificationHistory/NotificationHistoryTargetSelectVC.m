@@ -6,13 +6,13 @@
 //  Copyright © 2015年 jslsxu. All rights reserved.
 //
 
-#import "NotificationTargetSelectVC.h"
+#import "NotificationHistoryTargetSelectVC.h"
 
-@interface NotificationTargetSelectVC ()
+@interface NotificationHistoryTargetSelectVC ()
 @property (nonatomic, strong)NSMutableArray *targetArray;
 @end
 
-@implementation NotificationTargetSelectVC
+@implementation NotificationHistoryTargetSelectVC
 
 - (void)viewDidLoad
 {

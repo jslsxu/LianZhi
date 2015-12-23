@@ -40,25 +40,33 @@ static SystemSoundID shake_sound_male_id = 0;
     [self registerRemoteNotification];
     [self registerSound];
     
-    if([[UserCenter sharedInstance] hasLogin])
+    if([self isNewVersion])
     {
-        HomeViewController *homeVC = [[HomeViewController alloc] init];
-        self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:homeVC];
-        [self.window setRootViewController:self.rootNavigation];
-        self.homeVC = homeVC;
+        [self logout];
     }
     else
     {
-        LoginVC *loginVC = [[LoginVC alloc] init];
-        [loginVC setCompletion:^(BOOL loginSuccess, BOOL loginCancel) {
-            if(loginSuccess)
-            {
-                [self loginSuccess];
-            }
-        }];
-        self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:loginVC];
-        [self.window setRootViewController:self.rootNavigation];
+        if([[UserCenter sharedInstance] hasLogin])
+        {
+            HomeViewController *homeVC = [[HomeViewController alloc] init];
+            self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:homeVC];
+            [self.window setRootViewController:self.rootNavigation];
+            self.homeVC = homeVC;
+        }
+        else
+        {
+            LoginVC *loginVC = [[LoginVC alloc] init];
+            [loginVC setCompletion:^(BOOL loginSuccess, BOOL loginCancel) {
+                if(loginSuccess)
+                {
+                    [self loginSuccess];
+                }
+            }];
+            self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:loginVC];
+            [self.window setRootViewController:self.rootNavigation];
+        }
     }
+    
     NSDictionary *notificationInfo = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
     if(notificationInfo)
         [self handleNotification:notificationInfo];
@@ -338,6 +346,20 @@ static SystemSoundID shake_sound_male_id = 0;
         }
     });
 }
+
+- (BOOL)isNewVersion
+{
+    NSString *applicationVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if(![userDefaults boolForKey:applicationVersion])
+    {
+        [userDefaults setBool:YES forKey:applicationVersion];
+        [userDefaults synchronize];
+        return YES;
+    }
+    return NO;
+}
+
 
 #pragma mark - Reachability
 - (void)startReachability

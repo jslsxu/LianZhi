@@ -8,7 +8,7 @@
 
 #import "TNBaseViewController.h"
 
-@interface NotificationTargetSelectVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
+@interface NotificationHistoryTargetSelectVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
     UITableView*    _tableView;
 }

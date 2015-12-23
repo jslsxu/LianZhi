@@ -23,7 +23,7 @@ extern NSString* const kChildInfoChangedNotification;
 @property (nonatomic, strong)LogConfig *config;
 @property (nonatomic, assign)BOOL confirmed;
 @property (nonatomic, strong)NSMutableArray*   children;
-
+@property (nonatomic, assign)NSInteger curChildIndex;
 @end
 
 @interface UserCenter : TNModelItem
