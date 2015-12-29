@@ -20,7 +20,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"选择地点";
-    
+    if(_poiSearcher == nil)
+    {
+        _poiSearcher = [[AMapSearchAPI alloc] initWithSearchKey:[ApplicationDelegate curAutoNaviKey] Delegate:self];
+    }
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(onCancel)];
     
     _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
@@ -121,10 +124,7 @@
 {
     [mapView setShowsUserLocation:NO];
     self.location = userLocation.location;
-    if(_poiSearcher == nil)
-    {
-        _poiSearcher = [[AMapSearchAPI alloc] initWithSearchKey:kAutoNaviApiKey Delegate:self];
-    }
+
     AMapPlaceSearchRequest *request = [[AMapPlaceSearchRequest alloc] init];
     
     request.searchType          = AMapSearchType_PlaceAround;

@@ -9,7 +9,17 @@
 #import "TNBaseViewController.h"
 #import "InterestVC.h"
 
+typedef NS_ENUM(NSInteger, DicoveryType)
+{
+    DicoveryTypeH5 = 0,
+    DicoveryTypeLianZhi = 1,            //连枝剧场
+    DicoveryTypepersonalSettings = 2,   //个人设置
+    DicoveryTypeInterest = 3,           //兴趣
+    DicoveryTypeFAQ = 4,                //常见问题
+};
+
 @interface DiscoveryItem : TNModelItem
+@property (nonatomic, assign)DicoveryType type;
 @property (nonatomic, copy)NSString *name;
 @property (nonatomic, copy)NSString *icon;
 @property (nonatomic, copy)NSString *url;

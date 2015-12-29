@@ -44,7 +44,7 @@
 @end
 
 @interface ClassMemberVC ()<UITableViewDataSource, UITableViewDelegate>
-@property (nonatomic, strong)SchoolInfo* schooldInfo;
+
 @property (nonatomic, strong)NSArray *teacherArray;
 @property (nonatomic, strong)NSArray *studentArray;
 @end
@@ -126,84 +126,110 @@
 
 - (void)requestData
 {
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:self.classID forKey:@"class_id"];
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"app/contact_of_class" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        TNDataWrapper *classWrapper = [responseObject getDataWrapperForKey:@"class"];
-        if(classWrapper.count > 0)
-        {
-            
-            TNDataWrapper *schoolWrapper = [classWrapper getDataWrapperForKey:@"school"];
-            if(schoolWrapper.count > 0)
+    if(self.classID)
+    {
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:self.classID forKey:@"class_id"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"app/contact_of_class" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            TNDataWrapper *classWrapper = [responseObject getDataWrapperForKey:@"class"];
+            if(classWrapper.count > 0)
             {
-                SchoolInfo *schoolInfo = [[SchoolInfo alloc] init];
-                [schoolInfo parseData:schoolWrapper];
-                self.schooldInfo = schoolInfo;
-            }
-            
-            TNDataWrapper *teacherArrayWrapper = [classWrapper getDataWrapperForKey:@"teachers"];
-            if(teacherArrayWrapper.count > 0)
-            {
-                NSMutableArray *teacherArray = [NSMutableArray array];
-                for (NSInteger i = 0; i < teacherArrayWrapper.count; i++)
+                
+//                TNDataWrapper *schoolWrapper = [classWrapper getDataWrapperForKey:@"school"];
+//                if(schoolWrapper.count > 0)
+//                {
+//                    SchoolInfo *schoolInfo = [[SchoolInfo alloc] init];
+//                    [schoolInfo parseData:schoolWrapper];
+//                    self.schooldInfo = schoolInfo;
+//                }
+                
+                TNDataWrapper *teacherArrayWrapper = [classWrapper getDataWrapperForKey:@"teachers"];
+                if(teacherArrayWrapper.count > 0)
                 {
-                    TNDataWrapper *teacherItemWrapper = [teacherArrayWrapper getDataWrapperForIndex:i];
-                    TeacherInfo *teacherInfo = [[TeacherInfo alloc] init];
-                    [teacherInfo parseData:teacherItemWrapper];
-                    [teacherArray addObject:teacherInfo];
-                }
-                self.teacherArray = teacherArray;
-            }
-            
-            TNDataWrapper *studentArrayWrapper = [classWrapper getDataWrapperForKey:@"students"];
-            if(studentArrayWrapper.count > 0)
-            {
-                NSMutableArray *studentArray = [NSMutableArray array];
-                for (NSInteger i = 0; i < studentArrayWrapper.count; i++)
-                {
-                    TNDataWrapper *studentItemWrapper = [studentArrayWrapper getDataWrapperForIndex:i];
-                    StudentInfo *studentInfo = [[StudentInfo alloc] init];
-                    [studentInfo parseData:studentItemWrapper];
-                    [studentArray addObject:studentInfo];
+                    NSMutableArray *teacherArray = [NSMutableArray array];
+                    for (NSInteger i = 0; i < teacherArrayWrapper.count; i++)
+                    {
+                        TNDataWrapper *teacherItemWrapper = [teacherArrayWrapper getDataWrapperForIndex:i];
+                        TeacherInfo *teacherInfo = [[TeacherInfo alloc] init];
+                        [teacherInfo parseData:teacherItemWrapper];
+                        [teacherArray addObject:teacherInfo];
+                    }
+                    self.teacherArray = teacherArray;
                 }
                 
-                NSMutableArray *students = [NSMutableArray array];
-                for (StudentInfo *childInfo in studentArray)
+                TNDataWrapper *studentArrayWrapper = [classWrapper getDataWrapperForKey:@"students"];
+                if(studentArrayWrapper.count > 0)
                 {
-                    BOOL isIn = NO;
-                    for (ContactGroup *group in students)
+                    NSMutableArray *studentArray = [NSMutableArray array];
+                    for (NSInteger i = 0; i < studentArrayWrapper.count; i++)
                     {
-                        if([group.key isEqualToString:childInfo.shortIndex])
+                        TNDataWrapper *studentItemWrapper = [studentArrayWrapper getDataWrapperForIndex:i];
+                        StudentInfo *studentInfo = [[StudentInfo alloc] init];
+                        [studentInfo parseData:studentItemWrapper];
+                        [studentArray addObject:studentInfo];
+                    }
+                    
+                    NSMutableArray *students = [NSMutableArray array];
+                    for (StudentInfo *childInfo in studentArray)
+                    {
+                        BOOL isIn = NO;
+                        for (ContactGroup *group in students)
                         {
-                            isIn = YES;
+                            if([group.key isEqualToString:childInfo.shortIndex])
+                            {
+                                isIn = YES;
+                                [group.contacts addObject:childInfo];
+                            }
+                        }
+                        if(!isIn)
+                        {
+                            ContactGroup *group = [[ContactGroup alloc] init];
+                            [group setKey:childInfo.shortIndex];
                             [group.contacts addObject:childInfo];
+                            [students addObject:group];
                         }
                     }
-                    if(!isIn)
+                    
+                    [students sortUsingComparator:^NSComparisonResult(ContactGroup* obj1, ContactGroup* obj2) {
+                        NSString *index1 = obj1.key;
+                        NSString *index2 = obj2.key;
+                        return [index1 compare:index2];
+                    }];
+                    self.studentArray = students;
+                    
+                }
+                [_tableView reloadData];
+            }
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    }
+    else if(self.groupID)
+    {
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"app/groups" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"school_id" : [UserCenter sharedInstance].curSchool.schoolID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            TNDataWrapper *listWrappwr = [responseObject getDataWrapperForKey:@"list"];
+            if(listWrappwr.count > 0)
+            {
+                for (NSInteger i = 0; i < listWrappwr.count; i ++)
+                {
+                    TNDataWrapper *itemWrapper = [listWrappwr getDataWrapperForIndex:i];
+                    TeacherGroup *group = [[TeacherGroup alloc] init];
+                    [group parseData:itemWrapper];
+                    if([group.groupID isEqualToString:self.groupID])
                     {
-                        ContactGroup *group = [[ContactGroup alloc] init];
-                        [group setKey:childInfo.shortIndex];
-                        [group.contacts addObject:childInfo];
-                        [students addObject:group];
+                        self.teacherArray = group.teachers;
+                        break;
                     }
                 }
-                
-                [students sortUsingComparator:^NSComparisonResult(ContactGroup* obj1, ContactGroup* obj2) {
-                    NSString *index1 = obj1.key;
-                    NSString *index2 = obj2.key;
-                    return [index1 compare:index2];
-                }];
-                self.studentArray = students;
-                
+                [_tableView reloadData];
             }
-            [_tableView reloadData];
-        }
-    } fail:^(NSString *errMsg) {
-        
-    }];
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    }
 }
 
-#pragma mark 
+#pragma mark
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -284,7 +310,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if(indexPath.section == 1)
+    if(indexPath.section >= 1)
     {
         ContactGroup *group = self.studentArray[indexPath.section - 1];
         StudentInfo *studentInfo = group.contacts[indexPath.row];
@@ -295,13 +321,26 @@
     else
     {
         TeacherInfo *teacherInfo = self.teacherArray[indexPath.row];
-        JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-        [chatVC setTo_objid:self.schooldInfo.schoolID];
-        [chatVC setTargetID:teacherInfo.uid];
-        [chatVC setChatType:ChatTypeTeacher];
-        [chatVC setMobile:teacherInfo.mobile];
-        [chatVC setTitle:teacherInfo.name];
-        [ApplicationDelegate popAndPush:chatVC];
+        if(teacherInfo.activited)
+        {
+            JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+            [chatVC setTo_objid:[UserCenter sharedInstance].curSchool.schoolID];
+            [chatVC setTargetID:teacherInfo.uid];
+            [chatVC setChatType:ChatTypeTeacher];
+            [chatVC setMobile:teacherInfo.mobile];
+            [chatVC setTitle:teacherInfo.name];
+            [ApplicationDelegate popAndPush:chatVC];
+        }
+        else
+        {
+            TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+            TNButtonItem *callItem = [TNButtonItem itemWithTitle:@"拨打电话" action:^{
+                NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",teacherInfo.mobile];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+            }];
+            TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"该用户尚未下载使用连枝，您可打电话与用户联系" buttonItems:@[cancelItem, callItem]];
+            [alertView show];
+        }
     }
 }
 

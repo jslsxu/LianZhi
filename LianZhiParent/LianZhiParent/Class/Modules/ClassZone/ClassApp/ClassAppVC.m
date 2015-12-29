@@ -117,20 +117,20 @@
                 else if(classArray.count == 1)
                 {
                     ClassInfo *classInfo = classArray[0];
-                    if([appItem.appName isEqualToString:@"班博客"])
+                    if([host isEqualToString:@"class"])
                     {
                         ClassZoneVC *classZoneVC = [[ClassZoneVC alloc] init];
                         [classZoneVC setClassInfo:classInfo];
                         [CurrentROOTNavigationVC pushViewController:classZoneVC animated:YES];
                     }
-                    else if([appItem.appName isEqualToString:@"班相册"])
+                    else if([host isEqualToString:@"class_album"])
                     {
                         ClassAlbumVC *photoBrowser = [[ClassAlbumVC alloc] init];
                         [photoBrowser setShouldShowEmptyHint:YES];
                         [photoBrowser setClassID:classInfo.classID];
                         [CurrentROOTNavigationVC pushViewController:photoBrowser animated:YES];
                     }
-                    else if([appItem.appName isEqualToString:@"家园手册"])
+                    else if([host isEqualToString:@"record"])
                     {
                         GrowthTimelineVC *growthTimeLineVC = [[GrowthTimelineVC alloc] init];
                         [growthTimeLineVC setClassInfo:classInfo];
@@ -141,20 +141,20 @@
                 {
                     ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
                     [classSelectionVC setSelection:^(ClassInfo *classInfo) {
-                        if([appItem.appName isEqualToString:@"班博客"])
+                        if([host isEqualToString:@"class"])
                         {
                             ClassZoneVC *classZoneVC = [[ClassZoneVC alloc] init];
                             [classZoneVC setClassInfo:classInfo];
                             [CurrentROOTNavigationVC pushViewController:classZoneVC animated:YES];
                         }
-                        else if([appItem.appName isEqualToString:@"班相册"])
+                        else if([host isEqualToString:@"class_album"])
                         {
                             ClassAlbumVC *photoBrowser = [[ClassAlbumVC alloc] init];
                             [photoBrowser setShouldShowEmptyHint:YES];
                             [photoBrowser setClassID:classInfo.classID];
                             [CurrentROOTNavigationVC pushViewController:photoBrowser animated:YES];
                         }
-                        else if([appItem.appName isEqualToString:@"家园手册"])
+                        else if([host isEqualToString:@"record"])
                         {
                             GrowthTimelineVC *growthTimeLineVC = [[GrowthTimelineVC alloc] init];
                             [growthTimeLineVC setClassInfo:classInfo];

@@ -75,9 +75,6 @@
 		3793F50C1B7B27F200501F77 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3793F50B1B7B27F200501F77 /* Security.framework */; };
 		3793F5101B7B286700501F77 /* MineVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F50F1B7B286700501F77 /* MineVC.m */; };
 		3793F5141B7B2CF400501F77 /* ApplicationBoxVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F5131B7B2CF400501F77 /* ApplicationBoxVC.m */; };
-		3793FA211B7CFFF000501F77 /* AMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3793F82E1B7CFFEF00501F77 /* AMap.bundle */; };
-		3793FA221B7CFFF000501F77 /* AMapSearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3793F82F1B7CFFEF00501F77 /* AMapSearchKit.framework */; };
-		3793FA231B7CFFF000501F77 /* MAMapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3793F8301B7CFFEF00501F77 /* MAMapKit.framework */; };
 		3793FA241B7CFFF000501F77 /* YLGIFImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F8331B7CFFEF00501F77 /* YLGIFImage.m */; };
 		3793FA251B7CFFF000501F77 /* YLImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F8351B7CFFEF00501F77 /* YLImageView.m */; };
 		3793FA261B7CFFF000501F77 /* MBProgressHUD+Add.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F8381B7CFFEF00501F77 /* MBProgressHUD+Add.m */; };
@@ -319,6 +316,9 @@
 		37CA18721AB70A2F00B49B55 /* PhotoPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA186B1AB70A2F00B49B55 /* PhotoPickerCell.m */; };
 		37CA18731AB70A2F00B49B55 /* PhotoPickerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA186E1AB70A2F00B49B55 /* PhotoPickerModel.m */; };
 		37CCE2561B8B0649007BFA4F /* ActionPopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CCE2551B8B0649007BFA4F /* ActionPopView.m */; };
+		37D5122F1C31637A00432A7B /* AMapSearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D5122D1C31637A00432A7B /* AMapSearchKit.framework */; };
+		37D512301C31637A00432A7B /* MAMapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D5122E1C31637A00432A7B /* MAMapKit.framework */; };
+		37D512321C3164DB00432A7B /* AMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 37D512311C3164DB00432A7B /* AMap.bundle */; };
 		37D6EE361BC90C62000994A2 /* CheckInstalledMapAPP.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EE2F1BC90C62000994A2 /* CheckInstalledMapAPP.m */; };
 		37D6EE371BC90C62000994A2 /* DestinationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EE311BC90C62000994A2 /* DestinationVC.m */; };
 		37D6EE381BC90C62000994A2 /* LocationChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EE331BC90C62000994A2 /* LocationChange.m */; };
@@ -562,9 +562,6 @@
 		3793F50F1B7B286700501F77 /* MineVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MineVC.m; sourceTree = "<group>"; };
 		3793F5121B7B2CF400501F77 /* ApplicationBoxVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationBoxVC.h; sourceTree = "<group>"; };
 		3793F5131B7B2CF400501F77 /* ApplicationBoxVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplicationBoxVC.m; sourceTree = "<group>"; };
-		3793F82E1B7CFFEF00501F77 /* AMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AMap.bundle; sourceTree = "<group>"; };
-		3793F82F1B7CFFEF00501F77 /* AMapSearchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapSearchKit.framework; sourceTree = "<group>"; };
-		3793F8301B7CFFEF00501F77 /* MAMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MAMapKit.framework; sourceTree = "<group>"; };
 		3793F8321B7CFFEF00501F77 /* YLGIFImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLGIFImage.h; sourceTree = "<group>"; };
 		3793F8331B7CFFEF00501F77 /* YLGIFImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLGIFImage.m; sourceTree = "<group>"; };
 		3793F8341B7CFFEF00501F77 /* YLImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLImageView.h; sourceTree = "<group>"; };
@@ -1032,6 +1029,9 @@
 		37CCE2541B8B0649007BFA4F /* ActionPopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionPopView.h; sourceTree = "<group>"; };
 		37CCE2551B8B0649007BFA4F /* ActionPopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionPopView.m; sourceTree = "<group>"; };
 		37CF74ED1A92589500660604 /* TeacherDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TeacherDefine.h; sourceTree = "<group>"; };
+		37D5122D1C31637A00432A7B /* AMapSearchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapSearchKit.framework; sourceTree = "<group>"; };
+		37D5122E1C31637A00432A7B /* MAMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MAMapKit.framework; sourceTree = "<group>"; };
+		37D512311C3164DB00432A7B /* AMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AMap.bundle; sourceTree = "<group>"; };
 		37D6EE2E1BC90C62000994A2 /* CheckInstalledMapAPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckInstalledMapAPP.h; sourceTree = "<group>"; };
 		37D6EE2F1BC90C62000994A2 /* CheckInstalledMapAPP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckInstalledMapAPP.m; sourceTree = "<group>"; };
 		37D6EE301BC90C62000994A2 /* DestinationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DestinationVC.h; sourceTree = "<group>"; };
@@ -1271,8 +1271,8 @@
 				37C6B4341BF2EFC50001D54F /* TencentOpenAPI.framework in Frameworks */,
 				3793F50A1B7B27ED00501F77 /* libstdc++.6.0.9.dylib in Frameworks */,
 				37C6B43C1BF2EFC50001D54F /* MOBFoundation.framework in Frameworks */,
-				3793FA231B7CFFF000501F77 /* MAMapKit.framework in Frameworks */,
 				37C6B43F1BF2EFC50001D54F /* ShareSDKConnector.framework in Frameworks */,
+				37D512301C31637A00432A7B /* MAMapKit.framework in Frameworks */,
 				37C6B43A1BF2EFC50001D54F /* libWeChatSDK.a in Frameworks */,
 				3793F5081B7B27E400501F77 /* SystemConfiguration.framework in Frameworks */,
 				3793F5061B7B27DC00501F77 /* CoreTelephony.framework in Frameworks */,
@@ -1280,10 +1280,10 @@
 				3793F5041B7B27C100501F77 /* CoreLocation.framework in Frameworks */,
 				3793FAB61B7CFFF000501F77 /* libopencore-amrwb.a in Frameworks */,
 				376FC6BD1B01EFD100289DC2 /* CoreVideo.framework in Frameworks */,
-				3793FA221B7CFFF000501F77 /* AMapSearchKit.framework in Frameworks */,
 				376FC6BB1B01EFCB00289DC2 /* CoreMedia.framework in Frameworks */,
 				376FC6B91B01EFC500289DC2 /* AVFoundation.framework in Frameworks */,
 				376FC6B71B01EFBF00289DC2 /* CoreGraphics.framework in Frameworks */,
+				37D5122F1C31637A00432A7B /* AMapSearchKit.framework in Frameworks */,
 				37D8FEA71AC1398400E006FC /* libz.dylib in Frameworks */,
 				37C6B4411BF2EFC50001D54F /* ShareSDKInterfaceAdapter.framework in Frameworks */,
 				37C88F791A83AD08008E44DB /* AudioToolbox.framework in Frameworks */,
@@ -1522,9 +1522,9 @@
 		3793F82D1B7CFFEF00501F77 /* AutoNavi */ = {
 			isa = PBXGroup;
 			children = (
-				3793F82E1B7CFFEF00501F77 /* AMap.bundle */,
-				3793F82F1B7CFFEF00501F77 /* AMapSearchKit.framework */,
-				3793F8301B7CFFEF00501F77 /* MAMapKit.framework */,
+				37D512311C3164DB00432A7B /* AMap.bundle */,
+				37D5122D1C31637A00432A7B /* AMapSearchKit.framework */,
+				37D5122E1C31637A00432A7B /* MAMapKit.framework */,
 			);
 			path = AutoNavi;
 			sourceTree = "<group>";
@@ -3158,7 +3158,6 @@
 				37FD6E561BBBDD7300C83AB4 /* guide1.png in Resources */,
 				3793FAC41B7CFFF000501F77 /* ReceiverVoiceNodePlaying003@2x.png in Resources */,
 				3793FAC91B7CFFF000501F77 /* SenderVoiceNodePlaying003@2x.png in Resources */,
-				3793FA211B7CFFF000501F77 /* AMap.bundle in Resources */,
 				3793FA271B7CFFF000501F77 /* MBProgressHUD.bundle in Resources */,
 				37C6B44E1BF2F47D0001D54F /* TreeHouse.png in Resources */,
 				37FD6E581BBBDD7300C83AB4 /* small_guide1.png in Resources */,
@@ -3172,6 +3171,7 @@
 				3793FAC21B7CFFF000501F77 /* ReceiverVoiceNodePlaying002@2x.png in Resources */,
 				37C6B4351BF2EFC50001D54F /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				37C355E11A3FD5CF00B948E6 /* Images.xcassets in Resources */,
+				37D512321C3164DB00432A7B /* AMap.bundle in Resources */,
 				37C6B4421BF2EFC50001D54F /* ShareSDKUI.bundle in Resources */,
 				3793FAC01B7CFFF000501F77 /* ReceiverVoiceNodePlaying001@2x.png in Resources */,
 				3793FAC81B7CFFF000501F77 /* SenderVoiceNodePlaying002@2x.png in Resources */,
@@ -3647,7 +3647,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3679,9 +3679,9 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/SVShare/SVSDK/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = " -all_load";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppTeacher;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "309f869c-e642-40a5-b863-7a8e12cdd04a";
+				PROVISIONING_PROFILE = "72ffb7ff-6a30-4cbc-bc91-64fe85646ba9";
 			};
 			name = Debug;
 		};
@@ -3690,7 +3690,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3722,9 +3722,9 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/SVShare/SVSDK/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = " -all_load";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppTeacher;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "309f869c-e642-40a5-b863-7a8e12cdd04a";
+				PROVISIONING_PROFILE = "72ffb7ff-6a30-4cbc-bc91-64fe85646ba9";
 			};
 			name = Release;
 		};

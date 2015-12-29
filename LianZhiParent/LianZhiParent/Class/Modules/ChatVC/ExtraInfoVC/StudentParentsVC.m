@@ -214,14 +214,27 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ContactGroup *group = [self.formatterMemberArray objectAtIndex:indexPath.section];
     FamilyInfo *familyInfo = group.contacts[indexPath.row];
-    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-    [chatVC setChatType:ChatTypeParents];
-    [chatVC setTargetID:familyInfo.uid];
-    [chatVC setTo_objid:self.childInfo.uid];
-    [chatVC setMobile:familyInfo.mobile];
-//    [chatVC setTitle:familyInfo.name];
-    [chatVC setTitle:[NSString stringWithFormat:@"%@的%@",self.childInfo.name, familyInfo.relation]];
-    [ApplicationDelegate popAndPush:chatVC];
+    if(familyInfo.actived)
+    {
+        JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+        [chatVC setChatType:ChatTypeParents];
+        [chatVC setTargetID:familyInfo.uid];
+        [chatVC setTo_objid:self.childInfo.uid];
+        [chatVC setMobile:familyInfo.mobile];
+        //    [chatVC setTitle:familyInfo.name];
+        [chatVC setTitle:[NSString stringWithFormat:@"%@的%@",self.childInfo.name, familyInfo.relation]];
+        [ApplicationDelegate popAndPush:chatVC];
+    }
+    else
+    {
+        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+        TNButtonItem *callItem = [TNButtonItem itemWithTitle:@"拨打电话" action:^{
+            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",familyInfo.mobile];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+        }];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"该用户尚未下载使用连枝，您可打电话与用户联系" buttonItems:@[cancelItem, callItem]];
+        [alertView show];
+    }
 }
 
 - (void)contextMenuCellDidSelectDeleteOption:(DAContextMenuCell *)cell

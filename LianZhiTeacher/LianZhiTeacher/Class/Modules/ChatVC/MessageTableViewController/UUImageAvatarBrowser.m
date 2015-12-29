@@ -8,33 +8,38 @@
 
 #import "UUImageAvatarBrowser.h"
 
-static UIView*  coverBG;
+static UIScrollView*  coverBG;
 static UIImageView *orginImageView;
 static NSString*    imageUrl;
 static UIImageView *imageView;
 @implementation UUImageAvatarBrowser
 
-+ (void)showImage:(UIImageView *)avatarImageView withOriginalUrl:(NSString *)imageUrl
++ (void)showImage:(UIImageView *)avatarImageView withOriginalUrl:(NSString *)imageUrl size:(CGSize)size
 {
     UIImage *image=avatarImageView.image;
     orginImageView = avatarImageView;
     orginImageView.alpha = 0;
     UIWindow *window=[UIApplication sharedApplication].keyWindow;
-    UIView *backgroundView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     
-    coverBG = [[UIView alloc] initWithFrame:backgroundView.bounds];
-    [coverBG setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.7]];
-    [coverBG setAlpha:0.f];
+    UIView *backgroundView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+    [backgroundView setBackgroundColor:[[UIColor blackColor] colorWithAlphaComponent:0.7]];
+    [window addSubview:backgroundView];
+    
+    CGFloat height = size.height * kScreenWidth / size.width;
+    coverBG = [[UIScrollView alloc] initWithFrame:backgroundView.bounds];
+    
+    if(height < kScreenHeight)
+    {
+        [coverBG setScrollEnabled:NO];
+    }
+    [coverBG setContentSize:CGSizeMake(coverBG.width, height)];
     [backgroundView addSubview:coverBG];
     
     CGRect oldframe=[avatarImageView convertRect:avatarImageView.bounds toView:window];
     imageView=[[UIImageView alloc]initWithFrame:oldframe];
-    imageView.image=image;
-    imageView.tag=1;
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.image = image;
     imageView.clipsToBounds = YES;
-    [backgroundView addSubview:imageView];
-    [window addSubview:backgroundView];
+    [coverBG addSubview:imageView];
     
     UITapGestureRecognizer *tap=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hideImage:)];
     [backgroundView addGestureRecognizer: tap];
@@ -43,7 +48,12 @@ static UIImageView *imageView;
     [backgroundView addGestureRecognizer:longPressGesture];
     
     [UIView animateWithDuration:0.3 animations:^{
-        imageView.frame=CGRectMake(0,([UIScreen mainScreen].bounds.size.height-image.size.height*[UIScreen mainScreen].bounds.size.width/image.size.width)/2, [UIScreen mainScreen].bounds.size.width, image.size.height*[UIScreen mainScreen].bounds.size.width/image.size.width);
+        if(height > kScreenHeight)
+            [imageView setFrame:CGRectMake(0, 0, kScreenWidth, height)];
+        else
+        {
+            [imageView setFrame:CGRectMake(0, (kScreenHeight - height) / 2, kScreenWidth, height)];
+        }
         coverBG.alpha = 1;
     } completion:^(BOOL finished) {
         if(imageUrl.length > 0)
@@ -72,11 +82,12 @@ static UIImageView *imageView;
     [UIView animateWithDuration:0.3 animations:^{
         imageView.frame=[orginImageView convertRect:orginImageView.bounds toView:[UIApplication sharedApplication].keyWindow];
         coverBG.alpha = 0.f;
+        [backgroundView setAlpha:0.f];
+        orginImageView.alpha = 1;
     } completion:^(BOOL finished) {
         [backgroundView removeFromSuperview];
         coverBG = nil;
         imageView = nil;
-        orginImageView.alpha = 1;
     }];
 }
 

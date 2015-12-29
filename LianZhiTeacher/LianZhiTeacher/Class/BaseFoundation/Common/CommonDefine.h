@@ -50,7 +50,7 @@
 
 #define kTeacherClientAppStoreUrl           @"https://itunes.apple.com/us/app/lian-zhi-jiao-shi-ban/id967746734?l=zh&ls=1&mt=8"
 #define kAutoNaviApiKey                     @"b3ddcca903cd26035f8f210f9b88e09e"   //normal
-#define kAutoNaviApiInhouseKey                     @"decb8fe01d59d025c69fa220b3be1991"          //inhouse
+#define kAutoNaviApiInhouseKey              @"86f28512b262501f0cc9901e726f5638"          //inhouse
 
 #define kClassZoneShareUrl                  @"http://m.edugate.cn/share/teacher/index.html"
 #define kTreeHouseShareUrl                  @"http://m.5tree.cn/share/parent/index.html"  //正式环境

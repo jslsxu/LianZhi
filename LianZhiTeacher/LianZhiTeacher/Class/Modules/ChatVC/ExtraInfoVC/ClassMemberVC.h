@@ -26,4 +26,5 @@
 }
 @property (nonatomic, assign)BOOL showSound;
 @property (nonatomic, copy)NSString *classID;
+@property (nonatomic, copy)NSString *groupID;
 @end

@@ -8,24 +8,26 @@
 
 #import "TNBaseViewController.h"
 #import "LZTabBarButton.h"
-@interface ApplicationItem : NSObject
-@property (nonatomic, copy)NSString *imageStr;
-@property (nonatomic, copy)NSString *title;
+@interface ApplicationItem : TNModelItem
+@property (nonatomic, copy)NSString *icon;
+@property (nonatomic, copy)NSString *name;
+@property (nonatomic, copy)NSString *url;
+@property (nonatomic, copy)NSString *appId;
+
 @end
 
-@interface ApplicationItemCell : UICollectionViewCell
+@interface ApplicationModel : TNListModel
+
+@end
+
+@interface ApplicationItemCell : TNCollectionViewCell
 {
-    UIView*         _bgView;
-    LZTabBarButton*       _coverButton;
+    UIImageView*    _appImageView;
+    UILabel*        _nameLabel;
     NumIndicator*         _indicator;
 }
-@property (nonatomic, weak)ApplicationItem *appItem;
 @property (nonatomic, copy)NSString *badge;
 @end
 
-@interface ApplicationBoxVC : TNBaseViewController<UICollectionViewDataSource, UICollectionViewDelegate>
-{
-    UICollectionView*           _collectionView;
-    UICollectionViewFlowLayout* _layout;
-}
+@interface ApplicationBoxVC : TNBaseCollectionViewController
 @end

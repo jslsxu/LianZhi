@@ -160,7 +160,10 @@ static NSString *topChatID = nil;
 {
     ClassMemberVC *classMemberVC = [[ClassMemberVC alloc] init];
     [classMemberVC setShowSound:YES];
-    [classMemberVC setClassID:self.targetID];
+    if(self.chatType == ChatTypeClass)
+        [classMemberVC setClassID:self.targetID];
+    else if(self.chatType == ChatTypeGroup)
+        [classMemberVC setGroupID:self.targetID];
     [classMemberVC setTitle:self.title];
     [self.navigationController pushViewController:classMemberVC animated:YES];
 }

@@ -11,6 +11,6 @@
 @interface UUImageAvatarBrowser : NSObject
 
 //show imageView on the keyWindow
-+(void)showImage:(UIImageView*)avatarImageView withOriginalUrl:(NSString *)imageUrl;
++ (void)showImage:(UIImageView *)avatarImageView withOriginalUrl:(NSString *)imageUrl size:(CGSize)size;
 
 @end

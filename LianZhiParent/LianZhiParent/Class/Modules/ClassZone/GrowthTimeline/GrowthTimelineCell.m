@@ -19,7 +19,7 @@
         [self setBackgroundColor:[UIColor clearColor]];
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        _dateLabel  =[[UILabel alloc] initWithFrame:CGRectMake(10, 10, 35, 20)];
+        _dateLabel  =[[UILabel alloc] initWithFrame:CGRectMake(0, 10, 45, 20)];
         [_dateLabel setTextAlignment:NSTextAlignmentRight];
         [_dateLabel setBackgroundColor:[UIColor clearColor]];
         [_dateLabel setFont:[UIFont systemFontOfSize:16]];

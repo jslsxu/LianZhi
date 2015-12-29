@@ -37,6 +37,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _contactModel = [[ContactModel alloc] init];
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onCurSchoolChanged) name:kUserInfoVCNeedRefreshNotificaiotn object:nil];
@@ -44,7 +45,6 @@
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 45)];
     [self setupHeaderView:headerView];
     [self.view addSubview:headerView];
-    
 //    if([UserCenter sharedInstance].curSchool.classNum > 0)
 //        self.title = @"新聊天";
 //    else
@@ -87,23 +87,24 @@
     [_teacherTableView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:_teacherTableView];
     
-    _contactModel = [[ContactModel alloc] init];
     [self setCurIndex:0];
 }
 
 - (void)setupHeaderView:(UIView *)viewParent
 {
     [viewParent setBackgroundColor:[UIColor colorWithHexString:@"0fabc1"]];
-    if([[UserCenter sharedInstance] teachAtCurSchool])
-    {
-        _segCtrl = [[UISegmentedControl alloc] initWithItems:@[@"家长",@"同事"]];
+    NSMutableArray *titleArray = [NSMutableArray array];
+    if(_contactModel.classes.count > 0 || _contactModel.students.count > 0)
+        [titleArray addObject:@"家长"];
+    if(_contactModel.teachers.count > 0)
+        [titleArray addObject:@"同事"];
+        _segCtrl = [[UISegmentedControl alloc] initWithItems:titleArray];
         [_segCtrl setTintColor:[UIColor colorWithHexString:@"96e065"]];
         [_segCtrl setWidth:160];
         [_segCtrl setOrigin:CGPointMake((viewParent.width - _segCtrl.width) / 2, (viewParent.height - _segCtrl.height) / 2)];
         [_segCtrl addTarget:self action:@selector(onSegmentValueChanged:) forControlEvents:UIControlEventValueChanged];
         [_segCtrl setSelectedSegmentIndex:0];
         [viewParent addSubview:_segCtrl];
-    }
 
 }
 
@@ -371,13 +372,27 @@
         [chatVC setTo_objid:[UserCenter sharedInstance].curSchool.schoolID];
         if([teacher isKindOfClass:[TeacherInfo class]])
         {
-            [chatVC setTargetID:teacher.uid];
-            [chatVC setChatType:ChatTypeTeacher];
-            [chatVC setMobile:teacher.mobile];
-            NSString *title = teacher.name;
-            if(teacher.title.length)
-                title = [NSString stringWithFormat:@"%@(%@)",title,teacher.title];
-            [chatVC setTitle:title];
+            if(teacher.activited)
+            {
+                [chatVC setTargetID:teacher.uid];
+                [chatVC setChatType:ChatTypeTeacher];
+                [chatVC setMobile:teacher.mobile];
+                NSString *title = teacher.name;
+                if(teacher.title.length)
+                    title = [NSString stringWithFormat:@"%@(%@)",title,teacher.title];
+                [chatVC setTitle:title];
+            }
+            else
+            {
+                TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+                TNButtonItem *callItem = [TNButtonItem itemWithTitle:@"拨打电话" action:^{
+                    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",teacher.mobile];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+                }];
+                TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"该用户尚未下载使用连枝，您可打电话与用户联系" buttonItems:@[cancelItem, callItem]];
+                [alertView show];
+                return;
+            }
         }
         else if([teacher isKindOfClass:[TeacherGroup class]])
         {

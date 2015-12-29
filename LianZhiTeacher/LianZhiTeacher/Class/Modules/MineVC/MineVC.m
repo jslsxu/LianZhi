@@ -67,6 +67,7 @@
 @interface MineVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong)NSArray *titleArray;
 @property (nonatomic, strong)NSArray *imageArray;
+@property (nonatomic, strong)NSArray *actionArray;
 @end
 
 @implementation MineVC
@@ -75,8 +76,9 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        self.titleArray = @[@[@"我的学校",@"连枝账户",@"系统设置"],@[@"关于连枝",@"联系客服"]];
-        self.imageArray = @[@[@"IconMySchool",@"IconAccount",@"IconSetting"],@[@"IconAbout",@"IconContact"]];
+        self.titleArray = @[@[@"我的学校",/*@"连枝账户",*/@"系统设置"],@[@"关于连枝",@"联系客服"]];
+        self.imageArray = @[@[@"IconMySchool",/*@"IconAccount",*/@"IconSetting"],@[@"IconAbout",@"IconContact"]];
+        self.actionArray = @[@[@"RelatedInfoVC",/*@"AccountVC",*/@"PersonalSettingVC"],@[@"AboutVC",@"ContactServiceVC"]];
     }
     return self;
 }
@@ -183,36 +185,10 @@
         PersonalInfoVC *personalInfoVC = [[PersonalInfoVC alloc] init];
         [CurrentROOTNavigationVC pushViewController:personalInfoVC animated:YES];
     }
-    else if(section == 1)
-    {
-        if(row == 0)
-        {
-            RelatedInfoVC *relatedInfoVC = [[RelatedInfoVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:relatedInfoVC animated:YES];
-        }
-        else if(row == 1)
-        {
-            AccountVC *accountVC = [[AccountVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:accountVC animated:YES];
-        }
-        else if(row == 2)
-        {
-            PersonalSettingVC *settingsVC = [[PersonalSettingVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:settingsVC animated:YES];
-        }
-    }
     else
     {
-        if(row == 0)
-        {
-            AboutVC *aboutVC = [[AboutVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:aboutVC animated:YES];
-        }
-        else
-        {
-            ContactServiceVC *contactServiceVC = [[ContactServiceVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:contactServiceVC animated:YES];
-        }
+        TNBaseViewController *actionVC = [[NSClassFromString(self.actionArray[section - 1][row]) alloc] init];
+        [CurrentROOTNavigationVC pushViewController:actionVC animated:YES];
     }
 }
 @end

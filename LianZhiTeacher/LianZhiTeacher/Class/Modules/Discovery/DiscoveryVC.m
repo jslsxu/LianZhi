@@ -19,6 +19,7 @@
     self.name = [dataWrapper getStringForKey:@"name"];
     self.icon = [dataWrapper getStringForKey:@"icon"];
     self.url = [dataWrapper getStringForKey:@"url"];
+    self.type = [dataWrapper getIntegerForKey:@"type"];
 }
 
 @end
@@ -204,16 +205,17 @@
     NSInteger row = indexPath.row;
     DiscoveryItem *item = self.itemArray[section][row];
     [cell setDiscoveryItem:item];
+    DicoveryType type = item.type;
     BOOL redDotHidden = YES;
-    if([item.name isEqualToString:@"兴趣"])
+    if(type == DicoveryTypeInterest)
     {
         redDotHidden = ![UserCenter sharedInstance].statusManager.found;
     }
-    else if([item.name isEqualToString:@"常见问题"])
+    else if(type == DicoveryTypeFAQ)
     {
         redDotHidden = ![UserCenter sharedInstance].statusManager.faq;
     }
-    else if([item.name isEqualToString:@"连枝剧场"])
+    else if(type== DicoveryTypeLianZhi)
     {
         NSString *guideCellKey = @"guideCellKey";
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -230,16 +232,15 @@
     DiscoveryItem *item = self.itemArray[indexPath.section][indexPath.row];
     [cell.redDot setHidden:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if([item.name isEqualToString:@"兴趣"])
+    DicoveryType type = item.type;
+    if(type == DicoveryTypeInterest)
     {
         InterestVC *interestVC = [[InterestVC alloc] init];
         [interestVC setTitle:@"兴趣"];
         [CurrentROOTNavigationVC pushViewController:interestVC animated:YES];
         [self setRead:1];
     }
-    else
-    {
-        if([item.name isEqualToString:@"常见问题"])
+    else if(type == DicoveryTypeFAQ)
         {
             TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
             [webVC setUrl:[UserCenter sharedInstance].userData.config.faqUrl];
@@ -247,7 +248,7 @@
             [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
             [self setRead:2];
         }
-        else if([item.name isEqualToString:@"连枝剧场"])
+        else if(type == DicoveryTypeLianZhi)
         {
             NSString *guideCellKey = @"guideCellKey";
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -265,7 +266,6 @@
             [webVC setTitle:item.name];
             [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
         }
-    }
 }
 
 - (void)setRead:(NSInteger)type

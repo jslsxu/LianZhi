@@ -291,16 +291,29 @@
         if(indexPath.section == 0)
         {
             TeacherInfo *teacherInfo = self.classInfo.teachers[indexPath.row];
-            JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-            [chatVC setTo_objid:self.classInfo.schoolInfo.schoolID];
-            [chatVC setTargetID:teacherInfo.uid];
-            [chatVC setChatType:ChatTypeTeacher];
-            [chatVC setMobile:teacherInfo.mobile];
-            NSString *title = [NSString stringWithFormat:@"%@老师",teacherInfo.teacherName];
-            if(teacherInfo.course)
-                title = [NSString stringWithFormat:@"%@(%@)",title, teacherInfo.course];
-            [chatVC setTitle:title];
-            [ApplicationDelegate popAndPush:chatVC];
+            if(teacherInfo.actived)
+            {
+                JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+                [chatVC setTo_objid:self.classInfo.schoolInfo.schoolID];
+                [chatVC setTargetID:teacherInfo.uid];
+                [chatVC setChatType:ChatTypeTeacher];
+                [chatVC setMobile:teacherInfo.mobile];
+                NSString *title = [NSString stringWithFormat:@"%@老师",teacherInfo.teacherName];
+                if(teacherInfo.course)
+                    title = [NSString stringWithFormat:@"%@(%@)",title, teacherInfo.course];
+                [chatVC setTitle:title];
+                [ApplicationDelegate popAndPush:chatVC];
+            }
+            else
+            {
+                TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+                TNButtonItem *callItem = [TNButtonItem itemWithTitle:@"拨打电话" action:^{
+                    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",teacherInfo.mobile];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+                }];
+                TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"该用户尚未下载使用连枝，您可打电话与用户联系" buttonItems:@[cancelItem, callItem]];
+                [alertView show];
+            }
         }
         else
         {

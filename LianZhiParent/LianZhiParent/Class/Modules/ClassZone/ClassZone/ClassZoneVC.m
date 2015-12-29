@@ -136,7 +136,7 @@
 //    [_switchView setDelegate:self];
 //    [self.view addSubview:_switchView];
 //    [self.tableView setFrame:CGRectMake(0, _switchView.bottom, self.view.width, self.view.height - _switchView.bottom)];
-    [self onCurChildChanged];
+//    [self onCurChildChanged];
     
     _headerView = [[ClassZoneHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 160)];
     [_headerView setDelegate:self];
@@ -147,7 +147,7 @@
     [self setSupportPullUp:YES];
     [self requestData:REQUEST_REFRESH];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurChildChanged) name:kUserCenterChangedCurChildNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurChildChanged) name:kUserCenterChangedCurChildNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
     
     _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, kScreenHeight - REPLY_BOX_HEIGHT, self.view.width, REPLY_BOX_HEIGHT)];
@@ -181,6 +181,7 @@
     [button removeFromSuperview];
 }
 
+
 - (void)onStatusChanged
 {
     NSArray *commentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
@@ -210,21 +211,21 @@
         [_headerView.appButton setBadgeValue:nil];
 }
 
-- (void)onCurChildChanged
-{
-    if([UserCenter sharedInstance].curChild.classes.count > 0)
-    {
-        ClassInfo *curClassInfo = [UserCenter sharedInstance].curChild.classes[0];
-        [self setClassInfo:curClassInfo];
-        [self requestData:REQUEST_REFRESH];
-    }
-    else
-    {
-        TNButtonItem *item = [TNButtonItem itemWithTitle:@"确定" action:nil];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"未找到相关班级，请联系学校教师或直接联系客服人员" buttonItems:@[item]];
-        [alertView show];
-    }
-}
+//- (void)onCurChildChanged
+//{
+//    if([UserCenter sharedInstance].curChild.classes.count > 0)
+//    {
+//        ClassInfo *curClassInfo = [UserCenter sharedInstance].curChild.classes[0];
+//        [self setClassInfo:curClassInfo];
+//        [self requestData:REQUEST_REFRESH];
+//    }
+//    else
+//    {
+//        TNButtonItem *item = [TNButtonItem itemWithTitle:@"确定" action:nil];
+//        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"未找到相关班级，请联系学校教师或直接联系客服人员" buttonItems:@[item]];
+//        [alertView show];
+//    }
+//}
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
 {
@@ -440,18 +441,18 @@
 }
 
 
-#pragma mark - ClassZoneSwitchDelegate
-- (void)classZoneSwitch
-{
-    __weak typeof(self) wself = self;
-    SwitchClassVC *switchClassVC = [[SwitchClassVC alloc] init];
-    [switchClassVC setClassInfo:self.classInfo];
-    [switchClassVC setCompletion:^(ClassInfo *classInfo) {
-        wself.classInfo = classInfo;
-        [wself requestData:REQUEST_REFRESH];
-    }];
-    [self.navigationController pushViewController:switchClassVC animated:YES];
-}
+//#pragma mark - ClassZoneSwitchDelegate
+//- (void)classZoneSwitch
+//{
+//    __weak typeof(self) wself = self;
+//    SwitchClassVC *switchClassVC = [[SwitchClassVC alloc] init];
+//    [switchClassVC setClassInfo:self.classInfo];
+//    [switchClassVC setCompletion:^(ClassInfo *classInfo) {
+//        wself.classInfo = classInfo;
+//        [wself requestData:REQUEST_REFRESH];
+//    }];
+//    [self.navigationController pushViewController:switchClassVC animated:YES];
+//}
 #pragma mark - ClassZoneHeaderDelegate
 - (void)classZoneAlbumClicked
 {
