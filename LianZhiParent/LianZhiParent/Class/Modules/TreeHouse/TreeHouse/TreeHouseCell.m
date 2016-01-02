@@ -163,7 +163,7 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     [_timeLabel setOrigin:CGPointMake(_authorLabel.right + 5, _authorLabel.bottom - _timeLabel.height)];
     
     [_trashButton setFrame:CGRectMake(_bgView.width - 30 - 10, 5, 30, 30)];
-    [_trashButton setHidden:!item.canEdit];
+    [_trashButton setHidden:!item.canEdit || item.newSend || item.isUploading];
     
     NSInteger spaceYStart ;
     if(item.position.length > 0)

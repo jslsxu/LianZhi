@@ -82,7 +82,14 @@
         [self.modelItemArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             MessageItem *item1 = (MessageItem *)obj1;
             MessageItem *item2 = (MessageItem *)obj2;
-            return [item1.messageContent.ctime compare:item2.messageContent.ctime];
+            NSInteger item1Time = item1.messageContent.timeInterval;
+            NSInteger item2Time = item2.messageContent.timeInterval;
+            if(item1Time < item2Time)
+                return NSOrderedAscending;
+            else if(item1Time == item2Time)
+                return NSOrderedSame;
+            else
+                return NSOrderedDescending;
         }];
     }
     

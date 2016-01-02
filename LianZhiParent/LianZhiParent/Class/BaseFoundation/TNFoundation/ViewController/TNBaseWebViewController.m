@@ -26,6 +26,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backButton setImage:[UIImage imageNamed:@"WhiteLeftArrow"] forState:UIControlStateNormal];
+    [backButton setTitle:@"返回" forState:UIControlStateNormal];
+    [backButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16]];
+    [backButton addTarget:self action:@selector(onBack) forControlEvents:UIControlEventTouchUpInside];
+    [backButton setSize:CGSizeMake(60, 40)];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    space.width = -10;
+    self.navigationItem.leftBarButtonItems = @[space,backItem];
+    
     _webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
     [_webView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
     [_webView setDelegate:self];
@@ -37,6 +48,14 @@
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.url] cachePolicy:NSURLRequestReloadRevalidatingCacheData timeoutInterval:10];
     [_webView loadRequest:request];
+}
+
+- (void)onBack
+{
+    if([_webView canGoBack])
+        [_webView goBack];
+    else
+        [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)setupSubviews

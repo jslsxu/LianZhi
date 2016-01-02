@@ -194,7 +194,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(_nameLabel.right + 5, _nameLabel.bottom - _timeLabel.height)];
     
-    _deleteButton.hidden = !([item.userInfo.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid]);
+    _deleteButton.hidden = !([item.userInfo.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid]) || item.newSent || item.isUploading;
     
     NSInteger contentWidth = self.width - kImageLeftMargin - kImageRightMargin;
     CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(contentWidth, 0) andFont:_contentLabel.font];
