@@ -72,7 +72,7 @@
     [_contentView setBackgroundColor:[UIColor whiteColor]];
     [_contentView.layer setCornerRadius:10];
     [_contentView.layer setMasksToBounds:YES];
-    [self setupContentView:_contentView];
+    [self setupContentView];
     [_scrollView addSubview:_contentView];
     
     _courseView = [[CourseView alloc] initWithFrame:CGRectMake(10, _contentView.bottom + 10, self.view.width - 10 * 2, 60)];
@@ -81,8 +81,9 @@
     [_scrollView addSubview:_courseView];
 }
 
-- (void)setupContentView:(UIView *)viewParent
+- (void)setupContentView
 {
+    UIView *viewParent = _contentView;
     __weak typeof(self) wself = self;
     [viewParent.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     if(_textView == nil)
@@ -109,9 +110,12 @@
     {
         if(_photoView == nil)
         {
-            _photoView = [[HomeWorkPhotoView alloc] initWithFrame:CGRectMake(0, viewParent.height - 90, viewParent.width, 90)];
+            _photoView = [[HomeWorkPhotoView alloc] initWithFrame:CGRectMake(10, viewParent.height - 110, viewParent.width - 10 * 2, 110)];
             [_photoView setCompletion:^{
-                [wself setupContentView:_contentView];
+                [wself setupContentView];
+            }];
+            [_photoView setAddCompletion:^{
+                [wself onAddPhoto];
             }];
         }
         [_photoView setPhotoArray:self.photoArray];
@@ -122,7 +126,12 @@
     {
         if(_audioView == nil)
         {
-            _audioView = [[HomeWorkAudioView alloc] initWithFrame:CGRectMake(10, viewParent.height - 80 - 10, viewParent.width, 80)];
+            _audioView = [[HomeWorkAudioView alloc] initWithFrame:CGRectMake(10, viewParent.height - 80 - 10, viewParent.width - 10 * 2, 80)];
+            [_audioView setDeleteCompletion:^{
+                wself.audioData = nil;
+                wself.timeSpan = 0;
+                [wself setupContentView];
+            }];
         }
         [_audioView setAudioData:self.audioData];
         [_audioView setTimeSpan:self.timeSpan];
@@ -181,8 +190,7 @@
      {
          
      }];
-    TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:homeWorkListVC];
-    [self presentViewController:nav animated:YES completion:nil];
+    [CurrentROOTNavigationVC pushViewController:homeWorkListVC animated:YES];
 }
 
 - (void)onNext
@@ -201,7 +209,13 @@
 
 - (void)onAddAudio
 {
+    __weak typeof(self) wself = self;
     PublishHomeWorkAudioVC *publishAudioVC = [[PublishHomeWorkAudioVC alloc] init];
+    [publishAudioVC setCompletion:^(NSData *data, NSInteger timeSpan) {
+        wself.audioData = data;
+        wself.timeSpan = timeSpan;
+        [wself setupContentView];
+    }];
     TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:publishAudioVC];
     [self presentViewController:nav animated:YES completion:nil];
 }
@@ -232,7 +246,7 @@
     {
         [self.photoArray addObject:editedImage];
     }
-    [self setupContentView:_contentView];
+    [self setupContentView];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker

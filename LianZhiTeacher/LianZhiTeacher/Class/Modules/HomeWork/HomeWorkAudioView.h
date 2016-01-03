@@ -18,4 +18,5 @@
 }
 @property (nonatomic, strong)NSData* audioData;
 @property (nonatomic, assign)NSInteger timeSpan;
+@property (nonatomic, copy)void (^deleteCompletion)(void);
 @end

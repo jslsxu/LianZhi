@@ -15,4 +15,5 @@
 }
 @property (nonatomic, strong)NSMutableArray* photoArray;
 @property (nonatomic, copy)void (^completion)(void);
+@property (nonatomic, copy)void (^addCompletion)(void);
 @end

@@ -13,6 +13,9 @@
 #import "ClassSelectionVC.h"
 #import "GrowthTimelineVC.h"
 #import "PhotoFlowVC.h"
+#import "HomeWorkVC.h"
+#import "ClassAttendanceVC.h"
+#import "MyAttendanceVC.h"
 @implementation ApplicationItem
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
@@ -199,6 +202,9 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
+    HomeWorkVC *homeworkVC = [[HomeWorkVC alloc] init];
+    [CurrentROOTNavigationVC pushViewController:homeworkVC animated:YES];
+    return;
     ApplicationItem *item = (ApplicationItem *)modelItem;
     NSString *url = item.url;
     if([url hasPrefix:@"http"])
