@@ -92,8 +92,6 @@
         [ProgressHUD showHintText:@"你还没有选择班级"];
         return;
     }
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:[NSString stringWithJSONObject:self.record] forKey:@"record"];
     
     NSMutableArray *sendTargetArray = [NSMutableArray array];
     for (NSString *classID in _selectedArray)
@@ -102,28 +100,39 @@
         [classDic setValue:classID forKey:@"classid"];
         [sendTargetArray addObject:classDic];
     }
-    [params setValue:[NSString stringWithJSONObject:sendTargetArray] forKey:@"classes"];
+    NSString *targetStr = [NSString stringWithJSONObject:sendTargetArray];
+    if(self.selectionCompletion)
+    {
+        self.selectionCompletion(targetStr);
+    }
+    else
+    {
+        
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:targetStr forKey:@"classes"];
+        [params setValue:[NSString stringWithJSONObject:self.record] forKey:@"record"];
+        //转换
+        MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在提交" toView:self.view];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/record" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [hud hide:NO];
+            [ProgressHUD showSuccess:@"发送成功"];
+            UIViewController *baseVC = nil;
+            for (UIViewController *vc in self.navigationController.viewControllers)
+            {
+                if([NSStringFromClass([vc class]) isEqualToString:@"PublishGrowthTimelineVC"])
+                    baseVC = vc;
+            }
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                if(baseVC)
+                    [self.navigationController popToViewController:baseVC animated:YES];
+                
+            });
+        } fail:^(NSString *errMsg) {
+            [hud hide:NO];
+            [ProgressHUD showHintText:errMsg];
+        }];
+    }
     
-    //转换
-    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在提交" toView:self.view];
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/record" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        [hud hide:NO];
-        [ProgressHUD showSuccess:@"发送成功"];
-        UIViewController *baseVC = nil;
-        for (UIViewController *vc in self.navigationController.viewControllers)
-        {
-            if([NSStringFromClass([vc class]) isEqualToString:@"PublishGrowthTimelineVC"])
-                baseVC = vc;
-        }
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            if(baseVC)
-                [self.navigationController popToViewController:baseVC animated:YES];
-            
-        });
-    } fail:^(NSString *errMsg) {
-        [hud hide:NO];
-        [ProgressHUD showHintText:errMsg];
-    }];
 }
 
 #pragma mark - UITableViewDelegate
@@ -178,6 +187,7 @@
     [studentVC setClassInfo:classInfo];
     [studentVC setRecord:self.record];
     [studentVC setTitle:classInfo.className];
+    [studentVC setSelectionCompletion:self.selectionCompletion];
     [self.navigationController pushViewController:studentVC animated:YES];
 }
 

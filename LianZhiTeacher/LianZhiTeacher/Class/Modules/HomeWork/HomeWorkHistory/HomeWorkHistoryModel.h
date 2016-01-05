@@ -9,8 +9,9 @@
 #import "TNListModel.h"
 
 @interface HomeWorkHistoryItem : TNModelItem
+@property (nonatomic, copy)NSString *ctime;
 @property (nonatomic, copy)NSString *content;
-@property (nonatomic, strong)PhotoItem *photoItem;
+@property (nonatomic, strong)NSArray *photoArray;
 @property (nonatomic, strong)AudioItem *audioItem;
 
 @end

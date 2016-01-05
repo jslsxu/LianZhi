@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface StudentAttendanceCell : UICollectionViewCell
+#import "StudentAttendanceModel.h"
+@interface StudentAttendanceCell : TNTableViewCell
 {
-    AvatarView*     _avatarView;
-    UILabel*        _statusLabel;
-    UILabel*        _nameLabel;
+    UILabel*    _nameLabel;
+    UIImageView*    _statusImageView;
+    UIView*     _sepLine;
 }
-@property (nonatomic, strong)StudentInfo *studentInfo;
+
 @end

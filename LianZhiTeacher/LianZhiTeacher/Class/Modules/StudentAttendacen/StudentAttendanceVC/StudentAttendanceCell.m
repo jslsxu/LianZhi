@@ -10,45 +10,46 @@
 
 @implementation StudentAttendanceCell
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
-        [self setBackgroundColor:[UIColor whiteColor]];
-        _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake((self.width - 40) / 2, (self.height - 60) / 2, 40, 40)];
-        [_avatarView.layer setCornerRadius:20];
-        [_avatarView.layer setMasksToBounds:YES];
-        [self addSubview:_avatarView];
-        
-        _statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _avatarView.height - 13, _avatarView.width, 13)];
-        [_statusLabel setTextColor:[UIColor whiteColor]];
-        [_statusLabel setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7]];
-        [_statusLabel setFont:[UIFont systemFontOfSize:9]];
-        [_statusLabel setTextAlignment:NSTextAlignmentCenter];
-        [_avatarView addSubview:_statusLabel];
-        
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _avatarView.bottom, self.width, 20)];
-        [_nameLabel setFont:[UIFont systemFontOfSize:12]];
-        [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        self.width = kScreenWidth;
+        NSInteger itemWidth = self.width / 4;
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, itemWidth, 50)];
         [_nameLabel setTextAlignment:NSTextAlignmentCenter];
+        [_nameLabel setFont:[UIFont systemFontOfSize:14]];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [self addSubview:_nameLabel];
         
-        UIView *hLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
-        [hLine setBackgroundColor:[UIColor colorWithHexString:@"D8D8D8"]];
-        [self addSubview:hLine];
+        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - 0.5, self.width, 0.5)];
+        [_sepLine setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+        [_sepLine setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth];
+        [self addSubview:_sepLine];
         
-        UIView *vLine = [[UIView alloc] initWithFrame:CGRectMake(self.width - kLineHeight, 0, kLineHeight, self.height)];
-        [vLine setBackgroundColor:[UIColor colorWithHexString:@"D8D8D8"]];
-        [self addSubview:vLine];
+        _statusImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+        [self addSubview:_statusImageView];
+        
+        for (NSInteger i = 0; i < 3; i++)
+        {
+            UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(itemWidth * (i + 1), 0, 0.5, 50)];
+            [sepLine setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+            [self addSubview:sepLine];
+        }
     }
     return self;
 }
 
-- (void)setStudentInfo:(StudentInfo *)studentInfo
+- (void)onReloadData:(TNModelItem *)modelItem
 {
-    _studentInfo = studentInfo;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
+    StudentAttendanceItem *attendanceItem = (StudentAttendanceItem *)modelItem;
+    
+}
+
++ (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
+{
+    return @(50);
 }
 
 @end

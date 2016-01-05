@@ -9,9 +9,20 @@
 #import "TNBaseViewController.h"
 #import "StudentAttendanceCell.h"
 #import "StudentAttendanceHeaderView.h"
-@interface StudentAttendanceVC : TNBaseViewController
+#import "DatePickerView.h"
+
+@interface StudentAttendanceHeader : UITableViewHeaderFooterView
 {
-    UICollectionView*   _collectionView;
+    UILabel*    _nameLabel;
+    UILabel*    _attendanceLabel;
+    UILabel*    _vacationLabel;
+    UILabel*    _leftLabel;
+}
+@end
+
+@interface StudentAttendanceVC : TNBaseTableViewController
+{
+    DatePickerView* _datePickerView;
 }
 @property (nonatomic, strong)ClassInfo *classInfo;
 @end

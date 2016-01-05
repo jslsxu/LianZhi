@@ -10,7 +10,35 @@
 #import "ClassSelectionVC.h"
 #import "AttendanceOperationVC.h"
 #import "LeaveRegisterVC.h"
-@interface StudentAttendanceVC ()<UICollectionViewDataSource, UICollectionViewDelegate>
+
+@implementation StudentAttendanceHeader
+- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithReuseIdentifier:reuseIdentifier];
+    if(self)
+    {
+        self.width = kScreenWidth;
+        NSInteger itemWidth = self.width / 4;
+        NSArray *colorArray = @[@"cfcfcf",@"5ed115",@"fecf3c",@"fb7775"];
+        NSArray *titleArray = @[@"姓名",@"出勤",@"请假",@"缺勤"];
+        for (NSInteger i = 0; i < 4; i++)
+        {
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(itemWidth * i, 0, itemWidth, self.height)];
+            [label setBackgroundColor:[UIColor colorWithHexString:colorArray[i]]];
+            [label setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
+            [label setFont:[UIFont systemFontOfSize:14]];
+            [label setTextColor:[UIColor whiteColor]];
+            [label setTextAlignment:NSTextAlignmentCenter];
+            [label setText:titleArray[i]];
+            [self addSubview:label];
+        }
+    }
+    return self;
+}
+
+@end
+
+@interface StudentAttendanceVC ()< DatePickerDelegate>
 @property (nonatomic, strong)ClassInfo *curClass;
 @end
 
@@ -19,69 +47,68 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = self.classInfo.className;
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"切换" style:UIBarButtonItemStylePlain target:self action:@selector(onSwitchClass)];
+    _datePickerView = [[DatePickerView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 40)];
+    [self.view addSubview:_datePickerView];
+
+    [self.tableView setHeight:self.view.height - 64 - 40 - 50];
     
-    NSInteger itemWith = (self.view.width + 3) / 4;
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    [layout setItemSize:CGSizeMake(itemWith, itemWith)];
-    [layout setMinimumInteritemSpacing:0];
-    [layout setMinimumLineSpacing:0];
-    [layout setHeaderReferenceSize:CGSizeMake(self.view.width, 140)];
+    UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.tableView.bottom, self.view.width, 50)];
+    [self setupBottomView:bottomView];
+    [self.view addSubview:bottomView];
     
-    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake((self.view.width - itemWith * 4) / 2, 0, itemWith * 4, self.view.height - 64) collectionViewLayout:layout];
-    [_collectionView setBackgroundColor:[UIColor clearColor]];
-    [_collectionView setAlwaysBounceVertical:YES];
-    [_collectionView setDelegate:self];
-    [_collectionView setDataSource:self];
-    [_collectionView registerClass:[StudentAttendanceCell class] forCellWithReuseIdentifier:@"StudentAttendanceCell"];
-    [_collectionView registerClass:[StudentAttendanceHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"StudentAttendanceHeaderView"];
-    [self.view addSubview:_collectionView];
-    
-    NSArray *classes = [UserCenter sharedInstance].curSchool.classes;
-    if(classes.count > 0)
-        [self setCurClass:classes[0]];
+    [self bindTableCell:@"StudentAttendanceCell" tableModel:@"StudentAttendanceModel"];
 }
 
-- (void)onSwitchClass
+- (void)setupBottomView:(UIView *)viewParent
 {
-    ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
-    [classSelectionVC setOriginalClassID:self.classInfo.classID];
-    [classSelectionVC setSelection:^(ClassInfo *classInfo) {
-        
-    }];
-    [self.navigationController pushViewController:classSelectionVC animated:YES];
+    [viewParent setBackgroundColor:[UIColor whiteColor]];
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewParent.width, 0.5)];
+    [topLine setBackgroundColor:[UIColor colorWithHexString:@"d8d8d8"]];
+    [viewParent addSubview:topLine];
+    
+    UIButton *attendanceAllbutton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [attendanceAllbutton setFrame:CGRectMake(viewParent.width - 80 - 10, (viewParent.height - 36) / 2, 80, 36)];
+    [attendanceAllbutton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"5ed115"] size:attendanceAllbutton.size cornerRadius:18] forState:UIControlStateNormal];
+    [attendanceAllbutton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [attendanceAllbutton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [attendanceAllbutton setTitle:@"一键全勤" forState:UIControlStateNormal];
+    [viewParent addSubview:attendanceAllbutton];
 }
 
-#pragma mark - UICollectionViewDelegate
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+- (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
+{
+    return nil;
+}
+
+#pragma mark - DatePickerDelegate
+- (void)growthDatePickerFinished:(NSDate *)date
+{
+    
+}
+
+#pragma mark - UItableViewDelegate
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 10;
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    StudentAttendanceHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"StudentAttendanceHeaderView" forIndexPath:indexPath];
-    return headerView;
+    return 50;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    StudentAttendanceCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"StudentAttendanceCell" forIndexPath:indexPath];
-    return cell;
+    return 50;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if(indexPath.row > 5)
-    {
-        AttendanceOperationVC *attendanceOperationVC = [[AttendanceOperationVC alloc] init];
-        [self.navigationController pushViewController:attendanceOperationVC animated:YES];
-    }
-    else
-    {
-        LeaveRegisterVC *leaveRegisterVC = [[LeaveRegisterVC alloc] init];
-        [self.navigationController pushViewController:leaveRegisterVC animated:YES];
-    }
+    NSString *reuseID = @"tableHeader";
+    StudentAttendanceHeader *header = (StudentAttendanceHeader *)[tableView dequeueReusableCellWithIdentifier:reuseID];
+    if(header)
+        header = [[StudentAttendanceHeader alloc] initWithReuseIdentifier:reuseID];
+    return header;
 }
 
 - (void)didReceiveMemoryWarning {

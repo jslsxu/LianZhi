@@ -20,4 +20,5 @@
 {
     UITableView*    _tableView;
 }
+@property (nonatomic, copy)NSString *classID;
 @end

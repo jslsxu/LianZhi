@@ -14,7 +14,7 @@
 #import "HomeWorkItemCell.h"
 #import "MyHomeworkList.h"
 #import "HomeWorkAudioView.h"
-
+#import "GrowthTimelineClassChangeVC.h"
 
 @interface HomeWorkVC ()<ActionSelectViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate>
 {
@@ -185,17 +185,33 @@
 
 - (void)onSelectFromHistory
 {
+    __weak typeof(self) wself = self;
     MyHomeworkList *homeWorkListVC = [[MyHomeworkList alloc] init];
     [homeWorkListVC setCompletion:^(HomeWorkHistoryItem *homeWorkItem)
      {
-         
+         [CurrentROOTNavigationVC popToViewController:wself animated:YES];
      }];
     [CurrentROOTNavigationVC pushViewController:homeWorkListVC animated:YES];
 }
 
 - (void)onNext
 {
-    
+    if(_courseView.course.length == 0)
+    {
+        [ProgressHUD showHintText:@"尚未选择作业所属科目"];
+        return;
+    }
+    __weak typeof(self) wself = self;
+    GrowthTimelineClassChangeVC *classChangeVC = [[GrowthTimelineClassChangeVC alloc] init];
+    [classChangeVC setSelectionCompletion:^(NSString *targetStr) {
+        [wself sendHomeWork];
+    }];
+    [CurrentROOTNavigationVC pushViewController:classChangeVC animated:YES];
+}
+
+- (void)sendHomeWork
+{
+    [CurrentROOTNavigationVC popToViewController:self animated:YES];
 }
 
 - (void)onAddPhoto

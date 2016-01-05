@@ -15,4 +15,5 @@
     UIButton*           _selectAllButton;
 }
 @property (nonatomic, strong)NSMutableDictionary *record;
+@property (nonatomic, copy)void (^selectionCompletion)(NSString *targetStr);
 @end

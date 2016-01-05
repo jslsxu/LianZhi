@@ -7,9 +7,19 @@
 //
 
 #import "HomeWorkItemCell.h"
-
-@interface HomeWorkHistoryCell : HomeWorkItemCell
+#import "HomeWorkHistoryModel.h"
+@interface HomeWorkHistoryCell : TNTableViewCell<UICollectionViewDataSource, UICollectionViewDelegate>
 {
-    UIButton*       _shareButton;
+    UILabel*        _dateLabel;
+    UIView*         _bgView;
+    UILabel*        _courseLabel;
+    UILabel*        _timeLabel;
+    UIView*         _sepLine;
+    UILabel*        _contentLabel;
+    UICollectionView*   _collectionView;
+    MessageVoiceButton* _voiceButton;
+    UILabel*            _spanLabel;
+    UIImageView*    _likeImageView;          //收藏
+    UIButton*       _moreButton;
 }
 @end

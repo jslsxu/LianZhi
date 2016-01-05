@@ -7,6 +7,7 @@
 //
 
 #import "TNBaseViewController.h"
+#import "HomeWorkHistoryModel.h"
 #import "HomeWorkHistoryVC.h"
 #import "HomeWorkCollectionVC.h"
 @interface MyHomeworkList : TNBaseViewController
