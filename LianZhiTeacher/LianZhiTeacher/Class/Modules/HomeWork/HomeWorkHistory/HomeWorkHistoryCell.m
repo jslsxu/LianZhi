@@ -106,7 +106,7 @@
     [_contentLabel sizeToFit];
     [_contentLabel setY:30 + 18];
 
-    if(historyItem.content.length > 0)
+    if(historyItem.words.length > 0)
         spaceYStart = _contentLabel.bottom;
     else
         spaceYStart = 30;
@@ -186,7 +186,7 @@
     NSMutableArray *photos = [NSMutableArray arrayWithArray:item.photoArray];
     for (PhotoItem *photoItem in photos) {
 //        [photoItem setUserInfo:];
-        [photoItem setComment:item.content];
+        [photoItem setComment:item.words];
         [photoItem setFormatTimeStr:item.ctime];
     }
     [photoBrowser setPhotos:photos];
