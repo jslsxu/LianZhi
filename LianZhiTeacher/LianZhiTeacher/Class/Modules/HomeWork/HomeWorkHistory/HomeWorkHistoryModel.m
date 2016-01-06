@@ -12,48 +12,42 @@
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    self.content = [dataWrapper getStringForKey:@"content"];
+    self.homeworkId = [dataWrapper getStringForKey:@"id"];
+    self.words = [dataWrapper getStringForKey:@"words"];
+    self.courseName = [dataWrapper getStringForKey:@"course_name"];
+    self.fav = [dataWrapper getBoolForKey:@"fav"];
+    self.type = [dataWrapper getIntegerForKey:@"ptype"];
     
-}
-
-@end
-
-@implementation HomeWorkGroup
-- (void)parseData:(TNDataWrapper *)dataWrapper
-{
-    self.dateStr = [dataWrapper getStringForKey:@"date"];
-    TNDataWrapper *homeworkWrapper = [dataWrapper getDataWrapperForKey:@"homework"];
-    if(homeworkWrapper.count > 0)
+    TNDataWrapper *voiceWrapper = [dataWrapper getDataWrapperForKey:@"voice"];
+    if(voiceWrapper.count > 0)
     {
-        NSMutableArray *homeWorkArray = [NSMutableArray array];
-        for (NSInteger i = 0; i < homeworkWrapper.count; i++)
+        AudioItem *audioItem = [[AudioItem alloc] init];
+        [audioItem parseData:voiceWrapper];
+        self.audioItem = audioItem;
+    }
+    
+    TNDataWrapper *photoWrapper = [dataWrapper getDataWrapperForKey:@"pics"];
+    if(photoWrapper.count > 0)
+    {
+        NSMutableArray *photoArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < photoWrapper.count; i++)
         {
-            TNDataWrapper *homeWorkItemWrapper = [homeworkWrapper getDataWrapperForIndex:i];
-            HomeWorkHistoryItem *homeWorkItem = [[HomeWorkHistoryItem alloc] init];
-            [homeWorkItem parseData:homeWorkItemWrapper];
-            [homeWorkArray addObject:homeWorkItem];
+            TNDataWrapper *photoItemWrapp = [photoWrapper getDataWrapperForIndex:i];
+            PhotoItem *photoItem = [[PhotoItem alloc] init];
+            [photoItem parseData:photoItemWrapp];
+            [photoArray addObject:photoItem];
         }
-        self.homeWorkArray = homeWorkArray;
+        self.photoArray = photoArray;
     }
 }
 
 @end
 
+
 @implementation HomeWorkHistoryModel
-- (NSInteger)numOfSections
-{
-    return self.modelItemArray.count;
-}
 
-- (NSInteger)numOfRowsInSection:(NSInteger)section
+- (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
 {
-    HomeWorkGroup *group = self.modelItemArray[section];
-    return group.homeWorkArray.count;
-}
-
-- (TNModelItem *)itemForIndexPath:(NSIndexPath *)indexPath
-{
-    HomeWorkGroup *group = self.modelItemArray[indexPath.section];
-    return group.homeWorkArray[indexPath.row];
+    return YES;
 }
 @end

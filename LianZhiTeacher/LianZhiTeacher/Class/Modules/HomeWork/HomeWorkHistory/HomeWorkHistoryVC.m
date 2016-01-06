@@ -17,28 +17,45 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    
+//    self.courseArray = [NSMutableArray array];
+//    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
+//    {
+//        BOOL isIn = NO;
+//        for (NSString * course in self.courseArray)
+//        {
+//            if([course isEqualToString:classInfo.course])
+//                isIn = YES;
+//        }
+//        if(!isIn)
+//            [self.courseArray addObject:classInfo.course];
+//    }
+//    if(self.courseArray.count > 0)
+//        self.course = self.courseArray[0];
+//    if(self.courseArray.count > 0)
+//        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"切换" style:UIBarButtonItemStylePlain target:self action:@selector(switchCourse)];
     
-    self.courseArray = [NSMutableArray array];
-    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
-    {
-        BOOL isIn = NO;
-        for (NSString * course in self.courseArray)
-        {
-            if([course isEqualToString:classInfo.course])
-                isIn = YES;
-        }
-        if(!isIn)
-            [self.courseArray addObject:classInfo.course];
-    }
-    if(self.courseArray.count > 0)
-        self.course = self.courseArray[0];
-    if(self.courseArray.count > 0)
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"切换" style:UIBarButtonItemStylePlain target:self action:@selector(switchCourse)];
-    
-    self.title = self.course;
+//    self.title = self.course;
     
     [self bindTableCell:@"HomeWorkHistoryCell" tableModel:@"HomeWorkHistoryModel"];
+    [self setSupportPullDown:YES];
+    [self setSupportPullUp:YES];
     [self requestData:REQUEST_REFRESH];
+}
+
+- (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
+{
+    HttpRequestTask *task = [[HttpRequestTask alloc] init];
+    [task setRequestUrl:@"practice/get_list"];
+    [task setRequestMethod:REQUEST_GET];
+    [task setRequestType:requestType];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:nil forKey:@"max_id"];
+    
+    [task setParams:params];
+    [task setObserver:self];
+    return task;
+    
 }
 
 - (void)switchCourse

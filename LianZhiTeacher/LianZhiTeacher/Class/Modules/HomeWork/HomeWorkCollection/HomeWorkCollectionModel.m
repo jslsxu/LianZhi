@@ -10,4 +10,8 @@
 
 @implementation HomeWorkCollectionModel
 
+- (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
+{
+    return YES;
+}
 @end

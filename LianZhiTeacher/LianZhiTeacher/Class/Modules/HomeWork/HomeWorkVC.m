@@ -15,6 +15,7 @@
 #import "MyHomeworkList.h"
 #import "HomeWorkAudioView.h"
 #import "GrowthTimelineClassChangeVC.h"
+#import "HomeWorkHistoryModel.h"
 
 @interface HomeWorkVC ()<ActionSelectViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate>
 {
@@ -204,14 +205,56 @@
     __weak typeof(self) wself = self;
     GrowthTimelineClassChangeVC *classChangeVC = [[GrowthTimelineClassChangeVC alloc] init];
     [classChangeVC setSelectionCompletion:^(NSString *targetStr) {
-        [wself sendHomeWork];
+        [wself sendHomeWorkWithTarget:targetStr];
     }];
     [CurrentROOTNavigationVC pushViewController:classChangeVC animated:YES];
 }
 
-- (void)sendHomeWork
+- (void)sendHomeWorkWithTarget:(NSString *)target
 {
-    [CurrentROOTNavigationVC popToViewController:self animated:YES];
+    HomeworkType type = HomeworkTypeNormal;
+    if(self.photoArray.count > 0)
+        type = HomeworkTypePhoto;
+    else if(self.audioData && self.timeSpan > 0)
+        type = HomeworkTypeAudio;
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:kStringFromValue(type) forKey:@"ptype"];
+    [params setValue:_textView.text forKey:@"words"];
+    [params setValue:_courseView.course forKey:@"course_name"];
+    [params setValue:target forKey:@"classJson"];
+    if(type == HomeworkTypePhoto)
+    {
+        NSMutableString *photoSeqs = [[NSMutableString alloc] init];
+        if(self.photoArray.count > 0)
+            [photoSeqs appendString:@"pic_0"];
+        for (NSInteger i = 1; i < self.photoArray.count; i++)
+        {
+            [photoSeqs appendFormat:@",pic_%ld",(long)i];
+        }
+    }
+    else if(type == HomeworkTypeAudio)
+    {
+        [params setValue:kStringFromValue(self.timeSpan) forKey:@"voice_time"];
+    }
+    __weak typeof(self) wself = self;
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"practice/publish" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        if(type == HomeworkTypeAudio)
+        {
+            [formData appendPartWithFileData:self.audioData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
+        }
+        else if(type == HomeworkTypePhoto)
+        {
+            for (NSInteger i = 0; wself.photoArray.count; i++)
+            {
+                [formData appendPartWithFileData:UIImageJPEGRepresentation(self.photoArray[i], 0.8) name:[NSString stringWithFormat:@"pic_%ld",i] fileName:[NSString stringWithFormat:@"pic_%ld",i] mimeType:@"image/jpeg"];
+            }
+        }
+    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [ProgressHUD showHintText:@"发布成功"];
+        [CurrentROOTNavigationVC popToViewController:wself animated:YES];
+    } fail:^(NSString *errMsg) {
+        [ProgressHUD showHintText:errMsg];
+    }];
 }
 
 - (void)onAddPhoto
