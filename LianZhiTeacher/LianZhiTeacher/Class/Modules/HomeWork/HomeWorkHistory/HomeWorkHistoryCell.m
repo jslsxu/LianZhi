@@ -8,7 +8,10 @@
 
 #import "HomeWorkHistoryCell.h"
 #import "CollectionImageCell.h"
+NSString *const kAddFavNotification = @"kAddFavNotification";
+NSString *const kPractiseItemKey = @"kPractiseItemKey";
 @implementation HomeWorkHistoryCell
+
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -52,7 +55,7 @@
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_bgView addSubview:_contentLabel];
         
-        _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(50, 0, self.width - 10 - 50 - 60, 45)];
+        _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(0, 0, _bgView.width - 150, 45)];
         [_voiceButton addTarget:self action:@selector(onVoiceButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [_bgView addSubview:_voiceButton];
         
@@ -81,10 +84,11 @@
         [_collectionView registerClass:[CollectionImageCell class] forCellWithReuseIdentifier:@"CollectionImageCell"];
         [_bgView addSubview:_collectionView];
         
-        _likeImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        [_likeImageView setImage:[UIImage imageNamed:@"HomeworkCollectionOn"]];
-        [_likeImageView setUserInteractionEnabled:YES];
-        [_bgView addSubview:_likeImageView];
+        _likeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_likeButton setSize:CGSizeMake(25, 20)];
+        [_likeButton addTarget:self action:@selector(onCollectionClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_likeButton setImage:[UIImage imageNamed:@"HomeworkCollectionOn"] forState:UIControlStateNormal];
+        [_bgView addSubview:_likeButton];
 
         _moreButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_moreButton addTarget:self action:@selector(onMoreButtonClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -96,34 +100,39 @@
 
 - (void)onReloadData:(TNModelItem *)modelItem
 {
-    HomeWorkHistoryItem *historyItem = (HomeWorkHistoryItem *)modelItem;
-    [_dateLabel setText:@"星期一"];
-    [_courseLabel setText:@"英语"];
-    [_timeLabel setText:@"12月10日17：30"];
-    CGFloat spaceYStart = 30;
-    [_contentLabel setWidth:_bgView.width - 10 * 2];
-    [_contentLabel setText:@"英语课后习题作业，第六章第二节we are family 第三段语文背诵及抄写"];
+    HomeWorkItem *historyItem = (HomeWorkItem *)modelItem;
+    [_dateLabel setText:historyItem.weekday];
+    [_courseLabel setText:historyItem.courseName];
+    [_courseLabel sizeToFit];
+    [_courseLabel setOrigin:CGPointMake(10, (30 - _courseLabel.height) / 2)];
+    [_timeLabel setText:historyItem.timeStr];
+    [_timeLabel sizeToFit];
+    [_timeLabel setOrigin:CGPointMake(_bgView.width - _timeLabel.width - 10, (30 - _timeLabel.height) / 2)];
+    CGFloat spaceYStart = 28;
+    [_contentLabel setHidden:historyItem.words.length == 0];
+    [_contentLabel setWidth:_bgView.width - 15 * 2];
+    [_contentLabel setText:historyItem.words];
     [_contentLabel sizeToFit];
-    [_contentLabel setY:30 + 18];
+    [_contentLabel setOrigin:CGPointMake(10, spaceYStart + 10)];
 
     if(historyItem.words.length > 0)
         spaceYStart = _contentLabel.bottom;
-    else
-        spaceYStart = 30;
-    spaceYStart += 15;
     [_voiceButton setHidden:YES];
     [_collectionView setHidden:YES];
     [_spanLabel setHidden:YES];
     if(historyItem.audioItem)
     {
+        spaceYStart += 10;
         [_voiceButton setHidden:NO];
-        [_voiceButton setY:spaceYStart];
+        [_voiceButton setOrigin:CGPointMake(15, spaceYStart)];
         [_spanLabel setHidden:NO];
+        [_spanLabel setFrame:CGRectMake(_voiceButton.right + 10, _voiceButton.y, 50, _voiceButton.height)];
         [_spanLabel setText:[Utility formatStringForTime:historyItem.audioItem.timeSpan]];
-        spaceYStart += _voiceButton.bottom;
+        spaceYStart += _voiceButton.height;
     }
     else if(historyItem.photoArray.count > 0)
     {
+        spaceYStart += 10;
         NSInteger imageCount = historyItem.photoArray.count;
         _collectionView.width = _bgView.width - 15 * 2;
         NSInteger contentWidth = _collectionView.width;
@@ -135,11 +144,13 @@
         NSInteger imageWidth = (row > 1) ? contentWidth : (itemWidth * imageCount + innerMargin * (historyItem.photoArray.count - 1));
         [_collectionView setFrame:CGRectMake(15, spaceYStart, imageWidth, itemWidth * row + innerMargin * (row - 1))];
         [_collectionView reloadData];
-        spaceYStart = _collectionView.bottom;
+        spaceYStart += _collectionView.height;
     }
     
-    [_likeImageView setY:spaceYStart + 20];
-    spaceYStart = _likeImageView.bottom;
+    [_likeButton setOrigin:CGPointMake(10, spaceYStart + 10)];
+    [_likeButton setImage:[UIImage imageNamed:historyItem.fav ? @"HomeworkCollectionOn" :@"HomeworkCollectionOff"] forState:UIControlStateNormal];
+     [_likeButton setImage:[UIImage imageNamed:historyItem.fav ? @"HomeworkCollectionOn" :@"HomeworkCollectionOff"] forState:UIControlStateHighlighted];
+    spaceYStart = _likeButton.bottom;
     [_bgView setHeight:spaceYStart + 10];
 }
 
@@ -150,30 +161,65 @@
 
 - (void)onCollectionClicked
 {
-    
+    HomeWorkItem *item = (HomeWorkItem *)self.modelItem;
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:item.homeworkId forKey:@"practice_id"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"practice/set_fav" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        item.fav = !item.fav;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAddFavNotification object:nil userInfo:@{kPractiseItemKey : item}];
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (void)onVoiceButtonClicked
 {
-    HomeWorkHistoryItem *item = (HomeWorkHistoryItem *)self.modelItem;
+    HomeWorkItem *item = (HomeWorkItem *)self.modelItem;
     [_voiceButton setVoiceWithURL:[NSURL URLWithString:item.audioItem.audioUrl] withAutoPlay:YES];
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
 {
-    return @(100);
+    HomeWorkItem *item = (HomeWorkItem *)modelItem;
+    NSInteger height = 30;
+    CGFloat spaceYStart = 28;
+    NSInteger bgWidth = width - 10 * 2;
+    if(item.words.length > 0)
+    {
+        CGSize wordsSize = [item.words boundingRectWithSize:CGSizeMake(bgWidth - 15 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
+        spaceYStart += 10 + wordsSize.height;
+    }
+    if(item.audioItem)
+    {
+        spaceYStart += 10 + 45;
+    }
+    else if(item.photoArray.count > 0)
+    {
+        NSInteger imageCount = item.photoArray.count;
+        NSInteger contentWidth = bgWidth - 15 * 2;
+        NSInteger innerMargin = 3;
+        NSInteger row = (imageCount + 2) / 3;
+        NSInteger itemWidth = (contentWidth - innerMargin * 2) / 3;
+        innerMargin = (contentWidth - itemWidth * 3) / 2;
+        NSInteger collectionHeight = itemWidth * row + innerMargin * (row - 1);
+        spaceYStart += 10 + collectionHeight;
+    }
+    spaceYStart += 10 + 30 + 10;
+    height += spaceYStart;
+    return @(height);
 }
 
 #pragma mark - UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 9;
+    HomeWorkItem *item = (HomeWorkItem *)self.modelItem;
+    return item.photoArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CollectionImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CollectionImageCell" forIndexPath:indexPath];
-    HomeWorkHistoryItem *item = (HomeWorkHistoryItem *)self.modelItem;
+    HomeWorkItem *item = (HomeWorkItem *)self.modelItem;
     PhotoItem *photoItem = item.photoArray[indexPath.row];
     [cell setItem:photoItem];
     return cell;
@@ -181,13 +227,13 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    HomeWorkHistoryItem *item = (HomeWorkHistoryItem *)self.modelItem;
+    HomeWorkItem *item = (HomeWorkItem *)self.modelItem;
     MJPhotoBrowser *photoBrowser = [[MJPhotoBrowser alloc] init];
     NSMutableArray *photos = [NSMutableArray arrayWithArray:item.photoArray];
     for (PhotoItem *photoItem in photos) {
 //        [photoItem setUserInfo:];
         [photoItem setComment:item.words];
-        [photoItem setFormatTimeStr:item.ctime];
+        [photoItem setFormatTimeStr:item.timeStr];
     }
     [photoBrowser setPhotos:photos];
     [photoBrowser setCurrentPhotoIndex:indexPath.row];

@@ -9,13 +9,11 @@
 #import "HomeWorkVC.h"
 #import "PublishHomeWorkBaseVC.h"
 #import "PublishHomeWorkAudioVC.h"
-#import "PublishHomeWorkPhotoVC.h"
-#import "PublishHomeWorkTextVC.h"
-#import "HomeWorkItemCell.h"
 #import "MyHomeworkList.h"
 #import "HomeWorkAudioView.h"
 #import "GrowthTimelineClassChangeVC.h"
 #import "HomeWorkHistoryModel.h"
+#import "SDWebImagePrefetcher.h"
 
 @interface HomeWorkVC ()<ActionSelectViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate>
 {
@@ -96,18 +94,8 @@
         [_textView setPlaceholder:@"请输入文字内容"];
     }
     [viewParent addSubview:_textView];
-    if(self.photoArray.count == 0 && self.audioData == nil && self.timeSpan == 0)
-    {
-        [_textView setFrame:CGRectMake(10, 10, viewParent.width - 10 * 2, viewParent.height - 45 - 10)];
-        UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, viewParent.height - 45, viewParent.width, kLineHeight)];
-        [sepLine setBackgroundColor:kSepLineColor];
-        [viewParent addSubview:sepLine];
-        
-        UIView *extraView = [[UIView alloc] initWithFrame:CGRectMake(0, sepLine.bottom, viewParent.width, 45)];
-        [self setupExtraView:extraView];
-        [viewParent addSubview:extraView];
-    }
-    else if(self.photoArray.count > 0)
+
+    if(self.photoArray.count > 0)
     {
         if(_photoView == nil)
         {
@@ -123,7 +111,7 @@
         [viewParent addSubview:_photoView];
         [_textView setFrame:CGRectMake(10, 10, viewParent.width - 10 * 2, _photoView.y - 10 - 10)];
     }
-    else
+    else if(self.audioData)
     {
         if(_audioView == nil)
         {
@@ -138,6 +126,17 @@
         [_audioView setTimeSpan:self.timeSpan];
         [viewParent addSubview:_audioView];
         [_textView setFrame:CGRectMake(10, 10, viewParent.width - 10 * 2, _audioView.y - 10 - 10)];
+    }
+    else
+    {
+        [_textView setFrame:CGRectMake(10, 10, viewParent.width - 10 * 2, viewParent.height - 45 - 10)];
+        UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, viewParent.height - 45, viewParent.width, kLineHeight)];
+        [sepLine setBackgroundColor:kSepLineColor];
+        [viewParent addSubview:sepLine];
+        
+        UIView *extraView = [[UIView alloc] initWithFrame:CGRectMake(0, sepLine.bottom, viewParent.width, 45)];
+        [self setupExtraView:extraView];
+        [viewParent addSubview:extraView];
     }
     
 }
@@ -188,8 +187,31 @@
 {
     __weak typeof(self) wself = self;
     MyHomeworkList *homeWorkListVC = [[MyHomeworkList alloc] init];
-    [homeWorkListVC setCompletion:^(HomeWorkHistoryItem *homeWorkItem)
+    [homeWorkListVC setCompletion:^(HomeWorkItem *homeWorkItem)
      {
+         wself.homeWorkItem = homeWorkItem;
+         [_textView setText:wself.homeWorkItem.words];
+         wself.photoArray = nil;
+         wself.audioData = nil;
+         wself.timeSpan = 0;
+         if(wself.homeWorkItem.photoArray.count > 0)
+         {
+             NSMutableArray *photoArray = [NSMutableArray array];
+             for (PhotoItem *item in wself.homeWorkItem.photoArray)
+             {
+                 UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:item.originalUrl];
+                 if(image)
+                     [photoArray addObject:image];
+             }
+             wself.photoArray = photoArray;
+         }
+         else if(wself.homeWorkItem.audioItem)
+         {
+             wself.audioData = [[MLDataCache shareInstance] cachedDataForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:wself.homeWorkItem.audioItem.audioUrl]]];
+             wself.timeSpan = wself.homeWorkItem.audioItem.timeSpan;
+         }
+         [wself setupContentView];
+         [_courseView setCourse:wself.homeWorkItem.courseName];
          [CurrentROOTNavigationVC popToViewController:wself animated:YES];
      }];
     [CurrentROOTNavigationVC pushViewController:homeWorkListVC animated:YES];
@@ -212,6 +234,7 @@
 
 - (void)sendHomeWorkWithTarget:(NSString *)target
 {
+    [CurrentROOTNavigationVC popToViewController:self animated:YES];
     HomeworkType type = HomeworkTypeNormal;
     if(self.photoArray.count > 0)
         type = HomeworkTypePhoto;
@@ -226,33 +249,36 @@
     {
         NSMutableString *photoSeqs = [[NSMutableString alloc] init];
         if(self.photoArray.count > 0)
-            [photoSeqs appendString:@"pic_0"];
+            [photoSeqs appendString:@"picture_0"];
         for (NSInteger i = 1; i < self.photoArray.count; i++)
         {
-            [photoSeqs appendFormat:@",pic_%ld",(long)i];
+            [photoSeqs appendFormat:@",picture_%ld",(long)i];
         }
+        [params setValue:photoSeqs forKey:@"pic_seqs"];
     }
     else if(type == HomeworkTypeAudio)
     {
         [params setValue:kStringFromValue(self.timeSpan) forKey:@"voice_time"];
     }
     __weak typeof(self) wself = self;
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在发布" toView:[UIApplication sharedApplication].keyWindow];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"practice/publish" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         if(type == HomeworkTypeAudio)
         {
-            [formData appendPartWithFileData:self.audioData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
+            [formData appendPartWithFileData:wself.audioData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
         }
         else if(type == HomeworkTypePhoto)
         {
-            for (NSInteger i = 0; wself.photoArray.count; i++)
+            for (NSInteger i = 0; i < wself.photoArray.count; i++)
             {
-                [formData appendPartWithFileData:UIImageJPEGRepresentation(self.photoArray[i], 0.8) name:[NSString stringWithFormat:@"pic_%ld",i] fileName:[NSString stringWithFormat:@"pic_%ld",i] mimeType:@"image/jpeg"];
+                [formData appendPartWithFileData:UIImageJPEGRepresentation(wself.photoArray[i], 0.8) name:[NSString stringWithFormat:@"picture_%ld",i] fileName:[NSString stringWithFormat:@"picture_%ld",i] mimeType:@"image/jpeg"];
             }
         }
     } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [hud hide:NO];
         [ProgressHUD showHintText:@"发布成功"];
-        [CurrentROOTNavigationVC popToViewController:wself animated:YES];
     } fail:^(NSString *errMsg) {
+        [hud hide:NO];
         [ProgressHUD showHintText:errMsg];
     }];
 }

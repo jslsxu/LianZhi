@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseViewController.h"
-#import "HomeWorkItem.h"
+#import "HomeworkItem.h"
 @protocol PublishHomeWorkDelegate <NSObject>
 @optional
 - (void)publishHomeWorkFinished:(HomeWorkItem *)homeWorkItem;

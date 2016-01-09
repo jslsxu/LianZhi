@@ -7,7 +7,8 @@
 //
 
 #import "TNListModel.h"
-
+#import "HomeWorkHistoryModel.h"
 @interface HomeWorkCollectionModel : TNListModel
-
+@property (nonatomic, assign)BOOL has;
+@property (nonatomic, copy)NSString *maxID;
 @end

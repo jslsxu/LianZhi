@@ -34,7 +34,7 @@
 {
     [_photoViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [_photoViewArray removeAllObjects];
-    for (NSInteger i = 0; i < MAX(_photoArray.count + 1, 9); i++)
+    for (NSInteger i = 0; i < MIN(_photoArray.count + 1, 9); i++)
     {
         if(i == _photoArray.count)//加号
         {

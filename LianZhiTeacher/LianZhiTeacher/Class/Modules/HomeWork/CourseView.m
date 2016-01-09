@@ -28,6 +28,21 @@
     return self;
 }
 
+- (void)setCourse:(NSString *)course
+{
+    _course = course;
+    BOOL fContain = NO;
+    for (NSString *courseItem in _courseArray)
+    {
+        if([courseItem isEqualToString:_course])
+            fContain = YES;
+    }
+    if(!fContain)
+        [self onActionViewCommit:_course];
+    else
+        [self setupSubviews];
+}
+
 - (void)setupSubviews
 {
     [_deleteButtons removeAllObjects];

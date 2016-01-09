@@ -7,7 +7,8 @@
 //
 
 #import "TNBaseTableViewController.h"
-#import "HomeWorkHistoryModel.h"
+#import "HomeWorkCollectionModel.h"
+#import "HomeWorkHistoryCell.h"
 @interface HomeWorkCollectionVC : TNBaseTableViewController
-@property (nonatomic, copy)void (^completion)(HomeWorkHistoryItem *homeWorkItem);
+@property (nonatomic, copy)void (^completion)(HomeWorkItem *homeWorkItem);
 @end

@@ -8,46 +8,32 @@
 
 #import "HomeWorkHistoryModel.h"
 
-@implementation HomeWorkHistoryItem
-
-- (void)parseData:(TNDataWrapper *)dataWrapper
-{
-    self.homeworkId = [dataWrapper getStringForKey:@"id"];
-    self.words = [dataWrapper getStringForKey:@"words"];
-    self.courseName = [dataWrapper getStringForKey:@"course_name"];
-    self.fav = [dataWrapper getBoolForKey:@"fav"];
-    self.type = [dataWrapper getIntegerForKey:@"ptype"];
-    
-    TNDataWrapper *voiceWrapper = [dataWrapper getDataWrapperForKey:@"voice"];
-    if(voiceWrapper.count > 0)
-    {
-        AudioItem *audioItem = [[AudioItem alloc] init];
-        [audioItem parseData:voiceWrapper];
-        self.audioItem = audioItem;
-    }
-    
-    TNDataWrapper *photoWrapper = [dataWrapper getDataWrapperForKey:@"pics"];
-    if(photoWrapper.count > 0)
-    {
-        NSMutableArray *photoArray = [NSMutableArray array];
-        for (NSInteger i = 0; i < photoWrapper.count; i++)
-        {
-            TNDataWrapper *photoItemWrapp = [photoWrapper getDataWrapperForIndex:i];
-            PhotoItem *photoItem = [[PhotoItem alloc] init];
-            [photoItem parseData:photoItemWrapp];
-            [photoArray addObject:photoItem];
-        }
-        self.photoArray = photoArray;
-    }
-}
-
-@end
-
-
 @implementation HomeWorkHistoryModel
+
+
+- (BOOL)hasMoreData
+{
+    return self.has;
+}
 
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
 {
+    if(type == REQUEST_REFRESH)
+        [self.modelItemArray removeAllObjects];
+    TNDataWrapper *moreWrapper = [data getDataWrapperForKey:@"more"];
+    self.has = [moreWrapper getBoolForKey:@"has"];
+    self.maxID = [moreWrapper getStringForKey:@"id"];
+    TNDataWrapper *itemListWrapper = [data getDataWrapperForKey:@"items"];
+    if(itemListWrapper.count > 0)
+    {
+        for (NSInteger i = 0; i < itemListWrapper.count; i++)
+        {
+            TNDataWrapper *homeWorkItemWrapper = [itemListWrapper getDataWrapperForIndex:i];
+            HomeWorkItem *item = [[HomeWorkItem alloc] init];
+            [item parseData:homeWorkItemWrapper];
+            [self.modelItemArray addObject:item];
+        }
+    }
     return YES;
 }
 @end

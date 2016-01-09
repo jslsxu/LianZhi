@@ -168,7 +168,7 @@
     }
     else
     {
-        [params setValue:[NSString stringWithJSONObject:@[classDic]] forKey:@"classes"];
+        [params setValue:targetStr forKey:@"classes"];
         
         [params setValue:[NSString stringWithJSONObject:self.record] forKey:@"record"];
         

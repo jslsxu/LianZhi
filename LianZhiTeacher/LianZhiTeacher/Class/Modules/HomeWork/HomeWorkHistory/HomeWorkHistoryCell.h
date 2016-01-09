@@ -6,8 +6,12 @@
 //  Copyright (c) 2015年 jslsxu. All rights reserved.
 //
 
-#import "HomeWorkItemCell.h"
+
 #import "HomeWorkHistoryModel.h"
+
+extern NSString *const kAddFavNotification;
+extern NSString *const kPractiseItemKey;
+
 @interface HomeWorkHistoryCell : TNTableViewCell<UICollectionViewDataSource, UICollectionViewDelegate>
 {
     UILabel*        _dateLabel;
@@ -19,7 +23,7 @@
     UICollectionView*   _collectionView;
     MessageVoiceButton* _voiceButton;
     UILabel*            _spanLabel;
-    UIImageView*    _likeImageView;          //收藏
+    UIButton*       _likeButton;          //收藏
     UIButton*       _moreButton;
 }
 @end

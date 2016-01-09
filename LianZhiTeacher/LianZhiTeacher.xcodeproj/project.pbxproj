@@ -379,6 +379,7 @@
 		37EAC9EA1B82446F007BFBA1 /* CommonInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9E91B82446F007BFBA1 /* CommonInputVC.m */; };
 		37EACA031B845B5F007BFBA1 /* PasswordConfirmVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EACA011B845B5F007BFBA1 /* PasswordConfirmVC.m */; };
 		37ED9E0E1C3B8C3A00E9F8CA /* StudentAttendanceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37ED9E0D1C3B8C3A00E9F8CA /* StudentAttendanceModel.m */; };
+		37ED9E111C3D1A3C00E9F8CA /* HomeworkItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37ED9E101C3D1A3C00E9F8CA /* HomeworkItem.m */; };
 		37F206D81BD87A99006466F4 /* City.db in Resources */ = {isa = PBXBuildFile; fileRef = 37F206D71BD87A99006466F4 /* City.db */; };
 		37F206E61BDCB41E006466F4 /* CityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206E51BDCB41E006466F4 /* CityManager.m */; };
 		37F206F31BDCB5C9006466F4 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206E91BDCB5C9006466F4 /* FMDatabase.m */; };
@@ -389,11 +390,7 @@
 		37F2070F1BDE015D006466F4 /* SurroundingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F2070E1BDE015D006466F4 /* SurroundingVC.m */; };
 		37F207161BE0BBFF006466F4 /* UITouchScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207151BE0BBFF006466F4 /* UITouchScrollView.m */; };
 		37FB1C501BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C4F1BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.m */; };
-		37FB1C531BE3DECF004ECE2E /* PublishHomeWorkTextVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C521BE3DECF004ECE2E /* PublishHomeWorkTextVC.m */; };
-		37FB1C561BE3DEDF004ECE2E /* PublishHomeWorkPhotoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C551BE3DEDF004ECE2E /* PublishHomeWorkPhotoVC.m */; };
 		37FB1C591BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C581BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m */; };
-		37FB1C5C1BE4949F004ECE2E /* HomeWorkItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C5B1BE4949F004ECE2E /* HomeWorkItemCell.m */; };
-		37FB1C5F1BE4979B004ECE2E /* HomeWorkItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C5E1BE4979B004ECE2E /* HomeWorkItem.m */; };
 		37FB1C631BE4C368004ECE2E /* HomeWorkHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C621BE4C368004ECE2E /* HomeWorkHistoryVC.m */; };
 		37FB1C661BE4C50D004ECE2E /* HomeWorkHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C651BE4C50D004ECE2E /* HomeWorkHistoryModel.m */; };
 		37FB1C691BE4C596004ECE2E /* HomeWorkHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C681BE4C596004ECE2E /* HomeWorkHistoryCell.m */; };
@@ -1148,6 +1145,8 @@
 		37EACA021B845B5F007BFBA1 /* PasswordConfirmVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordConfirmVC.h; sourceTree = "<group>"; };
 		37ED9E0C1C3B8C3A00E9F8CA /* StudentAttendanceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentAttendanceModel.h; sourceTree = "<group>"; };
 		37ED9E0D1C3B8C3A00E9F8CA /* StudentAttendanceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentAttendanceModel.m; sourceTree = "<group>"; };
+		37ED9E0F1C3D1A3C00E9F8CA /* HomeworkItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkItem.h; sourceTree = "<group>"; };
+		37ED9E101C3D1A3C00E9F8CA /* HomeworkItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkItem.m; sourceTree = "<group>"; };
 		37F206D71BD87A99006466F4 /* City.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = City.db; sourceTree = "<group>"; };
 		37F206E41BDCB41E006466F4 /* CityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityManager.h; sourceTree = "<group>"; };
 		37F206E51BDCB41E006466F4 /* CityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityManager.m; sourceTree = "<group>"; };
@@ -1168,16 +1167,8 @@
 		37F207151BE0BBFF006466F4 /* UITouchScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITouchScrollView.m; sourceTree = "<group>"; };
 		37FB1C4E1BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishHomeWorkBaseVC.h; sourceTree = "<group>"; };
 		37FB1C4F1BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishHomeWorkBaseVC.m; sourceTree = "<group>"; };
-		37FB1C511BE3DECF004ECE2E /* PublishHomeWorkTextVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishHomeWorkTextVC.h; sourceTree = "<group>"; };
-		37FB1C521BE3DECF004ECE2E /* PublishHomeWorkTextVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishHomeWorkTextVC.m; sourceTree = "<group>"; };
-		37FB1C541BE3DEDF004ECE2E /* PublishHomeWorkPhotoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishHomeWorkPhotoVC.h; sourceTree = "<group>"; };
-		37FB1C551BE3DEDF004ECE2E /* PublishHomeWorkPhotoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishHomeWorkPhotoVC.m; sourceTree = "<group>"; };
 		37FB1C571BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishHomeWorkAudioVC.h; sourceTree = "<group>"; };
 		37FB1C581BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishHomeWorkAudioVC.m; sourceTree = "<group>"; };
-		37FB1C5A1BE4949F004ECE2E /* HomeWorkItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkItemCell.h; sourceTree = "<group>"; };
-		37FB1C5B1BE4949F004ECE2E /* HomeWorkItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkItemCell.m; sourceTree = "<group>"; };
-		37FB1C5D1BE4979B004ECE2E /* HomeWorkItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkItem.h; sourceTree = "<group>"; };
-		37FB1C5E1BE4979B004ECE2E /* HomeWorkItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkItem.m; sourceTree = "<group>"; };
 		37FB1C611BE4C368004ECE2E /* HomeWorkHistoryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkHistoryVC.h; sourceTree = "<group>"; };
 		37FB1C621BE4C368004ECE2E /* HomeWorkHistoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkHistoryVC.m; sourceTree = "<group>"; };
 		37FB1C641BE4C50D004ECE2E /* HomeWorkHistoryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkHistoryModel.h; sourceTree = "<group>"; };
@@ -2584,10 +2575,6 @@
 				378436AD1C153B31009CBBA0 /* CourseView.m */,
 				378436AF1C153BD6009CBBA0 /* HomeWorkPhotoView.h */,
 				378436B01C153BD6009CBBA0 /* HomeWorkPhotoView.m */,
-				37FB1C5A1BE4949F004ECE2E /* HomeWorkItemCell.h */,
-				37FB1C5B1BE4949F004ECE2E /* HomeWorkItemCell.m */,
-				37FB1C5D1BE4979B004ECE2E /* HomeWorkItem.h */,
-				37FB1C5E1BE4979B004ECE2E /* HomeWorkItem.m */,
 				378DA1441C09956C00301C26 /* HomeWorkDetail */,
 				372C75321C07FFD600A1D90B /* HomeWorkCollection */,
 				372C752E1C07FF8500A1D90B /* MyHomeworkList */,
@@ -2959,10 +2946,6 @@
 			children = (
 				37FB1C4E1BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.h */,
 				37FB1C4F1BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.m */,
-				37FB1C511BE3DECF004ECE2E /* PublishHomeWorkTextVC.h */,
-				37FB1C521BE3DECF004ECE2E /* PublishHomeWorkTextVC.m */,
-				37FB1C541BE3DEDF004ECE2E /* PublishHomeWorkPhotoVC.h */,
-				37FB1C551BE3DEDF004ECE2E /* PublishHomeWorkPhotoVC.m */,
 				37FB1C571BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.h */,
 				37FB1C581BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m */,
 			);
@@ -2974,6 +2957,8 @@
 			children = (
 				37FB1C611BE4C368004ECE2E /* HomeWorkHistoryVC.h */,
 				37FB1C621BE4C368004ECE2E /* HomeWorkHistoryVC.m */,
+				37ED9E0F1C3D1A3C00E9F8CA /* HomeworkItem.h */,
+				37ED9E101C3D1A3C00E9F8CA /* HomeworkItem.m */,
 				37FB1C641BE4C50D004ECE2E /* HomeWorkHistoryModel.h */,
 				37FB1C651BE4C50D004ECE2E /* HomeWorkHistoryModel.m */,
 				37FB1C671BE4C596004ECE2E /* HomeWorkHistoryCell.h */,
@@ -3300,12 +3285,12 @@
 				37D8C7BA1A5986F000E5E2E4 /* ClassTableCell.m in Sources */,
 				3793FA691B7CFFF000501F77 /* AFHTTPSessionManager.m in Sources */,
 				37FB1C591BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m in Sources */,
+				37ED9E111C3D1A3C00E9F8CA /* HomeworkItem.m in Sources */,
 				370F33D91A78795000FED3C2 /* PersonalSettingVC.m in Sources */,
 				3728A7371B9D376300310457 /* FunctionView.m in Sources */,
 				3793FAD31B7CFFF000501F77 /* SDWebImagePrefetcher.m in Sources */,
 				37DEE4D91A57C1D8009A8771 /* ClassAppCell.m in Sources */,
 				3793FA521B7CFFF000501F77 /* REValidator.m in Sources */,
-				37FB1C5F1BE4979B004ECE2E /* HomeWorkItem.m in Sources */,
 				372C75381C0802CC00A1D90B /* HomeWorkCollectionModel.m in Sources */,
 				3793FA731B7CFFF000501F77 /* ALAsset+accessibilityLabel.m in Sources */,
 				37E93FC21A7E9CC600AD45A1 /* MJPhotoBrowser.m in Sources */,
@@ -3372,12 +3357,10 @@
 				37D8C7B71A5986D800E5E2E4 /* StudentGridView.m in Sources */,
 				3793FA8E1B7CFFF000501F77 /* LimitedTextField.m in Sources */,
 				3793FA8D1B7CFFF000501F77 /* DAOverlayView.m in Sources */,
-				37FB1C531BE3DECF004ECE2E /* PublishHomeWorkTextVC.m in Sources */,
 				3728A73E1B9D376300310457 /* UUProgressHUD.m in Sources */,
 				371C6DAC1A7015AF00FA4AEC /* PublishAudioVC.m in Sources */,
 				372ED8231B81795A00D07344 /* InterestVC.m in Sources */,
 				3793FA991B7CFFF000501F77 /* TGRImageZoomAnimationController.m in Sources */,
-				37FB1C561BE3DEDF004ECE2E /* PublishHomeWorkPhotoVC.m in Sources */,
 				3793FA851B7CFFF000501F77 /* LZBadgeLabel.m in Sources */,
 				3793FAEA1B7CFFF000501F77 /* TNListModel.m in Sources */,
 				3793FAA41B7CFFF000501F77 /* NSString+StringSize.m in Sources */,
@@ -3385,7 +3368,6 @@
 				3705FF8E1BA1974500F0C6F6 /* MessageSendVC.m in Sources */,
 				3793FAF91B7D081900501F77 /* PhotoPickerView.m in Sources */,
 				37E93F991A7DC48200AD45A1 /* TNActionSheet.m in Sources */,
-				37FB1C5C1BE4949F004ECE2E /* HomeWorkItemCell.m in Sources */,
 				3793FA671B7CFFF000501F77 /* AFHTTPRequestOperation.m in Sources */,
 				37FD6E381BB6F53800C83AB4 /* RegisterAuthVC.m in Sources */,
 				3728A7481B9D37AF00310457 /* NSDate+Utils.m in Sources */,

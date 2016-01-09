@@ -7,40 +7,26 @@
 //
 
 #import "HomeWorkHistoryVC.h"
-
+#import "HomeWorkDetailVC.h"
 @interface HomeWorkHistoryVC ()<ActionSelectViewDelegate>
 @property (nonatomic, copy)NSString *course;
 @property (nonatomic, strong)NSMutableArray *courseArray;
 @end
 
 @implementation HomeWorkHistoryVC
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    
-//    self.courseArray = [NSMutableArray array];
-//    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
-//    {
-//        BOOL isIn = NO;
-//        for (NSString * course in self.courseArray)
-//        {
-//            if([course isEqualToString:classInfo.course])
-//                isIn = YES;
-//        }
-//        if(!isIn)
-//            [self.courseArray addObject:classInfo.course];
-//    }
-//    if(self.courseArray.count > 0)
-//        self.course = self.courseArray[0];
-//    if(self.courseArray.count > 0)
-//        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"切换" style:UIBarButtonItemStylePlain target:self action:@selector(switchCourse)];
-    
-//    self.title = self.course;
-    
+    [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 10, 0)];
     [self bindTableCell:@"HomeWorkHistoryCell" tableModel:@"HomeWorkHistoryModel"];
     [self setSupportPullDown:YES];
     [self setSupportPullUp:YES];
     [self requestData:REQUEST_REFRESH];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFavChanged:) name:kAddFavNotification object:nil];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
@@ -50,37 +36,37 @@
     [task setRequestMethod:REQUEST_GET];
     [task setRequestType:requestType];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:nil forKey:@"max_id"];
-    
+    HomeWorkHistoryModel *model = (HomeWorkHistoryModel *)self.tableViewModel;
+    if(REQUEST_GETMORE == requestType)
+        [params setValue:[model maxID] forKey:@"max_id"];
     [task setParams:params];
     [task setObserver:self];
     return task;
     
 }
 
-- (void)switchCourse
+- (void)onFavChanged:(NSNotification *)noti
 {
-    ActionSelectView *selectView = [[ActionSelectView alloc] init];
-    [selectView setDelegate:self];
-    [selectView show];
+    NSDictionary *userInfo = [noti userInfo];
+    HomeWorkItem *item = userInfo[kPractiseItemKey];
+    for (NSInteger i = 0; i < self.tableViewModel.modelItemArray.count; i++)
+    {
+        HomeWorkItem *targetItem = self.tableViewModel.modelItemArray[i];
+        if([item.homeworkId isEqualToString:targetItem.homeworkId])
+        {
+            targetItem.fav = item.fav;
+            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        }
+    }
 }
 
-#pragma mark - ActionSelectDelegate
-- (NSInteger)pickerView:(ActionSelectView *)pickerView numberOfRowsInComponent:(NSInteger)component
+- (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-    return self.courseArray.count;
-}
-
-- (NSString *)pickerView:(ActionSelectView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    return self.courseArray[row];
-}
-
-- (void)pickerViewFinished:(ActionSelectView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    self.course = self.courseArray[row];
-    self.title = self.course;
-    [self requestData:REQUEST_REFRESH];
+    HomeWorkItem *homeWorkItem = (HomeWorkItem *)modelItem;
+    HomeWorkDetailVC *detailVC = [[HomeWorkDetailVC alloc] init];
+    [detailVC setHomeworkID:homeWorkItem.homeworkId];
+    [detailVC setCompletion:self.completion];
+    [CurrentROOTNavigationVC pushViewController:detailVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -88,14 +74,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

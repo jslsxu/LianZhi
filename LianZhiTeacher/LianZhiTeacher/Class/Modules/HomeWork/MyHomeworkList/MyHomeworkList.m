@@ -30,9 +30,14 @@
     [self.view addSubview:headerView];
     
     _historyVC = [[HomeWorkHistoryVC alloc] init];
+    [_historyVC.view setFrame:CGRectMake(0, headerView.bottom, self.view.width, self.view.height - headerView.bottom)];
     [_historyVC setCompletion:self.completion];
+    [self.view addSubview:_historyVC.view];
+    
     _collectionVC = [[HomeWorkCollectionVC alloc] init];
-    [_historyVC setCompletion:self.completion];
+    [_collectionVC.view setFrame:CGRectMake(0, headerView.bottom, self.view.width, self.view.height - headerView.bottom)];
+    [_collectionVC setCompletion:self.completion];
+    [self.view addSubview:_collectionVC.view];
     [_historyVC.view setHidden:NO];
     [_collectionVC.view setHidden:YES];
 }

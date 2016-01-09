@@ -16,5 +16,5 @@
     HomeWorkHistoryVC*      _historyVC;
     HomeWorkCollectionVC*   _collectionVC;
 }
-@property (nonatomic, copy)void (^completion)(HomeWorkHistoryItem *homeWorkItem);
+@property (nonatomic, copy)void (^completion)(HomeWorkItem *homeWorkItem);
 @end

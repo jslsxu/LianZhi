@@ -14,5 +14,6 @@
     MessageVoiceButton *_voiceButton;
     UITableView*    _tableView;
 }
-@property (nonatomic, strong)HomeWorkItem *homeWorkItem;
+@property (nonatomic, copy)NSString *homeworkID;
+@property (nonatomic, copy)void (^completion)(HomeWorkItem *homeWorkItem);
 @end
