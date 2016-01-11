@@ -8,7 +8,7 @@
 
 #import "TNTableViewCell.h"
 
-@interface HomeWorkCell : TNTableViewCell
+@interface HomeWorkCell : TNTableViewCell<UICollectionViewDataSource, UICollectionViewDelegate>
 {
     UILabel*        _dateLabel;
     UILabel*        _courseLabel;
@@ -17,6 +17,7 @@
     NSMutableArray* _photoViewArray;
     MessageVoiceButton* _voiceButton;
     UILabel*        _timespanLabel;
+    UICollectionView*   _collectionView;
     UILabel*        _timeLabel;
     UIView*         _bottomLine;
     UILabel*        _fromLabel;

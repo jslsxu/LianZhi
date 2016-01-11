@@ -202,7 +202,7 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-    ClassAttendanceVC *homeWorkVC = [[ClassAttendanceVC alloc] init];
+    HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
     [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
     return;
     ApplicationItem *item = (ApplicationItem *)modelItem;

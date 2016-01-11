@@ -45,14 +45,24 @@
         _timespanLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_timespanLabel setFont:[UIFont systemFontOfSize:12]];
         [_timespanLabel setTextColor:[UIColor colorWithHexString:@"7a7a7a"]];
+        [_bgView addSubview:_timespanLabel];
+        
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 0, _bgView.width - 10 * 2, 0) collectionViewLayout:layout];
+        [_collectionView setDelegate:self];
+        [_collectionView setDataSource:self];
+        
+        [_bgView addSubview:_collectionView];
+        
         
         _bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height, self.width, kLineHeight)];
         [_bottomLine setBackgroundColor:kSepLineColor];
         [_bgView addSubview:_bottomLine];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_timeLabel setFont:[UIFont systemFontOfSize:9]];
-        [_timeLabel setTextColor:[UIColor colorWithHexString:@"cccccc"]];
+        [_timeLabel setFont:[UIFont systemFontOfSize:12]];
+        [_timeLabel setTextColor:[UIColor colorWithHexString:@"7a7a7a"]];
         [_bgView addSubview:_timeLabel];
         
         _fromLabel = [[UILabel alloc] initWithFrame:CGRectZero];

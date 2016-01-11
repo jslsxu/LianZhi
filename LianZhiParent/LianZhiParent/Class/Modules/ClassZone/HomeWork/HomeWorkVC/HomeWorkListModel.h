@@ -16,5 +16,6 @@
 @end
 
 @interface HomeWorkListModel : TNListModel
-
+@property (nonatomic, assign)BOOL has;
+@property (nonatomic, copy)NSString *maxID;
 @end

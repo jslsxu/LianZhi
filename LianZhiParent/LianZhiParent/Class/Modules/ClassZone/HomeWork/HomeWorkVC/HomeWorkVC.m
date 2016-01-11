@@ -23,7 +23,7 @@
     [super viewDidLoad];
     self.title = @"作业练习";
     [self bindTableCell:@"HomeWorkCell" tableModel:@"HomeWorkListModel"];
-    [self.tableView reloadData];
+    [self requestData:REQUEST_REFRESH];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType

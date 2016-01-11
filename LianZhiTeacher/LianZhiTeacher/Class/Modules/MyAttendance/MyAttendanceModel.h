@@ -9,5 +9,5 @@
 #import "TNListModel.h"
 #import "MyAttendanceItem.h"
 @interface MyAttendanceModel : TNListModel
-
+@property (nonatomic, strong)MyAttendanceItem *todayItem;
 @end

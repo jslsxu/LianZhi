@@ -8,8 +8,8 @@
 
 #import "VacationHistoryVC.h"
 #import "RequestVacationVC.h"
-@interface VacationHistoryVC ()
-
+@interface VacationHistoryVC ()<MonthIndicatorDelegate>
+@property (nonatomic, copy)NSString *month;
 @end
 
 @implementation VacationHistoryVC
@@ -17,7 +17,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"考勤记录";
-    
+    NSDateFormatter *fomatter = [[NSDateFormatter alloc] init];
+    [fomatter setDateFormat:@"yyyy-MM"];
+    self.month = [fomatter stringFromDate:[NSDate date]];
+    [self requestData];
     UIView* headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 100)];
     [headerView setBackgroundColor:[UIColor colorWithHexString:@"04aa73"]];
     
@@ -36,6 +39,7 @@
     [self.view addSubview:headerView];
     
     _monthIndicator = [[MonthIndicatorView alloc] initWithFrame:CGRectMake(0, headerView.bottom, self.view.width, 36)];
+    [_monthIndicator setDelegate:self];
     [self.view addSubview:_monthIndicator];
     
     _calendarView = [[CalendarView alloc] initWithFrame:CGRectMake(0, _monthIndicator.bottom, self.view.width, 280)];
@@ -49,12 +53,35 @@
     [vacationButton setTitle:@"在线请假" forState:UIControlStateNormal];
     [vacationButton addTarget:self action:@selector(onVacationButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:vacationButton];
+    
+    [self requestData];
+}
+
+- (void)requestData
+{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:[NSString stringWithFormat:@"%@-01",self.month] forKey:@"from_date"];
+    [params setValue:[NSString stringWithFormat:@"%@-31",self.month] forKey:@"to_date"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/get" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (void)onVacationButtonClicked
 {
     RequestVacationVC *requestVacationVC = [[RequestVacationVC alloc] init];
     [CurrentROOTNavigationVC pushViewController:requestVacationVC animated:YES];
+}
+
+#pragma mark - MonthIndicatorView
+- (void)monthIndicatorDidChangeMonth:(NSDate *)date
+{
+    NSDateFormatter *fomatter = [[NSDateFormatter alloc] init];
+    [fomatter setDateFormat:@"yyyy-MM"];
+    self.month = [fomatter stringFromDate:date];
+    [self requestData];
 }
 
 - (void)didReceiveMemoryWarning {

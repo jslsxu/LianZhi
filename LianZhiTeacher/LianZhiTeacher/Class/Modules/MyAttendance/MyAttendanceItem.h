@@ -9,7 +9,9 @@
 #import "TNModelItem.h"
 
 @interface MyAttendanceItem : TNModelItem
-@property (nonatomic, copy)NSString *date;
-@property (nonatomic, copy)NSString *start;
-@property (nonatomic, copy)NSString *end;
+@property (nonatomic, assign)NSInteger timeStamp;
+@property (nonatomic, copy)NSString *startTime;
+@property (nonatomic, copy)NSString *startRegion;
+@property (nonatomic, copy)NSString *endTime;
+@property (nonatomic, copy)NSString *endRegion;
 @end

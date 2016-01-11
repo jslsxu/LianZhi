@@ -20,26 +20,30 @@
 
 @implementation HomeWorkListModel
 
-- (id)init
-{
-    self = [super init];
-    if(self)
-    {
-        for (NSInteger i = 0; i < 4; i++)
-        {
-            
-        }
-    }
-    return self;
-}
-
 - (BOOL)hasMoreData
 {
-    return NO;
+    return self.has;
 }
 
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
 {
+    if(type == REQUEST_REFRESH)
+        [self.modelItemArray removeAllObjects];
+    TNDataWrapper *moreWrapper = [data getDataWrapperForKey:@"more"];
+    self.has = [moreWrapper getBoolForKey:@"has"];
+    self.maxID = [moreWrapper getStringForKey:@"id"];
+    
+    TNDataWrapper *itemsWrapper = [data getDataWrapperForKey:@"items"];
+    if(itemsWrapper.count > 0)
+    {
+        for (NSInteger i = 0; i < itemsWrapper.count; i++)
+        {
+            TNDataWrapper *itemWrapper = [itemsWrapper getDataWrapperForIndex:i];
+            HomeWorkItem *item = [[HomeWorkItem alloc] init];
+            [item parseData:itemWrapper];
+            [self.modelItemArray addObject:item];
+        }
+    }
     return YES;
 }
 

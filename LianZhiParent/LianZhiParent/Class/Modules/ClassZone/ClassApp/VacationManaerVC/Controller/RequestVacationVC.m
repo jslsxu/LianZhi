@@ -67,12 +67,12 @@
     [contentView.layer setMasksToBounds:YES];
     [self.view addSubview:contentView];
     
-    UTPlaceholderTextView* textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectInset(contentView.bounds, 10, 10)];
-    [textView setPlaceholder:@"请输入请假原因"];
-    [textView setFont:[UIFont systemFontOfSize:15]];
-    [textView setTextColor:[UIColor darkGrayColor]];
-    [textView setDelegate:self];
-    [contentView addSubview:textView];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectInset(contentView.bounds, 10, 10)];
+    [_textView setPlaceholder:@"请输入请假原因"];
+    [_textView setFont:[UIFont systemFontOfSize:15]];
+    [_textView setTextColor:[UIColor darkGrayColor]];
+    [_textView setDelegate:self];
+    [contentView addSubview:_textView];
 }
 - (void)setStartDate:(NSDate *)startDate
 {
@@ -133,7 +133,17 @@
 
 - (void)onSend
 {
-    
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:self.view];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.startDate forKey:@"from_date"];
+    [params setValue:self.endDate forKey:@"end_date"];
+    [params setValue:_textView.text forKey:@"words"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/leave" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [hud hide:YES];
+        [ProgressHUD showHintText:@"申请成功"];
+    } fail:^(NSString *errMsg) {
+        [hud hide:YES];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
