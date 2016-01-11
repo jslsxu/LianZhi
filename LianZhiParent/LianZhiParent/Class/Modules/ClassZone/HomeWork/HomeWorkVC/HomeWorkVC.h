@@ -9,5 +9,5 @@
 #import "TNBaseViewController.h"
 
 @interface HomeWorkVC : TNBaseTableViewController
-@property (nonatomic, copy)NSString *courseID;
+@property (nonatomic, copy)NSString *classID;
 @end

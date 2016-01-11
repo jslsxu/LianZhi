@@ -8,15 +8,17 @@
 
 #import "CalendarView.h"
 
+#define kHMargin                20
+
 @implementation CalendarGridCell
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if(self)
     {
-        [self.layer setBorderColor:[UIColor colorWithHexString:@"E8E8E8"].CGColor];
-        [self.layer setBorderWidth:0.5];
         _dateLabel = [[UILabel alloc] initWithFrame:CGRectInset(self.bounds, 5, 5)];
+        [_dateLabel setTextAlignment:NSTextAlignmentCenter];
+        [_dateLabel setText:@"1"];
         [_dateLabel setFont:[UIFont systemFontOfSize:14]];
         [_dateLabel setTextColor:[UIColor grayColor]];
         [self addSubview:_dateLabel];
@@ -28,6 +30,7 @@
         _drugImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CalendarDrug"]];
         [_drugImageView setOrigin:CGPointMake(self.width - 2 - _drugImageView.width, self.height - 2 - _drugImageView.height)];
         [self addSubview:_drugImageView];
+
     }
     return self;
 }
@@ -73,15 +76,16 @@
         [self setupWeekdayView:_weekdayView];
         [self addSubview:_weekdayView];
         
-        NSInteger width = (self.width + 6) / 7;
-        NSInteger height = width * 7 / 9;
+        NSInteger width = (self.width - kHMargin * 2) / 7;
+        NSInteger height = width;
         
         _flowLayout = [[UICollectionViewFlowLayout alloc] init];
         [_flowLayout setItemSize:CGSizeMake(width, height)];
         [_flowLayout setMinimumInteritemSpacing:0];
         [_flowLayout setMinimumLineSpacing:0];
         
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake((self.width - width * 7) / 2, _weekdayView.bottom - 1, width * 7, 100 + 2) collectionViewLayout:_flowLayout];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, _weekdayView.bottom - 1, self.width, 100 + 2) collectionViewLayout:_flowLayout];
+        [_collectionView setContentInset:UIEdgeInsetsMake(0, kHMargin, 0, kHMargin)];
         [_collectionView setBackgroundColor:[UIColor whiteColor]];
         [_collectionView registerClass:[CalendarGridCell class] forCellWithReuseIdentifier:@"CalendarGridCell"];
         [_collectionView setDelegate:self];
@@ -97,16 +101,16 @@
 
 - (void)setupWeekdayView:(UIView *)viewParent
 {
-    [viewParent setBackgroundColor:[UIColor colorWithHexString:@"E3E3E3"]];
+    [viewParent setBackgroundColor:[UIColor whiteColor]];
     
-    NSInteger width = viewParent.width / 7;
+    NSInteger width = (viewParent.width - kHMargin * 2) / 7;
     for (NSInteger i = 0; i < 7; i++)
     {
-        UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectMake(width * i, 0, width, viewParent.height)];
+        UILabel *weekdayLabel = [[UILabel alloc] initWithFrame:CGRectMake(kHMargin + width * i, 0, width, viewParent.height)];
         [weekdayLabel setTextColor:[UIColor darkGrayColor]];
         [weekdayLabel setFont:[UIFont systemFontOfSize:14]];
         [weekdayLabel setTextAlignment:NSTextAlignmentCenter];
-        [weekdayLabel setText:[Utility weekdayNameForIndex:i + 1]];
+        [weekdayLabel setText:[Utility weekdayNameForIndex:i]];
         [viewParent addSubview:weekdayLabel];
     }
 }
@@ -156,13 +160,15 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.dateArray.count;
+//    return self.dateArray.count;
+    return 30;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *reuseID = @"CalendarGridCell";
     CalendarGridCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseID forIndexPath:indexPath];
+    
 //    PlanCollection *collection = self.dateArray[indexPath.row];
 //    [cell setPlanCollection:collection];
 //    NSInteger selectedTimeInterval = [self.selectedDate timeIntervalSince1970];

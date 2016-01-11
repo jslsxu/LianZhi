@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "StudentAttendanceModel.h"
+
+extern NSString *const kStudentAttendanceStatusChanged;
+
 @interface StudentAttendanceCell : TNTableViewCell
 {
+    NSMutableArray*    _statusArray;
     UILabel*    _nameLabel;
-    UIImageView*    _statusImageView;
     UIView*     _sepLine;
 }
 

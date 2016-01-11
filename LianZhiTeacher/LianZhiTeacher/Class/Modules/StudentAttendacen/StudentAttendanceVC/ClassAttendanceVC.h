@@ -8,17 +8,29 @@
 
 #import "TNBaseViewController.h"
 
-@interface ClassAttendanceCell : UITableViewCell
+@interface ClassAttendanceCell : TNTableViewCell
 {
     LogoView*    _logoView;
     UILabel*        _nameLabel;
+    UIView*     _sepLine;
 }
-@property (nonatomic, strong)ClassInfo *classInfo;
 @end
 
-@interface ClassAttendanceVC : TNBaseViewController
+@interface ClassLeftItem : TNModelItem
+@property (nonatomic, copy)NSString *classID;
+@property (nonatomic, copy)NSString *className;
+@property (nonatomic, copy)NSString *logo;
+@property (nonatomic, assign)NSInteger leftNum;
+
+@end
+
+@interface ClassLeftModel : TNListModel
+
+@end
+
+@interface ClassAttendanceVC : TNBaseTableViewController
 {
-    UITableView*    _tableView;
+    
 }
 @property (nonatomic, copy)NSString *classID;
 @end

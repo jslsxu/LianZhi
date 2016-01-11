@@ -90,9 +90,9 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-//    VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
-//    [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
-//    return;
+    VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
+    [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
+    return;
     ClassAppItem *appItem = (ClassAppItem *)modelItem;
     NSString *actionUrl = appItem.actionUrl;
     if([actionUrl length] > 0)

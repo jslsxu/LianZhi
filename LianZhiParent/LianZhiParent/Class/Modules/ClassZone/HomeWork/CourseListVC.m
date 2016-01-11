@@ -140,7 +140,6 @@
     CourseItem *courseItem = (CourseItem *)modelItem;
     
     HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
-    [homeWorkVC setCourseID:courseItem.courseID];
     [homeWorkVC setTitle:courseItem.courseName];
     [self.navigationController pushViewController:homeWorkVC animated:YES];
 }

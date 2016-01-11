@@ -26,6 +26,7 @@
     [headerView addSubview:avatarView];
     
     _descLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarView.right + 20, 20, headerView.width - 20 - (avatarView.right + 20), headerView.height - 20 * 2)];
+    [_descLabel setText:@"李爽同学本月桑无请假记录，全勤宝宝勋章正在向你招手哦"];
     [_descLabel setTextColor:[UIColor whiteColor]];
     [_descLabel setFont:[UIFont systemFontOfSize:14]];
     [_descLabel setNumberOfLines:0];

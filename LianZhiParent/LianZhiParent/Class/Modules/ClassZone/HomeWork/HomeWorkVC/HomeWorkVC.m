@@ -28,7 +28,16 @@
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
 {
-    return nil;
+    HttpRequestTask *task = [[HttpRequestTask alloc] init];
+    [task setRequestUrl:@"practice/get_list"];
+    [task setRequestMethod:REQUEST_GET];
+    [task setRequestType:requestType];
+    [task setObserver:self];
+    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.classID forKey:@"class_id"];
+    [task setParams:params];
+    return task;
 }
 
 - (void)didReceiveMemoryWarning {

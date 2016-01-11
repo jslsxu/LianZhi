@@ -68,8 +68,8 @@
 
 + (NSString *)weekdayNameForIndex:(NSInteger)day
 {
-    static NSString *weekdays[7] = {@"周一",@"周二",@"周三",@"周四",@"周五",@"周六",@"周日"};
-    return weekdays[day - 1];
+    static NSString *weekdays[7] = {@"日", @"一",@"二",@"三",@"四",@"五",@"六"};
+    return weekdays[day];
 }
 
 + (NSString *)weekdayStrForSelectedArray:(NSArray *)selectedArray

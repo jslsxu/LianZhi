@@ -9,20 +9,26 @@
 #import "TNBaseViewController.h"
 #import "StudentAttendanceCell.h"
 #import "StudentAttendanceHeaderView.h"
-#import "DatePickerView.h"
+#import "AttendanceDateView.h"
+#import "StudentAttendanceModel.h"
+
+@protocol StudentAttendanceDelegate <NSObject>
+
+- (void)studentAttendanceOnSortColumn:(NSInteger)column;
+
+@end
 
 @interface StudentAttendanceHeader : UITableViewHeaderFooterView
 {
-    UILabel*    _nameLabel;
-    UILabel*    _attendanceLabel;
-    UILabel*    _vacationLabel;
-    UILabel*    _leftLabel;
+    NSMutableArray*     _labelArray;
 }
+@property (nonatomic, strong)StudentAttendanceModel *model;
+@property (nonatomic, weak)id<StudentAttendanceDelegate> delegate;
 @end
 
 @interface StudentAttendanceVC : TNBaseTableViewController
 {
-    DatePickerView* _datePickerView;
+    AttendanceDateView* _datePickerView;
 }
-@property (nonatomic, strong)ClassInfo *classInfo;
+@property (nonatomic, copy)NSString *classID;
 @end

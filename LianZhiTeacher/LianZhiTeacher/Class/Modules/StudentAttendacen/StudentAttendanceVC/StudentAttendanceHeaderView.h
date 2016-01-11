@@ -23,5 +23,6 @@
     UICollectionView*   _collectionView;
     UIView*     _attendanceHeader;
 }
+@property (nonatomic, assign)NSInteger sortColumn;
 @property (nonatomic, strong)NSArray *offArray;
 @end
