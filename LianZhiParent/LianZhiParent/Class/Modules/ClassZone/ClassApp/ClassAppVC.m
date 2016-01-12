@@ -91,7 +91,7 @@
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
     ClassInfo *classInfo = [UserCenter sharedInstance].curChild.classes[0];
-    HomeWorkVC *vacationHistoryVC = [[HomeWorkVC alloc] init];
+    VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
     [vacationHistoryVC setClassID:classInfo.classID];
     [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
     return;

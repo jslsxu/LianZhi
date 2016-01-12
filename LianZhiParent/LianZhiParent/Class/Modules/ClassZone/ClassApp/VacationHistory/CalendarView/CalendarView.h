@@ -22,10 +22,11 @@
 @interface CalendarGridCell : UICollectionViewCell
 {
     UILabel*        _dateLabel;
-    UIImageView*    _feelingImageView;
-    UIImageView*    _drugImageView;
+    UIImageView*    _statusImageView;
+    UIView*         _bgView;
 }
 @property (nonatomic, assign)BOOL curMonth;
+@property (nonatomic, strong)NSDate *date;
 @property (nonatomic, weak)VacationHistoryItem *vacationHistoryItem;
 @end
 
@@ -36,6 +37,6 @@
     UICollectionView*           _collectionView;
 }
 @property (nonatomic, strong)NSDate *curMonth;
-@property (nonatomic, strong)NSDate *selectedDate;
+@property (nonatomic, strong)NSArray *vacationArray;
 @property (nonatomic, weak)id<CalendarDelegate> delegate;
 @end

@@ -7,7 +7,7 @@
 
 #import "NSDate+convenience.h"
 
-#define kFirstWeekday                   2
+#define kFirstWeekday                   1
 
 @implementation NSDate (Convenience)
 

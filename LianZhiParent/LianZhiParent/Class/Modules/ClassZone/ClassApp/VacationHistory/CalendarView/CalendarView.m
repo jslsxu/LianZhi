@@ -16,21 +16,20 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        _dateLabel = [[UILabel alloc] initWithFrame:CGRectInset(self.bounds, 5, 5)];
+        _bgView = [[UIView alloc] initWithFrame:CGRectInset(self.bounds, 5, 5)];
+        [_bgView setBackgroundColor:[UIColor colorWithHexString:@"f4c645"]];
+        [_bgView.layer setCornerRadius:_bgView.width / 2];
+        [_bgView.layer setMasksToBounds:YES];
+        [self addSubview:_bgView];
+        
+        _dateLabel = [[UILabel alloc] initWithFrame:CGRectInset(self.bounds, 10, 10)];
+        [_dateLabel setBackgroundColor:[UIColor clearColor]];
         [_dateLabel setTextAlignment:NSTextAlignmentCenter];
-        [_dateLabel setText:@"1"];
         [_dateLabel setFont:[UIFont systemFontOfSize:14]];
-        [_dateLabel setTextColor:[UIColor grayColor]];
         [self addSubview:_dateLabel];
         
-        _feelingImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"BadFaceHighlighted"]];
-        [_feelingImageView setFrame:CGRectMake(self.width - 2 - 15, 2, 15, 15)];
-        [self addSubview:_feelingImageView];
-        
-        _drugImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CalendarDrug"]];
-        [_drugImageView setOrigin:CGPointMake(self.width - 2 - _drugImageView.width, self.height - 2 - _drugImageView.height)];
-        [self addSubview:_drugImageView];
-
+        _statusImageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.width - 15, 2, 12, 12)];
+        [self addSubview:_statusImageView];
     }
     return self;
 }
@@ -38,13 +37,28 @@
 - (void)setVacationHistoryItem:(VacationHistoryItem *)vacationHistoryItem
 {
     _vacationHistoryItem = vacationHistoryItem;
-//    NSDate *date = [NSDate dateWithTimeIntervalSince1970:[NSDate date]];
-    NSDate *date = [NSDate date];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"dd"];
-    NSString *dateStr = [formatter stringFromDate:date];
-    NSInteger dateNum = dateStr.integerValue;
-    [_dateLabel setText:[NSString stringWithFormat:@"%ld",(long)dateNum]];
+    [_bgView setHidden:YES];
+    if(_vacationHistoryItem == nil)
+    {
+        [_statusImageView setHidden:YES];
+    }
+    else
+    {
+        [_statusImageView setHidden:NO];
+        if(_vacationHistoryItem.leaveType == LeaveTypeAbsence)
+        {
+            [_statusImageView setImage:[UIImage imageNamed:@"AttendanceAbsence"]];
+        }
+        else if(_vacationHistoryItem.leaveType == LeaveTypeNormal)
+        {
+            [_bgView setHidden:NO];
+            [_statusImageView setImage:[UIImage imageNamed:@"AttendanceNormal"]];
+        }
+        else
+        {
+            [_statusImageView setImage:[UIImage imageNamed:@"AttendanceLeave"]];
+        }
+    }
 }
 
 - (void)setCurMonth:(BOOL)curMonth
@@ -58,6 +72,12 @@
     {
         [_dateLabel setTextColor:[UIColor colorWithHexString:@"D8D8D8"]];
     }
+}
+
+- (void)setDate:(NSDate *)date
+{
+    _date = date;
+    [_dateLabel setText:kStringFromValue([_date day])];
 }
 @end
 
@@ -119,21 +139,21 @@
 {
     _curMonth = curMonth;
     
-//    NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
-//    [formmater setDateFormat:@"yyyy/MM"];
-//    NSString *str = [formmater stringFromDate:self.curMonth];
-//    NSDate *beginDate = [formmater dateFromString:str];
-//    
-//    NSInteger numOfRows = [self numOfRows];
-//    NSMutableArray *dateArrayTmp = [[NSMutableArray alloc] initWithCapacity:0];
-//    NSInteger firstWeekday = [self.curMonth firstWeekDayInMonth];
-//    for (NSInteger i = 0; i < numOfRows * 7; i++)
-//    {
-//        NSInteger offset = (i - firstWeekday + 1) * 3600 * 24;
-//        NSDate *date  = [NSDate dateWithTimeInterval:offset sinceDate:beginDate];
-//        [dateArrayTmp addObject:date];
-//    }
-//    self.dateArray = dateArrayTmp;
+    NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
+    [formmater setDateFormat:@"yyyy/MM"];
+    NSString *str = [formmater stringFromDate:self.curMonth];
+    NSDate *beginDate = [formmater dateFromString:str];
+    
+    NSInteger numOfRows = [self numOfRows];
+    NSMutableArray *dateArrayTmp = [[NSMutableArray alloc] initWithCapacity:0];
+    NSInteger firstWeekday = [self.curMonth firstWeekDayInMonth];
+    for (NSInteger i = 0; i < numOfRows * 7; i++)
+    {
+        NSInteger offset = (i - firstWeekday + 1) * 3600 * 24;
+        NSDate *date  = [NSDate dateWithTimeInterval:offset sinceDate:beginDate];
+        [dateArrayTmp addObject:date];
+    }
+    self.dateArray = dateArrayTmp;
 
     [_collectionView setHeight:[self numOfRows] * _flowLayout.itemSize.height];
     [self setHeight:_collectionView.height + _weekdayView.height];
@@ -144,44 +164,48 @@
 
 - (NSInteger)numOfRows
 {
-    return  ([self.curMonth numDaysInMonth] + [self.curMonth firstWeekDayInMonth] + 6) / 7;
+    return  ([self.curMonth numDaysInMonth] + ([self.curMonth firstWeekDayInMonth] - 1) + 6) / 7;
 }
 
-- (void)setSelectedDate:(NSDate *)selectedDate
+- (void)setVacationArray:(NSArray *)vacationArray
 {
-    _selectedDate = selectedDate;
+    _vacationArray = vacationArray;
     [_collectionView reloadData];
+}
 
-//    if([self.delegate respondsToSelector:@selector(calendarViewSelectDate:item:)])
-//        [self.delegate calendarViewSelectDate:selectedDate item:collection];
+- (VacationHistoryItem *)itemForDate:(NSDate *)date
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *dateStr = [formatter stringFromDate:date];
+    for (VacationHistoryItem *item in _vacationArray)
+    {
+        if([item.timeStr isEqualToString:dateStr])
+            return item;
+    }
+    return nil;
 }
 
 #pragma mark - UICOllectionViewDelegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-//    return self.dateArray.count;
-    return 30;
+    return self.dateArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *reuseID = @"CalendarGridCell";
     CalendarGridCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseID forIndexPath:indexPath];
-    
-//    PlanCollection *collection = self.dateArray[indexPath.row];
-//    [cell setPlanCollection:collection];
-//    NSInteger selectedTimeInterval = [self.selectedDate timeIntervalSince1970];
-//    [cell setFocused:selectedTimeInterval == collection.timeInterval];
-//  
-//    NSDate *curDate = [NSDate dateWithTimeIntervalSince1970:collection.timeInterval];
-//    
-//    [cell setCurMonth:([curDate month] == [self.curMonth month])];
+    NSDate *date = self.dateArray[indexPath.row];
+    [cell setCurMonth:([date month] == [self.curMonth month])];
+    [cell setDate:date];
+    [cell setVacationHistoryItem:[self itemForDate:date]];
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CalendarGridCell *cell = (CalendarGridCell *)[collectionView cellForItemAtIndexPath:indexPath];
+//    CalendarGridCell *cell = (CalendarGridCell *)[collectionView cellForItemAtIndexPath:indexPath];
 }
 @end
