@@ -14,10 +14,12 @@ typedef NS_ENUM(NSInteger, LeaveType)
     LeaveTypeNormal,                //出勤
 };
 @interface VacationHistoryItem : TNModelItem
-@property (nonatomic, strong)UserInfo *userInfo;
-@property (nonatomic, assign)BOOL isNew;
-@property (nonatomic, copy)NSString *duration;
-@property (nonatomic, copy)NSString *timeStr;
+@property (nonatomic, copy)NSString *vacationID;
+@property (nonatomic, copy)NSString *ctime;
+@property (nonatomic, copy)NSString *remark;
+@property (nonatomic, copy)NSString *leaveDate;
+@property (nonatomic, copy)NSString *leaveTime;
+@property (nonatomic, copy)NSString *arriveTime;
 @property (nonatomic, assign)LeaveType leaveType;
 @end
 

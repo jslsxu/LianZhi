@@ -90,10 +90,13 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-    ClassInfo *classInfo = [UserCenter sharedInstance].curChild.classes[0];
-    VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
-    [vacationHistoryVC setClassID:classInfo.classID];
-    [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
+    ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
+    [classSelectionVC setSelection:^(ClassInfo *classInfo) {
+        VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
+        [vacationHistoryVC setClassInfo:classInfo];
+        [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
+    }];
+    [CurrentROOTNavigationVC pushViewController:classSelectionVC animated:YES];
     return;
     ClassAppItem *appItem = (ClassAppItem *)modelItem;
     NSString *actionUrl = appItem.actionUrl;

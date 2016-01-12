@@ -59,36 +59,40 @@
 
 - (void)requestData
 {
-    NSMutableArray *vacationArray = [NSMutableArray array];
-    for (NSInteger i = 0; i < 20; i++)
-    {
-        VacationHistoryItem *vacationItem = [[VacationHistoryItem alloc] init];
-        [vacationItem setTimeStr:[NSString stringWithFormat:@"%@-%2ld",self.month,i]];
-        [vacationItem setLeaveType:arc4random() % 3];
-        [vacationArray addObject:vacationItem];
-    }
-    [_calendarView setVacationArray:vacationArray];
-//    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-//    [params setValue:self.classID forKey:@"class_id"];
-//    [params setValue:[NSString stringWithFormat:@"%@-01",self.month] forKey:@"from_date"];
-//    [params setValue:[NSString stringWithFormat:@"%@-31",self.month] forKey:@"to_date"];
-//    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/get" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-//        NSMutableArray *vacationArray = [NSMutableArray array];
-//        for (NSInteger i = 0; i < 20; i++)
-//        {
-//            VacationHistoryItem *vacationItem = [[VacationHistoryItem alloc] init];
-//            [vacationItem setTimeStr:[NSString stringWithFormat:@"%@-%2ld",self.month,i]];
-//            [vacationArray addObject:vacationItem];
-//        }
-//        [_calendarView setVacationArray:vacationArray];
-//    } fail:^(NSString *errMsg) {
-//        
-//    }];
+//    NSMutableArray *vacationArray = [NSMutableArray array];
+//    for (NSInteger i = 0; i < 20; i++)
+//    {
+//        VacationHistoryItem *vacationItem = [[VacationHistoryItem alloc] init];
+//        [vacationItem setTimeStr:[NSString stringWithFormat:@"%@-%2ld",self.month,i]];
+//        [vacationItem setLeaveType:arc4random() % 3];
+//        [vacationArray addObject:vacationItem];
+//    }
+//    [_calendarView setVacationArray:vacationArray];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.classInfo.classID forKey:@"class_id"];
+    [params setValue:self.classInfo.schoolInfo.schoolID forKey:@"school_id"];
+    [params setValue:[NSString stringWithFormat:@"%@-01",self.month] forKey:@"from_date"];
+    [params setValue:[NSString stringWithFormat:@"%@-31",self.month] forKey:@"to_date"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/get" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        TNDataWrapper *leaveListWrapper = [responseObject getDataWrapperForKey:@"leave_info"];
+        NSMutableArray *vacationArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < leaveListWrapper.count; i++)
+        {
+            TNDataWrapper *itemWrapper = [leaveListWrapper getDataWrapperForIndex:i];
+            VacationHistoryItem *vacationItem = [[VacationHistoryItem alloc] init];
+            [vacationItem parseData:itemWrapper];
+            [vacationArray addObject:vacationItem];
+        }
+        [_calendarView setVacationArray:vacationArray];
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (void)onVacationButtonClicked
 {
     RequestVacationVC *requestVacationVC = [[RequestVacationVC alloc] init];
+//    [requestVacationVC setClassInfo:self.classInfo];
     [CurrentROOTNavigationVC pushViewController:requestVacationVC animated:YES];
 }
 

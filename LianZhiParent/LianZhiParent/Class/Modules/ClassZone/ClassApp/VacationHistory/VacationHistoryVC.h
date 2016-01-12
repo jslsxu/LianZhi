@@ -15,5 +15,5 @@
     MonthIndicatorView* _monthIndicator;
     CalendarView*       _calendarView;
 }
-@property (nonatomic, copy)NSString *classID;
+@property (nonatomic, strong)ClassInfo *classInfo;
 @end

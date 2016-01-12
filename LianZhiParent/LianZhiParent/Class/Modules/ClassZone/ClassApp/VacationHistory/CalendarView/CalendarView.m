@@ -7,7 +7,7 @@
 //
 
 #import "CalendarView.h"
-
+#import "LeaveDetailView.h"
 #define kHMargin                20
 
 @implementation CalendarGridCell
@@ -180,7 +180,7 @@
     NSString *dateStr = [formatter stringFromDate:date];
     for (VacationHistoryItem *item in _vacationArray)
     {
-        if([item.timeStr isEqualToString:dateStr])
+        if([item.leaveDate isEqualToString:dateStr])
             return item;
     }
     return nil;
@@ -206,6 +206,13 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//    CalendarGridCell *cell = (CalendarGridCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    CalendarGridCell *cell = (CalendarGridCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    VacationHistoryItem *item = cell.vacationHistoryItem;
+    if(item)
+    {
+        LeaveDetailView *leaveDetailView = [[LeaveDetailView alloc] initWithVacationItem:item];
+        [leaveDetailView show];
+    }
+    
 }
 @end

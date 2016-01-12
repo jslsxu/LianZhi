@@ -18,6 +18,12 @@ typedef NS_ENUM(NSInteger, LeaveType)
 @interface StudentAttendanceItem : TNModelItem
 @property (nonatomic, copy)NSString *studentID;
 @property (nonatomic, copy)NSString *studentName;
+@property (nonatomic, copy)NSString *vacationID;
+@property (nonatomic, copy)NSString *ctime;
+@property (nonatomic, copy)NSString *remark;
+@property (nonatomic, copy)NSString *leaveDate;
+@property (nonatomic, copy)NSString *leaveTime;
+@property (nonatomic, copy)NSString *arriveTime;
 @property (nonatomic, assign)LeaveType leaveType;
 @end
 

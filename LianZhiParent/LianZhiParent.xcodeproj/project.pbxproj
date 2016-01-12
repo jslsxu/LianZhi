@@ -361,6 +361,7 @@
 		37D6EEC81BCABF11000994A2 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6EEC71BCABF11000994A2 /* libicucore.dylib */; };
 		37D6EECA1BCABF17000994A2 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6EEC91BCABF17000994A2 /* libstdc++.dylib */; };
 		37D6EECD1BCABF40000994A2 /* ShareActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EECB1BCABF40000994A2 /* ShareActionView.m */; };
+		37E591CA1C44FCD400D54A2C /* LeaveDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E591C91C44FCD400D54A2C /* LeaveDetailView.m */; };
 		37E7C9151B1613EC005D653F /* SurroundingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E7C9141B1613EC005D653F /* SurroundingVC.m */; };
 		37E7C92D1B162AF2005D653F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E7C92C1B162AF2005D653F /* CoreLocation.framework */; };
 		37E7C93F1B162C1A005D653F /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E7C93E1B162C19005D653F /* OpenGLES.framework */; };
@@ -1092,6 +1093,8 @@
 		37D6EEC91BCABF17000994A2 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		37D6EECB1BCABF40000994A2 /* ShareActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareActionView.m; sourceTree = "<group>"; };
 		37D6EECC1BCABF40000994A2 /* ShareActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareActionView.h; sourceTree = "<group>"; };
+		37E591C81C44FCD400D54A2C /* LeaveDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaveDetailView.h; sourceTree = "<group>"; };
+		37E591C91C44FCD400D54A2C /* LeaveDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeaveDetailView.m; sourceTree = "<group>"; };
 		37E7C9131B1613EC005D653F /* SurroundingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurroundingVC.h; sourceTree = "<group>"; };
 		37E7C9141B1613EC005D653F /* SurroundingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurroundingVC.m; sourceTree = "<group>"; };
 		37E7C92C1B162AF2005D653F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -2400,6 +2403,8 @@
 				37BC70881C116EC900F8B79B /* UIColor+expanded.m */,
 				37BC70891C116EC900F8B79B /* UIView+convenience.h */,
 				37BC708A1C116EC900F8B79B /* UIView+convenience.m */,
+				37E591C81C44FCD400D54A2C /* LeaveDetailView.h */,
+				37E591C91C44FCD400D54A2C /* LeaveDetailView.m */,
 			);
 			path = CalendarView;
 			sourceTree = "<group>";
@@ -3372,6 +3377,7 @@
 				37FD6DF81BB0447700C83AB4 /* ChatVoiceButton.m in Sources */,
 				3793F8271B7CFFD900501F77 /* Reachability+.m in Sources */,
 				3719A7471AA2C47800FBDC2A /* NewEditionPreview.m in Sources */,
+				37E591CA1C44FCD400D54A2C /* LeaveDetailView.m in Sources */,
 				3793F79A1B7CFFD900501F77 /* AFHTTPRequestOperation+Associative.m in Sources */,
 				3793F7661B7CFFD900501F77 /* RETableViewOptionCell.m in Sources */,
 				37CBAF231A4724F20063F395 /* TreeHouseCell.m in Sources */,

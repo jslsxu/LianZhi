@@ -1,15 +1,16 @@
 //
-//  StudentAttendanceDetailView.m
-//  LianZhiTeacher
+//  LeaveDetailView.m
+//  LianZhiParent
 //
-//  Created by jslsxu on 16/1/9.
+//  Created by jslsxu on 16/1/12.
 //  Copyright © 2016年 jslsxu. All rights reserved.
 //
 
-#import "StudentAttendanceDetailView.h"
+#import "LeaveDetailView.h"
 
-@implementation StudentAttendanceDetailView
-- (instancetype)initWithVacationItem:(StudentAttendanceItem *)leaveItem
+@implementation LeaveDetailView
+
+- (instancetype)initWithVacationItem:(VacationHistoryItem *)leaveItem
 {
     self = [super initWithFrame:[UIScreen mainScreen].bounds];
     if(self)
@@ -33,7 +34,7 @@
         [nameLabel setTextAlignment:NSTextAlignmentCenter];
         [nameLabel setFont:[UIFont systemFontOfSize:18]];
         [nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-        [nameLabel setText:leaveItem.studentName];
+        [nameLabel setText:[UserCenter sharedInstance].curChild.name];
         [statusView addSubview:nameLabel];
         
         UILabel *statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(statusView.width / 2, 0, statusView.width / 2, statusView.height)];

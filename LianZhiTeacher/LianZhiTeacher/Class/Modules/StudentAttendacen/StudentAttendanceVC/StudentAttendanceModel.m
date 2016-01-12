@@ -14,7 +14,15 @@
 {
     self.studentID = [dataWrapper getStringForKey:@"id"];
     self.studentName = [dataWrapper getStringForKey:@"name"];
+    self.vacationID = [dataWrapper getStringForKey:@"id"];
+    self.ctime = [dataWrapper getStringForKey:@"ctime"];
+    NSString *leaveDate = [dataWrapper getStringForKey:@"leave_date"];
+    if(leaveDate.length > 10)
+        self.leaveDate = [leaveDate substringToIndex:10];
+    self.leaveTime = [dataWrapper getStringForKey:@"leave_time"];
+    self.arriveTime = [dataWrapper getStringForKey:@"arrive_time"];
     self.leaveType = [dataWrapper getIntegerForKey:@"status"];
+    self.remark = [dataWrapper getStringForKey:@"words"];
 }
 
 @end

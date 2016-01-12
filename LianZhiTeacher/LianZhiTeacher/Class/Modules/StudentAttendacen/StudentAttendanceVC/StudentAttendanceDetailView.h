@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "StudentAttendanceModel.h"
 @interface StudentAttendanceDetailView : UIView
 {
-    UIButton*       _bgButton;
+    UIButton*     _bgButton;
     UIView*         _contentView;
 }
+@property (nonatomic, strong)StudentAttendanceItem *leaveItem;
+- (instancetype)initWithVacationItem:(StudentAttendanceItem *)leaveItem;
+- (void)show;
 @end

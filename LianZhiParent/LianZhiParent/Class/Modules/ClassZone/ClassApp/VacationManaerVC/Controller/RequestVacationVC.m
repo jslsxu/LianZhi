@@ -135,8 +135,10 @@
 {
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:self.view];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
+//    [params setValue:self.classInfo.classID forKey:@"class_id"];
+//    [params setValue:self.classInfo.schoolInfo.schoolID forKey:@"school_id"];
     [params setValue:self.startDate forKey:@"from_date"];
-    [params setValue:self.endDate forKey:@"end_date"];
+    [params setValue:self.endDate forKey:@"to_date"];
     [params setValue:_textView.text forKey:@"words"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/leave" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:YES];
