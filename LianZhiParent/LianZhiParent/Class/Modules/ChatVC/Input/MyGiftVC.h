@@ -8,6 +8,22 @@
 
 #import "TNBaseViewController.h"
 
-@interface MyGiftVC : TNBaseViewController
+@interface GiftItem : TNModelItem
+@property (nonatomic, copy)NSString *giftID;
+@property (nonatomic, copy)NSString *giftName;
+@end
+
+@interface GiftModel : TNListModel
+
+@end
+
+@interface GiftCell : TNCollectionViewCell
+{
+    UIImageView*    _imageView;
+    UILabel*        _titleLabel;
+}
+@end
+
+@interface MyGiftVC : TNBaseCollectionViewController
 
 @end

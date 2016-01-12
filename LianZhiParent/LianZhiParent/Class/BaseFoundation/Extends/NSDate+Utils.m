@@ -65,6 +65,16 @@
     return newDate;
 }
 
+- (BOOL)isToday
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *curStr = [formatter stringFromDate:self];
+    if([curStr isEqualToString:[formatter stringFromDate:[NSDate date]]])
+        return YES;
+    return NO;
+}
+
 #pragma mark - Data component
 - (NSInteger)year
 {

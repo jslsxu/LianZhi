@@ -14,7 +14,6 @@
     UILabel*        _courseLabel;
     UIView*         _bgView;
     UILabel*        _contentLabel;
-    NSMutableArray* _photoViewArray;
     MessageVoiceButton* _voiceButton;
     UILabel*        _timespanLabel;
     UICollectionView*   _collectionView;

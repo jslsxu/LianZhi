@@ -8,11 +8,25 @@
 
 #import "TNListModel.h"
 
-@interface HomeWorkItem : TNModelItem
-@property (nonatomic, copy)NSString *content;
-@property (nonatomic, strong)PhotoItem *photoItem;
-@property (nonatomic, strong)AudioItem *audioItem;
+typedef NS_ENUM(NSInteger, HomeworkType)
+{
+    HomeworkTypeNormal = 0,
+    HomeworkTypePhoto = 1,
+    HomeworkTypeAudio,
+};
 
+@interface HomeWorkItem : TNModelItem
+@property (nonatomic, copy)NSString *homeworkId;
+@property (nonatomic, assign)HomeworkType type;
+@property (nonatomic, copy)NSString *courseName;
+@property (nonatomic, assign)NSInteger ctime;
+@property (nonatomic, copy)NSString *weekday;
+@property (nonatomic, copy)NSString *timeStr;
+@property (nonatomic, copy)NSString *words;
+@property (nonatomic, strong)NSArray *photoArray;
+@property (nonatomic, strong)AudioItem *audioItem;
+@property (nonatomic, assign)BOOL fav;
+@property (nonatomic, copy)NSString*    teacherName;
 @end
 
 @interface HomeWorkListModel : TNListModel

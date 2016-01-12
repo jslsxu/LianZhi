@@ -12,7 +12,47 @@
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    self.content = [dataWrapper getStringForKey:@"content"];
+    self.homeworkId = [dataWrapper getStringForKey:@"id"];
+    self.words = [dataWrapper getStringForKey:@"words"];
+    self.courseName = [dataWrapper getStringForKey:@"course_name"];
+    self.fav = [dataWrapper getBoolForKey:@"fav"];
+    self.type = [dataWrapper getIntegerForKey:@"ptype"];
+    self.ctime = [dataWrapper getIntegerForKey:@"ctime"];
+    self.teacherName = [dataWrapper getStringForKey:@"uname"];
+//    NSDate *date = [[NSDate alloc] initWithTimeIntervalSince1970:self.ctime];
+//    self.weekday = [date weekday];
+    
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    [formatter setDateFormat:@"MM月dd日 HH:mm"];
+//    self.timeStr = [formatter stringFromDate:date];
+    
+    TNDataWrapper *jsonWrapper = [dataWrapper getDataWrapperForKey:@"json_str"];
+    if(jsonWrapper.count > 0)
+    {
+        TNDataWrapper *voiceWrapper = [jsonWrapper getDataWrapperForKey:@"voice"];
+        if(voiceWrapper.count > 0)
+        {
+            AudioItem *audioItem = [[AudioItem alloc] init];
+            [audioItem parseData:voiceWrapper];
+            self.audioItem = audioItem;
+        }
+        
+        TNDataWrapper *photoWrapper = [jsonWrapper getDataWrapperForKey:@"pics"];
+        if(photoWrapper.count > 0)
+        {
+            NSMutableArray *photoArray = [NSMutableArray array];
+            for (NSInteger i = 0; i < photoWrapper.count; i++)
+            {
+                TNDataWrapper *photoItemWrapp = [photoWrapper getDataWrapperForIndex:i];
+                PhotoItem *photoItem = [[PhotoItem alloc] init];
+                [photoItem parseData:photoItemWrapp];
+                [photoArray addObject:photoItem];
+            }
+            self.photoArray = photoArray;
+        }
+        
+    }
+    
     
 }
 

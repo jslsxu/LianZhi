@@ -14,14 +14,10 @@
 
 @implementation HomeWorkVC
 
-- (UITableViewStyle)tableViewStyle
-{
-    return UITableViewStyleGrouped;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"作业练习";
+    [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 10, 0)];
     [self bindTableCell:@"HomeWorkCell" tableModel:@"HomeWorkListModel"];
     [self requestData:REQUEST_REFRESH];
 }
