@@ -127,7 +127,7 @@
     [helpbutton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
     [helpbutton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [helpbutton setTitle:@"如何赚取" forState:UIControlStateNormal];
-    [helpbutton setTitleColor:kCommonParentTintColor forState:UIControlStateNormal];
+    [helpbutton setTitleColor:kCommonTeacherTintColor forState:UIControlStateNormal];
     [helpbutton addTarget:self action:@selector(showHelp) forControlEvents:UIControlEventTouchUpInside];
     [headerView addSubview:helpbutton];
     
@@ -153,7 +153,7 @@
     _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 30)];
     
     UISegmentedControl *segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"全部",@"赚取",@"消费"]];
-    [segmentCtrl setTintColor:kCommonParentTintColor];
+    [segmentCtrl setTintColor:kCommonTeacherTintColor];
     [segmentCtrl setSelectedSegmentIndex:0];
     [segmentCtrl setFrame:CGRectMake(_headerView.width - 10 - 120, 3, 120, 24)];
     [segmentCtrl addTarget:self action:@selector(onSegmentValueChanged:) forControlEvents:UIControlEventValueChanged];

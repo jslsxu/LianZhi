@@ -29,7 +29,6 @@
     [headerView addSubview:avatarView];
     
     _descLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarView.right + 20, 20, headerView.width - 20 - (avatarView.right + 20), headerView.height - 20 * 2)];
-    [_descLabel setText:@"李爽同学本月桑无请假记录，全勤宝宝勋章正在向你招手哦"];
     [_descLabel setTextColor:[UIColor whiteColor]];
     [_descLabel setFont:[UIFont systemFontOfSize:14]];
     [_descLabel setNumberOfLines:0];
@@ -74,6 +73,8 @@
     [params setValue:[NSString stringWithFormat:@"%@-01",self.month] forKey:@"from_date"];
     [params setValue:[NSString stringWithFormat:@"%@-31",self.month] forKey:@"to_date"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/get" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        TNDataWrapper *childWrapper = [responseObject getDataWrapperForKey:@"child"];
+        [_descLabel setText:[childWrapper getStringForKey:@"record"]];
         TNDataWrapper *leaveListWrapper = [responseObject getDataWrapperForKey:@"leave_info"];
         NSMutableArray *vacationArray = [NSMutableArray array];
         for (NSInteger i = 0; i < leaveListWrapper.count; i++)

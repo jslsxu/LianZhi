@@ -12,7 +12,6 @@
 #import "RelatedInfoVC.h"
 #import "PersonalSettingVC.h"
 #import "AboutVC.h"
-#import "AccountVC.h"
 #define kUserInfoCellHeight                     75
 
 @implementation UserInfoCell
@@ -76,9 +75,9 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        self.titleArray = @[@[@"我的学校",@"连枝账户",@"系统设置"],@[@"关于连枝",@"联系客服"]];
-        self.imageArray = @[@[@"IconMySchool",@"IconAccount",@"IconSetting"],@[@"IconAbout",@"IconContact"]];
-        self.actionArray = @[@[@"RelatedInfoVC",@"AccountVC",@"PersonalSettingVC"],@[@"AboutVC",@"ContactServiceVC"]];
+        self.titleArray = @[@[@"我的学校",@"系统设置"],@[@"关于连枝",@"联系客服"]];
+        self.imageArray = @[@[@"IconMySchool",@"IconSetting"],@[@"IconAbout",@"IconContact"]];
+        self.actionArray = @[@[@"RelatedInfoVC",@"PersonalSettingVC"],@[@"AboutVC",@"ContactServiceVC"]];
     }
     return self;
 }

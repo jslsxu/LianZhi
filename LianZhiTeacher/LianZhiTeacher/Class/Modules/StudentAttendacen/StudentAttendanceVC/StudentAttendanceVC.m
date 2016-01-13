@@ -10,7 +10,7 @@
 #import "ClassSelectionVC.h"
 #import "AttendanceOperationVC.h"
 #import "LeaveRegisterVC.h"
-
+#import "StudentAttendanceDetailView.h"
 @implementation StudentAttendanceHeader
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -128,13 +128,15 @@
 
 - (void)onAllAttendance
 {
+    __weak typeof(self) wself = self;
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:self.view];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.classID forKey:@"class_id"];
     [params setValue:self.leaveDate forKey:@"leave_date"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/leave" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:NO];
-        
+        [ProgressHUD showHintText:@"一键全勤成功"];
+        [wself requestData:REQUEST_REFRESH];
     } fail:^(NSString *errMsg) {
         [hud hide:NO];
     }];
@@ -217,6 +219,13 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [cell setBackgroundColor:(indexPath.row % 2 == 0) ? [UIColor whiteColor] : [UIColor colorWithHexString:@"ebebeb"]];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    StudentAttendanceItem *item = self.tableViewModel.modelItemArray[indexPath.row];
+    StudentAttendanceDetailView *detailView = [[StudentAttendanceDetailView alloc] initWithVacationItem:item];
+    [detailView show];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -16,6 +16,7 @@
 #import "HomeWorkVC.h"
 #import "ClassAttendanceVC.h"
 #import "MyAttendanceVC.h"
+#import "LZAccountVC.h"
 @implementation ApplicationItem
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
@@ -202,7 +203,7 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-    ClassAttendanceVC *homeWorkVC = [[ClassAttendanceVC alloc] init];
+    LZAccountVC *homeWorkVC = [[LZAccountVC alloc] init];
     [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
     return;
     ApplicationItem *item = (ApplicationItem *)modelItem;
