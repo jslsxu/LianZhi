@@ -41,14 +41,25 @@
         [statusLabel setTextColor:[UIColor colorWithHexString:@"f03f64"]];
         [statusLabel setFont:[UIFont systemFontOfSize:18]];
         [statusLabel setTextAlignment:NSTextAlignmentCenter];
+        NSString *dateStr = nil;
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSDate *leaveDate = [dateFormatter dateFromString:leaveItem.leaveDate];
+        if([leaveDate isToday])
+            dateStr = @"今日";
+        else
+        {
+            [dateFormatter setDateFormat:@"MM月dd日"];
+            dateStr = [dateFormatter stringFromDate:leaveDate];
+        }
         NSString *statusStr = nil;
         if(leaveItem.leaveType == LeaveTypeAbsence)
-            statusStr = @"今日缺勤";
+            statusStr = @"缺勤";
         else if(leaveItem.leaveType == LeaveTypeLeave)
-            statusStr = @"今日请假";
+            statusStr = @"请假";
         else
-            statusStr = @"今日出勤";
-        [statusLabel setText:statusStr];
+            statusStr = @"出勤";
+        [statusLabel setText:[NSString stringWithFormat:@"%@%@",dateStr, statusStr]];
         [statusView addSubview:statusLabel];
         
         NSInteger spaceYEnd = _contentView.height;

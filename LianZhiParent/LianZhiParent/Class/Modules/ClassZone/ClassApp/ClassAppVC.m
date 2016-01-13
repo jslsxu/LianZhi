@@ -90,15 +90,15 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-//    ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
-//    [classSelectionVC setSelection:^(ClassInfo *classInfo) {
-//        VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
-//        [vacationHistoryVC setClassInfo:classInfo];
-//        [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
-//    }];
-//    [CurrentROOTNavigationVC pushViewController:classSelectionVC animated:YES];
-    LZAccountVC *accountVC = [[LZAccountVC alloc] init];
-    [CurrentROOTNavigationVC pushViewController:accountVC animated:YES];
+    ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
+    [classSelectionVC setSelection:^(ClassInfo *classInfo) {
+        VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
+        [vacationHistoryVC setClassInfo:classInfo];
+        [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
+    }];
+    [CurrentROOTNavigationVC pushViewController:classSelectionVC animated:YES];
+//    LZAccountVC *accountVC = [[LZAccountVC alloc] init];
+//    [CurrentROOTNavigationVC pushViewController:accountVC animated:YES];
     return;
     ClassAppItem *appItem = (ClassAppItem *)modelItem;
     NSString *actionUrl = appItem.actionUrl;

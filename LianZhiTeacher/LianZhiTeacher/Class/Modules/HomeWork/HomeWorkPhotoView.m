@@ -63,6 +63,7 @@
         }
     }
     [_scrollView setContentSize:CGSizeMake((90 + 10) * (_photoArray.count + 1) - 10, _scrollView.height)];
+    [_scrollView setContentOffset:CGPointMake(_scrollView.contentSize.width - _scrollView.width, 0)];
 }
 
 - (void)onAddButtonClicked

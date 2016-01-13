@@ -22,7 +22,7 @@
 
 + (NSDate *)dateWithHour:(int)hour
                   minute:(int)minute;
-
+- (BOOL)isToday;
 #pragma mark - Getter
 - (NSInteger)year;
 - (NSInteger)month;

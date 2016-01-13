@@ -168,12 +168,14 @@
 
 - (void)showHelp
 {
-    
+    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+    [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
 }
 
 - (void)onExchangeClicked
 {
-    
+    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+    [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
 }
 
 - (void)onSegmentValueChanged:(UISegmentedControl *)segmentCtrl
