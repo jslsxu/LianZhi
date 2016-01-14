@@ -7,9 +7,49 @@
 //
 
 #import "SurroundingVC.h"
+#import "FeedItemDetailVC.h"
+@implementation SurroundingCell
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if(self)
+    {
+        [self setBackgroundColor:[UIColor whiteColor]];
+        _shareToTreeHouseButton.hidden = YES;
+    }
+    return self;
+}
+
+@end
 
 @implementation SurroundingListModel
+- (BOOL)hasMoreData
+{
+    return self.hasMore;
+}
 
+- (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
+{
+    BOOL parse = [super parseData:data type:type];
+    if(type == REQUEST_REFRESH)
+        [self.modelItemArray removeAllObjects];
+    TNDataWrapper *feedListWrapper = [data getDataWrapperForKey:@"feed_list"];
+    for (NSInteger i = 0; i < feedListWrapper.count; i++) {
+        ClassZoneItem *item = [[ClassZoneItem alloc] init];
+        TNDataWrapper *itemWrapper = [feedListWrapper getDataWrapperForIndex:i];
+        [item parseData:itemWrapper];
+        [self.modelItemArray addObject:item];
+    }
+    
+    self.hasMore = [data getBoolForKey:@"has_more"];
+    
+    if(self.modelItemArray.count > 0)
+    {
+        ClassZoneItem *lastitem = [self.modelItemArray lastObject];
+        self.minID = lastitem.itemID;
+    }
+    return parse;
+}
 
 
 @end
@@ -26,7 +66,9 @@
     [super viewDidLoad];
     self.title = @"身边事";
     self.classInfo = [UserCenter sharedInstance].curChild.classes[0];
-    [self bindTableCell:@"ClassZoneItemCell" tableModel:@"SurroundingListModel"];
+    [self setSupportPullDown:YES];
+    [self setSupportPullUp:YES];
+    [self bindTableCell:@"SurroundingCell" tableModel:@"SurroundingListModel"];
     [self requestData:REQUEST_REFRESH];
     _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - REPLY_BOX_HEIGHT, self.view.width, REPLY_BOX_HEIGHT)];
     [_replyBox setDelegate:self];
@@ -42,13 +84,12 @@
     [task setRequestType:requestType];
     [task setObserver:self];
     
-    ClassZoneModel *model = (ClassZoneModel *)self.tableViewModel;
+    SurroundingListModel *model = (SurroundingListModel *)self.tableViewModel;
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:0];
     if(requestType == REQUEST_GETMORE)
         [params setValue:@"old" forKey:@"mode"];
     else
         [params setValue:@"new" forKey:@"mode"];
-    [params setValue:model.minID forKey:@"min_id"];
     [params setValue:self.classInfo.classID forKey:@"class_id"];
     
     [params setValue:@(20) forKey:@"num"];
@@ -149,9 +190,9 @@
 
 - (void)onShowDetail:(ClassZoneItem *)zoneItem
 {
-//    FeedItemDetailVC *itemDetailVC = [[FeedItemDetailVC alloc] init];
-//    [itemDetailVC setZoneItem:zoneItem];
-//    [self.navigationController pushViewController:itemDetailVC animated:YES];
+    FeedItemDetailVC *itemDetailVC = [[FeedItemDetailVC alloc] init];
+    [itemDetailVC setZoneItem:zoneItem];
+    [self.navigationController pushViewController:itemDetailVC animated:YES];
 }
 
 #pragma mark - ReplyBoxDelegate

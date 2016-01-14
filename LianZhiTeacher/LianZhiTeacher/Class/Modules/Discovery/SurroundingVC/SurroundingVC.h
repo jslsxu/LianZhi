@@ -7,9 +7,12 @@
 //
 
 #import "TNBaseTableViewController.h"
+@interface SurroundingCell : ClassZoneItemCell
 
+@end
 @interface SurroundingListModel : TNListModel
-
+@property (nonatomic, assign)BOOL hasMore;
+@property (nonatomic, copy)NSString *minID;
 @end
 
 @interface SurroundingVC : TNBaseTableViewController<ReplyBoxDelegate, ClassZoneItemCellDelegate>

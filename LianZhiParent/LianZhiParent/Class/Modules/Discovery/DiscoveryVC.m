@@ -227,44 +227,46 @@
     NSInteger row = indexPath.row;
     DiscoveryItem *item = self.itemArray[section][row];
     DicoveryType type = item.type;
-    if(type == DicoveryTypeInterest)
-    {
-        InterestVC *interestVC = [[InterestVC alloc] init];
-        [interestVC setTitle:item.name];
-        [CurrentROOTNavigationVC pushViewController:interestVC animated:YES];
-        [self setRead:1];
-    }
-    else if(type == DicoveryTypeFAQ)
-    {
-        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-        [webVC setTitle:item.name];
-        [webVC setUrl:[UserCenter sharedInstance].userData.config.faqUrl];
-        [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
-        [self setRead:2];
-    }
-    else if(type == DicoveryTypeLianZhi)
-    {
-        NSString *guideCellKey = @"guideCellKey";
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setBool:YES forKey:guideCellKey];
-        [userDefaults synchronize];
-        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kStatusChangedNotification object:nil];
-        OperationGuideVC *operationGuideVC = [[OperationGuideVC alloc] init];
-        [CurrentROOTNavigationVC pushViewController:operationGuideVC animated:YES];
-    }
-    else if(type == DicoveryTypepersonalSettings)
-    {
-        MineVC *mineVC = [[MineVC alloc] init];
-        [self.navigationController pushViewController:mineVC animated:YES];
-    }
-    else
-    {
-        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-        [webVC setTitle:item.name];
-        [webVC setUrl:item.url];
-        [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
-    }
+    SurroundingVC *surroundingVC = [[SurroundingVC alloc] init];
+    [CurrentROOTNavigationVC pushViewController:surroundingVC animated:YES];
+//    if(type == DicoveryTypeInterest)
+//    {
+//        InterestVC *interestVC = [[InterestVC alloc] init];
+//        [interestVC setTitle:item.name];
+//        [CurrentROOTNavigationVC pushViewController:interestVC animated:YES];
+//        [self setRead:1];
+//    }
+//    else if(type == DicoveryTypeFAQ)
+//    {
+//        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+//        [webVC setTitle:item.name];
+//        [webVC setUrl:[UserCenter sharedInstance].userData.config.faqUrl];
+//        [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
+//        [self setRead:2];
+//    }
+//    else if(type == DicoveryTypeLianZhi)
+//    {
+//        NSString *guideCellKey = @"guideCellKey";
+//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//        [userDefaults setBool:YES forKey:guideCellKey];
+//        [userDefaults synchronize];
+//        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:kStatusChangedNotification object:nil];
+//        OperationGuideVC *operationGuideVC = [[OperationGuideVC alloc] init];
+//        [CurrentROOTNavigationVC pushViewController:operationGuideVC animated:YES];
+//    }
+//    else if(type == DicoveryTypepersonalSettings)
+//    {
+//        MineVC *mineVC = [[MineVC alloc] init];
+//        [self.navigationController pushViewController:mineVC animated:YES];
+//    }
+//    else
+//    {
+//        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+//        [webVC setTitle:item.name];
+//        [webVC setUrl:item.url];
+//        [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
+//    }
 }
 
 - (void)setRead:(NSInteger)type
