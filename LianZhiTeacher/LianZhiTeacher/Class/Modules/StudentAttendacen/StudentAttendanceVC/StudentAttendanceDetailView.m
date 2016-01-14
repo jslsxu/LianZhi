@@ -22,6 +22,21 @@
         [self addSubview:_bgButton];
         
         _contentView = [[UIView alloc] initWithFrame:CGRectMake(30, 100, self.width - 30 * 2, self.height - 100 * 2)];
+        NSInteger cornerRadius = 15;
+        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        CGMutablePathRef path = CGPathCreateMutable();
+        CGPathMoveToPoint(path, NULL, cornerRadius, 0);
+        CGPathAddLineToPoint(path, NULL, _contentView.width - cornerRadius, 0);
+        CGPathAddArcToPoint(path, NULL, _contentView.width, 0, _contentView.width, cornerRadius, cornerRadius);
+        CGPathAddLineToPoint(path, NULL, _contentView.width, _contentView.height);
+        CGPathAddLineToPoint(path, NULL, 0, _contentView.height);
+        CGPathAddLineToPoint(path, NULL, 0, cornerRadius);
+        CGPathAddArcToPoint(path, NULL, 0, 0, cornerRadius, 0, cornerRadius);
+        CGPathCloseSubpath(path);
+        [shapeLayer setPath:path];
+        CFRelease(path);
+        _contentView.layer.mask = shapeLayer;
+        [_contentView.layer setMasksToBounds:YES];
         [_contentView setBackgroundColor:[UIColor whiteColor]];
         
         
@@ -99,8 +114,8 @@
         [self addSubview:_contentView];
         
         UIImageView *bottomView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LeaveDetailBottom"]];
-        [bottomView setFrame:CGRectMake(0, _contentView.height, _contentView.width, 5.5)];
-        [_contentView addSubview:bottomView];
+        [bottomView setFrame:CGRectMake(30, _contentView.bottom, _contentView.width, 5.5)];
+        [self addSubview:bottomView];
     }
     return self;
 }

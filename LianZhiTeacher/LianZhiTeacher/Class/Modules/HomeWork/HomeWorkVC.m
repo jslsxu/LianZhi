@@ -99,7 +99,9 @@
     {
         if(_photoView == nil)
         {
-            _photoView = [[HomeWorkPhotoView alloc] initWithFrame:CGRectMake(10, viewParent.height - 110, viewParent.width - 10 * 2, 110)];
+            CGFloat photoViewWidth = viewParent.width - 10 * 2;
+            CGFloat itemWidth = (photoViewWidth - 10 * 2) / 3;
+            _photoView = [[HomeWorkPhotoView alloc] initWithFrame:CGRectMake(10, viewParent.height - itemWidth - 20, viewParent.width - 10 * 2, itemWidth + 20)];
             [_photoView setCompletion:^{
                 [wself setupContentView];
             }];

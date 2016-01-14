@@ -12,6 +12,7 @@
 {
     NSMutableArray* _photoViewArray;
     UIScrollView*   _scrollView;
+    UIPageControl*  _pageControl;
 }
 @property (nonatomic, strong)NSMutableArray* photoArray;
 @property (nonatomic, copy)void (^completion)(void);

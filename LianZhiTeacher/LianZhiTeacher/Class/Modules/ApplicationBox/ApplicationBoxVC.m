@@ -203,8 +203,11 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-    LZAccountVC *homeWorkVC = [[LZAccountVC alloc] init];
-    [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
+//    HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
+//    [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
+
+    ClassAttendanceVC *classAttendanceVC = [[ClassAttendanceVC alloc] init];
+    [CurrentROOTNavigationVC pushViewController:classAttendanceVC animated:YES];
     return;
     ApplicationItem *item = (ApplicationItem *)modelItem;
     NSString *url = item.url;

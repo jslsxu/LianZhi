@@ -433,6 +433,8 @@
 		37FD709A1BBCEF9800C83AB4 /* ZipArchive.mm in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70951BBCEF9800C83AB4 /* ZipArchive.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		37FD70AE1BBD7A8000C83AB4 /* DetailCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70AD1BBD7A8000C83AB4 /* DetailCommentCell.m */; };
 		37FD70BE1BBDB7B400C83AB4 /* PraiseListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70BD1BBDB7B400C83AB4 /* PraiseListView.m */; };
+		37FEA9651C46554500E7425B /* AccountInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FEA9641C46554500E7425B /* AccountInfoView.m */; };
+		37FEA96B1C4657E900E7425B /* GiftDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FEA96A1C4657E900E7425B /* GiftDetailView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1243,6 +1245,10 @@
 		37FD70AD1BBD7A8000C83AB4 /* DetailCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailCommentCell.m; sourceTree = "<group>"; };
 		37FD70BC1BBDB7B400C83AB4 /* PraiseListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PraiseListView.h; sourceTree = "<group>"; };
 		37FD70BD1BBDB7B400C83AB4 /* PraiseListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PraiseListView.m; sourceTree = "<group>"; };
+		37FEA9631C46554500E7425B /* AccountInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountInfoView.h; sourceTree = "<group>"; };
+		37FEA9641C46554500E7425B /* AccountInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountInfoView.m; sourceTree = "<group>"; };
+		37FEA9691C4657E900E7425B /* GiftDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiftDetailView.h; sourceTree = "<group>"; };
+		37FEA96A1C4657E900E7425B /* GiftDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiftDetailView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1410,6 +1416,8 @@
 				3728A7251B9D376300310457 /* UUProgressHUD.m */,
 				3707E66F1C041EFB00944B8D /* MyGiftVC.h */,
 				3707E6701C041EFB00944B8D /* MyGiftVC.m */,
+				37FEA9691C4657E900E7425B /* GiftDetailView.h */,
+				37FEA96A1C4657E900E7425B /* GiftDetailView.m */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -2976,6 +2984,8 @@
 			children = (
 				37F28AF11C45F8F200CC459A /* LZAccountVC.h */,
 				37F28AF01C45F8F200CC459A /* LZAccountVC.m */,
+				37FEA9631C46554500E7425B /* AccountInfoView.h */,
+				37FEA9641C46554500E7425B /* AccountInfoView.m */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -3245,6 +3255,7 @@
 				3793FAE01B7CFFF000501F77 /* MJRefreshBaseView.m in Sources */,
 				378436AB1C1536E2009CBBA0 /* HomeWorkAudioView.m in Sources */,
 				3793FA311B7CFFF000501F77 /* RETableViewNumberCell.m in Sources */,
+				37FEA9651C46554500E7425B /* AccountInfoView.m in Sources */,
 				37EACA031B845B5F007BFBA1 /* PasswordConfirmVC.m in Sources */,
 				3793FA481B7CFFF000501F77 /* RETableViewCellStyle.m in Sources */,
 				3793FA7A1B7CFFF000501F77 /* CTAssetsGroupViewController.m in Sources */,
@@ -3407,6 +3418,7 @@
 				3793FAB91B7CFFF000501F77 /* MLAudioRecorder.m in Sources */,
 				37FD6E281BB444FB00C83AB4 /* ClassSelectionVC.m in Sources */,
 				3793FA291B7CFFF000501F77 /* OpenUDID.m in Sources */,
+				37FEA96B1C4657E900E7425B /* GiftDetailView.m in Sources */,
 				37FD70AE1BBD7A8000C83AB4 /* DetailCommentCell.m in Sources */,
 				3793FA261B7CFFF000501F77 /* MBProgressHUD+Add.m in Sources */,
 				3793FA2B1B7CFFF000501F77 /* RETableViewCreditCardCell.m in Sources */,

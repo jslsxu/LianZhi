@@ -224,6 +224,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     StudentAttendanceItem *item = self.tableViewModel.modelItemArray[indexPath.row];
+    item.leaveDate = self.leaveDate;
     StudentAttendanceDetailView *detailView = [[StudentAttendanceDetailView alloc] initWithVacationItem:item];
     [detailView show];
 }

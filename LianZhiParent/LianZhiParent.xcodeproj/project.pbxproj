@@ -416,6 +416,7 @@
 		37FD70B51BBDAFED00C83AB4 /* FeedItemDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70B31BBDAFED00C83AB4 /* FeedItemDetailVC.m */; };
 		37FD70B81BBDB29B00C83AB4 /* PraiseListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70B71BBDB29B00C83AB4 /* PraiseListView.m */; };
 		37FD70BB1BBDB42A00C83AB4 /* TreeHouseItemDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70BA1BBDB42A00C83AB4 /* TreeHouseItemDetailVC.m */; };
+		37FEA9681C46578400E7425B /* AccountInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FEA9671C46578400E7425B /* AccountInfoView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1186,6 +1187,8 @@
 		37FD70B71BBDB29B00C83AB4 /* PraiseListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PraiseListView.m; sourceTree = "<group>"; };
 		37FD70B91BBDB42A00C83AB4 /* TreeHouseItemDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreeHouseItemDetailVC.h; sourceTree = "<group>"; };
 		37FD70BA1BBDB42A00C83AB4 /* TreeHouseItemDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeHouseItemDetailVC.m; sourceTree = "<group>"; };
+		37FEA9661C46578400E7425B /* AccountInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountInfoView.h; sourceTree = "<group>"; };
+		37FEA9671C46578400E7425B /* AccountInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountInfoView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2901,6 +2904,8 @@
 			children = (
 				37F207111BDE0816006466F4 /* LZAccountVC.h */,
 				37F207121BDE0816006466F4 /* LZAccountVC.m */,
+				37FEA9661C46578400E7425B /* AccountInfoView.h */,
+				37FEA9671C46578400E7425B /* AccountInfoView.m */,
 			);
 			path = LZAccountVC;
 			sourceTree = "<group>";
@@ -3134,6 +3139,7 @@
 				372775C81A60369900464461 /* UserCenter.m in Sources */,
 				37C53AB61B15891A00C3ED69 /* PractiseItemCell.m in Sources */,
 				3793F7B71B7CFFD900501F77 /* ActionSelectView.m in Sources */,
+				37FEA9681C46578400E7425B /* AccountInfoView.m in Sources */,
 				3793F7831B7CFFD900501F77 /* NSString+RENumberFormat.m in Sources */,
 				3720C1371A41BB92000357A5 /* DiscoveryVC.m in Sources */,
 				3793F78B1B7CFFD900501F77 /* TTTAttributedLabel.m in Sources */,

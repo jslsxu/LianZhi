@@ -16,10 +16,18 @@
     if(self)
     {
         _photoViewArray = [NSMutableArray array];
-        _scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.width, self.height - 20)];
+        [_scrollView setPagingEnabled:YES];
         [_scrollView setDelegate:self];
         [_scrollView setShowsHorizontalScrollIndicator:NO];
         [self addSubview:_scrollView];
+        
+        _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, _scrollView.height, self.width, 20)];
+        [_pageControl setHidesForSinglePage:YES];
+        [_pageControl setUserInteractionEnabled:NO];
+        [_pageControl setPageIndicatorTintColor:[UIColor lightGrayColor]];
+        [_pageControl setCurrentPageIndicatorTintColor:[UIColor darkGrayColor]];
+        [self addSubview:_pageControl];
     }
     return self;
 }
@@ -32,6 +40,8 @@
 
 - (void)setupSubviews
 {
+    NSInteger innerMargin = 10;
+    NSInteger itemWidth = (self.width - innerMargin * 2) / 3;
     [_photoViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [_photoViewArray removeAllObjects];
     for (NSInteger i = 0; i < MIN(_photoArray.count + 1, 9); i++)
@@ -39,7 +49,7 @@
         if(i == _photoArray.count)//加号
         {
             UIButton *addButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            [addButton setFrame:CGRectMake((10 + 90) * i, 10, 90, 90)];
+            [addButton setFrame:CGRectMake((innerMargin + itemWidth) * i, 0, itemWidth, itemWidth)];
             [addButton.layer setBorderWidth:2];
             [addButton.layer setBorderColor:[UIColor colorWithHexString:@"ebebeb"].CGColor];
             [addButton setImage:[UIImage imageNamed:@"AddHomeWorkPhoto"] forState:UIControlStateNormal];
@@ -49,7 +59,7 @@
         }
         else
         {
-            UIImageView *photoView = [[UIImageView alloc] initWithFrame:CGRectMake( (10 + 90) * i, 10, 90, 90)];
+            UIImageView *photoView = [[UIImageView alloc] initWithFrame:CGRectMake( (innerMargin + itemWidth) * i, 0, itemWidth, itemWidth)];
             [photoView setUserInteractionEnabled:YES];
             [photoView setImage:_photoArray[i]];
             
@@ -62,8 +72,17 @@
             [_photoViewArray addObject:photoView];
         }
     }
-    [_scrollView setContentSize:CGSizeMake((90 + 10) * (_photoArray.count + 1) - 10, _scrollView.height)];
+    NSInteger numPage = (_photoArray.count + 3) / 3;
+    [_pageControl setNumberOfPages:numPage];
+    [_pageControl setCurrentPage:numPage - 1];
+    [_scrollView setContentSize:CGSizeMake(_scrollView.width * numPage, _scrollView.height)];
     [_scrollView setContentOffset:CGPointMake(_scrollView.contentSize.width - _scrollView.width, 0)];
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    NSInteger page = scrollView.contentOffset.x / scrollView.width;
+    [_pageControl setCurrentPage:page];
 }
 
 - (void)onAddButtonClicked
