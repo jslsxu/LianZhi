@@ -13,7 +13,7 @@
 @property (nonatomic, copy)NSString *actionUrl;
 @property (nonatomic, copy)NSString *appID;
 @property (nonatomic, copy)NSString *appName;
-
+@property (nonatomic, copy)NSString *badge;
 @end
 
 @interface ClassAppModel : TNListModel

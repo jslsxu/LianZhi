@@ -12,6 +12,9 @@
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
+    self.giftID = [dataWrapper getStringForKey:@"id"];
+    self.giftName = [dataWrapper getStringForKey:@"name"];
+    self.coin = [dataWrapper getIntegerForKey:@"coin"];
     
 }
 
@@ -26,9 +29,14 @@
 {
     if(type == REQUEST_REFRESH)
         [self.modelItemArray removeAllObjects];
-    for (NSInteger i = 0; i < 10; i++)
+    TNDataWrapper *userCoinWrapper = [data getDataWrapperForKey:@"user_coin"];
+    self.coinTotal = [userCoinWrapper getIntegerForKey:@"coin_total"];
+    TNDataWrapper *presentWrapper = [data getDataWrapperForKey:@"persent"];
+    for (NSInteger i = 0; i < presentWrapper.count; i++)
     {
+        TNDataWrapper *presentItemWrapper = [presentWrapper getDataWrapperForIndex:i];
         GiftItem *item = [[GiftItem alloc] init];
+        [item parseData:presentItemWrapper];
         [self.modelItemArray addObject:item];
     }
     return YES;
@@ -88,12 +96,9 @@
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
 {
     HttpRequestTask *task = [[HttpRequestTask alloc] init];
-    [task setRequestUrl:@"app/list"];
+    [task setRequestUrl:@"user/persent"];
     [task setRequestMethod:REQUEST_GET];
     [task setRequestType:requestType];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"school_id"];
-    [task setParams:params];
     [task setObserver:self];
     return task;
 }

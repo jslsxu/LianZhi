@@ -17,7 +17,17 @@
 #import "ClassSelectionVC.h"
 #import "LZAccountVC.h"
 
+@interface ClassAppVC ()
+@property (nonatomic, copy)NSString *classBadge;    //班博客
+@property (nonatomic, assign)NSInteger recordNum;       //成长记录
+@end
+
 @implementation ClassAppVC
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -27,6 +37,7 @@
         [self setCellName:@"ClassAppCell"];
         [self setModelName:@"ClassAppModel"];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurChildChanged) name:kUserCenterChangedCurChildNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
     }
     return self;
 }
@@ -41,6 +52,66 @@
 - (void)onCurChildChanged
 {
     [self requestData:REQUEST_REFRESH];
+}
+
+- (void)onStatusChanged
+{
+    NSArray *classRecordArray = [UserCenter sharedInstance].statusManager.classRecordArray;
+    NSInteger recordNum = 0;
+    for (ClassFeedNotice *noticeItem in classRecordArray)
+    {
+        recordNum += noticeItem.num;
+    }
+    self.recordNum = recordNum;
+    
+    NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+    NSInteger classZoneNum = 0;
+    for (TimelineCommentItem *item in classNewCommentArray)
+    {
+        if([item.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
+        {
+            classZoneNum= item.alertInfo.num;
+            break;
+        }
+    }
+    if(classZoneNum > 0)
+        self.classBadge = kStringFromValue(classZoneNum);
+    else
+    {
+        for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.feedClassesNew)
+        {
+            classZoneNum += notice.num;
+        }
+        
+        //成长记录
+        for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.classRecordArray)
+        {
+            classZoneNum += notice.num;
+        }
+        
+        if(classZoneNum > 0)
+            self.classBadge = @"";
+        else
+            self.classBadge = nil;
+    }
+
+    
+    for (ClassAppItem *appItem in self.collectionViewModel.modelItemArray)
+    {
+        NSURL *url = [NSURL URLWithString:appItem.actionUrl];
+        if([url.host isEqualToString:@"record"])
+        {
+            if(self.recordNum > 0)
+                appItem.badge = @"";
+            else
+                appItem.badge = nil;
+        }
+        if([url.host isEqualToString:@"class"])
+        {
+            appItem.badge = self.classBadge;
+        }
+    }
+    [self.collectionView reloadData];
 }
 
 - (void)TNBaseCollectionViewControllerModifyLayout:(UICollectionViewLayout *)layout
@@ -80,6 +151,22 @@
 
 - (void)TNBaseTableViewControllerRequestSuccess
 {
+    for (ClassAppItem *appItem in self.collectionViewModel.modelItemArray)
+    {
+        NSURL *url = [NSURL URLWithString:appItem.actionUrl];
+        if([url.host isEqualToString:@"record"])
+        {
+            if(self.recordNum > 0)
+                appItem.badge = @"";
+            else
+                appItem.badge = nil;
+        }
+        if([url.host isEqualToString:@"class"])
+        {
+            appItem.badge = self.classBadge;
+        }
+    }
+
     [self endLoading];
 }
 

@@ -64,6 +64,7 @@
     ApplicationItem *item = (ApplicationItem *)modelItem;
     [_appImageView sd_setImageWithURL:[NSURL URLWithString:item.icon] placeholderImage:nil];
     [_nameLabel setText:item.name];
+    [self setBadge:item.badge];
 }
 
 
@@ -100,6 +101,7 @@
 
 @interface ApplicationBoxVC ()
 @property (nonatomic, strong)NSMutableArray *appItems;
+@property (nonatomic, copy)NSString *classBadge;
 @end
 
 @implementation ApplicationBoxVC
@@ -124,42 +126,9 @@
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
-//    if([UserCenter sharedInstance].curSchool.classes.count + [UserCenter sharedInstance].curSchool.managedClasses.count > 0)
-//    {
-//        self.actionArray = @[@"NotificationToAllVC",@"ContactListVC",@"ClassZoneVC",@"PublishGrowthTimelineVC",@"TNBaseWebViewController"];
-//        self.titleArray = @[@"发布通知",@"聊天空间",@"班博客",@"家园手册",@"校主页"];
-//        self.imageArray = @[@"AppPublishNote",@"AppChat",@"AppClassZone",@"AppParent",@"AppSchoolHome"];
-//    }
-//    else
-//    {
-//        self.actionArray = @[@"ContactListVC",@"ClassZoneVC",@"PublishGrowthTimelineVC",@"TNBaseWebViewController"];
-//        self.titleArray = @[@"聊天空间",@"班博客",@"家园手册",@"校主页"];
-//        self.imageArray = @[@"AppChat",@"AppClassZone",@"AppParent",@"AppSchoolHome"];
-//    }
-//    self.actionArray = @[@"NotificationToAllVC",@"ContactListVC",@"ClassZoneVC",@"PhotoFlowVC",@"PublishGrowthTimelineVC",@"ClassAttendanceVC",@"MyAttendanceVC",@"HomeWorkVC",@"TNBaseWebViewController"];
-//    self.titleArray = @[@"发布通知",@"聊天空间",@"班博客",@"班相册",@"家园手册",@"学生考勤",@"我的考勤",@"作业练习",@"校主页"];
-//    self.imageArray = @[@"AppPublishNote",@"AppChat",@"AppClassZone",@"AppAlbum",@"AppParent",@"AppStudentAttendance",@"AppMyAttendance",@"AppHomeWork",@"AppSchoolHome"];
-
-//    BOOL recordEnabled = NO;
-//    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.allClasses)
-//    {
-//        if(classInfo.recordEnabled)
-//            recordEnabled = YES;
-//    }
-//    self.actionArray = @[@"NotificationToAllVC",@"ContactListVC",@"ClassZoneVC",@"PhotoFlowVC",@"PublishGrowthTimelineVC",@"TNBaseWebViewController"];
-//    self.titleArray = @[@"发布通知",@"聊天空间",@"班博客",@"班相册",@"家园手册",@"校主页"];
-//    self.imageArray = @[@"AppPublishNote",@"AppChat",@"AppClassZone",@"AppAlbum",@"AppParent",@"AppSchoolHome"];
-//
-//    self.appItems = [NSMutableArray array];
-//    for (NSInteger i = 0; i < self.titleArray.count; i++)
-//    {
-//        ApplicationItem *item = [[ApplicationItem alloc] init];
-//        [item setImageStr:self.imageArray[i]];
-//        [item setTitle:self.titleArray[i]];
-//        [self.appItems addObject:item];
-//    }
     [self requestData:REQUEST_REFRESH];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kUserCenterChangedSchoolNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
 }
 
 - (void)TNBaseCollectionViewControllerModifyLayout:(UICollectionViewLayout *)layout
@@ -194,12 +163,68 @@
     return [NSString stringWithFormat:@"%@_%@",[self class],[UserCenter sharedInstance].curSchool.schoolID];
 }
 
-- (void)onStatusChanged
+- (void)onSchoolChanged
 {
     [self requestData:REQUEST_REFRESH];
 }
 
+- (void)onStatusChanged
+{
+    //新动态
+    NSArray *newCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+    NSInteger commentNum = 0;
+    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
+    {
+        for (TimelineCommentItem *commentItem in newCommentArray)
+        {
+            if([commentItem.classID isEqualToString:classInfo.classID] && commentItem.alertInfo.num > 0)
+                commentNum += commentItem.alertInfo.num;
+        }
+    }
+    if(commentNum > 0)
+        self.classBadge = kStringFromValue(commentNum);
+    else
+    {
+        //新日志
+        NSArray *newFeedArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
+        NSInteger num = 0;
+        for (ClassFeedNotice *noticeItem in newFeedArray)
+        {
+            if([noticeItem.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID])
+            {
+                num += noticeItem.num;
+            }
+        }
+        if(num > 0)
+            self.classBadge = @"";
+        else
+            self.classBadge = nil;
+    }
+    for (ApplicationItem *appItem in self.collectionViewModel.modelItemArray)
+    {
+        NSURL *url = [NSURL URLWithString:appItem.url];
+        if([url.host isEqualToString:@"class"])
+        {
+            [appItem setBadge:self.classBadge];
+        }
+    }
+    [self.collectionView reloadData];
+}
+
 #pragma mark - UICollectionView
+
+- (void)TNBaseTableViewControllerRequestSuccess
+{
+    for (ApplicationItem *appItem in self.collectionViewModel.modelItemArray)
+    {
+        NSURL *url = [NSURL URLWithString:appItem.url];
+        if([url.host isEqualToString:@"class"])
+        {
+            [appItem setBadge:self.classBadge];
+        }
+    }
+
+}
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {

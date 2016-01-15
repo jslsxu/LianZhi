@@ -29,6 +29,9 @@
         [_nameLabel setTextAlignment:NSTextAlignmentCenter];
         [self addSubview:_nameLabel];
         
+        _indicator = [[NumIndicator alloc] initWithFrame:CGRectZero];
+        [self addSubview:_indicator];
+        
         NSInteger height = _appImageView.height + 15 + 6;
         [_appImageView setY:(self.height - height) / 2];
         [_nameLabel setY:_appImageView.bottom + 6];
@@ -41,6 +44,15 @@
     ClassAppItem *item = (ClassAppItem *)modelItem;
     [_appImageView sd_setImageWithURL:[NSURL URLWithString:item.imageUrl] placeholderImage:nil];
     [_nameLabel setText:item.appName];
+    [self setBadge:item.badge];
+}
+
+- (void)setBadge:(NSString *)badge
+{
+    _badge = badge;
+    [_indicator setOrigin:CGPointMake(_appImageView.right, _appImageView.y)];
+    [_indicator setHidden:!_badge];
+    [_indicator setIndicator:_badge];
 }
 
 @end

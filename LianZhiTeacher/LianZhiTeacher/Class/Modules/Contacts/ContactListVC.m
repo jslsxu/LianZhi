@@ -132,27 +132,21 @@
 - (void)setCurIndex:(NSInteger)curIndex
 {
     _curIndex = curIndex;
-    if([UserCenter sharedInstance].teachAtCurSchool)
+    _classesTableView.hidden = YES;
+    _studentsTableView.hidden = YES;
+    _teacherTableView.hidden = YES;
+    if(_curIndex == 1)
     {
-        if(_curIndex == 0)
-        {
-            _studentsTableView.hidden = (_contactModel.students.count == 0);
-            _classesTableView.hidden = (_contactModel.students.count > 0);
-            _teacherTableView.hidden = YES;
-        }
-        else
-        {
-            _classesTableView.hidden = YES;
-            _studentsTableView.hidden = YES;
-            _teacherTableView.hidden = NO;
-        }
-
+        _teacherTableView.hidden = NO;
     }
     else
     {
-        _classesTableView.hidden = YES;
-        _studentsTableView.hidden = YES;
-        _teacherTableView.hidden = NO;
+        if(_contactModel.students.count > 0)
+            [_studentsTableView setHidden:NO];
+        if(_contactModel.classes.count > 0)
+            [_classesTableView setHidden:NO];
+        if(_contactModel.teachers.count > 0)
+            [_teacherTableView setHidden:NO];
     }
 }
 

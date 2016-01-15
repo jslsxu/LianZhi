@@ -196,19 +196,6 @@
     [_headerView setCommentItem:curAlert];
     [_tableView setTableHeaderView:_headerView];
     
-    NSArray *classRecordArray = [UserCenter sharedInstance].statusManager.classRecordArray;
-    ClassFeedNotice *notice = nil;
-    for (ClassFeedNotice *noticeItem in classRecordArray)
-    {
-        if([notice.classID isEqualToString:self.classInfo.classID])
-        {
-            notice = noticeItem;
-        }
-    }
-    if(notice && notice.num > 0)
-        [_headerView.appButton setBadgeValue:@""];
-    else
-        [_headerView.appButton setBadgeValue:nil];
 }
 
 //- (void)onCurChildChanged

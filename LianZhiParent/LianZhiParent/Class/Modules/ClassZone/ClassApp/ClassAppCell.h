@@ -12,5 +12,7 @@
 {
     UIImageView*    _appImageView;
     UILabel*        _nameLabel;
+    NumIndicator*         _indicator;
 }
+@property (nonatomic, copy)NSString *badge;
 @end

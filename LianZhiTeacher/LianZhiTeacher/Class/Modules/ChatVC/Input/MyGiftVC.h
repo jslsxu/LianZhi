@@ -11,10 +11,12 @@
 @interface GiftItem : TNModelItem
 @property (nonatomic, copy)NSString *giftID;
 @property (nonatomic, copy)NSString *giftName;
+@property (nonatomic, assign)NSInteger coin;
+@property (nonatomic, strong)PhotoItem *photoItem;
 @end
 
 @interface GiftModel : TNListModel
-
+@property (nonatomic, assign)NSInteger coinTotal;
 @end
 
 @interface GiftCell : TNCollectionViewCell
