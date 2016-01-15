@@ -25,5 +25,5 @@
 @end
 
 @interface MyGiftVC : TNBaseCollectionViewController
-
+@property (nonatomic, copy)void (^completion)(NSString *giftID);
 @end
