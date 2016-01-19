@@ -70,6 +70,7 @@
 		3732A46D1AFC6B52006DE05C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3732A46C1AFC6B52006DE05C /* Foundation.framework */; };
 		3732A5001AFC929D006DE05C /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3732A4FF1AFC929D006DE05C /* libiconv.dylib */; };
 		373528741AD5556500C0F326 /* BaseInfoModifyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 373528731AD5556500C0F326 /* BaseInfoModifyVC.m */; };
+		3736CEAC1C4C984A004DB2D2 /* InterestDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3736CEAB1C4C984A004DB2D2 /* InterestDetailVC.m */; };
 		3759001B1A635FC9008AFFF1 /* PasswordModifyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3759001A1A635FC9008AFFF1 /* PasswordModifyVC.m */; };
 		376605A61B75F2B000204DFD /* MineVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 376605A51B75F2B000204DFD /* MineVC.m */; };
 		3766099E1A6828F700E4B4E2 /* ChildrenInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3766099D1A6828F700E4B4E2 /* ChildrenInfoVC.m */; };
@@ -535,6 +536,8 @@
 		3732A4FF1AFC929D006DE05C /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		373528721AD5556500C0F326 /* BaseInfoModifyVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseInfoModifyVC.h; sourceTree = "<group>"; };
 		373528731AD5556500C0F326 /* BaseInfoModifyVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseInfoModifyVC.m; sourceTree = "<group>"; };
+		3736CEAA1C4C984A004DB2D2 /* InterestDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterestDetailVC.h; sourceTree = "<group>"; };
+		3736CEAB1C4C984A004DB2D2 /* InterestDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterestDetailVC.m; sourceTree = "<group>"; };
 		375900191A635FC9008AFFF1 /* PasswordModifyVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordModifyVC.h; sourceTree = "<group>"; };
 		3759001A1A635FC9008AFFF1 /* PasswordModifyVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordModifyVC.m; sourceTree = "<group>"; };
 		376605A41B75F2B000204DFD /* MineVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MineVC.h; sourceTree = "<group>"; };
@@ -1313,6 +1316,8 @@
 				3720C1361A41BB92000357A5 /* DiscoveryVC.m */,
 				376FC6C81B03521F00289DC2 /* InterestVC.h */,
 				376FC6C91B03521F00289DC2 /* InterestVC.m */,
+				3736CEAA1C4C984A004DB2D2 /* InterestDetailVC.h */,
+				3736CEAB1C4C984A004DB2D2 /* InterestDetailVC.m */,
 				37FD6E7B1BBCE47600C83AB4 /* OperationGuideVC.h */,
 				37FD6E7C1BBCE47600C83AB4 /* OperationGuideVC.m */,
 			);
@@ -3164,6 +3169,7 @@
 				3793F8251B7CFFD900501F77 /* TaskItem.m in Sources */,
 				3720C13A1A41BBD5000357A5 /* ContactListVC.m in Sources */,
 				372BFC441BA6B343006DBCCC /* ClassMemberVC.m in Sources */,
+				3736CEAC1C4C984A004DB2D2 /* InterestDetailVC.m in Sources */,
 				3793F8191B7CFFD900501F77 /* UIScrollView+MJRefresh.m in Sources */,
 				37C53AA41B14D5FF00C3ED69 /* VacationDatePickerView.m in Sources */,
 				3705FF9A1BA2D65600F0C6F6 /* SwitchClassVC.m in Sources */,

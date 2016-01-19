@@ -34,7 +34,7 @@
     BOOL parse = [super parseData:data type:type];
     if(type == REQUEST_REFRESH)
         [self.modelItemArray removeAllObjects];
-    TNDataWrapper *feedListWrapper = [data getDataWrapperForKey:@"feed_list"];
+    TNDataWrapper *feedListWrapper = [data getDataWrapperForKey:@"list"];
     for (NSInteger i = 0; i < feedListWrapper.count; i++) {
         ClassZoneItem *item = [[ClassZoneItem alloc] init];
         TNDataWrapper *itemWrapper = [feedListWrapper getDataWrapperForIndex:i];
@@ -79,7 +79,7 @@
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
 {
     HttpRequestTask *task = [[HttpRequestTask alloc] init];
-    [task setRequestUrl:@"class/space"];
+    [task setRequestUrl:@"user/around"];
     [task setRequestMethod:REQUEST_GET];
     [task setRequestType:requestType];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
@@ -88,8 +88,7 @@
         [params setValue:@"old" forKey:@"mode"];
     else
         [params setValue:@"new" forKey:@"mode"];
-//    [params setValue:model.minID forKey:@"min_id"];
-    [params setValue:self.classInfo.classID forKey:@"class_id"];
+    [params setValue:model.minID forKey:@"min_id"];
     
     [params setValue:@(20) forKey:@"num"];
     [task setParams:params];

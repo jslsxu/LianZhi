@@ -230,10 +230,10 @@
 {
 //    HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
 //    [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
-
-    ClassAttendanceVC *classAttendanceVC = [[ClassAttendanceVC alloc] init];
-    [CurrentROOTNavigationVC pushViewController:classAttendanceVC animated:YES];
-    return;
+//
+////    ClassAttendanceVC *classAttendanceVC = [[ClassAttendanceVC alloc] init];
+////    [CurrentROOTNavigationVC pushViewController:classAttendanceVC animated:YES];
+//    return;
     ApplicationItem *item = (ApplicationItem *)modelItem;
     NSString *url = item.url;
     if([url hasPrefix:@"http"])

@@ -142,10 +142,14 @@
     else
     {
         if(_contactModel.students.count > 0)
+        {
             [_studentsTableView setHidden:NO];
-        if(_contactModel.classes.count > 0)
+        }
+        else if(_contactModel.classes.count > 0)
+        {
             [_classesTableView setHidden:NO];
-        if(_contactModel.teachers.count > 0)
+        }
+        else if(_contactModel.teachers.count > 0)
             [_teacherTableView setHidden:NO];
     }
 }

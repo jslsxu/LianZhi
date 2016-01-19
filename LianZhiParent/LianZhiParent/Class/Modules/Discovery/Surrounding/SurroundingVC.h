@@ -9,8 +9,10 @@
 #import "TNBaseTableViewController.h"
 #import "ClassZoneItemCell.h"
 
-@interface SurroundingCell : ClassZoneItemCell
-
+@interface SurroundingCell : TreeHouseCell
+{
+    UIView*     _sepLine;
+}
 @end
 
 @interface SurroundingListModel : TNListModel

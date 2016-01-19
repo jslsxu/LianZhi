@@ -8,6 +8,7 @@
 
 #import "SurroundingVC.h"
 #import "FeedItemDetailVC.h"
+#import "TreeHouseItemDetailVC.h"
 @implementation SurroundingCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -15,9 +16,20 @@
     if(self)
     {
         [self setBackgroundColor:[UIColor whiteColor]];
-        _shareToTreeHouseButton.hidden = YES;
+        _sepLine = [[UIView alloc] initWithFrame:CGRectZero];
+        [_sepLine setBackgroundColor:kSepLineColor];
+        [self addSubview:_sepLine];
     }
     return self;
+}
+
+- (void)onReloadData:(TNModelItem *)modelItem
+{
+    [super onReloadData:modelItem];
+    _tagLabel.hidden = YES;
+    _tagButton.hidden = YES;
+    _trashButton.hidden = YES;
+    [_sepLine setFrame:CGRectMake(0, _bgView.bottom + 10 - kLineHeight, self.width, kLineHeight)];
 }
 
 @end
@@ -33,9 +45,9 @@
     BOOL parse = [super parseData:data type:type];
     if(type == REQUEST_REFRESH)
         [self.modelItemArray removeAllObjects];
-    TNDataWrapper *feedListWrapper = [data getDataWrapperForKey:@"feed_list"];
+    TNDataWrapper *feedListWrapper = [data getDataWrapperForKey:@"list"];
     for (NSInteger i = 0; i < feedListWrapper.count; i++) {
-        ClassZoneItem *item = [[ClassZoneItem alloc] init];
+        TreehouseItem *item = [[TreehouseItem alloc] init];
         TNDataWrapper *itemWrapper = [feedListWrapper getDataWrapperForIndex:i];
         [item parseData:itemWrapper];
         [self.modelItemArray addObject:item];
@@ -56,7 +68,7 @@
 
 @interface SurroundingVC ()
 @property (nonatomic, strong)ClassInfo *classInfo;
-@property (nonatomic, strong)ClassZoneItem *targetClassZoneItem;
+@property (nonatomic, strong)TreehouseItem *targetTreeHouseItem;
 @property (nonatomic, strong)ResponseItem *targetResponseItem;
 @end
 
@@ -79,7 +91,7 @@
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
 {
     HttpRequestTask *task = [[HttpRequestTask alloc] init];
-    [task setRequestUrl:@"class/space"];
+    [task setRequestUrl:@"user/around"];
     [task setRequestMethod:REQUEST_GET];
     [task setRequestType:requestType];
     [task setObserver:self];
@@ -90,21 +102,83 @@
         [params setValue:@"old" forKey:@"mode"];
     else
         [params setValue:@"new" forKey:@"mode"];
-    [params setValue:self.classInfo.classID forKey:@"class_id"];
-    
+    [params setValue:model.minID forKey:@"min_id"];
     [params setValue:@(20) forKey:@"num"];
     [task setParams:params];
     return task;
 }
 
-#pragma mark - ClassZoneItemCellDelegate
+#pragma mark - TreeHouseCelleDelegate
+- (void)onActionClicked:(TreeHouseCell *)cell
+{
+    self.targetTreeHouseItem = (TreehouseItem *)cell.modelItem;
+    self.targetResponseItem = nil;
+    __weak typeof(self) wself = self;
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    CGPoint point = [cell.actionButton convertPoint:CGPointMake(10, cell.actionButton.height / 2) toView:keyWindow];
+    BOOL praised = self.targetTreeHouseItem.responseModel.praised;
+    ActionView *actionView = [[ActionView alloc] initWithPoint:point praised:praised action:^(NSInteger index) {
+        if(index == 0)
+        {
+            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+            [params setValue:self.targetTreeHouseItem.itemID forKey:@"feed_id"];
+            [params setValue:@"1" forKey:@"types"];
+            [params setValue:[UserCenter sharedInstance].curChild.uid forKey:@"objid"];
+            if(!praised)
+            {
+                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"fav/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                    if(responseObject.count > 0)
+                    {
+                        UserInfo *userInfo = [[UserInfo alloc] init];
+                        TNDataWrapper *userWrapper = [responseObject getDataWrapperForIndex:0];
+                        [userInfo parseData:userWrapper];
+                        [wself.targetTreeHouseItem.responseModel addPraiseUser:userInfo];
+                        [wself.tableView reloadData];
+                    }
+                } fail:^(NSString *errMsg) {
+                    
+                }];
+            }
+            else
+            {
+                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"fav/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                    [wself.targetTreeHouseItem.responseModel removePraise];
+                    [wself.tableView reloadData];
+                } fail:^(NSString *errMsg) {
+                    
+                }];
+            }
+        }
+        else if(index == 1)
+        {
+            _replyBox.hidden = NO;
+            [_replyBox assignFocus];
+        }
+        else
+        {
+            if(self.targetTreeHouseItem.audioItem)
+            {
+                [ProgressHUD showHintText:@"努力开发中,敬请期待..."];
+                return;
+            }
+            NSString *imageUrl = nil;
+            if(self.targetTreeHouseItem.photos.count > 0)
+                imageUrl = [self.targetTreeHouseItem.photos[0] thumbnailUrl];
+            NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kTreeHouseShareUrl,self.targetTreeHouseItem.user.uid,self.targetTreeHouseItem.itemID];
+            [ShareActionView shareWithTitle:self.targetTreeHouseItem.detail content:nil image:[UIImage imageNamed:@"TreeHouse"] imageUrl:imageUrl url:url];
+        }
+    }];
+    [actionView show];
+}
+
 - (void)onResponseClickedAtTarget:(ResponseItem *)responseItem cell:(ClassZoneItemCell *)cell
 {
+    //自己发的删除
     if([[UserCenter sharedInstance].userInfo.uid isEqualToString:responseItem.sendUser.uid])
     {
-        ClassZoneItem *zoneItem = (ClassZoneItem *)cell.modelItem;
+        TreehouseItem *zoneItem = (TreehouseItem *)cell.modelItem;
         TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除评论" action:^{
-            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : zoneItem.itemID, @"types" : @"0"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : zoneItem.itemID, @"types" : @"1"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
                 [ProgressHUD showSuccess:@"删除成功"];
                 [zoneItem.responseModel removeResponse:responseItem];
                 [self.tableView reloadData];
@@ -121,86 +195,25 @@
         [_replyBox setPlaceHolder:[NSString stringWithFormat:@"回复:%@",self.targetResponseItem.sendUser.name]];
         _replyBox.hidden = NO;
         [_replyBox assignFocus];
-        
-        self.targetClassZoneItem = (ClassZoneItem *)cell.modelItem;
+        self.targetTreeHouseItem = (TreehouseItem *)cell.modelItem;
         self.targetResponseItem = responseItem;
     }
 }
 
-- (void)onActionClicked:(ClassZoneItemCell *)cell
-{
-    self.targetClassZoneItem = (ClassZoneItem *)cell.modelItem;
-    self.targetResponseItem = nil;
-    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-    CGPoint point = [cell.actionButton convertPoint:CGPointMake(10, cell.actionButton.height / 2) toView:keyWindow];
-    __weak typeof(self) wself = self;
-    BOOL praised = self.targetClassZoneItem.responseModel.praised;
-    ActionView *actionView = [[ActionView alloc] initWithPoint:point praised:praised action:^(NSInteger index) {
-        if(index == 0)
-        {
-            NSMutableDictionary *params = [NSMutableDictionary dictionary];
-            [params setValue:self.targetClassZoneItem.itemID forKey:@"feed_id"];
-            [params setValue:@"0" forKey:@"types"];
-            [params setValue:[UserCenter sharedInstance].curChild.uid forKey:@"objid"];
-            if(!praised)
-            {
-                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"fav/send" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                    if(responseObject.count > 0)
-                    {
-                        UserInfo *userInfo = [[UserInfo alloc] init];
-                        TNDataWrapper *userWrapper = [responseObject getDataWrapperForIndex:0];
-                        [userInfo parseData:userWrapper];
-                        [wself.targetClassZoneItem.responseModel addPraiseUser:userInfo];
-                        [wself.tableView reloadData];
-                    }
-                } fail:^(NSString *errMsg) {
-                    
-                }];
-            }
-            else
-            {
-                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"fav/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                    [wself.targetClassZoneItem.responseModel removePraise];
-                    [wself.tableView reloadData];
-                } fail:^(NSString *errMsg) {
-                    
-                }];
-            }
-        }
-        else if(index == 1)
-        {
-            _replyBox.hidden = NO;
-            [_replyBox assignFocus];
-        }
-        else
-        {
-            if(self.targetClassZoneItem.audioItem)
-            {
-                [ProgressHUD showHintText:@"努力开发中,敬请期待..."];
-                return;
-            }
-            NSString *imageUrl = nil;
-            if(self.targetClassZoneItem.photos.count > 0)
-                imageUrl = [self.targetClassZoneItem.photos[0] thumbnailUrl];
-            [ShareActionView shareWithTitle:self.targetClassZoneItem.content content:nil image:[UIImage imageNamed:@"ClassZone"] imageUrl:imageUrl url:[NSString stringWithFormat:@"http://m.edugate.cn/share/%@_%@.html",self.targetClassZoneItem.userInfo.uid,self.targetClassZoneItem.itemID]];
-        }
-    }];
-    [actionView show];
-}
 
-- (void)onShowDetail:(ClassZoneItem *)zoneItem
+- (void)onShowDetail:(TreehouseItem *)treeItem
 {
-    FeedItemDetailVC *itemDetailVC = [[FeedItemDetailVC alloc] init];
-    [itemDetailVC setZoneItem:zoneItem];
-    [self.navigationController pushViewController:itemDetailVC animated:YES];
+    TreeHouseItemDetailVC *detailVC = [[TreeHouseItemDetailVC alloc] init];
+    [detailVC setTreeHouseItem:treeItem];
+    [self.navigationController pushViewController:detailVC animated:YES];
 }
 
 #pragma mark - ReplyBoxDelegate
 - (void)onActionViewCommit:(NSString *)content
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:self.targetClassZoneItem.itemID forKey:@"feed_id"];
-    [params setValue:@"0" forKey:@"types"];
+    [params setValue:self.targetTreeHouseItem.itemID forKey:@"feed_id"];
+    [params setValue:@"1" forKey:@"types"];
     [params setValue:[UserCenter sharedInstance].curChild.uid forKey:@"objid"];
     if(self.targetResponseItem)
     {
@@ -208,14 +221,28 @@
         [params setValue:self.targetResponseItem.commentItem.commentId forKey:@"comment_id"];
     }
     [params setValue:content forKey:@"content"];
+    
+    ResponseItem *tmpResponseItem = [[ResponseItem alloc] init];
+    tmpResponseItem.sendUser = [UserCenter sharedInstance].userInfo;
+    tmpResponseItem.isTmp = YES;
+    CommentItem *commentItem = [[CommentItem alloc] init];
+    [commentItem setContent:content];
+    if(self.targetResponseItem)
+        [commentItem setToUser:self.targetResponseItem.sendUser.name];
+    [tmpResponseItem setCommentItem:commentItem];
+    [self.targetTreeHouseItem.responseModel addResponse:tmpResponseItem];
+    [self.tableView reloadData];
+    
     __weak typeof(self) wself = self;
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/send" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/send" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         if(responseObject.count > 0)
         {
             TNDataWrapper *commentWrapper  =[responseObject getDataWrapperForIndex:0];
             ResponseItem *responseItem = [[ResponseItem alloc] init];
             [responseItem parseData:commentWrapper];
-            [wself.targetClassZoneItem.responseModel addResponse:responseItem];
+            NSInteger index = [wself.targetTreeHouseItem.responseModel.responseArray indexOfObject:tmpResponseItem];
+            [wself.targetTreeHouseItem.responseModel.responseArray replaceObjectAtIndex:index withObject:responseItem];
+            //            [wself.targetTreeHouseItem.responseModel addResponse:responseItem];
             [wself.tableView reloadData];
         }
     } fail:^(NSString *errMsg) {
