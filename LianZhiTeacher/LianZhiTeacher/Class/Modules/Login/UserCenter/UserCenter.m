@@ -199,6 +199,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"setting/get_personal" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         self.personalSetting.startTime = [responseObject getStringForKey:@"no_disturbing_begin"];
         self.personalSetting.endTime = [responseObject getStringForKey:@"no_disturbing_end"];
+        self.personalSetting.noDisturbing = [responseObject getBoolForKey:@"no_disturbing"];
         [self save];
     } fail:^(NSString *errMsg) {
         
@@ -210,6 +211,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.personalSetting.startTime forKey:@"no_disturbing_begin"];
     [params setValue:self.personalSetting.endTime forKey:@"no_disturbing_end"];
+    [params setValue:kStringFromValue(self.personalSetting.noDisturbing) forKey:@"no_disturbing"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"setting/set_personal" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
     } fail:^(NSString *errMsg) {
         

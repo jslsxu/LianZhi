@@ -43,6 +43,17 @@
     return self;
 }
 
+- (BOOL)hasNext
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM"];
+    NSString *thisStr = [formatter stringFromDate:self.date];
+    NSString *curStr = [formatter stringFromDate:[NSDate date]];
+    if([thisStr isEqualToString:curStr])
+        return NO;
+    return YES;
+}
+
 - (void)setDate:(NSDate *)date
 {
     _date = date;
@@ -51,6 +62,7 @@
     [formmater setDateFormat:@"yyyy年MM月"];
     NSString *monthStr = [formmater stringFromDate:_date];
     [_monthLabel setText:monthStr];
+    _nextButton.hidden = ![self hasNext];
 }
 
 - (void)onPreButtonClicked

@@ -195,48 +195,19 @@
             }
             else if([scheme isEqualToString:@"lianzhi"])
             {
-                NSArray *classArray = [UserCenter sharedInstance].curChild.classes;
-                if(classArray.count == 0)
-                    [ProgressHUD showHintText:@"孩子不在任何班级"];
-                else if(classArray.count == 1)
+                if([host isEqualToString:@"account"])
                 {
-                    ClassInfo *classInfo = classArray[0];
-                    if([host isEqualToString:@"class"])
-                    {
-                        ClassZoneVC *classZoneVC = [[ClassZoneVC alloc] init];
-                        [classZoneVC setClassInfo:classInfo];
-                        [CurrentROOTNavigationVC pushViewController:classZoneVC animated:YES];
-                    }
-                    else if([host isEqualToString:@"class_album"])
-                    {
-                        ClassAlbumVC *photoBrowser = [[ClassAlbumVC alloc] init];
-                        [photoBrowser setShouldShowEmptyHint:YES];
-                        [photoBrowser setClassID:classInfo.classID];
-                        [CurrentROOTNavigationVC pushViewController:photoBrowser animated:YES];
-                    }
-                    else if([host isEqualToString:@"record"])
-                    {
-                        GrowthTimelineVC *growthTimeLineVC = [[GrowthTimelineVC alloc] init];
-                        [growthTimeLineVC setClassInfo:classInfo];
-                        [CurrentROOTNavigationVC pushViewController:growthTimeLineVC animated:YES];
-                    }
-                    else if([host isEqualToString:@"practice"])
-                    {
-                        HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
-                        [homeWorkVC setClassID:classInfo.classID];
-                        [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
-                    }
-                    else if([host isEqualToString:@"leave"])
-                    {
-                        VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
-                        [vacationHistoryVC setClassInfo:classInfo];
-                        [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
-                    }
+                    LZAccountVC *accountVC = [[LZAccountVC alloc] init];
+                    [self.navigationController pushViewController:accountVC animated:YES];
                 }
                 else
                 {
-                    ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
-                    [classSelectionVC setSelection:^(ClassInfo *classInfo) {
+                    NSArray *classArray = [UserCenter sharedInstance].curChild.classes;
+                    if(classArray.count == 0)
+                        [ProgressHUD showHintText:@"孩子不在任何班级"];
+                    else if(classArray.count == 1)
+                    {
+                        ClassInfo *classInfo = classArray[0];
                         if([host isEqualToString:@"class"])
                         {
                             ClassZoneVC *classZoneVC = [[ClassZoneVC alloc] init];
@@ -268,10 +239,47 @@
                             [vacationHistoryVC setClassInfo:classInfo];
                             [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
                         }
-                    }];
-                    [CurrentROOTNavigationVC pushViewController:classSelectionVC animated:YES];
+                    }
+                    else
+                    {
+                        ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
+                        [classSelectionVC setSelection:^(ClassInfo *classInfo) {
+                            if([host isEqualToString:@"class"])
+                            {
+                                ClassZoneVC *classZoneVC = [[ClassZoneVC alloc] init];
+                                [classZoneVC setClassInfo:classInfo];
+                                [CurrentROOTNavigationVC pushViewController:classZoneVC animated:YES];
+                            }
+                            else if([host isEqualToString:@"class_album"])
+                            {
+                                ClassAlbumVC *photoBrowser = [[ClassAlbumVC alloc] init];
+                                [photoBrowser setShouldShowEmptyHint:YES];
+                                [photoBrowser setClassID:classInfo.classID];
+                                [CurrentROOTNavigationVC pushViewController:photoBrowser animated:YES];
+                            }
+                            else if([host isEqualToString:@"record"])
+                            {
+                                GrowthTimelineVC *growthTimeLineVC = [[GrowthTimelineVC alloc] init];
+                                [growthTimeLineVC setClassInfo:classInfo];
+                                [CurrentROOTNavigationVC pushViewController:growthTimeLineVC animated:YES];
+                            }
+                            else if([host isEqualToString:@"practice"])
+                            {
+                                HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
+                                [homeWorkVC setClassID:classInfo.classID];
+                                [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
+                            }
+                            else if([host isEqualToString:@"leave"])
+                            {
+                                VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
+                                [vacationHistoryVC setClassInfo:classInfo];
+                                [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
+                            }
+                        }];
+                        [CurrentROOTNavigationVC pushViewController:classSelectionVC animated:YES];
+                    }
+
                 }
-                
             }
         }
     }

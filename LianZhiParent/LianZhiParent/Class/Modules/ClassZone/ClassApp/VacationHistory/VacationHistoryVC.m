@@ -58,15 +58,6 @@
 
 - (void)requestData
 {
-//    NSMutableArray *vacationArray = [NSMutableArray array];
-//    for (NSInteger i = 0; i < 20; i++)
-//    {
-//        VacationHistoryItem *vacationItem = [[VacationHistoryItem alloc] init];
-//        [vacationItem setTimeStr:[NSString stringWithFormat:@"%@-%2ld",self.month,i]];
-//        [vacationItem setLeaveType:arc4random() % 3];
-//        [vacationArray addObject:vacationItem];
-//    }
-//    [_calendarView setVacationArray:vacationArray];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.classInfo.classID forKey:@"class_id"];
     [params setValue:self.classInfo.schoolInfo.schoolID forKey:@"school_id"];

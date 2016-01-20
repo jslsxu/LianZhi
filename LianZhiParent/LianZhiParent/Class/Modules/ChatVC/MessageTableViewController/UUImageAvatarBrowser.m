@@ -57,7 +57,7 @@ static UIImageView *imageView;
         coverBG.alpha = 1;
     } completion:^(BOOL finished) {
         if(imageUrl.length > 0)
-            [imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+            [imageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] placeholderImage:imageView.image];
     }];
 }
 

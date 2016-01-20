@@ -11,6 +11,7 @@
 @interface AccounInfoCell : TNTableViewCell
 {
     UILabel*    _numLabel;
+    UIView*     _sepLine;
 }
 @end
 

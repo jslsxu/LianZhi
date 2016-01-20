@@ -40,7 +40,7 @@
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     AccountInfoItem *item = (AccountInfoItem *)modelItem;
-    [_numLabel setText:[NSString stringWithFormat:@"%@%ld",item.num > 0 ? @"+" : @"-",item.num]];
+    [_numLabel setText:[NSString stringWithFormat:@"%@%ld",item.num > 0 ? @"+" : @"-",labs(item.num)]];
     [_numLabel sizeToFit];
     if(item.num > 0)
         [_numLabel setTextColor:[UIColor colorWithHexString:@"F0AB2A"]];
@@ -69,7 +69,8 @@
 //    self.num = [dataWrapper getIntegerForKey:@"num"];
 //    self.ctime = [dataWrapper getStringForKey:@"ctime"];
     self.title = @"每日登陆";
-    self.num = +3;
+    NSInteger num = arc4random() % 2;
+    self.num = (num + 3) * (num == 0 ? 1 : -1);
     self.ctime = @"2015-12-10";
 }
 
@@ -101,7 +102,7 @@
 //        [self.modelItemArray addObject:item];
 //    }
     self.coinTotal = 300;
-    for (NSInteger i = 0; i < 10; i++)
+    for (NSInteger i = 0; i < 20; i++)
     {
         AccountInfoItem *item = [[AccountInfoItem alloc] init];
         [item parseData:nil];

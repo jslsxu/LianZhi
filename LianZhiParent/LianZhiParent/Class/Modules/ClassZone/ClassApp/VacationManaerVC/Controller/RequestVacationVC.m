@@ -32,7 +32,9 @@
     [bgView addSubview:avatarView];
     
     _startLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarView.right + 10, 10, bgView.width - 50 - (avatarView.right + 20), 30)];
-    [_startLabel setTextAlignment:NSTextAlignmentCenter];
+    [_startLabel setTextColor:[UIColor colorWithHexString:@"9e9e9e"]];
+    [_startLabel setText:@"自"];
+//    [_startLabel setTextAlignment:NSTextAlignmentCenter];
     [_startLabel setFont:[UIFont systemFontOfSize:15]];
     [bgView addSubview:_startLabel];
     
@@ -42,7 +44,9 @@
     [self.view addSubview:startButton];
     
     _endLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarView.right + 10, _startLabel.bottom, bgView.width - 50 - (avatarView.right + 20), 30)];
-    [_endLabel setTextAlignment:NSTextAlignmentCenter];
+    [_endLabel setTextColor:[UIColor colorWithHexString:@"9e9e9e"]];
+    [_endLabel setText:@"至"];
+//    [_endLabel setTextAlignment:NSTextAlignmentCenter];
     [_endLabel setFont:[UIFont systemFontOfSize:15]];
     [bgView addSubview:_endLabel];
     
@@ -143,6 +147,9 @@
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/leave" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:YES];
         [ProgressHUD showHintText:@"申请成功"];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [CurrentROOTNavigationVC popViewControllerAnimated:YES];
+        });
     } fail:^(NSString *errMsg) {
         [hud hide:YES];
     }];

@@ -215,6 +215,7 @@
         else
         {
             personalSetting.noDisturbing = isOn;
+            [[UserCenter sharedInstance] setNoDisturbindTime];
         }
         [self saveSettings];
         [self reloadData];

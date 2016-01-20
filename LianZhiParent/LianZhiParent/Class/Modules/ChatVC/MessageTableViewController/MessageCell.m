@@ -279,8 +279,8 @@
         if(defaultImage)
         {
             PhotoItem *photoItem = [messageItem.messageContent photoItem];
-            if(photoItem.originalUrl.length > 0)
-                [_contentButton.backImageView sd_setImageWithURL:[NSURL URLWithString:photoItem.originalUrl] placeholderImage:defaultImage];
+//            if(photoItem.originalUrl.length > 0)
+//                [_contentButton.backImageView sd_setImageWithURL:[NSURL URLWithString:photoItem.originalUrl] placeholderImage:defaultImage];
             [UUImageAvatarBrowser showImage:_contentButton.backImageView withOriginalUrl:photoItem.originalUrl size:CGSizeMake(photoItem.width, photoItem.height)];
         }
     }
