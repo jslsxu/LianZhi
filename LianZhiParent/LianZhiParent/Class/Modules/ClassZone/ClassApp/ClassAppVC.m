@@ -177,16 +177,6 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-    ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
-    [classSelectionVC setSelection:^(ClassInfo *classInfo) {
-        VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
-        [vacationHistoryVC setClassInfo:classInfo];
-        [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
-    }];
-    [CurrentROOTNavigationVC pushViewController:classSelectionVC animated:YES];
-//    LZAccountVC *accountVC = [[LZAccountVC alloc] init];
-//    [CurrentROOTNavigationVC pushViewController:accountVC animated:YES];
-    return;
     ClassAppItem *appItem = (ClassAppItem *)modelItem;
     NSString *actionUrl = appItem.actionUrl;
     if([actionUrl length] > 0)
@@ -230,6 +220,18 @@
                         [growthTimeLineVC setClassInfo:classInfo];
                         [CurrentROOTNavigationVC pushViewController:growthTimeLineVC animated:YES];
                     }
+                    else if([host isEqualToString:@"practice"])
+                    {
+                        HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
+                        [homeWorkVC setClassID:classInfo.classID];
+                        [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
+                    }
+                    else if([host isEqualToString:@"leave"])
+                    {
+                        VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
+                        [vacationHistoryVC setClassInfo:classInfo];
+                        [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
+                    }
                 }
                 else
                 {
@@ -253,6 +255,18 @@
                             GrowthTimelineVC *growthTimeLineVC = [[GrowthTimelineVC alloc] init];
                             [growthTimeLineVC setClassInfo:classInfo];
                             [CurrentROOTNavigationVC pushViewController:growthTimeLineVC animated:YES];
+                        }
+                        else if([host isEqualToString:@"practice"])
+                        {
+                            HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
+                            [homeWorkVC setClassID:classInfo.classID];
+                            [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
+                        }
+                        else if([host isEqualToString:@"leave"])
+                        {
+                            VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
+                            [vacationHistoryVC setClassInfo:classInfo];
+                            [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
                         }
                     }];
                     [CurrentROOTNavigationVC pushViewController:classSelectionVC animated:YES];

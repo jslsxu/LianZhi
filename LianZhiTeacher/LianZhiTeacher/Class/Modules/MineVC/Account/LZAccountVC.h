@@ -10,7 +10,10 @@
 
 @interface AccounInfoCell : TNTableViewCell
 {
+    UILabel*    _titleLabel;
+    UILabel*    _timeLabel;
     UILabel*    _numLabel;
+    UIView*     _sepLine;
 }
 @end
 

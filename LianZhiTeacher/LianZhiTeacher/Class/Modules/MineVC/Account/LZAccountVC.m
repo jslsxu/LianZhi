@@ -16,15 +16,23 @@
     {
         [self setBackgroundColor:[UIColor whiteColor]];
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
-        [self.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-        [self.textLabel setFont:[UIFont systemFontOfSize:14]];
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 4, 0, 18)];
+        [_titleLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [_titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [self addSubview:_titleLabel];
         
-        [self.detailTextLabel setFont:[UIFont systemFontOfSize:12]];
-        [self.detailTextLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
+        _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 22, 0, 18)];
+        [_timeLabel setFont:[UIFont systemFontOfSize:12]];
+        [_timeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
+        [self addSubview:_timeLabel];
         
         _numLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_numLabel setFont:[UIFont boldSystemFontOfSize:15]];
         [self addSubview:_numLabel];
+        
+        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 44 - kLineHeight, self.width, kLineHeight)];
+        [_sepLine setBackgroundColor:kSepLineColor];
+        [self addSubview:_sepLine];
     }
     return self;
 }
@@ -32,9 +40,7 @@
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     AccountInfoItem *item = (AccountInfoItem *)modelItem;
-    [self.textLabel setText:item.title];
-    [self.detailTextLabel setText:item.ctime];
-    [_numLabel setText:kStringFromValue(item.num)];
+    [_numLabel setText:[NSString stringWithFormat:@"%@%ld",item.num > 0 ? @"+" : @"-",item.num]];
     [_numLabel sizeToFit];
     if(item.num > 0)
         [_numLabel setTextColor:[UIColor colorWithHexString:@"F0AB2A"]];
@@ -43,6 +49,11 @@
         [_numLabel setTextColor:[UIColor colorWithHexString:@"D07083"]];
     }
     [_numLabel setOrigin:CGPointMake(self.width - _numLabel.width - 10, (self.height - _numLabel.height) / 2)];
+    [_titleLabel setWidth:_numLabel.x - 10 - 10];
+    [_timeLabel setWidth:_numLabel.x - 10 - 10];
+    [_titleLabel setText:item.title];
+    [_timeLabel setText:item.ctime];
+    
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
@@ -54,9 +65,12 @@
 @implementation AccountInfoItem
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    self.title = [dataWrapper getStringForKey:@"title"];
-    self.num = [dataWrapper getIntegerForKey:@"num"];
-    self.ctime = [dataWrapper getStringForKey:@"ctime"];
+//    self.title = [dataWrapper getStringForKey:@"title"];
+//    self.num = [dataWrapper getIntegerForKey:@"num"];
+//    self.ctime = [dataWrapper getStringForKey:@"ctime"];
+    self.title = @"每日登陆";
+    self.num = +3;
+    self.ctime = @"2015-12-10";
 }
 
 @end
@@ -71,19 +85,26 @@
 {
     if(type == REQUEST_REFRESH)
         [self.modelItemArray removeAllObjects];
-    TNDataWrapper *userCoinWrapper = [data getDataWrapperForKey:@"user_coin"];
-    self.coinTotal = [userCoinWrapper getIntegerForKey:@"coin_total"];
-    
-    TNDataWrapper *moreWrapper  =[data getDataWrapperForKey:@"more"];
-    self.more = [moreWrapper getBoolForKey:@"has"];
-    self.maxID = [moreWrapper getStringForKey:@"id"];
-    
-    TNDataWrapper *itemsWrapper = [data getDataWrapperForKey:@"items"];
-    for (NSInteger i = 0; i < itemsWrapper.count; i++)
+//    TNDataWrapper *userCoinWrapper = [data getDataWrapperForKey:@"user_coin"];
+//    self.coinTotal = [userCoinWrapper getIntegerForKey:@"coin_total"];
+//    
+//    TNDataWrapper *moreWrapper  =[data getDataWrapperForKey:@"more"];
+//    self.more = [moreWrapper getBoolForKey:@"has"];
+//    self.maxID = [moreWrapper getStringForKey:@"id"];
+//    
+//    TNDataWrapper *itemsWrapper = [data getDataWrapperForKey:@"items"];
+//    for (NSInteger i = 0; i < itemsWrapper.count; i++)
+//    {
+//        TNDataWrapper *itemWrapper = [itemsWrapper getDataWrapperForIndex:i];
+//        AccountInfoItem *item = [[AccountInfoItem alloc] init];
+//        [item parseData:itemWrapper];
+//        [self.modelItemArray addObject:item];
+//    }
+    self.coinTotal = 300;
+    for (NSInteger i = 0; i < 10; i++)
     {
-        TNDataWrapper *itemWrapper = [itemsWrapper getDataWrapperForIndex:i];
         AccountInfoItem *item = [[AccountInfoItem alloc] init];
-        [item parseData:itemWrapper];
+        [item parseData:nil];
         [self.modelItemArray addObject:item];
     }
     return YES;
@@ -133,7 +154,7 @@
     
     _numLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     [_numLabel setTextColor:[UIColor colorWithHexString:@"F0AB2A"]];
-    [_numLabel setFrame:CGRectMake(10, titleLabel.bottom + 10, 160, 25)];
+    [_numLabel setFrame:CGRectMake(10, titleLabel.bottom + 5, 160, 25)];
     [headerView addSubview:_numLabel];
     
     UIButton *exchangeButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -151,6 +172,7 @@
 - (void)setupSectionHeaderView
 {
     _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 30)];
+    [_headerView setBackgroundColor:self.view.backgroundColor];
     
     UISegmentedControl *segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"全部",@"赚取",@"消费"]];
     [segmentCtrl setTintColor:kCommonTeacherTintColor];
@@ -168,12 +190,14 @@
 
 - (void)showHelp
 {
-    
+    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+    [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
 }
 
 - (void)onExchangeClicked
 {
-    
+    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+    [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
 }
 
 - (void)onSegmentValueChanged:(UISegmentedControl *)segmentCtrl

@@ -228,12 +228,6 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-//    HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
-//    [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
-//
-////    ClassAttendanceVC *classAttendanceVC = [[ClassAttendanceVC alloc] init];
-////    [CurrentROOTNavigationVC pushViewController:classAttendanceVC animated:YES];
-//    return;
     ApplicationItem *item = (ApplicationItem *)modelItem;
     NSString *url = item.url;
     if([url hasPrefix:@"http"])
@@ -294,6 +288,26 @@
                 [CurrentROOTNavigationVC pushViewController:albumVC animated:YES];
             }];
             [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];
+        }
+        else if([host isEqualToString:@"practice"])//联系
+        {
+            HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
+        }
+        else if([host isEqualToString:@"leave"])//考勤
+        {
+            ClassAttendanceVC *classAttendanceVC = [[ClassAttendanceVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:classAttendanceVC animated:YES];
+        }
+        else if ([host isEqualToString:@"account"])//炼制账户
+        {
+            LZAccountVC *accountVC = [[LZAccountVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:accountVC animated:YES];
+        }
+        else if([host isEqualToString:@"leave_my_record"])//我的考勤
+        {
+            MyAttendanceVC *myAttendanceVC = [[MyAttendanceVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:myAttendanceVC animated:YES];
         }
     }
 

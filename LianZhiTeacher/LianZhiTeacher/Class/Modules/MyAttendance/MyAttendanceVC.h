@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseViewController.h"
-
+#import "MyAttendanceModel.h"
 @interface MyAttendanceVC : TNBaseTableViewController
 {
     UIView* _headerView;

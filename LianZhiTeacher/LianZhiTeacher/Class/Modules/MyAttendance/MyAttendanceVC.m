@@ -11,6 +11,7 @@
 #import "MyAttendanceCell.h"
 @interface MyAttendanceVC ()<AttendanceDatePickerDelegate>
 @property (nonatomic, copy)NSString *month;
+@property (nonatomic, strong)MyAttendanceItem *todayItem;
 @end
 
 @implementation MyAttendanceVC
@@ -19,11 +20,15 @@
     [super viewDidLoad];
     self.title = @"我的考勤";
     
-    _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 95)];
+    _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 70)];
     [self.view addSubview:_headerView];
     [self setupHeadView];
     
-    [self.tableView setFrame:CGRectMake(0, _headerView.height, self.view.width, self.view.height - 64 - _headerView.height)];
+    AttendanceDatePickerView *datePickerView = [[AttendanceDatePickerView alloc] initWithFrame:CGRectMake(0, 70, _headerView.width, 25)];
+    [datePickerView setDelegate:self];
+    [self.view addSubview:datePickerView];
+    
+    [self.tableView setFrame:CGRectMake(0, datePickerView.bottom, self.view.width, self.view.height - 64 - datePickerView.bottom)];
     
     [self bindTableCell:@"MyAttendanceCell" tableModel:@"MyAttendanceModel"];
     [self setSupportPullDown:YES];
@@ -36,7 +41,14 @@
 - (void)setupHeadView
 {
     [_headerView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    
+    NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
+    [formmater setDateFormat:@"yyyy年MM月dd日"];
+    for (MyAttendanceItem *item in self.tableViewModel.modelItemArray)
+    {
+        NSString *dateStr = [formmater stringFromDate:[NSDate dateWithTimeIntervalSince1970:item.timeStamp]];
+        if([dateStr isEqualToString:[formmater stringFromDate:[NSDate date]]])
+            self.todayItem = item;
+    }
     UIView *todayView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _headerView.width, 70)];
     [todayView setBackgroundColor:[UIColor colorWithHexString:@"0eadc0"]];
     [_headerView addSubview:todayView];
@@ -46,24 +58,29 @@
     [avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
     [todayView addSubview:avatarView];
     
-    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarView.right + 20, 15, todayView.width - 10 - (avatarView.right + 20), 20)];
-    [dateLabel setTextColor:[UIColor whiteColor]];
-    [dateLabel setFont:[UIFont systemFontOfSize:14]];
-    [todayView addSubview:dateLabel];
+    if(self.todayItem)
+    {
+        UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarView.right + 20, 15, todayView.width - 10 - (avatarView.right + 20), 20)];
+        [dateLabel setTextColor:[UIColor whiteColor]];
+        [dateLabel setFont:[UIFont systemFontOfSize:14]];
+        [dateLabel setText:[formmater stringFromDate:[NSDate date]]];
+        [todayView addSubview:dateLabel];
+        
+        UILabel *startLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [startLabel setFrame:CGRectMake(dateLabel.x, 40, (_headerView.width - dateLabel.x) / 2, 16)];
+        [startLabel setTextColor:[UIColor whiteColor]];
+        [startLabel setFont:[UIFont systemFontOfSize:14]];
+        [startLabel setText:[NSString stringWithFormat:@"%@ %@",self.todayItem.startRegion, self.todayItem.startTime]];
+        [todayView addSubview:startLabel];
+        
+        UILabel *endLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [endLabel setFrame:CGRectMake(startLabel.right, 40, startLabel.width, 16)];
+        [endLabel setTextColor:[UIColor whiteColor]];
+        [endLabel setFont:[UIFont systemFontOfSize:14]];
+        [endLabel setText:[NSString stringWithFormat:@"%@ %@",self.todayItem.endRegion, self.todayItem.endTime]];
+        [todayView addSubview:endLabel];
+    }
     
-    UILabel *startLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [startLabel setTextColor:[UIColor whiteColor]];
-    [startLabel setFont:[UIFont systemFontOfSize:14]];
-    [todayView addSubview:startLabel];
-    
-    UILabel *endLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [endLabel setTextColor:[UIColor whiteColor]];
-    [endLabel setFont:[UIFont systemFontOfSize:14]];
-    [todayView addSubview:endLabel];
-    
-    AttendanceDatePickerView *datePickerView = [[AttendanceDatePickerView alloc] initWithFrame:CGRectMake(0, todayView.bottom, _headerView.width, _headerView.height - todayView.height)];
-    [datePickerView setDelegate:self];
-    [_headerView addSubview:datePickerView];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
