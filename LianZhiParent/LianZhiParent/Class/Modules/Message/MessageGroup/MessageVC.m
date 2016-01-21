@@ -8,7 +8,7 @@
 
 #import "MessageVC.h"
 #import "MessageDetailVC.h"
-
+#import "HomeWorkVC.h"
 @interface MessageVC ()
 @property (nonatomic, strong)NSTimer *timer;
 @end
@@ -234,6 +234,16 @@
             [groupItem setMsgNum:0];
             [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
             [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }
+        else if(groupItem.fromInfo.type == ChatTypeAttendance)
+        {
+            
+        }
+        else if(groupItem.fromInfo.type == ChatTypePractice)
+        {
+            HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
+            [homeWorkVC setClassID:groupItem.fromInfo.from_obj_id];
+            [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
         }
         else
         {

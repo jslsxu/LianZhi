@@ -25,6 +25,7 @@
 @property (nonatomic, readonly)EGORefreshTableHeaderView *refreshHeaderView;
 @property (nonatomic, assign)BOOL supportPullDown;
 @property (nonatomic, assign)BOOL supportPullUp;
+- (UITableViewStyle)tableViewStyle;
 - (void)bindTableCell:(NSString *)cellName tableModel:(NSString *)modelName;
 - (void)loadCache;
 - (void)requestData:(REQUEST_TYPE)requestType;

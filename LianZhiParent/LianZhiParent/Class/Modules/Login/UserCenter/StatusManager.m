@@ -74,7 +74,8 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
             TNDataWrapper *feedItemWrapper = [newFeedWrapper getDataWrapperForIndex:i];
             ClassFeedNotice *feedNotice = [[ClassFeedNotice alloc] init];
             [feedNotice parseData:feedItemWrapper];
-            [newFeedsArray addObject:feedNotice];
+            if([self isCurChild:feedNotice.classID])
+                [newFeedsArray addObject:feedNotice];
         }
         self.feedClassesNew = newFeedsArray;
     }
@@ -88,7 +89,8 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
             TNDataWrapper *classRecordItemWrapper = [newClassRecordWrapper getDataWrapperForIndex:i];
             ClassFeedNotice *recordItem = [[ClassFeedNotice alloc] init];
             [recordItem parseData:classRecordItemWrapper];
-            [newClassRecordArray addObject:recordItem];
+            if([self isCurChild:recordItem.classID])
+                [newClassRecordArray addObject:recordItem];
         }
         self.classRecordArray = newClassRecordArray;
     }
@@ -105,8 +107,9 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
             TNDataWrapper *itemWrapper = [classCommentWrapper getDataWrapperForIndex:i];
             TimelineCommentItem *commentItem = [[TimelineCommentItem alloc] init];
             [commentItem parseData:itemWrapper];
-            [commentItem setObjid:[itemWrapper getStringForKey:@"child_id"]];
-            [classNewCommentArray addObject:commentItem];
+            [commentItem setObjid:[itemWrapper getStringForKey:@"class_id"]];
+            if([self isCurChild:commentItem.objid])
+                [classNewCommentArray addObject:commentItem];
         }
         self.classNewCommentArray = classNewCommentArray;
     }
@@ -122,7 +125,8 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
             TimelineCommentItem *commentItem = [[TimelineCommentItem alloc] init];
             [commentItem parseData:itemWrapper];
             [commentItem setObjid:[itemWrapper getStringForKey:@"child_id"]];
-            [treeNewCommentArray addObject:commentItem];
+            if([commentItem.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
+                [treeNewCommentArray addObject:commentItem];
         }
         self.treeNewCommentArray = treeNewCommentArray;
     }
@@ -150,6 +154,17 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
         [self updateUserInfo];
     [[NSNotificationCenter defaultCenter] postNotificationName:kStatusChangedNotification object:nil userInfo:nil];
     
+}
+
+- (BOOL)isCurChild:(NSString *)classID
+{
+    BOOL isIn = NO;
+    for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
+    {
+        if([classID isEqualToString:classInfo.classID])
+            return isIn;
+    }
+    return isIn;
 }
 
 - (void)updateUserInfo

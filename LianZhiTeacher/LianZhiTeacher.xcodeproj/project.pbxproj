@@ -52,8 +52,9 @@
 		372C75351C07FFF500A1D90B /* HomeWorkCollectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372C75341C07FFF500A1D90B /* HomeWorkCollectionVC.m */; };
 		372C75381C0802CC00A1D90B /* HomeWorkCollectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 372C75371C0802CC00A1D90B /* HomeWorkCollectionModel.m */; };
 		372C753B1C08661500A1D90B /* ClassAttendanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372C753A1C08661500A1D90B /* ClassAttendanceVC.m */; };
-		372ED8231B81795A00D07344 /* InterestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372ED8221B81795A00D07344 /* InterestVC.m */; };
 		373528771AD6557800C0F326 /* BaseInfoModifyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 373528751AD6557800C0F326 /* BaseInfoModifyVC.m */; };
+		3736CEB41C508D31004DB2D2 /* InterestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3736CEB11C508D31004DB2D2 /* InterestVC.m */; };
+		3736CEB51C508D31004DB2D2 /* InterestDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3736CEB31C508D31004DB2D2 /* InterestDetailVC.m */; };
 		3739713E1C40F72000425250 /* StudentAttendanceDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3739713D1C40F72000425250 /* StudentAttendanceDetailView.m */; };
 		373B9D1A1BEF8B6000FE89CA /* NotificationTargetVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 373B9D191BEF8B6000FE89CA /* NotificationTargetVC.m */; };
 		375819C81C22AA29002C9B85 /* NotificationHistoryTargetSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 375819C71C22AA29002C9B85 /* NotificationHistoryTargetSelectVC.m */; };
@@ -526,10 +527,12 @@
 		372C75371C0802CC00A1D90B /* HomeWorkCollectionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkCollectionModel.m; sourceTree = "<group>"; };
 		372C75391C08661500A1D90B /* ClassAttendanceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassAttendanceVC.h; sourceTree = "<group>"; };
 		372C753A1C08661500A1D90B /* ClassAttendanceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassAttendanceVC.m; sourceTree = "<group>"; };
-		372ED8211B81795A00D07344 /* InterestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterestVC.h; sourceTree = "<group>"; };
-		372ED8221B81795A00D07344 /* InterestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterestVC.m; sourceTree = "<group>"; };
 		373528751AD6557800C0F326 /* BaseInfoModifyVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseInfoModifyVC.m; sourceTree = "<group>"; };
 		373528761AD6557800C0F326 /* BaseInfoModifyVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseInfoModifyVC.h; sourceTree = "<group>"; };
+		3736CEB01C508D31004DB2D2 /* InterestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterestVC.h; sourceTree = "<group>"; };
+		3736CEB11C508D31004DB2D2 /* InterestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterestVC.m; sourceTree = "<group>"; };
+		3736CEB21C508D31004DB2D2 /* InterestDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterestDetailVC.h; sourceTree = "<group>"; };
+		3736CEB31C508D31004DB2D2 /* InterestDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterestDetailVC.m; sourceTree = "<group>"; };
 		3739713C1C40F72000425250 /* StudentAttendanceDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentAttendanceDetailView.h; sourceTree = "<group>"; };
 		3739713D1C40F72000425250 /* StudentAttendanceDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentAttendanceDetailView.m; sourceTree = "<group>"; };
 		373B9D181BEF8B6000FE89CA /* NotificationTargetVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationTargetVC.h; sourceTree = "<group>"; };
@@ -2740,8 +2743,10 @@
 				37F2070C1BDE014B006466F4 /* SurroundingVC */,
 				37DEE4E61A57C21D009A8771 /* DiscoveryVC.h */,
 				37DEE4E71A57C21D009A8771 /* DiscoveryVC.m */,
-				372ED8211B81795A00D07344 /* InterestVC.h */,
-				372ED8221B81795A00D07344 /* InterestVC.m */,
+				3736CEB01C508D31004DB2D2 /* InterestVC.h */,
+				3736CEB11C508D31004DB2D2 /* InterestVC.m */,
+				3736CEB21C508D31004DB2D2 /* InterestDetailVC.h */,
+				3736CEB31C508D31004DB2D2 /* InterestDetailVC.m */,
 				37FD6FDB1BBCE55800C83AB4 /* OperationGuideVC.h */,
 				37FD6FDC1BBCE55800C83AB4 /* OperationGuideVC.m */,
 			);
@@ -3368,7 +3373,6 @@
 				3793FA8D1B7CFFF000501F77 /* DAOverlayView.m in Sources */,
 				3728A73E1B9D376300310457 /* UUProgressHUD.m in Sources */,
 				371C6DAC1A7015AF00FA4AEC /* PublishAudioVC.m in Sources */,
-				372ED8231B81795A00D07344 /* InterestVC.m in Sources */,
 				3793FA991B7CFFF000501F77 /* TGRImageZoomAnimationController.m in Sources */,
 				3739713E1C40F72000425250 /* StudentAttendanceDetailView.m in Sources */,
 				3793FA851B7CFFF000501F77 /* LZBadgeLabel.m in Sources */,
@@ -3407,6 +3411,7 @@
 				3705FF911BA2A1F800F0C6F6 /* NotificationClassStudentsVC.m in Sources */,
 				37FD6DE81BAEE01C00C83AB4 /* JSMessagesViewController.m in Sources */,
 				37FD6E471BBA698D00C83AB4 /* FeedItemDetailVC.m in Sources */,
+				3736CEB41C508D31004DB2D2 /* InterestVC.m in Sources */,
 				37DEE4F01A57C24A009A8771 /* PersonalInfoVC.m in Sources */,
 				37FD6E751BBC51DF00C83AB4 /* ClassMemberVC.m in Sources */,
 				3728A73B1B9D376300310457 /* MFWFace.m in Sources */,
@@ -3528,6 +3533,7 @@
 				3793FA3A1B7CFFF000501F77 /* REInlineDatePickerItem.m in Sources */,
 				3793FA9A1B7CFFF000501F77 /* UIImage+AspectFit.m in Sources */,
 				3793FACE1B7CFFF000501F77 /* SDWebImageCompat.m in Sources */,
+				3736CEB51C508D31004DB2D2 /* InterestDetailVC.m in Sources */,
 				378DA1471C09957C00301C26 /* HomeWorkDetailVC.m in Sources */,
 				37FD6E311BB4817900C83AB4 /* NewMessageModel.m in Sources */,
 				3728A7361B9D376300310457 /* FaceSelectView.m in Sources */,

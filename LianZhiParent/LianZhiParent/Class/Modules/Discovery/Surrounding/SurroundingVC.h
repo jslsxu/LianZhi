@@ -8,11 +8,30 @@
 
 #import "TNBaseTableViewController.h"
 #import "ClassZoneItemCell.h"
-
-@interface SurroundingCell : TreeHouseCell
+@class SurroundingCell;
+@protocol SurroundingCellDelegate <NSObject>
+@optional
+- (void)onActionClicked:(SurroundingCell *)cell;
+- (void)onResponseClickedAtTarget:(ResponseItem *)responseItem cell:(SurroundingCell *)cell;
+- (void)onShowDetail:(TreehouseItem *)zoneItem;
+@end
+@interface SurroundingCell : TNTableViewCell<UICollectionViewDataSource, UICollectionViewDelegate, ResponseDelegate>
 {
-    UIView*     _sepLine;
+    AvatarView*         _avatar;
+    UILabel*            _nameLabel;
+    UILabel*            _timeLabel;
+    UIButton*           _shareToTreeHouseButton;
+    UILabel*            _contentLabel;
+    UICollectionView*   _collectionView;
+    MessageVoiceButton* _voiceButton;
+    UILabel*            _spanLabel;
+    UIButton*           _addressButton;
+    UIButton*           _actionButton;
+    ResponseView*       _responseView;
+    UIView*             _sepLine;
 }
+@property (nonatomic, readonly)UIButton *actionButton;
+@property (nonatomic, weak)id<SurroundingCellDelegate> delegate;
 @end
 
 @interface SurroundingListModel : TNListModel
@@ -20,7 +39,7 @@
 @property (nonatomic, copy)NSString *minID;
 @end
 
-@interface SurroundingVC : TNBaseTableViewController<ReplyBoxDelegate, ClassZoneItemCellDelegate>
+@interface SurroundingVC : TNBaseTableViewController<ReplyBoxDelegate, SurroundingCellDelegate>
 {
     ReplyBox*                       _replyBox;
 }

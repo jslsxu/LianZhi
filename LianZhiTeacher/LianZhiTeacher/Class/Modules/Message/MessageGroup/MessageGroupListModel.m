@@ -25,7 +25,7 @@
 
 - (BOOL)isNotification
 {
-    if(self.type == ChatTypeClass || self.type == ChatTypeParents||self.type == ChatTypeTeacher || self.type == ChatTypeGroup)
+    if(self.type == ChatTypeClass || self.type == ChatTypeParents||self.type == ChatTypeTeacher || self.type == ChatTypeGroup || self.type == ChatTypePractice || self.type == ChatTypeAttendance)
         return NO;
     return YES;
 }

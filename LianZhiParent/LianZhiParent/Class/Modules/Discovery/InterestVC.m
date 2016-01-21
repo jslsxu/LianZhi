@@ -7,7 +7,7 @@
 //
 
 #import "InterestVC.h"
-
+#import "InterestDetailVC.h"
 @implementation InterestItem
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
@@ -55,9 +55,10 @@
     for (NSInteger i = 0; i < 10; i++)
     {
         InterestItem *item = [[InterestItem alloc] init];
+        [item setPv:10];
         [item setTitle:@"lalala"];
         [item setCtime:@"2016-01-13 星期日"];
-        [item setUrl:@"www.baidu.com"];
+        [item setUrl:@"http://www.baidu.com"];
         [item setPic:@"http://pic14.nipic.com/20110522/7411759_164157418126_2.jpg"];
         [self.modelItemArray addObject:item];
     }
@@ -154,6 +155,8 @@
     [_titleLabel setText:interestItem.title];
     [_rightImageView sd_setImageWithURL:[NSURL URLWithString:interestItem.pic] placeholderImage:nil];
     [_pvCountLabel setText:kStringFromValue(interestItem.pv)];
+    [_pvCountLabel sizeToFit];
+    [_pvCountLabel setOrigin:CGPointMake(10, 45)];
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
@@ -177,6 +180,16 @@
         self.title = @"兴趣";
     }
     return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"info/set_read" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"type": @"1"} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [[UserCenter sharedInstance].statusManager setFound:NO];
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (UITableViewStyle)tableViewStyle
@@ -229,7 +242,7 @@
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
     InterestItem *item = (InterestItem *)modelItem;
-    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+    InterestDetailVC *webVC = [[InterestDetailVC alloc] init];
     [webVC setUrl:item.url];
     [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
 }
