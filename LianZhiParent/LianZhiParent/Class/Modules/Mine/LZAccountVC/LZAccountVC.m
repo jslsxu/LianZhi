@@ -138,8 +138,9 @@
     [headerView addSubview:titleLabel];
     
     UIButton *helpbutton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [helpbutton setFrame:CGRectMake(headerView.width - 10 - 100, 20, 100, 20)];
-    [helpbutton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    [helpbutton setFrame:CGRectMake(headerView.width - 10 - 80, 20, 80, 20)];
+    [helpbutton setImage:[UIImage imageNamed:@"AccountFaq"] forState:UIControlStateNormal];
+    [helpbutton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 5)];
     [helpbutton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [helpbutton setTitle:@"如何赚取" forState:UIControlStateNormal];
     [helpbutton setTitleColor:kCommonParentTintColor forState:UIControlStateNormal];

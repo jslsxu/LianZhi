@@ -63,6 +63,7 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
 {
     self.changed = [dataWrapper getIntegerForKey:@"changed"];
     self.found = [dataWrapper getBoolForKey:@"found"];
+    self.around = [dataWrapper getBoolForKey:@"around"];
     self.faq = [dataWrapper getBoolForKey:@"faq"];
     TNDataWrapper *newFeedWrapper = [dataWrapper getDataWrapperForKey:@"new_class_feed"];
     if(newFeedWrapper.count == 0)

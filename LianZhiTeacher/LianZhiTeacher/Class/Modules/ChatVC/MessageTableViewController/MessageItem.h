@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, MessageType) {
     UUMessageTypeFace     = 4 ,    // 表情
     UUMessageTypeDeleted  = 8,      //消息被删除
     UUMessageTypeRevoked  = 9,      //消息被撤销
+    UUMessageTypeGift = 10,         //
 };
 
 typedef NS_ENUM(NSInteger, ChatType)

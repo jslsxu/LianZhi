@@ -197,6 +197,24 @@
     [model sort];
     [self.tableView reloadData];
 }
+
+- (void)TNBaseTableViewControllerRequestSuccess
+{
+    if(self.targetStudentID)
+    {
+        for (StudentAttendanceItem *item in self.tableViewModel.modelItemArray)
+        {
+            if([item.studentID isEqualToString:self.targetStudentID])
+            {
+                item.leaveDate = self.leaveDate;
+                StudentAttendanceDetailView *detailView = [[StudentAttendanceDetailView alloc] initWithVacationItem:item];
+                [detailView show];
+            }
+        }
+        self.targetStudentID = nil;
+    }
+}
+
 #pragma mark - UItableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

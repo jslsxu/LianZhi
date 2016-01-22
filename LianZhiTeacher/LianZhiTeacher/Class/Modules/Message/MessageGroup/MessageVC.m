@@ -11,6 +11,8 @@
 #import "NotificationToAllVC.h"
 #import "ActionPopView.h"
 #import "ContactListVC.h"
+#import "HomeWorkVC.h"
+#import "StudentAttendanceVC.h"
 @interface MessageVC ()<ActionPopViewDelegate>
 @property (nonatomic, strong)NSTimer *timer;
 @end
@@ -266,6 +268,17 @@
             [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
             [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         }
+        else if(groupItem.fromInfo.type == ChatTypeAttendance)
+        {
+            StudentAttendanceVC *classAttendanceVC = [[StudentAttendanceVC alloc] init];
+            classAttendanceVC.classID = groupItem.fromInfo.from_obj_id;
+            [CurrentROOTNavigationVC pushViewController:classAttendanceVC animated:YES];
+        }
+        else if(groupItem.fromInfo.type == ChatTypePractice)
+        {
+            
+        }
+
         else
         {
             JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];

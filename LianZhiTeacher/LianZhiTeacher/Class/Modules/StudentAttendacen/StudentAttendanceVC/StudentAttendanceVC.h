@@ -31,4 +31,5 @@
     AttendanceDateView* _datePickerView;
 }
 @property (nonatomic, copy)NSString *classID;
+@property (nonatomic, copy)NSString *targetStudentID;
 @end

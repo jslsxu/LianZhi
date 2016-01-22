@@ -215,6 +215,10 @@
     {
         redDotHidden = ![UserCenter sharedInstance].statusManager.faq;
     }
+    else if(type == DicoveryTypeAround)
+    {
+        redDotHidden = ![UserCenter sharedInstance].statusManager.around;
+    }
     else if(type== DicoveryTypeLianZhi)
     {
         NSString *guideCellKey = @"guideCellKey";
@@ -258,6 +262,11 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:kStatusChangedNotification object:nil];
             OperationGuideVC *operationGuideVC = [[OperationGuideVC alloc] init];
             [CurrentROOTNavigationVC pushViewController:operationGuideVC animated:YES];
+        }
+        else if(type == DicoveryTypeAround)
+        {
+            SurroundingVC *surroundingVC = [[SurroundingVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:surroundingVC animated:YES];
         }
         else
         {

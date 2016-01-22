@@ -200,10 +200,15 @@
         [_revokeMessageLabel sizeToFit];
         [_revokeMessageLabel setFrame:CGRectMake((self.width - _revokeMessageLabel.width - 10) / 2, _nameLabel.bottom, _revokeMessageLabel.width + 10, _revokeMessageLabel.height + 4)];
     }
+    else if(type == UUMessageTypeGift)
+    {
+        
+    }
     else
     {
         _contentButton.hidden = YES;
     }
+    
     if(UUMessageFromMe == messageItem.from)
     {
         [_contentButton setOrigin:CGPointMake(kScreenWidth - 50 - _contentButton.width, spaceYStart)];

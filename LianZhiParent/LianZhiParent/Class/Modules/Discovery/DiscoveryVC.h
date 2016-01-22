@@ -16,6 +16,7 @@ typedef NS_ENUM(NSInteger, DicoveryType)
     DicoveryTypepersonalSettings = 2,   //个人设置
     DicoveryTypeInterest = 3,           //兴趣
     DicoveryTypeFAQ = 4,                //常见问题
+    DicoveryTypeAround = 5,             //身边事
 };
 
 @interface DiscoveryItem : TNModelItem

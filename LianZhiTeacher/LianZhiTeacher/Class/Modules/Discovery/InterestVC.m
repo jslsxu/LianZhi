@@ -1,4 +1,4 @@
-//
+ //
 //  InterestVC.m
 //  LianZhiParent
 //
@@ -132,17 +132,19 @@
         [_rightImageView setContentMode:UIViewContentModeScaleAspectFill];
         [self addSubview:_rightImageView];
         
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, _rightImageView.x - 10 - 10, 32)];
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, _rightImageView.x - 10 - 10, 30)];
+        [_titleLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_titleLabel setNumberOfLines:0];
         [_titleLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [_titleLabel setFont:[UIFont systemFontOfSize:14]];
         [self addSubview:_titleLabel];
         
-        _pvIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+        _pvIcon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PVIcon"]];
         [self addSubview:_pvIcon];
         
         _pvCountLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_pvCountLabel setFont:[UIFont systemFontOfSize:14]];
+        [_pvCountLabel setTextColor:[UIColor colorWithHexString:@"c9c9c9"]];
         [self addSubview:_pvCountLabel];
         
     }
@@ -154,9 +156,10 @@
     InterestItem *interestItem = (InterestItem *)modelItem;
     [_titleLabel setText:interestItem.title];
     [_rightImageView sd_setImageWithURL:[NSURL URLWithString:interestItem.pic] placeholderImage:nil];
+    [_pvIcon setOrigin:CGPointMake(10, 45)];
     [_pvCountLabel setText:kStringFromValue(interestItem.pv)];
     [_pvCountLabel sizeToFit];
-    [_pvCountLabel setOrigin:CGPointMake(10, 45)];
+    [_pvCountLabel setOrigin:CGPointMake(_pvIcon.right + 5, _pvIcon.centerY - _pvCountLabel.height / 2)];
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width

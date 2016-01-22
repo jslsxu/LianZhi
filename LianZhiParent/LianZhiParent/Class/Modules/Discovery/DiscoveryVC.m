@@ -207,6 +207,10 @@
     {
         redDotHidden = ![UserCenter sharedInstance].statusManager.faq;
     }
+    else if (type == DicoveryTypeAround)
+    {
+        redDotHidden = ![UserCenter sharedInstance].statusManager.around;
+    }
     else if(type == DicoveryTypeLianZhi)
     {
         NSString *guideCellKey = @"guideCellKey";
@@ -257,6 +261,11 @@
     {
         MineVC *mineVC = [[MineVC alloc] init];
         [self.navigationController pushViewController:mineVC animated:YES];
+    }
+    else if (type == DicoveryTypeAround)
+    {
+        SurroundingVC *surroundingVC = [[SurroundingVC alloc] init];
+        [self.navigationController pushViewController:surroundingVC animated:YES];
     }
     else
     {
