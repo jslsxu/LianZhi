@@ -25,6 +25,7 @@
 {
     self.mid = [dataWrapper getStringForKey:@"mid"];
     self.messageType = [dataWrapper getIntegerForKey:@"type"];
+    self.messageType = UUMessageTypeGift;
     self.text = [dataWrapper getStringForKey:@"text"];
     TNDataWrapper *exinfoWrapper = [dataWrapper getDataWrapperForKey:@"exinfo"];
     TNDataWrapper *photoWrapper = [exinfoWrapper getDataWrapperForKey:@"imgs"];
@@ -102,6 +103,8 @@
     }
     else if(self.messageContent.messageType == UUMessageTypeRevoked)
         height = 32;
+    else if (self.messageContent.messageType == UUMessageTypeGift)
+        height = 60;
     else
         height = 32;
     if(self.messageContent.hideTime)

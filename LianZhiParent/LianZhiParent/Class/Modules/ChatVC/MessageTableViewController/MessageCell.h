@@ -35,6 +35,9 @@
     UILabel*                    _audioTimeLabel;
     ChatVoiceButton*          _playButton;
     UILabel*                    _revokeMessageLabel;
+    
+    UIImageView*                _giftView;
+    UILabel*                    _giftDetailLabel;
 }
 @property (nonatomic, assign)ChatType chatType;
 @property (nonatomic, weak)id<MessageCellDelegate> delegate;

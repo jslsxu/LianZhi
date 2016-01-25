@@ -89,14 +89,20 @@
 
 @end
 
+
 @implementation ClassAttendanceVC
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self requestData:REQUEST_REFRESH];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"我所有的班";
 
     [self bindTableCell:@"ClassAttendanceCell" tableModel:@"ClassLeftModel"];
-    [self requestData:REQUEST_REFRESH];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType

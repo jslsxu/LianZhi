@@ -26,7 +26,7 @@
         [_courseLabel setTextAlignment:NSTextAlignmentCenter];
         [_courseLabel.layer setCornerRadius:15];
         [_courseLabel.layer setMasksToBounds:YES];
-        [_courseLabel setFont:[UIFont systemFontOfSize:14]];
+        [_courseLabel setFont:[UIFont systemFontOfSize:13]];
         [_courseLabel setTextColor:[UIColor whiteColor]];
         [self addSubview:_courseLabel];
         
@@ -161,7 +161,8 @@
 
 - (void)onVoiceButtonClicked
 {
-    
+    HomeWorkItem *item = (HomeWorkItem *)self.modelItem;
+    [_voiceButton setVoiceWithURL:[NSURL URLWithString:item.audioItem.audioUrl] withAutoPlay:YES];
 }
 
 #pragma mark - 

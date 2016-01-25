@@ -271,7 +271,8 @@
         else if(groupItem.fromInfo.type == ChatTypeAttendance)
         {
             StudentAttendanceVC *classAttendanceVC = [[StudentAttendanceVC alloc] init];
-            classAttendanceVC.classID = groupItem.fromInfo.from_obj_id;
+            classAttendanceVC.classID = groupItem.fromInfo.classID;
+            classAttendanceVC.targetStudentID = groupItem.fromInfo.childID;
             [CurrentROOTNavigationVC pushViewController:classAttendanceVC animated:YES];
         }
         else if(groupItem.fromInfo.type == ChatTypePractice)

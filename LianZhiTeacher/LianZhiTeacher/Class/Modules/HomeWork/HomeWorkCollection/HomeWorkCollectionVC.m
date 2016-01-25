@@ -35,11 +35,14 @@
     [task setRequestUrl:@"practice/get_fav"];
     [task setRequestMethod:REQUEST_GET];
     [task setRequestType:requestType];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    HomeWorkCollectionModel *model = (HomeWorkCollectionModel *)self.tableViewModel;
-    [params setValue:[model maxID] forKey:@"max_id"];
-    
-    [task setParams:params];
+    if(requestType == REQUEST_GETMORE)
+    {
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        HomeWorkCollectionModel *model = (HomeWorkCollectionModel *)self.tableViewModel;
+        [params setValue:[model maxID] forKey:@"max_id"];
+        
+        [task setParams:params];
+    }
     [task setObserver:self];
     return task;
     

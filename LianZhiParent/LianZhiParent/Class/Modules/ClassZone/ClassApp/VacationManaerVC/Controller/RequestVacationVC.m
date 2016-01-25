@@ -146,7 +146,7 @@
     [params setValue:_textView.text forKey:@"words"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/leave" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:YES];
-        [ProgressHUD showHintText:@"申请成功"];
+        [ProgressHUD showHintText:@"请假条已发给老师"];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [CurrentROOTNavigationVC popViewControllerAnimated:YES];
         });

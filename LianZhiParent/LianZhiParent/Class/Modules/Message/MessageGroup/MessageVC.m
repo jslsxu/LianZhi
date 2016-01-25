@@ -242,7 +242,7 @@
         else if(groupItem.fromInfo.type == ChatTypePractice)
         {
             HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
-            [homeWorkVC setClassID:groupItem.fromInfo.from_obj_id];
+            [homeWorkVC setClassID:groupItem.fromInfo.classID];
             [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
         }
         else

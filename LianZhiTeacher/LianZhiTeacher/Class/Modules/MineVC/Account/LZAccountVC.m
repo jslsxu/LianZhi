@@ -86,26 +86,19 @@
 {
     if(type == REQUEST_REFRESH)
         [self.modelItemArray removeAllObjects];
-//    TNDataWrapper *userCoinWrapper = [data getDataWrapperForKey:@"user_coin"];
-//    self.coinTotal = [userCoinWrapper getIntegerForKey:@"coin_total"];
-//    
-//    TNDataWrapper *moreWrapper  =[data getDataWrapperForKey:@"more"];
-//    self.more = [moreWrapper getBoolForKey:@"has"];
-//    self.maxID = [moreWrapper getStringForKey:@"id"];
-//    
-//    TNDataWrapper *itemsWrapper = [data getDataWrapperForKey:@"items"];
-//    for (NSInteger i = 0; i < itemsWrapper.count; i++)
-//    {
-//        TNDataWrapper *itemWrapper = [itemsWrapper getDataWrapperForIndex:i];
-//        AccountInfoItem *item = [[AccountInfoItem alloc] init];
-//        [item parseData:itemWrapper];
-//        [self.modelItemArray addObject:item];
-//    }
-    self.coinTotal = 300;
-    for (NSInteger i = 0; i < 20; i++)
+    TNDataWrapper *userCoinWrapper = [data getDataWrapperForKey:@"user_coin"];
+    self.coinTotal = [userCoinWrapper getIntegerForKey:@"coin_total"];
+    
+    TNDataWrapper *moreWrapper  =[data getDataWrapperForKey:@"more"];
+    self.more = [moreWrapper getBoolForKey:@"has"];
+    self.maxID = [moreWrapper getStringForKey:@"id"];
+    
+    TNDataWrapper *itemsWrapper = [data getDataWrapperForKey:@"items"];
+    for (NSInteger i = 0; i < itemsWrapper.count; i++)
     {
+        TNDataWrapper *itemWrapper = [itemsWrapper getDataWrapperForIndex:i];
         AccountInfoItem *item = [[AccountInfoItem alloc] init];
-        [item parseData:nil];
+        [item parseData:itemWrapper];
         [self.modelItemArray addObject:item];
     }
     return YES;

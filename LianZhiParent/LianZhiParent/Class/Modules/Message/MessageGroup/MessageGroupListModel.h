@@ -18,6 +18,8 @@
 @property (nonatomic, strong)UIImage *logoImage;
 @property (nonatomic, copy)NSString *from_obj_id;
 @property (nonatomic, copy)NSString *mobile;
+@property (nonatomic, copy)NSString *classID;
+@property (nonatomic, copy)NSString *childID;
 - (BOOL)isNotification;
 @end
 

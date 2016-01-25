@@ -45,23 +45,23 @@
     self.more = [moreWrapper getBoolForKey:@"has"];
     self.maxID = [moreWrapper getStringForKey:@"id"];
     TNDataWrapper *itemsWrapper = [data getDataWrapperForKey:@"items"];
-//    for (NSInteger i = 0; i < itemsWrapper.count; i++)
-//    {
-//        TNDataWrapper *itemWrapper = [itemsWrapper getDataWrapperForIndex:i];
-//        InterestItem *interestItem = [[InterestItem alloc] init];
-//        [interestItem parseData:itemWrapper];
-//        [self.modelItemArray addObject:interestItem];
-//    }
-    for (NSInteger i = 0; i < 10; i++)
+    for (NSInteger i = 0; i < itemsWrapper.count; i++)
     {
-        InterestItem *item = [[InterestItem alloc] init];
-        [item setPv:10];
-        [item setTitle:@"lalala"];
-        [item setCtime:@"2016-01-13 星期日"];
-        [item setUrl:@"http://www.baidu.com"];
-        [item setPic:@"http://pic14.nipic.com/20110522/7411759_164157418126_2.jpg"];
-        [self.modelItemArray addObject:item];
+        TNDataWrapper *itemWrapper = [itemsWrapper getDataWrapperForIndex:i];
+        InterestItem *interestItem = [[InterestItem alloc] init];
+        [interestItem parseData:itemWrapper];
+        [self.modelItemArray addObject:interestItem];
     }
+//    for (NSInteger i = 0; i < 10; i++)
+//    {
+//        InterestItem *item = [[InterestItem alloc] init];
+//        [item setPv:10];
+//        [item setTitle:@"lalala"];
+//        [item setCtime:@"2016-01-13 星期日"];
+//        [item setUrl:@"http://www.baidu.com"];
+//        [item setPic:@"http://pic14.nipic.com/20110522/7411759_164157418126_2.jpg"];
+//        [self.modelItemArray addObject:item];
+//    }
     NSMutableArray *sectionArray = nil;
     for (NSInteger i = 0; i < self.modelItemArray.count; i++)
     {

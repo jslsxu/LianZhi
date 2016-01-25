@@ -12,8 +12,8 @@
 {
     UTPlaceholderTextView*  _textView;
     UILabel*                _numLabel;
-//    UIButton*               _checkButton;
-//    UILabel*                _hintLabel;
+    UIButton*               _checkButton;
+    UILabel*                _hintLabel;
 }
 @property (nonatomic, strong)NSDictionary *targetDic;
 @end

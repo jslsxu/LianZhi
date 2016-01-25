@@ -39,7 +39,6 @@
         [_contentView.layer setMasksToBounds:YES];
         [_contentView setBackgroundColor:[UIColor whiteColor]];
         
-        
         UIView* statusView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _contentView.width, 100)];
         [statusView setBackgroundColor:[UIColor colorWithHexString:@"87dd51"]];
         [_contentView addSubview:statusView];
@@ -116,6 +115,12 @@
         UIImageView *bottomView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LeaveDetailBottom"]];
         [bottomView setFrame:CGRectMake(30, _contentView.bottom, _contentView.width, 5.5)];
         [self addSubview:bottomView];
+        
+        UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [closeButton setImage:[UIImage imageNamed:@"StudentAttendanceClose"] forState:UIControlStateNormal];
+        [closeButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
+        [closeButton setFrame:CGRectMake(_contentView.right - 20, _contentView.top - 20, 40, 40)];
+        [self addSubview:closeButton];
     }
     return self;
 }

@@ -54,6 +54,17 @@
         _contentButton.titleLabel.numberOfLines = 0;
         [self addSubview:_contentButton];
         
+        _giftView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [_giftView setClipsToBounds:YES];
+        [_giftView setContentMode:UIViewContentModeScaleAspectFill];
+        [_contentButton addSubview:_giftView];
+        
+        _giftDetailLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_giftDetailLabel setTextColor:[UIColor whiteColor]];
+        [_giftDetailLabel setNumberOfLines:0];
+        [_giftDetailLabel setLineBreakMode:NSLineBreakByWordWrapping];
+        [_contentButton addSubview:_giftDetailLabel];
+        
         UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPress)];
         [longPressGesture setMinimumPressDuration:1];
         [_contentButton addGestureRecognizer:longPressGesture];
@@ -76,6 +87,7 @@
         [_revokeMessageLabel.layer setMasksToBounds:YES];
         [_revokeMessageLabel setHidden:YES];
         [self addSubview:_revokeMessageLabel];
+        
     }
     return self;
 }
@@ -126,7 +138,6 @@
     [_avatarView setY:spaceYStart];
     
     [_contentButton setY:spaceYStart];
-    
     [_contentButton setImage:nil forState:UIControlStateNormal];
     [_contentButton setTitle:nil forState:UIControlStateNormal];
     [_contentButton.backImageView setImage:nil];
@@ -135,6 +146,8 @@
     [_playButton setHidden:YES];
     [_audioTimeLabel setHidden:YES];
     [_revokeMessageLabel setHidden:YES];
+    [_giftDetailLabel setHidden:YES];
+    [_giftView setHidden:YES];
     MessageType type = messageItem.messageContent.messageType;
     if(type == UUMessageTypeText)
     {
@@ -202,7 +215,24 @@
     }
     else if(type == UUMessageTypeGift)
     {
+        NSInteger leftMargin = (UUMessageFromMe == messageItem.from) ? 10 : 15;
+        NSInteger rightMargin = (UUMessageFromMe == messageItem.from) ? 15 : 10;
+        [_giftView setHidden:NO];
+        [_giftDetailLabel setHidden:NO];
+        [_contentButton setSize:CGSizeMake(180, 60)];
+        [_contentButton.backImageView setHidden:NO];
+        [_contentButton.backImageView setBackgroundColor:[UIColor colorWithHexString:@"fa9d3b"]];
         
+        [_giftView setFrame:CGRectMake(leftMargin, 5, 50, 50)];
+        [_giftView sd_setImageWithURL:[NSURL URLWithString:@"http://pic14.nipic.com/20110522/7411759_164157418126_2.jpg"] placeholderImage:nil];
+        
+        [_giftDetailLabel setFrame:CGRectMake(_giftView.right + 10, 10, _contentButton.width - rightMargin - (_giftView.right + 10), 40)];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+        [paragraphStyle setLineSpacing:6];
+        NSMutableAttributedString *giftDetailStr = [[NSMutableAttributedString alloc] initWithString:@"请收下我的心意\n" attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:13],NSParagraphStyleAttributeName : paragraphStyle}];
+        [giftDetailStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"点击查看" attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:11],NSParagraphStyleAttributeName : paragraphStyle}]];
+        [_giftDetailLabel setAttributedText:giftDetailStr];
+
     }
     else
     {

@@ -12,7 +12,7 @@
 #import "HomeWorkPhotoView.h"
 @interface HomeWorkVC : TNBaseViewController<CourseViewDelegate>
 {
-    UIScrollView*           _scrollView;
+    UITouchScrollView*           _scrollView;
     UIView*                 _contentView;
     UTPlaceholderTextView*  _textView;
     CourseView*             _courseView;

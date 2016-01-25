@@ -55,7 +55,7 @@
     NSInteger timeSpan = [_recordView tmpAmrDuration];
     if(timeSpan == 0 || audioData == nil)
     {
-        [ProgressHUD showHintText:@"你还有录制语音"];
+        [ProgressHUD showHintText:@"你还没有录制语音"];
         return;
     }
     if(self.completion)

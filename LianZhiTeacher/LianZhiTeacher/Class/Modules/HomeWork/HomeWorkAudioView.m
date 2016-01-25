@@ -10,8 +10,6 @@
 
 @interface HomeWorkAudioView ()<MLAudioRecorderDelegate>
 @property (nonatomic, strong)MLAudioMeterObserver *meterObserver;
-@property (nonatomic, strong)MLAudioRecorder*   recorder;
-@property (nonatomic, strong)AmrRecordWriter*   amrWriter;
 @property (nonatomic, strong)MLAudioPlayer*     player;
 @property (nonatomic, strong)AmrPlayerReader*   amrReader;
 @property (nonatomic, strong)NSTimer*           playTimer;
@@ -25,7 +23,6 @@
     //音谱检测关联着录音类，录音类要停止了。所以要设置其audioQueue为nil
     self.meterObserver.audioQueue = nil;
     [self.player stopPlaying];
-    [self.recorder stopRecording];
 }
 
 - (void)dismiss
@@ -57,12 +54,20 @@
         _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_deleteButton setFrame:CGRectMake(self.width - 30 - 50, (self.height - 50) / 2, 50, 50)];
         [_deleteButton addTarget:self action:@selector(onDeleteClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_deleteButton setImage:[UIImage imageNamed:@"HomeWorkAudioDelete"] forState:UIControlStateNormal];
+        [_deleteButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"F65372"] size:_deleteButton.size cornerRadius:25] forState:UIControlStateNormal];
+        [_deleteButton.titleLabel setNumberOfLines:0];
+        [_deleteButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_deleteButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
+        [_deleteButton setTitle:@"删除\n录音" forState:UIControlStateNormal];
         [self addSubview:_deleteButton];
         
         _playButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_playButton setFrame:CGRectMake(_deleteButton.x - 15 - 50, (self.height - 50) / 2, 50, 50)];
-        [_playButton setImage:[UIImage imageNamed:@"HomeWorkAudioPlay"] forState:UIControlStateNormal];
+        [_playButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"27BAD0"] size:_deleteButton.size cornerRadius:25] forState:UIControlStateNormal];
+        [_playButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_playButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
+        [_playButton setTitle:@"播放\n录音" forState:UIControlStateNormal];
+        [_playButton.titleLabel setNumberOfLines:0];
         [_playButton addTarget:self action:@selector(onPlayButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_playButton];
     }
@@ -88,41 +93,21 @@
         _isPlaying = YES;
         [_audioImageView setImage:[UIImage animatedImageNamed:@"HomeWorkAudioPlaying" duration:1.f]];
         [self playAudio];
+        [_playButton setTitle:@"暂停\n播放" forState:UIControlStateNormal];
     }
     else
     {
+        [_playButton setTitle:@"播放\n录音" forState:UIControlStateNormal];
+        [self.player stopPlaying];
         [self stopAudio];
-        [[MLAmrPlayer shareInstance] stopPlaying];
     }
 }
 
 - (void)playAudio
 {
     NSString *filePath = [AudioRecordView tempFilePath];
-    AmrRecordWriter *amrWriter = [[AmrRecordWriter alloc]init];
-    amrWriter.filePath = filePath;
-    amrWriter.maxSecondCount = 119;
-    amrWriter.maxFileSize = 1024*256;
-    self.amrWriter = amrWriter;
     
-    MLAudioMeterObserver *meterObserver = [[MLAudioMeterObserver alloc]init];
-    [meterObserver setRefreshInterval:0.1];
-    self.meterObserver = meterObserver;
-    
-    MLAudioRecorder *recorder = [[MLAudioRecorder alloc]init];
-    [recorder setDelegate:self];
     __weak __typeof(self)weakSelf = self;
-    recorder.receiveStoppedBlock = ^{
-        weakSelf.meterObserver.audioQueue = nil;
-    };
-    recorder.receiveErrorBlock = ^(NSError *error){
-        weakSelf.meterObserver.audioQueue = nil;
-    };
-    
-    //amr
-    recorder.bufferDurationSeconds = 0.5;
-    recorder.fileWriterDelegate = self.amrWriter;
-    self.recorder = recorder;
     
     MLAudioPlayer *player = [[MLAudioPlayer alloc]init];
     AmrPlayerReader *amrReader = [[AmrPlayerReader alloc]init];
@@ -134,7 +119,7 @@
     self.player = player;
     self.amrReader = amrReader;
     
-    self.amrReader.filePath = self.amrWriter.filePath;
+    self.amrReader.filePath = filePath;
     [self.player startPlaying];
 }
 
