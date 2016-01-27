@@ -20,6 +20,7 @@
 @interface ClassAppVC ()
 @property (nonatomic, copy)NSString *classBadge;    //班博客
 @property (nonatomic, assign)NSInteger recordNum;       //成长记录
+@property (nonatomic, assign)NSInteger appPractice; //练习
 @end
 
 @implementation ClassAppVC
@@ -110,6 +111,10 @@
         {
             appItem.badge = self.classBadge;
         }
+        if([url.host isEqualToString:@"practice"])
+        {
+            appItem.badge = [UserCenter sharedInstance].statusManager.appPractice > 0 ? @"" : nil;
+        }
     }
     [self.collectionView reloadData];
 }
@@ -164,6 +169,11 @@
         if([url.host isEqualToString:@"class"])
         {
             appItem.badge = self.classBadge;
+        }
+        
+        if([url.host isEqualToString:@"practice"])
+        {
+            appItem.badge = self.appPractice > 0 ? @"" : nil;
         }
     }
 

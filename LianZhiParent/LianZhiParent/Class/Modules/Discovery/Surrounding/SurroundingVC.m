@@ -171,7 +171,7 @@
 {
     TreehouseItem *item = (TreehouseItem *)self.modelItem;
     [_avatar setImageWithUrl:[NSURL URLWithString:item.user.avatar]];
-    [_nameLabel setText:item.user.title];
+    [_nameLabel setText:item.user.name];
     [_nameLabel sizeToFit];
     
     [_timeLabel setText:item.timeStr];

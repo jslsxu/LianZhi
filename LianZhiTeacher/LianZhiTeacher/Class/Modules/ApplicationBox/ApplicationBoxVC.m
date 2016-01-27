@@ -207,6 +207,11 @@
         {
             [appItem setBadge:self.classBadge];
         }
+        if([url.host isEqualToString:@"leave"])
+        {
+            NSString *badge = [UserCenter sharedInstance].statusManager.appLeave > 0 ? @"" : nil;
+            [appItem setBadge:badge];
+        }
     }
     [self.collectionView reloadData];
 }
@@ -221,6 +226,11 @@
         if([url.host isEqualToString:@"class"])
         {
             [appItem setBadge:self.classBadge];
+        }
+        if([url.host isEqualToString:@"leave"])
+        {
+            NSString *badge = [UserCenter sharedInstance].statusManager.appLeave > 0 ? @"" : nil;
+            [appItem setBadge:badge];
         }
     }
 

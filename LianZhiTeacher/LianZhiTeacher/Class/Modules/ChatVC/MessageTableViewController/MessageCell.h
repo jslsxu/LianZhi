@@ -33,6 +33,8 @@
     UILabel*                    _audioTimeLabel;
     ChatVoiceButton*            _playButton;
     UILabel*                    _revokeMessageLabel;
+    UIImageView*                _giftView;
+    UILabel*                    _giftDetailLabel;
 }
 @property (nonatomic, weak)id<MessageCellDelegate> delegate;
 @end

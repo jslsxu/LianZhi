@@ -21,6 +21,21 @@
     return self;
 }
 
+- (void)onReloadData:(TNModelItem *)modelItem
+{
+    [super onReloadData:modelItem];
+    ClassZoneItem *zoneItem = (ClassZoneItem *)modelItem;
+    if([zoneItem.userInfo.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid])
+        [_nameLabel setText:@"我"];
+    else
+        [_nameLabel setText:zoneItem.userInfo.name];
+    [_nameLabel sizeToFit];
+    
+    [_timeLabel setText:zoneItem.formatTime];
+    [_timeLabel sizeToFit];
+    [_timeLabel setOrigin:CGPointMake(_nameLabel.right + 5, _nameLabel.bottom - _timeLabel.height)];
+}
+
 @end
 
 @implementation SurroundingListModel

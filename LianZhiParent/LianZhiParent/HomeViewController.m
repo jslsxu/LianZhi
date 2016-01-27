@@ -88,6 +88,8 @@ static NSArray *tabDatas = nil;
                 classZoneNum += notice.num;
         }
         
+        classZoneNum += [UserCenter sharedInstance].statusManager.appPractice;
+        
         if(classZoneNum > 0)
             [classTabButton setBadgeValue:@""];
         else

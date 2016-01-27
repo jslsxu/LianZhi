@@ -32,8 +32,11 @@
     [task setRequestType:requestType];
     [task setObserver:self];
     
+    HomeWorkListModel *listModel = (HomeWorkListModel *)self.tableViewModel;
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.classID forKey:@"class_id"];
+    if(requestType == REQUEST_GETMORE)
+        [params setValue:listModel.maxID forKey:@"max_id"];
     [task setParams:params];
     return task;
 }

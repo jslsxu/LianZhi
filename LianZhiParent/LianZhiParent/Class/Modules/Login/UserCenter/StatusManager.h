@@ -56,4 +56,6 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 @property (nonatomic, strong)NSArray *classNewCommentArray;
 @property (nonatomic, strong)NSArray *treeNewCommentArray;
 @property (nonatomic, assign)NSInteger msgNum;
+@property (nonatomic, assign)NSInteger appPractice;
+@property (nonatomic, assign)NSInteger appLeave;
 @end

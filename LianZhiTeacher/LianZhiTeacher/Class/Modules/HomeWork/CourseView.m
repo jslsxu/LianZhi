@@ -115,7 +115,7 @@
                 }
                 
                 UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPress:)];
-                [longPress setMinimumPressDuration:2];
+                [longPress setMinimumPressDuration:1];
                 [button addGestureRecognizer:longPress];
                 
                 spaceXStart += innerMargin + buttonWidth;

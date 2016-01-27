@@ -61,6 +61,8 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
+    self.appPractice = [dataWrapper getIntegerForKey:@"app_practice"];
+    self.appLeave = [dataWrapper getIntegerForKey:@"app_leave"];
     self.changed = [dataWrapper getIntegerForKey:@"changed"];
     self.found = [dataWrapper getBoolForKey:@"found"];
     self.around = [dataWrapper getBoolForKey:@"around"];

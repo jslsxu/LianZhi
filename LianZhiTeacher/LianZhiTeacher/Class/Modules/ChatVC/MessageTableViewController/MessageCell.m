@@ -59,6 +59,17 @@
         [longPressGesture setMinimumPressDuration:1];
         [_contentButton addGestureRecognizer:longPressGesture];
         
+        _giftView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [_giftView setClipsToBounds:YES];
+        [_giftView setContentMode:UIViewContentModeScaleAspectFill];
+        [_contentButton addSubview:_giftView];
+        
+        _giftDetailLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_giftDetailLabel setTextColor:[UIColor whiteColor]];
+        [_giftDetailLabel setNumberOfLines:0];
+        [_giftDetailLabel setLineBreakMode:NSLineBreakByWordWrapping];
+        [_contentButton addSubview:_giftDetailLabel];
+        
         _audioTimeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_audioTimeLabel setFont:[UIFont systemFontOfSize:14]];
         [_audioTimeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
@@ -203,6 +214,27 @@
         [_revokeMessageLabel setText:@"你撤回了一条消息"];
         [_revokeMessageLabel sizeToFit];
         [_revokeMessageLabel setFrame:CGRectMake((self.width - _revokeMessageLabel.width - 10) / 2, _nameLabel.bottom, _revokeMessageLabel.width + 10, _revokeMessageLabel.height + 4)];
+    }
+    else if(type == UUMessageTypeGift)
+    {
+        NSInteger leftMargin = 10;
+        NSInteger rightMargin = 10;
+        [_giftView setHidden:NO];
+        [_giftDetailLabel setHidden:NO];
+        [_contentButton setSize:CGSizeMake(180, 60)];
+        [_contentButton.backImageView setHidden:NO];
+        [_contentButton.backImageView setBackgroundColor:[UIColor colorWithHexString:@"fa9d3b"]];
+        
+        [_giftView setFrame:CGRectMake(leftMargin, 5, 50, 50)];
+        [_giftView sd_setImageWithURL:[NSURL URLWithString:@"http://pic14.nipic.com/20110522/7411759_164157418126_2.jpg"] placeholderImage:nil];
+        
+        [_giftDetailLabel setFrame:CGRectMake(_giftView.right + 10, 10, _contentButton.width - rightMargin - (_giftView.right + 10), 40)];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+        [paragraphStyle setLineSpacing:6];
+        NSMutableAttributedString *giftDetailStr = [[NSMutableAttributedString alloc] initWithString:@"请收下我的心意\n" attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:13],NSParagraphStyleAttributeName : paragraphStyle}];
+        [giftDetailStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"点击查看" attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:11],NSParagraphStyleAttributeName : paragraphStyle}]];
+        [_giftDetailLabel setAttributedText:giftDetailStr];
+        
     }
     else
     {

@@ -215,8 +215,8 @@
     }
     else if(type == UUMessageTypeGift)
     {
-        NSInteger leftMargin = (UUMessageFromMe == messageItem.from) ? 10 : 15;
-        NSInteger rightMargin = (UUMessageFromMe == messageItem.from) ? 15 : 10;
+        NSInteger leftMargin = 10;
+        NSInteger rightMargin =  10;
         [_giftView setHidden:NO];
         [_giftDetailLabel setHidden:NO];
         [_contentButton setSize:CGSizeMake(180, 60)];
