@@ -9,6 +9,7 @@
 #import "TNBaseTableViewController.h"
 #import "HomeWorkCollectionModel.h"
 #import "HomeWorkHistoryCell.h"
+extern NSString *const kCollectionStatusChangedNotification;
 @interface HomeWorkCollectionVC : TNBaseTableViewController
 @property (nonatomic, copy)void (^completion)(HomeWorkItem *homeWorkItem);
 @end

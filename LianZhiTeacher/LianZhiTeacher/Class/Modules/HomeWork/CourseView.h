@@ -11,7 +11,7 @@
 @protocol CourseViewDelegate <NSObject>
 
 - (void)courseViewDidChange;
-
+- (void)courseViewCourseChanged;
 @end
 
 @interface CourseView : UIView<ReplyBoxDelegate>

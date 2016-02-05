@@ -8,6 +8,7 @@
 
 #import "HomeWorkCollectionVC.h"
 #import "HomeWorkDetailVC.h"
+NSString *const kCollectionStatusChangedNotification = @"CollectionStatusChangedNotification";
 @interface HomeWorkCollectionVC ()
 
 @end
@@ -28,6 +29,7 @@
     [self requestData:REQUEST_REFRESH];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFavChanged:) name:kAddFavNotification object:nil];
 }
+
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
 {
@@ -51,13 +53,22 @@
 {
     NSDictionary *userInfo = [noti userInfo];
     HomeWorkItem *item = userInfo[kPractiseItemKey];
-    for (NSInteger i = 0; i < self.tableViewModel.modelItemArray.count; i++)
+    if(item.fav)
+        [self requestData:REQUEST_REFRESH];
+    else
     {
-        HomeWorkItem *targetItem = self.tableViewModel.modelItemArray[i];
-        if([item.homeworkId isEqualToString:targetItem.homeworkId])
+        for (NSInteger i = 0; i < self.tableViewModel.modelItemArray.count; i++)
         {
-            targetItem.fav = item.fav;
-            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:i inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+            HomeWorkItem *targetItem = self.tableViewModel.modelItemArray[i];
+            if([item.homeworkId isEqualToString:targetItem.homeworkId])
+            {
+                targetItem.fav = item.fav;
+                if(!targetItem.fav)
+                {
+                    [self.tableViewModel.modelItemArray removeObject:targetItem];
+                    [self.tableView reloadData];
+                }
+            }
         }
     }
 }

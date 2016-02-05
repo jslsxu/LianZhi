@@ -313,6 +313,15 @@
     [_scrollView setContentSize:CGSizeMake(_scrollView.width, MAX(_scrollView.height, _courseView.bottom))];
 }
 
+- (void)courseViewCourseChanged
+{
+//    self.photoArray = nil;
+//    self.audioData = nil;
+//    self.timeSpan = 0;
+//    _textView.text = nil;
+//    [self setupContentView];
+}
+
 #pragma mark - UITextViewDelegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {

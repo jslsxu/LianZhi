@@ -23,6 +23,7 @@
     self.arriveTime = [dataWrapper getStringForKey:@"arrive_time"];
     self.leaveType = [dataWrapper getIntegerForKey:@"status"];
     self.remark = [dataWrapper getStringForKey:@"words"];
+    self.reason = [dataWrapper getStringForKey:@"reason"];
 }
 
 @end

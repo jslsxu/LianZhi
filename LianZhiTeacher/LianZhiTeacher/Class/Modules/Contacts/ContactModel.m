@@ -83,7 +83,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ContactModel)
     {
         group = [[ContactGroup alloc] init];
         [self.teachers addObject:group];
-        [group setKey:@"组"];
+        [group setKey:@"群"];
         for (TeacherGroup *teacherGroup in schoolInfo.groups)
         {
             if(teacherGroup.canChat)

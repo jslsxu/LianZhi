@@ -25,7 +25,6 @@
 {
     self.mid = [dataWrapper getStringForKey:@"mid"];
     self.messageType = [dataWrapper getIntegerForKey:@"type"];
-    self.messageType = UUMessageTypeGift;
     self.text = [dataWrapper getStringForKey:@"text"];
     TNDataWrapper *exinfoWrapper = [dataWrapper getDataWrapperForKey:@"exinfo"];
     TNDataWrapper *photoWrapper = [exinfoWrapper getDataWrapperForKey:@"imgs"];

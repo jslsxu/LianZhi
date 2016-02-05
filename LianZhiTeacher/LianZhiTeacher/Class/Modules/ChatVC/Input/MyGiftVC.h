@@ -12,7 +12,11 @@
 @property (nonatomic, copy)NSString *giftID;
 @property (nonatomic, copy)NSString *giftName;
 @property (nonatomic, assign)NSInteger coin;
-@property (nonatomic, strong)PhotoItem *photoItem;
+@property (nonatomic, assign)NSInteger ctype;
+@property (nonatomic, copy)NSString *url;
+@property (nonatomic, assign)CGFloat width;
+@property (nonatomic, assign)CGFloat height;
+@property (nonatomic, assign)NSInteger num;
 @end
 
 @interface GiftModel : TNListModel
@@ -23,6 +27,7 @@
 {
     UIImageView*    _imageView;
     UILabel*        _titleLabel;
+    UILabel*        _coinLabel;
 }
 @end
 

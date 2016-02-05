@@ -174,6 +174,20 @@
     __weak typeof(self) wself = self;
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/leave" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         item.leaveType = [params[@"status"] integerValue];
+        StudentAttendanceModel *model = (StudentAttendanceModel *)wself.tableViewModel;
+        NSInteger absenseNum = 0,leaveNum,normalNum = 0;
+        for (StudentAttendanceItem *item in model.modelItemArray)
+        {
+            if(item.leaveType == LeaveTypeAbsence)
+                absenseNum ++;
+            if(item.leaveType == LeaveTypeLeave)
+                leaveNum ++;
+            if(item.leaveType == LeaveTypeNormal)
+                normalNum ++;
+        }
+        model.absenceNum = absenseNum;
+        model.leaveNum = leaveNum;
+        model.normalNum = normalNum;
         [wself.tableView reloadData];
     } fail:^(NSString *errMsg) {
         

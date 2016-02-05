@@ -194,6 +194,21 @@
             finishBlk();
         }];
     }
+    else if(self.homeWorkItem.audioItem)
+    {
+        NSData * audioData = [[MLDataCache shareInstance] cachedDataForRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:wself.homeWorkItem.audioItem.audioUrl]]];
+        if(audioData.length == 0)
+        {
+            [_voiceButton setVoiceWithURL:[NSURL URLWithString:self.homeWorkItem.audioItem.audioUrl] success:^(NSURLRequest *request, NSHTTPURLResponse *response, NSURL *voicePath) {
+                finishBlk();
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                [hud hide:NO];
+                [ProgressHUD showHintText:@"语音下载失败"];
+            }];
+        }
+        else
+            finishBlk();
+    }
     else
         finishBlk();
 

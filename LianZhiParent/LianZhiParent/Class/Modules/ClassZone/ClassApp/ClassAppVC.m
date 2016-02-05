@@ -173,7 +173,7 @@
         
         if([url.host isEqualToString:@"practice"])
         {
-            appItem.badge = self.appPractice > 0 ? @"" : nil;
+            appItem.badge = [UserCenter sharedInstance].statusManager.appPractice > 0 ? @"" : nil;
         }
     }
 

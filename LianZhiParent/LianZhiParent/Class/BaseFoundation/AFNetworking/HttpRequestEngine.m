@@ -66,6 +66,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
                     if(fail && ![urlStr isEqualToString:@"sms/get"])
                     {
                         NSString *errmsg = [responseWrapper getStringForKey:@"err_msg"];
+                        if([errmsg isEqualToString:@"系统故障，请联系管理员或稍后重试"])
+                            errmsg = nil;
                         fail(errmsg);
                     }
                 }
@@ -75,6 +77,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
                 if(fail && ![urlStr isEqualToString:@"sms/get"])
                 {
                     NSString *errmsg = [responseWrapper getStringForKey:@"err_msg"];
+                    if([errmsg isEqualToString:@"系统故障，请联系管理员或稍后重试"])
+                        errmsg = nil;
                     fail(errmsg);
                 }
             }
@@ -104,6 +108,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
                     if(fail)
                     {
                         NSString *errmsg = [responseWrapper getStringForKey:@"err_msg"];
+                        if([errmsg isEqualToString:@"系统故障，请联系管理员或稍后重试"])
+                            errmsg = nil;
                         fail(errmsg);
                     }
                 }
@@ -113,6 +119,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
                 if(fail)
                 {
                     NSString *errmsg = [responseWrapper getStringForKey:@"err_msg"];
+                    if([errmsg isEqualToString:@"系统故障，请联系管理员或稍后重试"])
+                        errmsg = nil;
                     fail(errmsg);
                 }
             }
@@ -154,6 +162,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
                 if(fail)
                 {
                     NSString *errmsg = [responseWrapper getStringForKey:@"err_msg"];
+                    if([errmsg isEqualToString:@"系统故障，请联系管理员或稍后重试"])
+                        errmsg = nil;
                     fail(errmsg);
                 }
             }
@@ -163,6 +173,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
             if(fail)
             {
                 NSString *errmsg = [responseWrapper getStringForKey:@"err_msg"];
+                if([errmsg isEqualToString:@"系统故障，请联系管理员或稍后重试"])
+                    errmsg = nil;
                 fail(errmsg);
             }
         }
@@ -199,6 +211,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
                 if(fail)
                 {
                     NSString *errmsg = [responseWrapper getStringForKey:@"err_msg"];
+                    if([errmsg isEqualToString:@"系统故障，请联系管理员或稍后重试"])
+                        errmsg = nil;
                     fail(errmsg);
                 }
             }
@@ -208,6 +222,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
             if(fail)
             {
                 NSString *errmsg = [responseWrapper getStringForKey:@"err_msg"];
+                if([errmsg isEqualToString:@"系统故障，请联系管理员或稍后重试"])
+                    errmsg = nil;
                 fail(errmsg);
             }
         }

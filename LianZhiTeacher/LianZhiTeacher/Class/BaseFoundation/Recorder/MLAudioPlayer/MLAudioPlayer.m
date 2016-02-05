@@ -155,7 +155,7 @@ void outBufferHandler(void *inUserData,AudioQueueRef inAQ,AudioQueueBufferRef in
     
     //打开文件
     if (self.fileReaderDelegate&&![self.fileReaderDelegate openFileWithPlayer:self]) {
-        [ProgressHUD showHintText:@"录入语音时间过短，请从新录入"];
+        [ProgressHUD showHintText:@"打开音频文件失败"];
         return;
     }
     

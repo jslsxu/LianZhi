@@ -222,16 +222,16 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
 
 - (void)cancelTaskByObserver:(id)observer
 {
-    @synchronized(_manager)
-    {
-        for (AFHTTPRequestOperation *operation in _manager.operationQueue.operations) {
-            if([operation.observer isEqual:observer] && REQUEST_POST != operation.requestMethod)
-            {
-                NSLog(@"Task canceled");
-                [operation cancel];
-            }
-        }
-    }
+//    @synchronized(_manager)
+//    {
+//        for (AFHTTPRequestOperation *operation in _manager.operationQueue.operations) {
+//            if([operation.observer isEqual:observer] && REQUEST_POST != operation.requestMethod)
+//            {
+//                NSLog(@"Task canceled");
+//                [operation cancel];
+//            }
+//        }
+//    }
 }
 - (void)cancelTaskByCategory:(NSString *)category
 {

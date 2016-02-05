@@ -25,6 +25,7 @@ typedef NS_ENUM(NSInteger, LeaveType)
 @property (nonatomic, copy)NSString *leaveTime;
 @property (nonatomic, copy)NSString *arriveTime;
 @property (nonatomic, assign)LeaveType leaveType;
+@property (nonatomic, copy)NSString *reason;
 @end
 
 @interface StudentAttendanceModel : TNListModel

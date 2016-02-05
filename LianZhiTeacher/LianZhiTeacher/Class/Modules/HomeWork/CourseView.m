@@ -17,7 +17,7 @@
     {
         _deleteButtons = [NSMutableArray array];
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        NSArray *courseArray = [userDefaults objectForKey:kCourseCacheKey];
+        NSArray *courseArray = [userDefaults objectForKey:[NSString stringWithFormat:@"%@_%@",kCourseCacheKey,[UserCenter sharedInstance].userInfo.uid]];
         _courseArray = [NSMutableArray arrayWithArray:courseArray];
         
         [self setupSubviews];
@@ -30,6 +30,7 @@
 
 - (void)setCourse:(NSString *)course
 {
+    NSString *preCourse = _course;
     _course = course;
     BOOL fContain = NO;
     for (NSString *courseItem in _courseArray)
@@ -41,6 +42,11 @@
         [self onActionViewCommit:_course];
     else
         [self setupSubviews];
+    if(preCourse.length > 0 && course.length > 0)
+    {
+        if([self.delegate respondsToSelector:@selector(courseViewDidChange)])
+            [self.delegate courseViewCourseChanged];
+    }
 }
 
 - (void)setupSubviews
@@ -203,7 +209,7 @@
         {
             [_courseArray insertObject:content atIndex:0];
             NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
-            [userdefaults setObject:_courseArray forKey:kCourseCacheKey];
+            [userdefaults setObject:_courseArray forKey:[NSString stringWithFormat:@"%@_%@",kCourseCacheKey,[UserCenter sharedInstance].userInfo.uid]];
         }
         [self setCourse:content];
         [self setupSubviews];

@@ -114,6 +114,7 @@ static SystemSoundID shake_sound_male_id = 0;
     [[HttpRequestEngine sharedInstance] setCommonHandleBlk:^BOOL(TNDataWrapper *responseWrapper){
         NSInteger errCode = [responseWrapper getIntegerForKey:@"err_code"];
         NSString *errMsg = [responseWrapper getStringForKey:@"err_msg"];
+        
         if(errCode == 9003 || errCode == 9004 || errCode == 9005)//重新登录
         {
             if(errCode == 9004)

@@ -84,7 +84,7 @@
             [topLine setBackgroundColor:kSepLineColor];
             [bottomInfoView addSubview:topLine];
             
-            NSArray *strArray = @[@"请假开始:",leaveItem.leaveTime,@"请假结束:",leaveItem.arriveTime];
+            NSArray *strArray = @[@"请假开始:",leaveItem.leaveDate,@"请假结束:",leaveItem.arriveTime];
             NSInteger infoWidth = (_contentView.width - 20 * 2) / 2;
             for (NSInteger i = 0; i < 2; i++)
             {
@@ -109,7 +109,8 @@
         [infoLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [infoLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [infoLabel setFont:[UIFont systemFontOfSize:14]];
-        [infoLabel setText:leaveItem.remark];
+        [infoLabel setText:leaveItem.reason];
+        [_contentView addSubview:infoLabel];
         [self addSubview:_contentView];
         
         UIImageView *bottomView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LeaveDetailBottom"]];

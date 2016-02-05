@@ -57,8 +57,8 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        self.titleArray = @[@"发照片",@"拍摄",@"礼物"];
-        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera",@"FunctionGift"];
+        self.titleArray = @[@"发照片",@"拍摄"/*,@"礼物"*/];
+        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera"/*,@"FunctionGift"*/];
         NSInteger itemWIdth = 80;
         UICollectionViewFlowLayout *_layout = [[UICollectionViewFlowLayout alloc] init];
         [_layout setItemSize:CGSizeMake(80, 90)];
@@ -81,7 +81,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 3;
+    return self.titleArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
