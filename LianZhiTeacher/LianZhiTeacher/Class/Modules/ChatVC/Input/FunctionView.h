@@ -27,5 +27,6 @@
 {
     UICollectionView*   _collectionView;
 }
+@property (nonatomic, assign)BOOL canSendGift;
 @property (nonatomic, weak)id<FunctionViewDelegate> delegate;
 @end

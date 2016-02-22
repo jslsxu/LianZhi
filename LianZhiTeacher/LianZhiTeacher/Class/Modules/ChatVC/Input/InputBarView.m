@@ -114,6 +114,12 @@
     return self;
 }
 
+- (void)setCanSendGift:(BOOL)canSendGift
+{
+    _canSendGift = canSendGift;
+    [_functionView setCanSendGift:_canSendGift];
+}
+
 - (void)layoutSubviews
 {
     [_faceSelectView setY:_contentView.height];
@@ -318,6 +324,10 @@
     else
     {
         MyGiftVC *myGiftVC = [[MyGiftVC alloc] init];
+        [myGiftVC setCompletion:^(NSString *giftID) {
+            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendGift:)])
+                [self.inputDelegate inputBarViewDidSendGift:giftID];
+        }];
         TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:myGiftVC];
         [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:nil];
     }

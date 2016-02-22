@@ -84,12 +84,6 @@
             classZoneNum += notice.num;
         }
         
-        //成长记录
-        for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.classRecordArray)
-        {
-            classZoneNum += notice.num;
-        }
-        
         if(classZoneNum > 0)
             self.classBadge = @"";
         else
@@ -252,7 +246,30 @@
                     }
                     else
                     {
+                        NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
+                        if([host isEqualToString:@"class"])//班博客
+                        {
+                            NSArray *feedClassNewArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
+                            NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+                            for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
+                            {
+                                NSString *classID = classInfo.classID;
+                                NSInteger count = 0;
+                                for (ClassFeedNotice *notice in feedClassNewArray)
+                                {
+                                    if([notice.classID isEqualToString:classID])
+                                        count += notice.num;
+                                }
+                                for (TimelineCommentItem *commentItem in classNewCommentArray)
+                                {
+                                    if([commentItem.objid isEqualToString:classID])
+                                        count += commentItem.alertInfo.num;
+                                }
+                                [classDic setValue:kStringFromValue(count) forKey:classID];
+                            }
+                        }
                         ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
+                        [classSelectionVC setClassDic:classDic];
                         [classSelectionVC setSelection:^(ClassInfo *classInfo) {
                             if([host isEqualToString:@"class"])
                             {

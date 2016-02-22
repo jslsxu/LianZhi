@@ -273,8 +273,11 @@
         NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
         if(timeInterval - messageItem.messageContent.timeInterval < 30)
         {
-            UIMenuItem *revokeMenu = [[UIMenuItem alloc] initWithTitle:@"撤销" action:@selector(revokeMessage)];
-            [menuArray addObject:revokeMenu];
+            if(messageItem.from == UUMessageFromMe)
+            {
+                UIMenuItem *revokeMenu = [[UIMenuItem alloc] initWithTitle:@"撤销" action:@selector(revokeMessage)];
+                [menuArray addObject:revokeMenu];
+            }
         }
         UIMenuItem *deleteMenu = [[UIMenuItem alloc] initWithTitle:@"删除" action:@selector(deleteMessage)];
         [menuArray addObject:deleteMenu];
@@ -288,11 +291,11 @@
         }
     }
     
-    if(ChatTypeParents == self.chatType && messageItem.from == UUMessageFromOther)
-    {
-        UIMenuItem *blackMenu = [[UIMenuItem alloc] initWithTitle:@"拉黑" action:@selector(addToBlackList)];
-        [menuArray addObject:blackMenu];
-    }
+//    if(ChatTypeParents == self.chatType && messageItem.from == UUMessageFromOther)
+//    {
+//        UIMenuItem *blackMenu = [[UIMenuItem alloc] initWithTitle:@"拉黑" action:@selector(addToBlackList)];
+//        [menuArray addObject:blackMenu];
+//    }
     
     if(menuArray.count > 0)
     {

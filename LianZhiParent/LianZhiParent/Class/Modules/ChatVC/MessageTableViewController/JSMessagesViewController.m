@@ -71,6 +71,7 @@ static NSString *topChatID = nil;
 //    }
     
     _inputView = [[InputBarView alloc] init];
+    [_inputView setCanSendGift:self.chatType == ChatTypeParents || self.chatType == ChatTypeTeacher];
     [_inputView setInputDelegate:self];
     [_inputView setY:self.view.height - _inputView.height - 64];
     [self.view addSubview:_inputView];
@@ -158,7 +159,7 @@ static NSString *topChatID = nil;
 
 - (void)onTap
 {
-    [_inputView setInputType:InputTypeNone];
+//    [_inputView setInputType:InputTypeNone];
 }
 
 - (void)onClickClassMember
@@ -351,9 +352,10 @@ static NSString *topChatID = nil;
 
 - (void)TNBaseTableViewControllerRequestSuccess
 {
+    BOOL scroll = (_tableView.contentSize.height  -_tableView.contentOffset.y < _tableView.height + 100);
     ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
-    if(messageModel.hasNew && messageModel.modelItemArray.count > 0)
-        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messageModel.modelItemArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    if(messageModel.hasNew && messageModel.modelItemArray.count > 0 && (scroll || messageModel.needScrollBottom))
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messageModel.modelItemArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 - (BOOL)hideErrorAlert
@@ -428,6 +430,11 @@ static NSString *topChatID = nil;
                               @"type": @(UUMessageTypeVoice)};
         [self dealTheFunctionData:dic];
     }
+}
+
+- (void)inputBarViewDidSendGift:(NSString *)giftID
+{
+    
 }
 
 - (void)dealTheFunctionData:(NSDictionary *)dic

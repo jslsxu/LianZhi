@@ -37,6 +37,14 @@
     }
 }
 
+- (void)stopRecord
+{
+    if([self.delegate respondsToSelector:@selector(audioRecordViewDidFinishedRecord:)])
+        [self.delegate audioRecordViewDidFinishedRecord:self];
+    [self.recorder stopRecording];
+    [self setRecordType:RecordTypePlay];
+}
+
 - (NSData *)tmpAmrData
 {
     return [NSData dataWithContentsOfFile:[[self class] tempFilePath]];

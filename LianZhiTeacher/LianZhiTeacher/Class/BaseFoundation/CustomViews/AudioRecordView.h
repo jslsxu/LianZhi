@@ -36,6 +36,7 @@ typedef CF_ENUM(NSInteger, RecordType){
 @property (nonatomic, assign)RecordType recordType;
 @property (nonatomic, weak)id<AudioRecordViewDelegate> delegate;
 @property (nonatomic, assign)NSInteger          duration;
+- (void)stopRecord;
 + (NSString *)tempFilePath;
 - (NSData *)tmpAmrData;
 - (void)setTmpAmrData:(NSData *)amrData;

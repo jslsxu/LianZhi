@@ -185,6 +185,7 @@
     ClassInfo *classInfo = self.classArray[indexPath.row];
     GrowthTimelineStudentsSelectVC *studentVC = [[GrowthTimelineStudentsSelectVC alloc] init];
     [studentVC setClassInfo:classInfo];
+    [studentVC setHomework:self.homework];
     [studentVC setRecord:self.record];
     [studentVC setTitle:classInfo.className];
     [studentVC setSelectionCompletion:self.selectionCompletion];

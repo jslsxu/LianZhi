@@ -7,7 +7,7 @@
 //
 
 #import "ClassSelectionVC.h"
-
+#define kRedDotTag                      1000
 @interface ClassSelectionVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong)NSArray *classArray;
 @end
@@ -67,12 +67,23 @@
     if(nil == cell)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+        [cell setWidth:kScreenWidth];
         [cell.textLabel setFont:[UIFont systemFontOfSize:15]];
         [cell.textLabel setTextColor:kCommonParentTintColor];
         [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+        
+        NumIndicator *indicator = [[NumIndicator alloc] init];
+        [indicator setIndicator:@""];
+        [indicator setTag:kRedDotTag];
+        [cell addSubview:indicator];
+        
+        [indicator setCenter:CGPointMake(cell.width - 40, cell.height / 2)];
     }
     ClassInfo *classInfo = self.classArray[indexPath.row];
     [cell.textLabel setText:classInfo.className];
+    NSString *value = self.classDic[classInfo.classID];
+    NumIndicator *indicator = [cell viewWithTag:kRedDotTag];
+    [indicator setHidden:value.integerValue == 0];
     return cell;
 }
 

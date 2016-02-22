@@ -82,6 +82,8 @@
 
 - (void)onDeleteClicked
 {
+    [self.player stopPlaying];
+    [self stopAudio];
     if(self.deleteCompletion)
         self.deleteCompletion();
 }
@@ -115,6 +117,7 @@
     player.fileReaderDelegate = amrReader;
     player.receiveStoppedBlock = ^{
         [weakSelf stopAudio];
+        [_playButton setTitle:@"播放\n录音" forState:UIControlStateNormal];
     };
     self.player = player;
     self.amrReader = amrReader;

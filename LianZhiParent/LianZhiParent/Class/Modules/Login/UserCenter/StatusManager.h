@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 @end
 
 @interface ClassFeedNotice : TNModelItem
+@property (nonatomic, copy)NSString *childID;
 @property (nonatomic, copy)NSString *classID;
 @property (nonatomic, assign)NSInteger num;
 

@@ -72,6 +72,7 @@
     [self.view addSubview:contentView];
     
     _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectInset(contentView.bounds, 10, 10)];
+    [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setPlaceholder:@"请输入请假原因"];
     [_textView setFont:[UIFont systemFontOfSize:15]];
     [_textView setTextColor:[UIColor darkGrayColor]];

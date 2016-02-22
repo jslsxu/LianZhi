@@ -42,7 +42,7 @@
     [_checkMark setCenter:CGPointMake(self.width - 24, 24)];
     if(item.asset)
     {
-        [_imageView setImage:[UIImage imageWithCGImage:[_item.asset thumbnail]]];
+        [_imageView setImage:[UIImage imageWithCGImage:[_item.asset defaultRepresentation].fullScreenImage]];
     }
     else
         [_imageView sd_setImageWithURL:[NSURL URLWithString:item.photoItem.thumbnailUrl] placeholderImage:nil];

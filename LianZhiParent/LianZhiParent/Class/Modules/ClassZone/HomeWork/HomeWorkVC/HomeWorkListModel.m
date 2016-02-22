@@ -65,13 +65,33 @@
     return self.has;
 }
 
+- (NSString *)maxID
+{
+    if(self.modelItemArray.count > 0)
+    {
+        HomeWorkItem *item = self.modelItemArray.lastObject;
+        return item.homeworkId;
+    }
+    return nil;
+}
+
+- (NSString *)minID
+{
+    if(self.modelItemArray.count > 0)
+    {
+        HomeWorkItem *item = self.modelItemArray.firstObject;
+        return item.homeworkId;
+    }
+    return nil;
+}
+
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
 {
-    if(type == REQUEST_REFRESH)
-        [self.modelItemArray removeAllObjects];
-    TNDataWrapper *moreWrapper = [data getDataWrapperForKey:@"more"];
-    self.has = [moreWrapper getBoolForKey:@"has"];
-    self.maxID = [moreWrapper getStringForKey:@"id"];
+    if(type == REQUEST_GETMORE || self.modelItemArray.count == 0)
+    {
+        TNDataWrapper *moreWrapper = [data getDataWrapperForKey:@"more"];
+        self.has = [moreWrapper getBoolForKey:@"has"];
+    }
     
     TNDataWrapper *itemsWrapper = [data getDataWrapperForKey:@"items"];
     if(itemsWrapper.count > 0)
@@ -81,7 +101,12 @@
             TNDataWrapper *itemWrapper = [itemsWrapper getDataWrapperForIndex:i];
             HomeWorkItem *item = [[HomeWorkItem alloc] init];
             [item parseData:itemWrapper];
-            [self.modelItemArray addObject:item];
+            if(type == REQUEST_GETMORE)
+                [self.modelItemArray addObject:item];
+            else
+            {
+                [self.modelItemArray insertObject:item atIndex:i];
+            }
         }
     }
     return YES;

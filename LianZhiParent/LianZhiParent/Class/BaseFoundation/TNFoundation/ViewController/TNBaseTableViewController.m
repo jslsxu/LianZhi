@@ -199,6 +199,12 @@
     return NO;
 }
 
+- (BOOL)needReload
+{
+    ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
+    return messageModel.hasNew;
+}
+
 #pragma mark - 
 #pragma mark UITableViewDelegate
 

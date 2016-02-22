@@ -35,4 +35,5 @@
 //缓存文件
 - (BOOL)supportCache;
 - (NSString *)cacheFileName;
+- (BOOL)needReload;
 @end

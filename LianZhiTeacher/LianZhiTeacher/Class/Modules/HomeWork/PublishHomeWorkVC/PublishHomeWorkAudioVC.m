@@ -51,6 +51,7 @@
 
 - (void)onSendButtonClicked
 {
+    [_recordView stopRecord];
     NSData *audioData = [_recordView tmpAmrData];
     NSInteger timeSpan = [_recordView tmpAmrDuration];
     if(timeSpan == 0 || audioData == nil)

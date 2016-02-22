@@ -9,11 +9,9 @@
 #import "ChatMessageModel.h"
 @implementation ChatMessageModel
 
-
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
 {
     self.hasNew = NO;
-    
     //获取原来消息列表别人发的最新的消息的id
     NSString *originalLatestID = nil;
     for (NSInteger i = self.modelItemArray.count - 1; i >=0; i--)
@@ -117,6 +115,10 @@
         MessageItem *lastitem = self.modelItemArray.lastObject;
         self.latestId = lastitem.messageContent.mid;
     }
+    if(originalNum == 0 && self.modelItemArray.count > 0)
+        self.needScrollBottom = YES;
+    else
+        self.needScrollBottom = NO;
     return YES;
 }
 

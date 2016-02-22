@@ -14,5 +14,6 @@
 @property (nonatomic, copy)NSString *latestId;
 @property (nonatomic, assign)BOOL hasNew;
 @property (nonatomic, assign)BOOL soundOff;
+@property (nonatomic, assign)BOOL needScrollBottom;
 - (BOOL)canInsert:(MessageItem *)messageItem;
 @end

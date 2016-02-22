@@ -51,6 +51,7 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
+    self.childID = [dataWrapper getStringForKey:@"child_id"];
     self.classID = [dataWrapper getStringForKey:@"class_id"];
     self.num = [dataWrapper getIntegerForKey:@"num"];
 }
@@ -92,7 +93,7 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
             TNDataWrapper *classRecordItemWrapper = [newClassRecordWrapper getDataWrapperForIndex:i];
             ClassFeedNotice *recordItem = [[ClassFeedNotice alloc] init];
             [recordItem parseData:classRecordItemWrapper];
-            if([self isCurChild:recordItem.classID])
+            if([recordItem.childID isEqualToString:[UserCenter sharedInstance].curChild.uid])
                 [newClassRecordArray addObject:recordItem];
         }
         self.classRecordArray = newClassRecordArray;
@@ -161,13 +162,12 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
 
 - (BOOL)isCurChild:(NSString *)classID
 {
-    BOOL isIn = NO;
     for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
     {
         if([classID isEqualToString:classInfo.classID])
-            return isIn;
+            return YES;
     }
-    return isIn;
+    return NO;
 }
 
 - (void)updateUserInfo

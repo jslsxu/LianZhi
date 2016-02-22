@@ -175,7 +175,7 @@
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/leave" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         item.leaveType = [params[@"status"] integerValue];
         StudentAttendanceModel *model = (StudentAttendanceModel *)wself.tableViewModel;
-        NSInteger absenseNum = 0,leaveNum,normalNum = 0;
+        NSInteger absenseNum = 0,leaveNum = 0,normalNum = 0;
         for (StudentAttendanceItem *item in model.modelItemArray)
         {
             if(item.leaveType == LeaveTypeAbsence)

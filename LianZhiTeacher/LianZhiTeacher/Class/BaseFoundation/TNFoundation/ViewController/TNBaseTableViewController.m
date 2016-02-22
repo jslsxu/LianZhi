@@ -169,7 +169,8 @@
                 NSLog(@"save success");
         });
     }
-    [self.tableView reloadData];
+    if([self needReload])
+        [self.tableView reloadData];
     _isLoading = NO;
     if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
         [self TNBaseTableViewControllerRequestSuccess];
@@ -199,6 +200,11 @@
 - (BOOL)hideErrorAlert
 {
     return NO;
+}
+
+- (BOOL)needReload
+{
+    return YES;
 }
 
 #pragma mark - 

@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, InputType)
 - (void)inputBarViewDidSendPhoto:(UIImage *)image;
 - (void)inputBarViewDidSendPhotoArray:(NSArray *)photoArry;
 - (void)inputBarViewDidSendVoice:(NSData *)amrData time:(NSInteger)time;
+- (void)inputBarViewDidSendGift:(NSString *)giftID;
 @end
 
 @interface InputBarView : UIView<HPGrowingTextViewDelegate, FaceSelectViewDelegate, FunctionViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
@@ -40,6 +41,7 @@ typedef NS_ENUM(NSInteger, InputType)
     FaceSelectView*     _faceSelectView;
     FunctionView*       _functionView;
 }
+@property (nonatomic, assign)BOOL canSendGift;
 @property (nonatomic, assign)InputType inputType;
 @property (nonatomic, weak)id<InputBarViewDelegate> inputDelegate;
 - (instancetype)initWithFrame:(CGRect)frame;

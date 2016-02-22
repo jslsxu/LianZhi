@@ -228,6 +228,7 @@
     }
     __weak typeof(self) wself = self;
     GrowthTimelineClassChangeVC *classChangeVC = [[GrowthTimelineClassChangeVC alloc] init];
+    [classChangeVC setHomework:YES];
     [classChangeVC setSelectionCompletion:^(NSString *targetStr) {
         [wself sendHomeWorkWithTarget:targetStr];
     }];

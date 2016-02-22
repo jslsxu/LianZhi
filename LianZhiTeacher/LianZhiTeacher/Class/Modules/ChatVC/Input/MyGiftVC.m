@@ -16,6 +16,7 @@
     self.giftName = [dataWrapper getStringForKey:@"name"];
     self.coin = [dataWrapper getIntegerForKey:@"coin"];
     self.url = [dataWrapper getStringForKey:@"url"];
+    self.url3x = [dataWrapper getStringForKey:@"url3x"];
     self.width = [dataWrapper getFloatForKey:@"width"];
     self.height = [dataWrapper getFloatForKey:@"height"];
     self.ctype = [dataWrapper getIntegerForKey:@"ctype"];
@@ -145,9 +146,10 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
+    GiftItem *giftItem = (GiftItem *)modelItem;
     [self dismissViewControllerAnimated:YES completion:nil];
     if(self.completion)
-        self.completion(nil);
+        self.completion(giftItem.giftID);
 }
 
 - (void)didReceiveMemoryWarning {

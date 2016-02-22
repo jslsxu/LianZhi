@@ -14,6 +14,7 @@
     UITableView*        _tableView;
     UIButton*           _selectAllButton;
 }
+@property (nonatomic, assign)BOOL homework;
 @property (nonatomic, strong)NSMutableDictionary *record;
 @property (nonatomic, copy)void (^selectionCompletion)(NSString *targetStr);
 @end

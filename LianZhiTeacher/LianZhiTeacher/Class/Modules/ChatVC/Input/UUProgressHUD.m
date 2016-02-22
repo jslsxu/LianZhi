@@ -58,6 +58,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UUProgressHUD)
     NSData *amrData = [NSData dataWithContentsOfFile:[[AudioRecordView class] tempFilePath]];
     if(self.recordCallBack)
         self.recordCallBack(amrData,self.playTime);
+    self.recordCallBack = nil;
 }
 
 - (void)setupRecorder

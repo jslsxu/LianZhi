@@ -91,7 +91,8 @@
     [self setupBottomView:bottomView];
     [self.view addSubview:bottomView];
     
-    [self requestData];
+    if(!self.homework)
+        [self requestData];
 }
 
 - (void)setupBottomView:(UIView *)viewParent

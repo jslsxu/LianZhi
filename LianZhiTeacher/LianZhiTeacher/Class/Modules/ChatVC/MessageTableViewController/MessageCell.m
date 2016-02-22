@@ -274,8 +274,11 @@
         NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
         if(timeInterval - messageItem.messageContent.timeInterval < 30)
         {
-            UIMenuItem *revokeMenu = [[UIMenuItem alloc] initWithTitle:@"撤销" action:@selector(revokeMessage)];
-            [menuArray addObject:revokeMenu];
+            if(messageItem.from == UUMessageFromMe)
+            {
+                UIMenuItem *revokeMenu = [[UIMenuItem alloc] initWithTitle:@"撤销" action:@selector(revokeMessage)];
+                [menuArray addObject:revokeMenu];
+            }
         }
         
         UIMenuItem *deleteMenu = [[UIMenuItem alloc] initWithTitle:@"删除" action:@selector(deleteMessage)];

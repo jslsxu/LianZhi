@@ -9,6 +9,11 @@
 #import "ChatMessageModel.h"
 @implementation ChatMessageModel
 
+//- (BOOL)shouldReload
+//{
+//    return self.hasNew;
+//}
+
 - (BOOL)hasMoreData
 {
     return YES;
@@ -112,7 +117,7 @@
             break;
         }
     }
-    if(originalLatestID && [curLatestID compare:originalLatestID] == NSOrderedDescending && !self.soundOff)
+    if( originalLatestID && [curLatestID compare:originalLatestID] == NSOrderedDescending && !self.soundOff)
     {
         //有新消息，播放声音
         if([UserCenter sharedInstance].personalSetting.soundOn)
@@ -131,6 +136,12 @@
         MessageItem *lastitem = self.modelItemArray.lastObject;
         self.latestId = lastitem.messageContent.mid;
     }
+
+    if(originalNum == 0 && self.modelItemArray.count > 0)
+        self.needScrollBottom = YES;
+    else
+        self.needScrollBottom = NO;
+    
     return YES;
 }
 

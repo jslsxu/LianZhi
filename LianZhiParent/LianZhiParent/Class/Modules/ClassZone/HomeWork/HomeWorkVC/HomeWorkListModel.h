@@ -31,5 +31,6 @@ typedef NS_ENUM(NSInteger, HomeworkType)
 
 @interface HomeWorkListModel : TNListModel
 @property (nonatomic, assign)BOOL has;
-@property (nonatomic, copy)NSString *maxID;
+- (NSString *)maxID;
+- (NSString *)minID;
 @end

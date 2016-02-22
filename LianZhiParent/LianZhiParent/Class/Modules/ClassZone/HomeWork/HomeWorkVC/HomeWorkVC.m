@@ -36,7 +36,15 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.classID forKey:@"class_id"];
     if(requestType == REQUEST_GETMORE)
+    {
         [params setValue:listModel.maxID forKey:@"max_id"];
+        [params setValue:@"0" forKey:@"new"];
+    }
+    else
+    {
+        [params setValue:listModel.minID forKey:@"max_id"];
+        [params setValue:@"1" forKey:@"new"];
+    }
     [task setParams:params];
     return task;
 }

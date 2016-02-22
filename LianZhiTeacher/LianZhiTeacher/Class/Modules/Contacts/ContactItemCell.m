@@ -97,7 +97,8 @@
     _userInfo = userInfo;
     if([_userInfo isKindOfClass:[TeacherGroup class]])
     {
-        [_avatar setImageWithUrl:nil placeHolder:[UIImage imageNamed:@"NoLogoDefault"]];
+        TeacherGroup *group = (TeacherGroup *)_userInfo;
+        [_avatar setImageWithUrl:[NSURL URLWithString:group.logo] placeHolder:[UIImage imageNamed:@"NoLogoDefault"]];
         [_commentLabel setText:nil];
         TeacherGroup *teacherGroup = (TeacherGroup *)userInfo;
         [_nameLabel setText:teacherGroup.groupName];

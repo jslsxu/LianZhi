@@ -66,6 +66,7 @@ static NSString *topChatID = nil;
     }
     
     _inputView = [[InputBarView alloc] init];
+    [_inputView setCanSendGift:self.chatType == ChatTypeParents || self.chatType == ChatTypeTeacher];
     [_inputView setInputDelegate:self];
     [_inputView setY:self.view.height - _inputView.height - 64];
     [self.view addSubview:_inputView];
@@ -184,7 +185,7 @@ static NSString *topChatID = nil;
 
 - (void)onTap
 {
-    [_inputView setInputType:InputTypeNone];
+//    [_inputView setInputType:InputTypeNone];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
@@ -216,6 +217,12 @@ static NSString *topChatID = nil;
     }
     [task setParams:params];
     return task;
+}
+
+- (BOOL)needReload
+{
+    ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
+    return messageModel.hasNew;
 }
 
 - (void)getMessage
@@ -272,7 +279,7 @@ static NSString *topChatID = nil;
     [messageParam setValue:dic[@"type"] forKey:@"content_type"];
     [messageParam setValue:dic[@"strContent"] forKey:@"content"];
     [messageParam setValue:dic[@"strVoiceTime"] forKey:@"voice_time"];
-    
+    [messageParam setValue:dic[@"giftID"] forKey:@"present_id"];
     MessageType messageType = [dic[@"type"] integerValue];
     UIImage *image = dic[@"picture"];
     NSData *voiceData = dic[@"voice"];
@@ -355,8 +362,9 @@ static NSString *topChatID = nil;
 
 - (void)TNBaseTableViewControllerRequestSuccess
 {
+    BOOL scroll = (_tableView.contentSize.height  -_tableView.contentOffset.y < _tableView.height + 100);
     ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
-    if(messageModel.hasNew && messageModel.modelItemArray.count >= 1)
+    if(messageModel.hasNew && messageModel.modelItemArray.count >= 1 && (scroll || messageModel.needScrollBottom))
     {
          [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messageModel.modelItemArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
     }
@@ -432,6 +440,15 @@ static NSString *topChatID = nil;
                               @"type": @(UUMessageTypeVoice)};
         [self dealTheFunctionData:dic];
     }
+}
+
+- (void)inputBarViewDidSendGift:(NSString *)giftID
+{
+//    if(giftID)
+//    {
+//        NSDictionary *dic = @{@"giftID" : giftID, @"type" : @(UUMessageTypeGift)};
+//        [self dealTheFunctionData:dic];
+//    }
 }
 
 - (void)dealTheFunctionData:(NSDictionary *)dic
