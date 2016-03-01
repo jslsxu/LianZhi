@@ -14,6 +14,64 @@
 
 @implementation ClassSelectionVC
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
+    }
+    return self;
+}
+
+- (void)onStatusChanged
+{
+    if(self.classDic)
+    {
+        if(self.isHomework)
+        {
+            self.classDic = [[NSMutableDictionary alloc] initWithDictionary:[UserCenter sharedInstance].statusManager.appPractice];
+            [_tableView reloadData];
+        }
+        else
+        {
+            NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
+            NSArray *feedClassNewArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
+            NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+            for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
+            {
+                NSString *classID = classInfo.classID;
+                NSString *badge = nil;
+                NSInteger count = 0;
+                for (TimelineCommentItem *commentItem in classNewCommentArray)
+                {
+                    if([commentItem.objid isEqualToString:classID])
+                        count += commentItem.alertInfo.num;
+                }
+                if(count > 0)
+                    badge = kStringFromValue(count);
+                else
+                {
+                    for (ClassFeedNotice *notice in feedClassNewArray)
+                    {
+                        if([notice.classID isEqualToString:classID])
+                            count += notice.num;
+                    }
+                    if(count > 0)
+                        badge = @"";
+                }
+                [classDic setValue:badge forKey:classID];
+            }
+            self.classDic = classDic;
+            [_tableView reloadData];
+        }
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"我所有的班";
@@ -73,17 +131,16 @@
         [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
         
         NumIndicator *indicator = [[NumIndicator alloc] init];
-        [indicator setIndicator:@""];
         [indicator setTag:kRedDotTag];
         [cell addSubview:indicator];
-        
-        [indicator setCenter:CGPointMake(cell.width - 40, cell.height / 2)];
     }
     ClassInfo *classInfo = self.classArray[indexPath.row];
     [cell.textLabel setText:classInfo.className];
-    NSString *value = self.classDic[classInfo.classID];
+    NSString *badge = self.classDic[classInfo.classID];
     NumIndicator *indicator = [cell viewWithTag:kRedDotTag];
-    [indicator setHidden:value.integerValue == 0];
+    [indicator setIndicator:badge];
+    [indicator setHidden:!badge];
+    [indicator setCenter:CGPointMake(cell.width - 40, cell.height / 2)];
     return cell;
 }
 

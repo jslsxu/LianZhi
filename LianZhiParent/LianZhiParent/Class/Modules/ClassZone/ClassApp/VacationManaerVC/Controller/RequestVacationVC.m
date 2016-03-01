@@ -78,6 +78,14 @@
     [_textView setTextColor:[UIColor darkGrayColor]];
     [_textView setDelegate:self];
     [contentView addSubview:_textView];
+    
+    [self setStartDate:[NSDate date]];
+    NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
+    [formmater setDateFormat:@"yyyy-MM-dd"];
+    NSString *str = [formmater stringFromDate:[NSDate date]];
+    str = [NSString stringWithFormat:@"%@ 23:59:59",str];
+    [formmater setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [self setEndDate:[formmater dateFromString:str]];
 }
 - (void)setStartDate:(NSDate *)startDate
 {

@@ -96,7 +96,8 @@
                 }
             }
         }
-        
+        if(originalMessageArray.count < self.modelItemArray.count)
+            hasNew = YES;
         if(hasNew)
         {
             //有新消息，播放声音

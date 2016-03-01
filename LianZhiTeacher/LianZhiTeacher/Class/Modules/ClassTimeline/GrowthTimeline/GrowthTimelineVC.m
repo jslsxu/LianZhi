@@ -143,19 +143,6 @@
     [self requestData:REQUEST_REFRESH];
 }
 
-- (void)onSwitchClass
-{
-    __weak typeof(self) wself = self;
-    ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
-    [classSelectionVC setOriginalClassID:self.classID];
-    [classSelectionVC setSelection:^(ClassInfo *classInfo) {
-        wself.classID = classInfo.classID;
-        wself.title = classInfo.className;
-        [wself requestData:REQUEST_REFRESH];
-    }];
-    [self.navigationController pushViewController:classSelectionVC animated:YES];
-}
-
 - (BOOL)supportCache
 {
     return YES;

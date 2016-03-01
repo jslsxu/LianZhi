@@ -125,6 +125,7 @@
             [params setValue:kStringFromValue(poiItem.poiInfo.location.latitude) forKey:@"latitude"];
             [params setValue:kStringFromValue(poiItem.poiInfo.location.longitude) forKey:@"longitude"];
         }
+        
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/post_content" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
             [formData appendPartWithFileData:amrData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
         } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
@@ -138,9 +139,10 @@
                     [self.delegate publishZoneItemFinished:zoneItem];
             }
             [ProgressHUD showSuccess:@"发布成功"];
-            [self performSelector:@selector(onBack) withObject:nil afterDelay:2];
+//            [self performSelector:@selector(onBack) withObject:nil afterDelay:2];
+            [self onBack];
         } fail:^(NSString *errMsg) {
-            [self showError];
+            [ProgressHUD showHintText:errMsg];
         }];
     }
     else

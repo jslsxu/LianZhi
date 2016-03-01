@@ -209,7 +209,7 @@
         }
         if([url.host isEqualToString:@"leave"])
         {
-            NSString *badge = [UserCenter sharedInstance].statusManager.appLeave > 0 ? @"" : nil;
+            NSString *badge = [UserCenter sharedInstance].statusManager.leaveNum > 0 ? @"" : nil;
             [appItem setBadge:badge];
         }
     }
@@ -229,7 +229,7 @@
         }
         if([url.host isEqualToString:@"leave"])
         {
-            NSString *badge = [UserCenter sharedInstance].statusManager.appLeave > 0 ? @"" : nil;
+            NSString *badge = [UserCenter sharedInstance].statusManager.leaveNum > 0 ? @"" : nil;
             [appItem setBadge:badge];
         }
     }
@@ -261,7 +261,45 @@
         }
         else if([host isEqualToString:@"class"])//班博客
         {
+            NSMutableDictionary *classInfoDic = [NSMutableDictionary dictionary];
+            //新动态
+            NSArray *newCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+            
+            for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
+            {
+                NSString *badge = nil;
+                NSInteger commentNum = 0;
+                for (TimelineCommentItem *commentItem in newCommentArray)
+                {
+                    if([commentItem.classID isEqualToString:classInfo.classID] && commentItem.alertInfo.num > 0)
+                        commentNum += commentItem.alertInfo.num;
+                }
+                
+                if(commentNum > 0)
+                    badge = kStringFromValue(commentNum);
+                else
+                {
+                    //新日志
+                    NSArray *newFeedArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
+                    NSInteger num = 0;
+                    for (ClassFeedNotice *noticeItem in newFeedArray)
+                    {
+                        if([noticeItem.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID] && [noticeItem.classID isEqualToString:classInfo.classID])
+                        {
+                            num += noticeItem.num;
+                        }
+                    }
+                    if(num > 0)
+                        badge = @"";
+                    else
+                        badge = nil;
+                }
+                [classInfoDic setValue:badge forKey:classInfo.classID];
+            }
+            
             ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
+            [selectionVC setShowNew:YES];
+            [selectionVC setClassInfoDic:classInfoDic];
             [selectionVC setSelection:^(ClassInfo *classInfo) {
                 ClassZoneVC *classZoneVC = [[ClassZoneVC alloc] init];
                 [classZoneVC setClassInfo:classInfo];

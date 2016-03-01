@@ -12,7 +12,6 @@
 @interface TNListModel : NSObject
 @property (nonatomic, copy)NSString *nextPage;
 @property (nonatomic, strong)NSMutableArray* modelItemArray;
-@property (nonatomic, assign)BOOL shouldReload;
 - (NSInteger)numOfSections;
 - (NSInteger)numOfRowsInSection:(NSInteger)section;
 - (TNModelItem *)itemForIndexPath:(NSIndexPath *)indexPath;

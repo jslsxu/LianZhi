@@ -67,12 +67,16 @@
     
     NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
     NSInteger classZoneNum = 0;
-    for (TimelineCommentItem *item in classNewCommentArray)
+    for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
     {
-        if([item.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
+        NSString *classID = classInfo.classID;
+        for (TimelineCommentItem *item in classNewCommentArray)
         {
-            classZoneNum= item.alertInfo.num;
-            break;
+            if([item.objid isEqualToString:classID])
+            {
+                classZoneNum = item.alertInfo.num;
+                break;
+            }
         }
     }
     if(classZoneNum > 0)
@@ -107,7 +111,7 @@
         }
         if([url.host isEqualToString:@"practice"])
         {
-            appItem.badge = [UserCenter sharedInstance].statusManager.appPractice > 0 ? @"" : nil;
+            appItem.badge = [UserCenter sharedInstance].statusManager.practiceNum > 0 ? @"" : nil;
         }
     }
     [self.collectionView reloadData];
@@ -167,7 +171,7 @@
         
         if([url.host isEqualToString:@"practice"])
         {
-            appItem.badge = [UserCenter sharedInstance].statusManager.appPractice > 0 ? @"" : nil;
+            appItem.badge = [UserCenter sharedInstance].statusManager.practiceNum > 0 ? @"" : nil;
         }
     }
 
@@ -246,6 +250,7 @@
                     }
                     else
                     {
+                        ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
                         NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
                         if([host isEqualToString:@"class"])//班博客
                         {
@@ -254,21 +259,34 @@
                             for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
                             {
                                 NSString *classID = classInfo.classID;
+                                NSString *badge = nil;
                                 NSInteger count = 0;
-                                for (ClassFeedNotice *notice in feedClassNewArray)
-                                {
-                                    if([notice.classID isEqualToString:classID])
-                                        count += notice.num;
-                                }
                                 for (TimelineCommentItem *commentItem in classNewCommentArray)
                                 {
                                     if([commentItem.objid isEqualToString:classID])
                                         count += commentItem.alertInfo.num;
                                 }
-                                [classDic setValue:kStringFromValue(count) forKey:classID];
+                                if(count > 0)
+                                    badge = kStringFromValue(count);
+                                else
+                                {
+                                    for (ClassFeedNotice *notice in feedClassNewArray)
+                                    {
+                                        if([notice.classID isEqualToString:classID])
+                                            count += notice.num;
+                                    }
+                                    if(count > 0)
+                                        badge = @"";
+                                }
+                                [classDic setValue:badge forKey:classID];
                             }
                         }
-                        ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
+                        else if ([host isEqualToString:@"practice"])
+                        {
+                            classDic = [[NSMutableDictionary alloc] initWithDictionary:[UserCenter sharedInstance].statusManager.appPractice];
+                            [classSelectionVC setIsHomework:YES];
+                        }
+                        
                         [classSelectionVC setClassDic:classDic];
                         [classSelectionVC setSelection:^(ClassInfo *classInfo) {
                             if([host isEqualToString:@"class"])

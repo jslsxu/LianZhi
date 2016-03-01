@@ -65,12 +65,16 @@ static NSArray *tabDatas = nil;
     NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
     NSInteger classZoneNum = 0;
     LZTabBarButton *classTabButton = (LZTabBarButton *)_tabbarButtons[3];
-    for (TimelineCommentItem *item in classNewCommentArray)
+    for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
     {
-        if([item.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
+        NSString *classID = classInfo.classID;
+        for (TimelineCommentItem *item in classNewCommentArray)
         {
-            classZoneNum= item.alertInfo.num;
-            break;
+            if([item.objid isEqualToString:classID])
+            {
+                classZoneNum = item.alertInfo.num;
+                break;
+            }
         }
     }
     if(classZoneNum > 0)
@@ -88,7 +92,7 @@ static NSArray *tabDatas = nil;
                 classZoneNum += notice.num;
         }
         
-        classZoneNum += [UserCenter sharedInstance].statusManager.appPractice;
+        classZoneNum += [UserCenter sharedInstance].statusManager.practiceNum;
         
         if(classZoneNum > 0)
             [classTabButton setBadgeValue:@""];

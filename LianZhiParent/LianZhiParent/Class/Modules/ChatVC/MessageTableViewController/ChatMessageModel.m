@@ -13,6 +13,15 @@
 //{
 //    return self.hasNew;
 //}
+- (instancetype)init
+{
+    self = [super init];
+    if(self)
+    {
+        _getMoreCount = 0;
+    }
+    return self;
+}
 
 - (BOOL)hasMoreData
 {
@@ -22,6 +31,8 @@
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
 {
     self.hasNew = NO;
+    if(type == REQUEST_GETMORE)
+        self.getMoreCount ++;
     //获取原来消息列表别人发的最新的消息的id
     NSString *originalLatestID = nil;
     for (NSInteger i = self.modelItemArray.count - 1; i >=0; i--)
@@ -41,6 +52,10 @@
         self.more = [moreWrapper getBoolForKey:@"has"];
     }
     TNDataWrapper *itemsWrapper = [data getDataWrapperForKey:@"items"];
+    if(type == REQUEST_REFRESH && itemsWrapper.count > 0)
+        self.getHistory = YES;
+    else
+        self.getHistory = NO;
     if(itemsWrapper.count > 0)
     {
         NSMutableArray *newArray = [NSMutableArray array];
@@ -65,7 +80,6 @@
                     hasNew = YES;
                 }
             }
-            self.shouldReload = hasNew;
             if(originalNum == 0)
                 self.hasNew = YES;
         }
@@ -80,7 +94,6 @@
                     hasNew = YES;
                 }
             }
-            self.shouldReload = hasNew;
             if(self.modelItemArray.count > originalNum)
                 self.hasNew = YES;
         }
@@ -117,7 +130,7 @@
             break;
         }
     }
-    if( originalLatestID && [curLatestID compare:originalLatestID] == NSOrderedDescending && !self.soundOff)
+    if( originalLatestID && [curLatestID compare:originalLatestID] == NSOrderedDescending && !self.soundOff && self.getMoreCount > 1)
     {
         //有新消息，播放声音
         if([UserCenter sharedInstance].personalSetting.soundOn)
@@ -125,16 +138,16 @@
         if([UserCenter sharedInstance].personalSetting.shakeOn)
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     }
-    
-    if(type == REQUEST_REFRESH)
+    if(self.modelItemArray.count > 0)
     {
         MessageItem *firstItem = self.modelItemArray.firstObject;
-        self.oldId = firstItem.messageContent.mid;
-    }
-    else
-    {
         MessageItem *lastitem = self.modelItemArray.lastObject;
+        self.oldId = firstItem.messageContent.mid;
         self.latestId = lastitem.messageContent.mid;
+    }
+    if(type == REQUEST_GETMORE)
+    {
+        self.numOfNew = self.modelItemArray.count - originalNum;
     }
 
     if(originalNum == 0 && self.modelItemArray.count > 0)

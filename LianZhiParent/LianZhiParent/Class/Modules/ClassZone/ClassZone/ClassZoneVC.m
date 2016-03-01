@@ -188,7 +188,7 @@
     TimelineCommentItem *curAlert = nil;
     for (TimelineCommentItem *alertInfo in commentArray)
     {
-        if([alertInfo.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
+        if([alertInfo.objid isEqualToString:self.classInfo.classID])
         {
             curAlert = alertInfo;
         }
@@ -460,7 +460,8 @@
 {
     NewMessageVC *newMessageVC = [[NewMessageVC alloc] init];
     [newMessageVC setTypes:NewMessageTypeClassZone];
-    [newMessageVC setObjid:[UserCenter sharedInstance].curChild.uid];
+//    [newMessageVC setObjid:[UserCenter sharedInstance].curChild.uid];
+    [newMessageVC setObjid:self.classInfo.classID];
     [CurrentROOTNavigationVC pushViewController:newMessageVC animated:YES];
 }
 

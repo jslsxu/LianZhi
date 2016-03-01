@@ -352,10 +352,18 @@ static NSString *topChatID = nil;
 
 - (void)TNBaseTableViewControllerRequestSuccess
 {
-    BOOL scroll = (_tableView.contentSize.height  -_tableView.contentOffset.y < _tableView.height + 100);
-    ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
-    if(messageModel.hasNew && messageModel.modelItemArray.count > 0 && (scroll || messageModel.needScrollBottom))
-        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messageModel.modelItemArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
+        NSArray *visibleCells = [_tableView visibleCells];
+        UITableViewCell *cell = [visibleCells lastObject];
+        NSIndexPath *indexpath = [_tableView indexPathForCell:cell];
+        BOOL scroll = indexpath.row >= messageModel.modelItemArray.count - messageModel.numOfNew - 1;
+        if(messageModel.hasNew && messageModel.modelItemArray.count > 0 && (scroll || messageModel.needScrollBottom))
+        {
+            NSLog(@"scroll");
+            [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messageModel.modelItemArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        }
+    });
 }
 
 - (BOOL)hideErrorAlert
@@ -363,6 +371,11 @@ static NSString *topChatID = nil;
     return YES;
 }
 
+- (BOOL)needReload
+{
+    ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
+    return messageModel.hasNew || messageModel.getHistory;
+}
 
 
 #pragma mark - TNBaseTableViewDelegate

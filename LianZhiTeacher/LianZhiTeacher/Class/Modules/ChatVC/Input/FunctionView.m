@@ -57,8 +57,8 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        self.titleArray = @[@"发照片",@"拍摄",@"发礼物"];
-        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera",@"FunctionGift"];
+        self.titleArray = @[@"发照片",@"拍摄"/*,@"发礼物"*/];
+        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera"/*,@"FunctionGift"*/];
         NSInteger itemWIdth = 80;
         UICollectionViewFlowLayout *_layout = [[UICollectionViewFlowLayout alloc] init];
         [_layout setItemSize:CGSizeMake(80, 90)];

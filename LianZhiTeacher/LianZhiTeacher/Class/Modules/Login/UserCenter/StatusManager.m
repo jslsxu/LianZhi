@@ -66,7 +66,29 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
     self.appPractice = [dataWrapper getIntegerForKey:@"app_practice"];
-    self.appLeave = [dataWrapper getIntegerForKey:@"app_leave"];
+    TNDataWrapper *appLeave = [dataWrapper getDataWrapperForKey:@"app_leave"];
+    NSDictionary *originalDic = appLeave.data;
+    NSMutableDictionary *appLeaveDic = [NSMutableDictionary dictionary];
+    for (NSString *key in originalDic.allKeys)
+    {
+        BOOL inCurSchool = NO;
+        for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
+        {
+            if([classInfo.classID isEqualToString:key])
+                inCurSchool = YES;
+        }
+        if(inCurSchool)
+            [appLeaveDic setValue:originalDic[key] forKey:key];
+    }
+    self.appLeave = appLeaveDic;
+    NSArray *keyArray = self.appLeave.allKeys;
+    NSInteger leaveNum = 0;
+    for (NSString *key in keyArray)
+    {
+        NSNumber *number = self.appLeave[key];
+        leaveNum += number.integerValue;
+    }
+    self.leaveNum = leaveNum;
     self.changed = [dataWrapper getIntegerForKey:@"changed"];
     self.found = [dataWrapper getBoolForKey:@"found"];
     self.around = [dataWrapper getBoolForKey:@"around"];

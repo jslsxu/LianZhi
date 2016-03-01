@@ -60,5 +60,6 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 
 @property (nonatomic, assign)NSInteger msgNum;
 @property (nonatomic, assign)NSInteger appPractice;
-@property (nonatomic, assign)NSInteger appLeave;
+@property (nonatomic, strong)NSDictionary *appLeave;
+@property (nonatomic, assign)NSInteger leaveNum;
 @end

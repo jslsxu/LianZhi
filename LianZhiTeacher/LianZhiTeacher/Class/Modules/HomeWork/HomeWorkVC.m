@@ -291,7 +291,7 @@
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     [imagePicker setDelegate:self];
     [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-    [imagePicker setAllowsEditing:YES];
+//    [imagePicker setAllowsEditing:YES];
     [self presentViewController:imagePicker animated:YES completion:nil];
 }
 
@@ -338,7 +338,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-    UIImage *editedImage = [info objectForKey:UIImagePickerControllerEditedImage];
+    UIImage *editedImage = [[info objectForKey:UIImagePickerControllerOriginalImage] formatImage];
     if(self.photoArray.count < 9)
     {
         [self.photoArray addObject:editedImage];

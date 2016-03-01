@@ -58,11 +58,29 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
 
 @end
 
+@implementation LeaveInfo
+- (void)parseData:(TNDataWrapper *)dataWrapper
+{
+    self.classID = [dataWrapper getStringForKey:@"class_id"];
+    self.num = [dataWrapper getIntegerForKey:@"num"];
+}
+
+@end
+
 @implementation StatusManager
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    self.appPractice = [dataWrapper getIntegerForKey:@"app_practice"];
+    TNDataWrapper *practiceWrapper = [dataWrapper getDataWrapperForKey:@"app_practice"];
+    NSDictionary *practiceDic = practiceWrapper.data;
+    self.appPractice = practiceDic[[UserCenter sharedInstance].curChild.uid];
+    NSInteger practiceNum = 0;
+    for (NSString *key in self.appPractice.allKeys)
+    {
+        practiceNum += [self.appPractice[key] integerValue];
+    }
+    self.practiceNum = practiceNum;
+    
     self.appLeave = [dataWrapper getIntegerForKey:@"app_leave"];
     self.changed = [dataWrapper getIntegerForKey:@"changed"];
     self.found = [dataWrapper getBoolForKey:@"found"];

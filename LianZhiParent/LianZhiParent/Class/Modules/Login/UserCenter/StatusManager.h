@@ -46,6 +46,12 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 
 @end
 
+@interface  LeaveInfo :TNModelItem
+@property (nonatomic, copy)NSString *classID;
+@property (nonatomic, assign)NSInteger num;
+
+@end
+
 @interface StatusManager : TNModelItem
 @property (nonatomic, assign)ChangedType changed;
 @property (nonatomic, assign)BOOL found;
@@ -57,6 +63,7 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 @property (nonatomic, strong)NSArray *classNewCommentArray;
 @property (nonatomic, strong)NSArray *treeNewCommentArray;
 @property (nonatomic, assign)NSInteger msgNum;
-@property (nonatomic, assign)NSInteger appPractice;
+@property (nonatomic, strong)NSDictionary *appPractice;
+@property (nonatomic, assign)NSInteger practiceNum;
 @property (nonatomic, assign)NSInteger appLeave;
 @end

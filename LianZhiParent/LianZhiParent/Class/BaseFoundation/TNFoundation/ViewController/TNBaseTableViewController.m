@@ -166,7 +166,7 @@
             [responseData.data writeToFile:[self cacheFilePath] atomically:YES];
         });
     }
-    if([_tableViewModel shouldReload])
+    if([self needReload])
         [self.tableView reloadData];
     _isLoading = NO;
     if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
@@ -201,8 +201,7 @@
 
 - (BOOL)needReload
 {
-    ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
-    return messageModel.hasNew;
+    return YES;
 }
 
 #pragma mark - 

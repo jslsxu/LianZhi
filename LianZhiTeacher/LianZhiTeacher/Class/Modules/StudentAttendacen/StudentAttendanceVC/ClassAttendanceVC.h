@@ -11,6 +11,7 @@
 @interface ClassAttendanceCell : TNTableViewCell
 {
     LogoView*    _logoView;
+    NumIndicator*   _indicator;
     UILabel*        _nameLabel;
     UIView*     _sepLine;
 }
@@ -21,7 +22,7 @@
 @property (nonatomic, copy)NSString *className;
 @property (nonatomic, copy)NSString *logo;
 @property (nonatomic, assign)NSInteger leftNum;
-
+@property (nonatomic, assign)BOOL showRed;
 @end
 
 @interface ClassLeftModel : TNListModel

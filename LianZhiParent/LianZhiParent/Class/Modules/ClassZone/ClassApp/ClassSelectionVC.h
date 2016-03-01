@@ -12,6 +12,7 @@
 {
     UITableView*    _tableView;
 }
+@property (nonatomic, assign)BOOL isHomework;
 @property (nonatomic, copy)NSString *originalClassID;
 @property (nonatomic, copy)void (^selection)(ClassInfo *classInfo);
 @property (nonatomic, strong)NSDictionary *classDic;

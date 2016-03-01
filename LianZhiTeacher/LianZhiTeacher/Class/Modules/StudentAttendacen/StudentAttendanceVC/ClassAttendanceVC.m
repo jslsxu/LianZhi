@@ -35,6 +35,10 @@
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [self addSubview:_nameLabel];
         
+        _indicator = [[NumIndicator alloc] init];
+        [_indicator setIndicator:@""];
+        [self addSubview:_indicator];
+        
         [self.detailTextLabel setFont:[UIFont systemFontOfSize:12]];
         [self.detailTextLabel setTextColor:[UIColor colorWithHexString:@"949494"]];
         [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
@@ -51,6 +55,10 @@
     ClassLeftItem *leftItem = (ClassLeftItem *)modelItem;
     [_logoView setImageWithUrl:[NSURL URLWithString:leftItem.logo]];
     [_nameLabel setText:leftItem.className];
+    [_nameLabel sizeToFit];
+    [_nameLabel setY:(55 - _nameLabel.height) / 2];
+    [_indicator setHidden:!leftItem.showRed];
+    [_indicator setCenter:CGPointMake(_nameLabel.right + 10, 55.f / 2)];
     if(leftItem.leftNum > 0)
         [self.detailTextLabel setText:[NSString stringWithFormat:@"%ld人请假",(long)leftItem.leftNum]];
     else
@@ -77,6 +85,12 @@
             TNDataWrapper *classDataWrapper = [data getDataWrapperForIndex:i];
             ClassLeftItem *leftItem = [[ClassLeftItem alloc] init];
             [leftItem parseData:classDataWrapper];
+            NSDictionary *leaveDic = [UserCenter sharedInstance].statusManager.appLeave;
+            NSNumber *number = [leaveDic objectForKey:leftItem.classID];
+            if(number.integerValue > 0)
+                leftItem.showRed = YES;
+            else
+                leftItem.showRed = NO;
             [self.modelItemArray addObject:leftItem];
         }
     }
@@ -91,11 +105,39 @@
 
 
 @implementation ClassAttendanceVC
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self)
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
+    }
+    return self;
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self requestData:REQUEST_REFRESH];
+}
+
+- (void)onStatusChanged
+{
+    NSDictionary *leaveDic = [UserCenter sharedInstance].statusManager.appLeave;
+    for (ClassLeftItem *leftItem in self.tableViewModel.modelItemArray)
+    {
+        NSNumber *number = [leaveDic objectForKey:leftItem.classID];
+        if(number.integerValue > 0)
+            leftItem.showRed = YES;
+        else
+            leftItem.showRed = NO;
+    }
+    [self.tableView reloadData];
 }
 
 - (void)viewDidLoad {

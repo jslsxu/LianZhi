@@ -43,7 +43,8 @@
     else
     {
         [params setValue:listModel.minID forKey:@"max_id"];
-        [params setValue:@"1" forKey:@"new"];
+        if(listModel.modelItemArray.count > 0)
+            [params setValue:@"1" forKey:@"new"];
     }
     [task setParams:params];
     return task;

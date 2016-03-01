@@ -128,7 +128,7 @@ static NSArray *tabDatas = nil;
                 num += noticeItem.num;
             }
         }
-        num += [UserCenter sharedInstance].statusManager.appLeave;
+        num += [UserCenter sharedInstance].statusManager.leaveNum;
         if(num > 0)
             [appTabButton setBadgeValue:@""];
         else

@@ -24,7 +24,7 @@ NSString *const kCollectionStatusChangedNotification = @"CollectionStatusChanged
     [super viewDidLoad];
     [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 10, 0)];
     [self bindTableCell:@"HomeWorkHistoryCell" tableModel:@"HomeWorkCollectionModel"];
-    [self setSupportPullDown:YES];
+    [self setSupportPullDown:NO];
     [self setSupportPullUp:YES];
     [self requestData:REQUEST_REFRESH];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFavChanged:) name:kAddFavNotification object:nil];

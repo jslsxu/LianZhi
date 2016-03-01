@@ -440,18 +440,6 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [actionPopView show];
 }
 
-- (void)onExchangeClass
-{
-    __weak typeof(self) wself = self;
-    ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
-    [classSelectionVC setOriginalClassID:self.classInfo.classID];
-    [classSelectionVC setShowNew:YES];
-    [classSelectionVC setSelection:^(ClassInfo *classInfo) {
-        [wself setClassInfo:classInfo];
-        [wself.navigationController popViewControllerAnimated:YES];
-    }];
-    [self.navigationController pushViewController:classSelectionVC animated:YES];
-}
 
 - (void)onToolBarButtonClicked:(UIButton *)button
 {
