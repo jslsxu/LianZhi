@@ -9,6 +9,7 @@
     InputBarView*           _inputView;
     CGFloat                 _previousTextViewContentHeight;
     NSTimer*                _timer;
+    NSTimer*                _testTimer;
 }
 @property (nonatomic, copy)NSString *targetID;
 @property (nonatomic, copy)NSString *to_objid;

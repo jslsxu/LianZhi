@@ -3652,7 +3652,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3684,9 +3684,9 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/SVShare/SVSDK/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = " -all_load";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4158a5eb-41a4-427c-a696-80aa05946d4f";
+				PROVISIONING_PROFILE = "305e8850-3d0a-4338-8ae4-7c88334b381d";
 			};
 			name = Debug;
 		};
@@ -3695,7 +3695,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3727,9 +3727,9 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/SVShare/SVSDK/extends/WeChatSDK",
 				);
 				OTHER_LDFLAGS = " -all_load";
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4158a5eb-41a4-427c-a696-80aa05946d4f";
+				PROVISIONING_PROFILE = "305e8850-3d0a-4338-8ae4-7c88334b381d";
 			};
 			name = Release;
 		};

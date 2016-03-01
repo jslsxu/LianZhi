@@ -4,6 +4,7 @@
 #import "ClassMemberVC.h"
 
 static NSString *topChatID = nil;
+static NSInteger num = 1;
 @implementation JSMessagesViewController
 
 
@@ -81,6 +82,16 @@ static NSString *topChatID = nil;
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
     [_tableView addGestureRecognizer:tapGesture];
+    
+//     _testTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(send) userInfo:nil repeats:YES];
+}
+
+- (void)send
+{
+    [self inputBarViewDidCommit:kStringFromValue(num)];
+    num++;
+    if(num >= 30)
+        [_testTimer invalidate];
 }
 
 - (void)updateTitle
