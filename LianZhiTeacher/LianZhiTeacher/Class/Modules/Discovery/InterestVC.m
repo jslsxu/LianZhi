@@ -130,6 +130,7 @@
         
         _rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(self.width - 10 - 54, 5, 54, 54)];
         [_rightImageView setContentMode:UIViewContentModeScaleAspectFill];
+        [_rightImageView setClipsToBounds:YES];
         [self addSubview:_rightImageView];
         
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, _rightImageView.x - 10 - 10, 30)];
@@ -218,10 +219,13 @@
     [task setRequestType:requestType];
     [task setObserver:self];
     
-    InterestModel *model = (InterestModel *)self.tableViewModel;
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:model.maxID forKey:@"max_id"];
-    [task setParams:params];
+    if(requestType == REQUEST_GETMORE)
+    {
+        InterestModel *model = (InterestModel *)self.tableViewModel;
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:model.maxID forKey:@"max_id"];
+        [task setParams:params];
+    }
     return task;
 }
 

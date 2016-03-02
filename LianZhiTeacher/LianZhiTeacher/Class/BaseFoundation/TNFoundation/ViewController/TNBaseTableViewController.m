@@ -213,26 +213,31 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [_tableViewModel numOfSections];
+    NSInteger count = [_tableViewModel numOfSections];
+    if([_tableViewModel hasMoreData] && _supportPullUp)
+        count ++;
+    return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger numOfRows = [_tableViewModel numOfRowsInSection:section];
-    if(_supportPullUp && [_tableViewModel hasMoreData])
-        numOfRows ++;
-    return numOfRows;
+    NSInteger numOfSections = [self numberOfSectionsInTableView:tableView];
+    if([_tableViewModel hasMoreData] && _supportPullUp && section == numOfSections - 1)
+        return 1;
+    else
+    {
+        return [_tableViewModel numOfRowsInSection:section];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray* modelItemArray = _tableViewModel.modelItemArray;
-    if ([_tableViewModel hasMoreData] && indexPath.row == [modelItemArray count])
+    if ([_tableViewModel hasMoreData] && indexPath.section == [self numberOfSectionsInTableView:tableView] - 1 && _supportPullUp)
     {
         return FOOTERVIEW_HEIGHT;
     }
     
-    TNModelItem* item = [modelItemArray objectAtIndex:indexPath.row];
+    TNModelItem *item = [_tableViewModel itemForIndexPath:indexPath];
     NSNumber* (*action)(id, SEL, id,NSInteger) = (NSNumber* (*)(id, SEL,id, NSInteger)) objc_msgSend;
     NSNumber* height = action([NSClassFromString(self.cellName) class], NSSelectorFromString(CELL_HEIGHT_SEL), item, (int) _tableView.frame.size.width);
     return [height floatValue];
@@ -240,8 +245,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray* modelItemArray = _tableViewModel.modelItemArray;
-    if ([_tableViewModel hasMoreData] && indexPath.row == [modelItemArray count] && [modelItemArray count] > 0) {
+    if ([_tableViewModel hasMoreData] && _supportPullUp && indexPath.section == [self numberOfSectionsInTableView:tableView] - 1)
+    {
         return _getMoreCell;
     }
     TNTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellName];
@@ -253,14 +258,13 @@
     TNModelItem *item = [_tableViewModel itemForIndexPath:indexPath];
     [cell setData:item];
     return cell;
-
+    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSArray* modelItemArray = _tableViewModel.modelItemArray;
-    if ([_tableViewModel hasMoreData] && indexPath.row == [modelItemArray count])
+    if ([_tableViewModel hasMoreData] && _supportPullUp && indexPath.section == [self numberOfSectionsInTableView:tableView] - 1)
         [self requestData:REQUEST_GETMORE];
     else
     {

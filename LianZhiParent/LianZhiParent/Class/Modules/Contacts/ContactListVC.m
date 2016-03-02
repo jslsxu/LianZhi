@@ -55,11 +55,17 @@
         [self addSubview:_sepLine];
         
         _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_chatButton setUserInteractionEnabled:NO];
         [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
-        [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
+//        [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
         [_chatButton setImage:[UIImage imageNamed:@"MassChatNormal"] forState:UIControlStateNormal];
         [_chatButton setImage:[UIImage imageNamed:@"MassChatHighlighted"] forState:UIControlStateHighlighted];
         [self addSubview:_chatButton];
+        
+        UIButton *coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [coverButton setFrame:self.bounds];
+        [coverButton addTarget:self action:@selector(onCoverButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:coverButton];
     }
     return self;
 }
@@ -83,7 +89,7 @@
     [_numLabel setOrigin:CGPointMake(_classLabel.right + 10, _classLabel.y + (_classLabel.height - _numLabel.height) / 2)];
 }
 
-- (void)onChatClicked
+- (void)onCoverButtonClicked
 {
     JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
     [chatVC setTo_objid:self.classInfo.schoolInfo.schoolID];

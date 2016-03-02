@@ -83,6 +83,9 @@ static NSInteger num = 1;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
     [_tableView addGestureRecognizer:tapGesture];
     
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [ApplicationDelegate.homeVC selectAtIndex:0];
+    });
 //     _testTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(send) userInfo:nil repeats:YES];
 }
 
@@ -390,15 +393,15 @@ static NSInteger num = 1;
 
 
 #pragma mark - TNBaseTableViewDelegate
-- (BOOL)supportCache
-{
-    return YES;
-}
-
-- (NSString *)cacheFileName
-{
-    return [NSString stringWithFormat:@"%@_%@_%@_%@_%@_%@",[self class],self.targetID,kStringFromValue(self.chatType),self.to_objid,[UserCenter sharedInstance].curChild.uid,[UserCenter sharedInstance].userInfo.uid];
-}
+//- (BOOL)supportCache
+//{
+//    return YES;
+//}
+//
+//- (NSString *)cacheFileName
+//{
+//    return [NSString stringWithFormat:@"%@_%@_%@_%@_%@_%@",[self class],self.targetID,kStringFromValue(self.chatType),self.to_objid,[UserCenter sharedInstance].curChild.uid,[UserCenter sharedInstance].userInfo.uid];
+//}
 
 #pragma mark - InputDelegate
 - (void)inputBarViewDidCommit:(NSString *)text

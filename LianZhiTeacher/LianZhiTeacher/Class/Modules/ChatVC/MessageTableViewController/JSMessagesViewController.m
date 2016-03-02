@@ -81,6 +81,10 @@ static NSInteger num = 1;
 //    _testTimer = [NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(send) userInfo:nil repeats:YES];
 //    _testTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(send) userInfo:nil repeats:YES];
 //    [_testTimer fire];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [ApplicationDelegate.homeVC selectAtIndex:0];
+    });
 }
 
 - (void)send
@@ -394,16 +398,16 @@ static NSInteger num = 1;
 }
 
 
-#pragma mark - TNBaseTableViewDelegate
-- (BOOL)supportCache
-{
-    return YES;
-}
-
-- (NSString *)cacheFileName
-{
-    return [NSString stringWithFormat:@"%@_%@_%@_%@_%@_%@",[self class],self.targetID,kStringFromValue(self.chatType),self.to_objid,[UserCenter sharedInstance].curSchool.schoolID,[UserCenter sharedInstance].userInfo.uid];
-}
+//#pragma mark - TNBaseTableViewDelegate
+//- (BOOL)supportCache
+//{
+//    return YES;
+//}
+//
+//- (NSString *)cacheFileName
+//{
+//    return [NSString stringWithFormat:@"%@_%@_%@_%@_%@_%@",[self class],self.targetID,kStringFromValue(self.chatType),self.to_objid,[UserCenter sharedInstance].curSchool.schoolID,[UserCenter sharedInstance].userInfo.uid];
+//}
 
 #pragma mark - InputDelegate
 - (void)inputBarViewDidCommit:(NSString *)text
