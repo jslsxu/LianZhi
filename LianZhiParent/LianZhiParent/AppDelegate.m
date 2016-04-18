@@ -148,6 +148,13 @@ static SystemSoundID shake_sound_male_id = 0;
 
         TNDataWrapper *statusWrapper = [responseWrapper getDataWrapperForKey:@"status"];
         [[UserCenter sharedInstance].statusManager parseData:statusWrapper];
+        
+        NSString *missionMsg = [UserCenter sharedInstance].statusManager.missionMsg;
+        if(missionMsg.length > 0)
+        {
+//            [[[ProgressHUD alloc] init] hudMake:missionMsg];
+            [ProgressHUD showHintText:missionMsg];
+        }
         return YES;
     }];
 }

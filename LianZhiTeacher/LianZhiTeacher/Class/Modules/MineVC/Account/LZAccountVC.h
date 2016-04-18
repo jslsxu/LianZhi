@@ -27,6 +27,8 @@
 @property (nonatomic, assign)BOOL more;
 @property (nonatomic, copy)NSString *maxID;
 @property (nonatomic, assign)NSInteger coinTotal;
+@property (nonatomic, copy)NSString *earnUrl;
+@property (nonatomic, copy)NSString *exchangeUrl;
 @end
 
 @interface LZAccountVC : TNBaseTableViewController

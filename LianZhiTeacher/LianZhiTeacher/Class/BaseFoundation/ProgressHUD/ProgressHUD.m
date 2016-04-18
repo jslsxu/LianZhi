@@ -46,6 +46,7 @@
 
 + (void)showHintText:(NSString *)text
 {
+    if([self shared].hud.superview == nil)
     [[self shared] hudMake:text];
 }
 
@@ -53,6 +54,7 @@
 + (void)show:(NSString *)status
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 {
+    if([self shared].hud.superview == nil)
 	[[self shared] hudMake:status imgage:nil spin:YES hide:NO];
 }
 
@@ -60,6 +62,7 @@
 + (void)showSuccess:(NSString *)status
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 {
+    if([self shared].hud.superview == nil)
 	[[self shared] hudMake:status imgage:HUD_IMAGE_SUCCESS spin:NO hide:YES];
 }
 
@@ -67,6 +70,7 @@
 + (void)showError:(NSString *)status
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 {
+    if([self shared].hud.superview == nil)
 	[[self shared] hudMake:status imgage:HUD_IMAGE_ERROR spin:NO hide:YES];
 }
 
@@ -91,6 +95,8 @@
 
 - (void)hudMake:(NSString *)text
 {
+    [[ProgressHUD shared] hudDestroy];
+    [ProgressHUD shared].alpha = 0;
     [self hudCreate];
     [self hudOrient];
     CGRect labelRect = CGRectZero;

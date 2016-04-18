@@ -49,6 +49,7 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 @end
 
 @interface StatusManager : TNModelItem
+@property (nonatomic, copy)NSString *missionMsg;
 @property (nonatomic, assign)ChangedType changed;
 @property (nonatomic, assign)BOOL found;            //发现是否有更新
 @property (nonatomic, assign)BOOL around;           //身边事是否有更新

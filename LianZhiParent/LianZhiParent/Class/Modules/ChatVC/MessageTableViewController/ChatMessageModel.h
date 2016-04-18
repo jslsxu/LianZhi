@@ -18,5 +18,6 @@
 @property (nonatomic, assign)BOOL getHistory;
 @property (nonatomic, assign)BOOL needScrollBottom;
 @property (nonatomic, assign)NSInteger numOfNew;
+@property (nonatomic, copy)NSString *targetUser;
 - (BOOL)canInsert:(MessageItem *)messageItem;
 @end

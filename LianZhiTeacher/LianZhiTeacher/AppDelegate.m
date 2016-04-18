@@ -130,6 +130,10 @@ static SystemSoundID shake_sound_male_id = 0;
             return NO;
         }
         [[UserCenter sharedInstance].statusManager parseData:[responseWrapper getDataWrapperForKey:@"status"]];
+        NSString *missionMsg = [UserCenter sharedInstance].statusManager.missionMsg;
+        if(missionMsg.length > 0){
+            [ProgressHUD showHintText:missionMsg];
+        }
         return YES;
     }];
 }

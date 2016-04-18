@@ -51,6 +51,7 @@
         {
             TNDataWrapper *messageWrapper = [itemsWrapper getDataWrapperForIndex:i];
             MessageItem *item = [[MessageItem alloc] init];
+            [item setTargetUser:self.targetUser];
             [item parseData:messageWrapper];
             if(item.messageContent.messageType != UUMessageTypeDeleted)
                 [newArray addObject:item];

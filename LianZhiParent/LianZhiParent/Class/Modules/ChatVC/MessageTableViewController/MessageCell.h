@@ -22,6 +22,7 @@
 - (void)onRevokeMessage:(MessageItem *)messageItem;
 - (void)onDeleteMessage:(MessageItem *)messageItem;
 - (void)onResendMessage:(MessageItem *)messageItem;
+- (void)onReceiveGift:(MessageItem *)messageItem;
 - (void)onAddToBlackList;
 @end
 @interface MessageCell : TNTableViewCell

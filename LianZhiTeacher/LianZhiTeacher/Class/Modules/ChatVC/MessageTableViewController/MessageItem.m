@@ -19,6 +19,7 @@
     {
         NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
         self.mid = kStringFromValue(timeInterval);
+        self.unread = 1;
     }
     return self;
 }
@@ -26,9 +27,12 @@
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
     self.mid = [dataWrapper getStringForKey:@"mid"];
+    self.unread = [dataWrapper getBoolForKey:@"unread"];
     self.messageType = [dataWrapper getIntegerForKey:@"type"];
     self.text = [dataWrapper getStringForKey:@"text"];
     TNDataWrapper *exinfoWrapper = [dataWrapper getDataWrapperForKey:@"exinfo"];
+    self.presentID = [exinfoWrapper getStringForKey:@"presnetId"];
+    self.presentName = [exinfoWrapper getStringForKey:@"presentName"];
     TNDataWrapper *photoWrapper = [exinfoWrapper getDataWrapperForKey:@"imgs"];
     PhotoItem *photoItem = [[PhotoItem alloc] init];
     [photoItem parseData:photoWrapper];
@@ -103,8 +107,10 @@
     {
         height = kFaceHeight;
     }
-    else if(self.messageContent.messageType == UUMessageTypeRevoked)
+    else if(self.messageContent.messageType == UUMessageTypeRevoked || self.messageContent.messageType == UUMessageTypeReceiveGift)
         height = 32;
+    else if (self.messageContent.messageType == UUMessageTypeGift)
+        height = 60;
     else
         height = 32;
     if(self.messageContent.hideTime)

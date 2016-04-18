@@ -107,6 +107,8 @@
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         [params setValue:_textView.text forKey:@"words"];
         [params setValue:kStringFromValue([_recordView tmpAmrDuration]) forKey:@"voice_time"];
+        if(self.forward)
+            [params setValue:@"1" forKey:@"forward"];
         POIItem *poiItem = _poiInfoView.poiItem;
         if(!poiItem.clearLocation)
         {

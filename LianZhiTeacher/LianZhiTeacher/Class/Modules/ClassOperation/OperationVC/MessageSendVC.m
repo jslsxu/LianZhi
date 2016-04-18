@@ -24,6 +24,8 @@
     [self.view setBackgroundColor:[UIColor whiteColor]];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:(@"WhiteLeftArrow")] style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"下一步" style:UIBarButtonItemStylePlain target:self action:@selector(onNext)];
+    
+    self.words = [NSString stringWithFormat:@"%@教师:",[UserCenter sharedInstance].userData.userInfo.name];
 }
 
 

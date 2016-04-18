@@ -411,7 +411,7 @@
         
         [publishVC setPoiItem:poiItem];
     }
-    
+    [publishVC setForward:YES];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:publishVC];
     [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
 }

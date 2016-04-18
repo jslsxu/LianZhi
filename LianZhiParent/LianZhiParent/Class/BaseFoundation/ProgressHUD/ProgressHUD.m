@@ -46,13 +46,16 @@
 
 + (void)showHintText:(NSString *)text
 {
-    [[self shared] hudMake:text];
+    if([self shared].hud.superview == nil){
+        [[self shared] hudMake:text];
+    }
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 + (void)show:(NSString *)status
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 {
+    if([self shared].hud.superview == nil)
 	[[self shared] hudMake:status imgage:nil spin:YES hide:NO];
 }
 
@@ -60,6 +63,7 @@
 + (void)showSuccess:(NSString *)status
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 {
+    if([self shared].hud.superview == nil)
 	[[self shared] hudMake:status imgage:HUD_IMAGE_SUCCESS spin:NO hide:YES];
 }
 
@@ -67,6 +71,7 @@
 + (void)showError:(NSString *)status
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 {
+    if([self shared].hud.superview == nil)
 	[[self shared] hudMake:status imgage:HUD_IMAGE_ERROR spin:NO hide:YES];
 }
 

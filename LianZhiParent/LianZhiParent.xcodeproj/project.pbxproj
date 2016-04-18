@@ -418,6 +418,8 @@
 		37FD70B81BBDB29B00C83AB4 /* PraiseListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70B71BBDB29B00C83AB4 /* PraiseListView.m */; };
 		37FD70BB1BBDB42A00C83AB4 /* TreeHouseItemDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70BA1BBDB42A00C83AB4 /* TreeHouseItemDetailVC.m */; };
 		37FEA9681C46578400E7425B /* AccountInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FEA9671C46578400E7425B /* AccountInfoView.m */; };
+		8D2496E31CBBA88D000B979D /* GiftDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D2496E21CBBA88D000B979D /* GiftDetailView.m */; };
+		8DA785991CA4E70B00A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785981CA4E70B00A384F0 /* NSString+UrlParams.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1192,6 +1194,10 @@
 		37FD70BA1BBDB42A00C83AB4 /* TreeHouseItemDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeHouseItemDetailVC.m; sourceTree = "<group>"; };
 		37FEA9661C46578400E7425B /* AccountInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountInfoView.h; sourceTree = "<group>"; };
 		37FEA9671C46578400E7425B /* AccountInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountInfoView.m; sourceTree = "<group>"; };
+		8D2496E11CBBA88D000B979D /* GiftDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiftDetailView.h; sourceTree = "<group>"; };
+		8D2496E21CBBA88D000B979D /* GiftDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiftDetailView.m; sourceTree = "<group>"; };
+		8DA785971CA4E70B00A384F0 /* NSString+UrlParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlParams.h"; sourceTree = "<group>"; };
+		8DA785981CA4E70B00A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1480,6 +1486,8 @@
 				3728A6EF1B9C2A0100310457 /* UUProgressHUD.m */,
 				3707E66C1C041E6E00944B8D /* MyGiftVC.h */,
 				3707E66D1C041E6E00944B8D /* MyGiftVC.m */,
+				8D2496E11CBBA88D000B979D /* GiftDetailView.h */,
+				8D2496E21CBBA88D000B979D /* GiftDetailView.m */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -2003,6 +2011,8 @@
 				3793F6991B7CFFD900501F77 /* NSString+StringSize.m */,
 				3793F69A1B7CFFD900501F77 /* NSString+Validate.h */,
 				3793F69B1B7CFFD900501F77 /* NSString+Validate.m */,
+				8DA785971CA4E70B00A384F0 /* NSString+UrlParams.h */,
+				8DA785981CA4E70B00A384F0 /* NSString+UrlParams.m */,
 				3793F69C1B7CFFD900501F77 /* UIColor+Addition.h */,
 				3793F69D1B7CFFD900501F77 /* UIColor+Addition.m */,
 				3793F69E1B7CFFD900501F77 /* UIImage+Utility.h */,
@@ -3092,7 +3102,9 @@
 				3793F7751B7CFFD900501F77 /* RESegmentedItem.m in Sources */,
 				3793F80A1B7CFFD900501F77 /* UIImage+MultiFormat.m in Sources */,
 				3793F7711B7CFFD900501F77 /* REMultipleChoiceItem.m in Sources */,
+				8DA785991CA4E70B00A384F0 /* NSString+UrlParams.m in Sources */,
 				3793F7761B7CFFD900501F77 /* RETextItem.m in Sources */,
+				8D2496E31CBBA88D000B979D /* GiftDetailView.m in Sources */,
 				3793F7CA1B7CFFD900501F77 /* SimpleImageScanView.m in Sources */,
 				37CFA5111A49910C0061D7B8 /* MessageGroupListModel.m in Sources */,
 				37C3560E1A3FD67300B948E6 /* HomeViewController.m in Sources */,

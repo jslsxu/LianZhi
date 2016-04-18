@@ -65,13 +65,9 @@
 @implementation AccountInfoItem
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-//    self.title = [dataWrapper getStringForKey:@"title"];
-//    self.num = [dataWrapper getIntegerForKey:@"num"];
-//    self.ctime = [dataWrapper getStringForKey:@"ctime"];
-    self.title = @"每日登陆";
-    NSInteger num = arc4random() % 2;
-    self.num = (num + 3) * (num == 0 ? 1 : -1);
-    self.ctime = @"2015-12-10";
+    self.title = [dataWrapper getStringForKey:@"title"];
+    self.num = [dataWrapper getIntegerForKey:@"num"];
+    self.ctime = [dataWrapper getStringForKey:@"ctime"];
 }
 
 @end
@@ -88,7 +84,8 @@
         [self.modelItemArray removeAllObjects];
     TNDataWrapper *userCoinWrapper = [data getDataWrapperForKey:@"user_coin"];
     self.coinTotal = [userCoinWrapper getIntegerForKey:@"coin_total"];
-    
+    self.earnUrl = [data getStringForKey:@"earnUrl"];
+    self.exchangeUrl = [data getStringForKey:@"exchangeUrl"];
     TNDataWrapper *moreWrapper  =[data getDataWrapperForKey:@"more"];
     self.more = [moreWrapper getBoolForKey:@"has"];
     self.maxID = [moreWrapper getStringForKey:@"id"];
@@ -122,12 +119,11 @@
     [self requestData:REQUEST_REFRESH];
     
     [self setupHeaderView];
-    [self setupSectionHeaderView];
 }
 
 - (void)setupHeaderView
 {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 120)];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 150)];
     [headerView setBackgroundColor:[UIColor whiteColor]];
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     [titleLabel setFont:[UIFont systemFontOfSize:13]];
@@ -153,7 +149,7 @@
     [headerView addSubview:_numLabel];
     
     UIButton *exchangeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [exchangeButton setFrame:CGRectMake(10, headerView.height - 15 - 32, headerView.width - 10 * 2, 32)];
+    [exchangeButton setFrame:CGRectMake(10, headerView.height - 30 - 15 - 32, headerView.width - 10 * 2, 32)];
     [exchangeButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"E82557"] size:exchangeButton.size cornerRadius:16] forState:UIControlStateNormal];
     [exchangeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [exchangeButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
@@ -161,37 +157,42 @@
     [exchangeButton addTarget:self action:@selector(onExchangeClicked) forControlEvents:UIControlEventTouchUpInside];
     [headerView addSubview:exchangeButton];
     
-    [self.tableView setTableHeaderView:headerView];
-}
-
-- (void)setupSectionHeaderView
-{
-    _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 30)];
-    [_headerView setBackgroundColor:self.view.backgroundColor];
+    UIView *filterView = [[UIView alloc] initWithFrame:CGRectMake(0, 120, headerView.width, 30)];
+    [filterView setBackgroundColor:self.view.backgroundColor];
+    [headerView addSubview:filterView];
     
     UISegmentedControl *segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"全部",@"赚取",@"消费"]];
     [segmentCtrl setTintColor:kCommonTeacherTintColor];
     [segmentCtrl setSelectedSegmentIndex:0];
-    [segmentCtrl setFrame:CGRectMake(_headerView.width - 10 - 120, 3, 120, 24)];
+    [segmentCtrl setFrame:CGRectMake(headerView.width - 10 - 120, 3, 120, 24)];
     [segmentCtrl addTarget:self action:@selector(onSegmentValueChanged:) forControlEvents:UIControlEventValueChanged];
-    [_headerView addSubview:segmentCtrl];
+    [filterView addSubview:segmentCtrl];
     
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, segmentCtrl.x - 10 - 10 , _headerView.height)];
-    [titleLabel setText:@"积分记录"];
-    [titleLabel setFont:[UIFont systemFontOfSize:13]];
-    [titleLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-    [_headerView addSubview:titleLabel];
+    UILabel *hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, segmentCtrl.x - 10 - 10 , 30)];
+    [hintLabel setText:@"积分记录"];
+    [hintLabel setFont:[UIFont systemFontOfSize:13]];
+    [hintLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
+    [filterView addSubview:hintLabel];
+    
+    [headerView addSubview:filterView];
+    
+    [self.tableView setTableHeaderView:headerView];
 }
+
 
 - (void)showHelp
 {
+    AccountInfoListModel *infoModel = (AccountInfoListModel *)self.tableViewModel;
     TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+    [webVC setUrl:infoModel.earnUrl];
     [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
 }
 
 - (void)onExchangeClicked
 {
+    AccountInfoListModel *infoModel = (AccountInfoListModel *)self.tableViewModel;
     TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+    [webVC setUrl:infoModel.exchangeUrl];
     [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
 }
 
@@ -217,16 +218,6 @@
     }
     [task setParams:params];
     return task;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 30;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return _headerView;
 }
 
 - (void)TNBaseTableViewControllerRequestSuccess

@@ -54,7 +54,7 @@
 + (void)show:(NSString *)status;
 + (void)showSuccess:(NSString *)status;
 + (void)showError:(NSString *)status;
-
+- (void)hudMake:(NSString *)text;
 @property (atomic, strong) UIWindow *window;
 @property (atomic, strong) UIView *hud;
 @property (atomic, strong) UIActivityIndicatorView *spinner;

@@ -9,6 +9,7 @@
 #import "MessageCell.h"
 #import "UUImageAvatarBrowser.h"
 #import "MFWFace.h"
+#import "GiftDetailView.h"
 @implementation MessageCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -80,6 +81,8 @@
         [self addSubview:_playButton];
         
         _revokeMessageLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_revokeMessageLabel setNumberOfLines:0];
+        [_revokeMessageLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [_revokeMessageLabel setTextAlignment:NSTextAlignmentCenter];
         [_revokeMessageLabel setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.2]];
         [_revokeMessageLabel setTextColor:[UIColor whiteColor]];
@@ -141,6 +144,8 @@
     spaceYStart += _nameLabel.height + 5;
     [_avatarView setImageWithUrl:[NSURL URLWithString:messageItem.userInfo.avatar]];
     [_avatarView setY:spaceYStart];
+    [_avatarView setHidden:NO];
+    [_nameLabel setHidden:NO];
     
     [_contentButton setY:spaceYStart];
     [_contentButton setImage:nil forState:UIControlStateNormal];
@@ -151,7 +156,10 @@
     [_playButton setHidden:YES];
     [_audioTimeLabel setHidden:YES];
     [_revokeMessageLabel setHidden:YES];
+    [_giftDetailLabel setHidden:YES];
+    [_giftView setHidden:YES];
     MessageType type = messageItem.messageContent.messageType;
+    _contentButton.backImageView.layer.mask = nil;
     if(type == UUMessageTypeText)
     {
         CGSize contentSize = [messageItem.messageContent.text boundingRectWithSize:CGSizeMake(kScreenWidth - 50 * 2 - 10 - 15, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
@@ -226,15 +234,40 @@
         [_contentButton.backImageView setBackgroundColor:[UIColor colorWithHexString:@"fa9d3b"]];
         
         [_giftView setFrame:CGRectMake(leftMargin, 5, 50, 50)];
-        [_giftView sd_setImageWithURL:[NSURL URLWithString:@"http://pic14.nipic.com/20110522/7411759_164157418126_2.jpg"] placeholderImage:nil];
+        [_giftView sd_setImageWithURL:[NSURL URLWithString:messageItem.messageContent.photoItem.thumbnailUrl] placeholderImage:nil];
         
         [_giftDetailLabel setFrame:CGRectMake(_giftView.right + 10, 10, _contentButton.width - rightMargin - (_giftView.right + 10), 40)];
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
-        [paragraphStyle setLineSpacing:6];
-        NSMutableAttributedString *giftDetailStr = [[NSMutableAttributedString alloc] initWithString:@"请收下我的心意\n" attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:13],NSParagraphStyleAttributeName : paragraphStyle}];
-        [giftDetailStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"点击查看" attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:11],NSParagraphStyleAttributeName : paragraphStyle}]];
-        [_giftDetailLabel setAttributedText:giftDetailStr];
+        if(messageItem.messageContent.text.length > 0)
+        {
+            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+            [paragraphStyle setLineSpacing:6];
+            NSMutableAttributedString *giftDetailStr = [[NSMutableAttributedString alloc] initWithString:messageItem.messageContent.text attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:13],NSParagraphStyleAttributeName : paragraphStyle}];
+            [giftDetailStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"点击查看" attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:11],NSParagraphStyleAttributeName : paragraphStyle}]];
+            [_giftDetailLabel setAttributedText:giftDetailStr];
+        }
         
+    }
+    else if (type == UUMessageTypeReceiveGift){
+        [_avatarView setHidden:YES];
+        [_nameLabel setHidden:YES];
+        _contentButton.hidden = YES;
+        _revokeMessageLabel.hidden = NO;
+        NSMutableAttributedString *msg = [[NSMutableAttributedString alloc] init];
+        if(UUMessageFromMe == messageItem.from) {//我接受礼物
+            [msg appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"您领取了%@送的",messageItem.targetUser] attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}]];
+            if(messageItem.messageContent.presentName) {
+                [msg appendAttributedString:[[NSAttributedString alloc] initWithString:messageItem.messageContent.presentName attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"fa9d3b"]}]];
+            }
+        }
+        else {//对方接受礼物
+            [msg appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"对方已领取您发送的%@,谢谢鼓励!",messageItem.messageContent.presentName] attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}]];
+            [msg addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"fa9d3b"] range:NSMakeRange(9, messageItem.messageContent.presentName.length)];
+        }
+        [_revokeMessageLabel setWidth:self.width - 10];
+        [_revokeMessageLabel setAttributedText:msg];
+
+        [_revokeMessageLabel sizeToFit];
+        [_revokeMessageLabel setFrame:CGRectMake((self.width - _revokeMessageLabel.width - 10) / 2, _nameLabel.bottom, _revokeMessageLabel.width + 10, _revokeMessageLabel.height + 4)];
     }
     else
     {
@@ -314,6 +347,29 @@
         {
             PhotoItem *photoItem = [messageItem.messageContent photoItem];
             [UUImageAvatarBrowser showImage:_contentButton.backImageView withOriginalUrl:photoItem.originalUrl size:CGSizeMake(photoItem.width, photoItem.height)];
+        }
+    }
+    else if (messageItem.messageContent.messageType == UUMessageTypeGift){
+        if(messageItem.from == UUMessageFromOther) {
+            //如果没有收
+            if(messageItem.messageContent.unread)
+            {
+                [GiftDetailView showWithImage:messageItem.messageContent.photoItem.thumbnailUrl title:[NSString stringWithFormat:@"%@给你送了%@",messageItem.targetUser, messageItem.messageContent.presentName] receiveCompletion:^{
+                    if([self.delegate respondsToSelector:@selector(onReceiveGift:)])
+                    {
+                        [self.delegate onReceiveGift:messageItem];
+                    }
+                } valid:YES];
+            }
+            else {
+                [GiftDetailView showWithImage:messageItem.messageContent.photoItem.thumbnailUrl title:[NSString stringWithFormat:@"%@给您送了%@",messageItem.targetUser, messageItem.messageContent.presentName]receiveCompletion:^{
+
+                } valid:NO];
+
+            }
+        }
+        else {//自己发的
+            [GiftDetailView showWithImage:messageItem.messageContent.photoItem.thumbnailUrl title:[NSString stringWithFormat:@"您给%@送了%@",messageItem.targetUser, messageItem.messageContent.presentName]];
         }
     }
 }

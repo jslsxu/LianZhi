@@ -233,9 +233,11 @@
     DicoveryType type = item.type;
     if(type == DicoveryTypeInterest)
     {
-        InterestVC *interestVC = [[InterestVC alloc] init];
-        [interestVC setTitle:item.name];
-        [CurrentROOTNavigationVC pushViewController:interestVC animated:YES];
+        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+        NSString *url = [NSString appendUrl:item.url withParams:@{@"child_id" : [UserCenter sharedInstance].curChild.uid}];
+        [webVC setUrl:url];
+        [webVC setTitle:item.name];
+        [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
         [self setRead:1];
     }
     else if(type == DicoveryTypeFAQ)

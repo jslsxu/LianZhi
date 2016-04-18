@@ -105,6 +105,11 @@
             if(SSDKResponseStateSuccess == state)
             {
                 [ProgressHUD showSuccess:@"分享成功"];
+                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/share" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                    
+                } fail:^(NSString *errMsg) {
+                    
+                }];
             }
             else if(errorMsg.length > 0)
                 [ProgressHUD showHintText:errorMsg];

@@ -17,6 +17,7 @@
 {
     PoiInfoView*    _poiInfoView;
 }
+@property (nonatomic, assign)BOOL forward;
 @property (nonatomic, copy)NSString *words;
 @property (nonatomic, strong)POIItem *poiItem;
 @property (nonatomic, weak)id<PublishTreeHouseDelegate> delegate;

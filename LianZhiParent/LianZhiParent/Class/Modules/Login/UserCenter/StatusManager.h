@@ -53,6 +53,7 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 @end
 
 @interface StatusManager : TNModelItem
+@property (nonatomic, copy)NSString *missionMsg;
 @property (nonatomic, assign)ChangedType changed;
 @property (nonatomic, assign)BOOL found;
 @property (nonatomic, assign)BOOL around;

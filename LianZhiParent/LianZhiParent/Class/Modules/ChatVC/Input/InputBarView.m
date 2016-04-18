@@ -325,9 +325,9 @@
     else
     {
         MyGiftVC *myGiftVC = [[MyGiftVC alloc] init];
-        [myGiftVC setCompletion:^(NSString *giftID) {
+        [myGiftVC setCompletion:^(GiftItem *giftItem) {
             if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendGift:)])
-                [self.inputDelegate inputBarViewDidSendGift:giftID];
+                [self.inputDelegate inputBarViewDidSendGift:giftItem];
         }];
         TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:myGiftVC];
         [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:nil];

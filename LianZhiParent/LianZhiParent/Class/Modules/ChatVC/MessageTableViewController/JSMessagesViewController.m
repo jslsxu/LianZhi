@@ -2,7 +2,7 @@
 
 #import "JSMessagesViewController.h"
 #import "ClassMemberVC.h"
-
+#import "MyGiftVC.h"
 static NSString *topChatID = nil;
 static NSInteger num = 1;
 @implementation JSMessagesViewController
@@ -79,6 +79,9 @@ static NSInteger num = 1;
     [self setSupportPullDown:YES];
     [self.tableView setHeight:self.view.height - _inputView.height];
     [self bindTableCell:@"MessageCell" tableModel:@"ChatMessageModel"];
+    
+    ChatMessageModel *model = (ChatMessageModel *)self.tableViewModel;
+    [model setTargetUser:self.title];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
     [_tableView addGestureRecognizer:tapGesture];
@@ -278,6 +281,7 @@ static NSInteger num = 1;
     [messageParam setValue:dic[@"type"] forKey:@"content_type"];
     [messageParam setValue:dic[@"strContent"] forKey:@"content"];
     [messageParam setValue:dic[@"strVoiceTime"] forKey:@"voice_time"];
+    [messageParam setValue:dic[@"present_id"] forKey:@"present_id"];
     
     MessageType messageType = [dic[@"type"] integerValue];
     UIImage *image = dic[@"picture"];
@@ -310,6 +314,7 @@ static NSInteger num = 1;
     }
     
     MessageItem *messageItem = [[MessageItem alloc] init];
+    [messageItem setTargetUser:self.title];
     [messageItem setParams:dic];
     [messageItem setMessageStatus:MessageStatusSending];
     [messageItem setIsTmp:YES];
@@ -380,6 +385,21 @@ static NSInteger num = 1;
     });
 }
 
+- (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath {
+    MessageItem *messageItem = (MessageItem *)modelItem;
+    if(messageItem.messageContent.messageType == UUMessageTypeReceiveGift && messageItem.messageContent.unread && messageItem.from == UUMessageFromOther) {
+        NSDictionary *dic = @{@"strContent": messageItem.messageContent.presentName,
+                              @"type": @(UUMessageTypeReceiveGift)};
+        [self sendMessage:dic];
+        //更新已读
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/read" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"mids" : messageItem.messageContent.mid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            messageItem.messageContent.unread = 0;
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    }
+}
+
 - (BOOL)hideErrorAlert
 {
     return YES;
@@ -402,6 +422,7 @@ static NSInteger num = 1;
 //{
 //    return [NSString stringWithFormat:@"%@_%@_%@_%@_%@_%@",[self class],self.targetID,kStringFromValue(self.chatType),self.to_objid,[UserCenter sharedInstance].curChild.uid,[UserCenter sharedInstance].userInfo.uid];
 //}
+
 
 #pragma mark - InputDelegate
 - (void)inputBarViewDidCommit:(NSString *)text
@@ -459,9 +480,12 @@ static NSInteger num = 1;
     }
 }
 
-- (void)inputBarViewDidSendGift:(NSString *)giftID
+- (void)inputBarViewDidSendGift:(GiftItem *)giftItem
 {
-    
+    NSDictionary *dic = @{@"present_id" : giftItem.giftID,
+                          @"type" : @(UUMessageTypeGift),
+                          @"strContent" : self.title};
+    [self dealTheFunctionData:dic];
 }
 
 - (void)dealTheFunctionData:(NSDictionary *)dic
@@ -525,6 +549,8 @@ static NSInteger num = 1;
     [messageParam setValue:dic[@"type"] forKey:@"content_type"];
     [messageParam setValue:dic[@"strContent"] forKey:@"content"];
     [messageParam setValue:dic[@"strVoiceTime"] forKey:@"voice_time"];
+    [messageParam setValue:dic[@"present_id"] forKey:@"present_id"];
+    
     
     MessageType messageType = [dic[@"type"] integerValue];
     UIImage *image = dic[@"picture"];
@@ -544,6 +570,18 @@ static NSInteger num = 1;
         [wself.tableView reloadData];
     }];
 }
-
+- (void)onReceiveGift:(MessageItem *)messageItem {
+    if(messageItem.messageContent.messageType == UUMessageTypeGift && messageItem.messageContent.unread && messageItem.from == UUMessageFromOther) {
+        NSDictionary *dic = @{@"strContent": messageItem.messageContent.presentName,
+                              @"type": @(UUMessageTypeReceiveGift)};
+        [self sendMessage:dic];
+        //更新已读
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/read" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"mids" : messageItem.messageContent.mid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            messageItem.messageContent.unread = 0;
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    }
+}
 
 @end

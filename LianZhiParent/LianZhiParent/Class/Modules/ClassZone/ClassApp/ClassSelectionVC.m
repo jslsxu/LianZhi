@@ -34,7 +34,13 @@
     {
         if(self.isHomework)
         {
-            self.classDic = [[NSMutableDictionary alloc] initWithDictionary:[UserCenter sharedInstance].statusManager.appPractice];
+            self.classDic = [NSMutableDictionary dictionary];
+            for (NSString *key in [UserCenter sharedInstance].statusManager.appPractice.allKeys) {
+                NSInteger num = [[UserCenter sharedInstance].statusManager.appPractice[key] integerValue];
+                if(num > 0)
+                    [self.classDic setValue:@"" forKey:key];
+            }
+
             [_tableView reloadData];
         }
         else

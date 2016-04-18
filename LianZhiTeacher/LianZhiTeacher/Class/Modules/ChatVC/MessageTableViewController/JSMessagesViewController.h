@@ -4,6 +4,7 @@
 #import "InputBarView.h"
 #import "MessageCell.h"
 #import "ChatMessageModel.h"
+#import "GiftDetailView.h"
 @interface JSMessagesViewController : TNBaseTableViewController <InputBarViewDelegate, MessageCellDelegate>
 {
     InputBarView*           _inputView;

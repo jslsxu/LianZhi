@@ -19,5 +19,4 @@
     UTPlaceholderTextView*        _textView;
 }
 @property (nonatomic, strong)NSArray *originalImageArray;
-@property (nonatomic, assign)BOOL forward;
 @end

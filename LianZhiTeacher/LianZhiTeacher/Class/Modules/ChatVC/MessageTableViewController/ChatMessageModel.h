@@ -9,6 +9,7 @@
 #import "TNListModel.h"
 #import "MessageItem.h"
 @interface ChatMessageModel : TNListModel
+@property (nonatomic, copy)NSString *targetUser;
 @property (nonatomic, assign)NSInteger getMoreCount;
 @property (nonatomic,assign)BOOL more;
 @property (nonatomic, copy)NSString *oldId;

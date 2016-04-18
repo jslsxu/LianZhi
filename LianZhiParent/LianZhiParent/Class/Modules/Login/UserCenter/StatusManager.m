@@ -80,7 +80,7 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
         practiceNum += [self.appPractice[key] integerValue];
     }
     self.practiceNum = practiceNum;
-    
+    self.missionMsg = [dataWrapper getStringForKey:@"mission_msg"];
     self.appLeave = [dataWrapper getIntegerForKey:@"app_leave"];
     self.changed = [dataWrapper getIntegerForKey:@"changed"];
     self.found = [dataWrapper getBoolForKey:@"found"];

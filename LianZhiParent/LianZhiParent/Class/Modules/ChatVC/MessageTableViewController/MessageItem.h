@@ -20,9 +20,10 @@ typedef NS_ENUM(NSInteger, MessageType) {
     UUMessageTypeVoice    = 2 ,  // 语音
     UUMessageTypePicture  = 3 , // 图片
     UUMessageTypeFace     = 4 ,    // 表情
+    UUMessageTypeGift = 5,         //礼物
+    UUMessageTypeReceiveGift = 6,  //收礼物
     UUMessageTypeDeleted  = 8,      //消息被删除
     UUMessageTypeRevoked  = 9,      //消息被撤销
-    UUMessageTypeGift = 10,         //
 };
 
 typedef NS_ENUM(NSInteger, ChatType)
@@ -42,6 +43,7 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 
 @interface MessageContent : TNModelItem
 @property (nonatomic, copy)NSString *mid;
+@property (nonatomic, assign)BOOL unread;
 @property (nonatomic, assign)MessageType messageType;
 @property (nonatomic, copy)NSString *text;
 @property (nonatomic, strong)PhotoItem *photoItem;
@@ -49,9 +51,12 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property (nonatomic, assign)NSInteger timeInterval;
 @property (nonatomic, copy)NSString *ctime;
 @property (nonatomic, assign)BOOL hideTime;
+@property (nonatomic, copy)NSString *presentID;
+@property (nonatomic, copy)NSString *presentName;
 @end
 
 @interface MessageItem : TNModelItem
+@property (nonatomic, copy)NSString *targetUser;
 @property (nonatomic, assign)MessageStatus messageStatus;
 @property (nonatomic, assign)BOOL isTmp;
 @property (nonatomic, copy)NSString *client_send_id;

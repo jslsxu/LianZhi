@@ -283,7 +283,11 @@
                         }
                         else if ([host isEqualToString:@"practice"])
                         {
-                            classDic = [[NSMutableDictionary alloc] initWithDictionary:[UserCenter sharedInstance].statusManager.appPractice];
+                            for (NSString *key in [UserCenter sharedInstance].statusManager.appPractice.allKeys) {
+                                NSInteger num = [[UserCenter sharedInstance].statusManager.appPractice[key] integerValue];
+                                if(num > 0)
+                                    [classDic setValue:@"" forKey:key];
+                            }
                             [classSelectionVC setIsHomework:YES];
                         }
                         

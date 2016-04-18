@@ -436,6 +436,7 @@
 		37FD70BE1BBDB7B400C83AB4 /* PraiseListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70BD1BBDB7B400C83AB4 /* PraiseListView.m */; };
 		37FEA9651C46554500E7425B /* AccountInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FEA9641C46554500E7425B /* AccountInfoView.m */; };
 		37FEA96B1C4657E900E7425B /* GiftDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FEA96A1C4657E900E7425B /* GiftDetailView.m */; };
+		8DA785961CA4E35900A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1252,6 +1253,8 @@
 		37FEA9641C46554500E7425B /* AccountInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountInfoView.m; sourceTree = "<group>"; };
 		37FEA9691C4657E900E7425B /* GiftDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiftDetailView.h; sourceTree = "<group>"; };
 		37FEA96A1C4657E900E7425B /* GiftDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiftDetailView.m; sourceTree = "<group>"; };
+		8DA785941CA4E35900A384F0 /* NSString+UrlParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlParams.h"; sourceTree = "<group>"; };
+		8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1947,6 +1950,8 @@
 				3793F9651B7CFFEF00501F77 /* NSString+StringSize.m */,
 				3793F9661B7CFFEF00501F77 /* NSString+Validate.h */,
 				3793F9671B7CFFEF00501F77 /* NSString+Validate.m */,
+				8DA785941CA4E35900A384F0 /* NSString+UrlParams.h */,
+				8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */,
 				3793F9681B7CFFEF00501F77 /* UIColor+Addition.h */,
 				3793F9691B7CFFEF00501F77 /* UIColor+Addition.m */,
 				3793F96A1B7CFFEF00501F77 /* UIImage+Utility.h */,
@@ -3130,6 +3135,11 @@
 				TargetAttributes = {
 					37C355CF1A3FD5CF00B948E6 = {
 						CreatedOnToolsVersion = 6.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -3360,6 +3370,7 @@
 				37C6B4441BF2EFC50001D54F /* SVShareManager.m in Sources */,
 				3793FAE61B7CFFF000501F77 /* UIView+MJExtension.m in Sources */,
 				37C8901C1A890DF9008E44DB /* ClassZoneManager.m in Sources */,
+				8DA785961CA4E35900A384F0 /* NSString+UrlParams.m in Sources */,
 				3793FA9B1B7CFFF000501F77 /* WelcomeView.m in Sources */,
 				37D6EEF91BCBA96D000994A2 /* StudentAttendanceVC.m in Sources */,
 				3793FAAA1B7CFFF000501F77 /* UIView+Frame.m in Sources */,

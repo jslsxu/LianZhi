@@ -17,6 +17,7 @@
 @property (nonatomic, assign)CGFloat width;
 @property (nonatomic, assign)CGFloat height;
 @property (nonatomic, assign)NSInteger num;
+@property (nonatomic, assign)BOOL chosen;
 @end
 
 @interface GiftModel : TNListModel
@@ -25,6 +26,7 @@
 
 @interface GiftCell : TNCollectionViewCell
 {
+    UIView*         _bgView;
     UIImageView*    _imageView;
     UILabel*        _titleLabel;
     UILabel*        _coinLabel;
@@ -32,5 +34,5 @@
 @end
 
 @interface MyGiftVC : TNBaseCollectionViewController
-@property (nonatomic, copy)void (^completion)(NSString *giftID);
+@property (nonatomic, copy)void (^completion)(GiftItem *giftItem);
 @end
