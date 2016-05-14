@@ -46,7 +46,6 @@
 
 + (void)showHintText:(NSString *)text
 {
-    if([self shared].hud.superview == nil)
     [[self shared] hudMake:text];
 }
 

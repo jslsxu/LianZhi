@@ -42,7 +42,8 @@
     if([self.delegate respondsToSelector:@selector(audioRecordViewDidFinishedRecord:)])
         [self.delegate audioRecordViewDidFinishedRecord:self];
     [self.recorder stopRecording];
-    [self setRecordType:RecordTypePlay];
+    if(self.duration > 0)
+        [self setRecordType:RecordTypePlay];
 }
 
 - (NSData *)tmpAmrData

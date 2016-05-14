@@ -16,6 +16,14 @@
     self.className = [dataWrapper getStringForKey:@"class_name"];
     self.total = [dataWrapper getIntegerForKey:@"total"];
     self.publish = [dataWrapper getIntegerForKey:@"publish"];
+    TNDataWrapper *studentsWrapper = [dataWrapper getDataWrapperForKey:@"students"];
+    if(studentsWrapper.count > 0) {
+        NSMutableArray *students = [NSMutableArray array];
+        for (NSInteger i = 0; i < studentsWrapper.count; i++) {
+            [students addObject:[studentsWrapper getStringForIndex:i]];
+        }
+        self.students = students;
+    }
 }
 
 @end

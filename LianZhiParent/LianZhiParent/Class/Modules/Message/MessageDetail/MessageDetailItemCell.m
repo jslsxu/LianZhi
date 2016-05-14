@@ -190,7 +190,7 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
         [publishImageItem setOriginalUrl:photoItem.originalUrl];
         [photoArray addObject:publishImageItem];
     }
-    [publishPhotoVC setForward:YES];
+    [publishPhotoVC setForward:ForwardTypeNotification];
     [publishPhotoVC setOriginalImageArray:photoArray];
     [publishPhotoVC setDelegate:ApplicationDelegate.homeVC.treeHouseVC];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:publishPhotoVC];

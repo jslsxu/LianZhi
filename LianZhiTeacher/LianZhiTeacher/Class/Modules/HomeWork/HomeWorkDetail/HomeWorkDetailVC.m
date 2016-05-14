@@ -256,6 +256,7 @@
     TargetClass *targetClass = self.targetArray[indexPath.row];
     NotificationTargetVC *notificationTargetVC = [[NotificationTargetVC alloc] init];
     [notificationTargetVC setGroupID:targetClass.classID];
+    [notificationTargetVC setSelectedArray:targetClass.students];
     [self.navigationController pushViewController:notificationTargetVC animated:YES];
 }
 

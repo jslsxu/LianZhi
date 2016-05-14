@@ -196,10 +196,53 @@
             NSString *host = hyperLink.host;
             if([scheme isEqualToString:@"http"])
             {
-                TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-                [webVC setUrl:actionUrl];
-                [webVC setTitle:appItem.appName];
-                [self.navigationController pushViewController:webVC animated:YES];
+                BOOL needSelectClass = NO;
+                NSString *paramString = hyperLink.parameterString;
+                if(paramString.length > 0) {
+                    NSArray *params = [paramString componentsSeparatedByString:@"&"];
+                    for (NSString *str in params) {
+                        NSArray *paramPair = [str componentsSeparatedByString:@"="];
+                        if(paramPair.count > 0) {
+                            if([paramPair[0] isEqualToString:@"userClassId"])
+                            {
+                                if(paramPair.count == 1)//没有值
+                                {
+                                    needSelectClass = YES;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                void (^openWebVC)(NSString *) = ^(NSString *url){
+                    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+                    [webVC setUrl:url];
+                    [webVC setTitle:appItem.appName];
+                    [self.navigationController pushViewController:webVC animated:YES];
+                };
+                
+                if(needSelectClass) {
+                    NSArray *classArray = [UserCenter sharedInstance].curChild.classes;
+                    if(classArray.count == 1) {
+                        ClassInfo *classInfo = classArray[0];
+                        NSString *classId = classInfo.classID;
+                        NSString *url = [actionUrl stringByReplacingOccurrencesOfString:@"userClassId=" withString:[NSString stringWithFormat:@"userClassId=%@",classId]];
+                        openWebVC(url);
+                    }
+                    else {
+                        ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
+                        [classSelectionVC setSelection:^(ClassInfo *classInfo) {
+                            NSString *classId = classInfo.classID;
+                            NSString *url = [actionUrl stringByReplacingOccurrencesOfString:@"userClassId=" withString:[NSString stringWithFormat:@"userClassId=%@",classId]];
+                            openWebVC(url);
+                        }];
+                        [CurrentROOTNavigationVC pushViewController:classSelectionVC animated:YES];
+                    }
+                }
+                else {
+                    openWebVC(actionUrl);
+                }
+            
             }
             else if([scheme isEqualToString:@"lianzhi"])
             {

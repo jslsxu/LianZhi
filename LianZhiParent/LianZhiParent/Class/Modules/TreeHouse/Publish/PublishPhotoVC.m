@@ -221,8 +221,7 @@
     {
         [params setValue:poiItem.poiInfo.name forKey:@"position"];
     }
-    if(self.forward)
-        [params setValue:@"1" forKey:@"forward"];
+    [params setValue:kStringFromValue(self.forward) forKey:@"forward"];
     [params setValue:kStringFromValue((NSInteger)[[NSDate date] timeIntervalSince1970]) forKey:@"onlywifi_time"];
     [item setParams:params];
     

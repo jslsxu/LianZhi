@@ -139,7 +139,8 @@
         [self onTemperatureButtonClicked];
     else
     {
-        button.selected = !button.selected;
+        BOOL selected = button.selected;
+        button.selected = !selected;
     }
 }
 

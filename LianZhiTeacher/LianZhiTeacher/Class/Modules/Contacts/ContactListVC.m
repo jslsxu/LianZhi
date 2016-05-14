@@ -42,9 +42,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onCurSchoolChanged) name:kUserInfoVCNeedRefreshNotificaiotn object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUserInfoChanged) name:kUserInfoChangedNotification object:nil];
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 45)];
-    [self setupHeaderView:headerView];
-    [self.view addSubview:headerView];
+    _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 45)];
+    [self setupHeaderView:_headerView];
+    [self.view addSubview:_headerView];
 //    if([UserCenter sharedInstance].curSchool.classNum > 0)
 //        self.title = @"新聊天";
 //    else
@@ -57,7 +57,7 @@
 //        self.title = classInfo.className;
 //    }
     
-    _classesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, headerView.bottom, self.view.width, self.view.height - headerView.height) style:UITableViewStylePlain];
+    _classesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _headerView.bottom, self.view.width, self.view.height - _headerView.height) style:UITableViewStylePlain];
     [_classesTableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [_classesTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_classesTableView setSectionIndexBackgroundColor:[UIColor clearColor]];
@@ -67,7 +67,7 @@
     [_classesTableView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:_classesTableView];
     
-    _studentsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, headerView.bottom, self.view.width, self.view.height - headerView.height) style:UITableViewStylePlain];
+    _studentsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _headerView.bottom, self.view.width, self.view.height - _headerView.height) style:UITableViewStylePlain];
     [_studentsTableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [_studentsTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_studentsTableView setSectionIndexBackgroundColor:[UIColor clearColor]];
@@ -77,7 +77,7 @@
     [_studentsTableView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:_studentsTableView];
     
-    _teacherTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, headerView.bottom, self.view.width, self.view.height - headerView.height) style:UITableViewStylePlain];
+    _teacherTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _headerView.bottom, self.view.width, self.view.height - _headerView.height) style:UITableViewStylePlain];
     [_teacherTableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [_teacherTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_teacherTableView setSectionIndexBackgroundColor:[UIColor clearColor]];
@@ -98,12 +98,16 @@
         [titleArray addObject:@"家长"];
     if(_contactModel.teachers.count > 0)
         [titleArray addObject:@"同事"];
+    if(_segCtrl) {
+        [_segCtrl removeFromSuperview];
+    }
         _segCtrl = [[UISegmentedControl alloc] initWithItems:titleArray];
         [_segCtrl setTintColor:[UIColor colorWithHexString:@"96e065"]];
         [_segCtrl setWidth:160];
         [_segCtrl setOrigin:CGPointMake((viewParent.width - _segCtrl.width) / 2, (viewParent.height - _segCtrl.height) / 2)];
         [_segCtrl addTarget:self action:@selector(onSegmentValueChanged:) forControlEvents:UIControlEventValueChanged];
         [_segCtrl setSelectedSegmentIndex:0];
+    [self setCurIndex:0];
         [viewParent addSubview:_segCtrl];
 
 }
@@ -114,7 +118,7 @@
     [_classesTableView reloadData];
     [_studentsTableView reloadData];
     [_teacherTableView reloadData];
-    [self setCurIndex:self.curIndex];
+    [self setupHeaderView:_headerView];
 }
 
 - (void)onUserInfoChanged
@@ -219,13 +223,14 @@
         }
         else
         {
+            NSInteger index = indexPath.section - 1 ;
             NSString *cellID = @"ContactItemCell";
             ContactItemCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
             if(nil == cell)
             {
                 cell = [[ContactItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
             }
-            ContactGroup *group = [_contactModel.students objectAtIndex:indexPath.section - 1];
+            ContactGroup *group = [_contactModel.students objectAtIndex:index];
             UserInfo *userInfo = [[group contacts] objectAtIndex:indexPath.row];
             [cell setUserInfo:userInfo];
             return cell;
@@ -278,7 +283,8 @@
         }
         else
         {
-            ContactGroup *group = [_contactModel.students objectAtIndex:section - 1];
+            NSInteger index = section - 1;
+            ContactGroup *group = [_contactModel.students objectAtIndex:index];
             title = group.key;
         }
     }
@@ -343,7 +349,7 @@
     }
     else if(tableView == _studentsTableView)
     {
-        if(indexPath.section == 0)
+        if(indexPath.section == 0 )
         {
             ClassInfo *classInfo = [UserCenter sharedInstance].curSchool.classes[0];
             JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
@@ -355,7 +361,8 @@
         }
         else
         {
-            ContactGroup *group = [_contactModel.students objectAtIndex:indexPath.section - 1];
+            NSInteger index =  indexPath.section - 1;
+            ContactGroup *group = [_contactModel.students objectAtIndex:index];
             StudentInfo *student = [group.contacts objectAtIndex:indexPath.row];
             ContactParentsVC *parentsVC = [[ContactParentsVC alloc] init];
             [parentsVC setStudentInfo:student];

@@ -59,8 +59,7 @@
     {
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         [params setValue:publishText forKey:@"words"];
-        if(self.forward)
-            [params setValue:@"1" forKey:@"forward"];
+        [params setValue:kStringFromValue(self.forward) forKey:@"forward"];
         POIItem *poiItem = _poiInfoView.poiItem;
         if(!poiItem.clearLocation)
         {

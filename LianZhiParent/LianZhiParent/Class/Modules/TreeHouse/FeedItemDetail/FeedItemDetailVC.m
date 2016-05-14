@@ -355,7 +355,7 @@
                 [publishImageItem setOriginalUrl:photoItem.originalUrl];
                 [photoArray addObject:publishImageItem];
             }
-            [publishPhotoVC setForward:YES];
+            [publishPhotoVC setForward:ForwardTypeClassZone];
             [publishPhotoVC setOriginalImageArray:photoArray];
             [publishPhotoVC setDelegate:ApplicationDelegate.homeVC.treeHouseVC];
             

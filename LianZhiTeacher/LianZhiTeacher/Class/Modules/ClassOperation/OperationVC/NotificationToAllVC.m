@@ -46,7 +46,7 @@ NSString * kNotificationPublishSuccessNotification = @"NotificationPublishSucces
     self.groupID = [dataWrapper getStringForKey:@"id"];
     self.groupName = [dataWrapper getStringForKey:@"name"];
     self.sentNum = [dataWrapper getIntegerForKey:@"sent_num"];
-    self.totalNum = [dataWrapper getIntegerForKey:@"students_num"];
+    self.totalNum = [dataWrapper getIntegerForKey:@"num"];
     
     TNDataWrapper *teacherWrapper =[dataWrapper getDataWrapperForKey:@"teachers"];
     if(teacherWrapper.count > 0)
@@ -54,7 +54,8 @@ NSString * kNotificationPublishSuccessNotification = @"NotificationPublishSucces
         NSMutableArray *teacherArray = [NSMutableArray array];
         for (NSInteger i = 0; i < teacherWrapper.count; i ++)
         {
-            NSString *studentID = [teacherWrapper getStringForIndex:i];
+            TNDataWrapper *teacherWrapperItem = [teacherWrapper getDataWrapperForIndex:i];
+            NSString *studentID = [teacherWrapperItem getStringForKey:@"id"];
             [teacherArray addObject:studentID];
         }
         self.sendTeachers = teacherArray;

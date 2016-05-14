@@ -19,7 +19,7 @@ typedef NS_ENUM(NSInteger, HomeworkType)
 @property (nonatomic, copy)NSString *className;
 @property (nonatomic, assign)NSInteger total;
 @property (nonatomic, assign)NSInteger publish;
-
+@property (nonatomic, strong)NSArray *students;
 @end
 
 @interface HomeWorkItem : TNModelItem
