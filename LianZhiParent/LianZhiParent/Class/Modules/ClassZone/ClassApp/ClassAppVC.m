@@ -17,6 +17,7 @@
 #import "ClassSelectionVC.h"
 #import "LZAccountVC.h"
 
+#define ClassIdKey          @"userClassId"
 @interface ClassAppVC ()
 @property (nonatomic, copy)NSString *classBadge;    //班博客
 @property (nonatomic, assign)NSInteger recordNum;       //成长记录
@@ -197,15 +198,16 @@
             if([scheme isEqualToString:@"http"])
             {
                 BOOL needSelectClass = NO;
-                NSString *paramString = hyperLink.parameterString;
+                NSString *paramString = hyperLink.query;
                 if(paramString.length > 0) {
                     NSArray *params = [paramString componentsSeparatedByString:@"&"];
                     for (NSString *str in params) {
                         NSArray *paramPair = [str componentsSeparatedByString:@"="];
                         if(paramPair.count > 0) {
-                            if([paramPair[0] isEqualToString:@"userClassId"])
+                            if([paramPair[0] isEqualToString:ClassIdKey])
                             {
-                                if(paramPair.count == 1)//没有值
+                                NSString *value = [paramPair[1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                                if(value.length == 0)//没有值
                                 {
                                     needSelectClass = YES;
                                 }
