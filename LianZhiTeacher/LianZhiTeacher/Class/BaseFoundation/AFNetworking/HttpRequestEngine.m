@@ -254,4 +254,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(HttpRequestEngine)
         self.commonParamsBlk(resultDic);
     return resultDic;
 }
+
+- (void)cancelAllTask {
+    for (AFHTTPRequestOperation *operation in _manager.operationQueue.operations) {
+        [operation cancel];
+    }
+}
 @end

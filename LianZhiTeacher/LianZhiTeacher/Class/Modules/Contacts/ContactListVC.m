@@ -218,6 +218,9 @@
             ClassInfo *classInfo = nil;
             if(classes.count > 0)
                 classInfo = classes[0];
+            if(classInfo == nil){
+                classInfo = [UserCenter sharedInstance].curSchool.managedClasses[0];
+            }
             [cell setClassInfo:classInfo];
             return cell;
         }
@@ -352,6 +355,8 @@
         if(indexPath.section == 0 )
         {
             ClassInfo *classInfo = [UserCenter sharedInstance].curSchool.classes[0];
+            if(classInfo == nil)
+                classInfo = [UserCenter sharedInstance].curSchool.managedClasses[0];
             JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
             [chatVC setTo_objid:[UserCenter sharedInstance].curSchool.schoolID];
             [chatVC setTargetID:classInfo.classID];

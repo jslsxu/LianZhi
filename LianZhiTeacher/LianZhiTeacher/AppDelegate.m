@@ -217,6 +217,7 @@ static SystemSoundID shake_sound_male_id = 0;
     self.logouted = YES;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[TaskUploadManager sharedInstance] cleanTask];
+        [[HttpRequestEngine sharedInstance] cancelAllTask];
     });
     [NotificationToAllVC clean];;
     [self.homeVC.messageVC invalidate];

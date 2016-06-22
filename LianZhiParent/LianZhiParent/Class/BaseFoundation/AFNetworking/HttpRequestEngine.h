@@ -58,4 +58,5 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(HttpRequestEngine)
                     constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block
                                   completion:(void (^)(NSURLSessionDataTask *task, TNDataWrapper *responseObject))success
                                         fail:(void (^)(NSString *errMsg))fail;
+- (void)cancelAllTask;
 @end
