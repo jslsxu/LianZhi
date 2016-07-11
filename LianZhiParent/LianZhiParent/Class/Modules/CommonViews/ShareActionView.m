@@ -7,10 +7,8 @@
 //
 
 #import "ShareActionView.h"
-
 #define kShareViewWidth             270
 #define kShareViewHeight            220
-
 @interface ShareActionView ()
 @property (nonatomic, strong)UIImage *image;
 @property (nonatomic, copy)NSString *imageUrl;
@@ -47,10 +45,8 @@
         [_bgButton setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.6]];
         [self addSubview:_bgButton];
         
-        _contentView = [[UIView alloc] initWithFrame:CGRectMake((kScreenWidth - kShareViewWidth) / 2, (self.height - kShareViewHeight) / 2, kShareViewWidth, kShareViewHeight)];
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, self.height, kScreenWidth, kShareViewHeight)];
         [_contentView setBackgroundColor:[UIColor whiteColor]];
-        [_contentView.layer setCornerRadius:10];
-        [_contentView.layer setMasksToBounds:YES];
         [self addSubview:_contentView];
         
         NSInteger innerMargin = 10;
@@ -81,11 +77,11 @@
         
         UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [cancelButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
-        [cancelButton setFrame:CGRectMake(hMargin, _contentView.height - vMargin - 36, _contentView.width - hMargin * 2, 36)];
-        [cancelButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"f13e64"] size:cancelButton.size cornerRadius:18] forState:UIControlStateNormal];
+        [cancelButton setFrame:CGRectMake(hMargin, _contentView.height - 15 - 36, _contentView.width - hMargin * 2, 36)];
+        [cancelButton setBackgroundImage:[UIImage imageWithColor:kCommonParentTintColor size:cancelButton.size cornerRadius:4] forState:UIControlStateNormal];
         [cancelButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
         [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
+        [cancelButton setTitle:@"转身离去" forState:UIControlStateNormal];
         [_contentView addSubview:cancelButton];
     }
     return self;
@@ -121,24 +117,26 @@
         pboard.string = self.url;
         [ProgressHUD showHintText:@"已复制到剪切板"];
     }
-
     [self dismiss];
 }
 
 - (void)show
 {
     UIWindow *keywindow = [UIApplication sharedApplication].keyWindow;
-    self.alpha = 0.f;
+    [_contentView setY:keywindow.height];
+    _bgButton.alpha = 0.f;
     [keywindow addSubview:self];
     [UIView animateWithDuration:0.3 animations:^{
-        self.alpha = 1.f;
+        _contentView.y = keywindow.height - _contentView.height;
+        _bgButton.alpha = 1.f;
     }];
 }
 
 - (void)dismiss
 {
     [UIView animateWithDuration:0.3 animations:^{
-        self.alpha = 0.f;
+        _contentView.y = kScreenHeight;
+        _bgButton.alpha = 0.f;
     }completion:^(BOOL finished) {
         [self removeFromSuperview];
     }];

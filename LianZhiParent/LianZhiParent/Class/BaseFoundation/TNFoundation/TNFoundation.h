@@ -17,6 +17,7 @@
 #import "TNDataWrapper.h"
 #import "TNListModel.h"
 #import "TNModelItem.h"
+#import "TNBaseObject.h"
 #import "TNBaseCollectionViewController.h"
 #import "TNBaseTableViewController.h"
 #import "TNBaseViewController.h"

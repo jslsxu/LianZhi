@@ -211,6 +211,9 @@ static NSArray *tabDatas = nil;
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
     [backItem setTitle:@"返回"];
     self.navigationItem.backBarButtonItem = backItem;
+    
+    QuickImagePickerView *imagePicker = [[QuickImagePickerView alloc] initWithMaxCount:9];
+    [self.view addSubview:imagePicker];
 }
 
 - (void)onTabButtonClicked:(UIButton *)button

@@ -7,6 +7,7 @@
 //
 
 #import "TNBaseTableViewController.h"
+#import "NHFileManager.h"
 #import <objc/message.h>
 
 #define CELL_HEIGHT_SEL     @"cellHeight:cellWidth:"
@@ -25,8 +26,8 @@
     self = [super init];
     if(self)
     {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-        [self setAutomaticallyAdjustsScrollViewInsets:NO];
+        if(IS_IOS7_LATER)
+            self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     return self;
 }
@@ -36,12 +37,13 @@
     [super viewDidLoad];
     
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:[self tableViewStyle]];
-    [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;;
     [_tableView setBackgroundColor:[UIColor clearColor]];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [self.view addSubview:_tableView];
+    
 }
 
 - (UITableViewStyle)tableViewStyle
@@ -64,10 +66,9 @@
 {
     if([self supportCache])//支持缓存，先出缓存中读取数据
     {
-        id responseObject = [NSDictionary dictionaryWithContentsOfFile:[self cacheFilePath]];
-        if(responseObject)
-        {
-            [_tableViewModel parseData:[TNDataWrapper dataWrapperWithObject:responseObject] type:REQUEST_REFRESH];
+        NSData *data = [NSData dataWithContentsOfFile:[self cacheFilePath]];
+        if(data.length > 0){
+            [_tableViewModel loadCache:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
             [self.tableView reloadData];
             if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
                 [self TNBaseTableViewControllerRequestSuccess];
@@ -122,6 +123,11 @@
 
 - (void)requestData:(REQUEST_TYPE)requestType
 {
+    if(self.tableViewModel.modelItemArray.count == 0)
+    {
+        [self loadCache];
+        
+    }
     if(!_isLoading)
     {
         HttpRequestTask *task = [self makeRequestTaskWithType:requestType];
@@ -142,7 +148,7 @@
                 if(requestType == REQUEST_GETMORE)
                     [_getMoreCell startLoading];
             }
-
+            
         }
         else
         {
@@ -160,10 +166,13 @@
     [_tableViewModel parseData:responseData type:operation.requestType];
     if(self.shouldShowEmptyHint)
         [self showEmptyLabel:_tableViewModel.modelItemArray.count == 0];
-    if([self supportCache] && operation.requestType == REQUEST_REFRESH)
+    if([self supportCache])
     {
+        NSData *modelData = [NSKeyedArchiver archivedDataWithRootObject:_tableViewModel];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [responseData.data writeToFile:[self cacheFilePath] atomically:YES];
+            BOOL success = [modelData writeToFile:[self cacheFilePath] atomically:YES];
+            if(success)
+                NSLog(@"save success");
         });
     }
     if([self needReload])
@@ -204,7 +213,7 @@
     return YES;
 }
 
-#pragma mark - 
+#pragma mark -
 #pragma mark UITableViewDelegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -254,7 +263,7 @@
     TNModelItem *item = [_tableViewModel itemForIndexPath:indexPath];
     [cell setData:item];
     return cell;
-
+    
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -325,12 +334,10 @@
     NSString *cacheName = [self cacheFileName];
     if(cacheName)
     {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        NSString *docDir = [paths objectAtIndex:0];
+        NSString *docDir = [NHFileManager localCachePath];
         NSString *commonCacheRoot = [HttpRequestEngine sharedInstance].commonCacheRoot;
-        NSString *filePath = docDir;
-        filePath = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@",commonCacheRoot,cacheName]];
-        return filePath;
+        docDir = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@",commonCacheRoot,cacheName]];
+        return docDir;
     }
     return nil;
 }

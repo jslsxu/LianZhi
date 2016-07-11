@@ -7,6 +7,7 @@
 //
 
 #import "TNBaseTableViewController.h"
+#import "NHFileManager.h"
 #import <objc/message.h>
 
 #define CELL_HEIGHT_SEL     @"cellHeight:cellWidth:"
@@ -65,11 +66,9 @@
 {
     if([self supportCache])//支持缓存，先出缓存中读取数据
     {
-        id responseObject = [NSDictionary dictionaryWithContentsOfFile:[self cacheFilePath]];
-        if(responseObject)
-        {
-            NSLog(@"load success");
-            [_tableViewModel parseData:[TNDataWrapper dataWrapperWithObject:responseObject] type:REQUEST_REFRESH];
+        NSData *data = [NSData dataWithContentsOfFile:[self cacheFileName]];
+        if(data.length > 0){
+            [_tableViewModel loadCache:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
             [self.tableView reloadData];
             if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
                 [self TNBaseTableViewControllerRequestSuccess];
@@ -162,10 +161,11 @@
     [_tableViewModel parseData:responseData type:operation.requestType];
     if(self.shouldShowEmptyHint)
         [self showEmptyLabel:_tableViewModel.modelItemArray.count == 0];
-     if([self supportCache] && operation.requestType == REQUEST_REFRESH)
+     if([self supportCache])
     {
+        NSData *modelData = [NSKeyedArchiver archivedDataWithRootObject:_tableViewModel];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            BOOL success = [responseData.data writeToFile:[self cacheFilePath] atomically:YES];
+            BOOL success = [modelData writeToFile:[self cacheFilePath] atomically:YES];
             if(success)
                 NSLog(@"save success");
         });
@@ -329,12 +329,10 @@
     NSString *cacheName = [self cacheFileName];
     if(cacheName)
     {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        NSString *docDir = [paths objectAtIndex:0];
+        NSString *docDir = [NHFileManager localCachePath];
         NSString *commonCacheRoot = [HttpRequestEngine sharedInstance].commonCacheRoot;
-        NSString *filePath = docDir;
-        filePath = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@",commonCacheRoot,cacheName]];
-        return filePath;
+        docDir = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@",commonCacheRoot,cacheName]];
+        return docDir;
     }
     return nil;
 }

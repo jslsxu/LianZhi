@@ -1,0 +1,35 @@
+PODS:
+  - CTAssetsPickerController (3.3.1):
+    - PureLayout (~> 3.0.0)
+  - FCFileManager (1.0.18)
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
+  - KRVideoPlayer (1.0.1)
+  - MJRefresh (3.1.9)
+  - PureLayout (3.0.2)
+  - SSZipArchive (1.2)
+  - YYKit (1.0.7):
+    - YYKit/no-arc (= 1.0.7)
+  - YYKit/no-arc (1.0.7)
+
+DEPENDENCIES:
+  - CTAssetsPickerController
+  - FCFileManager
+  - FMDB
+  - KRVideoPlayer
+  - MJRefresh
+  - SSZipArchive
+  - YYKit
+
+SPEC CHECKSUMS:
+  CTAssetsPickerController: b1d1d50ab87cf6b8b13531de5f4530482e7e53ed
+  FCFileManager: 3d13576da1f709d37460bd7669cdf07b9d6d8bc3
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  KRVideoPlayer: 08918da1b99cae35fd4c15b2ec2b49358d4c985f
+  MJRefresh: c5f1f1653e5a1b932c90f78074f2bc86f3f9bd5e
+  PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
+  SSZipArchive: 251093c65f98d6ea282c50bc404bfa631d9fd721
+  YYKit: 843d1b26e20b82c695790c9a89907eaa1e99907f
+
+COCOAPODS: 0.39.0

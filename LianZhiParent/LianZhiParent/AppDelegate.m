@@ -168,11 +168,6 @@ static SystemSoundID shake_sound_male_id = 0;
         [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
         [application registerForRemoteNotifications];
     }
-    else {
-        [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge
-                                                         | UIRemoteNotificationTypeSound
-                                                         | UIRemoteNotificationTypeAlert)];
-    }
 }
 
 - (void)handleNotification:(NSDictionary *)userInfo
@@ -343,13 +338,7 @@ static SystemSoundID shake_sound_male_id = 0;
         {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 NSString *originalPath = [[NSBundle mainBundle] pathForResource:@"Guide" ofType:@"zip"];
-                //解压缩
-                ZipArchive *za = [[ZipArchive alloc] init];
-                if ([za UnzipOpenFile:originalPath])
-                {
-                    BOOL ret = [za UnzipFileTo: path overWrite: YES];
-                    NSLog(@"unzip %d",ret);
-                }
+                [SSZipArchive unzipFileAtPath:originalPath toDestination:path];
                 
             });
         }

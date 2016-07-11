@@ -13,6 +13,7 @@
 #import "ContactListVC.h"
 #import "HomeWorkVC.h"
 #import "StudentAttendanceVC.h"
+#import "NotificationSendVC.h"
 @interface MessageVC ()<ActionPopViewDelegate>
 @property (nonatomic, strong)NSTimer *timer;
 @end
@@ -301,7 +302,9 @@
 {
     if(index == 0)
     {
-        [self.navigationController pushViewController:[NotificationToAllVC sharedInstance] animated:YES];
+//        [self.navigationController pushViewController:[NotificationToAllVC sharedInstance] animated:YES];
+        NotificationSendVC *sendVC = [[NotificationSendVC alloc] init];
+        [self.navigationController pushViewController:sendVC animated:YES];
     }
     else
     {

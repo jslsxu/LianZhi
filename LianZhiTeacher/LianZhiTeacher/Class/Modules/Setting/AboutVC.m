@@ -8,7 +8,7 @@
 
 #import "AboutVC.h"
 
-@interface AboutVC ()<TTTAttributedLabelDelegate>
+@interface AboutVC ()
 
 @end
 
@@ -93,12 +93,6 @@
 //    [self.view addSubview:checkButton];
 }
 
-- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url
-{
-    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-    [webVC setUrl:url.absoluteString];
-    [self.navigationController pushViewController:webVC animated:YES];
-}
 
 - (void)onCheckButtonClicked
 {

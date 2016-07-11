@@ -8,8 +8,9 @@
 
 #import "TNDataWrapper.h"
 #import "AFHTTPRequestOperation+Associative.h"
+#import "TNBaseObject.h"
 #import "TNModelItem.h"
-@interface TNListModel : NSObject
+@interface TNListModel : TNBaseObject
 @property (nonatomic, copy)NSString *nextPage;
 @property (nonatomic, strong)NSMutableArray* modelItemArray;
 
@@ -22,4 +23,6 @@
 
 - (BOOL)hasMoreData;
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type;
+
+- (void)loadCache:(TNListModel *)cacheModel;
 @end

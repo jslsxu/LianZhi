@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TNDataWrapper.h"
-
-@interface TNModelItem : NSObject
+#import "TNBaseObject.h"
+@interface TNModelItem : TNBaseObject
 - (void)parseData:(TNDataWrapper *)dataWrapper;
 @end

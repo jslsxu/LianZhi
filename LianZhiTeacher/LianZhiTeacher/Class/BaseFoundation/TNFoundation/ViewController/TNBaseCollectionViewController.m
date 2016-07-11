@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseCollectionViewController.h"
-
+#import "NHFileManager.h"
 #import <objc/message.h>
 
 #define CELL_HEIGHT_SEL     @"cellHeight:cellWidth:"
@@ -103,11 +103,11 @@
 {
     __weak typeof(self) wself = self;
     if(self.supportPullUp && [_collectionViewModel hasMoreData])
-        [_collectionView addFooterWithCallback:^{
+        [_collectionView setMj_footer:[MJRefreshFooter footerWithRefreshingBlock:^{
             [wself requestData:REQUEST_GETMORE];
-        }];
+        }]];
     else
-        [_collectionView removeFooter];
+        [_collectionView setMj_footer:nil];
     [_collectionView reloadData];
 }
 
@@ -117,11 +117,12 @@
     {
         if([self supportCache])//支持缓存，先出缓存中读取数据
         {
-            id responseObject = [NSDictionary dictionaryWithContentsOfFile:[self cacheFilePath]];
-            if(responseObject)
-            {
-                [_collectionViewModel parseData:[TNDataWrapper dataWrapperWithObject:responseObject] type:REQUEST_REFRESH];
-                [self reloadData];
+            NSData *data = [NSData dataWithContentsOfFile:[self cacheFilePath]];
+            if(data.length > 0){
+                [_collectionViewModel loadCache:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
+                [self.collectionView reloadData];
+                if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
+                    [self TNBaseTableViewControllerRequestSuccess];
             }
         }
 
@@ -134,8 +135,10 @@
             _isLoading = YES;
             __weak typeof(self) wself = self;
             AFHTTPRequestOperation *operation = [[HttpRequestEngine sharedInstance] makeRequestFromUrl:task.requestUrl method:task.requestMethod type:requestType withParams:task.params observer:task.observer completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                [self endRefresh:requestType];
                 [wself onRequestSuccess:operation responseData:responseObject];
             } fail:^(NSString *errMsg) {
+                [self endRefresh:requestType];
                 [wself onRequestFail:errMsg];
             }];
             if(operation)
@@ -148,9 +151,17 @@
         else
         {
             _isLoading = NO;
-            [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.collectionView];
-            [_collectionView footerEndRefreshing];
+            [self endRefresh:requestType];
         }
+    }
+}
+
+- (void)endRefresh:(REQUEST_TYPE)requestType{
+    if(requestType == REQUEST_GETMORE){
+        [_collectionView.mj_footer endRefreshing];
+    }
+    else{
+        [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.collectionView];
     }
 }
 
@@ -161,17 +172,18 @@
 
 - (void)onRequestSuccess:(AFHTTPRequestOperation *)operation responseData:(TNDataWrapper *)responseData
 {
-    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.collectionView];
-    [_collectionView footerEndRefreshing];
     [_collectionViewModel parseData:responseData type:operation.requestType];
     if(self.shouldShowEmptyHint)
         [self showEmptyLabel:_collectionViewModel.modelItemArray.count == 0];
     if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
         [self TNBaseTableViewControllerRequestSuccess];
-    if([self supportCache] && operation.requestType == REQUEST_REFRESH)
+    if([self supportCache])
     {
+        NSData *modelData = [NSKeyedArchiver archivedDataWithRootObject:_collectionViewModel];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [responseData.data writeToFile:[self cacheFilePath] atomically:YES];
+            BOOL success = [modelData writeToFile:[self cacheFilePath] atomically:YES];
+            if(success)
+                NSLog(@"save success");
         });
     }
     [self reloadData];
@@ -181,8 +193,6 @@
 - (void)onRequestFail:(NSString *)errMsg
 {
     [ProgressHUD showHintText:errMsg];
-    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.collectionView];
-    [_collectionView footerEndRefreshing];
     _isLoading = NO;
     if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestFailedWithError:)])
         [self TNBaseTableViewControllerRequestFailedWithError:errMsg];
@@ -262,12 +272,10 @@
     NSString *cacheName = [self cacheFileName];
     if(cacheName)
     {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        NSString *docDir = [paths objectAtIndex:0];
+        NSString *docDir = [NHFileManager localCachePath];
         NSString *commonCacheRoot = [HttpRequestEngine sharedInstance].commonCacheRoot;
-        NSString *filePath = docDir;
-        filePath = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@",commonCacheRoot,cacheName]];
-        return filePath;
+        docDir = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@",commonCacheRoot,cacheName]];
+        return docDir;
     }
     return nil;
 }
