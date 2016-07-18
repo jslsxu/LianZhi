@@ -61,7 +61,6 @@
 #import "UIAlertView+Blocks.h"
 #import "DAContextMenuTableViewController.h"
 
-#import "CTAssetsPickerController.h"
 #import "QuickImagePickerView.h"
 #import "TNFoundation.h"
 #import "MSCircleImageView.h"

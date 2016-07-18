@@ -355,6 +355,7 @@
 		8D867C2A1D2A6C530020A21C /* VoiceConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C221D2A6C530020A21C /* VoiceConverter.mm */; };
 		8D867C2D1D2A6C9C0020A21C /* NSString+UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C2C1D2A6C9C0020A21C /* NSString+UUID.m */; };
 		8D867C301D2A6CD90020A21C /* TNBaseObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C2F1D2A6CD90020A21C /* TNBaseObject.m */; };
+		8D867D231D3D232C0020A21C /* LZKVStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D221D3D232C0020A21C /* LZKVStorage.m */; };
 		8DA785991CA4E70B00A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785981CA4E70B00A384F0 /* NSString+UrlParams.m */; };
 /* End PBXBuildFile section */
 
@@ -1003,6 +1004,8 @@
 		8D867C2C1D2A6C9C0020A21C /* NSString+UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UUID.m"; sourceTree = "<group>"; };
 		8D867C2E1D2A6CD90020A21C /* TNBaseObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBaseObject.h; sourceTree = "<group>"; };
 		8D867C2F1D2A6CD90020A21C /* TNBaseObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNBaseObject.m; sourceTree = "<group>"; };
+		8D867D211D3D232C0020A21C /* LZKVStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZKVStorage.h; sourceTree = "<group>"; };
+		8D867D221D3D232C0020A21C /* LZKVStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZKVStorage.m; sourceTree = "<group>"; };
 		8DA785971CA4E70B00A384F0 /* NSString+UrlParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlParams.h"; sourceTree = "<group>"; };
 		8DA785981CA4E70B00A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
 		F48620718382C8CAB78BD7B3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1233,6 +1236,8 @@
 				37C88FF01A889A05008E44DB /* PersonalSetting.m */,
 				37C890201A895342008E44DB /* StatusManager.h */,
 				37C890211A895342008E44DB /* StatusManager.m */,
+				8D867D211D3D232C0020A21C /* LZKVStorage.h */,
+				8D867D221D3D232C0020A21C /* LZKVStorage.m */,
 			);
 			path = UserCenter;
 			sourceTree = "<group>";
@@ -2995,6 +3000,7 @@
 				37CA18871AB70BCC00B49B55 /* PhotoPickerVC.m in Sources */,
 				37B52A1A1A73C24B005F80F2 /* LogConfig.m in Sources */,
 				37B7044F1A4410CD0025D684 /* PasswordModificationVC.m in Sources */,
+				8D867D231D3D232C0020A21C /* LZKVStorage.m in Sources */,
 				37BC708B1C116EC900F8B79B /* CalendarView.m in Sources */,
 				3793F7C11B7CFFD900501F77 /* DAOverlayView.m in Sources */,
 				3720C1461A41E19D000357A5 /* SettingsVC.m in Sources */,

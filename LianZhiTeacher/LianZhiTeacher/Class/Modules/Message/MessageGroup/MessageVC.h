@@ -9,8 +9,18 @@
 #import "TNBaseTableViewController.h"
 #import "MessageGroupItemCell.h"
 #import "ClassZoneVC.h"
+@interface SwitchSchoolButton : UIButton
+{
+    NumIndicator*   _redDot;
+}
+@property (nonatomic, assign)BOOL hasNew;
+
+@end
+
 @interface MessageVC : DAContextMenuTableViewController<EGORefreshTableHeaderDelegate>
 {
+    SwitchSchoolButton *        _switchButton;
+    UISegmentedControl*         _segmentControl;
     UILabel*                    _emptyLabel;
     UIButton*                   _noticeButton;
     BOOL                        _isLoading;

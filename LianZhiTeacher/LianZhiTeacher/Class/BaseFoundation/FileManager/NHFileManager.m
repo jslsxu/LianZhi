@@ -26,7 +26,7 @@ static NSString *kLocalStorePath = @"LocalStore";
 
 + (NSString *)localCachePath
 {
-    NSString *cahcePath = [[self documentPath] stringByAppendingPathComponent:kLocalCachePath];
+    NSString *cahcePath = [[FCFileManager pathForCachesDirectory] stringByAppendingPathComponent:kLocalCachePath];
     if(![[NSFileManager defaultManager] fileExistsAtPath:cahcePath]){
         [[NSFileManager defaultManager] createDirectoryAtPath:cahcePath withIntermediateDirectories:YES attributes:nil error:NULL];
     }

@@ -14,17 +14,8 @@
 #import "MineVC.h"
 #import "LZTabBarButton.h"
 
-@interface SwitchSchoolButton : UIButton
-{
-    NumIndicator*   _redDot;
-}
-@property (nonatomic, assign)BOOL hasNew;
-
-@end
-
 @interface HomeViewController : UITabBarController
 {
-    SwitchSchoolButton *_switchButton;
     UIView*             _tabBarCover;
     NSArray *           _tabDatas;
     NSMutableArray *    _tabbarButtons;

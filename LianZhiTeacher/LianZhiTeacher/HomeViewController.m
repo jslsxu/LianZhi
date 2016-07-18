@@ -7,31 +7,6 @@
 //
 
 #import "HomeViewController.h"
-#import "ExchangeSchoolVC.h"
-
-@implementation SwitchSchoolButton
-
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    if(_redDot == nil)
-    {
-        _redDot = [[NumIndicator alloc] init];
-        [_redDot setIndicator:@""];
-        [_redDot setHidden:YES];
-        [self addSubview:_redDot];
-    }
-    [_redDot setCenter:CGPointMake(self.width - 7, 5)];
-}
-
-- (void)setHasNew:(BOOL)hasNew
-{
-    _hasNew = hasNew;
-    [_redDot setHidden:!_hasNew];
-}
-
-@end
 
 static NSArray *tabDatas = nil;
 
@@ -52,6 +27,7 @@ static NSArray *tabDatas = nil;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
+        self.hidesBottomBarWhenPushed = YES;
         self.edgesForExtendedLayout = UIRectEdgeNone;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNewMsgNumChanged) name:kNewMsgNumNotification object:nil];
@@ -68,11 +44,14 @@ static NSArray *tabDatas = nil;
         {
             NSString *className = subVCArray[i];
             TNBaseViewController *vc = [[NSClassFromString(className) alloc] init];
-            [subVCs addObject:vc];
+            vc.hidesBottomBarWhenPushed = NO;
+            if(i == 0)
+                self.messageVC = (MessageVC *)vc;
+            TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:vc];
+            [subVCs addObject:navVC];
         }
         [self setViewControllers:subVCs];
         [self initialViewControllers];
-        self.messageVC = subVCs[0];
     }
     return self;
 }
@@ -96,10 +75,9 @@ static NSArray *tabDatas = nil;
         if(![notice.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID])
             hasNew = YES;
     }
-    [_switchButton setHasNew:hasNew];
     
     LZTabBarButton *discoveryButon = _tabbarButtons[3];
-    DiscoveryVC *discoveryVC = [self.viewControllers objectAtIndex:3];
+    DiscoveryVC *discoveryVC = [self discoveryVC];
     [discoveryButon setBadgeValue:discoveryVC.hasNew ? @"" : nil];
     
     LZTabBarButton *appTabButton = _tabbarButtons[2];
@@ -159,7 +137,13 @@ static NSArray *tabDatas = nil;
 
 - (MessageVC *)messageVC
 {
-    return self.viewControllers[0];
+    TNBaseNavigationController *firstNav = self.viewControllers[0];
+    return [firstNav viewControllers][0];
+}
+
+- (DiscoveryVC *)discoveryVC {
+    TNBaseNavigationController *firstNav = self.viewControllers[3];
+    return [firstNav viewControllers][0];
 }
 - (void)initialViewControllers
 {
@@ -199,21 +183,8 @@ static NSArray *tabDatas = nil;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.navigationController setNavigationBarHidden:YES];
     [self updateTitleView];
-    if([UserCenter sharedInstance].userData.schools.count > 1)
-    {
-         _switchButton = [[SwitchSchoolButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
-        [_switchButton setImage:[UIImage imageNamed:@"SwitchSchool"] forState:UIControlStateNormal];
-        [_switchButton addTarget:self action:@selector(switchSchool) forControlEvents:UIControlEventTouchUpInside];
-        
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_switchButton];
-    }
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
-    [backItem setTitle:@"返回"];
-    self.navigationItem.backBarButtonItem = backItem;
-    
-    QuickImagePickerView *imagePicker = [[QuickImagePickerView alloc] initWithMaxCount:9];
-    [self.view addSubview:imagePicker];
 }
 
 - (void)onTabButtonClicked:(UIButton *)button
@@ -239,13 +210,5 @@ static NSArray *tabDatas = nil;
     }
 }
 
-
-#pragma mark Actions
-
-- (void)switchSchool
-{
-    ExchangeSchoolVC *exchangeSchoolVC = [[ExchangeSchoolVC alloc] init];
-    [self.navigationController pushViewController:exchangeSchoolVC animated:YES];
-}
 
 @end

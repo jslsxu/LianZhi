@@ -14,6 +14,32 @@
 #import "HomeWorkVC.h"
 #import "StudentAttendanceVC.h"
 #import "NotificationSendVC.h"
+#import "ExchangeSchoolVC.h"
+#import "NHFileManager.h"
+@implementation SwitchSchoolButton
+
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    if(_redDot == nil)
+    {
+        _redDot = [[NumIndicator alloc] init];
+        [_redDot setIndicator:@""];
+        [_redDot setHidden:YES];
+        [self addSubview:_redDot];
+    }
+    [_redDot setCenter:CGPointMake(self.width - 7, 5)];
+}
+
+- (void)setHasNew:(BOOL)hasNew
+{
+    _hasNew = hasNew;
+    [_redDot setHidden:!_hasNew];
+}
+
+@end
+
 @interface MessageVC ()<ActionPopViewDelegate>
 @property (nonatomic, strong)NSTimer *timer;
 @end
@@ -35,20 +61,6 @@
         [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
         [self.timer fire];
     }
-    
-    LZTabBarButton *addButton = [LZTabBarButton buttonWithType:UIButtonTypeCustom];
-    [addButton setImage:[UIImage imageNamed:@"ActionAdd"] forState:UIControlStateNormal];
-    [addButton addTarget:self action:@selector(onAddActionClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [addButton setSize:CGSizeMake(40, 40)];
-    
-    NSString *ActionAddKey = @"ActionAddKey";
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL actionAddNew = [userDefaults boolForKey:ActionAddKey];
-    if(!actionAddNew)
-    {
-        [addButton setBadgeValue:@""];
-    }
-    [ApplicationDelegate homeVC].navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -66,15 +78,45 @@
     }
 }
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
-    [backItem setTitle:@"返回"];
-    self.navigationItem.backBarButtonItem = backItem;
     [self setEdgesForExtendedLayout:UIRectEdgeNone];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
+    
+    //navigation
+    if([UserCenter sharedInstance].userData.schools.count > 1)
+    {
+        _switchButton = [[SwitchSchoolButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+        [_switchButton setImage:[UIImage imageNamed:@"SwitchSchool"] forState:UIControlStateNormal];
+        [_switchButton addTarget:self action:@selector(switchSchool) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_switchButton];
+    }
+    
+    _segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"通知", @"消息"]];
+    [_segmentControl setWidth:80 forSegmentAtIndex:0];
+    [_segmentControl setWidth:80 forSegmentAtIndex:1];
+    [_segmentControl setSelectedSegmentIndex:0];
+    [self.navigationItem setTitleView:_segmentControl];
+    
+    LZTabBarButton *addButton = [LZTabBarButton buttonWithType:UIButtonTypeCustom];
+    [addButton setImage:[UIImage imageNamed:@"ActionAdd"] forState:UIControlStateNormal];
+    [addButton addTarget:self action:@selector(onAddActionClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [addButton setSize:CGSizeMake(40, 40)];
+    
+    NSString *ActionAddKey = @"ActionAddKey";
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL actionAddNew = [userDefaults boolForKey:ActionAddKey];
+    if(!actionAddNew)
+    {
+        [addButton setBadgeValue:@""];
+    }
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
+    
+    
     
     _refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.height, self.tableView.width, self.tableView.height)];
     _refreshHeaderView.delegate = self;
@@ -126,6 +168,12 @@
 
 - (void)onCurSchoolChanged
 {
+    BOOL hasNew = NO;
+    for (NoticeItem *notice in [UserCenter sharedInstance].statusManager.notice) {
+        if(![notice.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID])
+            hasNew = YES;
+    }
+    [_switchButton setHasNew:hasNew];
     [self requestData:REQUEST_REFRESH];
 }
 
@@ -195,6 +243,12 @@
     [ApplicationDelegate.homeVC selectAtIndex:1];
 //    ContactListVC *contactListVC = [[ContactListVC alloc] init];
 //    [CurrentROOTNavigationVC pushViewController:contactListVC animated:YES];
+}
+
+- (void)switchSchool
+{
+    ExchangeSchoolVC *exchangeSchoolVC = [[ExchangeSchoolVC alloc] init];
+    [self.navigationController pushViewController:exchangeSchoolVC animated:YES];
 }
 #pragma mark - UITableViewDelegate
 
@@ -365,10 +419,10 @@
 
 - (NSString *)cacheFileName
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *docDir = [paths objectAtIndex:0];
-    NSString *filePath = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@",[HttpRequestEngine sharedInstance].commonCacheRoot,NSStringFromClass([self class])]];
-    return filePath;
+    NSString *docDir = [NHFileManager localCachePath];
+    NSString *commonCacheRoot = [HttpRequestEngine sharedInstance].commonCacheRoot;
+    docDir = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@",commonCacheRoot,NSStringFromClass([self class])]];
+    return docDir;
 }
 
 #pragma mark * DAContextMenuCell delegate

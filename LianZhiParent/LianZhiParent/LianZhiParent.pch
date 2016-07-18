@@ -24,5 +24,6 @@
 #import "LoginVC.h"
 #import "JSMessagesViewController.h"
 #import "ShareActionView.h"
+#import "LZKVStorage.h"
 #endif
 #endif

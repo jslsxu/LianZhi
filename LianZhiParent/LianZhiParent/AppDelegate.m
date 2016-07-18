@@ -13,6 +13,7 @@
 #import "MessageDetailVC.h"
 #import "PasswordModificationVC.h"
 #import "BaseInfoModifyVC.h"
+#import <Bugtags/Bugtags.h>
 static SystemSoundID shake_sound_male_id = 0;
 
 #define kBaseInfoModifyKey                  @"BaseInfoModifyKey"
@@ -20,6 +21,14 @@ static SystemSoundID shake_sound_male_id = 0;
 @end
 
 @implementation AppDelegate
+
+- (BOOL)isInhouse{
+    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    if([bundleIdentifier isEqualToString:@"cn.edugate.inhouse.EdugateAppParent"])
+        return YES;
+    return NO;
+}
+
 - (NSString *)curAutoNaviKey
 {
     NSString *bundleID = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
@@ -30,10 +39,22 @@ static SystemSoundID shake_sound_male_id = 0;
     return nil;
 }
 
+- (void)cleanOldData{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+        if([userdefaults objectForKey:@"userData"]){
+            [userdefaults removeObjectForKey:@"userData"];
+            [userdefaults synchronize];
+        }
+    });
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [self setupCommonAppearance];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setBackgroundColor:kCommonBackgroundColor];
+    [self cleanOldData];
+    [Bugtags startWithAppKey:kBugtagsKey invocationEvent:[self isInhouse] ? BTGInvocationEventBubble : BTGInvocationEventNone];
     [[SVShareManager sharedInstance] initialize];
     [self setupCommonHandler];
     [self registerThirdParty];
@@ -84,11 +105,11 @@ static SystemSoundID shake_sound_male_id = 0;
 - (void)setupCommonAppearance
 {
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+//    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    [[UINavigationBar appearance] setBarTintColor:kCommonParentTintColor];
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont boldSystemFontOfSize:18]}];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearance] setTintColor:[UIColor colorWithHexString:@"252525"]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"252525"],NSFontAttributeName:[UIFont systemFontOfSize:18]}];
 }
 
 - (void)registerThirdParty

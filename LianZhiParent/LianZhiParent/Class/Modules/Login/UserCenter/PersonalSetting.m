@@ -54,10 +54,7 @@ NSString *const kPersonalSettingKey = @"PersonalSettingKey";
 
 - (void)save
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];;
-    NSData *userData = [NSKeyedArchiver archivedDataWithRootObject:self];
-    [userDefaults setObject:userData forKey:kPersonalSettingKey];
-    [userDefaults synchronize];
+   [[LZKVStorage userKVStorage] saveStorageValue:self forKey:kPersonalSettingKey];
 }
 
 @end

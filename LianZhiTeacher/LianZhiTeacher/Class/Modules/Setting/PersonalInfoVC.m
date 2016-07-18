@@ -63,6 +63,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
+        self.hidesBottomBarWhenPushed = YES;
         UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
         [backItem setTitle:@"返回"];
         self.navigationItem.backBarButtonItem = backItem;

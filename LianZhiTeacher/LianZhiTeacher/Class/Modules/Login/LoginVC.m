@@ -144,11 +144,11 @@
         NSString *username = [_userNameField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         NSString *password = [_passwordField text];
         
-        NSString *serviceName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"];
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setValue:username forKey:kLoginUserNameKey];
-        [userDefaults synchronize];
-        [SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:serviceName updateExisting:YES error:nil];
+//        NSString *serviceName = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"];
+//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//        [userDefaults setValue:username forKey:kLoginUserNameKey];
+//        [userDefaults synchronize];
+//        [SFHFKeychainUtils storeUsername:username andPassword:password forServiceName:serviceName updateExisting:YES error:nil];
         //登录接口
         MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在登录" toView:self.view];
         NSMutableDictionary *params = [[NSMutableDictionary alloc] init];

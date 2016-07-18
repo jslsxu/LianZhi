@@ -8,6 +8,7 @@
 
 #import "TNBaseViewController.h"
 #import "UIImage+GIF.h"
+#import <FDFullscreenPopGesture/UINavigationController+FDFullscreenPopGesture.h>
 
 @interface TNBaseViewController ()
 
@@ -17,12 +18,17 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    return UIStatusBarStyleDefault;
 }
 
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
+}
+
+- (void)setInteractivePopDisabled:(BOOL)interactivePopDisabled{
+    _interactivePopDisabled = interactivePopDisabled;
+    self.fd_interactivePopDisabled = _interactivePopDisabled;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

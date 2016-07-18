@@ -66,7 +66,7 @@
 {
     if([self supportCache])//支持缓存，先出缓存中读取数据
     {
-        NSData *data = [NSData dataWithContentsOfFile:[self cacheFileName]];
+        NSData *data = [NSData dataWithContentsOfFile:[self cacheFilePath]];
         if(data.length > 0){
             [_tableViewModel loadCache:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
             [self.tableView reloadData];

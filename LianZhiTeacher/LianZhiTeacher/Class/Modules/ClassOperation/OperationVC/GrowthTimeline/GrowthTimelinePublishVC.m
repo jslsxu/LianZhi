@@ -16,6 +16,7 @@
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
     [backItem setTitle:@"返回"];
     self.navigationItem.backBarButtonItem = backItem;
+    self.hidesBottomBarWhenPushed = YES;
     return self;
 }
 - (void)viewDidLoad

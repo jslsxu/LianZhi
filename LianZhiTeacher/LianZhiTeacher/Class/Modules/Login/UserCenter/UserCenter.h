@@ -15,6 +15,7 @@ extern NSString* const kUserCenterChangedSchoolNotification;
 extern NSString* const kUserCenterSchoolSchemeChangedNotification;      //学校布局需要改变
 extern NSString* const kUserInfoChangedNotification;
 extern NSString *const kPersonalSettingChangedNotification;
+extern NSString* const kUserDataStorageKey;
 @interface UserData : TNModelItem<NSCoding>
 @property (nonatomic, strong)UserInfo *userInfo;
 @property (nonatomic, copy)NSString *accessToken;

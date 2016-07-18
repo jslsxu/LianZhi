@@ -55,4 +55,5 @@
 #define kClassZoneShareUrl                  @"http://m.edugate.cn/share/teacher/index.html"
 #define kTreeHouseShareUrl                  @"http://m.5tree.cn/share/parent/index.html"  //正式环境
 
+#define kBugtagsKey                         @"642ba56fcae0559e4e33f717e3bbd980"             //bugtags Key
 #endif

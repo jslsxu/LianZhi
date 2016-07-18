@@ -1,32 +1,41 @@
 PODS:
+  - Bugtags (1.2.9)
   - CTAssetsPickerController (2.9.5)
   - FCFileManager (1.0.18)
+  - FDFullscreenPopGesture (1.1)
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
   - KRVideoPlayer (1.0.1)
-  - MJRefresh (3.1.9)
-  - SSZipArchive (1.2)
+  - MJRefresh (3.1.10)
+  - SCRecorder (2.7.0)
+  - SSZipArchive (1.3)
   - YYKit (1.0.7):
     - YYKit/no-arc (= 1.0.7)
   - YYKit/no-arc (1.0.7)
 
 DEPENDENCIES:
+  - Bugtags
   - CTAssetsPickerController
   - FCFileManager
+  - FDFullscreenPopGesture
   - FMDB
   - KRVideoPlayer
   - MJRefresh
+  - SCRecorder
   - SSZipArchive
   - YYKit
 
 SPEC CHECKSUMS:
+  Bugtags: 255bb1c47db1ee692dcb2509887dac8d87d9e67f
   CTAssetsPickerController: b413fece2194ae3dbf22fbc544cf6f2a6d516a4d
   FCFileManager: 3d13576da1f709d37460bd7669cdf07b9d6d8bc3
+  FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   KRVideoPlayer: 08918da1b99cae35fd4c15b2ec2b49358d4c985f
-  MJRefresh: c5f1f1653e5a1b932c90f78074f2bc86f3f9bd5e
-  SSZipArchive: 251093c65f98d6ea282c50bc404bfa631d9fd721
+  MJRefresh: bb72948c985914b0b5cecac573a2c69a8915fb02
+  SCRecorder: bbb521dbc222908876ec9cd9156bbc8a893bed44
+  SSZipArchive: 5525196ee195b473dcc4a0d4d2cba98bfa3eb1c1
   YYKit: 843d1b26e20b82c695790c9a89907eaa1e99907f
 
 COCOAPODS: 0.39.0

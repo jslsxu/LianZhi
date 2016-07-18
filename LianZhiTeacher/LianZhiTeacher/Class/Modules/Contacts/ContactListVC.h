@@ -19,7 +19,6 @@
 
 @interface ContactListVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
-    UIView*             _headerView;
     UISegmentedControl *_segCtrl;
     UITableView*    _classesTableView;
     UITableView*    _studentsTableView;

@@ -12,8 +12,7 @@ NSString *const kUserCenterChangedSchoolNotification = @"UserCenterChangeSchoolN
 NSString *const kUserCenterSchoolSchemeChangedNotification = @"UserCenterSchoolSchemeChangedNotification";
 NSString *const kUserInfoChangedNotification = @"UserInfoChangedNotification";
 NSString *const kPersonalSettingChangedNotification = @"PersonalSettingChangedNotification";
-#define kUserCenterCacheFile            @"lianzhiTeacherUser"
-
+NSString *const kUserDataStorageKey = @"UserData";
 @implementation UserData
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
@@ -93,21 +92,20 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
     self = [super init];
     if(self)
     {
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        NSData *userData = [userDefaults objectForKey:@"userData"];
-        if(userData)
-        {
-            self.userData = [NSKeyedUnarchiver unarchiveObjectWithData:userData];
-        }
-        
-        NSData *personalSettingData = [userDefaults objectForKey:kPersonalSettingKey];
-        if(personalSettingData)
-            self.personalSetting = [NSKeyedUnarchiver unarchiveObjectWithData:personalSettingData];
-        if(!self.personalSetting)
-            self.personalSetting = [[PersonalSetting alloc] init];
+        self.userData = [[LZKVStorage applicationKVStorage] storageValueForKey:kUserDataStorageKey];
         self.statusManager = [[StatusManager alloc] init];
     }
     return self;
+}
+
+- (PersonalSetting *)personalSetting{
+    if(!_personalSetting){
+        _personalSetting = [[LZKVStorage userKVStorage] storageValueForKey:kPersonalSettingKey];
+    }
+    if(!_personalSetting){
+        _personalSetting = [[PersonalSetting alloc] init];
+    }
+    return _personalSetting;
 }
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
@@ -162,10 +160,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
 
 - (void)save
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];;
-    NSData *userData = [NSKeyedArchiver archivedDataWithRootObject:self.userData];
-    [userDefaults setObject:userData forKey:@"userData"];
-    [userDefaults synchronize];
+    [[LZKVStorage applicationKVStorage] saveStorageValue:self.userData forKey:kUserDataStorageKey];
 }
 
 
@@ -189,9 +184,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
 {
     self.userData = nil;
     self.statusManager = [[StatusManager alloc] init];
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];;
-    [userDefaults removeObjectForKey:@"userData"];
-    [userDefaults synchronize];
+    [[LZKVStorage applicationKVStorage] saveStorageValue:nil forKey:kUserDataStorageKey];
 }
 
 - (void)requestNoDisturbingTime

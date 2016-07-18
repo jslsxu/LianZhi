@@ -398,6 +398,7 @@
 		8D867C931D2F97080020A21C /* DNUnAuthorizedTipsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C7F1D2F97080020A21C /* DNUnAuthorizedTipsView.m */; };
 		8D867C941D2F97080020A21C /* JKPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C811D2F97080020A21C /* JKPromptView.m */; };
 		8D867C961D2F9A2A0020A21C /* DNImagePicker.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D867C951D2F9A2A0020A21C /* DNImagePicker.strings */; };
+		8D867D201D3CE2CB0020A21C /* LZKVStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D1F1D3CE2CB0020A21C /* LZKVStorage.m */; };
 		8DA785961CA4E35900A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */; };
 /* End PBXBuildFile section */
 
@@ -1136,6 +1137,8 @@
 		8D867C801D2F97080020A21C /* JKPromptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKPromptView.h; sourceTree = "<group>"; };
 		8D867C811D2F97080020A21C /* JKPromptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKPromptView.m; sourceTree = "<group>"; };
 		8D867C951D2F9A2A0020A21C /* DNImagePicker.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = DNImagePicker.strings; sourceTree = "<group>"; };
+		8D867D1E1D3CE2CB0020A21C /* LZKVStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZKVStorage.h; sourceTree = "<group>"; };
+		8D867D1F1D3CE2CB0020A21C /* LZKVStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZKVStorage.m; sourceTree = "<group>"; };
 		8DA785941CA4E35900A384F0 /* NSString+UrlParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlParams.h"; sourceTree = "<group>"; };
 		8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
 		BFB7BE1F02D8CB37989349C3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -2036,6 +2039,8 @@
 				37C890181A89091A008E44DB /* PersonalSetting.m */,
 				37F206E41BDCB41E006466F4 /* CityManager.h */,
 				37F206E51BDCB41E006466F4 /* CityManager.m */,
+				8D867D1E1D3CE2CB0020A21C /* LZKVStorage.h */,
+				8D867D1F1D3CE2CB0020A21C /* LZKVStorage.m */,
 			);
 			path = UserCenter;
 			sourceTree = "<group>";
@@ -3189,6 +3194,7 @@
 				3793FAD51B7CFFF000501F77 /* UIImage+GIF.m in Sources */,
 				372774EB1A5D94EC00464461 /* GrowthTimelinePublishCell.m in Sources */,
 				3793FAD71B7CFFF000501F77 /* UIImage+WebP.m in Sources */,
+				8D867D201D3CE2CB0020A21C /* LZKVStorage.m in Sources */,
 				37D6EE371BC90C62000994A2 /* DestinationVC.m in Sources */,
 				3728A7391B9D376300310457 /* HPTextViewInternal.m in Sources */,
 				37C6B4441BF2EFC50001D54F /* SVShareManager.m in Sources */,
@@ -3487,7 +3493,7 @@
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/LianZhiTeacher/LianZhiTeacher.pch";
 				INFOPLIST_FILE = LianZhiTeacher/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3521,7 +3527,7 @@
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/LianZhiTeacher/LianZhiTeacher.pch";
 				INFOPLIST_FILE = LianZhiTeacher/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

@@ -17,9 +17,10 @@
 #include "BaseInfoModifyVC.h"
 #import "RelatedInfoVC.h"
 #import "NotificationToAllVC.h"
+#import <Bugtags/Bugtags.h>
 static SystemSoundID shake_sound_male_id = 0;
 @interface AppDelegate ()<WelComeViewDelegate>
-
+@property (nonatomic, strong)TNBaseNavigationController *loginNav;
 @end
 
 @implementation AppDelegate
@@ -33,10 +34,30 @@ static SystemSoundID shake_sound_male_id = 0;
         return kAutoNaviApiInhouseKey;
 }
 
+- (BOOL)isInhouse{
+    NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+    if([bundleIdentifier isEqualToString:@"cn.edugate.inhouse.EdugateAppTeacher"])
+        return YES;
+    return NO;
+}
+
+- (void)cleanOldData{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSUserDefaults *userdefaults = [NSUserDefaults standardUserDefaults];
+        if([userdefaults objectForKey:@"userData"]){
+            [userdefaults removeObjectForKey:@"userData"];
+            [userdefaults synchronize];
+        }
+    });
+}
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setBackgroundColor:[UIColor whiteColor]];
+
+    [self cleanOldData];
+    [Bugtags startWithAppKey:kBugtagsKey invocationEvent:[self isInhouse] ?  BTGInvocationEventBubble : BTGInvocationEventNone];
     [[SVShareManager sharedInstance] initialize];
     [[TaskUploadManager sharedInstance] start];
     [MAMapServices sharedServices].apiKey = [self curAutoNaviKey];
@@ -54,8 +75,7 @@ static SystemSoundID shake_sound_male_id = 0;
         if([[UserCenter sharedInstance] hasLogin])
         {
             HomeViewController *homeVC = [[HomeViewController alloc] init];
-            self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:homeVC];
-            [self.window setRootViewController:self.rootNavigation];
+            [self.window setRootViewController:homeVC];
             self.homeVC = homeVC;
         }
         else
@@ -67,8 +87,9 @@ static SystemSoundID shake_sound_male_id = 0;
                     [self loginSuccess];
                 }
             }];
-            self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:loginVC];
-            [self.window setRootViewController:self.rootNavigation];
+            
+            self.loginNav = [[TNBaseNavigationController alloc] initWithRootViewController:loginVC];
+            [self.window setRootViewController:self.loginNav];
         }
     }
     
@@ -81,6 +102,15 @@ static SystemSoundID shake_sound_male_id = 0;
     [self expendOperationGuide];
     [self checkNewVersion];
     return YES;
+}
+
+- (TNBaseNavigationController *)rootNavigation{
+    if(_loginNav){
+        return _loginNav;
+    }
+    else{
+        return self.homeVC.selectedViewController;
+    }
 }
 
 - (void)setupCommonHandler
@@ -141,12 +171,12 @@ static SystemSoundID shake_sound_male_id = 0;
 - (void)setupCommonAppearance
 {
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+//    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    [[UINavigationBar appearance] setBarTintColor:kCommonTeacherTintColor];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
 //    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:CGSizeMake(10, 10)] forBarMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont boldSystemFontOfSize:18]}];
+    [[UINavigationBar appearance] setTintColor:[UIColor colorWithHexString:@"252525"]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"252525"],NSFontAttributeName:[UIFont systemFontOfSize:18]}];
 }
 
 - (void)showNewEditionPreview
@@ -180,11 +210,11 @@ static SystemSoundID shake_sound_male_id = 0;
 //    [self showNewEditionPreview];
     
     void (^callback)() = ^(){
+        self.loginNav = nil;
         self.logouted = NO;
          [[HttpRequestEngine sharedInstance] setCommonCacheRoot:[NSString stringWithFormat:@"school_id_%@",[UserCenter sharedInstance].curSchool.schoolID]];
         HomeViewController *homeVC = [[HomeViewController alloc] init];
         self.homeVC = homeVC;
-        self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:homeVC];
         if([UserCenter sharedInstance].userData.firstLogin)
         {
             RelatedInfoVC *relatedInfoVC = [[RelatedInfoVC alloc] init];
@@ -195,7 +225,7 @@ static SystemSoundID shake_sound_male_id = 0;
             BaseInfoModifyVC *baseInfoVC = [[BaseInfoModifyVC alloc] init];
             [self.rootNavigation pushViewController:baseInfoVC animated:NO];
         }
-        [self.window setRootViewController:self.rootNavigation];
+        [self.window setRootViewController:self.homeVC];
 //        [self showNewEditionPreview];
     };
     
@@ -203,8 +233,8 @@ static SystemSoundID shake_sound_male_id = 0;
     {
         PasswordModificationVC *passWordModificationVC = [[PasswordModificationVC alloc] init];
         [passWordModificationVC setCallback:callback];
-        self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:passWordModificationVC];
-        [self.window setRootViewController:self.rootNavigation];
+        self.loginNav = [[TNBaseNavigationController alloc] initWithRootViewController:passWordModificationVC];
+        [self.window setRootViewController:self.loginNav];
     }
     else
     {
@@ -228,8 +258,8 @@ static SystemSoundID shake_sound_male_id = 0;
             [self loginSuccess];
         }
     }];
-    self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:loginVC];
-    [self.window setRootViewController:self.rootNavigation];
+    self.loginNav = [[TNBaseNavigationController alloc] initWithRootViewController:loginVC];
+    [self.window setRootViewController:self.loginNav];
     [[UserCenter sharedInstance] logout];
 }
 

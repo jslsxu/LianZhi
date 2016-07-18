@@ -42,9 +42,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(onCurSchoolChanged) name:kUserInfoVCNeedRefreshNotificaiotn object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUserInfoChanged) name:kUserInfoChangedNotification object:nil];
-    _headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 45)];
-    [self setupHeaderView:_headerView];
-    [self.view addSubview:_headerView];
+    [self setupNavTitle];
 //    if([UserCenter sharedInstance].curSchool.classNum > 0)
 //        self.title = @"新聊天";
 //    else
@@ -57,7 +55,7 @@
 //        self.title = classInfo.className;
 //    }
     
-    _classesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _headerView.bottom, self.view.width, self.view.height - _headerView.height) style:UITableViewStylePlain];
+    _classesTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height) style:UITableViewStylePlain];
     [_classesTableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [_classesTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_classesTableView setSectionIndexBackgroundColor:[UIColor clearColor]];
@@ -67,7 +65,7 @@
     [_classesTableView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:_classesTableView];
     
-    _studentsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _headerView.bottom, self.view.width, self.view.height - _headerView.height) style:UITableViewStylePlain];
+    _studentsTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height ) style:UITableViewStylePlain];
     [_studentsTableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [_studentsTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_studentsTableView setSectionIndexBackgroundColor:[UIColor clearColor]];
@@ -77,7 +75,7 @@
     [_studentsTableView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:_studentsTableView];
     
-    _teacherTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _headerView.bottom, self.view.width, self.view.height - _headerView.height) style:UITableViewStylePlain];
+    _teacherTableView = [[UITableView alloc] initWithFrame:CGRectMake(0,0, self.view.width, self.view.height) style:UITableViewStylePlain];
     [_teacherTableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [_teacherTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [_teacherTableView setSectionIndexBackgroundColor:[UIColor clearColor]];
@@ -90,9 +88,8 @@
     [self setCurIndex:0];
 }
 
-- (void)setupHeaderView:(UIView *)viewParent
+- (void)setupNavTitle
 {
-    [viewParent setBackgroundColor:[UIColor colorWithHexString:@"0fabc1"]];
     NSMutableArray *titleArray = [NSMutableArray array];
     if(_contactModel.classes.count > 0 || _contactModel.students.count > 0)
         [titleArray addObject:@"家长"];
@@ -101,15 +98,13 @@
     if(_segCtrl) {
         [_segCtrl removeFromSuperview];
     }
-        _segCtrl = [[UISegmentedControl alloc] initWithItems:titleArray];
-        [_segCtrl setTintColor:[UIColor colorWithHexString:@"96e065"]];
-        [_segCtrl setWidth:160];
-        [_segCtrl setOrigin:CGPointMake((viewParent.width - _segCtrl.width) / 2, (viewParent.height - _segCtrl.height) / 2)];
-        [_segCtrl addTarget:self action:@selector(onSegmentValueChanged:) forControlEvents:UIControlEventValueChanged];
-        [_segCtrl setSelectedSegmentIndex:0];
+    _segCtrl = [[UISegmentedControl alloc] initWithItems:titleArray];
+//    [_segCtrl setTintColor:[UIColor colorWithHexString:@"96e065"]];
+    [_segCtrl setWidth:160];
+    [_segCtrl addTarget:self action:@selector(onSegmentValueChanged:) forControlEvents:UIControlEventValueChanged];
+    [_segCtrl setSelectedSegmentIndex:0];
     [self setCurIndex:0];
-        [viewParent addSubview:_segCtrl];
-
+    [self.navigationItem setTitleView:_segCtrl];
 }
 
 - (void)onCurSchoolChanged
@@ -118,7 +113,7 @@
     [_classesTableView reloadData];
     [_studentsTableView reloadData];
     [_teacherTableView reloadData];
-    [self setupHeaderView:_headerView];
+    [self setupNavTitle];
 }
 
 - (void)onUserInfoChanged

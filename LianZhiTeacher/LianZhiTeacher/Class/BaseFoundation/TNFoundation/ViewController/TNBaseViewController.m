@@ -8,7 +8,7 @@
 
 #import "TNBaseViewController.h"
 #import "UIImage+GIF.h"
-
+#import <FDFullscreenPopGesture/UINavigationController+FDFullscreenPopGesture.h>
 @interface TNBaseViewController ()
 
 @end
@@ -17,7 +17,7 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    return UIStatusBarStyleDefault;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -25,10 +25,16 @@
     return NO;
 }
 
+- (void)setInteractivePopDisabled:(BOOL)interactivePopDisabled{
+    _interactivePopDisabled = interactivePopDisabled;
+    self.fd_interactivePopDisabled = _interactivePopDisabled;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     if(self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])
     {
+        self.hidesBottomBarWhenPushed = YES;
         self.hideNavigationBar = NO;
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
@@ -44,9 +50,11 @@
     {
         [_loadingView startAnimating];
     }
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
-    [backItem setTitle:@"返回"];
-    self.navigationItem.backBarButtonItem = backItem;
+
+    UINavigationController *nav = self.navigationController;
+    if(nav.viewControllers.count > 1){
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"NavBack"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+    }
 }
 
 - (void)viewDidLoad
@@ -73,6 +81,10 @@
         [self setupSubviews];
         _hasSetup = YES;
     }
+}
+
+- (void)back{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)setupSubviews

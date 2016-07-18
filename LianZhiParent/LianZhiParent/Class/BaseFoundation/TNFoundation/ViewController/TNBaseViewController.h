@@ -26,6 +26,7 @@
 }
 @property (nonatomic, assign)BOOL hideNavigationBar;
 @property (nonatomic, assign)BOOL shouldShowEmptyHint;
+@property (nonatomic, assign)BOOL interactivePopDisabled;
 - (void)setupSubviews;//ios7 viewDidLoad时不确定真是frame，需要在addsubview时重新计算
 - (void)startLoading;
 - (void)endLoading;
