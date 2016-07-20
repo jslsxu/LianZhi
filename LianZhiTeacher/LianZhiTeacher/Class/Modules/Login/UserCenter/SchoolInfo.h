@@ -14,7 +14,7 @@ typedef CF_ENUM(NSInteger, GenderType) {
     GenderSecret,
 };
 
-@interface SchoolInfo : TNModelItem<NSCoding>
+@interface SchoolInfo : TNModelItem
 @property (nonatomic, copy)NSString *schoolID;
 @property (nonatomic, copy)NSString *schoolName;
 @property (nonatomic, copy)NSString *logoUrl;

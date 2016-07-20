@@ -8,10 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import "NotificationRecordView.h"
+#import "QuickImagePickerView.h"
+
+#define kActionAnimationDuration        0.3
+#define kActionBarHeight                50
+#define kActionContentHeight            160
+typedef NS_ENUM(NSInteger, ActionType){
+    ActionTypeNone,
+    ActionTypeRecordAudio,
+    ActionTypePhoto,
+    ActionTypeCamera
+};
 
 @class NotificationInputView;
 @protocol NotificationInputDelegate <NSObject>
-
+- (void)notificationInputDidWillChangeHeight:(CGFloat)height;
 - (void)notificationInputPhoto:(NotificationInputView *)inputView;
 - (void)notificationInputVideo:(NotificationInputView *)inputView;
 
@@ -20,7 +31,11 @@
 @interface NotificationInputView : UIView
 {
     UIView*                 _actionView;
+    UIButton*               _sendButton;
     NotificationRecordView* _recordView;
+    QuickImagePickerView*   _photoView;
+    NSMutableArray*         _actionButtonArray;
 }
+@property (nonatomic, assign)ActionType actionType;
 @property (nonatomic, weak)id<NotificationInputDelegate> delegate;
 @end

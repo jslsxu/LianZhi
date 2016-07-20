@@ -8,7 +8,7 @@
 
 #import "ExchangeSchoolVC.h"
 
-#define kSchoolCellHeight                       60
+#define kSchoolCellHeight                       70
 
 @implementation SchoolInfoCell
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -18,7 +18,7 @@
     {
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        _logoView = [[LogoView alloc] initWithFrame:CGRectMake(15, (kSchoolCellHeight - 36) / 2, 36, 36)];
+        _logoView = [[LogoView alloc] initWithFrame:CGRectMake(12, (kSchoolCellHeight - 50) / 2, 50, 50)];
         [self addSubview:_logoView];
         
         _redDot = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 6, 6)];
@@ -34,15 +34,15 @@
         
         _statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_statusLabel setTextColor:kCommonTeacherTintColor];
-        [_statusLabel setFont:[UIFont systemFontOfSize:14]];
+        [_statusLabel setFont:[UIFont systemFontOfSize:15]];
         [_statusLabel setText:@"当前"];
         [_statusLabel sizeToFit];
         [_statusLabel setFrame:CGRectMake(self.width - 20 - _statusLabel.width, (kSchoolCellHeight - _statusLabel.height) / 2, _statusLabel.width, _statusLabel.height)];
         [self addSubview:_statusLabel];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_logoView.right + 10, 0, _statusLabel.x - 10 - (_logoView.right + 10), kSchoolCellHeight)];
-        [_nameLabel setFont:[UIFont systemFontOfSize:14]];
-        [_nameLabel setTextColor:[UIColor grayColor]];
+        [_nameLabel setFont:[UIFont systemFontOfSize:15]];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
         [self addSubview:_nameLabel];
         
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, kSchoolCellHeight - kLineHeight, self.width, kLineHeight)];

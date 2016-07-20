@@ -366,7 +366,6 @@
 		8D867BD21D2506EF0020A21C /* NSString+UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BD11D2506EF0020A21C /* NSString+UUID.m */; };
 		8D867BD61D2508AC0020A21C /* NHFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BD51D2508AC0020A21C /* NHFileManager.m */; };
 		8D867BDD1D251E710020A21C /* NotificationSendVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BDC1D251E710020A21C /* NotificationSendVC.m */; };
-		8D867BE01D251E910020A21C /* NotificationSendTargetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BDF1D251E910020A21C /* NotificationSendTargetView.m */; };
 		8D867BE31D252E010020A21C /* NotificationInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BE21D252E010020A21C /* NotificationInputView.m */; };
 		8D867BE61D252F210020A21C /* NotificationRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BE51D252F210020A21C /* NotificationRecordView.m */; };
 		8D867BE91D2614A90020A21C /* CircleProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BE81D2614A90020A21C /* CircleProgressView.m */; };
@@ -399,6 +398,9 @@
 		8D867C941D2F97080020A21C /* JKPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C811D2F97080020A21C /* JKPromptView.m */; };
 		8D867C961D2F9A2A0020A21C /* DNImagePicker.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D867C951D2F9A2A0020A21C /* DNImagePicker.strings */; };
 		8D867D201D3CE2CB0020A21C /* LZKVStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D1F1D3CE2CB0020A21C /* LZKVStorage.m */; };
+		8D867D271D3DD4A90020A21C /* NotificationTargetContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D261D3DD4A90020A21C /* NotificationTargetContentView.m */; };
+		8D867D2A1D3DD5C90020A21C /* NotificationSendTargetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D291D3DD5C90020A21C /* NotificationSendTargetView.m */; };
+		8D867D2D1D3DFE020020A21C /* NotificationSendChoiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D2C1D3DFE020020A21C /* NotificationSendChoiceView.m */; };
 		8DA785961CA4E35900A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */; };
 /* End PBXBuildFile section */
 
@@ -1074,8 +1076,6 @@
 		8D867BD51D2508AC0020A21C /* NHFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHFileManager.m; sourceTree = "<group>"; };
 		8D867BDB1D251E710020A21C /* NotificationSendVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSendVC.h; sourceTree = "<group>"; };
 		8D867BDC1D251E710020A21C /* NotificationSendVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSendVC.m; sourceTree = "<group>"; };
-		8D867BDE1D251E910020A21C /* NotificationSendTargetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSendTargetView.h; sourceTree = "<group>"; };
-		8D867BDF1D251E910020A21C /* NotificationSendTargetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSendTargetView.m; sourceTree = "<group>"; };
 		8D867BE11D252E010020A21C /* NotificationInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationInputView.h; sourceTree = "<group>"; };
 		8D867BE21D252E010020A21C /* NotificationInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationInputView.m; sourceTree = "<group>"; };
 		8D867BE41D252F210020A21C /* NotificationRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationRecordView.h; sourceTree = "<group>"; };
@@ -1139,6 +1139,12 @@
 		8D867C951D2F9A2A0020A21C /* DNImagePicker.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = DNImagePicker.strings; sourceTree = "<group>"; };
 		8D867D1E1D3CE2CB0020A21C /* LZKVStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZKVStorage.h; sourceTree = "<group>"; };
 		8D867D1F1D3CE2CB0020A21C /* LZKVStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZKVStorage.m; sourceTree = "<group>"; };
+		8D867D251D3DD4A90020A21C /* NotificationTargetContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationTargetContentView.h; sourceTree = "<group>"; };
+		8D867D261D3DD4A90020A21C /* NotificationTargetContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationTargetContentView.m; sourceTree = "<group>"; };
+		8D867D281D3DD5C90020A21C /* NotificationSendTargetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSendTargetView.h; sourceTree = "<group>"; };
+		8D867D291D3DD5C90020A21C /* NotificationSendTargetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSendTargetView.m; sourceTree = "<group>"; };
+		8D867D2B1D3DFE020020A21C /* NotificationSendChoiceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSendChoiceView.h; sourceTree = "<group>"; };
+		8D867D2C1D3DFE020020A21C /* NotificationSendChoiceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSendChoiceView.m; sourceTree = "<group>"; };
 		8DA785941CA4E35900A384F0 /* NSString+UrlParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlParams.h"; sourceTree = "<group>"; };
 		8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
 		BFB7BE1F02D8CB37989349C3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -2804,10 +2810,9 @@
 		8D867BDA1D251E560020A21C /* NotificationSend */ = {
 			isa = PBXGroup;
 			children = (
+				8D867D241D3DD4960020A21C /* NotificationSendViews */,
 				8D867BDB1D251E710020A21C /* NotificationSendVC.h */,
 				8D867BDC1D251E710020A21C /* NotificationSendVC.m */,
-				8D867BDE1D251E910020A21C /* NotificationSendTargetView.h */,
-				8D867BDF1D251E910020A21C /* NotificationSendTargetView.m */,
 				8D867BE11D252E010020A21C /* NotificationInputView.h */,
 				8D867BE21D252E010020A21C /* NotificationInputView.m */,
 				8D867BE41D252F210020A21C /* NotificationRecordView.h */,
@@ -2906,6 +2911,19 @@
 				8D867C811D2F97080020A21C /* JKPromptView.m */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		8D867D241D3DD4960020A21C /* NotificationSendViews */ = {
+			isa = PBXGroup;
+			children = (
+				8D867D251D3DD4A90020A21C /* NotificationTargetContentView.h */,
+				8D867D261D3DD4A90020A21C /* NotificationTargetContentView.m */,
+				8D867D281D3DD5C90020A21C /* NotificationSendTargetView.h */,
+				8D867D291D3DD5C90020A21C /* NotificationSendTargetView.m */,
+				8D867D2B1D3DFE020020A21C /* NotificationSendChoiceView.h */,
+				8D867D2C1D3DFE020020A21C /* NotificationSendChoiceView.m */,
+			);
+			path = NotificationSendViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3158,7 +3176,6 @@
 				37C88F7C1A83BE57008E44DB /* RelatedInfoVC.m in Sources */,
 				379947E91A66B430008E4B4F /* PhotoFlowCell.m in Sources */,
 				37FD6E321BB4817900C83AB4 /* NewMessageVC.m in Sources */,
-				8D867BE01D251E910020A21C /* NotificationSendTargetView.m in Sources */,
 				375819C81C22AA29002C9B85 /* NotificationHistoryTargetSelectVC.m in Sources */,
 				3793FA841B7CFFF000501F77 /* AudioRecordView.m in Sources */,
 				3793FA9D1B7CFFF000501F77 /* PhotoItem.m in Sources */,
@@ -3199,6 +3216,7 @@
 				3728A7391B9D376300310457 /* HPTextViewInternal.m in Sources */,
 				37C6B4441BF2EFC50001D54F /* SVShareManager.m in Sources */,
 				37C8901C1A890DF9008E44DB /* ClassZoneManager.m in Sources */,
+				8D867D2D1D3DFE020020A21C /* NotificationSendChoiceView.m in Sources */,
 				8DA785961CA4E35900A384F0 /* NSString+UrlParams.m in Sources */,
 				3793FA9B1B7CFFF000501F77 /* WelcomeView.m in Sources */,
 				37D6EEF91BCBA96D000994A2 /* StudentAttendanceVC.m in Sources */,
@@ -3228,6 +3246,7 @@
 				37FD6E381BB6F53800C83AB4 /* RegisterAuthVC.m in Sources */,
 				3728A7481B9D37AF00310457 /* NSDate+Utils.m in Sources */,
 				3705FF851BA16C1700F0C6F6 /* AudioMessageSendVC.m in Sources */,
+				8D867D271D3DD4A90020A21C /* NotificationTargetContentView.m in Sources */,
 				372774E51A5D94A900464461 /* GrowthTimelinePublishVC.m in Sources */,
 				3793FABA1B7CFFF000501F77 /* MLAmrPlayer.m in Sources */,
 				37DEE4FD1A57C2C0009A8771 /* ContactItemCell.m in Sources */,
@@ -3388,6 +3407,7 @@
 				37D6EEF01BCBA96D000994A2 /* MyAttendanceItem.m in Sources */,
 				3793FAA11B7CFFF000501F77 /* NSObject+Print.m in Sources */,
 				37B485041A65853C00C412D8 /* PasswordModificationVC.m in Sources */,
+				8D867D2A1D3DD5C90020A21C /* NotificationSendTargetView.m in Sources */,
 				3793FAEE1B7CFFF000501F77 /* TNBaseTableViewController.m in Sources */,
 				373B9D1A1BEF8B6000FE89CA /* NotificationTargetVC.m in Sources */,
 				37B485051A65853C00C412D8 /* PhoneLoginVC.m in Sources */,

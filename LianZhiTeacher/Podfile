@@ -8,4 +8,5 @@ pod "MJRefresh"
 pod 'SCRecorder'
 pod "FDFullscreenPopGesture"
 pod "Bugtags"
+pod 'Masonry'
 

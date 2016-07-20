@@ -7,10 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "XMNPhotoManager.h"
+#import "XMNPhotoStickLayout.h"
 @interface XMNPhotoPickerCell : UICollectionViewCell
-@property (nonatomic, strong, nullable)UIImageView *imageView;
-
+{
+    UIImageView*    _imageView;
+    UIButton*       _stateButton;
+}
+@property (nonatomic, nonnull, readonly)UIButton *stateButton;
+@property (nonatomic, nonnull, strong)XMNAssetModel *asset;
+@property (nonatomic, nonnull, copy)void (^selectButtonClickedBlk)();
 @end
 
 @interface QuickImagePickerView : UIView<UICollectionViewDelegate, UICollectionViewDataSource>

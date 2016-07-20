@@ -60,7 +60,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+//    [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     _loadingView = [[LoadingView alloc] initWithFrame:CGRectMake(0, 0, 80, 80)];
     [_loadingView setUserInteractionEnabled:NO];
     [_loadingView setCenter:CGPointMake(self.view.width / 2, self.view.height / 2 - 30)];

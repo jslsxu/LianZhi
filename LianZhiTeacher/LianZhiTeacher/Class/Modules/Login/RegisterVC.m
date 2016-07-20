@@ -23,7 +23,10 @@
     {
         self.hideNavigationBar = NO;
         self.feildArray = [NSMutableArray array];
-        self.cityManager = [[CityManager alloc] init];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            self.cityManager = [[CityManager alloc] init];
+        });
+    
     }
     return self;
 }

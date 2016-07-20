@@ -102,19 +102,21 @@
     [_segmentControl setSelectedSegmentIndex:0];
     [self.navigationItem setTitleView:_segmentControl];
     
-    LZTabBarButton *addButton = [LZTabBarButton buttonWithType:UIButtonTypeCustom];
-    [addButton setImage:[UIImage imageNamed:@"ActionAdd"] forState:UIControlStateNormal];
-    [addButton addTarget:self action:@selector(onAddActionClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [addButton setSize:CGSizeMake(40, 40)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ActionAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddActionClicked:)];
     
-    NSString *ActionAddKey = @"ActionAddKey";
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL actionAddNew = [userDefaults boolForKey:ActionAddKey];
-    if(!actionAddNew)
-    {
-        [addButton setBadgeValue:@""];
-    }
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
+//    LZTabBarButton *addButton = [LZTabBarButton buttonWithType:UIButtonTypeCustom];
+//    [addButton setImage:[UIImage imageNamed:@"ActionAdd"] forState:UIControlStateNormal];
+//    [addButton addTarget:self action:@selector(onAddActionClicked:) forControlEvents:UIControlEventTouchUpInside];
+//    [addButton setSize:CGSizeMake(40, 40)];
+//    
+//    NSString *ActionAddKey = @"ActionAddKey";
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    BOOL actionAddNew = [userDefaults boolForKey:ActionAddKey];
+//    if(!actionAddNew)
+//    {
+//        [addButton setBadgeValue:@""];
+//    }
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
     
     
     
@@ -142,22 +144,23 @@
 
 - (void)onAddActionClicked:(LZTabBarButton *)button
 {
-    NSString *ActionAddKey = @"ActionAddKey";
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setBool:YES forKey:ActionAddKey];
-    [userDefaults synchronize];
-    [button setBadgeValue:nil];
+//    NSString *ActionAddKey = @"ActionAddKey";
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    [userDefaults setBool:YES forKey:ActionAddKey];
+//    [userDefaults synchronize];
+//    [button setBadgeValue:nil];
 
-    if([UserCenter sharedInstance].curSchool.classes.count + [UserCenter sharedInstance].curSchool.managedClasses.count > 0)
-    {
+#warning todo
+//    if([UserCenter sharedInstance].curSchool.classes.count + [UserCenter sharedInstance].curSchool.managedClasses.count > 0)
+//    {
         ActionPopView *actionView = [[ActionPopView alloc] initWithImageArray:@[@"PopActionNotification",@"PopActionNewChat"] titleArray:@[@"发通知",@"新聊天"]];
         [actionView setDelegate:self];
         [actionView show];
-    }
-    else
-    {
-        [self onNewChat];
-    }
+//    }
+//    else
+//    {
+//        [self onNewChat];
+//    }
 }
 
 - (void)onPublishPhotoFinished:(NSNotification *)notification

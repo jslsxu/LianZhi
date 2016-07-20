@@ -8,6 +8,7 @@ PODS:
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
   - KRVideoPlayer (1.0.1)
+  - Masonry (1.0.1)
   - MJRefresh (3.1.9)
   - PureLayout (3.0.2)
   - SSZipArchive (1.2)
@@ -22,6 +23,7 @@ DEPENDENCIES:
   - FDFullscreenPopGesture
   - FMDB
   - KRVideoPlayer
+  - Masonry
   - MJRefresh
   - SSZipArchive
   - YYKit
@@ -33,6 +35,7 @@ SPEC CHECKSUMS:
   FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   KRVideoPlayer: 08918da1b99cae35fd4c15b2ec2b49358d4c985f
+  Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   MJRefresh: c5f1f1653e5a1b932c90f78074f2bc86f3f9bd5e
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   SSZipArchive: 251093c65f98d6ea282c50bc404bfa631d9fd721
