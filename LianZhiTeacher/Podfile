@@ -9,4 +9,4 @@ pod 'SCRecorder'
 pod "FDFullscreenPopGesture"
 pod "Bugtags"
 pod 'Masonry'
-
+pod "ReactiveCocoa", "2.5"

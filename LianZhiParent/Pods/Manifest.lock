@@ -11,6 +11,13 @@ PODS:
   - Masonry (1.0.1)
   - MJRefresh (3.1.9)
   - PureLayout (3.0.2)
+  - ReactiveCocoa (2.5):
+    - ReactiveCocoa/UI (= 2.5)
+  - ReactiveCocoa/Core (2.5):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.5)
+  - ReactiveCocoa/UI (2.5):
+    - ReactiveCocoa/Core
   - SSZipArchive (1.2)
   - YYKit (1.0.7):
     - YYKit/no-arc (= 1.0.7)
@@ -25,6 +32,7 @@ DEPENDENCIES:
   - KRVideoPlayer
   - Masonry
   - MJRefresh
+  - ReactiveCocoa (= 2.5)
   - SSZipArchive
   - YYKit
 
@@ -38,6 +46,7 @@ SPEC CHECKSUMS:
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   MJRefresh: c5f1f1653e5a1b932c90f78074f2bc86f3f9bd5e
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
+  ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   SSZipArchive: 251093c65f98d6ea282c50bc404bfa631d9fd721
   YYKit: 843d1b26e20b82c695790c9a89907eaa1e99907f
 

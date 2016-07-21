@@ -365,9 +365,6 @@
 		8D867BCF1D25042A0020A21C /* VoiceConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BC81D25042A0020A21C /* VoiceConverter.mm */; };
 		8D867BD21D2506EF0020A21C /* NSString+UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BD11D2506EF0020A21C /* NSString+UUID.m */; };
 		8D867BD61D2508AC0020A21C /* NHFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BD51D2508AC0020A21C /* NHFileManager.m */; };
-		8D867BDD1D251E710020A21C /* NotificationSendVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BDC1D251E710020A21C /* NotificationSendVC.m */; };
-		8D867BE31D252E010020A21C /* NotificationInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BE21D252E010020A21C /* NotificationInputView.m */; };
-		8D867BE61D252F210020A21C /* NotificationRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BE51D252F210020A21C /* NotificationRecordView.m */; };
 		8D867BE91D2614A90020A21C /* CircleProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BE81D2614A90020A21C /* CircleProgressView.m */; };
 		8D867C081D2A3A5B0020A21C /* TNBaseObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C071D2A3A5B0020A21C /* TNBaseObject.m */; };
 		8D867C461D2F75B10020A21C /* QuickImagePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C451D2F75B10020A21C /* QuickImagePickerView.m */; };
@@ -398,9 +395,16 @@
 		8D867C941D2F97080020A21C /* JKPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C811D2F97080020A21C /* JKPromptView.m */; };
 		8D867C961D2F9A2A0020A21C /* DNImagePicker.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8D867C951D2F9A2A0020A21C /* DNImagePicker.strings */; };
 		8D867D201D3CE2CB0020A21C /* LZKVStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D1F1D3CE2CB0020A21C /* LZKVStorage.m */; };
-		8D867D271D3DD4A90020A21C /* NotificationTargetContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D261D3DD4A90020A21C /* NotificationTargetContentView.m */; };
-		8D867D2A1D3DD5C90020A21C /* NotificationSendTargetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D291D3DD5C90020A21C /* NotificationSendTargetView.m */; };
-		8D867D2D1D3DFE020020A21C /* NotificationSendChoiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D2C1D3DFE020020A21C /* NotificationSendChoiceView.m */; };
+		8D867D431D3F7BF80020A21C /* NotificationSendVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D351D3F7BF80020A21C /* NotificationSendVC.m */; };
+		8D867D441D3F7BF80020A21C /* NotificationInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D391D3F7BF80020A21C /* NotificationInputView.m */; };
+		8D867D451D3F7BF80020A21C /* NotificationRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D3B1D3F7BF80020A21C /* NotificationRecordView.m */; };
+		8D867D461D3F7BF80020A21C /* NotificationSendChoiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D3E1D3F7BF80020A21C /* NotificationSendChoiceView.m */; };
+		8D867D471D3F7BF80020A21C /* NotificationSendTargetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D401D3F7BF80020A21C /* NotificationSendTargetView.m */; };
+		8D867D481D3F7BF80020A21C /* NotificationTargetContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D421D3F7BF80020A21C /* NotificationTargetContentView.m */; };
+		8D867D4B1D3F7C550020A21C /* NotificationSendEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D4A1D3F7C550020A21C /* NotificationSendEntity.m */; };
+		8D867D4E1D3F7F160020A21C /* NotificationSelectTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D4D1D3F7F160020A21C /* NotificationSelectTimeView.m */; };
+		8D867D511D3FD21E0020A21C /* NotificationCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D501D3FD21E0020A21C /* NotificationCommentView.m */; };
+		8D867D541D3FE2290020A21C /* NotificationMemberSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D531D3FE2290020A21C /* NotificationMemberSelectVC.m */; };
 		8DA785961CA4E35900A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */; };
 /* End PBXBuildFile section */
 
@@ -1074,12 +1078,6 @@
 		8D867BD11D2506EF0020A21C /* NSString+UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UUID.m"; sourceTree = "<group>"; };
 		8D867BD41D2508AC0020A21C /* NHFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHFileManager.h; sourceTree = "<group>"; };
 		8D867BD51D2508AC0020A21C /* NHFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHFileManager.m; sourceTree = "<group>"; };
-		8D867BDB1D251E710020A21C /* NotificationSendVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSendVC.h; sourceTree = "<group>"; };
-		8D867BDC1D251E710020A21C /* NotificationSendVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSendVC.m; sourceTree = "<group>"; };
-		8D867BE11D252E010020A21C /* NotificationInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationInputView.h; sourceTree = "<group>"; };
-		8D867BE21D252E010020A21C /* NotificationInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationInputView.m; sourceTree = "<group>"; };
-		8D867BE41D252F210020A21C /* NotificationRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationRecordView.h; sourceTree = "<group>"; };
-		8D867BE51D252F210020A21C /* NotificationRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationRecordView.m; sourceTree = "<group>"; };
 		8D867BE71D2614A90020A21C /* CircleProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleProgressView.h; sourceTree = "<group>"; };
 		8D867BE81D2614A90020A21C /* CircleProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleProgressView.m; sourceTree = "<group>"; };
 		8D867C061D2A3A5B0020A21C /* TNBaseObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNBaseObject.h; sourceTree = "<group>"; };
@@ -1139,12 +1137,26 @@
 		8D867C951D2F9A2A0020A21C /* DNImagePicker.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = DNImagePicker.strings; sourceTree = "<group>"; };
 		8D867D1E1D3CE2CB0020A21C /* LZKVStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZKVStorage.h; sourceTree = "<group>"; };
 		8D867D1F1D3CE2CB0020A21C /* LZKVStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZKVStorage.m; sourceTree = "<group>"; };
-		8D867D251D3DD4A90020A21C /* NotificationTargetContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationTargetContentView.h; sourceTree = "<group>"; };
-		8D867D261D3DD4A90020A21C /* NotificationTargetContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationTargetContentView.m; sourceTree = "<group>"; };
-		8D867D281D3DD5C90020A21C /* NotificationSendTargetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSendTargetView.h; sourceTree = "<group>"; };
-		8D867D291D3DD5C90020A21C /* NotificationSendTargetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSendTargetView.m; sourceTree = "<group>"; };
-		8D867D2B1D3DFE020020A21C /* NotificationSendChoiceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSendChoiceView.h; sourceTree = "<group>"; };
-		8D867D2C1D3DFE020020A21C /* NotificationSendChoiceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSendChoiceView.m; sourceTree = "<group>"; };
+		8D867D341D3F7BF80020A21C /* NotificationSendVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSendVC.h; sourceTree = "<group>"; };
+		8D867D351D3F7BF80020A21C /* NotificationSendVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSendVC.m; sourceTree = "<group>"; };
+		8D867D381D3F7BF80020A21C /* NotificationInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationInputView.h; sourceTree = "<group>"; };
+		8D867D391D3F7BF80020A21C /* NotificationInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationInputView.m; sourceTree = "<group>"; };
+		8D867D3A1D3F7BF80020A21C /* NotificationRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationRecordView.h; sourceTree = "<group>"; };
+		8D867D3B1D3F7BF80020A21C /* NotificationRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationRecordView.m; sourceTree = "<group>"; };
+		8D867D3D1D3F7BF80020A21C /* NotificationSendChoiceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSendChoiceView.h; sourceTree = "<group>"; };
+		8D867D3E1D3F7BF80020A21C /* NotificationSendChoiceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSendChoiceView.m; sourceTree = "<group>"; };
+		8D867D3F1D3F7BF80020A21C /* NotificationSendTargetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSendTargetView.h; sourceTree = "<group>"; };
+		8D867D401D3F7BF80020A21C /* NotificationSendTargetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSendTargetView.m; sourceTree = "<group>"; };
+		8D867D411D3F7BF80020A21C /* NotificationTargetContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationTargetContentView.h; sourceTree = "<group>"; };
+		8D867D421D3F7BF80020A21C /* NotificationTargetContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationTargetContentView.m; sourceTree = "<group>"; };
+		8D867D491D3F7C550020A21C /* NotificationSendEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSendEntity.h; sourceTree = "<group>"; };
+		8D867D4A1D3F7C550020A21C /* NotificationSendEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSendEntity.m; sourceTree = "<group>"; };
+		8D867D4C1D3F7F160020A21C /* NotificationSelectTimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSelectTimeView.h; sourceTree = "<group>"; };
+		8D867D4D1D3F7F160020A21C /* NotificationSelectTimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSelectTimeView.m; sourceTree = "<group>"; };
+		8D867D4F1D3FD21E0020A21C /* NotificationCommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCommentView.h; sourceTree = "<group>"; };
+		8D867D501D3FD21E0020A21C /* NotificationCommentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCommentView.m; sourceTree = "<group>"; };
+		8D867D521D3FE2290020A21C /* NotificationMemberSelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationMemberSelectVC.h; sourceTree = "<group>"; };
+		8D867D531D3FE2290020A21C /* NotificationMemberSelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationMemberSelectVC.m; sourceTree = "<group>"; };
 		8DA785941CA4E35900A384F0 /* NSString+UrlParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlParams.h"; sourceTree = "<group>"; };
 		8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
 		BFB7BE1F02D8CB37989349C3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -2810,13 +2822,9 @@
 		8D867BDA1D251E560020A21C /* NotificationSend */ = {
 			isa = PBXGroup;
 			children = (
-				8D867D241D3DD4960020A21C /* NotificationSendViews */,
-				8D867BDB1D251E710020A21C /* NotificationSendVC.h */,
-				8D867BDC1D251E710020A21C /* NotificationSendVC.m */,
-				8D867BE11D252E010020A21C /* NotificationInputView.h */,
-				8D867BE21D252E010020A21C /* NotificationInputView.m */,
-				8D867BE41D252F210020A21C /* NotificationRecordView.h */,
-				8D867BE51D252F210020A21C /* NotificationRecordView.m */,
+				8D867D331D3F7BF80020A21C /* Controller */,
+				8D867D361D3F7BF80020A21C /* model */,
+				8D867D371D3F7BF80020A21C /* View */,
 			);
 			path = NotificationSend;
 			sourceTree = "<group>";
@@ -2913,15 +2921,51 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		8D867D241D3DD4960020A21C /* NotificationSendViews */ = {
+		8D867D331D3F7BF80020A21C /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				8D867D251D3DD4A90020A21C /* NotificationTargetContentView.h */,
-				8D867D261D3DD4A90020A21C /* NotificationTargetContentView.m */,
-				8D867D281D3DD5C90020A21C /* NotificationSendTargetView.h */,
-				8D867D291D3DD5C90020A21C /* NotificationSendTargetView.m */,
-				8D867D2B1D3DFE020020A21C /* NotificationSendChoiceView.h */,
-				8D867D2C1D3DFE020020A21C /* NotificationSendChoiceView.m */,
+				8D867D341D3F7BF80020A21C /* NotificationSendVC.h */,
+				8D867D351D3F7BF80020A21C /* NotificationSendVC.m */,
+				8D867D521D3FE2290020A21C /* NotificationMemberSelectVC.h */,
+				8D867D531D3FE2290020A21C /* NotificationMemberSelectVC.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		8D867D361D3F7BF80020A21C /* model */ = {
+			isa = PBXGroup;
+			children = (
+				8D867D491D3F7C550020A21C /* NotificationSendEntity.h */,
+				8D867D4A1D3F7C550020A21C /* NotificationSendEntity.m */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		8D867D371D3F7BF80020A21C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8D867D381D3F7BF80020A21C /* NotificationInputView.h */,
+				8D867D391D3F7BF80020A21C /* NotificationInputView.m */,
+				8D867D3A1D3F7BF80020A21C /* NotificationRecordView.h */,
+				8D867D3B1D3F7BF80020A21C /* NotificationRecordView.m */,
+				8D867D3C1D3F7BF80020A21C /* NotificationSendViews */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8D867D3C1D3F7BF80020A21C /* NotificationSendViews */ = {
+			isa = PBXGroup;
+			children = (
+				8D867D3D1D3F7BF80020A21C /* NotificationSendChoiceView.h */,
+				8D867D3E1D3F7BF80020A21C /* NotificationSendChoiceView.m */,
+				8D867D3F1D3F7BF80020A21C /* NotificationSendTargetView.h */,
+				8D867D401D3F7BF80020A21C /* NotificationSendTargetView.m */,
+				8D867D411D3F7BF80020A21C /* NotificationTargetContentView.h */,
+				8D867D421D3F7BF80020A21C /* NotificationTargetContentView.m */,
+				8D867D4C1D3F7F160020A21C /* NotificationSelectTimeView.h */,
+				8D867D4D1D3F7F160020A21C /* NotificationSelectTimeView.m */,
+				8D867D4F1D3FD21E0020A21C /* NotificationCommentView.h */,
+				8D867D501D3FD21E0020A21C /* NotificationCommentView.m */,
 			);
 			path = NotificationSendViews;
 			sourceTree = "<group>";
@@ -3106,10 +3150,12 @@
 				3793FAD41B7CFFF000501F77 /* UIButton+WebCache.m in Sources */,
 				37D6EEED1BCBA96D000994A2 /* HomeWorkVC.m in Sources */,
 				37FB1C661BE4C50D004ECE2E /* HomeWorkHistoryModel.m in Sources */,
+				8D867D461D3F7BF80020A21C /* NotificationSendChoiceView.m in Sources */,
 				3793FA6C1B7CFFF000501F77 /* AFSecurityPolicy.m in Sources */,
 				379947EA1A66B430008E4B4F /* PhotoFlowModel.m in Sources */,
 				37B485061A65853C00C412D8 /* SchoolInfo.m in Sources */,
 				8D867C941D2F97080020A21C /* JKPromptView.m in Sources */,
+				8D867D4E1D3F7F160020A21C /* NotificationSelectTimeView.m in Sources */,
 				37DEE4E81A57C21D009A8771 /* DiscoveryVC.m in Sources */,
 				37C890161A88FA73008E44DB /* PhotoPickerVC.m in Sources */,
 				37B485071A65853C00C412D8 /* UserCenter.m in Sources */,
@@ -3123,7 +3169,6 @@
 				3793FABB1B7CFFF000501F77 /* MLDataCache.m in Sources */,
 				3793FAE71B7CFFF000501F77 /* TNCollectionViewCell.m in Sources */,
 				37DEE4DF1A57C1D8009A8771 /* ClassZoneVC.m in Sources */,
-				8D867BDD1D251E710020A21C /* NotificationSendVC.m in Sources */,
 				3793FAB31B7CFFF000501F77 /* AmrPlayerReader.m in Sources */,
 				37D6EE3C1BCAA45C000994A2 /* ShareActionView.m in Sources */,
 				37D6EEF11BCBA96D000994A2 /* MyAttendanceModel.m in Sources */,
@@ -3131,7 +3176,6 @@
 				37D6EEF21BCBA96D000994A2 /* MyAttendanceVC.m in Sources */,
 				37C01B111A6C245500C8F454 /* DatePickerView.m in Sources */,
 				37C890271A8963BD008E44DB /* StatusManager.m in Sources */,
-				8D867BE31D252E010020A21C /* NotificationInputView.m in Sources */,
 				37CCE2561B8B0649007BFA4F /* ActionPopView.m in Sources */,
 				378436AB1C1536E2009CBBA0 /* HomeWorkAudioView.m in Sources */,
 				37FEA9651C46554500E7425B /* AccountInfoView.m in Sources */,
@@ -3154,6 +3198,7 @@
 				3793FAEB1B7CFFF000501F77 /* TNModelItem.m in Sources */,
 				37E038E81A7386D3003A3A7F /* PublishNewspaperVC.m in Sources */,
 				3793FAB81B7CFFF000501F77 /* MLAudioMeterObserver.m in Sources */,
+				8D867D541D3FE2290020A21C /* NotificationMemberSelectVC.m in Sources */,
 				3728A73C1B9D376300310457 /* ReplyBox.m in Sources */,
 				37FD6E161BB0584400C83AB4 /* ChatVoiceButton.m in Sources */,
 				37D6EEF61BCBA96D000994A2 /* RefuseVC.m in Sources */,
@@ -3172,6 +3217,7 @@
 				37DEE4D91A57C1D8009A8771 /* ClassAppCell.m in Sources */,
 				372C75381C0802CC00A1D90B /* HomeWorkCollectionModel.m in Sources */,
 				37E93FC21A7E9CC600AD45A1 /* MJPhotoBrowser.m in Sources */,
+				8D867D451D3F7BF80020A21C /* NotificationRecordView.m in Sources */,
 				37C355D91A3FD5CF00B948E6 /* AppDelegate.m in Sources */,
 				37C88F7C1A83BE57008E44DB /* RelatedInfoVC.m in Sources */,
 				379947E91A66B430008E4B4F /* PhotoFlowCell.m in Sources */,
@@ -3216,7 +3262,6 @@
 				3728A7391B9D376300310457 /* HPTextViewInternal.m in Sources */,
 				37C6B4441BF2EFC50001D54F /* SVShareManager.m in Sources */,
 				37C8901C1A890DF9008E44DB /* ClassZoneManager.m in Sources */,
-				8D867D2D1D3DFE020020A21C /* NotificationSendChoiceView.m in Sources */,
 				8DA785961CA4E35900A384F0 /* NSString+UrlParams.m in Sources */,
 				3793FA9B1B7CFFF000501F77 /* WelcomeView.m in Sources */,
 				37D6EEF91BCBA96D000994A2 /* StudentAttendanceVC.m in Sources */,
@@ -3241,18 +3286,19 @@
 				37C296E61A6ACF2F00C2ACDD /* ContactStudentsVC.m in Sources */,
 				3705FF8E1BA1974500F0C6F6 /* MessageSendVC.m in Sources */,
 				3793FAF91B7D081900501F77 /* PhotoPickerView.m in Sources */,
+				8D867D511D3FD21E0020A21C /* NotificationCommentView.m in Sources */,
 				37E93F991A7DC48200AD45A1 /* TNActionSheet.m in Sources */,
 				3793FA671B7CFFF000501F77 /* AFHTTPRequestOperation.m in Sources */,
 				37FD6E381BB6F53800C83AB4 /* RegisterAuthVC.m in Sources */,
 				3728A7481B9D37AF00310457 /* NSDate+Utils.m in Sources */,
 				3705FF851BA16C1700F0C6F6 /* AudioMessageSendVC.m in Sources */,
-				8D867D271D3DD4A90020A21C /* NotificationTargetContentView.m in Sources */,
 				372774E51A5D94A900464461 /* GrowthTimelinePublishVC.m in Sources */,
 				3793FABA1B7CFFF000501F77 /* MLAmrPlayer.m in Sources */,
 				37DEE4FD1A57C2C0009A8771 /* ContactItemCell.m in Sources */,
 				3793FA9E1B7CFFF000501F77 /* PublishImageItem.m in Sources */,
 				37C296E91A6AD5DB00C2ACDD /* ContactParentsVC.m in Sources */,
 				3793FAE81B7CFFF000501F77 /* TNTableViewCell.m in Sources */,
+				8D867D4B1D3F7C550020A21C /* NotificationSendEntity.m in Sources */,
 				37DEE4BD1A57C19C009A8771 /* MessageDetailModel.m in Sources */,
 				8D867C841D2F97080020A21C /* DNImageFlowViewController.m in Sources */,
 				37C355D61A3FD5CF00B948E6 /* main.m in Sources */,
@@ -3316,7 +3362,6 @@
 				3793FA711B7CFFF000501F77 /* HttpRequestEngine.m in Sources */,
 				37DEE4DB1A57C1D8009A8771 /* ClassAppVC.m in Sources */,
 				37DEE4F61A57C289009A8771 /* LZTabBarButton.m in Sources */,
-				8D867BE61D252F210020A21C /* NotificationRecordView.m in Sources */,
 				8D867C081D2A3A5B0020A21C /* TNBaseObject.m in Sources */,
 				3793FACD1B7CFFF000501F77 /* SDImageCache.m in Sources */,
 				37C296E31A6AABFC00C2ACDD /* ContactModel.m in Sources */,
@@ -3330,6 +3375,7 @@
 				3793FAA01B7CFFF000501F77 /* NSObject+Associative.m in Sources */,
 				3793FAA91B7CFFF000501F77 /* UIImageView+URLWithAnimation.m in Sources */,
 				3793FAB71B7CFFF000501F77 /* AmrRecordWriter.m in Sources */,
+				8D867D441D3F7BF80020A21C /* NotificationInputView.m in Sources */,
 				8D867C8B1D2F97080020A21C /* UIViewController+DNImagePicker.m in Sources */,
 				37C890191A89091A008E44DB /* PersonalSetting.m in Sources */,
 				3793FAD91B7CFFF000501F77 /* UIImageView+WebCache.m in Sources */,
@@ -3392,6 +3438,7 @@
 				37D6EE381BC90C62000994A2 /* LocationChange.m in Sources */,
 				3793FAF61B7CFFF000501F77 /* Utility.m in Sources */,
 				371C6DAD1A7015AF00FA4AEC /* PublishBaseVC.m in Sources */,
+				8D867D481D3F7BF80020A21C /* NotificationTargetContentView.m in Sources */,
 				3793FA861B7CFFF000501F77 /* RIButtonItem.m in Sources */,
 				37A46F6E1A5B017D00A5FB63 /* TextMessageSendVC.m in Sources */,
 				37D6EE361BC90C62000994A2 /* CheckInstalledMapAPP.m in Sources */,
@@ -3406,8 +3453,9 @@
 				3793FAD11B7CFFF000501F77 /* SDWebImageDownloaderOperation.m in Sources */,
 				37D6EEF01BCBA96D000994A2 /* MyAttendanceItem.m in Sources */,
 				3793FAA11B7CFFF000501F77 /* NSObject+Print.m in Sources */,
+				8D867D431D3F7BF80020A21C /* NotificationSendVC.m in Sources */,
 				37B485041A65853C00C412D8 /* PasswordModificationVC.m in Sources */,
-				8D867D2A1D3DD5C90020A21C /* NotificationSendTargetView.m in Sources */,
+				8D867D471D3F7BF80020A21C /* NotificationSendTargetView.m in Sources */,
 				3793FAEE1B7CFFF000501F77 /* TNBaseTableViewController.m in Sources */,
 				373B9D1A1BEF8B6000FE89CA /* NotificationTargetVC.m in Sources */,
 				37B485051A65853C00C412D8 /* PhoneLoginVC.m in Sources */,
@@ -3502,6 +3550,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3536,6 +3585,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (

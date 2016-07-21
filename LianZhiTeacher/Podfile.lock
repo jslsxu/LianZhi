@@ -9,7 +9,15 @@ PODS:
   - KRVideoPlayer (1.0.1)
   - Masonry (1.0.1)
   - MJRefresh (3.1.10)
+  - ReactiveCocoa (2.5):
+    - ReactiveCocoa/UI (= 2.5)
+  - ReactiveCocoa/Core (2.5):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.5)
+  - ReactiveCocoa/UI (2.5):
+    - ReactiveCocoa/Core
   - SCRecorder (2.7.0)
+  - SlackTextViewController (1.9.3)
   - SSZipArchive (1.3)
   - YYKit (1.0.7):
     - YYKit/no-arc (= 1.0.7)
@@ -24,7 +32,9 @@ DEPENDENCIES:
   - KRVideoPlayer
   - Masonry
   - MJRefresh
+  - ReactiveCocoa (= 2.5)
   - SCRecorder
+  - SlackTextViewController
   - SSZipArchive
   - YYKit
 
@@ -37,7 +47,9 @@ SPEC CHECKSUMS:
   KRVideoPlayer: 08918da1b99cae35fd4c15b2ec2b49358d4c985f
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   MJRefresh: bb72948c985914b0b5cecac573a2c69a8915fb02
+  ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   SCRecorder: bbb521dbc222908876ec9cd9156bbc8a893bed44
+  SlackTextViewController: bd2a34c188d4f7dec93cf42388f38551263fac82
   SSZipArchive: 5525196ee195b473dcc4a0d4d2cba98bfa3eb1c1
   YYKit: 843d1b26e20b82c695790c9a89907eaa1e99907f
 

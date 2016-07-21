@@ -23,5 +23,6 @@
 #import "ShareActionView.h"
 #import "LZKVStorage.h"
 #import "Masonry.h"
+#import "ReactiveCocoa.h"
 #endif
 #endif
