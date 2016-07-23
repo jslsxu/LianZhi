@@ -405,6 +405,7 @@
 		8D867D4E1D3F7F160020A21C /* NotificationSelectTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D4D1D3F7F160020A21C /* NotificationSelectTimeView.m */; };
 		8D867D511D3FD21E0020A21C /* NotificationCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D501D3FD21E0020A21C /* NotificationCommentView.m */; };
 		8D867D541D3FE2290020A21C /* NotificationMemberSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D531D3FE2290020A21C /* NotificationMemberSelectVC.m */; };
+		8D867D571D4128F10020A21C /* VideoRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D561D4128F10020A21C /* VideoRecordView.m */; };
 		8DA785961CA4E35900A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */; };
 /* End PBXBuildFile section */
 
@@ -1157,6 +1158,8 @@
 		8D867D501D3FD21E0020A21C /* NotificationCommentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCommentView.m; sourceTree = "<group>"; };
 		8D867D521D3FE2290020A21C /* NotificationMemberSelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationMemberSelectVC.h; sourceTree = "<group>"; };
 		8D867D531D3FE2290020A21C /* NotificationMemberSelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationMemberSelectVC.m; sourceTree = "<group>"; };
+		8D867D551D4128F10020A21C /* VideoRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoRecordView.h; sourceTree = "<group>"; };
+		8D867D561D4128F10020A21C /* VideoRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoRecordView.m; sourceTree = "<group>"; };
 		8DA785941CA4E35900A384F0 /* NSString+UrlParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlParams.h"; sourceTree = "<group>"; };
 		8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
 		BFB7BE1F02D8CB37989349C3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -1321,6 +1324,8 @@
 				3728A7131B9D376300310457 /* emotions_cn.plist */,
 				3728A7141B9D376300310457 /* FaceSelectView.h */,
 				3728A7151B9D376300310457 /* FaceSelectView.m */,
+				8D867D551D4128F10020A21C /* VideoRecordView.h */,
+				8D867D561D4128F10020A21C /* VideoRecordView.m */,
 				3728A7161B9D376300310457 /* FunctionView.h */,
 				3728A7171B9D376300310457 /* FunctionView.m */,
 				3728A7181B9D376300310457 /* HPGrowingTextView.h */,
@@ -3419,6 +3424,7 @@
 				371C6DAF1A7015AF00FA4AEC /* PublishSelectionView.m in Sources */,
 				379947EB1A66B430008E4B4F /* PhotoFlowVC.m in Sources */,
 				37E93FC61A7E9CC600AD45A1 /* PhotoBrowserInfoBar.m in Sources */,
+				8D867D571D4128F10020A21C /* VideoRecordView.m in Sources */,
 				37EAC9EA1B82446F007BFBA1 /* CommonInputVC.m in Sources */,
 				37CA18731AB70A2F00B49B55 /* PhotoPickerModel.m in Sources */,
 				37DEE4DA1A57C1D8009A8771 /* ClassAppModel.m in Sources */,

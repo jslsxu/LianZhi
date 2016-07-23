@@ -265,7 +265,7 @@
     self.inputType = InputTypeNormal;
 }
 
-- (void)growingTextView:(HPGrowingTextView *)growingTextView didChangeHeight:(float)height
+- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
 {
     if(self.inputType == InputTypeNormal)
     {

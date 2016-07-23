@@ -10,6 +10,7 @@
 #import "NotificationSelectTimeView.h"
 #import "NotificationSendEntity.h"
 #import "NotificationMemberSelectVC.h"
+#import "VideoRecordView.h"
 @interface NotificationSendVC ()<NotificationInputDelegate,
 UIGestureRecognizerDelegate,
 UIScrollViewDelegate,
@@ -120,12 +121,15 @@ UINavigationControllerDelegate>
 }
 - (void)notificationInputVideo:(NotificationInputView *)inputView
 {
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-    [imagePicker setMediaTypes:[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera]];
-    [imagePicker setVideoQuality:UIImagePickerControllerQualityTypeMedium];
-    [imagePicker setDelegate:self];
-    [self presentViewController:imagePicker animated:YES completion:nil];
+//    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+//    [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+//    [imagePicker setMediaTypes:[UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera]];
+//    [imagePicker setVideoQuality:UIImagePickerControllerQualityTypeMedium];
+//    [imagePicker setDelegate:self];
+//    [self presentViewController:imagePicker animated:YES completion:nil];
+    [VideoRecordView showWithCompletion:^(NSURL *videoPath) {
+        
+    }];
 }
 
 #pragma mark - UIImagePickerController

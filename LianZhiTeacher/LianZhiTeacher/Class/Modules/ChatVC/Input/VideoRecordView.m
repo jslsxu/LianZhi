@@ -1,0 +1,200 @@
+//
+//  VideoRecordView.m
+//  LianZhiTeacher
+//
+//  Created by qingxu zhou on 16/7/21.
+//  Copyright © 2016年 jslsxu. All rights reserved.
+//
+
+#import "VideoRecordView.h"
+#import "SCRecorder.h"
+#import "SCRecordSession.h"
+#define kVideoMaxTime               8
+@interface VideoRecordView ()<SCRecorderDelegate>
+@property (nonatomic, strong)SCRecorder*    recorder;
+@property (nonatomic, strong)SCRecordSession * recordSession;
+@property (nonatomic, copy)void (^completion)(NSURL *videoPath);
+@property (nonatomic, strong)NSTimer*   pressTimer;
+@end
+
+@implementation VideoRecordView
+
++ (void)showWithCompletion:(void (^)(NSURL *))completion{
+    VideoRecordView *recordView = [[VideoRecordView alloc] init];
+    [recordView setCompletion:completion];
+    [recordView show];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame{
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    self = [super initWithFrame:window.bounds];
+    if(self){
+        
+        _bgButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_bgButton setFrame:self.bounds];
+        [_bgButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
+        [_bgButton setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.5]];
+        [self addSubview:_bgButton];
+        
+        _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, self.height / 2, self.width, self.height / 2)];
+        [_contentView setBackgroundColor:[UIColor whiteColor]];
+        [self addSubview:_contentView];
+        
+        _previewView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _contentView.width, _contentView.height - 60)];
+        [_contentView addSubview:_previewView];
+        
+        _progressView = [[UIView alloc] initWithFrame:CGRectMake(0, _previewView.bottom, _contentView.width, 2)];
+        [_progressView setBackgroundColor:[UIColor greenColor]];
+        [_contentView addSubview:_progressView];
+        
+        _captureButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_captureButton setImage:[UIImage imageNamed:@"captureButton"] forState:UIControlStateNormal];
+        [_captureButton setFrame:CGRectMake((_contentView.width - 50) / 2, _previewView.height + (60 - 50) / 2, 50, 50)];
+        [_captureButton addTarget:self action:@selector(startCapture) forControlEvents:UIControlEventTouchDown];
+        [_contentView addSubview:_captureButton];
+        
+        [self configRecorder];
+        [_recorder startRunning];
+    }
+    return self;
+}
+
+- (NSString *)tmpVideoPath{
+    NSString *cachePath =  [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    return [cachePath stringByAppendingPathComponent:@"tmpVideo.mov"];
+}
+
+- (void)configRecorder {
+    _recorder = [SCRecorder recorder];
+    _recorder.captureSessionPreset = [SCRecorderTools bestCaptureSessionPresetCompatibleWithAllDevices];
+    _recorder.maxRecordDuration = CMTimeMake(30 * kVideoMaxTime, 30);
+    _recorder.delegate = self;
+    _recorder.previewView = _previewView;
+    _recorder.initializeSessionLazily = NO;
+    [_recorder previewViewFrameChanged];
+    NSError *error;
+    if (![_recorder prepare:&error]) {
+        NSLog(@"Prepare error: %@", error.localizedDescription);
+    }
+    if (_recorder.session == nil) {
+        
+        SCRecordSession *session = [SCRecordSession recordSession];
+        session.fileType = AVFileTypeMPEG4;
+        
+        _recorder.session = session;
+    }
+    
+}
+
+- (void)refreshProgressViewLengthByTime:(CMTime)duration{
+    CGFloat durationTime = CMTimeGetSeconds(duration);
+    CGFloat scale = (kVideoMaxTime - durationTime) / kVideoMaxTime;
+    [_progressView setTransform:CGAffineTransformMakeScale(scale, 1)];
+}
+
+
+- (void)startCapture{
+    [_recorder record];
+}
+
+- (void)stopCapture{
+    [_recorder stopRunning];
+    _recorder.previewView = nil;
+}
+
+- (void)saveCapture {
+    NSURL *url = [NSURL fileURLWithPath:[self tmpVideoPath]];
+    AVAsset *asset = _recorder.session.assetRepresentingSegments;
+    [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
+    
+    CGSize videoSize = _previewView.bounds.size;
+    AVAssetExportSession * exportSession = [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetMediumQuality];
+    exportSession.outputFileType = AVFileTypeMPEG4;
+    exportSession.shouldOptimizeForNetworkUse = YES;
+    exportSession.videoComposition = [self buildDefaultVideoCompositionWithAsset:asset targetSize:videoSize];
+    exportSession.outputURL = url;
+    [exportSession exportAsynchronouslyWithCompletionHandler:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(self.completion){
+                self.completion(url);
+            }
+            [self dismiss];
+        });
+        
+    }];
+}
+
+- (AVMutableVideoComposition *)buildDefaultVideoCompositionWithAsset:(AVAsset *)asset targetSize:(CGSize)targetSize
+{
+    
+    AVMutableVideoComposition *videoComposition = [AVMutableVideoComposition videoComposition];
+    NSArray *trackArray = [asset tracksWithMediaType:AVMediaTypeVideo];
+    if(trackArray.count > 0){
+        AVAssetTrack *videoTrack = [trackArray objectAtIndex:0];
+        
+        videoComposition.frameDuration = CMTimeMake(1, 30);
+        CGSize naturalSize = [videoTrack naturalSize];
+        targetSize.width = naturalSize.width;
+        targetSize.height = targetSize.width;
+        CGAffineTransform transform = videoTrack.preferredTransform;
+        CGFloat videoAngleInDegree  = atan2(transform.b, transform.a) * 180 / M_PI;
+        if (videoAngleInDegree == 90 || videoAngleInDegree == -90) {
+            CGFloat width = naturalSize.width;
+            naturalSize.width = naturalSize.height;
+            naturalSize.height = width;
+        }
+        videoComposition.renderSize = targetSize;
+        transform = CGAffineTransformMakeTranslation(0, (targetSize.height - naturalSize.height) / 2);
+        // Make a "pass through video track" video composition.
+        AVMutableVideoCompositionInstruction *passThroughInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+        passThroughInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);
+        
+        AVMutableVideoCompositionLayerInstruction *passThroughLayer = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:videoTrack];
+        
+        [passThroughLayer setTransform:transform atTime:kCMTimeZero];
+        
+        passThroughInstruction.layerInstructions = @[passThroughLayer];
+        videoComposition.instructions = @[passThroughInstruction];
+    }
+    return videoComposition;
+}
+
+
+#pragma mark - SCRecorderDelegate
+- (void)recorder:(SCRecorder *)recorder didAppendVideoSampleBufferInSession:(SCRecordSession *)recordSession {
+    //update progressBar
+    [self refreshProgressViewLengthByTime:recordSession.duration];
+}
+
+- (void)recorder:(SCRecorder *__nonnull)recorder didCompleteSession:(SCRecordSession *__nonnull)session {
+    [self saveCapture];
+}
+
+- (void)show{
+    UIWindow *window= [UIApplication sharedApplication].keyWindow;
+    [window addSubview:self];
+    _bgButton.alpha = 0.f;
+    _contentView.y = self.height;
+    [UIView animateWithDuration:0.3 animations:^{
+        _bgButton.alpha = 1.f;
+        _contentView.y = self.height - _contentView.height;
+    }completion:^(BOOL finished) {
+       
+    }];
+}
+
+- (void)dismiss{
+    if(self.pressTimer){
+        [self.pressTimer invalidate];
+    }
+    [UIView animateWithDuration:0.3 animations:^{
+        [_bgButton setAlpha:0.f];
+        [_contentView setY:self.height];
+    } completion:^(BOOL finished) {
+        [self stopCapture];
+        [self removeFromSuperview];
+    }];
+}
+
+@end
+

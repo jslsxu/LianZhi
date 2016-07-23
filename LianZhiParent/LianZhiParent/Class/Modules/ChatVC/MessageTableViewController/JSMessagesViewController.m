@@ -354,11 +354,11 @@ static NSInteger num = 1;
         [_inputView setInputType:InputTypeNone];
 }
 
-- (void)scrollToBottom
+- (void)scrollToBottom:(BOOL)animated
 {
     NSArray *modelArray = self.tableViewModel.modelItemArray;
     if(modelArray.count > 0 && modelArray.count <= [_tableView numberOfRowsInSection:0])
-    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:modelArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:modelArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -434,12 +434,11 @@ static NSInteger num = 1;
 
 - (void)inputBarViewDidChangeHeight:(NSInteger)height
 {
+    [self scrollToBottom:YES];
     [UIView animateWithDuration:0.25 animations:^{
         [_tableView setHeight:self.view.height - height];
         [_inputView setFrame:CGRectMake(0, self.view.height - height, self.view.width, height)];
-        [self scrollToBottom];
     } completion:^(BOOL finished) {
-        [self scrollToBottom];
     }];
 }
 
@@ -492,7 +491,7 @@ static NSInteger num = 1;
 {
     [self sendMessage:dic];
     [_tableView reloadData];
-    [self scrollToBottom];
+    [self scrollToBottom:YES];
 }
 
 #pragma mark - MessageCellDelegate

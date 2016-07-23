@@ -8,6 +8,7 @@
 
 #import "InputBarView.h"
 #import "MyGiftVC.h"
+#import "VideoRecordView.h"
 #define kContentViewHeight                  48
 #define kButtonWidth                        30
 #define kButtonHeight                       30
@@ -264,7 +265,7 @@
     self.inputType = InputTypeNormal;
 }
 
-- (void)growingTextView:(HPGrowingTextView *)growingTextView didChangeHeight:(float)height
+- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
 {
     if(self.inputType == InputTypeNormal)
     {
@@ -303,22 +304,26 @@
 #pragma mark - FUnctionViewDelegate
 - (void)functionViewDidSelectAtIndex:(NSInteger)index
 {
-    if(index <= 1)
+    if(index <= 2)
     {
-        if(index == 1)
-        {
-            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-            [imagePicker setDelegate:self];
-            [imagePicker setSourceType: UIImagePickerControllerSourceTypeCamera];
-            [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
-        }
-        else
-        {
+        if(index == 0){
             PhotoPickerVC *photoPickerVC = [[PhotoPickerVC alloc] init];
             [photoPickerVC setMaxToSelected:9];
             [photoPickerVC setDelegate:self];
             TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:photoPickerVC];
             [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
+        }
+        else if(index == 1){
+            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+            [imagePicker setDelegate:self];
+            [imagePicker setSourceType: UIImagePickerControllerSourceTypeCamera];
+            [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
+        }
+        else{
+            [VideoRecordView showWithCompletion:^(NSURL *videoPath) {
+                NSData *data = [NSData dataWithContentsOfURL:videoPath];
+                NSLog(@"data size is %zd",data.length);
+            }];
         }
     }
     else

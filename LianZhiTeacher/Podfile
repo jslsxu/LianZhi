@@ -10,3 +10,5 @@ pod "FDFullscreenPopGesture"
 pod "Bugtags"
 pod 'Masonry'
 pod "ReactiveCocoa", "2.5"
+pod 'SWTableViewCell', '~> 0.3.7'
+pod "MWPhotoBrowser"

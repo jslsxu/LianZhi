@@ -84,10 +84,7 @@ static NSInteger num = 1;
 //    _testTimer = [NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(send) userInfo:nil repeats:YES];
 //    _testTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(send) userInfo:nil repeats:YES];
 //    [_testTimer fire];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [ApplicationDelegate.homeVC selectAtIndex:0];
-    });
+
 }
 
 - (void)send
@@ -367,11 +364,11 @@ static NSInteger num = 1;
         [_inputView setInputType:InputTypeNone];
 }
 
-- (void)scrollToBottom
+- (void)scrollToBottom:(BOOL)animated
 {
     NSArray *modelArray = self.tableViewModel.modelItemArray;
     if(modelArray.count > 0)
-        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:modelArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:modelArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -427,8 +424,9 @@ static NSInteger num = 1;
         [_tableView setHeight:self.view.height - height];
         [_inputView setFrame:CGRectMake(0, self.view.height - height, self.view.width, height)];
     } completion:^(BOOL finished) {
-        [self scrollToBottom];
+        
     }];
+    [self scrollToBottom:YES];
 }
 
 - (void)inputBarViewDidFaceSelect:(NSString *)face
@@ -480,7 +478,7 @@ static NSInteger num = 1;
 {
     [self sendMessage:dic];
     [_tableView reloadData];
-    [self scrollToBottom];
+    [self scrollToBottom:YES];
 }
 
 #pragma mark - MessageCellDelegate

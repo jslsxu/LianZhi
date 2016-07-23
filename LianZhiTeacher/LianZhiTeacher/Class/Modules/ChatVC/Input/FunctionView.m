@@ -84,13 +84,13 @@
     _canSendGift = canSendGift;
     if(_canSendGift)
     {
-        self.titleArray = @[@"发照片",@"拍摄",@"发礼物"];
-        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera",@"FunctionGift"];
+        self.titleArray = @[@"发照片",@"拍摄",@"小视频",@"发礼物"];
+        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera",@"",@"FunctionGift"];
     }
     else
     {
-        self.titleArray = @[@"发照片",@"拍摄"];
-        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera"];
+        self.titleArray = @[@"发照片",@"拍摄",@"小视频"];
+        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera",@""];
     }
     [_collectionView reloadData];
 }
