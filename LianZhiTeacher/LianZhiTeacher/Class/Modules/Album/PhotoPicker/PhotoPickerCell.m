@@ -45,7 +45,7 @@
         [_imageView setImage:[UIImage imageWithCGImage:[_item.asset defaultRepresentation].fullScreenImage]];
     }
     else
-        [_imageView sd_setImageWithURL:[NSURL URLWithString:item.photoItem.thumbnailUrl] placeholderImage:nil];
+        [_imageView sd_setImageWithURL:[NSURL URLWithString:item.photoItem.small] placeholderImage:nil];
 }
 
 

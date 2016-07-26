@@ -377,7 +377,7 @@
         [chatVC setTo_objid:[UserCenter sharedInstance].curSchool.schoolID];
         if([teacher isKindOfClass:[TeacherInfo class]])
         {
-            if(teacher.activited)
+            if(teacher.actived)
             {
                 [chatVC setTargetID:teacher.uid];
                 [chatVC setChatType:ChatTypeTeacher];

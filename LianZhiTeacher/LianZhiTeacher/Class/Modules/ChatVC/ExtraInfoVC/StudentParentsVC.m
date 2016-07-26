@@ -41,7 +41,7 @@
 {
     _familyInfo = familyInfo;
     [_avatar setImageWithUrl:[NSURL URLWithString:_familyInfo.avatar]];
-    [_avatar setStatus:_familyInfo.activited ? nil : @"未下载"];
+    [_avatar setStatus:_familyInfo.actived ? nil : @"未下载"];
     [_nameLabel setText:_familyInfo.name];
 }
 
@@ -151,7 +151,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ContactGroup *group = [self.formatterMemberArray objectAtIndex:indexPath.section];
     FamilyInfo *familyInfo = group.contacts[indexPath.row];
-    if(familyInfo.activited)
+    if(familyInfo.actived)
     {
         JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
         [chatVC setChatType:ChatTypeParents];

@@ -146,7 +146,7 @@
 //        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",userInfo.mobile] buttonItems:@[cancelItem,item]];
 //        [alertView show];
 //    }
-    if(userInfo.activited)
+    if(userInfo.actived)
     {
         JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
         [chatVC setTo_objid:self.studentInfo.uid];

@@ -24,5 +24,6 @@
 #import "LZKVStorage.h"
 #import "Masonry.h"
 #import "ReactiveCocoa.h"
+#import "FMDB.h"
 #endif
 #endif

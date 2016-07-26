@@ -92,11 +92,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ContactModel)
     }
     
     for (TeacherInfo *teacher in schoolInfo.teachers) {
-        if(![teacher.shortIndex isEqualToString:group.key])
+        if(![teacher.first_letter isEqualToString:group.key])
         {
             group = [[ContactGroup alloc] init];
             [self.teachers addObject:group];
-            [group setKey:teacher.shortIndex];
+            [group setKey:teacher.first_letter];
         }
         [group.contacts addObject:teacher];
     }
@@ -133,7 +133,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ContactModel)
         NSMutableDictionary *studentDic = [[NSMutableDictionary alloc] initWithCapacity:0];
         for (StudentInfo *student in students)
         {
-            NSString *key = student.shortIndex;
+            NSString *key = student.first_letter;
             ContactGroup *studentGroup = [studentDic objectForKey:key];
             if(studentGroup == nil)
             {

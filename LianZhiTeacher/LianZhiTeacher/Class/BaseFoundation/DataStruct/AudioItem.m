@@ -22,6 +22,11 @@
     }
 }
 
++ (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
+    return @{@"timeSpan" : @"second",
+             @"audioUrl" : @"url"};
+}
+
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
     self.timeSpan = [dataWrapper getIntegerForKey:@"second"];

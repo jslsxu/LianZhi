@@ -161,7 +161,7 @@
     [nameLabel setOrigin:CGPointMake(avatar.right + margin, infoHeight / 2 - 2 - nameLabel.height)];
     [viewParent addSubview:nameLabel];
     
-    GenderType gender = [UserCenter sharedInstance].userInfo.gender;
+    GenderType gender = [UserCenter sharedInstance].userInfo.sex;
     NSString *imageStr = gender == GenderMale ? (@"GenderMale.png") : (@"GenderFemale.png");
     UIImageView *genderImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageStr]];
     [genderImage setOrigin:CGPointMake(nameLabel.right + 10, nameLabel.top + (nameLabel.height - genderImage.height) / 2)];
@@ -170,7 +170,7 @@
     UILabel*    birthdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     [birthdayLabel setFont:[UIFont systemFontOfSize:14]];
     [birthdayLabel setTextColor:[UIColor grayColor]];
-    NSString *birthday = [NSString stringWithFormat:@"%@ (%@)",[UserCenter sharedInstance].userInfo.birthDay,[UserCenter sharedInstance].userInfo.constellation];
+    NSString *birthday = [NSString stringWithFormat:@"%@ (%@)",[UserCenter sharedInstance].userInfo.birthday,[UserCenter sharedInstance].userInfo.constellation];
     [birthdayLabel setText:birthday];
     [birthdayLabel sizeToFit];
     [birthdayLabel setOrigin:CGPointMake(avatar.right + 10, infoHeight / 2 + 2)];

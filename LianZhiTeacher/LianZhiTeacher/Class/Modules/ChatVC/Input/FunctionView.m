@@ -69,6 +69,7 @@
         [_layout setMinimumLineSpacing:0];
         
         _collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:_layout];
+        [_collectionView setScrollsToTop:NO];
         [_collectionView setAlwaysBounceHorizontal:YES];
         [_collectionView setBackgroundColor:[UIColor clearColor]];
         [_collectionView setDelegate:self];

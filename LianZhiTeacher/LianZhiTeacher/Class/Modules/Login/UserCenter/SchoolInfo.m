@@ -69,7 +69,7 @@
         [teacherArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             TeacherInfo *teacher1 = (TeacherInfo *)obj1;
             TeacherInfo *teacher2 = (TeacherInfo *)obj2;
-            return ([teacher1.shortIndex compare:teacher2.shortIndex]);
+            return ([teacher1.first_letter compare:teacher2.first_letter]);
         }];
         [self setTeachers:teacherArray];
     }
@@ -161,20 +161,7 @@
     self.course = [dataWrapper getStringForKey:@"course"];
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if(self = [super initWithCoder:aDecoder])
-    {
-        self.course = [aDecoder decodeObjectForKey:@"course"];
-    }
-    return self;
-}
 
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:self.course forKey:@"course"];
-}
 @end
 
 @implementation FamilyInfo
@@ -184,20 +171,6 @@
     self.relation = [dataWrapper getStringForKey:@"relation"];
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if(self = [super initWithCoder:aDecoder])
-    {
-        self.relation = [aDecoder decodeObjectForKey:@"relation"];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:self.relation forKey:@"relation"];
-}
 
 @end
 
@@ -235,7 +208,7 @@
         [studentArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             StudentInfo *student1 = (StudentInfo *)obj1;
             StudentInfo *student2 = (StudentInfo *)obj2;
-            return ([student1.shortIndex compare:student2.shortIndex]);
+            return ([student1.first_letter compare:student2.first_letter]);
         }];
         [self setStudents:studentArray];
     }
@@ -254,7 +227,7 @@
         [students sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             StudentInfo *student1 = (StudentInfo *)obj1;
             StudentInfo *student2 = (StudentInfo *)obj2;
-            return ([student1.shortIndex compare:student2.shortIndex]);
+            return ([student1.first_letter compare:student2.first_letter]);
         }];
         self.students = students;
     }

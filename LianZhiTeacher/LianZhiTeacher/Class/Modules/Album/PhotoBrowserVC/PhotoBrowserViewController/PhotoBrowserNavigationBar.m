@@ -54,8 +54,8 @@
 - (void)setPhoto:(PhotoItem *)photo
 {
     _photo = photo;
-    [deleteButton setHidden:!self.photo.canDelete];
-    [_timeLabel setText:_photo.formatTimeStr];
+    [deleteButton setHidden:!self.photo.can_edit];
+    [_timeLabel setText:_photo.time_str];
 }
 
 
@@ -78,7 +78,7 @@
 {
     __block UIImage *aimage;
     __weak typeof(self) wself = self;
-    [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:self.photo.originalUrl] options:SDWebImageLowPriority progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished,NSURL *url) {
+    [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:self.photo.big] options:SDWebImageLowPriority progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished,NSURL *url) {
         __strong typeof(self) sself = wself;
         if( image && finished && sself){
             aimage = image;

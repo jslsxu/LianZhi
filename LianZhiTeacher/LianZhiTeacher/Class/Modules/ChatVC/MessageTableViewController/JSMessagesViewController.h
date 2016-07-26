@@ -5,7 +5,7 @@
 #import "MessageCell.h"
 #import "ChatMessageModel.h"
 #import "GiftDetailView.h"
-@interface JSMessagesViewController : TNBaseTableViewController <InputBarViewDelegate, MessageCellDelegate>
+@interface JSMessagesViewController : TNBaseViewController <InputBarViewDelegate, MessageCellDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     InputBarView*           _inputView;
     CGFloat                 _previousTextViewContentHeight;

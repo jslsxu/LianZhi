@@ -108,7 +108,7 @@
     else
     {
         [_avatar setImageWithUrl:[NSURL URLWithString:userInfo.avatar] placeHolder:[UIImage imageNamed:(@"NoAvatarDefault.png")]];
-        [_avatar setStatus:_userInfo.activited ? nil : @"未下载"];
+        [_avatar setStatus:_userInfo.actived ? nil : @"未下载"];
         [_nameLabel setText:userInfo.name];
         [_nameLabel sizeToFit];
         [_nameLabel setFrame:CGRectMake(_avatar.right + 15, (self.height - _nameLabel.height) / 2, MIN(_nameLabel.width, self.width - _nameLabel.left - 10), _nameLabel.height)];

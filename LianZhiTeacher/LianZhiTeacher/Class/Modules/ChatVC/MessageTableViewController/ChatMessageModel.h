@@ -8,16 +8,26 @@
 
 #import "TNListModel.h"
 #import "MessageItem.h"
-@interface ChatMessageModel : TNListModel
+
+typedef NS_ENUM(NSInteger, RequestMessageType) {
+    RequestMessageTypeLatest,
+    RequestMessageTypeOld
+};
+
+@interface ChatMessageModel : TNBaseObject
 @property (nonatomic, copy)NSString *targetUser;
-@property (nonatomic, assign)NSInteger getMoreCount;
-@property (nonatomic,assign)BOOL more;
 @property (nonatomic, copy)NSString *oldId;
 @property (nonatomic, copy)NSString *latestId;
 @property (nonatomic, assign)BOOL hasNew;
 @property (nonatomic, assign)BOOL soundOff;
-@property (nonatomic, assign)BOOL getHistory;
 @property (nonatomic, assign)BOOL needScrollBottom;
 @property (nonatomic, assign)NSInteger numOfNew;
+- (NSArray *)messageArray;
+- (instancetype)initWithUid:(NSString *)uid type:(ChatType)type;
 - (BOOL)canInsert:(MessageItem *)messageItem;
+- (BOOL)loadOldData;
+- (BOOL)parseData:(NSDictionary *)data type:(RequestMessageType)type;
+- (void)sendNewMessage:(MessageItem *)message;
+- (void)updateMessage:(MessageItem *)message;
+- (void)deleteMessage:(MessageItem *)message;
 @end

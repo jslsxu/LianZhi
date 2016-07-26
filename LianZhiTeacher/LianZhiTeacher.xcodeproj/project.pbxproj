@@ -407,6 +407,7 @@
 		8D867D541D3FE2290020A21C /* NotificationMemberSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D531D3FE2290020A21C /* NotificationMemberSelectVC.m */; };
 		8D867D571D4128F10020A21C /* VideoRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D561D4128F10020A21C /* VideoRecordView.m */; };
 		8DA785961CA4E35900A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */; };
+		8DCFD6651D43CCA6001EDC8A /* YYInfiniteScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6641D43CCA6001EDC8A /* YYInfiniteScrollView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1162,6 +1163,8 @@
 		8D867D561D4128F10020A21C /* VideoRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoRecordView.m; sourceTree = "<group>"; };
 		8DA785941CA4E35900A384F0 /* NSString+UrlParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlParams.h"; sourceTree = "<group>"; };
 		8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
+		8DCFD6631D43CCA6001EDC8A /* YYInfiniteScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInfiniteScrollView.h; sourceTree = "<group>"; };
+		8DCFD6641D43CCA6001EDC8A /* YYInfiniteScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfiniteScrollView.m; sourceTree = "<group>"; };
 		BFB7BE1F02D8CB37989349C3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1542,6 +1545,8 @@
 			children = (
 				3793F9151B7CFFEF00501F77 /* ActionSelectView.h */,
 				3793F9161B7CFFEF00501F77 /* ActionSelectView.m */,
+				8DCFD6631D43CCA6001EDC8A /* YYInfiniteScrollView.h */,
+				8DCFD6641D43CCA6001EDC8A /* YYInfiniteScrollView.m */,
 				8D867BE71D2614A90020A21C /* CircleProgressView.h */,
 				8D867BE81D2614A90020A21C /* CircleProgressView.m */,
 				37F207141BE0BBFF006466F4 /* UITouchScrollView.h */,
@@ -3435,6 +3440,7 @@
 				3793FACF1B7CFFF000501F77 /* SDWebImageDecoder.m in Sources */,
 				3793FA9A1B7CFFF000501F77 /* UIImage+AspectFit.m in Sources */,
 				3793FACE1B7CFFF000501F77 /* SDWebImageCompat.m in Sources */,
+				8DCFD6651D43CCA6001EDC8A /* YYInfiniteScrollView.m in Sources */,
 				3736CEB51C508D31004DB2D2 /* InterestDetailVC.m in Sources */,
 				378DA1471C09957C00301C26 /* HomeWorkDetailVC.m in Sources */,
 				8D867C5A1D2F82120020A21C /* UIView+Animations.m in Sources */,

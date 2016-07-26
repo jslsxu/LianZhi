@@ -434,7 +434,7 @@ static NSInteger num = 1;
 
 - (void)inputBarViewDidChangeHeight:(NSInteger)height
 {
-    [self scrollToBottom:YES];
+    [self scrollToBottom:NO];
     [UIView animateWithDuration:0.25 animations:^{
         [_tableView setHeight:self.view.height - height];
         [_inputView setFrame:CGRectMake(0, self.view.height - height, self.view.width, height)];

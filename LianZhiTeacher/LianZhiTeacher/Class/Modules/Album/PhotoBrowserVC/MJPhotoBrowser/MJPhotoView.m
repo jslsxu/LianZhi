@@ -84,7 +84,7 @@
     
     __weak MJPhotoView *wPhotoView = self;
     __weak MJPhotoLoadingView *wLoading = _photoLoadingView;
-    NSString *targetUrl = _photo.originalUrl;
+    NSString *targetUrl = _photo.big;
     [_imageView sd_setImageWithURL:[NSURL URLWithString:targetUrl]
                   placeholderImage:nil
                            options:SDWebImageRetryFailed|SDWebImageLowPriority
@@ -114,7 +114,7 @@
 #pragma mark 加载完毕
 - (void)photoDidFinishLoadWithImage:(UIImage *)image withURL:(NSURL *)url
 {
-    if (![self.photo.originalUrl isEqualToString:[url absoluteString]]) {
+    if (![self.photo.big isEqualToString:[url absoluteString]]) {
         return;
     }
     if (image) {

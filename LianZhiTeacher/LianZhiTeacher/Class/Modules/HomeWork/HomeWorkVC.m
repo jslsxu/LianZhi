@@ -201,7 +201,7 @@
              NSMutableArray *photoArray = [NSMutableArray array];
              for (PhotoItem *item in wself.homeWorkItem.photoArray)
              {
-                 UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:item.originalUrl];
+                 UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:item.big];
                  if(image)
                      [photoArray addObject:image];
              }

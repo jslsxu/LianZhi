@@ -41,30 +41,35 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
     UUMessageFromOther = 1    // 别人发得
 };
 
-@interface MessageContent : TNModelItem
-@property (nonatomic, copy)NSString *mid;
-@property (nonatomic, assign)BOOL unread;
-@property (nonatomic, assign)MessageType messageType;
-@property (nonatomic, copy)NSString *text;
-@property (nonatomic, strong)PhotoItem *photoItem;
-@property (nonatomic, strong)AudioItem *audioItem;
-@property (nonatomic, assign)NSInteger timeInterval;
-@property (nonatomic, copy)NSString *ctime;
-@property (nonatomic, assign)BOOL hideTime;
-@property (nonatomic, copy)NSString *presentID;
+@interface Exinfo : TNBaseObject
+@property (nonatomic, copy)NSString *presnetId;
 @property (nonatomic, copy)NSString *presentName;
+@property (nonatomic, strong)PhotoItem *imgs;
+@property (nonatomic, strong)AudioItem *voice;
 @end
 
-@interface MessageItem : TNModelItem
+@interface MessageContent : TNBaseObject
+@property (nonatomic, copy)NSString *mid;
+@property (nonatomic, assign)BOOL unread;
+@property (nonatomic, assign)MessageType type;
+@property (nonatomic, copy)NSString *text;
+@property (nonatomic, assign)NSString * timeStr;
+@property (nonatomic, assign)NSInteger ctime;
+@property (nonatomic, assign)BOOL hideTime;
+@property (nonatomic, strong)Exinfo* exinfo;
+@end
+
+@interface MessageItem : TNBaseObject
 @property (nonatomic, copy)NSString *targetUser;
 @property (nonatomic, assign)MessageStatus messageStatus;
 @property (nonatomic, assign)BOOL isTmp;
 @property (nonatomic, copy)NSString *client_send_id;
 @property (nonatomic, assign)MessageFrom from;
-@property (nonatomic, strong)UserInfo *userInfo;
-@property (nonatomic, strong)MessageContent *messageContent;
-
+@property (nonatomic, strong)UserInfo *user;
+@property (nonatomic, strong)MessageContent *content;
+@property (nonatomic, assign)NSInteger createTime;
 //
 @property (nonatomic, strong)NSDictionary *params;
+- (void)makeClientSendID;
 - (CGFloat)cellHeight;
 @end

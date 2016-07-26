@@ -182,8 +182,8 @@
         NSMutableArray *urlArray = [NSMutableArray array];
         for (PhotoItem *photoItem in self.homeWorkItem.photoArray)
         {
-            if(photoItem.originalUrl)
-                [urlArray addObject:photoItem.originalUrl];
+            if(photoItem.big)
+                [urlArray addObject:photoItem.big];
         }
         [[SDWebImagePrefetcher sharedImagePrefetcher] prefetchURLs:urlArray progress:nil completed:^(NSUInteger noOfFinishedUrls, NSUInteger noOfSkippedUrls) {
             NSMutableArray *imageArray = [NSMutableArray array];

@@ -114,7 +114,7 @@
     NSMutableDictionary *studentDic = [[NSMutableDictionary alloc] initWithCapacity:0];
     for (StudentInfo *student in students)
     {
-        NSString *key = student.shortIndex;
+        NSString *key = student.first_letter;
         ContactGroup *studentGroup = [studentDic objectForKey:key];
         if(studentGroup == nil)
         {

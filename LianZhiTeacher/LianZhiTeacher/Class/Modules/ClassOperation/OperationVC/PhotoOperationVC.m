@@ -47,7 +47,7 @@
         for (PhotoItem *photoItem in self.originalImageArray)
         {
             PublishImageItem *imageItem = [[PublishImageItem alloc] init];
-            [imageItem setImage:[[SDImageCache sharedImageCache] imageFromDiskCacheForKey:photoItem.thumbnailUrl]];
+            [imageItem setImage:[[SDImageCache sharedImageCache] imageFromDiskCacheForKey:photoItem.small]];
             [_imageArray addObject:imageItem];
         }
     }

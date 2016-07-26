@@ -170,9 +170,9 @@
     PersonalInfoItem *nameItem = [[PersonalInfoItem alloc] initWithKey:@"姓名" value:[UserCenter sharedInstance].userInfo.name canEdit:YES];
     [nameItem setRequestKey:@"name"];
     
-    PersonalInfoItem *nickItem = [[PersonalInfoItem alloc] initWithKey:@"昵称" value:[UserCenter sharedInstance].userInfo.nickName canEdit:YES];
+    PersonalInfoItem *nickItem = [[PersonalInfoItem alloc] initWithKey:@"昵称" value:[UserCenter sharedInstance].userInfo.nick canEdit:YES];
     [nickItem setRequestKey:@"nick"];
-    PersonalInfoItem *birthDayItem = [[PersonalInfoItem alloc] initWithKey:@"出生日期" value:[UserCenter sharedInstance].userInfo.birthDay canEdit:NO];
+    PersonalInfoItem *birthDayItem = [[PersonalInfoItem alloc] initWithKey:@"出生日期" value:[UserCenter sharedInstance].userInfo.birthday canEdit:NO];
     [birthDayItem setRequestKey:@"birthday"];
     PersonalInfoItem *emailItem = [[PersonalInfoItem alloc] initWithKey:@"联系邮箱" value:[UserCenter sharedInstance].userInfo.email canEdit:YES];
     [emailItem setRequestKey:@"email"];

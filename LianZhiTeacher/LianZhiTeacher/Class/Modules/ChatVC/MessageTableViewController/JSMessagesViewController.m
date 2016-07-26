@@ -6,6 +6,13 @@
 static NSString *topChatID = nil;
 static NSInteger num = 1;
 
+@interface JSMessagesViewController ()
+@property (nonatomic, strong)UITableView *tableView;
+@property (nonatomic, strong)ChatMessageModel *chatMessageModel;
+@property (nonatomic, assign)BOOL isRequestHistory;
+@property (nonatomic, assign)BOOL isRequestLatest;
+@end
+
 @implementation JSMessagesViewController
 
 
@@ -18,7 +25,6 @@ static NSInteger num = 1;
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     topChatID = nil;
 }
 
@@ -32,17 +38,16 @@ static NSInteger num = 1;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    Reachability* curReach = ApplicationDelegate.hostReach;
-    NetworkStatus status = [curReach currentReachabilityStatus];
-    if(status == NotReachable)
-        [self updateTitle];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(getMessage) userInfo:nil repeats:YES];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(getMessage) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
     [_timer fire];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.targetID forKey:@"from_id"];
     [params setValue:kStringFromValue(self.chatType) forKey:@"from_type"];
+    @weakify(self);
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/get_sound" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        @strongify(self);
         NSString *status = [responseObject getStringForKey:@"sound"];
         self.soundOn = [status isEqualToString:@"open"];
         [self updateTitle];
@@ -54,7 +59,6 @@ static NSInteger num = 1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateTitle) name:kReachabilityChangedNotification object:nil];
     topChatID = self.targetID;
     if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup)//群组或者班级
     {
@@ -71,20 +75,34 @@ static NSInteger num = 1;
     [_inputView setInputDelegate:self];
     [_inputView setY:self.view.height - _inputView.height - 64];
     [self.view addSubview:_inputView];
-    [self setSupportPullDown:YES];
-    [self.tableView setHeight:self.view.height - _inputView.height];
-    [self bindTableCell:@"MessageCell" tableModel:@"ChatMessageModel"];
     
-    ChatMessageModel *model = (ChatMessageModel *)self.tableViewModel;
-    [model setTargetUser:self.title];
-    
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
-    [_tableView addGestureRecognizer:tapGesture];
-    
-//    _testTimer = [NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(send) userInfo:nil repeats:YES];
-//    _testTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(send) userInfo:nil repeats:YES];
-//    [_testTimer fire];
+    [self.view addSubview:[self tableView]];
 
+    [self.chatMessageModel setTargetUser:self.title];
+    [self scrollToBottom:NO];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
+    [self.tableView addGestureRecognizer:tapGesture];
+
+}
+
+- (UITableView *)tableView{
+    if(!_tableView){
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64 - _inputView.height) style:UITableViewStylePlain];
+        [_tableView setBackgroundColor:[UIColor clearColor]];
+        [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+        [_tableView setDelegate:self];
+        [_tableView setDataSource:self];
+        
+        [_tableView setMj_header:[MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(requestOldMessage)]];
+    }
+    return _tableView;
+}
+
+- (ChatMessageModel *)chatMessageModel{
+    if(!_chatMessageModel){
+        _chatMessageModel = [[ChatMessageModel alloc] initWithUid:self.targetID type:self.chatType];
+    }
+    return _chatMessageModel;
 }
 
 - (void)send
@@ -98,80 +116,65 @@ static NSInteger num = 1;
 - (void)setSoundOn:(BOOL)soundOn
 {
     _soundOn = soundOn;
-    ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
-    [messageModel setSoundOff:!_soundOn];
+    [self.chatMessageModel setSoundOff:!_soundOn];
 }
 
 - (void)updateTitle
 {
-    NSString *title = nil;
-    Reachability* curReach = ApplicationDelegate.hostReach;
-    NetworkStatus status = [curReach currentReachabilityStatus];
-    if(status == NotReachable)
+    BOOL earMode = [UserCenter sharedInstance].personalSetting.earPhone;
+    BOOL soundOn = self.soundOn;
+    if(soundOn && !earMode){
+        return;
+    }
+    NSInteger maxWidth = self.view.width - 80 * 2;
+    
+    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, maxWidth, 40)];
+    NSInteger width = 0;
+    NSInteger spaceXEnd = titleView.width;
+    UIImageView *soundOffImageView = nil;
+    if(!soundOn)
     {
-        title = @"网络不可用";
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-        [titleLabel setTextColor:[UIColor whiteColor]];
-        [titleLabel setText:title];
-        [titleLabel sizeToFit];
-        [self.navigationItem setTitleView:titleLabel];
+        soundOffImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TitleSoundOff"]];
+        [titleView addSubview:soundOffImageView];
+        [soundOffImageView setOrigin:CGPointMake(spaceXEnd - soundOffImageView.width, (titleView.height - soundOffImageView.height) / 2)];
+        width += soundOffImageView.width + 5;
+        spaceXEnd -= soundOffImageView.width + 5;
+    }
+    UIImageView *earPhoneImageView = nil;
+    if(earMode)
+    {
+        earPhoneImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"EarPhoneMode"]];
+        [titleView addSubview:earPhoneImageView];
+        width += earPhoneImageView.width + 5;
+        spaceXEnd -= earPhoneImageView.width + 5;
+    }
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    [titleLabel setFont:[UIFont systemFontOfSize:18]];
+    [titleLabel setTextColor:[UIColor colorWithHexString:@"252525"]];
+    [titleLabel setText:self.title];
+    [titleLabel sizeToFit];
+    [titleView addSubview:titleLabel];
+    width += titleLabel.width;
+    
+    if(width < maxWidth)
+    {
+        [titleLabel setOrigin:CGPointMake((titleView.width - width) / 2, (titleView.height - titleLabel.height) / 2)];
+        NSInteger spaceXStart = titleLabel.right + 5;
+        if(earMode)
+        {
+            [earPhoneImageView setOrigin:CGPointMake(spaceXStart, (titleView.height - earPhoneImageView.height) / 2)];
+            spaceXStart += earPhoneImageView.width + 5;
+        }
+        if(!soundOn)
+            [soundOffImageView setOrigin:CGPointMake(spaceXStart, (titleView.height - soundOffImageView.height) / 2)];
     }
     else
     {
-        BOOL earMode = [UserCenter sharedInstance].personalSetting.earPhone;
-        BOOL soundOn = self.soundOn;
-        
-        NSInteger maxWidth = self.view.width - 80 * 2;
-        
-        UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, maxWidth, 40)];
-        NSInteger width = 0;
-        NSInteger spaceXEnd = titleView.width;
-        UIImageView *soundOffImageView = nil;
-        if(!soundOn)
-        {
-            soundOffImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TitleSoundOff"]];
-            [titleView addSubview:soundOffImageView];
-            [soundOffImageView setOrigin:CGPointMake(spaceXEnd - soundOffImageView.width, (titleView.height - soundOffImageView.height) / 2)];
-            width += soundOffImageView.width + 5;
-            spaceXEnd -= soundOffImageView.width + 5;
-        }
-        UIImageView *earPhoneImageView = nil;
-        if(earMode)
-        {
-            earPhoneImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"EarPhoneMode"]];
-            [titleView addSubview:earPhoneImageView];
-            width += earPhoneImageView.width + 5;
-            spaceXEnd -= earPhoneImageView.width + 5;
-        }
-        
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
-        [titleLabel setTextColor:[UIColor whiteColor]];
-        [titleLabel setText:self.title];
-        [titleLabel sizeToFit];
-        [titleView addSubview:titleLabel];
-        width += titleLabel.width;
-        
-        if(width < maxWidth)
-        {
-            [titleLabel setOrigin:CGPointMake((titleView.width - width) / 2, (titleView.height - titleLabel.height) / 2)];
-            NSInteger spaceXStart = titleLabel.right + 5;
-            if(earMode)
-            {
-                [earPhoneImageView setOrigin:CGPointMake(spaceXStart, (titleView.height - earPhoneImageView.height) / 2)];
-                spaceXStart += earPhoneImageView.width + 5;
-            }
-            if(!soundOn)
-                [soundOffImageView setOrigin:CGPointMake(spaceXStart, (titleView.height - soundOffImageView.height) / 2)];
-        }
-        else
-        {
-            [titleLabel setFrame:CGRectMake(0, 0, spaceXEnd, titleView.height)];
-        }
-        
-        self.navigationItem.titleView = titleView;
+        [titleLabel setFrame:CGRectMake(0, 0, spaceXEnd, titleView.height)];
     }
+    
+    self.navigationItem.titleView = titleView;
 }
 
 - (void)onShowClassMembers
@@ -205,42 +208,6 @@ static NSInteger num = 1;
 //    [_inputView setInputType:InputTypeNone];
 }
 
-- (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
-{
-    HttpRequestTask *task = [[HttpRequestTask alloc] init];
-    [task setRequestUrl:@"sms/get"];
-    [task setRequestMethod:REQUEST_GET];
-    [task setRequestType:requestType];
-    [task setObserver:self];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"objid"];
-    [params setValue:self.targetID forKey:@"to_id"];
-    [params setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
-    if(self.chatType == ChatTypeGroup || self.chatType == ChatTypeClass)
-        [params setValue:@"0" forKey:@"to_objid"];
-    else
-        [params setValue:self.to_objid forKey:@"to_objid"];
-    
-    ChatMessageModel *messageModel = (ChatMessageModel *)[self tableViewModel];
-    if(REQUEST_GETMORE == requestType)
-    {
-        [params setValue:messageModel.latestId forKey:@"more_id"];
-        [params setValue:kStringFromValue(1) forKey:@"more_new"];
-    }
-    else
-    {
-        [params setValue:messageModel.oldId forKey:@"more_id"];
-        [params setValue:kStringFromValue(0) forKey:@"more_new"];
-    }
-    [task setParams:params];
-    return task;
-}
-
-- (BOOL)needReload
-{
-    ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
-    return messageModel.hasNew || messageModel.getHistory;
-}
 
 - (void)getMessage
 {
@@ -250,36 +217,91 @@ static NSInteger num = 1;
         _timer = nil;
     }
     else
-        [self requestData:REQUEST_GETMORE];
+    {
+        [self requestLatestMessage];
+    }
 }
 
+- (void)requestOldMessage{
+    if(self.isRequestHistory)
+        return;
+    self.isRequestHistory = YES;
+    if([self.chatMessageModel loadOldData]){
+        [self.tableView reloadData];
+        [self.tableView.mj_header endRefreshing];
+        self.isRequestHistory = NO;
+    }
+    else{
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"objid"];
+        [params setValue:self.targetID forKey:@"to_id"];
+        [params setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
+        if(self.chatType == ChatTypeGroup || self.chatType == ChatTypeClass)
+            [params setValue:@"0" forKey:@"to_objid"];
+        else
+            [params setValue:self.to_objid forKey:@"to_objid"];
+        
+        ChatMessageModel *messageModel = [self chatMessageModel];
+        [params setValue:messageModel.oldId forKey:@"more_id"];
+        [params setValue:kStringFromValue(0) forKey:@"more_new"];
+        @weakify(self);
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/get" method:REQUEST_GET type:REQUEST_GETMORE withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            @strongify(self);
+            [self.chatMessageModel parseData:responseObject.data type:RequestMessageTypeOld];
+            [self.tableView reloadData];
+            self.isRequestHistory = NO;
+            [self.tableView.mj_header endRefreshing];
+        } fail:^(NSString *errMsg) {
+            [self.tableView.mj_header endRefreshing];
+            self.isRequestHistory = NO;
+        }];
+        
+    }
+}
 
+- (void)requestLatestMessage{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"objid"];
+    [params setValue:self.targetID forKey:@"to_id"];
+    [params setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
+    if(self.chatType == ChatTypeGroup || self.chatType == ChatTypeClass)
+        [params setValue:@"0" forKey:@"to_objid"];
+    else
+        [params setValue:self.to_objid forKey:@"to_objid"];
+    
+    ChatMessageModel *messageModel = [self chatMessageModel];
+    [params setValue:messageModel.latestId forKey:@"more_id"];
+    [params setValue:kStringFromValue(1) forKey:@"more_new"];
+    @weakify(self);
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/get" method:REQUEST_GET type:REQUEST_GETMORE withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        @strongify(self);
+        [self.chatMessageModel parseData:responseObject.data type:RequestMessageTypeLatest];
+        [self.tableView reloadData];
+    } fail:^(NSString *errMsg) {
+        
+    }];
+
+}
 - (void)appendNewMessage:(TNDataWrapper *)response replace:(MessageItem *)messageItem
 {
     if(response.count > 0)
     {
-        UIImage *image = messageItem.messageContent.photoItem.image;
+        UIImage *image = messageItem.content.exinfo.imgs.image;
         TNDataWrapper *messageItemWrapper = [response getDataWrapperForIndex:0];
-        [messageItem parseData:messageItemWrapper];
-        messageItem.messageStatus = MessageStatusSuccess;
+        MessageItem *resultItem = [MessageItem nh_modelWithJson:messageItemWrapper.data];
+        resultItem.messageStatus = MessageStatusSuccess;
         if(image)
         {
-            PhotoItem *photoItem = messageItem.messageContent.photoItem;
+            PhotoItem *photoItem = messageItem.content.exinfo.imgs;
             if(photoItem)
             {
-                [[SDImageCache sharedImageCache] storeImage:image forKey:photoItem.thumbnailUrl toDisk:YES];
-                [[SDImageCache sharedImageCache] storeImage:image forKey:photoItem.originalUrl toDisk:YES];
+                [[SDImageCache sharedImageCache] storeImage:image forKey:photoItem.small toDisk:YES];
+                [[SDImageCache sharedImageCache] storeImage:image forKey:photoItem.big toDisk:YES];
             }
         }
-        messageItem.isTmp = NO;
-        BOOL hideTime = NO;
-        for (MessageItem *item in self.tableViewModel.modelItemArray)
-        {
-            if(item != messageItem &&!item.isTmp && [item.messageContent.ctime isEqualToString:messageItem.messageContent.ctime])
-                hideTime = YES;
-        }
-        [messageItem.messageContent setHideTime:hideTime];
-        [self.tableView reloadData];
+        [self.chatMessageModel updateMessage:resultItem];
+        NSInteger row = [self.chatMessageModel.messageArray indexOfObject:resultItem];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 
@@ -302,20 +324,19 @@ static NSInteger num = 1;
     NSData *voiceData = dic[@"voice"];
     
     MessageContent *messageContent = [[MessageContent alloc] init];
-    [messageContent setMessageType:messageType];
+    [messageContent setType:messageType];
     [messageContent setText:dic[@"strContent"]];
-    [messageContent setTimeInterval:[[NSDate date] timeIntervalSince1970]];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MM月dd日 HH:mm"];
-    messageContent.ctime = [formatter stringFromDate:[NSDate date]];
+    [messageContent setCtime:[[NSDate date] timeIntervalSince1970]];
     
+    Exinfo *exinfo = [[Exinfo alloc] init];
+    messageContent.exinfo = exinfo;
     if(image)
     {
         PhotoItem *photoItem = [[PhotoItem alloc] init];
         [photoItem setWidth:image.size.width];
         [photoItem setHeight:image.size.height];
         [photoItem setImage:image];
-        [messageContent setPhotoItem:photoItem];
+        [exinfo setImgs:photoItem];
     }
     
     if(voiceData)
@@ -323,7 +344,7 @@ static NSInteger num = 1;
         NSInteger timeSpan = [dic[@"strVoiceTime"] integerValue];
         AudioItem *audioItem = [[AudioItem alloc] init];
         [audioItem setTimeSpan:timeSpan];
-        [messageContent setAudioItem:audioItem];
+        [exinfo setVoice:audioItem];
     }
     
     MessageItem *messageItem = [[MessageItem alloc] init];
@@ -331,16 +352,17 @@ static NSInteger num = 1;
     messageItem.params = dic;
     [messageItem setMessageStatus:MessageStatusSending];
     [messageItem setIsTmp:YES];
-    [messageItem setUserInfo:[UserCenter sharedInstance].userInfo];
+    [messageItem setUser:[UserCenter sharedInstance].userInfo];
     [messageItem setFrom:UUMessageFromMe];
-    [messageItem setMessageContent:messageContent];
+    [messageItem setContent:messageContent];
+    [messageItem makeClientSendID];
     
-    MessageItem *preItem = [self.tableViewModel.modelItemArray lastObject];
-    if([messageItem.messageContent.ctime isEqualToString:preItem.messageContent.ctime])
-        [messageItem.messageContent setHideTime:YES];
-    [self.tableViewModel.modelItemArray addObject:messageItem];
+    MessageItem *preItem = [self.chatMessageModel.messageArray lastObject];
+    if([messageItem.content.timeStr isEqualToString:preItem.content.timeStr])
+        [messageItem.content setHideTime:YES];
+    [self.chatMessageModel sendNewMessage:messageItem];
     [self.tableView reloadData];
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.tableViewModel.modelItemArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    [self scrollToBottom:YES];
     
     
     [messageParam setValue:messageItem.client_send_id forKey:@"client_send_id"];
@@ -358,57 +380,66 @@ static NSInteger num = 1;
     }];
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if(_inputView.inputType != InputTypeNone && scrollView.dragging)
-        [_inputView setInputType:InputTypeNone];
-}
-
 - (void)scrollToBottom:(BOOL)animated
 {
-    NSArray *modelArray = self.tableViewModel.modelItemArray;
+    NSArray *modelArray = self.chatMessageModel.messageArray;
     if(modelArray.count > 0)
-        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:modelArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:modelArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+}
+
+#pragma mark - UITableViewDelegate
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.chatMessageModel.messageArray.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    MessageItem *messageItem = self.chatMessageModel.messageArray[indexPath.row];
+    return [messageItem cellHeight];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MessageCell *cell = (MessageCell *)[super tableView:tableView cellForRowAtIndexPath:indexPath];
+    static NSString *reuseID = @"MessageCell";
+    MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+    if(!cell){
+        cell = [[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+    }
     [cell setDelegate:self];
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    MessageCell *messageCell = (MessageCell *)cell;
+    [messageCell setData:[[self chatMessageModel].messageArray objectAtIndex:indexPath.row]];
 }
 
 - (void)TNBaseTableViewControllerRequestSuccess
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        ChatMessageModel *messageModel = (ChatMessageModel *)self.tableViewModel;
-        NSArray *visibleCells = [_tableView visibleCells];
+        ChatMessageModel *messageModel = (ChatMessageModel *)self.chatMessageModel;
+        NSArray *visibleCells = [self.tableView visibleCells];
         UITableViewCell *cell = [visibleCells lastObject];
-        NSIndexPath *indexpath = [_tableView indexPathForCell:cell];
-        BOOL scroll = indexpath.row >= messageModel.modelItemArray.count - messageModel.numOfNew - 1;
-        if(messageModel.hasNew && messageModel.modelItemArray.count >= 1 && (scroll || messageModel.needScrollBottom))
+        NSIndexPath *indexpath = [self.tableView indexPathForCell:cell];
+        BOOL scroll = indexpath.row >= messageModel.messageArray.count - messageModel.numOfNew - 1;
+        if(messageModel.hasNew && messageModel.messageArray.count >= 1 && (scroll || messageModel.needScrollBottom))
         {
-            [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messageModel.modelItemArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messageModel.messageArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         }
     });
 }
 
-- (BOOL)hideErrorAlert
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    return YES;
+    if(_inputView.inputType != InputTypeNone && scrollView.dragging)
+        [_inputView setInputType:InputTypeNone];
+    
+//    if(scrollView.contentOffset.y < 40){
+//        if(!self.isRequestHistory){
+//            self.isRequestHistory = YES;
+//            [self requestOldMessage];
+//        }
+//    }
 }
-
-
-//#pragma mark - TNBaseTableViewDelegate
-//- (BOOL)supportCache
-//{
-//    return YES;
-//}
-//
-//- (NSString *)cacheFileName
-//{
-//    return [NSString stringWithFormat:@"%@_%@_%@_%@_%@_%@",[self class],self.targetID,kStringFromValue(self.chatType),self.to_objid,[UserCenter sharedInstance].curSchool.schoolID,[UserCenter sharedInstance].userInfo.uid];
-//}
 
 #pragma mark - InputDelegate
 - (void)inputBarViewDidCommit:(NSString *)text
@@ -421,7 +452,7 @@ static NSInteger num = 1;
 - (void)inputBarViewDidChangeHeight:(NSInteger)height
 {
     [UIView animateWithDuration:0.25 animations:^{
-        [_tableView setHeight:self.view.height - height];
+        [self.tableView setHeight:self.view.height - height];
         [_inputView setFrame:CGRectMake(0, self.view.height - height, self.view.width, height)];
     } completion:^(BOOL finished) {
         
@@ -477,19 +508,17 @@ static NSInteger num = 1;
 - (void)dealTheFunctionData:(NSDictionary *)dic
 {
     [self sendMessage:dic];
-    [_tableView reloadData];
-    [self scrollToBottom:YES];
 }
 
 #pragma mark - MessageCellDelegate
 - (void)onRevokeMessage:(MessageItem *)messageItem
 {
     __weak typeof(self) wself = self;
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/revoke" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"mid" : messageItem.messageContent.mid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        for (MessageItem *item in wself.tableViewModel.modelItemArray)
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/revoke" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"mid" : messageItem.content.mid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        for (MessageItem *item in wself.chatMessageModel.messageArray)
         {
-            if([item.messageContent.mid isEqualToString:messageItem.messageContent.mid])
-                [item.messageContent setMessageType:UUMessageTypeRevoked];
+            if([item.content.mid isEqualToString:messageItem.content.mid])
+                [item.content setType:UUMessageTypeRevoked];
         }
         [wself.tableView reloadData];
     } fail:^(NSString *errMsg) {
@@ -500,13 +529,16 @@ static NSInteger num = 1;
 - (void)onDeleteMessage:(MessageItem *)messageItem
 {
     __weak typeof(self) wself = self;
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"mid" : messageItem.messageContent.mid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        for (MessageItem *item in wself.tableViewModel.modelItemArray)
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"mid" : messageItem.content.mid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        for (MessageItem *item in wself.chatMessageModel.messageArray)
         {
-            if([item.messageContent.mid isEqualToString:messageItem.messageContent.mid])
+            if([item.content.mid isEqualToString:messageItem.content.mid])
             {
-                [wself.tableViewModel.modelItemArray removeObject:item];
-                [wself.tableView reloadData];
+                NSInteger row = [wself.chatMessageModel.messageArray indexOfObject:item];
+                [wself.chatMessageModel deleteMessage:item];
+                [self.tableView beginUpdates];
+                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                [self.tableView endUpdates];
                 break;
             }
         }
@@ -550,13 +582,13 @@ static NSInteger num = 1;
 }
 
 - (void)onReceiveGift:(MessageItem *)messageItem {
-    if(messageItem.messageContent.messageType == UUMessageTypeGift && messageItem.messageContent.unread && messageItem.from == UUMessageFromOther) {
-        NSDictionary *dic = @{@"strContent": messageItem.messageContent.presentName,
+    if(messageItem.content.type == UUMessageTypeGift && messageItem.content.unread && messageItem.from == UUMessageFromOther) {
+        NSDictionary *dic = @{@"strContent": messageItem.content.exinfo.presentName,
                               @"type": @(UUMessageTypeReceiveGift)};
         [self sendMessage:dic];
         //更新已读
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/read" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"mids" : messageItem.messageContent.mid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-            messageItem.messageContent.unread = 0;
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/read" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"mids" : messageItem.content.mid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            messageItem.content.unread = 0;
         } fail:^(NSString *errMsg) {
             
         }];

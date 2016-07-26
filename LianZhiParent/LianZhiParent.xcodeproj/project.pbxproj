@@ -357,6 +357,7 @@
 		8D867C301D2A6CD90020A21C /* TNBaseObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C2F1D2A6CD90020A21C /* TNBaseObject.m */; };
 		8D867D231D3D232C0020A21C /* LZKVStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D221D3D232C0020A21C /* LZKVStorage.m */; };
 		8DA785991CA4E70B00A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785981CA4E70B00A384F0 /* NSString+UrlParams.m */; };
+		8DCFD6621D43CC78001EDC8A /* YYInfiniteScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6611D43CC78001EDC8A /* YYInfiniteScrollView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1008,6 +1009,8 @@
 		8D867D221D3D232C0020A21C /* LZKVStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZKVStorage.m; sourceTree = "<group>"; };
 		8DA785971CA4E70B00A384F0 /* NSString+UrlParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlParams.h"; sourceTree = "<group>"; };
 		8DA785981CA4E70B00A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
+		8DCFD6601D43CC78001EDC8A /* YYInfiniteScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInfiniteScrollView.h; sourceTree = "<group>"; };
+		8DCFD6611D43CC78001EDC8A /* YYInfiniteScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfiniteScrollView.m; sourceTree = "<group>"; };
 		F48620718382C8CAB78BD7B3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1506,6 +1509,8 @@
 			children = (
 				3793F6491B7CFFD900501F77 /* ActionSelectView.h */,
 				3793F64A1B7CFFD900501F77 /* ActionSelectView.m */,
+				8DCFD6601D43CC78001EDC8A /* YYInfiniteScrollView.h */,
+				8DCFD6611D43CC78001EDC8A /* YYInfiniteScrollView.m */,
 				8D867BED1D261FFE0020A21C /* CircleProgressView.h */,
 				8D867BEE1D261FFE0020A21C /* CircleProgressView.m */,
 				3793F64B1B7CFFD900501F77 /* AudioRecordView.h */,
@@ -2798,6 +2803,7 @@
 				3793F7FF1B7CFFD900501F77 /* MKAnnotationView+WebCache.m in Sources */,
 				3793F8201B7CFFD900501F77 /* TNBaseCollectionViewController.m in Sources */,
 				3793F8031B7CFFD900501F77 /* SDWebImageDecoder.m in Sources */,
+				8DCFD6621D43CC78001EDC8A /* YYInfiniteScrollView.m in Sources */,
 				3720C1491A41E3EB000357A5 /* ContactItemCell.m in Sources */,
 				3793F7D21B7CFFD900501F77 /* PublishImageItem.m in Sources */,
 				8D867C261D2A6C530020A21C /* NHAudioTool.m in Sources */,

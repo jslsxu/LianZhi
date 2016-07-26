@@ -55,15 +55,18 @@ static SystemSoundID shake_sound_male_id = 0;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setBackgroundColor:[UIColor whiteColor]];
-
-    [self cleanOldData];
-    [Bugtags startWithAppKey:kBugtagsKey invocationEvent:[self isInhouse] ?  BTGInvocationEventBubble : BTGInvocationEventNone];
-    [[SVShareManager sharedInstance] initialize];
-    [[TaskUploadManager sharedInstance] start];
-    [MAMapServices sharedServices].apiKey = [self curAutoNaviKey];
-    [self setupCommonHandler];
+   [ self setupCommonAppearance];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self cleanOldData];
+        [Bugtags startWithAppKey:kBugtagsKey invocationEvent:[self isInhouse] ?  BTGInvocationEventBubble : BTGInvocationEventNone];
+        [[SVShareManager sharedInstance] initialize];
+        [[TaskUploadManager sharedInstance] start];
+        [MAMapServices sharedServices].apiKey = [self curAutoNaviKey];
+        [self setupCommonHandler];
+    });
     [self registerSound];           //注册声音
-    [self setupCommonAppearance];
+
     [self registerRemoteNotification];
     
     if([self isNewVersion])

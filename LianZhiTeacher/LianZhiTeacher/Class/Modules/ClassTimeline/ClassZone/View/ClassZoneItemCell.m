@@ -170,9 +170,9 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
     MJPhotoBrowser *photoBrowser = [[MJPhotoBrowser alloc] init];
     NSMutableArray *photos = [NSMutableArray arrayWithArray:item.photos];
     for (PhotoItem *photoItem in photos) {
-        [photoItem setUserInfo:item.userInfo];
-        [photoItem setComment:item.content];
-        [photoItem setFormatTimeStr:item.formatTime];
+        [photoItem setUser:item.userInfo];
+        [photoItem setWords:item.content];
+        [photoItem setTime_str:item.formatTime];
     }
     [photoBrowser setDelegate:self];
     [photoBrowser setPhotos:photos];

@@ -232,8 +232,8 @@ NSString *const kPractiseItemKey = @"kPractiseItemKey";
     NSMutableArray *photos = [NSMutableArray arrayWithArray:item.photoArray];
     for (PhotoItem *photoItem in photos) {
 //        [photoItem setUserInfo:];
-        [photoItem setComment:item.words];
-        [photoItem setFormatTimeStr:item.timeStr];
+        [photoItem setWords:item.words];
+        [photoItem setTime_str:item.timeStr];
     }
     [photoBrowser setPhotos:photos];
     [photoBrowser setCurrentPhotoIndex:indexPath.row];

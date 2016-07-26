@@ -38,7 +38,7 @@
     else if([_userInfo isKindOfClass:[StudentInfo class]])
         [_nameLabel setText:[(StudentInfo *)_userInfo name]];
     [_avatarView setImageWithUrl:[NSURL URLWithString:_userInfo.avatar]];
-    [_avatarView setStatus:_userInfo.activited ? nil : @"未下载"];
+    [_avatarView setStatus:_userInfo.actived ? nil : @"未下载"];
 }
 
 @end
@@ -175,7 +175,7 @@
                         BOOL isIn = NO;
                         for (ContactGroup *group in students)
                         {
-                            if([group.key isEqualToString:childInfo.shortIndex])
+                            if([group.key isEqualToString:childInfo.first_letter])
                             {
                                 isIn = YES;
                                 [group.contacts addObject:childInfo];
@@ -184,7 +184,7 @@
                         if(!isIn)
                         {
                             ContactGroup *group = [[ContactGroup alloc] init];
-                            [group setKey:childInfo.shortIndex];
+                            [group setKey:childInfo.first_letter];
                             [group.contacts addObject:childInfo];
                             [students addObject:group];
                         }
@@ -321,7 +321,7 @@
     else
     {
         TeacherInfo *teacherInfo = self.teacherArray[indexPath.row];
-        if(teacherInfo.activited)
+        if(teacherInfo.actived)
         {
             JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
             [chatVC setTo_objid:[UserCenter sharedInstance].curSchool.schoolID];

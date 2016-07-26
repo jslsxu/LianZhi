@@ -98,8 +98,8 @@
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     MessageItem *messageItem = (MessageItem *)modelItem;
-    [_timeLabel setHidden:messageItem.messageContent.hideTime];
-    [_timeLabel setText:messageItem.messageContent.ctime];
+    [_timeLabel setHidden:messageItem.content.hideTime];
+    [_timeLabel setText:messageItem.content.timeStr];
     
     if(MessageStatusSending == messageItem.messageStatus)
     {
@@ -112,7 +112,7 @@
     [_sendFailImageView setHidden:MessageStatusFailed != messageItem.messageStatus];
     
     NSInteger spaceYStart = kTimeLabelHeight + 10;
-    if(messageItem.messageContent.hideTime)
+    if(messageItem.content.hideTime)
         spaceYStart = 0;
     if(messageItem.from == UUMessageFromMe)
     {
@@ -137,12 +137,12 @@
         [_contentButton setContentEdgeInsets:UIEdgeInsetsMake(10, 15, 10, 10)];
         [_playButton setBackgroundImage:[[UIImage imageNamed:@"MessageReceivedBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)] forState:UIControlStateNormal];
         [_playButton setBackgroundImage:[[UIImage imageNamed:@"MessageReceivedBGHighlighted"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)] forState:UIControlStateHighlighted];
-        UserInfo *userInfo = messageItem.userInfo;
+        UserInfo *userInfo = messageItem.user;
         [_nameLabel setText:userInfo.name];
     }
     [_nameLabel setY:spaceYStart];
     spaceYStart += _nameLabel.height + 5;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:messageItem.userInfo.avatar]];
+    [_avatarView setImageWithUrl:[NSURL URLWithString:messageItem.user.avatar]];
     [_avatarView setY:spaceYStart];
     [_avatarView setHidden:NO];
     [_nameLabel setHidden:NO];
@@ -158,17 +158,17 @@
     [_revokeMessageLabel setHidden:YES];
     [_giftDetailLabel setHidden:YES];
     [_giftView setHidden:YES];
-    MessageType type = messageItem.messageContent.messageType;
+    MessageType type = messageItem.content.type;
     _contentButton.backImageView.layer.mask = nil;
     if(type == UUMessageTypeText)
     {
-        CGSize contentSize = [messageItem.messageContent.text boundingRectWithSize:CGSizeMake(kScreenWidth - 50 * 2 - 10 - 15, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
-        [_contentButton setTitle:messageItem.messageContent.text forState:UIControlStateNormal];
+        CGSize contentSize = [messageItem.content.text boundingRectWithSize:CGSizeMake(kScreenWidth - 50 * 2 - 10 - 15, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
+        [_contentButton setTitle:messageItem.content.text forState:UIControlStateNormal];
         [_contentButton setSize:CGSizeMake(contentSize.width + 10 + 15, contentSize.height + 10 * 2)];
     }
     else if(type == UUMessageTypePicture)
     {
-        PhotoItem *photoItem = messageItem.messageContent.photoItem;
+        PhotoItem *photoItem = messageItem.content.exinfo.imgs;
         [_contentButton.backImageView setHidden:NO];
         if(photoItem.width > photoItem.height)
             [_contentButton setSize:CGSizeMake(120, 120 * photoItem.height / photoItem.width)];
@@ -177,12 +177,12 @@
         if(photoItem.image)
             [_contentButton.backImageView setImage:photoItem.image];
         else
-            [_contentButton.backImageView sd_setImageWithURL:[NSURL URLWithString:photoItem.thumbnailUrl] placeholderImage:nil];
+            [_contentButton.backImageView sd_setImageWithURL:[NSURL URLWithString:photoItem.small] placeholderImage:nil];
         [self makeMaskView:_contentButton.backImageView withImage:[_contentButton backgroundImageForState:UIControlStateNormal]];
     }
     else if(type == UUMessageTypeVoice)
     {
-        AudioItem *audioItem = messageItem.messageContent.audioItem;
+        AudioItem *audioItem = messageItem.content.exinfo.voice;
         NSInteger second = audioItem.timeSpan;
         NSInteger maxWidth = kScreenWidth - 50 * 2 - 60 - 40;
         NSInteger width = maxWidth * second / 120 + 40;
@@ -190,7 +190,7 @@
         [_contentButton setHidden:YES];
         [_playButton setHidden:NO];
         [_audioTimeLabel setHidden:NO];
-        [_audioTimeLabel setText:[Utility formatStringForTime:messageItem.messageContent.audioItem.timeSpan]];
+        [_audioTimeLabel setText:[Utility formatStringForTime:messageItem.content.exinfo.voice.timeSpan]];
         [_audioTimeLabel sizeToFit];
         [_playButton setSize:_contentButton.size];
         if(messageItem.from == UUMessageFromMe)
@@ -208,7 +208,7 @@
     }
     else if(type == UUMessageTypeFace)//表情
     {
-        NSString *faceText = messageItem.messageContent.text;
+        NSString *faceText = messageItem.content.text;
         NSInteger index = [MFWFace indexForFace:faceText];
         [_contentButton setBackgroundImage:nil forState:UIControlStateNormal];
         [_contentButton setBackgroundImage:nil forState:UIControlStateHighlighted];
@@ -234,14 +234,14 @@
         [_contentButton.backImageView setBackgroundColor:[UIColor colorWithHexString:@"fa9d3b"]];
         
         [_giftView setFrame:CGRectMake(leftMargin, 5, 50, 50)];
-        [_giftView sd_setImageWithURL:[NSURL URLWithString:messageItem.messageContent.photoItem.thumbnailUrl] placeholderImage:nil];
+        [_giftView sd_setImageWithURL:[NSURL URLWithString:messageItem.content.exinfo.imgs.small] placeholderImage:nil];
         
         [_giftDetailLabel setFrame:CGRectMake(_giftView.right + 10, 10, _contentButton.width - rightMargin - (_giftView.right + 10), 40)];
-        if(messageItem.messageContent.text.length > 0)
+        if(messageItem.content.text.length > 0)
         {
             NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
             [paragraphStyle setLineSpacing:6];
-            NSMutableAttributedString *giftDetailStr = [[NSMutableAttributedString alloc] initWithString:messageItem.messageContent.text attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:13],NSParagraphStyleAttributeName : paragraphStyle}];
+            NSMutableAttributedString *giftDetailStr = [[NSMutableAttributedString alloc] initWithString:messageItem.content.text attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:13],NSParagraphStyleAttributeName : paragraphStyle}];
             [giftDetailStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"点击查看" attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:11],NSParagraphStyleAttributeName : paragraphStyle}]];
             [_giftDetailLabel setAttributedText:giftDetailStr];
         }
@@ -255,13 +255,13 @@
         NSMutableAttributedString *msg = [[NSMutableAttributedString alloc] init];
         if(UUMessageFromMe == messageItem.from) {//我接受礼物
             [msg appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"您领取了%@送的",messageItem.targetUser] attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}]];
-            if(messageItem.messageContent.presentName) {
-                [msg appendAttributedString:[[NSAttributedString alloc] initWithString:messageItem.messageContent.presentName attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"fa9d3b"]}]];
+            if(messageItem.content.exinfo.presentName) {
+                [msg appendAttributedString:[[NSAttributedString alloc] initWithString:messageItem.content.exinfo.presentName attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"fa9d3b"]}]];
             }
         }
         else {//对方接受礼物
-            [msg appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"对方已领取您发送的%@,谢谢鼓励!",messageItem.messageContent.presentName] attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}]];
-            [msg addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"fa9d3b"] range:NSMakeRange(9, messageItem.messageContent.presentName.length)];
+            [msg appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"对方已领取您发送的%@,谢谢鼓励!",messageItem.content.exinfo.presentName] attributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}]];
+            [msg addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"fa9d3b"] range:NSMakeRange(9, messageItem.content.exinfo.presentName.length)];
         }
         [_revokeMessageLabel setWidth:self.width - 10];
         [_revokeMessageLabel setAttributedText:msg];
@@ -289,7 +289,7 @@
 - (void)onAudioCLicked
 {
     MessageItem *messageItem = (MessageItem *)self.modelItem;
-    AudioItem *audioItem = messageItem.messageContent.audioItem;
+    AudioItem *audioItem = messageItem.content.exinfo.voice;
     [_playButton setVoiceWithURL:[NSURL URLWithString:audioItem.audioUrl] withAutoPlay:YES];
 }
 
@@ -297,7 +297,7 @@
 {
     MessageItem *messageItem = (MessageItem *)self.modelItem;
     NSMutableArray *menuArray = [NSMutableArray array];
-    if(messageItem.messageContent.messageType == UUMessageTypeText)
+    if(messageItem.content.type == UUMessageTypeText)
     {
         UIMenuItem *copyMenu = [[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copyMessage)];
         [menuArray addObject:copyMenu];
@@ -305,7 +305,7 @@
     if(!messageItem.isTmp)
     {
         NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
-        if(timeInterval - messageItem.messageContent.timeInterval < 30)
+        if(timeInterval - messageItem.createTime < 30)
         {
             if(messageItem.from == UUMessageFromMe)
             {
@@ -339,22 +339,22 @@
 - (void)onContentButtonClicked
 {
     MessageItem *messageItem = (MessageItem *)self.modelItem;
-    if (messageItem.messageContent.messageType == UUMessageTypePicture)
+    if (messageItem.content.type == UUMessageTypePicture)
     {
         UIImageView *backImageView = _contentButton.backImageView;
         UIImage *defaultImage = backImageView.image;
         if(defaultImage)
         {
-            PhotoItem *photoItem = [messageItem.messageContent photoItem];
-            [UUImageAvatarBrowser showImage:_contentButton.backImageView withOriginalUrl:photoItem.originalUrl size:CGSizeMake(photoItem.width, photoItem.height)];
+            PhotoItem *photoItem = messageItem.content.exinfo.imgs;
+            [UUImageAvatarBrowser showImage:_contentButton.backImageView withOriginalUrl:photoItem.big size:CGSizeMake(photoItem.width, photoItem.height)];
         }
     }
-    else if (messageItem.messageContent.messageType == UUMessageTypeGift){
+    else if (messageItem.content.type == UUMessageTypeGift){
         if(messageItem.from == UUMessageFromOther) {
             //如果没有收
-            if(messageItem.messageContent.unread)
+            if(messageItem.content.unread)
             {
-                [GiftDetailView showWithImage:messageItem.messageContent.photoItem.thumbnailUrl title:[NSString stringWithFormat:@"%@给你送了%@",messageItem.targetUser, messageItem.messageContent.presentName] receiveCompletion:^{
+                [GiftDetailView showWithImage:messageItem.content.exinfo.imgs.small title:[NSString stringWithFormat:@"%@给你送了%@",messageItem.targetUser, messageItem.content.exinfo.presentName] receiveCompletion:^{
                     if([self.delegate respondsToSelector:@selector(onReceiveGift:)])
                     {
                         [self.delegate onReceiveGift:messageItem];
@@ -362,14 +362,14 @@
                 } valid:YES];
             }
             else {
-                [GiftDetailView showWithImage:messageItem.messageContent.photoItem.thumbnailUrl title:[NSString stringWithFormat:@"%@给您送了%@",messageItem.targetUser, messageItem.messageContent.presentName]receiveCompletion:^{
+                [GiftDetailView showWithImage:messageItem.content.exinfo.imgs.small title:[NSString stringWithFormat:@"%@给您送了%@",messageItem.targetUser, messageItem.content.exinfo.presentName]receiveCompletion:^{
 
                 } valid:NO];
 
             }
         }
         else {//自己发的
-            [GiftDetailView showWithImage:messageItem.messageContent.photoItem.thumbnailUrl title:[NSString stringWithFormat:@"您给%@送了%@",messageItem.targetUser, messageItem.messageContent.presentName]];
+            [GiftDetailView showWithImage:messageItem.content.exinfo.imgs.small title:[NSString stringWithFormat:@"您给%@送了%@",messageItem.targetUser, messageItem.content.exinfo.presentName]];
         }
     }
 }
@@ -408,7 +408,7 @@
 {
     MessageItem *messageItem = (MessageItem *)self.modelItem;
     UIPasteboard *pboard = [UIPasteboard generalPasteboard];
-    pboard.string = messageItem.messageContent.text;
+    pboard.string = messageItem.content.text;
 }
 
 - (void)deleteMessage

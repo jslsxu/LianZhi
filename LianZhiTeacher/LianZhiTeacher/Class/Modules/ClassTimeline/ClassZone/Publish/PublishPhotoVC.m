@@ -216,8 +216,8 @@
         
         PhotoItem *photoItem = [[PhotoItem alloc] init];
         [photoItem setImage:imageItem.image];
-        [photoItem setThumbnailUrl:imageItem.thumbnailUrl];
-        [photoItem setOriginalUrl:imageItem.originalUrl];
+        [photoItem setSmall:imageItem.thumbnailUrl];
+        [photoItem setBig:imageItem.originalUrl];
         [photoItem setPublishImageItem:imageItem];
         [photos addObject:photoItem];
     }

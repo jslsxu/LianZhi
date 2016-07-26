@@ -127,6 +127,7 @@
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     [self requestData:REQUEST_REFRESH];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
 }

@@ -186,8 +186,8 @@
             ALAsset *asset = item.asset;
             if(photoItem)
             {
-                [publishItem setThumbnailUrl:photoItem.thumbnailUrl];
-                [publishItem setOriginalUrl:photoItem.originalUrl];
+                [publishItem setThumbnailUrl:photoItem.small];
+                [publishItem setOriginalUrl:photoItem.big];
                 [publishItem setPhotoID:photoItem.photoID];
             }
             else if(asset)
@@ -211,7 +211,7 @@
     PhotoPickerModel *model = (PhotoPickerModel *)self.collectionViewModel;
     TNModelItem *modelItem = [model.modelItemArray firstObject];
     PhotoPickerItem *pickerItem = (PhotoPickerItem *)modelItem;
-    [_groupView setIconUrl:pickerItem.photoItem.thumbnailUrl];
+    [_groupView setIconUrl:pickerItem.photoItem.small];
     [_groupView setTotal:model.total];
 }
 

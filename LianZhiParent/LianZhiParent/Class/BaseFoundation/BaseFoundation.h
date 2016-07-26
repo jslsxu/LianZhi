@@ -84,4 +84,5 @@
 #import "POISelectVC.h"
 #import "PoiInfoView.h"
 #import "UITouchScrollView.h"
+#import "YYInfiniteScrollView.h"
 #endif
