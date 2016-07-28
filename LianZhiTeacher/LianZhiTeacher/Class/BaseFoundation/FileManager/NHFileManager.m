@@ -58,6 +58,12 @@ static NSString *kLocalStorePath = @"LocalStore";
     return pathComponent;
 }
 
++ (NSString *)getTmpRecordPath{
+    NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
+    NSInteger randomValue = arc4random() % 10000;
+    return [FCFileManager pathForTemporaryDirectoryWithPath:[NSString stringWithFormat:@"%zd_%zd",timeInterval,randomValue]];
+}
+
 + (NSString *)uidDirectoryPathByUid:(NSString *)uid {
     NSString *chatDirectory = [FCFileManager pathForDocumentsDirectoryWithPath:uid];
     if (![FCFileManager existsItemAtPath:chatDirectory]) {

@@ -10,8 +10,8 @@
 #define LianZhiTeacher_TeacherDefine_h
 
 #define kTeacherUmengAppKey         @"5510ffc9fd98c50e200008ba"
-#define kRootRequestUrl             @"http://t2.test.lb.5tree.cn"
+//#define kRootRequestUrl             @"http://t2.test.lb.5tree.cn"
 //#define kRootRequestUrl                   @"http://t.mapi.wangyichuan.cn"
-//#define kRootRequestUrl             @"http://t.test.lb.5tree.cn"
+#define kRootRequestUrl             @"http://t.test.lb.5tree.cn"
 //#define kRootRequestUrl             @"http://t.v2.lb.5tree.cn"          //新发布环境
 #endif

@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '1B5376E9DEDFED2508697A13'
+               BlueprintIdentifier = '86876813A021CD3E9A42930E'
                BlueprintName = 'KRVideoPlayer'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libKRVideoPlayer.a'>

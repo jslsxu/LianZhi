@@ -358,7 +358,7 @@ static NSInteger num = 1;
     [messageItem makeClientSendID];
     
     MessageItem *preItem = [self.chatMessageModel.messageArray lastObject];
-    if([messageItem.content.timeStr isEqualToString:preItem.content.timeStr])
+    if(messageItem.content.ctime - preItem.content.ctime <= 60 * 3)
         [messageItem.content setHideTime:YES];
     [self.chatMessageModel sendNewMessage:messageItem];
     [self.tableView reloadData];

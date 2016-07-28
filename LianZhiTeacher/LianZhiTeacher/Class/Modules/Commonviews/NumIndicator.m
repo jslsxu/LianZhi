@@ -42,7 +42,7 @@
     if(indicator.length > 0)
         [self setSize:CGSizeMake(MAX(kIndicatorHeight, self.width + 6), kIndicatorHeight)];
     else
-        [self setSize:CGSizeMake(8, 8)];
+        [self setSize:CGSizeMake(kRedDotSize, kRedDotSize)];
 }
 
 @end

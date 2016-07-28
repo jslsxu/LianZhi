@@ -19,13 +19,13 @@
         self.width = kScreenWidth;
         [self setBackgroundColor:[UIColor whiteColor]];
         [self.moreOptionsButton setBackgroundColor:[UIColor colorWithHexString:@"c7c7c7"]];
-        _logoView = [[LogoView alloc] initWithFrame:CGRectMake(10, 8, 44, 44)];
+        _logoView = [[LogoView alloc] initWithFrame:CGRectMake(10, 8, 50, 50)];
         [self.actualContentView addSubview:_logoView];
         
         _numIndicator = [[NumIndicator alloc] initWithFrame:CGRectZero];
         [self.actualContentView addSubview:_numIndicator];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 18)];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 10, 180, 18)];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [self.actualContentView addSubview:_nameLabel];
@@ -40,11 +40,11 @@
         [self.actualContentView addSubview:_massChatIndicator];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.right + 10, 10, self.width - 10 - (_nameLabel.right + 10), 18)];
-        [_timeLabel setFont:[UIFont systemFontOfSize:10]];
-        [_timeLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
+        [_timeLabel setFont:[UIFont systemFontOfSize:11]];
+        [_timeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
         [self.actualContentView addSubview:_timeLabel];
         
-        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, 0.5)];
+        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(70, 0, self.width, 0.5)];
         [_sepLine setBackgroundColor:kSepLineColor];
         [self.actualContentView addSubview:_sepLine];
         
@@ -55,10 +55,10 @@
         
         _notificationIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NotificationIndicator"]];
         [_notificationIndicator setHidden:YES];
-        [_notificationIndicator setOrigin:CGPointMake(60, 32 + (20 - _notificationIndicator.height) / 2)];
+        [_notificationIndicator setOrigin:CGPointMake(70, 36 + (20 - _notificationIndicator.height) / 2)];
         [self.actualContentView addSubview:_notificationIndicator];
         
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 32, _soundOff.left - 5 - 60, 20)];
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 36, _soundOff.left - 5 - 70, 20)];
         [_contentLabel setFont:[UIFont systemFontOfSize:13]];
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
         [self.actualContentView addSubview:_contentLabel];
@@ -123,12 +123,12 @@
     if([_messageItem.fromInfo isNotification])
     {
         [_notificationIndicator setHidden:NO];
-        [_contentLabel setFrame:CGRectMake(_notificationIndicator.right + 5, 30, _soundOff.left - 5 - (_notificationIndicator.right + 5), 20)];
+        [_contentLabel setFrame:CGRectMake(_notificationIndicator.right + 5, 36, _soundOff.left - 5 - (_notificationIndicator.right + 5), 20)];
     }
     else
     {
         [_notificationIndicator setHidden:YES];
-        [_contentLabel setFrame:CGRectMake(60, 30, _soundOff.left - 5 - 60, 20)];
+        [_contentLabel setFrame:CGRectMake(70, 36, _soundOff.left - 5 - 70, 20)];
     }
     
     if(_messageItem.msgNum > 0)
@@ -143,16 +143,14 @@
     if(content.length == 0 && _messageItem.audioItem)
         content = @"这是一条语音消息，点击播放收听";
     _contentLabel.text = content;
-    [_sepLine setY:_contentLabel.bottom + 10 - 0.5];
+    [_sepLine setY:66 - kLineHeight];
     
     _soundOff.hidden = _messageItem.soundOn;
     _soundOff.y = _sepLine.y - 10 - _soundOff.height;
 }
 + (NSNumber *)cellHeight:(MessageGroupItem *)messageItem cellWidth:(NSInteger)width;
 {
-//    CGSize contentSize = [messageItem.content boundingRectWithSize:CGSizeMake(width - 10 - 60, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:13]];
-//    return contentSize.height + 32 + 10;
-    return @(30 + 10 + 20);
+    return @(66);
 }
 
 @end

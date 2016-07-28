@@ -28,7 +28,7 @@
 #define kSubTextFont                    [UIFont systemFontOfSize:11]
 
 #define kLineHeight                     0.5f
-
+#define kRedDotSize                     7
 
 #ifdef DEBUG
 #define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);

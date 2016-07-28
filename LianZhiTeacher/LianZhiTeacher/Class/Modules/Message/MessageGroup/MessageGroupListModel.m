@@ -60,11 +60,6 @@
 
 @implementation MessageGroupListModel
 
-- (BOOL)hasMoreData
-{
-    return NO;
-}
-
 - (BOOL)isNewMessage:(MessageGroupItem *)groupItem inArray:(NSArray *)originalArray
 {
     BOOL isNew = YES;
@@ -82,6 +77,16 @@
             return YES;
     }
     return NO;
+}
+
+- (NSArray *)arrayForType:(BOOL)isNotification{
+    NSMutableArray *resultArray = [NSMutableArray array];
+    for (MessageGroupItem *groupItem in self.modelItemArray) {
+        if(groupItem.fromInfo.isNotification == isNotification){
+            [resultArray addObject:groupItem];
+        }
+    }
+    return resultArray;
 }
 
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type

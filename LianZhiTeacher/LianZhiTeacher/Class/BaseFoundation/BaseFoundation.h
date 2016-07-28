@@ -37,8 +37,6 @@
 #import "MLPlayVoiceButton.h"
 #import "HttpRequestEngine.h"
 #import "NetworkConnection.h"
-#import "SDWebImageManager.h"
-#import "UIImageView+WebCache.h"
 #import "UrlHandler.h"
 #import "LoadingView.h"
 #import "TNActionSheet.h"
@@ -86,4 +84,5 @@
 #import "PoiInfoView.h"
 #import "UITouchScrollView.h"
 #import "YYInfiniteScrollView.h"
+#import "NHFileManager.h"
 #endif

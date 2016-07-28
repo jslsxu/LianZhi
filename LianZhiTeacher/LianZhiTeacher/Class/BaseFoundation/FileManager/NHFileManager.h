@@ -20,9 +20,11 @@ static NSString *const LZCache = @"LZCache";
 
 + (NSString *)localFilePath;        //本地文件，无需删除
 
-+ (NSString *)uidDirectoryPathByUid:(NSString *)uid;
++ (NSString *)uidDirectoryPathByUid:(NSString *)uid;        //用户目录
 
-+ (NSString *)chatDirectoryPathForUid:(NSString *)uid;
++ (NSString *)chatDirectoryPathForUid:(NSString *)uid;      //聊天目录
+
++ (NSString *)getTmpRecordPath;                             //录音的临时路径
 
 + (NSDictionary *)attribuateOfItemAtPath:(NSString *)path;
 

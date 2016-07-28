@@ -91,7 +91,6 @@
         _zoomingScrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleWidth;
         _zoomingScrollView.showsHorizontalScrollIndicator = NO;
         _zoomingScrollView.showsVerticalScrollIndicator = NO;
-        _zoomingScrollView.decelerationRate = UIScrollViewDecelerationRateFast;
             [self addSubview:_zoomingScrollView];
     }
     return _zoomingScrollView;
@@ -138,7 +137,7 @@
     CGFloat minScale = MIN(xScale, yScale);                 // use minimum of these to allow the image to become fully visible
     
     // Calculate Max
-    CGFloat maxScale = 1.5;
+    CGFloat maxScale = 3;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         // Let them go a bit bigger on a bigger screen!
         maxScale = 4;

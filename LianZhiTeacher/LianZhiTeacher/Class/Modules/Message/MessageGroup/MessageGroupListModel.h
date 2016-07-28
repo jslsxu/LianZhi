@@ -35,4 +35,5 @@
 @interface MessageGroupListModel : TNListModel
 //@property (nonatomic, assign)BOOL canPublish;
 @property (nonatomic, assign)BOOL playAlert;
+- (NSArray *)arrayForType:(BOOL)isNotification;
 @end

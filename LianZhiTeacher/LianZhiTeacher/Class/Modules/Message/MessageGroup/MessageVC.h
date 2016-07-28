@@ -9,6 +9,7 @@
 #import "TNBaseTableViewController.h"
 #import "MessageGroupItemCell.h"
 #import "ClassZoneVC.h"
+#import "MessageSegView.h"
 @interface SwitchSchoolButton : UIButton
 {
     NumIndicator*   _redDot;
@@ -17,15 +18,13 @@
 
 @end
 
-@interface MessageVC : DAContextMenuTableViewController<EGORefreshTableHeaderDelegate>
+@interface MessageVC : DAContextMenuTableViewController
 {
     SwitchSchoolButton *        _switchButton;
-    UISegmentedControl*         _segmentControl;
+    MessageSegView*             _segView;
     UILabel*                    _emptyLabel;
     UIButton*                   _noticeButton;
     BOOL                        _isLoading;
-    EGORefreshTableHeaderView*  _refreshHeaderView;
-    TNGetMoreCell*              _getMoreCell;
 }
 @property (nonatomic, strong)MessageGroupListModel *messageModel;
 - (void)refreshData;

@@ -26,5 +26,7 @@
 @property (nonatomic, assign) NSUInteger maxPreviewCount;
 /** 是否可以选择视频 默认YES */
 @property (nonatomic, assign) BOOL pickingVideoEnable;
+
+@property (nonatomic, copy, nonnull) void (^onClickAlbum)(void);
 - (instancetype _Nullable)initWithMaxCount:(NSInteger)count;
 @end

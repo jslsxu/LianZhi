@@ -7,7 +7,7 @@
 //
 
 #import "NotificationInputView.h"
-
+#import "DNImagePickerController.h"
 @interface NotificationInputView ()
 @property(nonatomic, weak)UIView* currentActionView;
 @end
@@ -23,11 +23,18 @@
         [self setupActionView:_actionView];
         [self addSubview:_actionView];
         
-        _recordView = [[NotificationRecordView alloc] initWithFrame:CGRectMake(0, self.height, self.width, kActionContentHeight)];
+        _recordView = [[NotificationAudioRecordView alloc] initWithFrame:CGRectMake(0, self.height, self.width, kActionContentHeight)];
         [self addSubview:_recordView];
         
+        @weakify(self);
         _photoView = [[QuickImagePickerView alloc] initWithMaxCount:9];
         [_photoView setOrigin:CGPointMake(0, self.height)];
+        [_photoView setOnClickAlbum:^{
+            @strongify(self);
+            if([self.delegate respondsToSelector:@selector(notificationInputPhoto:)]){
+                [self.delegate notificationInputPhoto:self];
+            }
+        }];
         [self addSubview:_photoView];
 
         [self setActionType:ActionTypeNone];
@@ -114,20 +121,6 @@
     if(type != _actionType){
         [self setActionType:type];
     }
-    if(index == 0){
-        
-    }
-    else if(index == 1){
-        if([self.delegate respondsToSelector:@selector(notificationInputPhoto:)]){
-            [self.delegate notificationInputPhoto:self];
-        }
-    }
-    else{
-        if([self.delegate respondsToSelector:@selector(notificationInputVideo:)]){
-            [self.delegate notificationInputVideo:self];
-        }
-    }
-
 }
 
 - (void)onSendClicked{

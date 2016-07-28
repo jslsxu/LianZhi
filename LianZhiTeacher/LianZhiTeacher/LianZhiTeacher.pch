@@ -25,5 +25,7 @@
 #import "Masonry.h"
 #import "ReactiveCocoa.h"
 #import "FMDB.h"
+#import "UIImageView+WebCache.h"
+#import "SDWebImageManager.h"
 #endif
 #endif

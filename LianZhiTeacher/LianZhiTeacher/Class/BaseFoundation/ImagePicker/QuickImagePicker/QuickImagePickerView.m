@@ -162,8 +162,9 @@
 
 #pragma actions
 - (void)onAlbumButonClicked{
-    DNImagePickerController *imagePicker = [[DNImagePickerController alloc] init];
-    [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
+    if(self.onClickAlbum){
+        self.onClickAlbum();
+    }
 }
 
 - (void)onOriginalImageButtonClicked{

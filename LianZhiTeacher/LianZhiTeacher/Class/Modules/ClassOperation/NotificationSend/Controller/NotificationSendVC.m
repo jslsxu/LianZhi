@@ -11,6 +11,7 @@
 #import "NotificationSendEntity.h"
 #import "NotificationMemberSelectVC.h"
 #import "VideoRecordView.h"
+#import "DNImagePickerController.h"
 @interface NotificationSendVC ()<NotificationInputDelegate,
 UIGestureRecognizerDelegate,
 UIScrollViewDelegate,
@@ -32,6 +33,8 @@ UINavigationControllerDelegate>
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"发布通知";
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"预览" style:UIBarButtonItemStylePlain target:self action:@selector(onPreview)];
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
     [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, kActionBarHeight, 0)];
@@ -50,6 +53,10 @@ UINavigationControllerDelegate>
     [_inputView setDelegate:self];
     [self.view addSubview:_inputView];
 
+}
+
+- (void)cancel{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)onPreview{
@@ -117,7 +124,8 @@ UINavigationControllerDelegate>
 }
 
 - (void)notificationInputPhoto:(NotificationInputView *)inputView{
-    
+    DNImagePickerController *imagePicker = [[DNImagePickerController alloc] init];
+    [self presentViewController:imagePicker animated:YES completion:nil];
 }
 - (void)notificationInputVideo:(NotificationInputView *)inputView
 {
@@ -160,6 +168,16 @@ UINavigationControllerDelegate>
     if ([scrollView isTracking]) {
         [_inputView setActionType:ActionTypeNone];
     }
+}
+
+
+#pragma mark - DNImagePickerControllerDelegate
+- (void)dnImagePickerController:(DNImagePickerController *)imagePicker sendImages:(NSArray *)imageAssets isFullImage:(BOOL)fullImage{
+    
+}
+
+- (void)dnImagePickerControllerDidCancel:(DNImagePickerController *)imagePicker{
+    
 }
 
 - (void)didReceiveMemoryWarning {

@@ -29,6 +29,7 @@
 //        [text appendString:[NSString stringWithFormat:@"(%@)",self.fromInfo.label]];
 //    self.title = text;
     self.title = [UserCenter sharedInstance].curSchool.schoolName;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"清空" style:UIBarButtonItemStylePlain target:self action:@selector(clear)];
     [self bindTableCell:@"MessageDetailItemCell" tableModel:@"MessageDetailModel"];
     MessageDetailModel *detailModel = (MessageDetailModel *)self.tableViewModel;
     [detailModel setAuthor:self.fromInfo.name];
@@ -37,6 +38,10 @@
     [self setSupportPullUp:YES];
     [self requestData:REQUEST_REFRESH];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMessageItemDeleteNotification:) name:kMessageDeleteNotitication object:nil];
+}
+
+- (void)clear{
+    
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType

@@ -43,7 +43,7 @@
         
         [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
         
-        _redDot = [[UIView alloc] initWithFrame:CGRectMake(self.width - 40, (self.height - 8) / 2, 8, 8)];
+        _redDot = [[UIView alloc] initWithFrame:CGRectMake(self.width - 40, (self.height - kRedDotSize) / 2, kRedDotSize, kRedDotSize)];
         [_redDot setBackgroundColor:[UIColor colorWithHexString:@"F0003A"]];
         [_redDot.layer setCornerRadius:4];
         [_redDot.layer setMasksToBounds:YES];
