@@ -188,12 +188,13 @@ static NSString* const dnAssetsViewCellReuseIdentifier = @"DNAssetsViewCell";
 
 - (NSArray *)seletedDNAssetArray
 {
-    NSMutableArray *seletedArray = [NSMutableArray new];
-    for (ALAsset *asset in self.selectedAssetsArray) {
-        DNAsset *dnasset = [self dnassetFromALAsset:asset];
-        [seletedArray addObject:dnasset];
-    }
-    return seletedArray;
+//    NSMutableArray *seletedArray = [NSMutableArray new];
+//    for (ALAsset *asset in self.selectedAssetsArray) {
+//        DNAsset *dnasset = [self dnassetFromALAsset:asset];
+//        [seletedArray addObject:dnasset];
+//    }
+//    return seletedArray;
+    return self.selectedAssetsArray;
 }
 
 #pragma mark - priviate methods

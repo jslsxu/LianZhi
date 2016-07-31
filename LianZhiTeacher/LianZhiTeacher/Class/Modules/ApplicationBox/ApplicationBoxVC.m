@@ -17,6 +17,7 @@
 #import "MyAttendanceVC.h"
 #import "LZAccountVC.h"
 #import "NotificationSendVC.h"
+#import "NotificationHistoryVC.h"
 @implementation ApplicationItem
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
@@ -253,9 +254,10 @@
         NSString *host = path.host;
         if([host isEqualToString:@"notice"])//发通知
         {
-            NotificationSendVC *notificationSendVC = [[NotificationSendVC alloc] init];
-            TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:notificationSendVC];
-            [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
+//            NotificationSendVC *notificationSendVC = [[NotificationSendVC alloc] init];
+//            TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:notificationSendVC];
+            NotificationHistoryVC *historyVC = [[NotificationHistoryVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:historyVC animated:YES];
         }
         else if([host isEqualToString:@"contact"])//联系人
         {

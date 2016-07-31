@@ -40,6 +40,7 @@
 @property (weak, nonatomic) id<DAContextMenuCellDelegate> delegate;
 
 - (CGFloat)contextMenuWidth;
+- (CGFloat)menuOptionButtonWidth;
 - (void)setMenuOptionsViewHidden:(BOOL)hidden animated:(BOOL)animated completionHandler:(void (^)(void))completionHandler;
 
 @end

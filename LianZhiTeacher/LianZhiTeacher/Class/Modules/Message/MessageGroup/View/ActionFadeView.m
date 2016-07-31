@@ -92,10 +92,10 @@
 }
 
 - (void)sendNotification{
-    [self dismiss];
-    NotificationSendVC *sendVC = [[NotificationSendVC alloc] init];
-    TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:sendVC];
-    [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:nil];
+    [self dismissWithCompletion:^{
+        NotificationSendVC *sendVC = [[NotificationSendVC alloc] init];
+        [CurrentROOTNavigationVC pushViewController:sendVC animated:YES];
+    }];
 }
 
 - (void)newChat{
@@ -105,7 +105,9 @@
 
 - (void)studentAttendance{
 
-    [self dismiss];
+    [self dismissWithCompletion:^{
+        
+    }];
 }
 
 - (void)show{
@@ -123,6 +125,17 @@
     [UIView animateWithDuration:0.3 animations:^{
         self.alpha = 0.f;
     }completion:^(BOOL finished) {
+        [self removeFromSuperview];
+    }];
+}
+
+- (void)dismissWithCompletion:(void (^)())completion{
+    [UIView animateWithDuration:0.3 animations:^{
+        self.alpha = 0.f;
+    }completion:^(BOOL finished) {
+        if(completion){
+            completion();
+        }
         [self removeFromSuperview];
     }];
 }

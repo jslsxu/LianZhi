@@ -18,26 +18,29 @@ NSString *const kUserDataStorageKey = @"UserData";
 {
     if(dataWrapper)
     {
-        TNDataWrapper *userDataWrapper = [dataWrapper getDataWrapperForKey:@"user"];
-        if(userDataWrapper.count > 0)
-        {
-            UserInfo *userInfo = [[UserInfo alloc] init];
-            [userInfo parseData:userDataWrapper];
-            [self setUserInfo:userInfo];
-        }
-        
-        self.firstLogin = [dataWrapper getBoolForKey:@"first_login"];
-        self.confirmed = [dataWrapper getBoolForKey:@"confirmed"];
-        NSString *verify = [dataWrapper getStringForKey:@"verify"];
-        if(verify.length > 0)
-            self.accessToken = verify;
-        
-        TNDataWrapper *configWrapper = [dataWrapper getDataWrapperForKey:@"config"];
-        if(configWrapper.count)
-        {
-            LogConfig *logConfig = [[LogConfig alloc] init];
-            [logConfig parseData:configWrapper];
-            self.config = logConfig;
+        if(!self.userInfo){
+            TNDataWrapper *userDataWrapper = [dataWrapper getDataWrapperForKey:@"user"];
+            if(userDataWrapper.count > 0)
+            {
+                UserInfo *userInfo = [[UserInfo alloc] init];
+                [userInfo parseData:userDataWrapper];
+                [self setUserInfo:userInfo];
+            }
+            
+            self.firstLogin = [dataWrapper getBoolForKey:@"first_login"];
+            self.confirmed = [dataWrapper getBoolForKey:@"confirmed"];
+            NSString *verify = [dataWrapper getStringForKey:@"verify"];
+            if(verify.length > 0)
+                self.accessToken = verify;
+            
+            TNDataWrapper *configWrapper = [dataWrapper getDataWrapperForKey:@"config"];
+            if(configWrapper.count)
+            {
+                LogConfig *logConfig = [[LogConfig alloc] init];
+                [logConfig parseData:configWrapper];
+                self.config = logConfig;
+            }
+
         }
         
         TNDataWrapper *schoolListWrapper = [dataWrapper getDataWrapperForKey:@"schools"];
@@ -146,7 +149,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
 - (void)updateUserInfo
 {
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_related_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-         [self parseData:responseObject];
+        if(responseObject.count > 0){
+             [self.userData parseData:responseObject];
+            [self save];
+             [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoVCNeedRefreshNotificaiotn object:nil];
+        }
     } fail:^(NSString *errMsg) {
         
     }];

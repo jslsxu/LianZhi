@@ -158,16 +158,7 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
 
 - (void)updateUserInfo
 {
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_related_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        if(responseObject.count > 0)
-        {
-            [[UserCenter sharedInstance].userData parseData:responseObject];
-            [[UserCenter sharedInstance] save];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoVCNeedRefreshNotificaiotn object:nil];
-        }
-    } fail:^(NSString *errMsg) {
-        
-    }];
+    [[UserCenter sharedInstance] updateUserInfo];
 
 }
 - (void)setMsgNum:(NSInteger)msgNum

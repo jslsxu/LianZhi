@@ -9,6 +9,7 @@
 #import "LoginVC.h"
 #import "AuthCodeVC.h"
 #import "RegisterVC.h"
+#import "StatusManager.h"
 #define kLoginUserNameKey               @"LoginUserNameKey"
 @interface LoginVC ()
 @end
@@ -162,6 +163,7 @@
             if(schoolsWrapper.count > 0)
             {
                 [[UserCenter sharedInstance] parseData:responseObject];
+                [[UserCenter sharedInstance] updateUserInfo];
                 [self dismissViewControllerAnimated:YES completion:nil];
                 if(self.completion)
                 {

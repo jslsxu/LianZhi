@@ -137,7 +137,7 @@
 - (void)onActionButtonClicked:(UIButton *)button{
     NSInteger index = [_actionButtonArray indexOfObject:button];
     ActionType type = index + ActionTypeRecordAudio;
-    if(_actionType != type){
+    if(_actionType != type || type == ActionTypeCamera){
          [self setActionType:type];
     }
 }

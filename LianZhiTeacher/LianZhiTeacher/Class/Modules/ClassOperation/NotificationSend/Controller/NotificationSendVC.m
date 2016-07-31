@@ -18,7 +18,8 @@
 UIGestureRecognizerDelegate,
 UIScrollViewDelegate,
 UIImagePickerControllerDelegate,
-UINavigationControllerDelegate>
+UINavigationControllerDelegate,
+DNImagePickerControllerDelegate>
 @property (nonatomic, strong)NotificationSendEntity *sendEntity;
 
 @property (nonatomic, strong)NotificationTargetContentView*  targetContentView;
@@ -79,7 +80,7 @@ UINavigationControllerDelegate>
     [super viewDidLoad];
     self.title = @"发布通知";
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"预览" style:UIBarButtonItemStylePlain target:self action:@selector(onPreview)];
     _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
     [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, kActionBarHeight, 0)];
@@ -218,6 +219,7 @@ UINavigationControllerDelegate>
 
 - (void)notificationInputPhoto:(NotificationInputView *)inputView{
     DNImagePickerController *imagePicker = [[DNImagePickerController alloc] init];
+    [imagePicker setImagePickerDelegate:self];
     [self presentViewController:imagePicker animated:YES completion:nil];
 }
 
@@ -275,7 +277,23 @@ UINavigationControllerDelegate>
 
 #pragma mark - DNImagePickerControllerDelegate
 - (void)dnImagePickerController:(DNImagePickerController *)imagePicker sendImages:(NSArray *)imageAssets isFullImage:(BOOL)fullImage{
-
+    if(imageAssets.count > 0){
+        NSMutableArray *imageArray = self.sendEntity.imageArray;
+        for (ALAsset *asset in imageAssets) {
+            UIImage *image;
+            if(fullImage)
+                image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage]];
+            else
+                image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+            if(image)
+            {
+                [imageArray addObject:image];
+            }
+            NSLog(@"image size is (%f,%f)",image.size.width, image.size.height);
+        }
+        [_photoView setPhotoArray:imageArray];
+        [self adjustPosition];
+    }
 }
 
 - (void)dnImagePickerControllerDidCancel:(DNImagePickerController *)imagePicker{

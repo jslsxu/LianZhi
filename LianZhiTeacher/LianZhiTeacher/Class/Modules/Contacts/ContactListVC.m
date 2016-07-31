@@ -35,6 +35,14 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self){
+        [[UserCenter sharedInstance] updateUserInfo];
+    }
+    return self;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     _contactModel = [[ContactModel alloc] init];

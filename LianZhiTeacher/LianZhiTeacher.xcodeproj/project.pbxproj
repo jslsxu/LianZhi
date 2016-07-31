@@ -392,6 +392,9 @@
 		8DCFD6BE1D4C5D90001EDC8A /* NotificationDetailVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6BD1D4C5D90001EDC8A /* NotificationDetailVideoView.m */; };
 		8DCFD6C11D4C5D9E001EDC8A /* NotificationDetailPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6C01D4C5D9E001EDC8A /* NotificationDetailPhotoView.m */; };
 		8DCFD6C81D4DAD79001EDC8A /* NotificationTargetListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6C71D4DAD79001EDC8A /* NotificationTargetListView.m */; };
+		8DCFD6CC1D4DE277001EDC8A /* NotificationRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6CB1D4DE277001EDC8A /* NotificationRecordVC.m */; };
+		8DCFD6CF1D4DE29D001EDC8A /* NotificationDraftVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6CE1D4DE29D001EDC8A /* NotificationDraftVC.m */; };
+		8DCFD6D21D4DE2BB001EDC8A /* NotificationHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6D11D4DE2BB001EDC8A /* NotificationHistoryVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1116,6 +1119,12 @@
 		8DCFD6C01D4C5D9E001EDC8A /* NotificationDetailPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationDetailPhotoView.m; sourceTree = "<group>"; };
 		8DCFD6C61D4DAD79001EDC8A /* NotificationTargetListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationTargetListView.h; sourceTree = "<group>"; };
 		8DCFD6C71D4DAD79001EDC8A /* NotificationTargetListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationTargetListView.m; sourceTree = "<group>"; };
+		8DCFD6CA1D4DE277001EDC8A /* NotificationRecordVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationRecordVC.h; sourceTree = "<group>"; };
+		8DCFD6CB1D4DE277001EDC8A /* NotificationRecordVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationRecordVC.m; sourceTree = "<group>"; };
+		8DCFD6CD1D4DE29D001EDC8A /* NotificationDraftVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationDraftVC.h; sourceTree = "<group>"; };
+		8DCFD6CE1D4DE29D001EDC8A /* NotificationDraftVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationDraftVC.m; sourceTree = "<group>"; };
+		8DCFD6D01D4DE2BB001EDC8A /* NotificationHistoryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationHistoryVC.h; sourceTree = "<group>"; };
+		8DCFD6D11D4DE2BB001EDC8A /* NotificationHistoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationHistoryVC.m; sourceTree = "<group>"; };
 		BFB7BE1F02D8CB37989349C3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2251,6 +2260,7 @@
 		37DEE4A81A57BE65009A8771 /* ClassOperation */ = {
 			isa = PBXGroup;
 			children = (
+				8DCFD6C91D4DE18A001EDC8A /* NotificationHistory */,
 				8DCFD6A51D4B60B9001EDC8A /* NotificationDetail */,
 				8DCFD6951D4B4BCB001EDC8A /* OldNotification */,
 				8D867BDA1D251E560020A21C /* NotificationSend */,
@@ -2890,6 +2900,19 @@
 			path = DetailView;
 			sourceTree = "<group>";
 		};
+		8DCFD6C91D4DE18A001EDC8A /* NotificationHistory */ = {
+			isa = PBXGroup;
+			children = (
+				8DCFD6CA1D4DE277001EDC8A /* NotificationRecordVC.h */,
+				8DCFD6CB1D4DE277001EDC8A /* NotificationRecordVC.m */,
+				8DCFD6CD1D4DE29D001EDC8A /* NotificationDraftVC.h */,
+				8DCFD6CE1D4DE29D001EDC8A /* NotificationDraftVC.m */,
+				8DCFD6D01D4DE2BB001EDC8A /* NotificationHistoryVC.h */,
+				8DCFD6D11D4DE2BB001EDC8A /* NotificationHistoryVC.m */,
+			);
+			path = NotificationHistory;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3220,6 +3243,7 @@
 				37FD6FDD1BBCE55800C83AB4 /* OperationGuideVC.m in Sources */,
 				37E93FC31A7E9CC600AD45A1 /* MJPhotoLoadingView.m in Sources */,
 				37C88F6E1A827AD2008E44DB /* LogConfig.m in Sources */,
+				8DCFD6CC1D4DE277001EDC8A /* NotificationRecordVC.m in Sources */,
 				8D867C851D2F97080020A21C /* DNImagePickerController.m in Sources */,
 				3728A74C1B9EE5C400310457 /* PublishGrowthTimelineVC.m in Sources */,
 				3725715B1A80C0450087F178 /* SettingDatePickerView.m in Sources */,
@@ -3227,6 +3251,7 @@
 				3793FAF21B7CFFF000501F77 /* TaskUploadManager.m in Sources */,
 				3793FA831B7CFFF000501F77 /* ActionSelectView.m in Sources */,
 				3793FA961B7CFFF000501F77 /* SimpleImageScanView.m in Sources */,
+				8DCFD6D21D4DE2BB001EDC8A /* NotificationHistoryVC.m in Sources */,
 				8DCFD6A81D4B60B9001EDC8A /* NotificationDetailVC.m in Sources */,
 				37DEE4BC1A57C19C009A8771 /* MessageDetailItemCell.m in Sources */,
 				37FD6DE81BAEE01C00C83AB4 /* JSMessagesViewController.m in Sources */,
@@ -3284,6 +3309,7 @@
 				3793FA8C1B7CFFF000501F77 /* DAContextMenuTableViewController.m in Sources */,
 				8D867BC91D25042A0020A21C /* NHAudioConverter.m in Sources */,
 				3793FADC1B7CFFF000501F77 /* EGORefreshTableHeaderView.m in Sources */,
+				8DCFD6CF1D4DE29D001EDC8A /* NotificationDraftVC.m in Sources */,
 				3793FA931B7CFFF000501F77 /* POIListModel.m in Sources */,
 				3793FADD1B7CFFF000501F77 /* LoadingView.m in Sources */,
 				3793FAA01B7CFFF000501F77 /* NSObject+Associative.m in Sources */,
