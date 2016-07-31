@@ -47,7 +47,7 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @property (nonatomic, assign)BOOL showFocus;
 @end
 
-@interface ClassInfo : TNModelItem<NSCoding>
+@interface ClassInfo : TNModelItem
 @property (nonatomic, copy)NSString *course;
 @property (nonatomic, copy)NSString *grade;
 @property (nonatomic, copy)NSString *classID;
@@ -62,7 +62,7 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @end
 
 
-@interface TeacherGroup : TNModelItem<NSCoding>
+@interface TeacherGroup : TNModelItem
 @property (nonatomic, copy)NSString *logo;
 @property (nonatomic, copy)NSString *groupID;
 @property (nonatomic, copy)NSString *groupName;

@@ -28,5 +28,6 @@
 @property (nonatomic, assign) BOOL pickingVideoEnable;
 
 @property (nonatomic, copy, nonnull) void (^onClickAlbum)(void);
+@property (nonatomic, copy, nonnull)void (^sendCallback)(NSArray *imageArray, BOOL fullImage);
 - (instancetype _Nullable)initWithMaxCount:(NSInteger)count;
 @end

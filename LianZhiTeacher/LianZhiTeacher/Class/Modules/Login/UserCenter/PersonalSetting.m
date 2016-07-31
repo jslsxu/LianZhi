@@ -22,34 +22,6 @@ NSString *const kPersonalSettingKey = @"PersonalSettingKey";
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super init];
-    if(self)
-    {
-        self.earPhone = [aDecoder decodeBoolForKey:@"ear_phone"];
-        self.wifiSend = [aDecoder decodeBoolForKey:@"only_wifi_photo"];
-        self.autoSave = [aDecoder decodeBoolForKey:@"auto_save"];
-        self.soundOn = [aDecoder decodeBoolForKey:@"sound"];
-        self.shakeOn = [aDecoder decodeBoolForKey:@"shake"];
-        self.noDisturbing = [aDecoder decodeBoolForKey:@"no_disturbing"];
-        self.startTime = [aDecoder decodeObjectForKey:@"no_disturbing_begin"];
-        self.endTime = [aDecoder decodeObjectForKey:@"no_disturbing_end"];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [aCoder encodeBool:self.earPhone forKey:@"ear_phone"];
-    [aCoder encodeBool:self.wifiSend forKey:@"only_wifi_photo"];
-    [aCoder encodeBool:self.autoSave forKey:@"auto_save"];
-    [aCoder encodeBool:self.soundOn forKey:@"sound"];
-    [aCoder encodeBool:self.shakeOn forKey:@"shake"];
-    [aCoder encodeBool:self.noDisturbing forKey:@"no_disturbing"];
-    [aCoder encodeObject:self.startTime forKey:@"no_disturbing_begin"];
-    [aCoder encodeObject:self.endTime forKey:@"no_disturbing_end"];
-}
 
 - (void)save
 {

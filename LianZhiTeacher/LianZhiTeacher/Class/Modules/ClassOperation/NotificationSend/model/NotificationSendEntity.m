@@ -9,5 +9,13 @@
 #import "NotificationSendEntity.h"
 
 @implementation NotificationSendEntity
-
+- (instancetype)init{
+    self = [super init];
+    if(self){
+        self.targets = [NSMutableArray array];
+        self.voiceArray = [NSMutableArray array];
+        self.imageArray = [NSMutableArray array];
+    }
+    return self;
+}
 @end

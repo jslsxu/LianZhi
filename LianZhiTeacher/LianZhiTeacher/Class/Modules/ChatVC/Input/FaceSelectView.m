@@ -100,6 +100,7 @@
     self = [super initWithFrame:frame];
     if(self)
     {
+        [self setBackgroundColor:[UIColor whiteColor]];
         [self setHeight:FaceSelectHeight];
         _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.width, self.height - PageControlHeight)];
         [_scrollView setBackgroundColor:[UIColor clearColor]];

@@ -11,13 +11,11 @@
 #import "NotificationSendChoiceView.h"
 #import "NotificationCommentView.h"
 #import "NotificationInputView.h"
+#import "NotificationVoiceView.h"
+#import "NotificationPhotoView.h"
 @interface NotificationSendVC : TNBaseViewController
 {
     UIScrollView*                   _scrollView;
-    NotificationTargetContentView*  _targetContentView;
-    NotificationSendChoiceView*     _smsChoiceView;
-    NotificationSendChoiceView*     _timerSendView;
-    NotificationCommentView*        _commentView;
     NotificationInputView*          _inputView;
 }
 @end

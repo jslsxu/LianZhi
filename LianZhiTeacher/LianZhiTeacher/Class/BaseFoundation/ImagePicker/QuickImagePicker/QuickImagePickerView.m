@@ -175,7 +175,9 @@
 }
 
 - (void)onSendButtonClicked{
-    
+    if(self.sendCallback){
+        self.sendCallback(self.selectedAssets, self.originalSelected);
+    }
 }
 
 - (void)handleStateButtonAction:(XMNPhotoPickerCell *)cell{

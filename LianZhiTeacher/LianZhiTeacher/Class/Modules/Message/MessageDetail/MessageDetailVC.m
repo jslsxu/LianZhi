@@ -7,7 +7,7 @@
 //
 
 #import "MessageDetailVC.h"
-
+#import "NotificationDetailVC.h"
 @implementation MessageDetailVC
 + (void)handlePushAction:(NSString *)fromID fromType:(NSString *)fromType
 {
@@ -75,6 +75,10 @@
     return [NSString stringWithFormat:@"%@_%@_%@",[self class],self.fromInfo.uid,kStringFromValue(self.fromInfo.type)];
 }
 
+- (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
+    NotificationDetailVC *notificationDetailVC = [[NotificationDetailVC alloc] init];
+    [self.navigationController pushViewController:notificationDetailVC animated:YES];
+}
 - (void)onMessageItemDeleteNotification:(NSNotification *)notification
 {
     NSDictionary *userInfo = notification.userInfo;

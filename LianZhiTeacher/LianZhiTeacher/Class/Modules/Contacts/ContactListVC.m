@@ -100,7 +100,7 @@
     }
     _segCtrl = [[UISegmentedControl alloc] initWithItems:titleArray];
 //    [_segCtrl setTintColor:[UIColor colorWithHexString:@"96e065"]];
-    [_segCtrl setWidth:160];
+    [_segCtrl setWidth:140];
     [_segCtrl addTarget:self action:@selector(onSegmentValueChanged:) forControlEvents:UIControlEventValueChanged];
     [_segCtrl setSelectedSegmentIndex:0];
     [self setCurIndex:0];

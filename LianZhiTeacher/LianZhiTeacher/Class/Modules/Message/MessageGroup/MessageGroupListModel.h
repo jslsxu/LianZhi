@@ -35,5 +35,6 @@
 @interface MessageGroupListModel : TNListModel
 //@property (nonatomic, assign)BOOL canPublish;
 @property (nonatomic, assign)BOOL playAlert;
+@property (nonatomic, copy)void (^unreadNumChanged)(NSInteger notificationNum, NSInteger chatNum);
 - (NSArray *)arrayForType:(BOOL)isNotification;
 @end

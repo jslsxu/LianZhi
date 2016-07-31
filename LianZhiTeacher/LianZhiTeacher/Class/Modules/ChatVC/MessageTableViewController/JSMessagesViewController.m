@@ -252,6 +252,7 @@ static NSInteger num = 1;
             self.isRequestHistory = NO;
             [self.tableView.mj_header endRefreshing];
         } fail:^(NSString *errMsg) {
+            @strongify(self);
             [self.tableView.mj_header endRefreshing];
             self.isRequestHistory = NO;
         }];
@@ -275,8 +276,15 @@ static NSInteger num = 1;
     @weakify(self);
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/get" method:REQUEST_GET type:REQUEST_GETMORE withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         @strongify(self);
-        [self.chatMessageModel parseData:responseObject.data type:RequestMessageTypeLatest];
-        [self.tableView reloadData];
+        BOOL hasNew = [self.chatMessageModel parseData:responseObject.data type:RequestMessageTypeLatest];
+        if(hasNew){
+            BOOL shouldScrollToBottom = NO;
+            if(self.tableView.contentOffset.y + self.tableView.height > self.tableView.contentSize.height - 160)
+                shouldScrollToBottom = YES;
+            [self.tableView reloadData];
+            if(shouldScrollToBottom)
+                [self scrollToBottom:YES];
+        }
     } fail:^(NSString *errMsg) {
         
     }];
@@ -361,7 +369,7 @@ static NSInteger num = 1;
     if(messageItem.content.ctime - preItem.content.ctime <= 60 * 3)
         [messageItem.content setHideTime:YES];
     [self.chatMessageModel sendNewMessage:messageItem];
-    [self.tableView reloadData];
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.chatMessageModel.messageArray.count - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     [self scrollToBottom:YES];
     
     
@@ -413,20 +421,6 @@ static NSInteger num = 1;
     [messageCell setData:[[self chatMessageModel].messageArray objectAtIndex:indexPath.row]];
 }
 
-- (void)TNBaseTableViewControllerRequestSuccess
-{
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        ChatMessageModel *messageModel = (ChatMessageModel *)self.chatMessageModel;
-        NSArray *visibleCells = [self.tableView visibleCells];
-        UITableViewCell *cell = [visibleCells lastObject];
-        NSIndexPath *indexpath = [self.tableView indexPathForCell:cell];
-        BOOL scroll = indexpath.row >= messageModel.messageArray.count - messageModel.numOfNew - 1;
-        if(messageModel.hasNew && messageModel.messageArray.count >= 1 && (scroll || messageModel.needScrollBottom))
-        {
-            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:messageModel.messageArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-        }
-    });
-}
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -530,18 +524,16 @@ static NSInteger num = 1;
 {
     __weak typeof(self) wself = self;
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"mid" : messageItem.content.mid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        for (MessageItem *item in wself.chatMessageModel.messageArray)
-        {
-            if([item.content.mid isEqualToString:messageItem.content.mid])
+            for (MessageItem *item in wself.chatMessageModel.messageArray)
             {
-                NSInteger row = [wself.chatMessageModel.messageArray indexOfObject:item];
-                [wself.chatMessageModel deleteMessage:item];
-                [self.tableView beginUpdates];
-                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-                [self.tableView endUpdates];
-                break;
+                if([item.content.mid isEqualToString:messageItem.content.mid])
+                {
+                    NSInteger row = [wself.chatMessageModel.messageArray indexOfObject:item];
+                    [wself.chatMessageModel deleteMessage:item];
+                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                    break;
+                }
             }
-        }
     } fail:^(NSString *errMsg) {
         [ProgressHUD showHintText:errMsg];
     }];

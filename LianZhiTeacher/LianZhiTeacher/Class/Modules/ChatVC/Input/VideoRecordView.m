@@ -15,6 +15,7 @@
 @property (nonatomic, strong)SCRecordSession * recordSession;
 @property (nonatomic, copy)void (^completion)(NSURL *videoPath);
 @property (nonatomic, strong)NSTimer*   pressTimer;
+@property (nonatomic, strong)UIActivityIndicatorView *indicatorView;
 @end
 
 @implementation VideoRecordView
@@ -29,7 +30,7 @@
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     self = [super initWithFrame:window.bounds];
     if(self){
-        
+    
         _bgButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_bgButton setFrame:self.bounds];
         [_bgButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
@@ -37,21 +38,29 @@
         [self addSubview:_bgButton];
         
         _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, self.height / 2, self.width, self.height / 2)];
-        [_contentView setBackgroundColor:[UIColor whiteColor]];
+        [_contentView setBackgroundColor:[UIColor darkGrayColor]];
         [self addSubview:_contentView];
         
         _previewView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _contentView.width, _contentView.height - 60)];
         [_contentView addSubview:_previewView];
         
         _progressView = [[UIView alloc] initWithFrame:CGRectMake(0, _previewView.bottom, _contentView.width, 2)];
-        [_progressView setBackgroundColor:[UIColor greenColor]];
+        [_progressView setBackgroundColor:kCommonTeacherTintColor];
         [_contentView addSubview:_progressView];
         
         _captureButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_captureButton setImage:[UIImage imageNamed:@"captureButton"] forState:UIControlStateNormal];
+        [_captureButton.layer setBorderColor:kCommonTeacherTintColor.CGColor];
+        [_captureButton.layer setBorderWidth:2];
+        [_captureButton.layer setCornerRadius:25];
+        [_captureButton.layer setMasksToBounds:YES];
         [_captureButton setFrame:CGRectMake((_contentView.width - 50) / 2, _previewView.height + (60 - 50) / 2, 50, 50)];
         [_captureButton addTarget:self action:@selector(startCapture) forControlEvents:UIControlEventTouchDown];
+        [_captureButton addTarget:self action:@selector(recordButtonDragExit) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchDragExit];
         [_contentView addSubview:_captureButton];
+        
+        _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [_indicatorView setHidesWhenStopped:YES];
+        [self addSubview:_indicatorView];
         
         [self configRecorder];
         [_recorder startRunning];
@@ -67,7 +76,7 @@
 - (void)configRecorder {
     _recorder = [SCRecorder recorder];
     _recorder.captureSessionPreset = [SCRecorderTools bestCaptureSessionPresetCompatibleWithAllDevices];
-    _recorder.maxRecordDuration = CMTimeMake(30 * kVideoMaxTime, 30);
+//    _recorder.maxRecordDuration = CMTimeMake(30 * kVideoMaxTime, 30);
     _recorder.delegate = self;
     _recorder.previewView = _previewView;
     _recorder.initializeSessionLazily = NO;
@@ -86,9 +95,8 @@
     
 }
 
-- (void)refreshProgressViewLengthByTime:(CMTime)duration{
-    CGFloat durationTime = CMTimeGetSeconds(duration);
-    CGFloat scale = (kVideoMaxTime - durationTime) / kVideoMaxTime;
+- (void)refreshProgressViewLengthByTime:(CGFloat)duration{
+    CGFloat scale = (kVideoMaxTime - duration) / kVideoMaxTime;
     [_progressView setTransform:CGAffineTransformMakeScale(scale, 1)];
 }
 
@@ -100,9 +108,19 @@
 - (void)stopCapture{
     [_recorder stopRunning];
     _recorder.previewView = nil;
+    
+}
+
+- (void)recordButtonDragExit{
+    if(_recorder.isRecording){
+        [_recorder pause:^{
+            [self saveCapture];
+        }];
+    }
 }
 
 - (void)saveCapture {
+    [self.indicatorView startAnimating];
     NSURL *url = [NSURL fileURLWithPath:[self tmpVideoPath]];
     AVAsset *asset = _recorder.session.assetRepresentingSegments;
     [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
@@ -113,8 +131,11 @@
     exportSession.shouldOptimizeForNetworkUse = YES;
     exportSession.videoComposition = [self buildDefaultVideoCompositionWithAsset:asset targetSize:videoSize];
     exportSession.outputURL = url;
+    @weakify(self);
     [exportSession exportAsynchronouslyWithCompletionHandler:^{
         dispatch_async(dispatch_get_main_queue(), ^{
+            @strongify(self);
+            [self.indicatorView stopAnimating];
             if(self.completion){
                 self.completion(url);
             }
@@ -162,8 +183,16 @@
 
 #pragma mark - SCRecorderDelegate
 - (void)recorder:(SCRecorder *)recorder didAppendVideoSampleBufferInSession:(SCRecordSession *)recordSession {
+    CGFloat duration = CMTimeGetSeconds(recordSession.duration);
+    if(duration >= kVideoMaxTime){
+        if(_recorder.isRecording){
+            [_recorder pause:^{
+                [self saveCapture];
+            }];
+        }
+    }
     //update progressBar
-    [self refreshProgressViewLengthByTime:recordSession.duration];
+    [self refreshProgressViewLengthByTime:duration];
 }
 
 - (void)recorder:(SCRecorder *__nonnull)recorder didCompleteSession:(SCRecordSession *__nonnull)session {
@@ -187,6 +216,7 @@
     if(self.pressTimer){
         [self.pressTimer invalidate];
     }
+    
     [UIView animateWithDuration:0.3 animations:^{
         [_bgButton setAlpha:0.f];
         [_contentView setY:self.height];

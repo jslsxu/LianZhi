@@ -143,13 +143,16 @@
 
 #pragma mark - NHAudioToolDelegate
 - (void)audioToolDidStartToRecord{
-    
+   
 }
 
 - (void)audioTool:(NHAudioTool *)tool didUpdateCurrentRecordTime:(NSTimeInterval)time{
     self.duration = time;
     NSString *durationStr = [NSString stringWithFormat:@"%02ld:%02ld",self.duration / 60, self.duration % 60];
     [_titleLabel setText:durationStr];
+}
+- (void)audioTool:(NHAudioTool *)tool didEndToRecordWithRecordInfo:(NSDictionary *)info{
+    self.recordPath = info[NHAudioToolAmrFilePathKey];
 }
 
 - (void)audioTool:(NHAudioTool *)tool didFailedOnRecord:(NSError *)error{
@@ -292,6 +295,9 @@
     [self.listenView setSendCallback:^{
         @strongify(self);
         [self showRecordView];
+        if(self.sendCallback){
+            self.sendCallback(self.recordView.recordPath, self.listenView.timeSpan);
+        }
     }];
     [self addSubview:self.listenView];
     

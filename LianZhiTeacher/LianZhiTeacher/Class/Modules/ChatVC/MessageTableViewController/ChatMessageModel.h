@@ -18,7 +18,6 @@ typedef NS_ENUM(NSInteger, RequestMessageType) {
 @property (nonatomic, copy)NSString *targetUser;
 @property (nonatomic, copy)NSString *oldId;
 @property (nonatomic, copy)NSString *latestId;
-@property (nonatomic, assign)BOOL hasNew;
 @property (nonatomic, assign)BOOL soundOff;
 @property (nonatomic, assign)BOOL needScrollBottom;
 @property (nonatomic, assign)NSInteger numOfNew;

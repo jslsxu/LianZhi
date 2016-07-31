@@ -8,7 +8,6 @@
 
 #import "MessageVC.h"
 #import "MessageDetailVC.h"
-#import "NotificationToAllVC.h"
 #import "ActionPopView.h"
 #import "ContactListVC.h"
 #import "HomeWorkVC.h"
@@ -42,6 +41,7 @@
 @end
 
 @interface MessageVC ()
+@property (nonatomic, strong)MessageSegView *segView;
 @property (nonatomic, strong)NSTimer *timer;
 @property (nonatomic, assign)BOOL isNotification;
 @end
@@ -132,6 +132,11 @@
 //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
     
     self.messageModel = [[MessageGroupListModel alloc] init];
+    [self.messageModel setUnreadNumChanged:^(NSInteger notificationNum, NSInteger chatNum) {
+        @strongify(self);
+        [self.segView setShowBadge:notificationNum > 0 ? @"" : nil atIndex:0];
+        [self.segView setShowBadge:chatNum > 0 ? @"" : nil atIndex:1];
+    }];
     [self.messageModel setPlayAlert:YES];
     if([self supportCache])//支持缓存，先出缓存中读取数据
     {

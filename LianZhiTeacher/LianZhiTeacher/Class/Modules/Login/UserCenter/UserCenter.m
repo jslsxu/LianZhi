@@ -57,29 +57,29 @@ NSString *const kUserDataStorageKey = @"UserData";
 }
 
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if(self = [super init])
-    {
-        self.userInfo = [aDecoder decodeObjectForKey:@"user"];
-        self.firstLogin = [aDecoder decodeBoolForKey:@"first_login"];
-        self.accessToken = [aDecoder decodeObjectForKey:@"verify"];
-        self.curIndex = [aDecoder decodeIntegerForKey:@"curIndex"];
-        self.config = [aDecoder decodeObjectForKey:@"config"];
-        self.schools = [aDecoder decodeObjectForKey:@"schools"];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [aCoder encodeObject:self.userInfo forKey:@"user"];
-    [aCoder encodeBool:self.firstLogin forKey:@"first_login"];
-    [aCoder encodeObject:self.accessToken forKey:@"verify"];
-    [aCoder encodeInteger:self.curIndex forKey:@"curIndex"];
-    [aCoder encodeObject:self.config forKey:@"config"];
-    [aCoder encodeObject:self.schools forKey:@"schools"];
-}
+//- (id)initWithCoder:(NSCoder *)aDecoder
+//{
+//    if(self = [super init])
+//    {
+//        self.userInfo = [aDecoder decodeObjectForKey:@"user"];
+//        self.firstLogin = [aDecoder decodeBoolForKey:@"first_login"];
+//        self.accessToken = [aDecoder decodeObjectForKey:@"verify"];
+//        self.curIndex = [aDecoder decodeIntegerForKey:@"curIndex"];
+//        self.config = [aDecoder decodeObjectForKey:@"config"];
+//        self.schools = [aDecoder decodeObjectForKey:@"schools"];
+//    }
+//    return self;
+//}
+//
+//- (void)encodeWithCoder:(NSCoder *)aCoder
+//{
+//    [aCoder encodeObject:self.userInfo forKey:@"user"];
+//    [aCoder encodeBool:self.firstLogin forKey:@"first_login"];
+//    [aCoder encodeObject:self.accessToken forKey:@"verify"];
+//    [aCoder encodeInteger:self.curIndex forKey:@"curIndex"];
+//    [aCoder encodeObject:self.config forKey:@"config"];
+//    [aCoder encodeObject:self.schools forKey:@"schools"];
+//}
 
 @end
 

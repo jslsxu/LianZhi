@@ -57,6 +57,7 @@
         [self addSubview:_contentButton];
         
         UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPress)];
+        [longPressGesture setCancelsTouchesInView:YES];
         [longPressGesture setMinimumPressDuration:1];
         [_contentButton addGestureRecognizer:longPressGesture];
         

@@ -18,7 +18,7 @@
         _bgButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_bgButton setFrame:self.bounds];
         [_bgButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
-        [_bgButton setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.6]];
+        [_bgButton setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.5]];
         [self addSubview:_bgButton];
         
         _contentView = [[UIView alloc] initWithFrame:CGRectMake(30, 100, self.width - 30 * 2, self.height - 100 * 2)];

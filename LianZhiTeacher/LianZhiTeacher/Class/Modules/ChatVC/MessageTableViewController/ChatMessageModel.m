@@ -9,6 +9,7 @@
 #import "ChatMessageModel.h"
 #import "NHFileManager.h"
 @interface ChatMessageModel ()
+@property (nonatomic, assign)BOOL firstRequestNewMessage;
 @property (nonatomic, strong)NSMutableArray* modelItemArray;
 @property (nonatomic, copy)NSString *uid;
 @property (nonatomic, assign)ChatType type;
@@ -24,6 +25,7 @@
     if(self){
         self.uid = uid;
         self.type = type;
+        self.firstRequestNewMessage = YES;
         NSString *tableName = [self tableName];
         BOOL tableExist = [self.database tableExists:tableName];
         if(!tableExist){
@@ -136,7 +138,11 @@
 
 - (BOOL)parseData:(NSDictionary *)data type:(RequestMessageType)type
 {
-    self.hasNew = NO;
+    if(type == RequestMessageTypeLatest){
+        if(self.firstRequestNewMessage){
+            self.firstRequestNewMessage = NO;
+        }
+    }
     NSInteger originalNum = self.modelItemArray.count;
     NSArray *newMessageArray = [MessageItem nh_modelArrayWithJson:data[@"items"]];
     
@@ -151,13 +157,13 @@
             break;
         }
     }
+    BOOL add = NO;
     if(newMessageArray.count > 0){
-        BOOL add = NO;
         //添加到前面
         for (NSInteger i = newMessageArray.count - 1; i >= 0; i--) {
             MessageItem *messageItem = newMessageArray[i];
             
-            NSString *sql = [NSString stringWithFormat:@"select * from %@ where message_id = '%@'",[self tableName], messageItem.content.mid];
+            NSString *sql = [NSString stringWithFormat:@"select * from %@ where client_send_id = '%@'",[self tableName], messageItem.client_send_id];
             FMResultSet *rs = [self.database executeQuery:sql];
             if(![rs next]){
                 add = YES;
@@ -169,14 +175,16 @@
         
         if(add){
             [self sortMessage];
-            //有新消息，播放声音
-            if([UserCenter sharedInstance].personalSetting.soundOn)
-                [ApplicationDelegate playSound];
-            if([UserCenter sharedInstance].personalSetting.shakeOn)
-                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+            if(type == RequestMessageTypeLatest && !self.firstRequestNewMessage){
+                //有新消息，播放声音
+                if([UserCenter sharedInstance].personalSetting.soundOn)
+                    [ApplicationDelegate playSound];
+                if([UserCenter sharedInstance].personalSetting.shakeOn)
+                    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+            }
         }
     }
-    return YES;
+    return type == RequestMessageTypeLatest && add;
 }
 
 - (BOOL)canInsert:(MessageItem *)messageItem
@@ -200,13 +208,7 @@
 }
 
 - (void)updateMessage:(MessageItem *)message{
-    NSString *sql;
-    if(message.content.mid.length > 0){
-        sql = [NSString stringWithFormat:@"update %@ set message_id = %@, client_send_id = '%@', message_json = '%@', content = '%@' where message_id = '%@'",[self tableName],message.content.mid, message.client_send_id, [message modelToJSONString], message.content.text,message.content.mid];
-    }
-    else{
-        sql = [NSString stringWithFormat:@"update %@ set message_id = %@, client_send_id = '%@', message_json = '%@', content = '%@' where client_send_id = '%@'",[self tableName],message.content.mid, message.client_send_id, [message modelToJSONString], message.content.text,message.client_send_id];
-    }
+    NSString *sql = [NSString stringWithFormat:@"update %@ set message_id = %@, client_send_id = '%@', message_json = '%@', content = '%@' where client_send_id = '%@'",[self tableName],message.content.mid, message.client_send_id, [message modelToJSONString], message.content.text,message.client_send_id];
     
     [self.database executeUpdate:sql];
     

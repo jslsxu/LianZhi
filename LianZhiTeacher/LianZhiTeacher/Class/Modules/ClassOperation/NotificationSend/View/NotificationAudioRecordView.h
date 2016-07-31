@@ -38,5 +38,5 @@ typedef NS_ENUM(NSInteger, AudioRecordState){
     
 }
 @property (nonatomic, copy)void (^cancelCallback)();
-@property (nonatomic, copy)void (^sendCallback)(NSString *filePath, NSData *audioData);
+@property (nonatomic, copy)void (^sendCallback)(NSString *filePath, NSInteger duration);
 @end

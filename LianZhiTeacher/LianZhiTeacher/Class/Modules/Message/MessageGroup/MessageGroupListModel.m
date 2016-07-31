@@ -89,6 +89,24 @@
     return resultArray;
 }
 
+- (void)notificationUnreadNumChanged{
+    if(self.unreadNumChanged){
+        NSInteger notificationNum = 0;
+        NSInteger chatnum = 0;
+        for (MessageGroupItem *groupItem in self.modelItemArray) {
+            if(groupItem.msgNum > 0){
+                if(groupItem.fromInfo.isNotification){
+                    notificationNum += groupItem.msgNum;
+                }
+                else{
+                    chatnum += groupItem.msgNum;
+                }
+            }
+        }
+        self.unreadNumChanged(notificationNum, chatnum);
+    }
+}
+
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
 {
     BOOL parse = [super parseData:data type:type];
@@ -129,8 +147,6 @@
                 }
             }
         }
-        if(originalMessageArray.count < self.modelItemArray.count)
-            hasNew = YES;
         if(hasNew)
         {
             //有新消息，播放声音
@@ -140,7 +156,7 @@
                 AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         }
     }
-    
+    [self notificationUnreadNumChanged];
     return parse;
 }
 @end

@@ -33,14 +33,14 @@
     [_imageView setImage:[UIImage imageNamed:self.imageStr]];
 }
 
-- (void)setHighlighted:(BOOL)highlighted
-{
-    [super setHighlighted:highlighted];
-    if(highlighted)
-        [_imageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Highlighted",self.imageStr]]];
-    else
-        [_imageView setImage:[UIImage imageNamed:self.imageStr]];
-}
+//- (void)setHighlighted:(BOOL)highlighted
+//{
+//    [super setHighlighted:highlighted];
+//    if(highlighted)
+//        [_imageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Highlighted",self.imageStr]]];
+//    else
+//        [_imageView setImage:[UIImage imageNamed:self.imageStr]];
+//}
 
 
 @end
@@ -57,12 +57,13 @@
     self = [super initWithFrame:frame];
     if(self)
     {
+        [self setBackgroundColor:[UIColor whiteColor]];
         self.titleArray = @[@"发照片",@"拍摄"/*,@"发礼物"*/];
         self.imageArray = @[@"FunctionAlbum",@"FunctionCamera"/*,@"FunctionGift"*/];
-        NSInteger itemWIdth = 80;
+        NSInteger itemWIdth = 75;
         UICollectionViewFlowLayout *_layout = [[UICollectionViewFlowLayout alloc] init];
-        [_layout setItemSize:CGSizeMake(80, 90)];
-        NSInteger numPerRow = kScreenWidth / 80;
+        [_layout setItemSize:CGSizeMake(itemWIdth, itemWIdth + 15)];
+        NSInteger numPerRow = kScreenWidth / itemWIdth;
         NSInteger hMargin = (kScreenWidth - numPerRow * itemWIdth) / 4;
         [_layout setSectionInset:UIEdgeInsetsMake(0, hMargin, 0, hMargin)];
         [_layout setMinimumInteritemSpacing:0];
@@ -86,12 +87,12 @@
     if(_canSendGift)
     {
         self.titleArray = @[@"发照片",@"拍摄",@"小视频",@"发礼物"];
-        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera",@"",@"FunctionGift"];
+        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera",@"FunctionVideo",@"FunctionGift"];
     }
     else
     {
         self.titleArray = @[@"发照片",@"拍摄",@"小视频"];
-        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera",@""];
+        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera",@"FunctionVideo"];
     }
     [_collectionView reloadData];
 }

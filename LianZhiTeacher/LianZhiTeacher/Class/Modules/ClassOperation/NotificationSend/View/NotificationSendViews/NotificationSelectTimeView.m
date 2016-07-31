@@ -21,7 +21,7 @@
     if(self){
         _bgButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_bgButton setFrame:self.bounds];
-        [_bgButton setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.6]];
+        [_bgButton setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.5]];
         [_bgButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_bgButton];
         

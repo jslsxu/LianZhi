@@ -16,7 +16,6 @@
 #import "PasswordModificationVC.h"
 #include "BaseInfoModifyVC.h"
 #import "RelatedInfoVC.h"
-#import "NotificationToAllVC.h"
 #import <Bugtags/Bugtags.h>
 static SystemSoundID shake_sound_male_id = 0;
 @interface AppDelegate ()<WelComeViewDelegate>
@@ -251,7 +250,6 @@ static SystemSoundID shake_sound_male_id = 0;
         [[TaskUploadManager sharedInstance] cleanTask];
         [[HttpRequestEngine sharedInstance] cancelAllTask];
     });
-    [NotificationToAllVC clean];;
     [self.homeVC.messageVC invalidate];
     LoginVC *loginVC = [[LoginVC alloc] init];
     [loginVC setCompletion:^(BOOL loginSuccess, BOOL loginCancel) {

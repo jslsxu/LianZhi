@@ -22,24 +22,51 @@
         _actionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, kActionBarHeight)];
         [self setupActionView:_actionView];
         [self addSubview:_actionView];
-        
-        _recordView = [[NotificationAudioRecordView alloc] initWithFrame:CGRectMake(0, self.height, self.width, kActionContentHeight)];
+
+        [self setActionType:ActionTypeNone];
+    }
+    return self;
+}
+
+- (void)showAudioRecordView{
+    [_photoView removeFromSuperview];
+    _photoView = nil;
+    if(!_recordView){
+        @weakify(self);
+        _recordView = [[NotificationAudioRecordView alloc] initWithFrame:CGRectMake(0, kActionBarHeight, self.width, kActionContentHeight)];
+        [_recordView setSendCallback:^(NSString *filePath, NSInteger duration) {
+            @strongify(self);
+            AudioItem *audioItem = [[AudioItem alloc] init];
+            [audioItem setAudioUrl:filePath];
+            [audioItem setTimeSpan:duration];
+            if([self.delegate respondsToSelector:@selector(notificationInputAudio:audioItem:)]){
+                [self.delegate notificationInputAudio:self audioItem:audioItem];
+            }
+        }];
         [self addSubview:_recordView];
-        
+    }
+}
+
+- (void)showImagePicker{
+    [_recordView removeFromSuperview];
+    _recordView = nil;
+    if(!_photoView){
         @weakify(self);
         _photoView = [[QuickImagePickerView alloc] initWithMaxCount:9];
-        [_photoView setOrigin:CGPointMake(0, self.height)];
+        [_photoView setOrigin:CGPointMake(0, kActionBarHeight)];
         [_photoView setOnClickAlbum:^{
             @strongify(self);
             if([self.delegate respondsToSelector:@selector(notificationInputPhoto:)]){
                 [self.delegate notificationInputPhoto:self];
             }
         }];
+        [_photoView setSendCallback:^(NSArray *photoArray, BOOL fullImage) {
+            @strongify(self);
+            if([self.delegate respondsToSelector:@selector(notificationInputQuickPhoto: fullImage:)])
+                [self.delegate notificationInputQuickPhoto:photoArray fullImage:fullImage];
+        }];
         [self addSubview:_photoView];
-
-        [self setActionType:ActionTypeNone];
     }
-    return self;
 }
 
 - (void)setupActionView:(UIView *)viewParent
@@ -75,51 +102,43 @@
     NSArray *imageArray = @[@"action_record_audio",@"action_photo",@"action_camera"];
     for (NSInteger i = 0; i < _actionButtonArray.count; i++) {
         UIButton *actionButton = _actionButtonArray[i];
-        if(_actionType == i + 1){
+        if(_actionType == i + 1 && i != ActionTypeCamera - ActionTypeRecordAudio){
             [actionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_selected",imageArray[i]]] forState:UIControlStateNormal];
         }
         else{
             [actionButton setImage:[UIImage imageNamed:imageArray[i]] forState:UIControlStateNormal];
         }
     }
-    UIView *targetView = nil;
     CGFloat height = kActionBarHeight;
-    if(_actionType == ActionTypeRecordAudio){
-        targetView = _recordView;
+    if(_actionType == ActionTypeNone){
+        [_photoView removeFromSuperview];
+        _photoView = nil;
+        [_recordView removeFromSuperview];
+        _recordView = nil;
+    }
+    else if(_actionType == ActionTypeRecordAudio){
+        [self showAudioRecordView];
         height = self.height;
     }
     else if(_actionType == ActionTypePhoto){
-        targetView = _photoView;
+        [self showImagePicker];
         height = self.height;
     }
-    BOOL heightChanged = (self.currentActionView.height != targetView.height);
-    CGFloat duration = kActionAnimationDuration;
-    if(!self.currentActionView)
-        duration = 0;
-    if(_actionType != ActionTypeNone && _actionType != ActionTypeCamera){
-        [UIView animateWithDuration:duration animations:^{
-            [self.currentActionView setY:self.height];
-            [targetView setY:kActionBarHeight];
-        } completion:^(BOOL finished) {
-            self.currentActionView = targetView;
-        }];
-    }
-    else{
-        self.currentActionView = targetView;
-    }
-
-    if(heightChanged){
-        if([self.delegate respondsToSelector:@selector(notificationInputDidWillChangeHeight:)]){
-            [self.delegate notificationInputDidWillChangeHeight:height];
+    else if(_actionType == ActionTypeCamera){
+        if([self.delegate respondsToSelector:@selector(notificationInputVideo:)]){
+            [self.delegate notificationInputVideo:self];
         }
+    }
+    if([self.delegate respondsToSelector:@selector(notificationInputDidWillChangeHeight:)]){
+        [self.delegate notificationInputDidWillChangeHeight:height];
     }
 }
 
 - (void)onActionButtonClicked:(UIButton *)button{
     NSInteger index = [_actionButtonArray indexOfObject:button];
     ActionType type = index + ActionTypeRecordAudio;
-    if(type != _actionType){
-        [self setActionType:type];
+    if(_actionType != type){
+         [self setActionType:type];
     }
 }
 

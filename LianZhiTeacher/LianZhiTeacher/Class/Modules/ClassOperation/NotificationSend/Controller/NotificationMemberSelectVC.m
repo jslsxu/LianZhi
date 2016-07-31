@@ -13,7 +13,7 @@
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithReuseIdentifier:reuseIdentifier];
     if(self){
-        [self setBackgroundColor:[UIColor whiteColor]];
+        [self.contentView setBackgroundColor:[UIColor whiteColor]];
         _stateImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
         [self addSubview:_stateImageView];
         
@@ -132,6 +132,7 @@
         [_tableView setDelegate:self];
         [_tableView setDataSource:self];
         [_tableView setSectionHeaderHeight:56];
+        [_tableView setContentInset:UIEdgeInsetsMake(0, 0, 44, 0)];
         [self addSubview:_tableView];
         
         _actionView = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - 44, self.width, 44)];
@@ -175,7 +176,15 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 10;
+    if(self.userType == UserTypeStudent){
+        ClassInfo *classInfo = [self.dataSource objectAtIndex:section];
+        return classInfo.students.count;
+    }
+    else{
+        TeacherGroup *group = [self.dataSource objectAtIndex:section];
+        return group.teachers.count;
+    }
+
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -203,12 +212,22 @@
     if(!cell){
         cell = [[NotificationMemberItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
+    
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     NotificationMemberItemCell *itemCell = (NotificationMemberItemCell *)cell;
-    [itemCell setUserInfo:[UserCenter sharedInstance].userInfo];
+    UserInfo *userInfo;
+    if(self.userType == UserTypeStudent){
+        ClassInfo *classInfo = [self.dataSource objectAtIndex:indexPath.section];
+        userInfo = classInfo.students[indexPath.row];
+    }
+    else{
+        TeacherGroup *group = [self.dataSource objectAtIndex:indexPath.section];
+        userInfo = group.teachers[indexPath.row];
+    }
+    [itemCell setUserInfo:userInfo];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section{
@@ -240,10 +259,12 @@
     
     _studentView = [[NotificationMemberView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
     [_studentView setDataSource:[UserCenter sharedInstance].curSchool.classes];
+    [_studentView setUserType:UserTypeStudent];
     [self.view addSubview:_studentView];
     
     _teacherView = [[NotificationMemberView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
-    [_teacherView setDataSource:[UserCenter sharedInstance].curSchool.teachers];
+    [_teacherView setDataSource:[UserCenter sharedInstance].curSchool.groups];
+    [_teacherView setUserType:UserTypeTeacher];
     [_teacherView setHidden:YES];
     [self.view addSubview:_teacherView];
     

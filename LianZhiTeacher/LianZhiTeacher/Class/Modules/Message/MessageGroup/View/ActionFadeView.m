@@ -111,11 +111,9 @@
 - (void)show{
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     [keyWindow addSubview:self];
-    _effectView.alpha = 0.f;
-    _contentView.alpha = 0.f;
+    self.alpha = 0.f;
     [UIView animateWithDuration:0.3 animations:^{
-        _effectView.alpha = 1.f;
-        _contentView.alpha = 1.f;
+        self.alpha = 1.f;
     }completion:^(BOOL finished) {
         
     }];
@@ -123,8 +121,7 @@
 
 - (void)dismiss{
     [UIView animateWithDuration:0.3 animations:^{
-        _effectView.alpha = 0.f;
-        _contentView.alpha = 0.f;
+        self.alpha = 0.f;
     }completion:^(BOOL finished) {
         [self removeFromSuperview];
     }];

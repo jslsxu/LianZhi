@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface LogConfig : TNModelItem<NSCoding>
+@interface LogConfig : TNModelItem
 @property (nonatomic, copy)NSString *dicoveryUrl;
 @property (nonatomic, copy)NSString *introUrl;
 @property (nonatomic, copy)NSString *aboutUrl;

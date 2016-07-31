@@ -7,7 +7,6 @@
 //
 
 #import "ApplicationBoxVC.h"
-#import "NotificationToAllVC.h"
 #import "PublishGrowthTimelineVC.h"
 #import "ContactListVC.h"
 #import "ClassSelectionVC.h"
@@ -17,6 +16,7 @@
 #import "ClassAttendanceVC.h"
 #import "MyAttendanceVC.h"
 #import "LZAccountVC.h"
+#import "NotificationSendVC.h"
 @implementation ApplicationItem
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
@@ -253,7 +253,9 @@
         NSString *host = path.host;
         if([host isEqualToString:@"notice"])//发通知
         {
-            [CurrentROOTNavigationVC pushViewController:[NotificationToAllVC sharedInstance] animated:YES];
+            NotificationSendVC *notificationSendVC = [[NotificationSendVC alloc] init];
+            TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:notificationSendVC];
+            [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
         }
         else if([host isEqualToString:@"contact"])//联系人
         {

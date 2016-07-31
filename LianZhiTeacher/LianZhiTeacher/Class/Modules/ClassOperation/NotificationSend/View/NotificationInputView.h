@@ -25,6 +25,8 @@ typedef NS_ENUM(NSInteger, ActionType){
 - (void)notificationInputDidWillChangeHeight:(CGFloat)height;
 - (void)notificationInputPhoto:(NotificationInputView *)inputView;
 - (void)notificationInputVideo:(NotificationInputView *)inputView;
+- (void)notificationInputQuickPhoto:(NSArray *)photoArray fullImage:(BOOL)isFullImage;
+- (void)notificationInputAudio:(NotificationInputView *)inputView audioItem:(AudioItem *)audioItem;
 @end
 
 @interface NotificationInputView : UIView

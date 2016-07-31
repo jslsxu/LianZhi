@@ -8,6 +8,11 @@
 
 #import "TNBaseViewController.h"
 
+typedef NS_ENUM(NSInteger, UserType){
+    UserTypeStudent,
+    UserTypeTeacher
+};
+
 @interface NotificationMemberHeaderView : UITableViewHeaderFooterView
 {
     UIImageView*    _stateImageView;
@@ -39,6 +44,7 @@
     UIButton*       _selectAllButton;
     UILabel*        _stateLabel;
 }
+@property (nonatomic, assign)UserType userType;
 @property (nonatomic, strong)NSArray *dataSource;
 - (instancetype)initWithFrame:(CGRect)frame;
 @end
