@@ -42,6 +42,13 @@
     return self.modelItemArray;
 }
 
+- (void)setTargetUser:(NSString *)targetUser{
+    _targetUser = targetUser;
+    for (MessageItem *messageItem in self.modelItemArray) {
+        [messageItem setTargetUser:_targetUser];
+    }
+}
+
 - (FMDatabase *)database{
     if(!_database){
         _database = [FMDatabase databaseWithPath:[self chatPath]];
@@ -50,7 +57,7 @@
     return _database;
 }
 
-- (BOOL)loadOldData{
+- (NSInteger)loadOldData{
     NSString *sql = nil;
     FMResultSet *rs = nil;
     
@@ -62,17 +69,18 @@
         sql = [NSString stringWithFormat:@"select * from %@ order by message_id desc limit 20 ", [self tableName]];
     }
     rs = [self.database executeQuery:sql];
-    BOOL loadFromDB = NO;
+    NSInteger loadCount = 0;
     while ([rs next]){
-        loadFromDB = YES;
+        loadCount ++;
         NSString *messageJson = [rs stringForColumn:@"message_json"];
         MessageItem *item = [MessageItem nh_modelWithJson:messageJson];
+        [item setTargetUser:self.targetUser];
         [self.modelItemArray addObject:item];
     }
-    if(loadFromDB){
+    if(loadCount > 0){
         [self sortMessage];
     }
-    return loadFromDB;
+    return loadCount;
 }
 
 - (NSMutableArray *)modelItemArray{
@@ -80,6 +88,44 @@
         _modelItemArray = [NSMutableArray array];
     }
     return _modelItemArray;
+}
+
+- (NSArray *)searchMessageWithKeyword:(NSString *)keyword{
+    if(keyword.length == 0)
+        return nil;
+    NSMutableArray* searchResultArray = [NSMutableArray array];
+    NSString *sql = nil;
+    FMResultSet *rs = nil;
+    sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE content like '%%%@%%' order by message_id desc ", [self tableName], keyword];
+    rs = [self.database executeQuery:sql];
+    while ([rs next]) {
+        NSString *messageJson = [rs stringForColumn:@"message_json"];
+        MessageItem *item = [MessageItem nh_modelWithJson:messageJson];
+        [searchResultArray addObject:item];
+    }
+    return searchResultArray;
+}
+
+- (void)loadForSearchItem:(NSString *)mid{
+    NSMutableArray* searchResultArray = [NSMutableArray array];
+    NSString *sql = nil;
+    FMResultSet *rs = nil;
+    NSString *oldID = [self oldId];
+    if(oldID.length > 0)
+    {
+        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE message_id >= %@ and message_id < %@", [self tableName], mid, oldID];
+    }
+    else{
+        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE message_id >= %@", [self tableName], mid];
+    }
+    rs = [self.database executeQuery:sql];
+    while ([rs next]) {
+        NSString *messageJson = [rs stringForColumn:@"message_json"];
+        MessageItem *item = [MessageItem nh_modelWithJson:messageJson];
+        [searchResultArray addObject:item];
+    }
+    [self.modelItemArray addObjectsFromArray:searchResultArray];
+    [self sortMessage];
 }
 
 - (NSString *)tableName{
@@ -162,7 +208,7 @@
         //添加到前面
         for (NSInteger i = newMessageArray.count - 1; i >= 0; i--) {
             MessageItem *messageItem = newMessageArray[i];
-            
+            [messageItem setTargetUser:self.targetUser];
             NSString *sql = [NSString stringWithFormat:@"select * from %@ where client_send_id = '%@'",[self tableName], messageItem.client_send_id];
             FMResultSet *rs = [self.database executeQuery:sql];
             if(![rs next]){
@@ -201,6 +247,7 @@
 }
 
 - (void)sendNewMessage:(MessageItem *)message{
+    [message setTargetUser:self.targetUser];
     [self.modelItemArray addObject:message];
     [self sortMessage];
     NSString *sql = [NSString stringWithFormat:@"insert into %@ values(%@,'%@','%@','%@') ",[self tableName],message.content.mid, message.client_send_id, message.content.text, [message modelToJSONString]];

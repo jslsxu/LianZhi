@@ -24,9 +24,11 @@ typedef NS_ENUM(NSInteger, RequestMessageType) {
 - (NSArray *)messageArray;
 - (instancetype)initWithUid:(NSString *)uid type:(ChatType)type;
 - (BOOL)canInsert:(MessageItem *)messageItem;
-- (BOOL)loadOldData;
+- (NSInteger)loadOldData;
 - (BOOL)parseData:(NSDictionary *)data type:(RequestMessageType)type;
 - (void)sendNewMessage:(MessageItem *)message;
 - (void)updateMessage:(MessageItem *)message;
 - (void)deleteMessage:(MessageItem *)message;
+- (NSArray *)searchMessageWithKeyword:(NSString *)keyword;
+- (void)loadForSearchItem:(NSString *)mid;
 @end

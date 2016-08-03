@@ -270,7 +270,8 @@ DNImagePickerControllerDelegate>
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     if ([scrollView isTracking]) {
-        [_inputView setActionType:ActionTypeNone];
+        if(_inputView.actionType != ActionTypeNone)
+            [_inputView setActionType:ActionTypeNone];
     }
 }
 

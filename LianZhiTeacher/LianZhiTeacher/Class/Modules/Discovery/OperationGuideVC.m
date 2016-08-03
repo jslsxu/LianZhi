@@ -22,32 +22,7 @@
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *guidePath = [path stringByAppendingPathComponent:@"Guide"];
     NSString *htmlPath = [guidePath stringByAppendingPathComponent:@"index.html"];;
-    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:htmlPath]]];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:htmlPath]]];
 }
-
-- (void)back
-{
-    if([_webView canGoBack])
-    {
-        [_webView goBack];
-    }
-    else
-        [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -121,6 +121,11 @@
     [_functionView setCanSendGift:_canSendGift];
 }
 
+- (void)setCanCallTelephone:(BOOL)canCallTelephone{
+    _canCallTelephone = canCallTelephone;
+    [_functionView setCanCalltelephone:_canCallTelephone];
+}
+
 - (void)layoutSubviews
 {
     [_faceSelectView setY:_contentView.height];
@@ -130,6 +135,12 @@
 - (void)setInputType:(InputType)inputType
 {
     _inputType = inputType;
+    if(_inputType == InputTypeSound){
+        [_soundButton setImage:[UIImage imageNamed:@"SoundIconHighlighted"] forState:UIControlStateNormal];
+    }
+    else{
+        [_soundButton setImage:[UIImage imageNamed:@"SoundIconNormal"] forState:UIControlStateNormal];
+    }
     NSInteger height = kContentViewHeight;
     if(_inputType == InputTypeNone)
     {
@@ -188,11 +199,13 @@
 
 - (void)onKeyboardWillShow:(NSNotification *)notification
 {
-    CGRect keyboardBounds;
-    [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
-    self.targetHeight = keyboardBounds.size.height + _contentView.height;
-    if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidChangeHeight:)])
-        [self.inputDelegate inputBarViewDidChangeHeight:self.targetHeight];
+    if(self.window){
+        CGRect keyboardBounds;
+        [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+        self.targetHeight = keyboardBounds.size.height + _contentView.height;
+        if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidChangeHeight:)])
+            [self.inputDelegate inputBarViewDidChangeHeight:self.targetHeight];
+    }
 }
 
 - (void)onKeyboardWillHide:(NSNotification *)notification
@@ -302,40 +315,56 @@
 }
 
 #pragma mark - FUnctionViewDelegate
-- (void)functionViewDidSelectAtIndex:(NSInteger)index
+- (void)functionViewDidSelectWithType:(FunctionType)functionType
 {
-    if(index <= 2)
-    {
-        if(index == 0){
+    switch (functionType) {
+        case FunctionTypePhoto:
+        {
             PhotoPickerVC *photoPickerVC = [[PhotoPickerVC alloc] init];
             [photoPickerVC setMaxToSelected:9];
             [photoPickerVC setDelegate:self];
             TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:photoPickerVC];
             [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
         }
-        else if(index == 1){
+            break;
+        case FunctionTypeCamera:
+        {
             UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
             [imagePicker setDelegate:self];
             [imagePicker setSourceType: UIImagePickerControllerSourceTypeCamera];
             [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
         }
-        else{
+            break;
+        case FunctionTypeShortVideo:
+        {
             [VideoRecordView showWithCompletion:^(NSURL *videoPath) {
                 NSData *data = [NSData dataWithContentsOfURL:videoPath];
                 NSLog(@"data size is %zd",data.length);
             }];
         }
+            break;
+        case FunctionTypeSendGift:
+        {
+            MyGiftVC *myGiftVC = [[MyGiftVC alloc] init];
+            [myGiftVC setCompletion:^(GiftItem *giftItem) {
+                if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendGift:)])
+                    [self.inputDelegate inputBarViewDidSendGift:giftItem];
+            }];
+            TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:myGiftVC];
+            [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:nil];
+        }
+            break;
+        case FunctionTypeTelephone:
+        {
+            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidCallTelephone)]){
+                [self.inputDelegate inputBarViewDidCallTelephone];
+            }
+        }
+            break;
+        default:
+            break;
     }
-    else
-    {
-        MyGiftVC *myGiftVC = [[MyGiftVC alloc] init];
-        [myGiftVC setCompletion:^(GiftItem *giftItem) {
-            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendGift:)])
-                [self.inputDelegate inputBarViewDidSendGift:giftItem];
-        }];
-        TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:myGiftVC];
-        [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:nil];
-    }
+
 }
 
 #pragma mark - PhotoPickerVCDelegate

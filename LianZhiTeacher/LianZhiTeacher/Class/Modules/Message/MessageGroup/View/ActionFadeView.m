@@ -8,9 +8,55 @@
 
 #import "ActionFadeView.h"
 #import "NotificationSendVC.h"
+#import "POP.h"
+#define kItemWidth                  66
+#define kItemHeight                 96
+
+@implementation WeatherView
+- (instancetype)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if(self){
+        _dayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_dayLabel setFont:[UIFont systemFontOfSize:40]];
+        [_dayLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
+        [_dayLabel setText:@"16"];
+        [_dayLabel sizeToFit];
+        [self addSubview:_dayLabel];
+        
+        _weekdayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_weekdayLabel setFont:[UIFont systemFontOfSize:12]];
+        [_weekdayLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
+        [_weekdayLabel setText:@"星期一"];
+        [_weekdayLabel sizeToFit];
+        [_weekdayLabel setOrigin:CGPointMake(_dayLabel.right + 10, _dayLabel.y + 5)];
+        [self addSubview:_weekdayLabel];
+        
+        _monthLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_monthLabel setFont:[UIFont systemFontOfSize:12]];
+        [_monthLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
+        [_monthLabel setText:@"05/2016"];
+        [_monthLabel sizeToFit];
+        [_monthLabel setOrigin:CGPointMake(_weekdayLabel.left, _dayLabel.bottom - _monthLabel.height - 5)];
+        [self addSubview:_monthLabel];
+        
+        _temperatureLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_temperatureLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
+        [_temperatureLabel setFont:[UIFont systemFontOfSize:14]];
+        [_temperatureLabel setText:@"天津:晴 30℃"];
+        [_temperatureLabel sizeToFit];
+        [_temperatureLabel setOrigin:CGPointMake(0, _dayLabel.bottom )];
+        [self addSubview:_temperatureLabel];
+        
+        [self setHeight:_temperatureLabel.bottom];
+    }
+    return self;
+}
+
+@end
 @interface ActionFadeView (){
     UIVisualEffectView* _effectView;
     UIView*             _contentView;
+    WeatherView*        _weatherView;
     UIImageView*        _logoView;
     UIButton*           _cancelButton;
     NSMutableArray*     _buttonArray;
@@ -43,6 +89,9 @@
 
 - (void)setupContentView:(UIView *)viewParent{
     
+    _weatherView = [[WeatherView alloc] initWithFrame:CGRectMake(10, 40, viewParent.width - 10 * 2, 0)];
+    [viewParent addSubview:_weatherView];
+    
     _logoView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo_title"]];
     [_logoView setOrigin:CGPointMake((_contentView.width - _logoView.width) / 2, 160)];
     [_contentView addSubview:_logoView];
@@ -54,7 +103,7 @@
     [_cancelButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
     [_contentView addSubview:_cancelButton];
     
-//    if([UserCenter sharedInstance].curSchool.classes.count + [UserCenter sharedInstance].curSchool.managedClasses.count > 0)
+    if([UserCenter sharedInstance].curSchool.classes.count + [UserCenter sharedInstance].curSchool.managedClasses.count > 0)
     {
         [_buttonArray addObject:[self actionViewWithTitle:@"发通知" image:@"SendNotification" action:@selector(sendNotification)]];
     }
@@ -62,26 +111,26 @@
     [_buttonArray addObject:[self actionViewWithTitle:@"学生考勤" image:@"StudentAttendance" action:@selector(studentAttendance)]];
     
     NSInteger count = _buttonArray.count;
-    NSInteger spaceXStart = (_contentView.width - 100 * count) / 2;
-    NSInteger spaceYStart = (_cancelButton.y + _logoView.bottom - 110) / 2;
+    CGFloat innerHMargin = (_contentView.width - kItemWidth * count) / (2 + 1.5 * (count - 1));
+    NSInteger spaceYStart = (_cancelButton.y + _logoView.bottom - kItemHeight) / 2;
     for (NSInteger i = 0; i < count; i++) {
         UIView *itemView = _buttonArray[i];
         [_contentView addSubview:itemView];
-        [itemView setOrigin:CGPointMake(spaceXStart + 100 * i, spaceYStart)];
+        [itemView setOrigin:CGPointMake(innerHMargin + (kItemWidth + innerHMargin * 1.5 ) * i, _contentView.height)];
     }
     
 }
 
 - (UIView *)actionViewWithTitle:(NSString *)title image:(NSString *)imageName action:(SEL)action{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 110)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kItemWidth, kItemHeight)];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
-    [button setSize:CGSizeMake(100, 80)];
+    [button setSize:CGSizeMake(kItemWidth, kItemWidth)];
     [view addSubview:button];
     
-    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, button.bottom, view.width, 30)];
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, button.bottom, view.width, kItemHeight - button.bottom)];
     [titleLabel setTextAlignment:NSTextAlignmentCenter];
     [titleLabel setFont:[UIFont systemFontOfSize:15]];
     [titleLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
@@ -114,23 +163,55 @@
     UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
     [keyWindow addSubview:self];
     self.alpha = 0.f;
-    [UIView animateWithDuration:0.3 animations:^{
+    [UIView animateWithDuration:0.2 animations:^{
         self.alpha = 1.f;
     }completion:^(BOOL finished) {
-        
+        [self showItems];
     }];
 }
 
 - (void)dismiss{
-    [UIView animateWithDuration:0.3 animations:^{
+    [self dismissItems];
+    [UIView animateWithDuration:0.5 animations:^{
         self.alpha = 0.f;
     }completion:^(BOOL finished) {
         [self removeFromSuperview];
     }];
 }
 
+- (void)showItems{
+    CGRect fromRect;
+    CGRect toRect;
+    NSInteger spaceYStart = (_cancelButton.y + _logoView.bottom - kItemHeight) / 2;
+    for (NSInteger i = 0; i < _buttonArray.count; i++) {
+        UIView* itemView = _buttonArray[i];
+        itemView.y = _contentView.height;
+        fromRect = itemView.frame;
+        toRect = fromRect;
+        toRect.origin.y = spaceYStart;
+        
+        float delayInseconds = i * 0.1;
+        [self initailzerAnimationWithToPostion:toRect formPostion:fromRect atView:itemView beginTime:delayInseconds];
+    }
+}
+
+- (void)dismissItems{
+    CGRect fromRect;
+    CGRect toRect;
+    for (NSInteger i = 0; i < _buttonArray.count; i++) {
+        UIView* itemView = _buttonArray[i];
+        fromRect = itemView.frame;
+        toRect = CGRectMake(fromRect.origin.x, _contentView.height, fromRect.size.width, fromRect.size.height);
+        
+        float delayInseconds = i * 0.1;
+        [self initailzerAnimationWithToPostion:toRect formPostion:fromRect atView:itemView beginTime:delayInseconds];
+    }
+
+}
+
 - (void)dismissWithCompletion:(void (^)())completion{
-    [UIView animateWithDuration:0.3 animations:^{
+    [self dismissItems];
+    [UIView animateWithDuration:0.5 animations:^{
         self.alpha = 0.f;
     }completion:^(BOOL finished) {
         if(completion){
@@ -138,6 +219,22 @@
         }
         [self removeFromSuperview];
     }];
+}
+
+- (void)initailzerAnimationWithToPostion:(CGRect)toRect formPostion:(CGRect)fromRect atView:(UIView *)view beginTime:(CFTimeInterval)beginTime {
+    POPSpringAnimation *springAnimation = [POPSpringAnimation animation];
+    springAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewFrame];
+    springAnimation.removedOnCompletion = YES;
+    springAnimation.beginTime = beginTime + CACurrentMediaTime();
+    CGFloat springBounciness = 10 - beginTime * 2;
+    springAnimation.springBounciness = springBounciness;    // value between 0-20
+    
+    CGFloat springSpeed = 12 - beginTime * 2;
+    springAnimation.springSpeed = springSpeed;     // value between 0-20
+    springAnimation.toValue = [NSValue valueWithCGRect:toRect];
+    springAnimation.fromValue = [NSValue valueWithCGRect:fromRect];
+    
+    [view pop_addAnimation:springAnimation forKey:@"POPSpringAnimationKey"];
 }
 
 @end

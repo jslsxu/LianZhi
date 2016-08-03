@@ -244,8 +244,7 @@
     NSString *url = item.url;
     if([url hasPrefix:@"http"])
     {
-        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-        [webVC setUrl:url];
+        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:url]];
         [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
     }
     else if([url hasPrefix:@"lianzhi://"])

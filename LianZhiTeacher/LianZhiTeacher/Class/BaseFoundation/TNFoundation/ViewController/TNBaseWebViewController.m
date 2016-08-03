@@ -8,88 +8,178 @@
 
 #import "TNBaseWebViewController.h"
 
-@interface TNBaseWebViewController ()
+#import "NJKWebViewProgress.h"
+#import "NJKWebViewProgressView.h"
+
+#define boundsWidth self.view.bounds.size.width
+#define boundsHeight self.view.bounds.size.height
+@interface TNBaseWebViewController ()<UIWebViewDelegate,UINavigationControllerDelegate,UINavigationBarDelegate,NJKWebViewProgressDelegate>
+
+@property (nonatomic)UIBarButtonItem* customBackBarItem;
+@property (nonatomic)UIBarButtonItem* closeButtonItem;
+
+@property (nonatomic)NJKWebViewProgress* progressProxy;
+@property (nonatomic)NJKWebViewProgressView* progressView;
+
 @end
 
 @implementation TNBaseWebViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    if(_webView)
-    {
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.url]];
-        [_webView loadRequest:request];
-    }
+-(UIStatusBarStyle) preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
 }
 
-- (void)viewDidLoad {
+#pragma mark - init
+-(instancetype)initWithUrl:(NSURL *)url{
+    self = [super init];
+    if (self) {
+        self.url = url;
+        _progressViewColor = [UIColor colorWithRed:119.0/255 green:228.0/255 blue:115.0/255 alpha:1];
+    }
+    return self;
+}
+
+- (void)viewDidLoad{
     [super viewDidLoad];
-    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backButton setImage:[UIImage imageNamed:@"WhiteLeftArrow"] forState:UIControlStateNormal];
-    [backButton setTitle:@"返回" forState:UIControlStateNormal];
-    [backButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16]];
-    [backButton addTarget:self action:@selector(onBack) forControlEvents:UIControlEventTouchUpInside];
-    [backButton setSize:CGSizeMake(60, 40)];
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
-    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    space.width = -10;
-    self.navigationItem.leftBarButtonItems = @[space,backItem];
-    _webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
-    [_webView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
-    [_webView setDelegate:self];
-    [self.view addSubview:_webView];
     
-    _indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [_indicator setHidesWhenStopped:YES];
-    [self.view addSubview:_indicator];
+    self.title = @"";
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    //config navigation item
+//    self.navigationItem.leftItemsSupplementBackButton = YES;
+    
+    self.webView.delegate = self.progressProxy;
+    [self.view addSubview:self.webView];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
+    
+    [self.navigationController.navigationBar addSubview:self.progressView];
+    // Do any additional setup after loading the view.
+}
+
+-(void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [self.progressView removeFromSuperview];
+    self.webView.delegate = nil;
 }
 
 
-- (void)onBack
-{
-    if([_webView canGoBack])
-        [_webView goBack];
-    else
-        [self.navigationController popViewControllerAnimated:YES];
+#pragma mark - public funcs
+-(void)reloadWebView{
+    [self.webView reload];
 }
 
-- (void)setupSubviews
-{
-    [_indicator setCenter:CGPointMake(self.view.width / 2, self.view.height / 2)];
-}
+#pragma mark - update nav items
 
-- (void)setUrl:(NSString *)url
-{
-    _url = url;
-    if(_webView)
-    {
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.url]];
-        [_webView loadRequest:request];
+-(void)updateNavigationItems{
+    if (self.webView.canGoBack) {
+        [self.navigationItem setLeftBarButtonItems:@[self.customBackBarItem,self.closeButtonItem] animated:NO];
+    }else{
+        [self.navigationItem setLeftBarButtonItem:self.customBackBarItem];
     }
 }
 
-#pragma mark - UIWebViewDelegate
-- (void)webViewDidStartLoad:(UIWebView *)webView
-{
-    [_indicator startAnimating];
+
+-(void)customBackItemClicked{
+    if([self.webView canGoBack]){
+        [self.webView goBack];
+    }
+    else{
+        [self closeItemClicked];
+    }
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    [_indicator stopAnimating];
+-(void)closeItemClicked{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
+#pragma mark - webView delegate
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+}
+
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
+    [self updateNavigationItems];
     return YES;
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [self updateNavigationItems];
+    NSString *theTitle=[webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+    if (theTitle.length > 10) {
+        theTitle = [[theTitle substringToIndex:9] stringByAppendingString:@"…"];
+    }
+    self.title = theTitle;
+    //    [self.progressView setProgress:1 animated:NO];
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+}
+
+#pragma mark - NJProgress delegate
+
+-(void)webViewProgress:(NJKWebViewProgress *)webViewProgress updateProgress:(float)progress
+{
+    [self.progressView setProgress:progress animated:NO];
 }
 
 
+#pragma mark - setters and getters
+-(void)setUrl:(NSURL *)url{
+    _url = url;
+}
+
+-(void)setProgressViewColor:(UIColor *)progressViewColor{
+    _progressViewColor = progressViewColor;
+    self.progressView.progressColor = progressViewColor;
+}
+
+-(UIWebView*)webView{
+    if (!_webView) {
+        _webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
+        _webView.delegate = (id)self;
+        _webView.scalesPageToFit = YES;
+        _webView.backgroundColor = [UIColor whiteColor];
+    }
+    return _webView;
+}
+
+-(UIBarButtonItem*)customBackBarItem{
+    if (!_customBackBarItem) {
+        _customBackBarItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"NavBack"] style:UIBarButtonItemStylePlain target:self action:@selector(customBackItemClicked)];
+    }
+    return _customBackBarItem;
+}
+
+-(UIBarButtonItem*)closeButtonItem{
+    if (!_closeButtonItem) {
+        _closeButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStylePlain target:self action:@selector(closeItemClicked)];
+    }
+    return _closeButtonItem;
+}
+
+
+-(NJKWebViewProgress*)progressProxy{
+    if (!_progressProxy) {
+        _progressProxy = [[NJKWebViewProgress alloc] init];
+        _progressProxy.webViewProxyDelegate = (id)self;
+        _progressProxy.progressDelegate = (id)self;
+    }
+    return _progressProxy;
+}
+
+-(NJKWebViewProgressView*)progressView{
+    if (!_progressView) {
+        CGFloat progressBarHeight = 3.0f;
+        CGRect navigaitonBarBounds = self.navigationController.navigationBar.bounds;
+        //        CGRect barFrame = CGRectMake(0, navigaitonBarBounds.size.height - progressBarHeight-0.5, navigaitonBarBounds.size.width, progressBarHeight);
+        CGRect barFrame = CGRectMake(0, navigaitonBarBounds.size.height, navigaitonBarBounds.size.width, progressBarHeight);
+        _progressView = [[NJKWebViewProgressView alloc] initWithFrame:barFrame];
+        _progressView.progressColor = self.progressViewColor;
+        _progressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    }
+    return _progressView;
+}
 
 @end

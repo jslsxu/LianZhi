@@ -1,10 +1,8 @@
 
 
 #import "JSMessagesViewController.h"
-#import "ClassMemberVC.h"
-
+#import "ChatExtraInfoVC.h"
 static NSString *topChatID = nil;
-static NSInteger num = 1;
 
 @interface JSMessagesViewController ()
 @property (nonatomic, strong)UITableView *tableView;
@@ -28,9 +26,14 @@ static NSInteger num = 1;
     topChatID = nil;
 }
 
+- (ChatMessageModel *)curChatMessageModel{
+    return self.chatMessageModel;
+}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_timer invalidate];
     _timer = nil;
 }
@@ -38,6 +41,7 @@ static NSInteger num = 1;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onReceiveGift:) name:ReceiveGiftNotification object:nil];
     _timer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(getMessage) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
     [_timer fire];
@@ -60,18 +64,11 @@ static NSInteger num = 1;
 {
     [super viewDidLoad];
     topChatID = self.targetID;
-    if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup)//群组或者班级
-    {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"GroupMemberIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(onShowClassMembers)];
-    }
-    else
-    {
-        if(self.mobile.length > 0)
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"CallMobile"] style:UIBarButtonItemStylePlain target:self action:@selector(onTelephoneClicked)];
-    }
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"GroupMemberIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(showChatUserInfo)];
     
     _inputView = [[InputBarView alloc] init];
     [_inputView setCanSendGift:self.chatType == ChatTypeParents || self.chatType == ChatTypeTeacher];
+    [_inputView setCanCallTelephone:((self.chatType == ChatTypeParents || self.chatType == ChatTypeTeacher) && self.mobile.length > 0)];
     [_inputView setInputDelegate:self];
     [_inputView setY:self.view.height - _inputView.height - 64];
     [self.view addSubview:_inputView];
@@ -101,16 +98,9 @@ static NSInteger num = 1;
 - (ChatMessageModel *)chatMessageModel{
     if(!_chatMessageModel){
         _chatMessageModel = [[ChatMessageModel alloc] initWithUid:self.targetID type:self.chatType];
+        [_chatMessageModel setTargetUser:self.title];
     }
     return _chatMessageModel;
-}
-
-- (void)send
-{
-    [self inputBarViewDidCommit:kStringFromValue(num)];
-    num++;
-    if(num >= 30)
-        [_testTimer invalidate];
 }
 
 - (void)setSoundOn:(BOOL)soundOn
@@ -177,30 +167,26 @@ static NSInteger num = 1;
     self.navigationItem.titleView = titleView;
 }
 
-- (void)onShowClassMembers
+- (void)showChatUserInfo
 {
-    ClassMemberVC *classMemberVC = [[ClassMemberVC alloc] init];
-    [classMemberVC setShowSound:YES];
-    if(self.chatType == ChatTypeClass)
-        [classMemberVC setClassID:self.targetID];
-    else if(self.chatType == ChatTypeGroup)
-        [classMemberVC setGroupID:self.targetID];
-    [classMemberVC setTitle:self.title];
-    [self.navigationController pushViewController:classMemberVC animated:YES];
+    ChatExtraInfoVC *chatExtraInfoVC = [[ChatExtraInfoVC alloc] init];
+    [self.navigationController pushViewController:chatExtraInfoVC animated:YES];
 }
 
-- (void)onTelephoneClicked
-{
-    if(self.mobile.length > 0)
-    {
-        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-        TNButtonItem *item = [TNButtonItem itemWithTitle:@"拨打" action:^{
-            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",self.mobile];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-        }];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",self.mobile] buttonItems:@[cancelItem,item]];
-        [alertView show];
+- (void)scrollToSearchResult:(MessageItem *)messageItem{
+    
+    for (NSInteger i = 0; i < self.chatMessageModel.messageArray.count; i++) {
+        MessageItem *item = self.chatMessageModel.messageArray[i];
+        if([item.content.mid isEqualToString:messageItem.content.mid]){
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:NO];
+            return;
+        }
     }
+    [self.chatMessageModel loadForSearchItem:messageItem.content.mid];
+    [self.tableView reloadData];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:NO];
+    //如果当前没有，去数据库查
+    
 }
 
 - (void)onTap
@@ -226,8 +212,10 @@ static NSInteger num = 1;
     if(self.isRequestHistory)
         return;
     self.isRequestHistory = YES;
-    if([self.chatMessageModel loadOldData]){
+    NSInteger loadCount = [self.chatMessageModel loadOldData];
+    if(loadCount > 0){
         [self.tableView reloadData];
+//        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:loadCount inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
         [self.tableView.mj_header endRefreshing];
         self.isRequestHistory = NO;
     }
@@ -402,23 +390,23 @@ static NSInteger num = 1;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     MessageItem *messageItem = self.chatMessageModel.messageArray[indexPath.row];
-    return [messageItem cellHeight];
+//    return [messageItem cellHeight];
+    return [MessageCell cellHeightForModel:messageItem];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *reuseID = @"MessageCell";
+    MessageItem *messageItem = [[self chatMessageModel].messageArray objectAtIndex:indexPath.row];
+    NSString *reuseID = messageItem.reuseID;
     MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
     if(!cell){
-        cell = [[MessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+        cell = [[MessageCell alloc] initWithModel:messageItem reuseID:reuseID];
+    }
+    else{
+        [cell setMessageItem:messageItem];
     }
     [cell setDelegate:self];
     return cell;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    MessageCell *messageCell = (MessageCell *)cell;
-    [messageCell setData:[[self chatMessageModel].messageArray objectAtIndex:indexPath.row]];
 }
 
 
@@ -499,6 +487,19 @@ static NSInteger num = 1;
     [self dealTheFunctionData:dic];
 }
 
+- (void)inputBarViewDidCallTelephone{
+    if(self.mobile.length > 0)
+    {
+        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+        TNButtonItem *item = [TNButtonItem itemWithTitle:@"拨打" action:^{
+            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",self.mobile];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+        }];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",self.mobile] buttonItems:@[cancelItem,item]];
+        [alertView show];
+    }
+}
+
 - (void)dealTheFunctionData:(NSDictionary *)dic
 {
     [self sendMessage:dic];
@@ -573,7 +574,8 @@ static NSInteger num = 1;
     }];
 }
 
-- (void)onReceiveGift:(MessageItem *)messageItem {
+- (void)onReceiveGift:(NSNotification *)notification {
+    MessageItem *messageItem = notification.userInfo[ReceiveGiftMessageKey];
     if(messageItem.content.type == UUMessageTypeGift && messageItem.content.unread && messageItem.from == UUMessageFromOther) {
         NSDictionary *dic = @{@"strContent": messageItem.content.exinfo.presentName,
                               @"type": @(UUMessageTypeReceiveGift)};
@@ -581,6 +583,8 @@ static NSInteger num = 1;
         //更新已读
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/read" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"mids" : messageItem.content.mid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             messageItem.content.unread = 0;
+            [self.chatMessageModel updateMessage:messageItem];
+            [self.tableView reloadData];
         } fail:^(NSString *errMsg) {
             
         }];

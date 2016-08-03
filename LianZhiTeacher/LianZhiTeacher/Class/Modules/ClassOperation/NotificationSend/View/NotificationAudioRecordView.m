@@ -152,7 +152,15 @@
     [_titleLabel setText:durationStr];
 }
 - (void)audioTool:(NHAudioTool *)tool didEndToRecordWithRecordInfo:(NSDictionary *)info{
-    self.recordPath = info[NHAudioToolAmrFilePathKey];
+    NSLog(@"info is %@",info);
+    NSString *amrFileKey = info[NHAudioToolAmrFilePathKey];// 相对路径
+    NSString *wavFileKey = info[NHAudioToolWAVFilePathKey];// 相对路径
+    NSString *amrFile = [NHFileManager audioFileAbsolutePathForRelativePath:amrFileKey];// 绝对路径
+    NSString *wavFile = [NHFileManager audioFileAbsolutePathForRelativePath:wavFileKey];// 绝对路径
+    
+//    NSNumber *duration = info[NHAudioToolFileDurationKey];      /时间
+
+    self.recordPath = amrFileKey;
 }
 
 - (void)audioTool:(NHAudioTool *)tool didFailedOnRecord:(NSError *)error{
@@ -217,7 +225,7 @@
 }
 
 - (void)onListenStart{
-    
+    [self.audioTool playAudioWithFilePath:self.recordPath];
 }
 
 - (void)onCancel{
@@ -234,15 +242,15 @@
 
 #pragma mark - NHAudioToolDelegate 
 - (void)audioTool:(NHAudioTool *)tool startToPlayAudioFile:(NSString *)filePath{
-    
+    NSLog(@"start play %@",filePath);
 }
 
 - (void)audioTool:(NHAudioTool *)tool didSuccessPlayedFile:(NSString *)filePath{
-    
+    NSLog(@"success play %@",filePath);
 }
 
 - (void)audioTool:(NHAudioTool *)tool didFailedOnPlayAudioFile:(NSString *)filePath error:(NSError *)error{
-    
+    NSLog(@"fail play");
 }
 
 @end
@@ -259,7 +267,6 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        self.recordPath = [NHFileManager getTmpRecordPath];
         [self showRecordView];
     }
     return self;
@@ -287,6 +294,8 @@
     self.listenView = [[ListenView alloc] initWithFrame:self.bounds];
     [self.listenView setTimeSpan:self.recordView.duration];
     [self.listenView setAudioTool:self.recordView.audioTool];
+    [self.listenView setRecordPath:self.recordView.recordPath];
+    [self.recordView.audioTool setDelegate:self.listenView];
     [self.listenView setCancelCallBack:^{
         @strongify(self);
         [self showRecordView];

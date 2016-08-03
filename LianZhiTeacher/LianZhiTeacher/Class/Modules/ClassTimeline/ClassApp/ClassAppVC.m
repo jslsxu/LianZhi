@@ -107,8 +107,7 @@
             NSString *host = hyperLink.host;
             if([scheme isEqualToString:@"http"])
             {
-                TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-                [webVC setUrl:actionUrl];
+                TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:actionUrl]];
                 [webVC setTitle:appItem.appName];
                 [self.navigationController pushViewController:webVC animated:YES];
             }

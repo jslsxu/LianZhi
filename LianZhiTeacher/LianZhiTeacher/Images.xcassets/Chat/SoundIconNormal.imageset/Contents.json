@@ -6,13 +6,13 @@
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "icon-yy@2x.png"
+      "filename" : "icon_shengyin1@2x.png",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "icon-yy@3x.png"
+      "filename" : "icon_shengyin1@3x.png",
+      "scale" : "3x"
     }
   ],
   "info" : {

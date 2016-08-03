@@ -11,7 +11,7 @@
 #import "OperationGuideVC.h"
 #import "SurroundingVC.h"
 
-#define kDiscoveryCachePath             @"DiscoveryCache"
+#define kDiscoveryCachePath             @"Discovery"
 
 @implementation DiscoveryItem
 - (void)parseData:(TNDataWrapper *)dataWrapper
@@ -84,6 +84,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.itemArray = [[LZKVStorage applicationKVStorage] storageValueForKey:kDiscoveryCachePath];
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [_tableView setSeparatorColor:kCommonSeparatorColor];
     [_tableView setDelegate:self];
@@ -92,12 +93,6 @@
     [self.view addSubview:_tableView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
-    id responseObject = [NSDictionary dictionaryWithContentsOfFile:[self cachePath]];
-    if(responseObject)
-    {
-        TNDataWrapper *dataWrapper = [TNDataWrapper dataWrapperWithObject:responseObject];
-        [self onSuccessWithResponse:dataWrapper];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -129,6 +124,9 @@
             }
         }
         self.itemArray = sectionArray;
+        if(self.itemArray.count > 0){
+            [[LZKVStorage userKVStorage] saveStorageValue:self.itemArray forKey:kDiscoveryCachePath];
+        }
     }
     [_tableView reloadData];
 }
@@ -136,22 +134,10 @@
 - (void)requestData
 {
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"info/find" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"school_id" : [UserCenter sharedInstance].curSchool.schoolID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        NSDictionary *data = responseObject.data;
-        [data writeToFile:[self cachePath] atomically:YES];
         [self onSuccessWithResponse:responseObject];
     } fail:^(NSString *errMsg) {
         
     }];
-}
-
-- (NSString *)cachePath
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *docDir = [paths objectAtIndex:0];
-    NSString *commonCacheRoot = [HttpRequestEngine sharedInstance].commonCacheRoot;
-    NSString *filePath = docDir;
-    filePath = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@_%@",commonCacheRoot,kDiscoveryCachePath,[UserCenter sharedInstance].curSchool.schoolID]];
-    return filePath;
 }
 
 
@@ -239,17 +225,15 @@
     DicoveryType type = item.type;
     if(type == DicoveryTypeInterest)
     {
-        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
         NSString *url = [NSString appendUrl:item.url withParams:@{@"school_id" : [UserCenter sharedInstance].curSchool.schoolID}];
-        [webVC setUrl:url];
+        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:url]];
         [webVC setTitle:item.name];
         [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
         [self setRead:1];
     }
     else if(type == DicoveryTypeFAQ)
         {
-            TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-            [webVC setUrl:[UserCenter sharedInstance].userData.config.faqUrl];
+            TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userData.config.faqUrl]];
             [webVC setTitle:@"常见问题"];
             [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
             [self setRead:2];
@@ -272,8 +256,7 @@
         }
         else
         {
-            TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-            [webVC setUrl:item.url];
+            TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:item.url]];
             [webVC setTitle:item.name];
             [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
         }

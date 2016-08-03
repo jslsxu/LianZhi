@@ -29,6 +29,7 @@ PODS:
   - SDWebImage/Core (3.8.1)
   - SSZipArchive (1.4)
   - SWTableViewCell (0.3.7)
+  - XHRealTimeBlur (1.7)
   - YYKit (1.0.7):
     - YYKit/no-arc (= 1.0.7)
   - YYKit/no-arc (1.0.7)
@@ -48,6 +49,7 @@ DEPENDENCIES:
   - SCRecorder
   - SSZipArchive
   - SWTableViewCell (~> 0.3.7)
+  - XHRealTimeBlur
   - YYKit
 
 SPEC CHECKSUMS:
@@ -68,6 +70,7 @@ SPEC CHECKSUMS:
   SDWebImage: 35f9627a3e44b4f292a8a8ce6a531fa488239b91
   SSZipArchive: bab21000ee11b7ba68d5880bcd87d80e4eb93e65
   SWTableViewCell: 2a94aadc9d47b2b611fa064566bf57948b95b579
+  XHRealTimeBlur: 661fadd5691ba2d349758e8fd5fbdb499ac55f8c
   YYKit: 843d1b26e20b82c695790c9a89907eaa1e99907f
 
 COCOAPODS: 0.39.0

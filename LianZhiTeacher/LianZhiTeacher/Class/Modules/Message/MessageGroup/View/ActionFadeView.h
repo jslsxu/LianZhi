@@ -7,6 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+
+@interface WeatherView : UIView{
+    UILabel*    _dayLabel;
+    UILabel*    _weekdayLabel;
+    UILabel*    _monthLabel;
+    UILabel*    _temperatureLabel;
+}
+
+@end
+
 typedef NS_ENUM(NSInteger, ActionFadeViewType){
     ActionTypeSendNotification,
     ActionTypeNewChat,

@@ -8,6 +8,18 @@
 
 #import "FunctionView.h"
 
+@implementation FunctionItem
+
++ (FunctionItem *)functionItemWithTitle:(NSString *)title image:(NSString *)image type:(FunctionType)functionType{
+    FunctionItem *item = [FunctionItem new];
+    [item setTitle:title];
+    [item setImage:image];
+    [item setFunctionType:functionType];
+    return item;
+}
+
+@end
+
 @implementation FunctionItemCell
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -27,27 +39,17 @@
     return self;
 }
 
-- (void)setImageStr:(NSString *)imageStr
-{
-    _imageStr = imageStr;
-    [_imageView setImage:[UIImage imageNamed:self.imageStr]];
+- (void)setFunctionItem:(FunctionItem *)functionItem{
+    _functionItem = functionItem;
+    [_imageView setImage:[UIImage imageNamed:_functionItem.image]];
+    [_titleLabel setText:_functionItem.title];
 }
-
-//- (void)setHighlighted:(BOOL)highlighted
-//{
-//    [super setHighlighted:highlighted];
-//    if(highlighted)
-//        [_imageView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Highlighted",self.imageStr]]];
-//    else
-//        [_imageView setImage:[UIImage imageNamed:self.imageStr]];
-//}
 
 
 @end
 
 @interface FunctionView ()
-@property (nonatomic, strong)NSArray *imageArray;
-@property (nonatomic, strong)NSArray *titleArray;
+@property (nonatomic, strong)NSMutableArray*    functionArray;
 @end
 
 @implementation FunctionView
@@ -58,8 +60,6 @@
     if(self)
     {
         [self setBackgroundColor:[UIColor whiteColor]];
-        self.titleArray = @[@"发照片",@"拍摄"/*,@"发礼物"*/];
-        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera"/*,@"FunctionGift"*/];
         NSInteger itemWIdth = 75;
         UICollectionViewFlowLayout *_layout = [[UICollectionViewFlowLayout alloc] init];
         [_layout setItemSize:CGSizeMake(itemWIdth, itemWIdth + 15)];
@@ -81,39 +81,65 @@
     return self;
 }
 
-- (void)setCanSendGift:(BOOL)canSendGift
-{
+- (void)setCanCalltelephone:(BOOL)canCalltelephone{
+    _canCalltelephone = canCalltelephone;
+    [self updateSubviews];
+}
+
+- (void)setCanSendGift:(BOOL)canSendGift{
     _canSendGift = canSendGift;
-    if(_canSendGift)
-    {
-        self.titleArray = @[@"发照片",@"拍摄",@"小视频",@"发礼物"];
-        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera",@"FunctionVideo",@"FunctionGift"];
+    [self updateSubviews];
+}
+
+- (NSMutableArray *)functionArray{
+    if(_functionArray == nil){
+        _functionArray = [NSMutableArray array];
+        [_functionArray addObject:[FunctionItem functionItemWithTitle:@"发照片" image:@"FunctionAlbum" type:FunctionTypePhoto]];
+        [_functionArray addObject:[FunctionItem functionItemWithTitle:@"拍摄" image:@"FunctionCamera" type:FunctionTypeCamera]];
+        [_functionArray addObject:[FunctionItem functionItemWithTitle:@"小视频" image:@"FunctionVideo" type:FunctionTypeShortVideo]];
     }
-    else
-    {
-        self.titleArray = @[@"发照片",@"拍摄",@"小视频"];
-        self.imageArray = @[@"FunctionAlbum",@"FunctionCamera",@"FunctionVideo"];
+    return _functionArray;
+}
+
+
+- (void)updateSubviews{
+    if(self.canSendGift){
+        if(![self supportType:FunctionTypeSendGift])
+            [_functionArray addObject:[FunctionItem functionItemWithTitle:@"发礼物" image:@"FunctionGift" type:FunctionTypeSendGift]];
+    }
+    if(self.canCalltelephone){
+        if(![self supportType:FunctionTypeTelephone])
+            [_functionArray addObject:[FunctionItem functionItemWithTitle:@"打电话" image:@"FunctionVideo" type:FunctionTypeTelephone]];
     }
     [_collectionView reloadData];
 }
 
+- (BOOL)supportType:(FunctionType)functionType{
+    for (FunctionItem *item in self.functionArray) {
+        if(functionType == item.functionType)
+            return YES;
+    }
+    return NO;
+}
+
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.titleArray.count;
+    return self.functionArray.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FunctionItemCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"FunctionItemCell" forIndexPath:indexPath];
-    [cell setImageStr:self.imageArray[indexPath.row]];
-    [cell.titleLabel setText:self.titleArray[indexPath.row]];
+    [cell setFunctionItem:self.functionArray[indexPath.row]];
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([self.delegate respondsToSelector:@selector(functionViewDidSelectAtIndex:)])
-        [self.delegate functionViewDidSelectAtIndex:indexPath.row];
+    if([self.delegate respondsToSelector:@selector(functionViewDidSelectWithType:)]){
+        FunctionItem *item = self.functionArray[indexPath.row];
+        [self.delegate functionViewDidSelectWithType:item.functionType];
+    }
 }
 
 

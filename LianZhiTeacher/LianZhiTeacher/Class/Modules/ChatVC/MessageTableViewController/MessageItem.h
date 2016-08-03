@@ -24,6 +24,7 @@ typedef NS_ENUM(NSInteger, MessageType) {
     UUMessageTypeReceiveGift    = 6,    //收礼物
     UUMessageTypeDeleted  = 8,      //消息被删除
     UUMessageTypeRevoked  = 9,      //消息被撤销
+    UUMessageTypeVideo,             //视频消息
 };
 
 typedef NS_ENUM(NSInteger, ChatType)
@@ -70,6 +71,7 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property (nonatomic, assign)NSInteger createTime;
 //
 @property (nonatomic, strong)NSDictionary *params;
+- (BOOL)isMyMessage;
 - (void)makeClientSendID;
-- (CGFloat)cellHeight;
+- (NSString *)reuseID;
 @end
