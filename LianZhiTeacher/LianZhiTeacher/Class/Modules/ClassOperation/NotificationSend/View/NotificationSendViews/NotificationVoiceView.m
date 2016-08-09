@@ -8,35 +8,26 @@
 
 #import "NotificationVoiceView.h"
 
-@interface AudioContentView ()
-@property (nonatomic, strong)AudioItem *audioItem;
-@end
-
-@implementation AudioContentView
-- (instancetype)initWithAudioItem:(AudioItem *)audioItem{
-    self = [super initWithFrame:CGRectZero];
+@implementation AudioItemView
+- (instancetype)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
     if(self){
-        self.audioItem = audioItem;
-        NSInteger second = audioItem.timeSpan;
-        NSInteger maxWidth = kScreenWidth - 50 * 2 - 60 - 40;
-        NSInteger width = maxWidth * second / 120 + 40;
-        _voiceButton = [[ChatVoiceButton alloc] init];
-        [_voiceButton setFrame:CGRectMake(0, 0, width, 32)];
-        _voiceButton.type = MLPlayVoiceButtonTypeRight;
-        [_voiceButton addTarget:self action:@selector(onVoiceClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_voiceButton setBackgroundImage:[[UIImage imageNamed:@"MessageSendedBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)] forState:UIControlStateNormal];
-        [_voiceButton setBackgroundImage:[[UIImage imageNamed:@"MessageSendedBGHighlighted"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)] forState:UIControlStateHighlighted];
-
-        [self addSubview:_voiceButton];
+        _bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"MessageSendedBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)]];
+        [self addSubview:_bgImageView];
         
-        _removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_removeButton setSize:CGSizeMake(20, 20)];
-        [_removeButton setOrigin:CGPointMake(width + 10, (32 - 20) / 2)];
-        [_removeButton addTarget:self action:@selector(onRemoveClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_removeButton setImage:[UIImage imageNamed:@"delete_target"] forState:UIControlStateNormal];
-        [self addSubview:_removeButton];
+        _animateImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        NSMutableArray* animateImages = [NSMutableArray array];
+        for (NSInteger i = 0; i < 3; i++) {
+            [animateImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"notificaiton_voice_%zd",i + 1]]];
+        }
+        [_animateImageView setAnimationImages:animateImages];
+        [self addSubview:_animateImageView];
         
-        [self setSize:CGSizeMake(width + 20 + 10, 32)];
+//        _loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+//        [self addSubview:_loadingIndicator];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
+        [self addGestureRecognizer:tapGesture];
     }
     return self;
 }
@@ -46,12 +37,73 @@
     
 }
 
-- (void)onVoiceClicked{
+- (void)onTap{
     
 }
 
+@end
+
+@interface AudioContentView ()
+@property (nonatomic, assign)CGFloat maxWidth;
+@end
+
+@implementation AudioContentView
+- (instancetype)initWithMaxWidth:(CGFloat)maxWidth{
+    self = [super initWithFrame:CGRectMake(0, 0, maxWidth, 32)];
+    if(self){
+        self.maxWidth = maxWidth;
+        _voiceButton = [[ChatVoiceButton alloc] init];
+        _voiceButton.type = MLPlayVoiceButtonTypeRight;
+        [_voiceButton addTarget:self action:@selector(onVoiceClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_voiceButton setBackgroundImage:[[UIImage imageNamed:@"MessageSendedBG"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)] forState:UIControlStateNormal];
+        [_voiceButton setBackgroundImage:[[UIImage imageNamed:@"MessageSendedBGHighlighted"] resizableImageWithCapInsets:UIEdgeInsetsMake(26, 20, 8, 20)] forState:UIControlStateHighlighted];
+
+        [self addSubview:_voiceButton];
+        
+        _durationLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_durationLabel setFont:[UIFont systemFontOfSize:14]];
+        [_durationLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
+        [self addSubview:_durationLabel];
+        
+        
+        _removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_removeButton setSize:CGSizeMake(30, 32)];
+        [_removeButton addTarget:self action:@selector(onRemoveClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_removeButton setImage:[UIImage imageNamed:@"delete_target"] forState:UIControlStateNormal];
+        [_removeButton setHidden:YES];
+        [self addSubview:_removeButton];
+    }
+    return self;
+}
+
+- (void)setDeleteCallback:(void (^)())deleteCallback{
+    _deleteCallback = [deleteCallback copy];
+    [_removeButton setHidden:NO];
+}
+
+- (void)setAudioItem:(AudioItem *)audioItem{
+    _audioItem = audioItem;
+    [_durationLabel setText:[Utility formatStringForTime:_audioItem.timeSpan]];
+    [_durationLabel sizeToFit];
+    CGFloat maxWidth = self.maxWidth - 30 - _durationLabel.width - 10;
+    CGFloat audioWidth = [self audioButtonWidthWithDuration:_audioItem.timeSpan maxWidth:maxWidth];
+    [_voiceButton setFrame:CGRectMake(0, 0, audioWidth, 32)];
+    [_durationLabel setOrigin:CGPointMake(_voiceButton.right + 10, (self.height - _durationLabel.height) / 2)];
+    [_removeButton setOrigin:CGPointMake(_durationLabel.right, 0)];
+}
+
+- (void)onVoiceClicked{
+    [_voiceButton setVoiceWithURL:[NSURL fileURLWithPath:self.audioItem.audioUrl] withAutoPlay:YES];
+}
+
 - (void)onRemoveClicked{
-    
+    if(self.deleteCallback){
+        self.deleteCallback();
+    }
+}
+
+- (CGFloat)audioButtonWidthWithDuration:(NSInteger)duration maxWidth:(CGFloat)maxWidth{
+    return (maxWidth - 60) * (duration - 2) / (120 - 2) + 60;
 }
 
 @end
@@ -100,18 +152,31 @@
         [self setHeight:0];
     }
     else{
+        CGFloat maxWidth = self.width - kVoiceMargin - _titleLabel.right - kVoiceMargin;
         CGFloat spaceXStart = _titleLabel.right + kVoiceMargin;
         CGFloat spaceYStart = kVoiceMargin;
         for (NSInteger i = 0; i < _voiceArray.count; i++) {
             AudioItem *item = _voiceArray[i];
-            AudioContentView *voiceView = [[AudioContentView alloc] initWithAudioItem:item];
+            AudioContentView *voiceView = [[AudioContentView alloc] initWithMaxWidth:maxWidth];
+            [voiceView setAudioItem:item];
             [voiceView setOrigin:CGPointMake(spaceXStart, spaceYStart)];
+            @weakify(self)
+            [voiceView setDeleteCallback:^{
+                @strongify(self)
+                [self deleteVoice:item];
+            }];
             [_voiceViewArray addObject:voiceView];
             [self addSubview:voiceView];
             
             spaceYStart += kVoiceMargin + voiceView.height;
         }
         [self setHeight:spaceYStart];
+    }
+}
+
+- (void)deleteVoice:(AudioItem *)audioItem{
+    if(self.deleteDataCallback){
+        self.deleteDataCallback(audioItem);
     }
 }
 

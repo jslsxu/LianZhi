@@ -142,7 +142,14 @@
     NSString *content = _messageItem.content;
     if(content.length == 0 && _messageItem.audioItem)
         content = @"这是一条语音消息，点击播放收听";
-    _contentLabel.text = content;
+    if(_messageItem.im_at){
+        NSMutableAttributedString *attrContent = [[NSMutableAttributedString alloc] initWithString:@"[有人@我]" attributes:@{NSForegroundColorAttributeName : [UIColor redColor]}];
+        [attrContent appendAttributedString:[[NSAttributedString alloc] initWithString:content attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"9a9a9a"]}]];
+        [_contentLabel setAttributedText:attrContent];
+    }
+    else{
+        _contentLabel.text = content;
+    }
     [_sepLine setY:66 - kLineHeight];
     
     _soundOff.hidden = _messageItem.soundOn;

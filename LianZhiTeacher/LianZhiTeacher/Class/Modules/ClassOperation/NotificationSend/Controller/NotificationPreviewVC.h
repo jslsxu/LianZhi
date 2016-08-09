@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseViewController.h"
-
+#import "NotificationSendEntity.h"
 @interface NotificationPreviewVC : TNBaseViewController
-
+@property (nonatomic, strong)NotificationSendEntity*    sendEntity;
 @end

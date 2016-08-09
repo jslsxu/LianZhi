@@ -7,7 +7,7 @@
 //
 
 #import "TNModelItem.h"
-
+#import "VideoItem.h"
 typedef NS_ENUM(NSInteger, MessageStatus)
 {
     MessageStatusSuccess = 0,
@@ -22,9 +22,9 @@ typedef NS_ENUM(NSInteger, MessageType) {
     UUMessageTypeFace     = 4 ,    // 表情
     UUMessageTypeGift     = 5,    //礼物
     UUMessageTypeReceiveGift    = 6,    //收礼物
+    UUMessageTypeVideo      = 7,          //视频消息
     UUMessageTypeDeleted  = 8,      //消息被删除
     UUMessageTypeRevoked  = 9,      //消息被撤销
-    UUMessageTypeVideo,             //视频消息
 };
 
 typedef NS_ENUM(NSInteger, ChatType)
@@ -47,6 +47,7 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property (nonatomic, copy)NSString *presentName;
 @property (nonatomic, strong)PhotoItem *imgs;
 @property (nonatomic, strong)AudioItem *voice;
+@property (nonatomic, strong)VideoItem *video;
 @end
 
 @interface MessageContent : TNBaseObject

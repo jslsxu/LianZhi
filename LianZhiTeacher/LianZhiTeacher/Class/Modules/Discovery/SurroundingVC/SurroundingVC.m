@@ -197,7 +197,7 @@
                 if(self.targetZoneItem.photos.count > 0)
                     imageUrl = [self.targetZoneItem.photos[0] thumbnailUrl];
                 if(imageUrl.length == 0)
-                    imageUrl = self.classInfo.logoUrl;
+                    imageUrl = self.classInfo.logo;
                 [ShareActionView shareWithTitle:self.targetZoneItem.content content:nil image:[UIImage imageNamed:@"ClassZone"] imageUrl:imageUrl url:[NSString stringWithFormat:@"http://m.edugate.cn/share/%@_%@.html",self.targetZoneItem.userInfo.uid,self.targetZoneItem.itemID]];
             }
         }

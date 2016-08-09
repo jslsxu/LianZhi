@@ -150,8 +150,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
 {
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_related_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         if(responseObject.count > 0){
-             [self.userData parseData:responseObject];
-            [self save];
+            [self updateUserInfoWithData:responseObject];
              [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoVCNeedRefreshNotificaiotn object:nil];
         }
     } fail:^(NSString *errMsg) {
@@ -161,7 +160,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
 
 - (void)updateUserInfoWithData:(TNDataWrapper *)userWrapper
 {
-    [self.userData.userInfo parseData:userWrapper];
+    [self.userData parseData:userWrapper];
     [self save];
 }
 

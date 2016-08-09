@@ -26,12 +26,12 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @property (nonatomic, assign)BOOL classIMEnabled;
 @property (nonatomic, readonly)NSInteger classNum;
 - (NSArray *)allClasses;
+- (BOOL)canSendNotification;
 @end
 
 @interface TeacherInfo : UserInfo
 //@property (nonatomic, copy)NSString *title;
 @property (nonatomic, copy)NSString *course;
-
 @end
 
 @interface FamilyInfo : UserInfo
@@ -42,7 +42,6 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @interface StudentInfo : UserInfo
 //@property (nonatomic, assign)GenderType gender;
 @property (nonatomic, strong)NSArray *family;
-@property (nonatomic, assign)BOOL selected;             //在班级操作中有用
 @property (nonatomic, assign)NSInteger attention;       //关注度
 @property (nonatomic, assign)BOOL showFocus;
 @end
@@ -51,8 +50,8 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @property (nonatomic, copy)NSString *course;
 @property (nonatomic, copy)NSString *grade;
 @property (nonatomic, copy)NSString *classID;
-@property (nonatomic, copy)NSString *className;
-@property (nonatomic, copy)NSString *logoUrl;
+@property (nonatomic, copy)NSString *name;
+@property (nonatomic, copy)NSString *logo;
 @property (nonatomic, strong)NSMutableArray *students;
 @property (nonatomic, assign)BOOL recordEnabled;//是否开通成长记录
 @property (nonatomic, assign)BOOL canSelected;
@@ -68,5 +67,6 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @property (nonatomic, copy)NSString *groupName;
 @property (nonatomic, assign)BOOL canNotice;
 @property (nonatomic, strong)NSArray *teachers;
+@property (nonatomic, assign)BOOL selected;
 - (BOOL)canChat;
 @end

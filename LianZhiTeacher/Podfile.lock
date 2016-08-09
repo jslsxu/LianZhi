@@ -8,6 +8,7 @@ PODS:
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
   - KRVideoPlayer (1.0.1)
+  - LGAlertView (2.0.13)
   - Masonry (1.0.1)
   - MBProgressHUD (0.9.2)
   - MJRefresh (3.1.12)
@@ -41,6 +42,7 @@ DEPENDENCIES:
   - FDFullscreenPopGesture
   - FMDB
   - KRVideoPlayer
+  - LGAlertView
   - Masonry
   - MJRefresh
   - MWPhotoBrowser
@@ -60,6 +62,7 @@ SPEC CHECKSUMS:
   FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   KRVideoPlayer: 08918da1b99cae35fd4c15b2ec2b49358d4c985f
+  LGAlertView: 9a5dcbf4f81b02b718083539d7f222280adc9547
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806

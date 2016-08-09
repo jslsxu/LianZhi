@@ -130,6 +130,9 @@
             self.deleteCallback();
         }
     }
+    else if(self.recordState == RecordStateRecord){
+        [self.audioTool stopRecord];
+    }
     self.recordState = RecordStateNone;
 }
 
@@ -160,7 +163,10 @@
     
 //    NSNumber *duration = info[NHAudioToolFileDurationKey];      /时间
 
-    self.recordPath = amrFileKey;
+    self.recordPath = amrFile;
+    if(self.recordFinished){
+        self.recordFinished();
+    }
 }
 
 - (void)audioTool:(NHAudioTool *)tool didFailedOnRecord:(NSError *)error{
@@ -225,6 +231,7 @@
 }
 
 - (void)onListenStart{
+    self.audioTool = [[NHAudioTool alloc] init];
     [self.audioTool playAudioWithFilePath:self.recordPath];
 }
 
@@ -283,6 +290,14 @@
         @strongify(self);
         [self showRecordView];
     }];
+    [self.recordView setRecordFinished:^{
+        @strongify(self)
+        if(self.sendCallback){
+            self.sendCallback(self.recordView.recordPath, self.recordView.duration);
+        }
+        [self.recordView removeFromSuperview];
+        [self showRecordView];
+    }];
     [self addSubview:self.recordView];
     
     [self.listenView removeFromSuperview];
@@ -293,7 +308,6 @@
     @weakify(self);
     self.listenView = [[ListenView alloc] initWithFrame:self.bounds];
     [self.listenView setTimeSpan:self.recordView.duration];
-    [self.listenView setAudioTool:self.recordView.audioTool];
     [self.listenView setRecordPath:self.recordView.recordPath];
     [self.recordView.audioTool setDelegate:self.listenView];
     [self.listenView setCancelCallBack:^{

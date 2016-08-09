@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "NotificationContentBaseView.h"
 @interface NotificationSendChoiceView : UIView
 {
     UIButton*       _stateButton;

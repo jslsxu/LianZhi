@@ -185,7 +185,7 @@
             classInfo = [UserCenter sharedInstance].curSchool.managedClasses[0];
         GrowthTimelineVC *growthTimelineVC = [[GrowthTimelineVC alloc] init];
         [growthTimelineVC setClassID:classInfo.classID];
-        [growthTimelineVC setTitle:classInfo.className];
+        [growthTimelineVC setTitle:classInfo.name];
         [CurrentROOTNavigationVC pushViewController:growthTimelineVC animated:YES];
     }
     else
@@ -194,7 +194,7 @@
         [selectionVC setSelection:^(ClassInfo *classInfo) {
             GrowthTimelineVC *growthTimelineVC = [[GrowthTimelineVC alloc] init];
             [growthTimelineVC setClassID:classInfo.classID];
-            [growthTimelineVC setTitle:classInfo.className];
+            [growthTimelineVC setTitle:classInfo.name];
             [CurrentROOTNavigationVC pushViewController:growthTimelineVC animated:YES];
         }];
         [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];

@@ -55,7 +55,7 @@
 - (void)setClassInfo:(ClassInfo *)classInfo
 {
     _classInfo = classInfo;
-    _classNameLabel.text = _classInfo.className;
+    _classNameLabel.text = _classInfo.name;
     if([self.delegate respondsToSelector:@selector(classZoneSwitch:)])
         [self.delegate classZoneSwitch:_classInfo];
 }

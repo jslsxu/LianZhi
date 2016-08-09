@@ -8,6 +8,15 @@
 
 #import "TNBaseViewController.h"
 #import "LZTabBarButton.h"
+#import "SDCycleScrollView.h"
+@interface ApplicationBoxHeaderView : UICollectionReusableView
+{
+    SDCycleScrollView*  _cycleScrollView;
+}
+@property (nonatomic, readonly)SDCycleScrollView*  cycleScrollView;
+- (void)updateWithHeight:(CGFloat)height;
+@end
+
 @interface ApplicationItem : TNModelItem
 @property (nonatomic, copy)NSString *icon;
 @property (nonatomic, copy)NSString *name;

@@ -9,13 +9,14 @@
 #import "MessageVC.h"
 #import "MessageDetailVC.h"
 #import "ActionPopView.h"
-#import "ContactListVC.h"
+#import "ContactVC.h"
 #import "HomeWorkVC.h"
 #import "StudentAttendanceVC.h"
 #import "NotificationSendVC.h"
 #import "ExchangeSchoolVC.h"
 #import "NHFileManager.h"
 #import "ActionFadeView.h"
+#import "ChatMessageModel.h"
 @implementation SwitchSchoolButton
 
 
@@ -353,24 +354,31 @@
 - (void)contextMenuCellDidSelectDeleteOption:(DAContextMenuCell *)cell
 {
     [super contextMenuCellDidSelectDeleteOption:cell];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"是否删除该记录？" message:@"删除该记录内容也会随之清空" delegate:nil cancelButtonTitle:@"删除(不推荐)" otherButtonTitles:@"取消", nil];
-    [alertView show];
-    
-    
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    MessageGroupItem *groupitem = (MessageGroupItem *)[self.messageModel.modelItemArray objectAtIndex:indexPath.row];
-    MessageFromInfo *fromInfo = [groupitem fromInfo];
-    //删除消息
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setValue:fromInfo.uid forKey:@"from_id"];
-    [params setValue:kStringFromValue(fromInfo.type) forKey:@"from_type"];
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_thread" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        [self.messageModel.modelItemArray removeObjectAtIndex:indexPath.row];
-        [self.tableView deleteRowsAtIndexPaths:@[indexPath]
-                              withRowAnimation:UITableViewRowAnimationNone];
-    } fail:^(NSString *errMsg) {
-        
+    @weakify(self)
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"是否删除该记录？" message:@"删除该记录内容也会随之清空" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除(不推荐)"];
+    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+        @strongify(self)
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+        MessageGroupItem *groupitem = (MessageGroupItem *)[self.messageModel.modelItemArray objectAtIndex:indexPath.row];
+        MessageFromInfo *fromInfo = [groupitem fromInfo];
+        if(!fromInfo.isNotification){
+            [ChatMessageModel removeConversasionForUid:fromInfo.uid type:fromInfo.type];
+        }
+        //删除消息
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setValue:fromInfo.uid forKey:@"from_id"];
+        [params setValue:kStringFromValue(fromInfo.type) forKey:@"from_type"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_thread" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [self.messageModel.modelItemArray removeObjectAtIndex:indexPath.row];
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath]
+                                  withRowAnimation:UITableViewRowAnimationNone];
+        } fail:^(NSString *errMsg) {
+            
+        }];
     }];
+    [alertView showAnimated:YES completionHandler:nil];
     
 }
 

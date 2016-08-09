@@ -125,7 +125,7 @@
     {
         ClassInfo *classInfo = [UserCenter sharedInstance].curSchool.classes[0];
         self.classID = classInfo.classID;
-        self.title = classInfo.className;
+        self.title = classInfo.name;
     }
     return self;
 }

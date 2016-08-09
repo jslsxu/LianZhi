@@ -80,7 +80,7 @@
             NSString *newpaper = publishText;
             if(newpaper.length == 0)
             {
-                newpaper = [NSString stringWithFormat:@"热烈庆祝我们班率先引用连枝APP智能客户端这里是我们 %@ 的掌上根据地。就让我们一起努力经营好这个大家庭吧",self.classInfo.className];
+                newpaper = [NSString stringWithFormat:@"热烈庆祝我们班率先引用连枝APP智能客户端这里是我们 %@ 的掌上根据地。就让我们一起努力经营好这个大家庭吧",self.classInfo.name];
             }
             [self.delegate publishNewsPaperFinished:newpaper];
         }

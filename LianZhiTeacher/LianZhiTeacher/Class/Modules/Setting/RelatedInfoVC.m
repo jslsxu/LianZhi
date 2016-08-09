@@ -95,7 +95,7 @@
 - (void)setClassInfo:(ClassInfo *)classInfo
 {
     _classInfo = classInfo;
-    [_nameLabel setText:[NSString stringWithFormat:@"%@ (%@)",classInfo.className,_classInfo.course]];
+    [_nameLabel setText:[NSString stringWithFormat:@"%@ (%@)",classInfo.name,_classInfo.course]];
 }
 
 - (void)onReportError

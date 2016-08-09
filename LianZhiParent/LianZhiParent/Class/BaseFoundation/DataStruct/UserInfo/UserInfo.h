@@ -7,7 +7,7 @@
 //
 
 #import "TNModelItem.h"
-@interface UserInfo : TNModelItem<NSCoding>
+@interface UserInfo : TNModelItem
 @property (nonatomic, copy)NSString *uid;
 @property (nonatomic, copy)NSString *name;
 @property (nonatomic, copy)NSString *label;

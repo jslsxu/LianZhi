@@ -12,13 +12,12 @@
  NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
 #define kContentFont            [UIFont systemFontOfSize:14]
 
-#define kBGTopMargin            20
-#define kBGBottomMargin         20
+#define kBGTopMargin            12
 #define kOperationHeight        32
 #define kBGViewHMargin          10
 #define kContentHMargin         10
 #define kInnerMargin            8
-#define kVoiceButtonHeight      40
+#define kExtraInfoHeight        48
 
 @implementation MessageDetailItemCell
 
@@ -33,224 +32,129 @@
         
         _bgView = [[UIView alloc] initWithFrame:CGRectMake(kBGViewHMargin, kBGTopMargin, self.width - kBGViewHMargin * 2, 0)];
         [_bgView setBackgroundColor:[UIColor whiteColor]];
-        [_bgView.layer setCornerRadius:15];
+        [_bgView.layer setCornerRadius:10];
         [_bgView.layer setMasksToBounds:YES];
         [self addSubview:_bgView];
         
-        UILongPressGestureRecognizer *longGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onLongPress)];
-        [longGesture setMinimumPressDuration:1];
-        [_bgView addGestureRecognizer:longGesture];
+        _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(10, 10, 46, 46)];
+        [_bgView addSubview:_avatarView];
         
-        _logoView = [[LogoView alloc] initWithFrame:CGRectMake(20, 5, 45, 45)];
-        [_logoView setBorderColor:[UIColor whiteColor]];
-        [_logoView setBorderWidth:2];
-        [self addSubview:_logoView];
-        
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, 100, kOperationHeight)];
-        [_nameLabel setFont:[UIFont systemFontOfSize:13]];
-        [_nameLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 25, 100, kOperationHeight)];
+        [_nameLabel setFont:[UIFont systemFontOfSize:15]];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
         [_bgView addSubview:_nameLabel];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_timeLabel setBackgroundColor:[UIColor clearColor]];
-        [_timeLabel setFont:[UIFont systemFontOfSize:14]];
+        [_timeLabel setFont:[UIFont systemFontOfSize:13]];
         [_timeLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
         [_bgView addSubview:_timeLabel];
         
-        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, kOperationHeight, _bgView.width, kLineHeight)];
-        [_sepLine setBackgroundColor:kSepLineColor];
-        [_bgView addSubview:_sepLine];
+        _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_deleteButton setFrame:CGRectMake(_bgView.width - 50, 0, 50, 50)];
+        [_deleteButton setImage:[UIImage imageNamed:@"MessageDetailTrash"] forState:UIControlStateNormal];
+        [_deleteButton addTarget:self action:@selector(onMessageDeleteButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_bgView addSubview:_deleteButton];
         
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(kContentHMargin, kOperationHeight + 10, _bgView.width - kContentHMargin * 2, 0)];
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(kContentHMargin, 0, _bgView.width - kContentHMargin * 2, 0)];
         [_contentLabel setBackgroundColor:[UIColor clearColor]];
         [_contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [_contentLabel setNumberOfLines:0];
         [_contentLabel setFont:kContentFont];
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_bgView addSubview:_contentLabel];
+    
+        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _bgView.width, kLineHeight)];
+        [_sepLine setBackgroundColor:kSepLineColor];
+        [_bgView addSubview:_sepLine];
         
-        _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(10, 0, _bgView.width - 10 * 2 - 60, kVoiceButtonHeight)];
-        [_voiceButton addTarget:self action:@selector(onVoiceButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_bgView addSubview:_voiceButton];
+        _voiceImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"message_hasAudio"]];
+        [_bgView addSubview:_voiceImageView];
         
-        _voiceSpanLabel = [[UILabel alloc] initWithFrame:CGRectMake(_voiceButton.right, _voiceButton.y, 60, _voiceButton.height)];
-        [_voiceSpanLabel setTextAlignment:NSTextAlignmentCenter];
-        [_voiceSpanLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
-        [_voiceSpanLabel setFont:[UIFont systemFontOfSize:14]];
-        [_bgView addSubview:_voiceSpanLabel];
+        _videoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"message_hasVideo"]];
+        [_bgView addSubview:_videoImageView];
         
-        NSInteger collectionWidth = _bgView.width - 10 * 2;
-        NSInteger itemWidth = (collectionWidth - kInnerMargin * 2) / 3;
-        NSInteger innerMargin = (collectionWidth - itemWidth * 3) / 2;
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        [layout setItemSize:CGSizeMake(itemWidth, itemWidth)];
-        [layout setMinimumInteritemSpacing:innerMargin];
-        [layout setMinimumLineSpacing:innerMargin];
+        _photoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"message_hasPhoto"]];
+        [_bgView addSubview:_photoImageView];
         
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-        [_collectionView setBackgroundColor:[UIColor clearColor]];
-        [_collectionView setShowsHorizontalScrollIndicator:NO];
-        [_collectionView setShowsVerticalScrollIndicator:NO];
-        [_collectionView setScrollsToTop:NO];
-        [_collectionView setDelegate:self];
-        [_collectionView setDataSource:self];
-        [_collectionView registerClass:[CollectionImageCell class] forCellWithReuseIdentifier:@"CollectionImageCell"];
-        [_bgView addSubview:_collectionView];
+        _rightArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gray_expand_indicator"]];
+        [_bgView addSubview:_rightArrow];
     }
     return self;
 }
 
-- (void)onLongPress
-{
-    MessageDetailItem *messageItem = (MessageDetailItem *)self.modelItem;
-    if(messageItem.content.length > 0)
-    {
-        [self becomeFirstResponder];
-        UIMenuController *menu = [UIMenuController sharedMenuController];
-        [menu setTargetRect:_contentLabel.frame inView:self];
-        [menu setMenuVisible:YES animated:YES];
-    }
-}
-
-- (BOOL)canBecomeFirstResponder
-{
-    return YES;
-}
-
-- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
-{
-    return (action == @selector(copy:));
-}
-
--(void)copy:(id)sender
-{
-    MessageDetailItem *messageItem = (MessageDetailItem *)self.modelItem;
-    UIPasteboard *pboard = [UIPasteboard generalPasteboard];
-    pboard.string = messageItem.content;
+- (void)setFromInfo:(MessageFromInfo *)fromInfo{
+    _fromInfo = fromInfo;
+    [_avatarView setImageWithUrl:[NSURL URLWithString:_fromInfo.logoUrl]];
+    [_nameLabel setText:_fromInfo.name];
+    [_nameLabel sizeToFit];
+    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.y + 5)];
 }
 
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     MessageDetailItem *item = (MessageDetailItem *)modelItem;
+    [_avatarView setImageWithUrl:[NSURL URLWithString:item.author.avatar]];
     [_nameLabel setText:item.author.name];
-    [_logoView setImageWithUrl:[NSURL URLWithString:item.author.avatar]];
+    [_nameLabel sizeToFit];
+    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.y + 5)];
     [_timeLabel setText:item.timeStr];
     [_timeLabel sizeToFit];
-    [_timeLabel setFrame:CGRectMake(_bgView.width - kContentHMargin - _timeLabel.width, (kOperationHeight - _timeLabel.height) / 2, _timeLabel.width, _timeLabel.height)];
-    CGFloat height = kOperationHeight + 10;
+    [_timeLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.bottom - 5 - _timeLabel.height)];
+    CGFloat height = _avatarView.bottom + 15;
     NSString *content = item.content;
-    if(item.audioItem)
-        content = @"这是一条语音内容，点击播放:";
-    if(item.content.length > 0)
-    {
+    if(content.length > 0){
         [_contentLabel setHidden:NO];
-        [_contentLabel setText:item.content];
-        CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(_contentLabel.width, CGFLOAT_MAX) andFont:_contentLabel.font];
-        [_contentLabel setHeight:contentSize.height];
-        height += contentSize.height + 10;
+        [_contentLabel setText:content];
+        [_contentLabel sizeToFit];
+        [_contentLabel setY:height];
+        height += _contentLabel.height + 10;
     }
-    else
+    else{
         [_contentLabel setHidden:YES];
-    [_collectionView setHidden:YES];
-    [_voiceButton setHidden:YES];
-    [_voiceSpanLabel setHidden:YES];
-    if(item.photos.count > 0)
-    {
-        [_collectionView setHidden:NO];
-        NSInteger imageCount = item.photos.count;
-        NSInteger contentWidth = _bgView.width - 10 * 2;
-        NSInteger row = (item.photos.count + 2) / 3;
-        NSInteger itemWidth = (contentWidth - kInnerMargin * 2) / 3;
-        NSInteger innerMargin = (contentWidth - itemWidth * 3) / 2;
-        NSInteger imageWidth = (row > 1) ? contentWidth : (itemWidth * imageCount + innerMargin * (imageCount - 1));
-        [_collectionView setFrame:CGRectMake(10, height, imageWidth, itemWidth * row + innerMargin * (row - 1))];
-        [_collectionView reloadData];
-        height += _collectionView.height + 10;
     }
-    else if(item.audioItem)
-    {
-        [_voiceButton setHidden:NO];
-        [_voiceSpanLabel setHidden:NO];
-        [_voiceButton setAudioItem:item.audioItem];
-        [_voiceButton setOrigin:CGPointMake(kContentHMargin, height)];
-        [_voiceSpanLabel setText:[Utility formatStringForTime:item.audioItem.timeSpan]];
-        [_voiceSpanLabel setY:_voiceButton.y];
-        height += kVoiceButtonHeight + kContentHMargin;
-    }
-    else
-    {
-        height += kContentHMargin;
-    }
-    [_bgView setHeight:height];
-    height += kBGBottomMargin + kBGTopMargin;
+    [_sepLine setY:height];
     
-}
-
-- (void)onVoiceButtonClicked
-{
-    MessageDetailItem *item = (MessageDetailItem *)self.modelItem;
-    [_voiceButton setVoiceWithURL:[NSURL URLWithString:item.audioItem.audioUrl] withAutoPlay:YES];
+    
+    CGFloat spaceXStart = kContentHMargin;
+    [_voiceImageView setHidden:!item.hasAudio];
+    [_photoImageView setHidden:!item.hasPhoto];
+    [_videoImageView setHidden:!item.hasVideo];
+    if(item.hasAudio){
+        [_voiceImageView setOrigin:CGPointMake(spaceXStart, height + (kExtraInfoHeight - _voiceImageView.height) / 2)];
+        spaceXStart += _voiceImageView.width + 15;
+    }
+    if(item.hasVideo){
+        [_videoImageView setOrigin:CGPointMake(spaceXStart, height + (kExtraInfoHeight - _videoImageView.height) / 2)];
+        spaceXStart += _videoImageView.width + 15;
+    }
+    if(item.hasPhoto){
+        [_photoImageView setOrigin:CGPointMake(spaceXStart, height + (kExtraInfoHeight - _photoImageView.height) / 2)];
+        spaceXStart += _photoImageView.width + 15;
+    }
+    
+    [_rightArrow setOrigin:CGPointMake(_bgView.width - 12 - _rightArrow.width, height + (kExtraInfoHeight - _rightArrow.height) / 2)];
+    height += kExtraInfoHeight;
+    [_bgView setHeight:height];
 }
 
 - (void)onMessageDeleteButtonClicked
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kMessageDeleteNotitication object:nil userInfo:@{kMessageDeleteModelItemKey : self.modelItem}];
-}
-
-#pragma mark - UICollectionViewDelegate
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    MessageDetailItem *messageItem = (MessageDetailItem *)self.modelItem;
-    return messageItem.photos.count;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    MessageDetailItem *messageItem = (MessageDetailItem *)self.modelItem;
-    CollectionImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CollectionImageCell" forIndexPath:indexPath];
-    [cell setItem:messageItem.photos[indexPath.row]];
-    return cell;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    MessageDetailItem *item = (MessageDetailItem *)self.modelItem;
-    MJPhotoBrowser *photoBrowser = [[MJPhotoBrowser alloc] init];
-    [photoBrowser setCurrentPhotoIndex:indexPath.row];
-    [photoBrowser setPhotos:[NSMutableArray arrayWithArray:item.photos]];
-    [CurrentROOTNavigationVC pushViewController:photoBrowser animated:YES];
+    if(self.deleteCallback){
+        self.deleteCallback();
+    }
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
 {
     MessageDetailItem *item = (MessageDetailItem *)modelItem;
-    NSInteger height = kBGTopMargin + kBGBottomMargin + kOperationHeight + 10;
+    NSInteger height = kBGTopMargin + 46 + 15;
     NSString *content = item.content;
-    if(item.audioItem)
-        content = @"这是一条语音内容，点击播放:";
-    if(item.content.length > 0)
-    {
-        CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(width - kBGViewHMargin * 4, CGFLOAT_MAX) andFont:kContentFont];
+    if(content.length > 0){
+        CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(width - kBGViewHMargin * 2 - kContentHMargin * 2, CGFLOAT_MAX) andFont:kContentFont];
         height += contentSize.height + 10;
     }
-    
-    if(item.photos.count > 0)
-    {
-        NSInteger imageCount = item.photos.count;
-        NSInteger contentWidth = width - kBGViewHMargin * 4;
-        NSInteger row = (imageCount + 2) / 3;
-        NSInteger itemWidth = (contentWidth - kInnerMargin * 2) / 3;
-        NSInteger innerMargin = (contentWidth - itemWidth * 3) / 2;
-        height += itemWidth * row + innerMargin * (row - 1) + 10;
-    }
-    else if(item.audioItem)
-    {
-        height += kVoiceButtonHeight + 10;
-    }
-    else
-    {
-        height += 10;
-    }
+    height += kExtraInfoHeight;
     return @(height);
 }
 @end

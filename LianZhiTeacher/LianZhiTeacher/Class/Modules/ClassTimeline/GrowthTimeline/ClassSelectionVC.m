@@ -40,8 +40,8 @@
 - (void)setClassInfo:(ClassInfo *)classInfo
 {
     _classInfo = classInfo;
-    [_logoView setImageWithUrl:[NSURL URLWithString:_classInfo.logoUrl]];
-    [_nameLabel setText:_classInfo.className];
+    [_logoView setImageWithUrl:[NSURL URLWithString:_classInfo.logo]];
+    [_nameLabel setText:_classInfo.name];
     [_nameLabel sizeToFit];
     [_nameLabel setY:(self.height - _nameLabel.height) / 2];
 }

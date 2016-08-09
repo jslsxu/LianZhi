@@ -10,12 +10,11 @@
 
 @implementation NotificationContentBaseView
 
-- (void)setFrame:(CGRect)frame{
-    CGRect originalFrame = self.frame;
-    if(!CGRectEqualToRect(originalFrame, frame)){
-        [super setFrame:frame];
-        
+- (instancetype)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if(self){
+        [self setClipsToBounds:YES];
     }
+    return self;
 }
-
 @end

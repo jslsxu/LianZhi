@@ -40,7 +40,7 @@
 - (void)setClassInfo:(ClassInfo *)classInfo
 {
     _classInfo = classInfo;
-    [_nameLabel setText:_classInfo.className];
+    [_nameLabel setText:_classInfo.name];
 }
 @end
 
@@ -425,7 +425,7 @@
 //        NSArray *groupArray = groupDic[@"groupArray"];
         ClassInfo *classInfo = self.classArray[indexPath.row];
         [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld",classInfo.students.count]];
-        [cell.nameLabel setText:classInfo.className];
+        [cell.nameLabel setText:classInfo.name];
         [cell.checkButton setSelected:[_selectedClassArray containsObject:classInfo]];
         [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     }
@@ -451,7 +451,7 @@
 //        NSArray *groupArray = groupDic[@"groupArray"];
         ClassInfo *classInfo = self.classArray[row];
         NotificationClassStudentsVC *studentVC = [[NotificationClassStudentsVC alloc] init];
-        [studentVC setTitle:classInfo.className];
+        [studentVC setTitle:classInfo.name];
         [studentVC setClassInfo:classInfo];
         [studentVC setParams:self.params];
         [studentVC setImageArray:self.imageArray];

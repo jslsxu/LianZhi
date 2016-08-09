@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface NotificationContentBaseView : UIView
-
+@property (nonatomic, copy)void (^deleteDataCallback)(id item);
 @end

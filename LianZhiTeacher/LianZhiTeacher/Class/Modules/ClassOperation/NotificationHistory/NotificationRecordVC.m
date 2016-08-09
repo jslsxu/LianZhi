@@ -8,6 +8,31 @@
 
 #import "NotificationRecordVC.h"
 
+@implementation NotificationItem
+
++ (nullable NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
+    return @{@"nid" : @"id"};
+}
+
++ (nullable NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
+    return @{@"voice" : [AudioItem class],
+             @"pictures" : [PhotoItem class]};
+}
+
+- (BOOL)hasImage{
+    return self.pictures.count > 0;
+}
+
+- (BOOL)hasAudio{
+    return self.voice;
+}
+
+- (BOOL)hasVideo{
+    return YES;
+}
+
+@end
+
 @implementation NotificationRecordItemCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
@@ -27,15 +52,12 @@
         [self.actualContentView addSubview:_timeLabel];
         
         _audioImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"draft_audio"]];
-        [_audioImageView setOrigin:CGPointMake(12, 40)];
         [self.actualContentView addSubview:_audioImageView];
         
         _photoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"draft_photo"]];
-        [_photoImageView setOrigin:CGPointMake(_audioImageView.right + 12, 40)];
         [self.actualContentView addSubview:_photoImageView];
         
         _videoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"draft_video"]];
-        [_videoImageView setOrigin:CGPointMake(_photoImageView.right + 12, 40)];
         [self.actualContentView addSubview:_videoImageView];
 
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
@@ -55,20 +77,42 @@
     return 66;
 }
 
-- (void)setData{
+- (void)setNotificationItem:(NotificationItem *)notificationItem{
+    _notificationItem = notificationItem;
     [_titleLabel setFrame:CGRectMake(12, 18, self.width - 12 * 2, 0)];
-    [_titleLabel setText:@"今天要明上课很认真过，课上积极"];
+    [_titleLabel setText:_notificationItem.words];
     [_titleLabel sizeToFit];
     [self.moreOptionsButton setTitle:@"转发" forState:UIControlStateNormal];
     [_sepLine setFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
+    
+    [_audioImageView setHidden:!_notificationItem.hasAudio];
+    [_photoImageView setHidden:!_notificationItem.hasImage];
+    [_videoImageView setHidden:!_notificationItem.hasVideo];
+    CGFloat spaceXStart = 12;
+    CGFloat centerY = 50;
+    if(_notificationItem.hasAudio){
+        [_audioImageView setCenter:CGPointMake(spaceXStart + _audioImageView.width / 2, centerY)];
+        spaceXStart += _audioImageView.width + 15;
+    }
+    if(_notificationItem.hasImage){
+        [_photoImageView setCenter:CGPointMake(spaceXStart, centerY)];
+        spaceXStart += _photoImageView.width + 15;
+    }
+    if(_notificationItem.hasVideo){
+        [_videoImageView setCenter:CGPointMake(spaceXStart, centerY)];
+    }
 }
 
 @end
 
-@interface NotificationRecordVC ()
+@interface NotificationRecordVC ()<EGORefreshTableHeaderDelegate>
 {
-   
+
 }
+@property (nonatomic, strong)EGORefreshTableHeaderView*  refreshHeaderView;
+@property (nonatomic, assign)BOOL                        isLoading;
+@property (nonatomic, assign)NSInteger total;
+@property (nonatomic, strong)NSMutableArray* notificationArray;
 @end
 
 @implementation NotificationRecordVC
@@ -78,16 +122,60 @@
     [self setEdgesForExtendedLayout:UIRectEdgeNone];
     [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 50, 0)];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    
+    self.refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.height, self.tableView.width, self.tableView.height)];
+    self.refreshHeaderView.delegate = self;
+    [self.tableView addSubview:self.refreshHeaderView];
+    
+    [self requestData:REQUEST_REFRESH];
 }
 
+- (NSMutableArray *)notificationArray{
+    if(_notificationArray == nil){
+        _notificationArray = [NSMutableArray array];
+    }
+    return _notificationArray;
+}
 
 - (void)clear{
     
 }
 
+- (void)requestData:(REQUEST_TYPE)requestType{
+    if(!self.isLoading){
+        self.isLoading = YES;
+        @weakify(self)
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/my_send_list" method:REQUEST_GET type:requestType withParams:@{@"from" : kStringFromValue(_notificationArray.count)} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            @strongify(self)
+            self.total = [responseObject getIntegerForKey:@"total"];
+            NSArray *array = [NotificationItem nh_modelArrayWithJson:[responseObject getDataWrapperForKey:@"list"].data];
+            if(requestType == REQUEST_REFRESH){
+                [self.notificationArray removeAllObjects];
+            }
+            [self.notificationArray addObjectsFromArray:array];
+            [self.tableView reloadData];
+            self.isLoading = NO;
+            [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+            [self.tableView.mj_footer endRefreshing];
+            if(self.notificationArray.count < self.total){
+                [self.tableView setMj_footer:[MJRefreshFooter footerWithRefreshingBlock:^{
+                    [self requestData:REQUEST_GETMORE];
+                }]];
+            }
+            else{
+                [self.tableView setMj_footer:nil];
+            }
+        } fail:^(NSString *errMsg) {
+            self.isLoading = NO;
+            [self.refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+            [self.tableView.mj_footer endRefreshing];
+        }];
+    }
+}
+
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 6;
+    return _notificationArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -106,11 +194,43 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     NotificationRecordItemCell *itemCell = (NotificationRecordItemCell *)cell;
-    [itemCell setData];
+    NotificationItem *item = _notificationArray[indexPath.row];
+    [itemCell setNotificationItem:item];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    
+    [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    
+    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+}
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+    
+    [self requestData:REQUEST_REFRESH];
+    
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+    
+    return _isLoading; // should return if data source model is reloading
+    
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+    
+    return [NSDate date]; // should return date data source was last changed
+    
 }
 
 #pragma mark - DAContextMenuCellDelegate

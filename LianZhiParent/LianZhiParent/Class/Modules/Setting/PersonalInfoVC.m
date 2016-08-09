@@ -268,7 +268,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
         if(self.avatarImage)
             [formData appendPartWithFileData:UIImageJPEGRepresentation(self.avatarImage, 0.8) name:@"head" fileName:@"head" mimeType:@"image/JPEG"];
     } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        [[UserCenter sharedInstance] updateUserInfo:[responseObject getDataWrapperForKey:@"user"]];
+        [[UserCenter sharedInstance] updateUserInfoWithData:[responseObject getDataWrapperForKey:@"user"]];
         for (NSInteger i = 5; i < _infoArray.count; i++) {
             PersonalInfoItem *infoItem = _infoArray[i];
             NSString *childID = infoItem.relation[@"child_id"];

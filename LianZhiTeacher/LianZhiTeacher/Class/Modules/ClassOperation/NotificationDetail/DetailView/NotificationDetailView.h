@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "NotificationSendEntity.h"
 @interface NotificationDetailView : UIView{
     UIScrollView*       _scrollView;
 }
-
+@property (nonatomic, strong)NotificationSendEntity*    notificationSendEntity;
 @end

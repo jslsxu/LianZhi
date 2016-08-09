@@ -205,7 +205,7 @@
         [nameItem setRequestKey:@"name"];
         PersonalInfoItem *genderItem = [[PersonalInfoItem alloc] initWithKey:@"性别" value:childInfo.gender == GenderFemale ? @"美女" : @"帅哥" canEdit:YES];
         [genderItem setRequestKey:@"sex"];
-        PersonalInfoItem *birthDayItem = [[PersonalInfoItem alloc] initWithKey:@"出生日期" value:childInfo.birthday canEdit:NO];
+        PersonalInfoItem *birthDayItem = [[PersonalInfoItem alloc] initWithKey:@"出生日期" value:childInfo.birthDay canEdit:NO];
         [birthDayItem setRequestKey:@"birthday"];
         
         PersonalInfoItem *nickItem = [[PersonalInfoItem alloc] initWithKey:@"孩子昵称" value:childInfo.nickName canEdit:YES];

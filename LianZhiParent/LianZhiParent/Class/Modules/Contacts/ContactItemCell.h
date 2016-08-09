@@ -14,9 +14,6 @@
     UILabel*            _nameLabel;
     UILabel*            _commentLabel;
     UIView*             _sepLine;
-    UIButton*           _chatButton;
 }
-@property (nonatomic, assign)BOOL studetsParentsCell;
-@property (nonatomic, strong)TeacherInfo *teachInfo;
-@property (nonatomic, strong)SchoolInfo *schoolInfo;
+@property (nonatomic, strong)UserInfo *userInfo;
 @end

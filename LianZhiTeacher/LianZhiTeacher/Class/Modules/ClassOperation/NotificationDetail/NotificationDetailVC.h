@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseViewController.h"
-
+#import "MessageDetailModel.h"
 @interface NotificationDetailVC : TNBaseViewController
-
+@property (nonatomic, strong)MessageDetailItem* messageDetailItem;
 @end

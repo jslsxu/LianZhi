@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NotificationVideoView.h"
 
 @interface NotificationDetailVideoView : UIView
-
+@property (nonatomic, strong)NotificationSendEntity *sendEntity;
 @end

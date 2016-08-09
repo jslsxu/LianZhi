@@ -16,24 +16,6 @@
     self.content = [dataWrapper getIntegerForKey:@"content"];
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if(self = [super init])
-    {
-        self.tagID = [aDecoder decodeObjectForKey:@"id"];
-        self.tagName = [aDecoder decodeObjectForKey:@"name"];
-        self.content = [aDecoder decodeIntegerForKey:@"content"];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    
-    [aCoder encodeObject:self.tagID forKey:@"id"];
-    [aCoder encodeObject:self.tagName forKey:@"name"];
-    [aCoder encodeInteger:self.content forKey:@"content"];
-}
 
 @end
 
@@ -57,23 +39,6 @@
     }
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if(self = [super init])
-    {
-        self.groupID = [aDecoder decodeObjectForKey:@"id"];
-        self.groupName = [aDecoder decodeObjectForKey:@"name"];
-        self.subTags = [aDecoder decodeObjectForKey:@"sub_tags"];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [aCoder encodeObject:self.groupID forKey:@"id"];
-    [aCoder encodeObject:self.groupName forKey:@"name"];
-    [aCoder encodeObject:self.subTags forKey:@"sub_tags"];
-}
 
 @end
 @implementation LogConfig
@@ -96,30 +61,6 @@
         }
         [self setTags:groupArray];
     }
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if(self = [super init])
-    {
-        self.dicoveryUrl = [aDecoder decodeObjectForKey:@"find_url"];
-        self.introUrl = [aDecoder decodeObjectForKey:@"intro_url"];
-        self.aboutUrl = [aDecoder decodeObjectForKey:@"about_url"];
-        self.helpUrl = [aDecoder decodeObjectForKey:@"help_url"];
-        self.faqUrl = [aDecoder decodeObjectForKey:@"faq_url"];
-        self.tags = [aDecoder decodeObjectForKey:@"tags"];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [aCoder encodeObject:self.dicoveryUrl forKey:@"find_url" ];
-    [aCoder encodeObject:self.introUrl forKey:@"intro_url"];
-    [aCoder encodeObject:self.aboutUrl forKey:@"about_url"];
-    [aCoder encodeObject:self.helpUrl forKey:@"help_url"];
-    [aCoder encodeObject:self.faqUrl forKey:@"faq_url"];
-    [aCoder encodeObject:self.tags forKey:@"tags"];
 }
 
 - (NSArray *)tagForPrivilege:(TagPrivilege)privilege

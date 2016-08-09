@@ -37,7 +37,8 @@ extern NSString* const kUserDataStorageKey;
 - (ChildInfo *)curChild;
 - (void)setCurChild:(ChildInfo *)curChild;
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(UserCenter)
-- (void)updateUserInfo:(TNDataWrapper *)userWrapper;
+- (void)updateUserInfoWithData:(TNDataWrapper *)userWrapper;
+- (void)updateUserInfo;
 - (void)save;
 - (BOOL)hasLogin;
 - (void)logout;

@@ -8,14 +8,8 @@
 
 #import "ContactItemCell.h"
 
-@interface ClassParentsCell : TNTableViewCell
-{
-    
-}
 
-@end
-
-@interface ContactListHeaderView : UIView
+@interface ContactListHeaderView : UITableViewHeaderFooterView
 {
     LogoView*   _logoView;
     UILabel*    _classLabel;
@@ -25,7 +19,8 @@
     UIButton*   _chatButton;
 }
 @property (nonatomic, strong)ClassInfo *classInfo;
-
+@property (nonatomic, copy)void (^chatCallback)();
+@property (nonatomic, copy)void (^expandCallback)();
 @end
 
 @interface ContactListVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>

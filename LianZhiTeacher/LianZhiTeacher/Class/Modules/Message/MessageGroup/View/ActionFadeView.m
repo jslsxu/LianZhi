@@ -103,7 +103,7 @@
     [_cancelButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
     [_contentView addSubview:_cancelButton];
     
-    if([UserCenter sharedInstance].curSchool.classes.count + [UserCenter sharedInstance].curSchool.managedClasses.count > 0)
+    if([UserCenter sharedInstance].curSchool.canSendNotification)
     {
         [_buttonArray addObject:[self actionViewWithTitle:@"发通知" image:@"SendNotification" action:@selector(sendNotification)]];
     }
@@ -112,7 +112,6 @@
     
     NSInteger count = _buttonArray.count;
     CGFloat innerHMargin = (_contentView.width - kItemWidth * count) / (2 + 1.5 * (count - 1));
-    NSInteger spaceYStart = (_cancelButton.y + _logoView.bottom - kItemHeight) / 2;
     for (NSInteger i = 0; i < count; i++) {
         UIView *itemView = _buttonArray[i];
         [_contentView addSubview:itemView];

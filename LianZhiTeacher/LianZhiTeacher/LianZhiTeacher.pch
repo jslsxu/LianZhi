@@ -27,5 +27,6 @@
 #import "FMDB.h"
 #import "UIImageView+WebCache.h"
 #import "SDWebImageManager.h"
+#import "LGAlertView.h"
 #endif
 #endif

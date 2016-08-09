@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "NotificationSendEntity.h"
 @interface NotificationDetailContentView : UIView
-
+@property (nonatomic, strong)NotificationSendEntity *sendEntity;
 @end

@@ -7,7 +7,6 @@
 //
 
 #import "MessageDetailModel.h"
-
 @implementation MessageDetailItem
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
@@ -46,6 +45,17 @@
     }
 }
 
+- (BOOL)hasAudio{
+    return self.audioItem;
+}
+
+- (BOOL)hasPhoto{
+    return self.photos.count > 0;
+}
+
+- (BOOL)hasVideo{
+    return self.videoItem;
+}
 
 @end
 
@@ -68,6 +78,12 @@
     if(type == REQUEST_REFRESH)
         [self.modelItemArray removeAllObjects];
     self.hasMore = [data getBoolForKey:@"has_next"];
+    TNDataWrapper *fromDataWrapper = [data getDataWrapperForKey:@"from"];
+    if(fromDataWrapper.count > 0){
+        MessageFromInfo *fromInfo = [[MessageFromInfo alloc] init];
+        [fromInfo parseData:fromDataWrapper];
+        self.fromInfo = fromInfo;
+    }
     TNDataWrapper *listWrapper = [data getDataWrapperForKey:@"list"];
     for (NSInteger i = 0; i < listWrapper.count; i++) {
         MessageDetailItem *item = [[MessageDetailItem alloc] init];

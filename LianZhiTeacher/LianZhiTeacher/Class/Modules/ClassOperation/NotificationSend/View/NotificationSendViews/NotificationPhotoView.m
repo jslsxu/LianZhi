@@ -23,15 +23,10 @@
         [self addSubview:self.imageView];
         
         self.removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.removeButton setSize:CGSizeMake(35, 35)];
-        [self.removeButton setImage:[UIImage imageNamed:@"delete_target"] forState:UIControlStateNormal];
+        [self.removeButton setFrame:CGRectMake(self.width - 30, 0, 30, 30)];
+        [self.removeButton setImage:[UIImage imageNamed:@"media_delete"] forState:UIControlStateNormal];
         [self.removeButton addTarget:self action:@selector(onRemoveButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.removeButton];
-        @weakify(self);
-        [self.removeButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            @strongify(self);
-            make.right.mas_offset(self.width);
-        }];
     }
     return self;
 }
@@ -76,6 +71,10 @@
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
         [_sepLine setBackgroundColor:kSepLineColor];
         [self addSubview:_sepLine];
+        
+        [_sepLine mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(self).offset(0);
+        }];
     }
     return self;
 }
@@ -105,13 +104,19 @@
         [_photoViewArray addObject:itemView];
         [self addSubview:itemView];
     }
-    NSInteger row = (_photoArray.count + 2) / 3;
-    [self setHeight:_titleLabel.bottom + hMargin * 2 + itemWidth * row + hInnerMargin * (row - 1)];
+    if(_photoArray.count == 0){
+        [self setHeight:0];
+    }
+    else{
+        NSInteger row = (_photoArray.count + 2) / 3;
+        [self setHeight:_titleLabel.bottom + hMargin * 2 + itemWidth * row + hInnerMargin * (row - 1)];
+    }
 }
 
 - (void)deleteImage:(UIImage *)image{
-    [self.photoArray removeObject:image];
-    [self setPhotoArray:self.photoArray];
+    if(self.deleteDataCallback){
+        self.deleteDataCallback(image);
+    }
 }
 
 @end

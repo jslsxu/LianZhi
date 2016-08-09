@@ -203,7 +203,6 @@
 		37B52A1A1A73C24B005F80F2 /* LogConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B52A191A73C24B005F80F2 /* LogConfig.m */; };
 		37B5D3E71A57B23A003CA877 /* PersonalInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B5D3E61A57B23A003CA877 /* PersonalInfoVC.m */; };
 		37B7044F1A4410CD0025D684 /* PasswordModificationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B7044E1A4410CD0025D684 /* PasswordModificationVC.m */; };
-		37BB0BB11B05BD2800734EAA /* SearchUserVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BB0BB01B05BD2800734EAA /* SearchUserVC.m */; };
 		37BC41101A43346D005038F9 /* ConfimInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC410F1A43346D005038F9 /* ConfimInfoVC.m */; };
 		37BC708B1C116EC900F8B79B /* CalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC70801C116EC900F8B79B /* CalendarView.m */; };
 		37BC708C1C116EC900F8B79B /* MonthIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC70821C116EC900F8B79B /* MonthIndicatorView.m */; };
@@ -358,6 +357,7 @@
 		8D867D231D3D232C0020A21C /* LZKVStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D221D3D232C0020A21C /* LZKVStorage.m */; };
 		8DA785991CA4E70B00A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785981CA4E70B00A384F0 /* NSString+UrlParams.m */; };
 		8DCFD6621D43CC78001EDC8A /* YYInfiniteScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6611D43CC78001EDC8A /* YYInfiniteScrollView.m */; };
+		8DCFD73A1D53641B001EDC8A /* ContactParentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7391D53641B001EDC8A /* ContactParentsView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -736,8 +736,6 @@
 		37B5D3E61A57B23A003CA877 /* PersonalInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalInfoVC.m; sourceTree = "<group>"; };
 		37B7044D1A4410CD0025D684 /* PasswordModificationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordModificationVC.h; sourceTree = "<group>"; };
 		37B7044E1A4410CD0025D684 /* PasswordModificationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordModificationVC.m; sourceTree = "<group>"; };
-		37BB0BAF1B05BD2800734EAA /* SearchUserVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchUserVC.h; sourceTree = "<group>"; };
-		37BB0BB01B05BD2800734EAA /* SearchUserVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchUserVC.m; sourceTree = "<group>"; };
 		37BC410E1A43346D005038F9 /* ConfimInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfimInfoVC.h; sourceTree = "<group>"; };
 		37BC410F1A43346D005038F9 /* ConfimInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfimInfoVC.m; sourceTree = "<group>"; };
 		37BC707F1C116EC900F8B79B /* CalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarView.h; sourceTree = "<group>"; };
@@ -1011,6 +1009,8 @@
 		8DA785981CA4E70B00A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
 		8DCFD6601D43CC78001EDC8A /* YYInfiniteScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInfiniteScrollView.h; sourceTree = "<group>"; };
 		8DCFD6611D43CC78001EDC8A /* YYInfiniteScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfiniteScrollView.m; sourceTree = "<group>"; };
+		8DCFD7381D53641B001EDC8A /* ContactParentsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactParentsView.h; sourceTree = "<group>"; };
+		8DCFD7391D53641B001EDC8A /* ContactParentsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactParentsView.m; sourceTree = "<group>"; };
 		F48620718382C8CAB78BD7B3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1132,8 +1132,8 @@
 				3720C1391A41BBD5000357A5 /* ContactListVC.m */,
 				3720C1471A41E3EB000357A5 /* ContactItemCell.h */,
 				3720C1481A41E3EB000357A5 /* ContactItemCell.m */,
-				37BB0BAF1B05BD2800734EAA /* SearchUserVC.h */,
-				37BB0BB01B05BD2800734EAA /* SearchUserVC.m */,
+				8DCFD7381D53641B001EDC8A /* ContactParentsView.h */,
+				8DCFD7391D53641B001EDC8A /* ContactParentsView.m */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -2888,7 +2888,6 @@
 				3793F7581B7CFFD900501F77 /* YLGIFImage.m in Sources */,
 				3793F7B81B7CFFD900501F77 /* AudioRecordView.m in Sources */,
 				37C316551A568F7B002E847D /* GrowthTimelineModel.m in Sources */,
-				37BB0BB11B05BD2800734EAA /* SearchUserVC.m in Sources */,
 				37C53AA31B14D5FF00C3ED69 /* RequestVacationVC.m in Sources */,
 				3793F7591B7CFFD900501F77 /* YLImageView.m in Sources */,
 				3793F7D71B7CFFD900501F77 /* NSString+JSONObject.m in Sources */,
@@ -2926,6 +2925,7 @@
 				3793F7D31B7CFFD900501F77 /* UserInfo.m in Sources */,
 				3793F7D91B7CFFD900501F77 /* NSString+Validate.m in Sources */,
 				3759001B1A635FC9008AFFF1 /* PasswordModifyVC.m in Sources */,
+				8DCFD73A1D53641B001EDC8A /* ContactParentsView.m in Sources */,
 				3793F7BF1B7CFFD900501F77 /* DAContextMenuCell.m in Sources */,
 				37D5536F1A7EAE6F00D77F89 /* ClassAlbumVC.m in Sources */,
 				37E93F931A7DC43500AD45A1 /* TNAlertView.m in Sources */,
@@ -3140,7 +3140,7 @@
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/LianZhiParent/LianZhiParent.pch";
 				INFOPLIST_FILE = LianZhiParent/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3182,7 +3182,7 @@
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/LianZhiParent/LianZhiParent.pch";
 				INFOPLIST_FILE = LianZhiParent/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

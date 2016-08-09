@@ -52,28 +52,6 @@
     self.avatar = [dataWrapper getStringForKey:@"head"];
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if(self = [super initWithCoder:aDecoder])
-    {
-        self.uid = [aDecoder decodeObjectForKey:@"id"];
-        self.teacherName = [aDecoder decodeObjectForKey:@"name"];
-        self.course = [aDecoder decodeObjectForKey:@"course"];
-        self.mobile = [aDecoder decodeObjectForKey:@"mobile"];
-        self.avatar = [aDecoder decodeObjectForKey:@"avatar"];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:self.uid forKey:@"id"];
-    [aCoder encodeObject:self.teacherName forKey:@"name"];
-    [aCoder encodeObject:self.course forKey:@"course"];
-    [aCoder encodeObject:self.mobile forKey:@"mobile"];
-    [aCoder encodeObject:self.avatar forKey:@"avatar"];
-}
 @end
 
 @implementation ClassInfo
@@ -114,27 +92,6 @@
     }
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-   if(self = [super init])
-   {
-       self.classID = [aDecoder decodeObjectForKey:@"id"];
-       self.className = [aDecoder decodeObjectForKey:@"name"];
-       self.logo = [aDecoder decodeObjectForKey:@"logo"];
-       self.schoolInfo = [aDecoder decodeObjectForKey:@"school"];
-       self.teachers = [aDecoder decodeObjectForKey:@"teachers"];
-   }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [aCoder encodeObject:self.classID forKey:@"id"];
-    [aCoder encodeObject:self.className forKey:@"name"];
-    [aCoder encodeObject:self.logo forKey:@"logo"];
-    [aCoder encodeObject:self.schoolInfo forKey:@"school"];
-    [aCoder encodeObject:self.teachers forKey:@"teachers"];
-}
 @end
 
 @implementation FamilyInfo
@@ -148,28 +105,6 @@
     self.avatar = [dataWrapper getStringForKey:@"head"];
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if(self = [super initWithCoder:aDecoder])
-    {
-        self.uid = [aDecoder decodeObjectForKey:@"id"];
-        self.name = [aDecoder decodeObjectForKey:@"name"];
-        self.mobile = [aDecoder decodeObjectForKey:@"mobile"];
-        self.relation = [aDecoder decodeObjectForKey:@"relation"];
-        self.avatar = [aDecoder decodeObjectForKey:@"head"];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:self.uid forKey:@"id"];
-    [aCoder encodeObject:self.name forKey:@"name"];
-    [aCoder encodeObject:self.mobile forKey:@"mobile"];
-    [aCoder encodeObject:self.relation forKey:@"relation"];
-    [aCoder encodeObject:self.avatar forKey:@"head"];
-}
 @end
 
 
@@ -207,45 +142,10 @@
     self.name = [dataWrapper getStringForKey:@"name"];
     self.avatar = [dataWrapper getStringForKey:@"head"];
     self.nickName = [dataWrapper getStringForKey:@"nick"];
-    self.birthday = [dataWrapper getStringForKey:@"birthday"];
     self.constellation = [dataWrapper getStringForKey:@"constellation"];
     self.height = [dataWrapper getStringForKey:@"height"];
     self.weight = [dataWrapper getStringForKey:@"weight"];
     self.gender = [dataWrapper getIntegerForKey:@"sex"];
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if(self = [super initWithCoder:aDecoder])
-    {
-        self.uid = [aDecoder decodeObjectForKey:@"id"];
-        self.name = [aDecoder decodeObjectForKey:@"name"];
-        self.avatar = [aDecoder decodeObjectForKey:@"head"];
-        self.nickName = [aDecoder decodeObjectForKey:@"nick"];
-        self.birthday = [aDecoder decodeObjectForKey:@"birthday"];
-        self.constellation = [aDecoder decodeObjectForKey:@"constellation"];
-        self.height = [aDecoder decodeObjectForKey:@"height"];
-        self.weight = [aDecoder decodeObjectForKey:@"weight"];
-        self.gender = [aDecoder decodeIntegerForKey:@"sex"];
-        self.classes = [aDecoder decodeObjectForKey:@"classes"];
-        self.family = [aDecoder decodeObjectForKey:@"family"];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [super encodeWithCoder:aCoder];
-    [aCoder encodeObject:self.uid forKey:@"id"];
-    [aCoder encodeObject:self.name forKey:@"name"];
-    [aCoder encodeObject:self.avatar forKey:@"head"];
-    [aCoder encodeObject:self.nickName forKey:@"nick"];
-    [aCoder encodeObject:self.birthday forKey:@"birthday"];
-    [aCoder encodeObject:self.constellation forKey:@"constellation"];
-    [aCoder encodeObject:self.height forKey:@"height"];
-    [aCoder encodeObject:self.weight forKey:@"weight"];
-    [aCoder encodeInteger:self.gender forKey:@"sex"];
-    [aCoder encodeObject:self.classes forKey:@"classes"];
-    [aCoder encodeObject:self.family forKey:@"family"];
-}
 @end

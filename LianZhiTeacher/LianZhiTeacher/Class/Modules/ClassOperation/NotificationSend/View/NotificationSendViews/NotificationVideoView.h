@@ -7,7 +7,25 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NotificationSendEntity.h"
+#import "NotificationContentBaseView.h"
 
-@interface NotificationVideoView : UIView
-@property (nonatomic, strong)NSArray* videoArray;
+typedef NS_ENUM(NSInteger, VideoViewType){
+    VideoViewTypeEdit,
+    VideoViewTypePreview
+};
+@interface VideoItemView : UIView
+{
+    UIImageView*        _coverImageView;
+    UIView*             _darkCoverView;
+    UIButton*           _deleteButton;
+    UIButton*           _playButton;
+}
+@property (nonatomic, assign)VideoViewType videoViewType;
+@property (nonatomic, strong)VideoItem *videoItem;
+@property (nonatomic, copy)void (^deleteCallback)();
+@end
+
+@interface NotificationVideoView : NotificationContentBaseView
+@property (nonatomic, strong)NSMutableArray *videoArray;
 @end

@@ -27,22 +27,24 @@
         [_nameLabel setTextAlignment:NSTextAlignmentCenter];
         [_nameLabel setText:self.userInfo.name];
         [_nameLabel sizeToFit];
-        [_nameLabel setFrame:CGRectMake(8, 0, _nameLabel.width + 18, kItemHeight)];
-        [self setSize:CGSizeMake(_nameLabel.width + 8, _nameLabel.height)];
+        [_nameLabel setFrame:CGRectMake(6, 0, _nameLabel.width + 18, kItemHeight)];
+        [self setSize:CGSizeMake(_nameLabel.width + 6, _nameLabel.height)];
         [self addSubview:_nameLabel];
         
         _cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_cancelButton setContentVerticalAlignment:UIControlContentVerticalAlignmentTop];
+        [_cancelButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
         [_cancelButton setImage:[UIImage imageNamed:@"delete_target"] forState:UIControlStateNormal];
         [_cancelButton addTarget:self action:@selector(onCancelClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_cancelButton setFrame:CGRectMake(0, 0, 15, 15)];
+        [_cancelButton setFrame:CGRectMake(0, 0, MIN(self.width, 30), self.height)];
         [self addSubview:_cancelButton];
     }
     return self;
 }
 
 - (void)onCancelClicked{
-    if(self.removeBlk){
-        self.removeBlk();
+    if(self.deleteCallback){
+        self.deleteCallback();
     }
 }
 
@@ -74,6 +76,11 @@
     NSInteger totalHeight = 0;
     for (UserInfo *userInfo in _sendArray) {
         TargetItemView *itemView = [[TargetItemView alloc] initWithUserInfo:userInfo];
+        @weakify(self)
+        [itemView setDeleteCallback:^{
+            @strongify(self)
+            [self deleteUser:userInfo];
+        }];
         if(itemView.width + spaceXStart + kItemHMargin > _scrollView.width){
             spaceXStart = 0;
             spaceYStart += kItemHeight + kItemVMargin;
@@ -87,6 +94,12 @@
     [_scrollView setContentSize:CGSizeMake(_scrollView.width, totalHeight)];
     [self setHeight:MIN(kTargetViewMaxHeight, totalHeight)];
     [_scrollView setHeight:self.height];
+}
+
+- (void)deleteUser:(UserInfo *)userInfo{
+    if(self.deleteCallback){
+        self.deleteCallback(userInfo);
+    }
 }
 
 @end

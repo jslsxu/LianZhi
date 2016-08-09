@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "NotificationSendTargetView.h"
-@interface NotificationTargetContentView : UIView{
+#import "NotificationContentBaseView.h"
+@interface NotificationTargetContentView : NotificationContentBaseView{
     UILabel*                        _numLabel;
     NotificationSendTargetView*     _memberView;
     UIButton*                       _addButton;
 }
 @property (nonatomic, strong)NSArray *targets;
 @property (nonatomic, copy)void (^addBlk)();
-- (instancetype)initWithWidth:(CGFloat)width targets:(NSArray *)targets;
 @end

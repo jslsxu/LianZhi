@@ -38,7 +38,7 @@ static NSArray *tabDatas = nil;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
         
         NSMutableArray *subVCs = [[NSMutableArray alloc] initWithCapacity:0];
-        NSArray *subVCArray = @[@"MessageVC",@"ContactListVC",@"ApplicationBoxVC",@"DiscoveryVC",@"MineVC"];
+        NSArray *subVCArray = @[@"MessageVC",@"ContactVC",@"ApplicationBoxVC",@"DiscoveryVC",@"MineVC"];
         
         for (NSInteger i = 0; i < subVCArray.count; i++)
         {

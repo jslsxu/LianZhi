@@ -11,23 +11,15 @@
 @implementation UserInfo
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    self.uid = [dataWrapper getStringForKey:@"id"];
-    self.name = [dataWrapper getStringForKey:@"name"];
-    self.label = [dataWrapper getStringForKey:@"label"];
-    self.title = [dataWrapper getStringForKey:@"title"];
-    self.nick = [dataWrapper getStringForKey:@"nick"];
-    self.sex = [dataWrapper getIntegerForKey:@"sex"];
-    self.mobile = [dataWrapper getStringForKey:@"mobile"];
-    self.avatar = [dataWrapper getStringForKey:@"head"];
-    self.constellation = [dataWrapper getStringForKey:@"constellation"];
-    self.email = [dataWrapper getStringForKey:@"email"];
-    self.birthday = [dataWrapper getStringForKey:@"birthday"];
-    self.actived = [dataWrapper getBoolForKey:@"actived"];
-    self.first_letter = [dataWrapper getStringForKey:@"first_letter"];
+    [self modelSetWithJSON:dataWrapper.data];
 }
 + (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
     return @{@"uid" : @"id",
              @"avatar":@"head"};
+}
+
++ (nullable NSArray<NSString *> *)modelPropertyBlacklist{
+    return @[@"selected"];
 }
 
 @end

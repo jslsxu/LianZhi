@@ -13,6 +13,7 @@
 #import "NotificationInputView.h"
 #import "NotificationVoiceView.h"
 #import "NotificationPhotoView.h"
+#import "NotificationVideoView.h"
 @interface NotificationSendVC : TNBaseViewController
 {
     UIScrollView*                   _scrollView;

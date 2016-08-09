@@ -9,6 +9,7 @@
 #import "InputBarView.h"
 #import "MyGiftVC.h"
 #import "VideoRecordView.h"
+#import "ClassMemberVC.h"
 #define kContentViewHeight                  48
 #define kButtonWidth                        30
 #define kButtonHeight                       30
@@ -22,6 +23,7 @@
 
 @interface InputBarView ()<PhotoPickerVCDelegate>
 @property (nonatomic,assign)NSInteger targetHeight;
+@property (nonatomic, strong)NSMutableArray *atArray;
 @end
 
 @implementation InputBarView
@@ -113,6 +115,13 @@
         [self addNotifications];
     }
     return self;
+}
+
+- (NSMutableArray *)atArray{
+    if(_atArray == nil){
+        _atArray = [NSMutableArray array];
+    }
+    return _atArray;
 }
 
 - (void)setCanSendGift:(BOOL)canSendGift
@@ -299,10 +308,36 @@
         if(content.length > 0)
         {
             [growingTextView setText:nil];
-            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidCommit:)])
-                [self.inputDelegate inputBarViewDidCommit:content];
+            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidCommit: atArray:)])
+                [self.inputDelegate inputBarViewDidCommit:content atArray:self.atArray];
         }
         return NO;
+    }
+    if(self.classID.length > 0 || self.groupID.length > 0){
+        if([text isEqualToString:@"@"]){
+            [growingTextView setText:[NSString stringWithFormat:@"%@@",growingTextView.text]];
+            [self setInputType:InputTypeNone];
+            ClassMemberVC *memberVC = [[ClassMemberVC alloc] init];
+            if(self.classID.length > 0){
+                [memberVC setClassID:self.classID];
+            }
+            else if(self.groupID.length > 0){
+                [memberVC setGroupID:self.groupID];
+            }
+            @weakify(self)
+            [memberVC setAtCallback:^(UserInfo *user) {
+                @strongify(self)
+                [growingTextView setText:[NSString stringWithFormat:@"%@%@",growingTextView.text,user.name]];
+                [self.atArray addObject:user];
+                [self setInputType:InputTypeNormal];
+            }];
+            [memberVC setCancelCallback:^{
+                @strongify(self)
+                [self setInputType:InputTypeNormal];
+            }];
+            TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:memberVC];
+            [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
+        }
     }
     return YES;
 }
@@ -337,9 +372,10 @@
             break;
         case FunctionTypeShortVideo:
         {
-            [VideoRecordView showWithCompletion:^(NSURL *videoPath) {
-                NSData *data = [NSData dataWithContentsOfURL:videoPath];
-                NSLog(@"data size is %zd",data.length);
+            [VideoRecordView showWithCompletion:^(VideoItem *videoItem) {
+                if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendVideo:)]){
+                    [self.inputDelegate inputBarViewDidSendVideo:videoItem];
+                }
             }];
         }
             break;

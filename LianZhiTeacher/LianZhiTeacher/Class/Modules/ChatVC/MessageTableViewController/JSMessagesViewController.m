@@ -1,7 +1,8 @@
 
 
 #import "JSMessagesViewController.h"
-#import "ChatExtraInfoVC.h"
+#import "ChatExtraGroupInfoVC.h"
+#import "ChatExtraIndividualInfoVC.h"
 static NSString *topChatID = nil;
 
 @interface JSMessagesViewController ()
@@ -67,6 +68,10 @@ static NSString *topChatID = nil;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"GroupMemberIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(showChatUserInfo)];
     
     _inputView = [[InputBarView alloc] init];
+    if(self.chatType == ChatTypeClass)
+        [_inputView setClassID:self.targetID];
+    else if(self.chatType == ChatTypeGroup)
+        [_inputView setGroupID:self.targetID];
     [_inputView setCanSendGift:self.chatType == ChatTypeParents || self.chatType == ChatTypeTeacher];
     [_inputView setCanCallTelephone:((self.chatType == ChatTypeParents || self.chatType == ChatTypeTeacher) && self.mobile.length > 0)];
     [_inputView setInputDelegate:self];
@@ -169,8 +174,14 @@ static NSString *topChatID = nil;
 
 - (void)showChatUserInfo
 {
-    ChatExtraInfoVC *chatExtraInfoVC = [[ChatExtraInfoVC alloc] init];
-    [self.navigationController pushViewController:chatExtraInfoVC animated:YES];
+    if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup){
+        ChatExtraGroupInfoVC *chatExtraInfoVC = [[ChatExtraGroupInfoVC alloc] init];
+        [self.navigationController pushViewController:chatExtraInfoVC animated:YES];
+    }
+    else{
+        ChatExtraIndividualInfoVC *chatExtraInfoVC = [[ChatExtraIndividualInfoVC alloc] init];
+        [self.navigationController pushViewController:chatExtraInfoVC animated:YES];
+    }
 }
 
 - (void)scrollToSearchResult:(MessageItem *)messageItem{
@@ -284,8 +295,8 @@ static NSString *topChatID = nil;
     {
         UIImage *image = messageItem.content.exinfo.imgs.image;
         TNDataWrapper *messageItemWrapper = [response getDataWrapperForIndex:0];
-        MessageItem *resultItem = [MessageItem nh_modelWithJson:messageItemWrapper.data];
-        resultItem.messageStatus = MessageStatusSuccess;
+        [messageItem modelSetWithJSON:messageItemWrapper.data];
+        messageItem.messageStatus = MessageStatusSuccess;
         if(image)
         {
             PhotoItem *photoItem = messageItem.content.exinfo.imgs;
@@ -295,10 +306,90 @@ static NSString *topChatID = nil;
                 [[SDImageCache sharedImageCache] storeImage:image forKey:photoItem.big toDisk:YES];
             }
         }
-        [self.chatMessageModel updateMessage:resultItem];
-        NSInteger row = [self.chatMessageModel.messageArray indexOfObject:resultItem];
+        VideoItem *videoItem = messageItem.content.exinfo.video;
+        if(videoItem){
+            
+        }
+        [self.chatMessageModel updateMessage:messageItem];
+        NSInteger row = [self.chatMessageModel.messageArray indexOfObject:messageItem];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     }
+}
+
+//- (void)sendMessageWithText:(NSString *)text{
+//    NSMutableDictionary *messageParam = [self sendParams];
+//    [messageParam setValue:kStringFromValue(UUMessageTypeText) forKey:@"content_type"];
+//    [messageParam setValue:text forKey:@"content"];
+//    
+//    MessageItem *messageItem = [self createMessageItem];
+//    [messageItem.content setType:UUMessageTypeText];
+//    [messageItem.content setText:text];
+//    
+//    MessageItem *preItem = [self.chatMessageModel.messageArray lastObject];
+//    if(messageItem.content.ctime - preItem.content.ctime <= 60 * 3)
+//        [messageItem.content setHideTime:YES];
+//    [self.chatMessageModel sendNewMessage:messageItem];
+//    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.chatMessageModel.messageArray.count - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+//    [self scrollToBottom:YES];
+//    
+//    
+//    [messageParam setValue:messageItem.client_send_id forKey:@"client_send_id"];
+//    __weak typeof(self) wself = self;
+//    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/send" withParams:messageParam constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+//    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+//        [wself appendNewMessage:responseObject replace:messageItem];
+//    } fail:^(NSString *errMsg) {
+//        messageItem.messageStatus = MessageStatusFailed;
+//        [wself.tableView reloadData];
+//    }];
+//
+//}
+//
+//- (void)sendMessageWithImage:(UIImage *)image{
+//    
+//}
+//
+//- (void)sendMessageWithGift:(GiftItem *)giftItem{
+//    
+//}
+//
+//- (void)sendMessageWithFace:(NSString *)face{
+//    
+//}
+//
+//- (void)sendMessageWithVoice:(NSData *)voiceData time:(NSInteger)voiceDuration{
+//    
+//}
+//
+//- (void)sendMessageWithVideo:(VideoItem *)videoItem{
+//    
+//}
+
+- (NSMutableDictionary *)sendParams{
+    NSMutableDictionary *messageParam = [NSMutableDictionary dictionary];
+    [messageParam setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"objid"];
+    if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup)
+        [messageParam setValue:@"0" forKey:@"to_objid"];
+    else
+        [messageParam setValue:self.to_objid forKey:@"to_objid"];
+    [messageParam setValue:self.targetID forKey:@"to_id"];
+    [messageParam setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
+    return messageParam;
+}
+
+- (MessageItem *)createMessageItem{
+    MessageContent *messageContent = [[MessageContent alloc] init];
+    [messageContent setCtime:[[NSDate date] timeIntervalSince1970]];
+    
+    MessageItem *messageItem = [[MessageItem alloc] init];
+    [messageItem setTargetUser:self.title];
+    [messageItem setMessageStatus:MessageStatusSending];
+    [messageItem setIsTmp:YES];
+    [messageItem setUser:[UserCenter sharedInstance].userInfo];
+    [messageItem setFrom:UUMessageFromMe];
+    [messageItem setContent:messageContent];
+    [messageItem makeClientSendID];
+    return messageItem;
 }
 
 - (void)sendMessage:(NSDictionary *)dic
@@ -315,9 +406,13 @@ static NSString *topChatID = nil;
     [messageParam setValue:dic[@"strContent"] forKey:@"content"];
     [messageParam setValue:dic[@"strVoiceTime"] forKey:@"voice_time"];
     [messageParam setValue:dic[@"present_id"] forKey:@"present_id"];
+    [messageParam setValue:dic[@"video_time"] forKey:@"video_time"];
+    [messageParam setValue:dic[@"im_at"] forKey:@"im_at"];
     MessageType messageType = [dic[@"type"] integerValue];
     UIImage *image = dic[@"picture"];
     NSData *voiceData = dic[@"voice"];
+    UIImage* coverImage = dic[@"video_cover"];
+    NSString* localVideoPath = dic[@"video"];
     
     MessageContent *messageContent = [[MessageContent alloc] init];
     [messageContent setType:messageType];
@@ -341,6 +436,17 @@ static NSString *topChatID = nil;
         AudioItem *audioItem = [[AudioItem alloc] init];
         [audioItem setTimeSpan:timeSpan];
         [exinfo setVoice:audioItem];
+    }
+    
+    if(localVideoPath.length > 0){
+        NSInteger videoTime = [dic[@"video_time"] integerValue];
+        VideoItem *videoItem = [[VideoItem alloc] init];
+        [videoItem setVideoTime:videoTime];
+        [videoItem setCoverImage:coverImage];
+        [videoItem setLocalVideoPath:localVideoPath];
+        [videoItem setCoverWidth:coverImage.size.width];
+        [videoItem setCoverHeight:coverImage.size.height];
+        [exinfo setVideo:videoItem];
     }
     
     MessageItem *messageItem = [[MessageItem alloc] init];
@@ -368,6 +474,16 @@ static NSString *topChatID = nil;
             [formData appendPartWithFileData:voiceData name:@"file" fileName:@"file" mimeType:@"audio/AMR"];
         else if(messageType == UUMessageTypePicture)
             [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.8) name:@"file" fileName:@"file" mimeType:@"image/jpeg"];
+        else if(messageType == UUMessageTypeVideo){
+            NSString *localVideoPath = dic[@"video"];
+            NSData *videoData = [NSData dataWithContentsOfFile:localVideoPath];
+            if(videoData){
+                [formData appendPartWithFileData:videoData name:@"video" fileName:@"video" mimeType:@"application/octet-stream"];
+            }
+            if(coverImage){
+             [formData appendPartWithFileData:UIImageJPEGRepresentation(coverImage, 0.8) name:@"video_cover" fileName:@"video_cover" mimeType:@"image/jpeg"];
+            }
+        }
     } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [wself appendNewMessage:responseObject replace:messageItem];
     } fail:^(NSString *errMsg) {
@@ -412,7 +528,7 @@ static NSString *topChatID = nil;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if(_inputView.inputType != InputTypeNone && scrollView.dragging)
+    if(_inputView.inputType != InputTypeNone && scrollView.tracking)
         [_inputView setInputType:InputTypeNone];
     
 //    if(scrollView.contentOffset.y < 40){
@@ -424,11 +540,27 @@ static NSString *topChatID = nil;
 }
 
 #pragma mark - InputDelegate
-- (void)inputBarViewDidCommit:(NSString *)text
+- (void)inputBarViewDidCommit:(NSString *)text atArray:(NSArray *)atArray
 {
-    NSDictionary *dic = @{@"strContent": text,
-                          @"type": @(UUMessageTypeText)};
-    [self dealTheFunctionData:dic];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:text forKey:@"strContent"];
+    [params setValue:@(UUMessageTypeText) forKey:@"type"];
+    if(atArray.count > 0){
+        NSMutableArray *atList = [NSMutableArray array];
+        for (UserInfo *userInfo in atArray) {
+            NSString *type;
+            if([userInfo isKindOfClass:[TeacherInfo class]]){
+                type = @"t";
+            }
+            else{
+                type = @"p";
+            }
+            [atList addObject:@{@"type" : type, @"uid" : userInfo.uid}];
+        }
+        
+        [params setValue:[NSString stringWithJSONObject:atList] forKey:@"im_at"];
+    }
+    [self dealTheFunctionData:params];
 }
 
 - (void)inputBarViewDidChangeHeight:(NSInteger)height
@@ -487,6 +619,14 @@ static NSString *topChatID = nil;
     [self dealTheFunctionData:dic];
 }
 
+- (void)inputBarViewDidSendVideo:(VideoItem *)videoItem{
+    NSDictionary *dic = @{@"type" : @(UUMessageTypeVideo),
+                          @"video" : videoItem.localVideoPath,
+                          @"video_time" : @(videoItem.videoTime),
+                          @"video_cover" : videoItem.coverImage};
+    [self dealTheFunctionData:dic];
+}
+
 - (void)inputBarViewDidCallTelephone{
     if(self.mobile.length > 0)
     {
@@ -542,36 +682,37 @@ static NSString *topChatID = nil;
 
 - (void)onResendMessage:(MessageItem *)messageItem
 {
-    NSDictionary *dic = messageItem.params;
-    NSMutableDictionary *messageParam = [NSMutableDictionary dictionary];
-    [messageParam setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"objid"];
-    if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup)
-        [messageParam setValue:@"0" forKey:@"to_objid"];
-    else
-        [messageParam setValue:self.to_objid forKey:@"to_objid"];
-    [messageParam setValue:self.targetID forKey:@"to_id"];
-    [messageParam setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
-    [messageParam setValue:dic[@"type"] forKey:@"content_type"];
-    [messageParam setValue:dic[@"strContent"] forKey:@"content"];
-    [messageParam setValue:dic[@"strVoiceTime"] forKey:@"voice_time"];
-    [messageParam setValue:dic[@"present_id"] forKey:@"present_id"];
-    MessageType messageType = [dic[@"type"] integerValue];
-    UIImage *image = dic[@"picture"];
-    NSData *voiceData = dic[@"voice"];
-    
-    [messageParam setValue:messageItem.client_send_id forKey:@"client_send_id"];
-    __weak typeof(self) wself = self;
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/send" withParams:messageParam constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        if(messageType == UUMessageTypeVoice)
-            [formData appendPartWithFileData:voiceData name:@"file" fileName:@"file" mimeType:@"audio/AMR"];
-        else if(messageType == UUMessageTypePicture)
-            [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.8) name:@"file" fileName:@"file" mimeType:@"image/jpeg"];
-    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        [wself appendNewMessage:responseObject replace:messageItem];
-    } fail:^(NSString *errMsg) {
-        messageItem.messageStatus = MessageStatusFailed;
-        [wself.tableView reloadData];
-    }];
+#warning todo重发
+//    NSDictionary *dic = messageItem.params;
+//    NSMutableDictionary *messageParam = [NSMutableDictionary dictionary];
+//    [messageParam setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"objid"];
+//    if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup)
+//        [messageParam setValue:@"0" forKey:@"to_objid"];
+//    else
+//        [messageParam setValue:self.to_objid forKey:@"to_objid"];
+//    [messageParam setValue:self.targetID forKey:@"to_id"];
+//    [messageParam setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
+//    [messageParam setValue:dic[@"type"] forKey:@"content_type"];
+//    [messageParam setValue:dic[@"strContent"] forKey:@"content"];
+//    [messageParam setValue:dic[@"strVoiceTime"] forKey:@"voice_time"];
+//    [messageParam setValue:dic[@"present_id"] forKey:@"present_id"];
+//    MessageType messageType = [dic[@"type"] integerValue];
+//    UIImage *image = dic[@"picture"];
+//    NSData *voiceData = dic[@"voice"];
+//    
+//    [messageParam setValue:messageItem.client_send_id forKey:@"client_send_id"];
+//    __weak typeof(self) wself = self;
+//    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/send" withParams:messageParam constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+//        if(messageType == UUMessageTypeVoice)
+//            [formData appendPartWithFileData:voiceData name:@"file" fileName:@"file" mimeType:@"audio/AMR"];
+//        else if(messageType == UUMessageTypePicture)
+//            [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.8) name:@"file" fileName:@"file" mimeType:@"image/jpeg"];
+//    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+//        [wself appendNewMessage:responseObject replace:messageItem];
+//    } fail:^(NSString *errMsg) {
+//        messageItem.messageStatus = MessageStatusFailed;
+//        [wself.tableView reloadData];
+//    }];
 }
 
 - (void)onReceiveGift:(NSNotification *)notification {

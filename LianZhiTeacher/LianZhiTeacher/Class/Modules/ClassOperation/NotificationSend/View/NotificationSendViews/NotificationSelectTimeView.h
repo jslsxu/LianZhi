@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface NotificationSelectTimeView : UIView{
+#import "NotificationContentBaseView.h"
+@interface NotificationSelectTimeView : NotificationContentBaseView{
     UIButton*       _bgButton;
     UIView*         _contentView;
     UIDatePicker*   _datePicker;

@@ -98,39 +98,41 @@
 }
 
 - (void)setActionType:(ActionType)actionType{
-    _actionType = actionType;
-    NSArray *imageArray = @[@"action_record_audio",@"action_photo",@"action_camera"];
-    for (NSInteger i = 0; i < _actionButtonArray.count; i++) {
-        UIButton *actionButton = _actionButtonArray[i];
-        if(_actionType == i + 1 && i != ActionTypeCamera - ActionTypeRecordAudio){
-            [actionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_selected",imageArray[i]]] forState:UIControlStateNormal];
-        }
-        else{
-            [actionButton setImage:[UIImage imageNamed:imageArray[i]] forState:UIControlStateNormal];
-        }
-    }
-    CGFloat height = kActionBarHeight;
-    if(_actionType == ActionTypeNone){
-        [_photoView removeFromSuperview];
-        _photoView = nil;
-        [_recordView removeFromSuperview];
-        _recordView = nil;
-    }
-    else if(_actionType == ActionTypeRecordAudio){
-        [self showAudioRecordView];
-        height = self.height;
-    }
-    else if(_actionType == ActionTypePhoto){
-        [self showImagePicker];
-        height = self.height;
-    }
-    else if(_actionType == ActionTypeCamera){
+    if(actionType == ActionTypeCamera){
         if([self.delegate respondsToSelector:@selector(notificationInputVideo:)]){
             [self.delegate notificationInputVideo:self];
         }
     }
-    if([self.delegate respondsToSelector:@selector(notificationInputDidWillChangeHeight:)]){
-        [self.delegate notificationInputDidWillChangeHeight:height];
+    else{
+        _actionType = actionType;
+        NSArray *imageArray = @[@"action_record_audio",@"action_photo",@"action_camera"];
+        for (NSInteger i = 0; i < _actionButtonArray.count; i++) {
+            UIButton *actionButton = _actionButtonArray[i];
+            if(_actionType == i + 1 && i != ActionTypeCamera - ActionTypeRecordAudio){
+                [actionButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_selected",imageArray[i]]] forState:UIControlStateNormal];
+            }
+            else{
+                [actionButton setImage:[UIImage imageNamed:imageArray[i]] forState:UIControlStateNormal];
+            }
+        }
+        CGFloat height = kActionBarHeight;
+        if(_actionType == ActionTypeNone){
+            [_photoView removeFromSuperview];
+            _photoView = nil;
+            [_recordView removeFromSuperview];
+            _recordView = nil;
+        }
+        else if(_actionType == ActionTypeRecordAudio){
+            [self showAudioRecordView];
+            height = self.height;
+        }
+        else if(_actionType == ActionTypePhoto){
+            [self showImagePicker];
+            height = self.height;
+        }
+        if([self.delegate respondsToSelector:@selector(notificationInputDidWillChangeHeight:)]){
+            [self.delegate notificationInputDidWillChangeHeight:height];
+        }
     }
 }
 

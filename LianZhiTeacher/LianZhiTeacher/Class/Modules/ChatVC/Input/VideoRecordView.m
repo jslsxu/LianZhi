@@ -13,14 +13,14 @@
 @interface VideoRecordView ()<SCRecorderDelegate>
 @property (nonatomic, strong)SCRecorder*    recorder;
 @property (nonatomic, strong)SCRecordSession * recordSession;
-@property (nonatomic, copy)void (^completion)(NSURL *videoPath);
+@property (nonatomic, copy)void (^completion)(VideoItem *videoItem);
 @property (nonatomic, strong)NSTimer*   pressTimer;
 @property (nonatomic, strong)UIActivityIndicatorView *indicatorView;
 @end
 
 @implementation VideoRecordView
 
-+ (void)showWithCompletion:(void (^)(NSURL *))completion{
++ (void)showWithCompletion:(void (^)(VideoItem *))completion{
     VideoRecordView *recordView = [[VideoRecordView alloc] init];
     [recordView setCompletion:completion];
     [recordView show];
@@ -60,7 +60,8 @@
         
         _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         [_indicatorView setHidesWhenStopped:YES];
-        [self addSubview:_indicatorView];
+        [_indicatorView setCenter:CGPointMake(_contentView.width / 2, _contentView.height / 2)];
+        [_contentView addSubview:_indicatorView];
         
         [self configRecorder];
         [_recorder startRunning];
@@ -70,7 +71,7 @@
 
 - (NSString *)tmpVideoPath{
     NSString *cachePath =  [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-    return [cachePath stringByAppendingPathComponent:@"tmpVideo.mov"];
+    return [cachePath stringByAppendingPathComponent:@"tmpVideo.mp4"];
 }
 
 - (void)configRecorder {
@@ -121,7 +122,8 @@
 
 - (void)saveCapture {
     [self.indicatorView startAnimating];
-    NSURL *url = [NSURL fileURLWithPath:[self tmpVideoPath]];
+    NSString *localVideoPath = [self tmpVideoPath];
+    NSURL *url = [NSURL fileURLWithPath:localVideoPath];
     AVAsset *asset = _recorder.session.assetRepresentingSegments;
     [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
     
@@ -137,7 +139,13 @@
             @strongify(self);
             [self.indicatorView stopAnimating];
             if(self.completion){
-                self.completion(url);
+                VideoItem *videoItem = [[VideoItem alloc] init];
+                [videoItem setLocalVideoPath:localVideoPath];
+                [videoItem setCoverImage:[UIImage coverImageForVideo:url]];
+                CMTime videoDuration = asset.duration;
+                float videoDurationSeconds = CMTimeGetSeconds(videoDuration);
+                [videoItem setVideoTime:videoDurationSeconds];
+                self.completion(videoItem);
             }
             [self dismiss];
         });
@@ -155,8 +163,7 @@
         
         videoComposition.frameDuration = CMTimeMake(1, 30);
         CGSize naturalSize = [videoTrack naturalSize];
-        targetSize.width = naturalSize.width;
-        targetSize.height = targetSize.width;
+        CGSize cropSize = CGSizeMake(naturalSize.width, naturalSize.width * targetSize.height / targetSize.width);
         CGAffineTransform transform = videoTrack.preferredTransform;
         CGFloat videoAngleInDegree  = atan2(transform.b, transform.a) * 180 / M_PI;
         if (videoAngleInDegree == 90 || videoAngleInDegree == -90) {
@@ -164,8 +171,8 @@
             naturalSize.width = naturalSize.height;
             naturalSize.height = width;
         }
-        videoComposition.renderSize = targetSize;
-        transform = CGAffineTransformMakeTranslation(0, (targetSize.height - naturalSize.height) / 2);
+        videoComposition.renderSize = cropSize;
+        transform = CGAffineTransformMakeTranslation(0, (cropSize.height - naturalSize.height) / 2);
         // Make a "pass through video track" video composition.
         AVMutableVideoCompositionInstruction *passThroughInstruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
         passThroughInstruction.timeRange = CMTimeRangeMake(kCMTimeZero, asset.duration);

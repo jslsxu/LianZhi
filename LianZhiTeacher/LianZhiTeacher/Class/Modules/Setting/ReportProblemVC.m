@@ -51,7 +51,7 @@
             NSMutableArray *classArray = [NSMutableArray array];
             for (ClassInfo *classInfo in schoolInfo.classes)
             {
-                [classArray addObject:classInfo.className];
+                [classArray addObject:classInfo.name];
             }
             [schoolDic setValue:classArray forKey:@"component"];
             [sourceArray addObject:schoolDic];

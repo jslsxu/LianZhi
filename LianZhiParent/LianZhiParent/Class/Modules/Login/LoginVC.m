@@ -173,6 +173,7 @@
             else
             {
                  [[UserCenter sharedInstance] parseData:responseObject];
+                [[UserCenter sharedInstance] updateUserInfo];
                 [self dismissViewControllerAnimated:YES completion:nil];
                 if(self.completion)
                 {

@@ -75,6 +75,11 @@
     }
 }
 
+- (BOOL)canSendNotification{
+    NSInteger count = self.groups.count + self.classes.count + self.managedClasses.count;
+    return count > 0;
+}
+
 - (NSInteger)classNum
 {
     if(self.classes.count == 0)
@@ -157,8 +162,7 @@
 @implementation TeacherInfo
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    [super parseData:dataWrapper];
-    self.course = [dataWrapper getStringForKey:@"course"];
+    [self modelSetWithJSON:dataWrapper.data];
 }
 
 
@@ -167,8 +171,7 @@
 @implementation FamilyInfo
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    [super parseData:dataWrapper];
-    self.relation = [dataWrapper getStringForKey:@"relation"];
+    [self modelSetWithJSON:dataWrapper.data];
 }
 
 
@@ -181,67 +184,22 @@
     if([object isKindOfClass:[self class]])
     {
         ClassInfo *classInfo = (ClassInfo *)object;
-        return ([classInfo.classID isEqualToString:self.classID] && [classInfo.className isEqualToString:self.className]);
+        return ([classInfo.classID isEqualToString:self.classID] && [classInfo.name isEqualToString:self.name]);
     }
     return NO;
 }
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    self.classID = [dataWrapper getStringForKey:@"id"];
-    self.className = [dataWrapper getStringForKey:@"name"];
-    self.grade = [dataWrapper getStringForKey:@"grade"];
-    self.logoUrl = [dataWrapper getStringForKey:@"logo"];
-    self.course = [dataWrapper getStringForKey:@"course"];
-    self.num = [dataWrapper getIntegerForKey:@"num"];
-    
-    TNDataWrapper *studentsDataWrapper = [dataWrapper getDataWrapperForKey:@"students"];
-    if(studentsDataWrapper.count > 0)
-    {
-        NSMutableArray *studentArray = [[NSMutableArray alloc] initWithCapacity:0];
-        for (NSInteger i = 0; i < studentsDataWrapper.count; i++) {
-            TNDataWrapper *studentWrapper = [studentsDataWrapper getDataWrapperForIndex:i];
-            StudentInfo *studentInfo = [[StudentInfo alloc] init];
-            [studentInfo parseData:studentWrapper];
-            [studentArray addObject:studentInfo];
-        }
-        [studentArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            StudentInfo *student1 = (StudentInfo *)obj1;
-            StudentInfo *student2 = (StudentInfo *)obj2;
-            return ([student1.first_letter compare:student2.first_letter]);
-        }];
-        [self setStudents:studentArray];
-    }
+    [self modelSetWithJSON:dataWrapper.data];
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if(self = [super init])
-    {
-        self.classID = [aDecoder decodeObjectForKey:@"id"];
-        self.className = [aDecoder decodeObjectForKey:@"name"];
-        self.grade = [aDecoder decodeObjectForKey:@"grade"];
-        self.logoUrl = [aDecoder decodeObjectForKey:@"logo"];
-        self.course = [aDecoder decodeObjectForKey:@"course"];
-        NSMutableArray *students = [NSMutableArray arrayWithArray:[aDecoder decodeObjectForKey:@"students"]];
-        [students sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            StudentInfo *student1 = (StudentInfo *)obj1;
-            StudentInfo *student2 = (StudentInfo *)obj2;
-            return ([student1.first_letter compare:student2.first_letter]);
-        }];
-        self.students = students;
-    }
-    return self;
++ (nullable NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
+    return @{@"students" : [StudentInfo class]};
 }
 
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [aCoder encodeObject:self.classID forKey:@"id"];
-     [aCoder encodeObject:self.className forKey:@"name"];
-     [aCoder encodeObject:self.grade forKey:@"grade"];
-     [aCoder encodeObject:self.logoUrl forKey:@"logo"];
-     [aCoder encodeObject:self.course forKey:@"course"];
-     [aCoder encodeObject:self.students forKey:@"students"];
++ (nullable NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
+    return @{@"classID" : @"id"};
 }
 
 @end
@@ -251,19 +209,11 @@
 @implementation StudentInfo
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    [super parseData:dataWrapper];
-    TNDataWrapper *familyDataWrapper = [dataWrapper getDataWrapperForKey:@"family"];
-    if(familyDataWrapper.count > 0)
-    {
-        NSMutableArray *familyArray = [[NSMutableArray alloc] initWithCapacity:0];
-        for (NSInteger i = 0; i < familyDataWrapper.count; i++) {
-            TNDataWrapper *familyItemData = [familyDataWrapper getDataWrapperForIndex:i];
-            FamilyInfo *familyInfo = [[FamilyInfo alloc] init];
-            [familyInfo parseData:familyItemData];
-            [familyArray addObject:familyInfo];
-        }
-        [self setFamily:familyArray];
-    }
+    [self modelSetWithJSON:dataWrapper.data];
+}
+
++ (nullable NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
+    return @{@"family" : [FamilyInfo class]};
 }
 
 @end
@@ -272,23 +222,21 @@
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    self.groupID = [dataWrapper getStringForKey:@"id"];
-    self.groupName = [dataWrapper getStringForKey:@"name"];
-    self.logo = [dataWrapper getStringForKey:@"logo"];
-    self.canNotice = [dataWrapper getBoolForKey:@"can_notice"];
-    TNDataWrapper *teacherWrapper = [dataWrapper getDataWrapperForKey:@"teachers"];
-    if(teacherWrapper.count > 0)
-    {
-        NSMutableArray *teacherArray = [NSMutableArray array];
-        for (NSInteger i = 0; i < teacherWrapper.count; i++)
-        {
-            TNDataWrapper *teacherItemWrapper = [teacherWrapper getDataWrapperForIndex:i];
-            TeacherInfo *teacherInfo = [[TeacherInfo alloc] init];
-            [teacherInfo parseData:teacherItemWrapper];
-            [teacherArray addObject:teacherInfo];
-        }
-        self.teachers = teacherArray;
-    }
+    [self modelSetWithJSON:dataWrapper.data];
+}
+
++ (nullable NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
+    return @{@"groupID" : @"id",
+             @"groupName" : @"name",
+             @"canNotice" : @"can_notice"};
+}
+
++ (nullable NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
+    return @{@"teachers" : [TeacherInfo class]};
+}
+
++ (nullable NSArray<NSString *> *)modelPropertyBlacklist{
+    return @[@"selected"];
 }
 
 - (BOOL)canChat

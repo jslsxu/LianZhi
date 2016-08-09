@@ -172,7 +172,7 @@
     }
     ClassInfo *classInfo = self.classArray[indexPath.row];
     [cell.detailTextLabel setText:[NSString stringWithFormat:@"%ld",classInfo.students.count]];
-    [cell.nameLabel setText:classInfo.className];
+    [cell.nameLabel setText:classInfo.name];
     [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
     [cell.checkButton setSelected:[self hasBeenSelected:classInfo.classID]];
     [cell.checkButton addTarget:self action:@selector(onCheckClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -187,7 +187,7 @@
     [studentVC setClassInfo:classInfo];
     [studentVC setHomework:self.homework];
     [studentVC setRecord:self.record];
-    [studentVC setTitle:classInfo.className];
+    [studentVC setTitle:classInfo.name];
     [studentVC setSelectionCompletion:self.selectionCompletion];
     [self.navigationController pushViewController:studentVC animated:YES];
 }

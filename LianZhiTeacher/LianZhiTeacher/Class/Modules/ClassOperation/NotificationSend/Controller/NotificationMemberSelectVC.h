@@ -25,6 +25,7 @@ typedef NS_ENUM(NSInteger, UserType){
 @property (nonatomic, copy)void (^headerExpandClick)();
 @property (nonatomic, copy)void (^allSelectClick)();
 @property (nonatomic, assign)BOOL expand;
+@property (nonatomic, strong)id groupInfo;
 @end
 
 @interface NotificationMemberItemCell : UITableViewCell{
@@ -55,5 +56,6 @@ typedef NS_ENUM(NSInteger, UserType){
     NotificationMemberView* _studentView;
     NotificationMemberView* _teacherView;
 }
-@property (nonatomic, copy)void (^selectCompletion)(NSArray *targetArray);
+@property (nonatomic, copy)void (^selectCompletion)(NSArray *classArray, NSArray* groupArray);
+- (instancetype)initWithOriginalArray:(NSArray *)sourceArray;
 @end

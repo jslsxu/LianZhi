@@ -45,40 +45,5 @@
     return dictionary;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if(self = [super init])
-    {
-        self.uid = [aDecoder decodeObjectForKey:@"id"];
-        self.name = [aDecoder decodeObjectForKey:@"name"];
-        self.title = [aDecoder decodeObjectForKey:@"title"];
-        self.nickName = [aDecoder decodeObjectForKey:@"nick"];
-        self.gender = [aDecoder decodeIntegerForKey:@"sex"];
-        self.mobile = [aDecoder decodeObjectForKey:@"mobile"];
-        self.avatar = [aDecoder decodeObjectForKey:@"head"];
-        self.constellation = [aDecoder decodeObjectForKey:@"constellation"];
-        self.email = [aDecoder decodeObjectForKey:@"email"];
-        self.birthDay = [aDecoder decodeObjectForKey:@"birthday"];
-        self.actived = [aDecoder decodeBoolForKey:@"actived"];
-        self.shortIndex = [aDecoder decodeObjectForKey:@"first_letter"];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [aCoder encodeObject:self.uid forKey:@"id"];
-    [aCoder encodeObject:self.name forKey:@"name"];
-    [aCoder encodeObject:self.title forKey:@"title"];
-    [aCoder encodeObject:self.nickName forKey:@"nick"];
-    [aCoder encodeInteger:self.gender forKey:@"sex"];
-    [aCoder encodeObject:self.mobile forKey:@"mobile"];
-    [aCoder encodeObject:self.avatar forKey:@"head"];
-    [aCoder encodeObject:self.constellation forKey:@"constellation"];
-    [aCoder encodeObject:self.email forKey:@"email"];
-    [aCoder encodeObject:self.birthDay forKey:@"birthday"];
-    [aCoder encodeBool:self.actived forKey:@"actived"];
-    [aCoder encodeObject:self.shortIndex forKey:@"first_letter"];
-}
 
 @end

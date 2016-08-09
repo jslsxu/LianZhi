@@ -8,7 +8,7 @@
 
 #import "ClassAppVC.h"
 #import "GrowthTimelineVC.h"
-#import "ContactListVC.h"
+#import "ContactVC.h"
 
 @interface ClassAppVC ()
 
@@ -115,7 +115,7 @@
             {
                 if([host isEqualToString:@"contact"])
                 {
-                    ContactListVC *contactVC = [[ContactListVC alloc] init];
+                    ContactVC *contactVC = [[ContactVC alloc] init];
                     [self.navigationController pushViewController:contactVC animated:YES];
                 }
                 else if([host isEqualToString:@"record"])

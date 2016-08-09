@@ -46,8 +46,8 @@
 - (void)setClassInfo:(ClassInfo *)classInfo
 {
     _classInfo = classInfo;
-    [_logoView setImageWithUrl:[NSURL URLWithString:_classInfo.logoUrl]];
-    [_nameLabel setText:_classInfo.className];
+    [_logoView setImageWithUrl:[NSURL URLWithString:_classInfo.logo]];
+    [_nameLabel setText:_classInfo.name];
 }
 
 @end
@@ -60,7 +60,6 @@
     if(self)
     {
         _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(0, 0, 36, 36)];
-        [_avatar setCenter:CGPointMake(15 + _avatar.width / 2, self.height / 2)];
         [self addSubview:_avatar];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -75,17 +74,20 @@
         [_commentLabel setFont:[UIFont systemFontOfSize:13]];
         [self addSubview:_commentLabel];
         
-        _genderImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        [self addSubview:_genderImageView];
+        _phoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_phoneButton addTarget:self action:@selector(onPhoneClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_phoneButton setImage:[UIImage imageNamed:@"contact_telephone"] forState:UIControlStateNormal];
+        [_phoneButton setImage:[UIImage imageNamed:@"contact_telephone_disabled"] forState:UIControlStateDisabled];
+        [self addSubview:_phoneButton];
         
-//        _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [_chatButton setFrame:CGRectMake(self.width - 40 - 10, (self.height - 30) / 2, 40, 30)];
-//        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonNormal"] forState:UIControlStateNormal];
-//        [_chatButton setImage:[UIImage imageNamed:@"ChatButtonHighlighted"] forState:UIControlStateHighlighted];
-//        [self addSubview:_chatButton];
+        _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_chatButton setImage:[UIImage imageNamed:@"contact_chat"] forState:UIControlStateNormal];
+        [_chatButton setImage:[UIImage imageNamed:@"contact_chat_disabled"] forState:UIControlStateDisabled];
+        [self addSubview:_chatButton];
         
-        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 44 - 0.5, self.width, 0.5)];
-        [_sepLine setBackgroundColor:[UIColor colorWithRed:240 / 255.0 green:240 / 255.0 blue:240 / 255.0 alpha:1.f]];
+        _sepLine = [[UIView alloc] initWithFrame:CGRectZero];
+        [_sepLine setBackgroundColor:[UIColor colorWithHexString:@"eaeaea"]];
         [self addSubview:_sepLine];
     }
     return self;
@@ -95,6 +97,10 @@
 - (void)setUserInfo:(UserInfo *)userInfo
 {
     _userInfo = userInfo;
+    [_avatar setCenter:CGPointMake(15 + _avatar.width / 2, self.height / 2)];
+    NSInteger buttonWidth = 30;
+    [_phoneButton setFrame:CGRectMake(self.width - 25 - buttonWidth, 0, buttonWidth, self.height)];
+    [_chatButton setFrame:CGRectMake(_phoneButton.left - 5 - buttonWidth, 0, buttonWidth, self.height)];
     if([_userInfo isKindOfClass:[TeacherGroup class]])
     {
         TeacherGroup *group = (TeacherGroup *)_userInfo;
@@ -104,6 +110,8 @@
         [_nameLabel setText:teacherGroup.groupName];
         [_nameLabel sizeToFit];
         [_nameLabel setFrame:CGRectMake(_avatar.right + 15, (self.height - _nameLabel.height) / 2, MIN(_nameLabel.width, self.width - _nameLabel.left - 10), _nameLabel.height)];
+        [_chatButton setHidden:YES];
+        [_phoneButton setHidden:YES];
     }
     else
     {
@@ -119,7 +127,10 @@
             [_commentLabel setText:teacher.title];
             [_commentLabel sizeToFit];
             [_commentLabel setOrigin:CGPointMake(_nameLabel.right + 15, (self.height - _commentLabel.height) / 2)];
-            [self setAccessoryView:nil];
+            [_chatButton setEnabled:_userInfo.actived];
+            [_chatButton setHidden:NO];
+            [_phoneButton setEnabled:_userInfo.mobile.length > 0];
+            [_phoneButton setHidden:NO];
         }
         else
         {
@@ -127,8 +138,22 @@
             [_commentLabel setText:[NSString stringWithFormat:@"(%ld位家长)",studentInfo.family.count]];
             [_commentLabel sizeToFit];
             [_commentLabel setOrigin:CGPointMake(_nameLabel.right + 15, (self.height - _commentLabel.height) / 2)];
-            [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+            [_chatButton setHidden:YES];
+            [_phoneButton setHidden:YES];
         }
+    }
+    [_sepLine setFrame:CGRectMake(_avatar.right + 10, self.height - kLineHeight, self.width - (_avatar.right + 10), kLineHeight)];
+}
+
+- (void)onChatClicked{
+    if(self.chatCallback){
+        self.chatCallback();
+    }
+}
+
+- (void)onPhoneClicked{
+    if(self.telephoneCallback){
+        self.telephoneCallback();
     }
 }
 @end

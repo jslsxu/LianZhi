@@ -8,8 +8,11 @@
 
 #import "NotificationDetailVideoView.h"
 #import "KRVideoPlayerController.h"
-@interface NotificationDetailVideoView ()
-@property (nonatomic, strong)KRVideoPlayerController *playController;
+@interface NotificationDetailVideoView (){
+    
+}
+
+@property (nonatomic, strong)NSMutableArray*    videoViewArray;
 @end
 
 @implementation NotificationDetailVideoView
@@ -17,13 +20,47 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if(self){
-//        _playController = [[KRVideoPlayerController alloc] initWithFrame:CGRectMake(10, 10, self.width - 10 * 2, (self.width - 10 * 2) * 2 / 3)];
-//        [_playController setContentURL:[NSURL URLWithString:@"http://krtv.qiniudn.com/150522nextapp"]];
-//        [_playController showInWindow];
-//        
-//        [self setHeight:_playController.view.height];
+        self.videoViewArray = [NSMutableArray array];
+        
+        
     }
     return self;
+}
+
+- (void)setSendEntity:(NotificationSendEntity *)sendEntity{
+    _sendEntity = sendEntity;
+    [_videoViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [_videoViewArray removeAllObjects];
+    
+    CGFloat height = 0;
+    NSInteger margin = 10;
+    NSInteger start = 0;
+    if(_sendEntity.videoArray.count % 2 == 1){
+        start = 1;
+        VideoItem *videoItem = _sendEntity.videoArray[0];
+        VideoItemView*  videoItemView = [[VideoItemView alloc] initWithFrame:CGRectMake(margin, 0, self.width - margin * 2, (self.width - margin * 2) * 2 / 3 )];
+        [videoItemView setVideoItem:videoItem];
+        [videoItemView setVideoViewType:VideoViewTypePreview];
+        [_videoViewArray addObject:videoItemView];
+        [self addSubview:videoItemView];
+        height += videoItemView.height + margin;
+    }
+    CGFloat itemWidth = (self.width - margin * 3) / 2;
+    CGFloat itemHeight = itemWidth * 2 / 3;
+    for (NSInteger i = start; i < _sendEntity.videoArray.count; i++) {
+        VideoItem *videoItem = _sendEntity.videoArray[i];
+        NSInteger row = (i - start) / 2;
+        NSInteger column = (i - start) % 2;
+        VideoItemView*  videoItemView = [[VideoItemView alloc] initWithFrame:CGRectMake(margin + (itemWidth + margin) * column, height + (itemHeight + margin) * row, itemWidth, itemHeight)];
+        [videoItemView setVideoItem:videoItem];
+        [videoItemView setVideoViewType:VideoViewTypePreview];
+        [_videoViewArray addObject:videoItemView];
+        [self addSubview:videoItemView];
+    }
+    NSInteger row = (_sendEntity.videoArray.count - start + 1) / 2;
+    height += (itemHeight + margin) * row;
+    [self setHeight:height];
+
 }
 
 @end

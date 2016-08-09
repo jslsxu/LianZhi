@@ -55,7 +55,7 @@
     [_genderImageView setImage:[UIImage imageNamed:_childInfo.gender == GenderMale ? @"GenderMale.png" : @"GenderFemale.png"]];
     [_genderImageView setOrigin:CGPointMake(_nameLabel.right + 10, _nameLabel.top + (_nameLabel.height - _genderImageView.height) / 2)];
     
-    NSString *birthday = [NSString stringWithFormat:@"%@ (%@)",_childInfo.birthday,_childInfo.constellation];
+    NSString *birthday = [NSString stringWithFormat:@"%@ (%@)",_childInfo.birthDay,_childInfo.constellation];
     [_birthdayLabel setText:birthday];
     [_birthdayLabel sizeToFit];
     [_birthdayLabel setOrigin:CGPointMake(_avtarView.right + 10, _bgImageView.height / 2 + 5)];

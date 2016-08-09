@@ -21,10 +21,10 @@
 
 @interface ClassMemberVC : TNBaseViewController
 {
-    UISwitch*       _soundSwitch;
     UITableView*    _tableView;
 }
-@property (nonatomic, assign)BOOL showSound;
 @property (nonatomic, copy)NSString *classID;
 @property (nonatomic, copy)NSString *groupID;
+@property (nonatomic, copy)void (^atCallback)(UserInfo *user);
+@property (nonatomic, copy)void (^cancelCallback)();
 @end

@@ -66,4 +66,24 @@
     return memSize;
 }
 
++ (NSString *)sizeStrForSize:(NSInteger)size{
+    NSString *sizeStr;
+    if(size < 1024){
+        sizeStr = [NSString stringWithFormat:@"%zdB",size];
+    }
+    else if(size < 1024 * 1024)
+        sizeStr = [NSString stringWithFormat:@"%zdk",size / 1024];
+    else{
+        sizeStr = [NSString stringWithFormat:@"%.1fM",size / (1024 * 1024.f)];
+    }
+    return sizeStr;
+}
+
++ (AVAsset *)avAssetFromALAsset:(ALAsset *)alasset{
+    ALAssetRepresentation *representation = [alasset defaultRepresentation];
+    NSString *filePath = [[representation url] absoluteString];
+    AVAsset *avAsset = [AVAsset assetWithURL:[NSURL URLWithString:filePath]];
+    return avAsset;
+}
+
 @end

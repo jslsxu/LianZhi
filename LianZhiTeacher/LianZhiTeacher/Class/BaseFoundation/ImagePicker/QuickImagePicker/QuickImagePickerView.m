@@ -29,6 +29,10 @@
         [_stateButton setImage:[UIImage imageNamed:@"photo_state_selected"] forState:UIControlStateSelected];
         [_stateButton addTarget:self action:@selector(onSelectButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_stateButton];
+        
+        _typeImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"video_type_white"]];
+        [_typeImageView setOrigin:CGPointMake(5, self.height - 5 - _typeImageView.height)];
+        [self addSubview:_typeImageView];
     }
     return self;
 }
@@ -37,6 +41,7 @@
     _asset = asset;
     [_imageView setImage:_asset.previewImage];
     [_stateButton setSelected:_asset.selected];
+    [_typeImageView setHidden:_asset.type != XMNAssetTypeVideo];
 }
 
 - (void)onSelectButtonClicked{
@@ -184,18 +189,15 @@
     UIButton *button = cell.stateButton;
     XMNAssetModel *assetModel = cell.asset;
     if (!assetModel.selected) {
-        if (assetModel.type == XMNAssetTypeVideo) {
-            if ([self.selectedAssets firstObject] && [self.selectedAssets firstObject].type != XMNAssetTypeVideo) {
-//                [self.parentController showAlertWithMessage:@"不能同时选择照片和视频"];
+        for (XMNAssetModel *model in self.selectedAssets) {
+            if(model.type != assetModel.type){
                 [ProgressHUD showHintText:@"不能同时选择照片和视频"];
-            }else if ([self.selectedAssets firstObject]){
-                [ProgressHUD showHintText:@"一次只能发送1个视频"];
-//                [self.parentController showAlertWithMessage:@"一次只能发送1个视频"];
+                return;
             }
-            return;
-        }else if (self.selectedAssets.count >= self.maxCount) {
-//            [self.parentController showAlertWithMessage:[NSString stringWithFormat:@"一次最多只能选择%d张图片",(int)self.maxCount]];
-            return;
+            else if(model.type == XMNAssetTypeVideo){
+                [ProgressHUD showHintText:@"一次只能发送1个视频"];
+                return;
+            }
         }
         [UIView animationWithLayer:button.layer type:XMNAnimationTypeBigger];
         assetModel.selected = YES;

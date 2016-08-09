@@ -8,13 +8,16 @@
 
 #import "NotificationMemberSelectVC.h"
 
+#define kNotificationClassArrayKey      @"NotificationClassArray"
+#define kNotificationGroupArrayKey      @"NotificationGroupArray"
+
 @implementation NotificationMemberHeaderView
 
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithReuseIdentifier:reuseIdentifier];
     if(self){
         [self.contentView setBackgroundColor:[UIColor whiteColor]];
-        _stateImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        _stateImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gray_expand_indicator"]];
         [self addSubview:_stateImageView];
         
         _logoView = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -25,13 +28,11 @@
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
-        [_nameLabel setText:@"二班"];
         [self addSubview:_nameLabel];
         
         _numLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_numLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
         [_numLabel setFont:[UIFont systemFontOfSize:14]];
-        [_numLabel setText:@"2/30"];
         [_numLabel setTextAlignment:NSTextAlignmentRight];
         [self addSubview:_numLabel];
         
@@ -51,13 +52,37 @@
     return self;
 }
 
+- (void)setGroupInfo:(id)groupInfo{
+    _groupInfo = groupInfo;
+    if([_groupInfo isKindOfClass:[ClassInfo class]]){
+        ClassInfo *classInfo = (ClassInfo *)_groupInfo;
+        [_logoView sd_setImageWithURL:[NSURL URLWithString:classInfo.logo] placeholderImage:nil];
+        [_nameLabel setText:classInfo.name];
+        [_allSelectButton setSelected:classInfo.selected];
+    }
+    else{
+        TeacherGroup *teacherGroup = (TeacherGroup *)_groupInfo;
+        [_logoView sd_setImageWithURL:[NSURL URLWithString:teacherGroup.logo] placeholderImage:nil];
+        [_nameLabel setText:teacherGroup.groupName];
+        [_allSelectButton setSelected:teacherGroup.selected];
+    }
+}
+
 - (void)setExpand:(BOOL)expand{
     _expand = expand;
+    [UIView animateWithDuration:0.3 animations:^{
+        if(_expand)
+            [_stateImageView setTransform:CGAffineTransformMakeRotation(M_PI_2)];
+        else{
+            [_stateImageView setTransform:CGAffineTransformIdentity];
+        }
+    }];
     [self setNeedsLayout];
 }
 
 - (void)layoutSubviews{
-    [_logoView setFrame:CGRectMake(40, (self.height - 36) / 2, 36, 36)];
+    [_stateImageView setCenter:CGPointMake(25, self.height / 2)];
+    [_logoView setFrame:CGRectMake(50, (self.height - 36) / 2, 36, 36)];
     [_allSelectButton setFrame:CGRectMake(self.width - 40, 0, 40, self.height)];
     [_numLabel setFrame:CGRectMake(_allSelectButton.left - 50, 0, 50, self.height)];
     [_nameLabel setFrame:CGRectMake(_logoView.right + 10, 0, _numLabel.left - 10 - (_logoView.right + 10), self.height)];
@@ -86,9 +111,10 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self){
+        [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         _stateImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 60)];
         [_stateImageView setContentMode:UIViewContentModeCenter];
-        [_stateImageView setImage:[UIImage imageNamed:@"send_sms_on"]];
+        [_stateImageView setImage:[UIImage imageNamed:@"send_sms_off"]];
         [self addSubview:_stateImageView];
         
         _avatarView = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -110,8 +136,9 @@
 
 - (void)setUserInfo:(UserInfo *)userInfo{
     _userInfo = userInfo;
+    [_stateImageView setImage:[UIImage imageNamed:_userInfo.selected ? @"send_sms_on" : @"send_sms_off"]];
     [_avatarView sd_setImageWithURL:[NSURL URLWithString:_userInfo.avatar] placeholderImage:nil];
-    [_avatarView setFrame:CGRectMake(40, (60 - 36) / 2, 36, 36)];
+    [_avatarView setFrame:CGRectMake(50, (60 - 36) / 2, 36, 36)];
     [_nameLabel setText:_userInfo.name];
     [_nameLabel setFrame:CGRectMake(_avatarView.right + 10, 0, self.width - 10 - (_avatarView.right + 10), self.height)];
     [_sepLine setFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
@@ -120,7 +147,7 @@
 @end
 
 @interface NotificationMemberView ()<UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic, strong)NSMutableArray *selectedArray;
+@property (nonatomic, strong)NSMutableDictionary *expandDictionary;
 @end
 
 @implementation NotificationMemberView
@@ -150,7 +177,7 @@
         [_stateLabel setFont:[UIFont systemFontOfSize:16]];
         [_stateLabel setTextColor:[UIColor whiteColor]];
         [_stateLabel setTextAlignment:NSTextAlignmentRight];
-        [_stateLabel setText:[NSString stringWithFormat:@"已选择(%zd)",self.selectedArray.count]];
+        [_stateLabel setText:@"已选择0人"];
         [_actionView addSubview:_stateLabel];
         
         [self addSubview:_actionView];
@@ -158,17 +185,86 @@
     return self;
 }
 
-- (NSMutableArray *)selectedArray{
-    if(!_selectedArray){
-        _selectedArray = [NSMutableArray array];
+- (void)setDataSource:(NSArray *)dataSource{
+    _dataSource = dataSource;
+    self.expandDictionary = [NSMutableDictionary dictionary];
+    for (id groupInfo in _dataSource) {
+        if([groupInfo isKindOfClass:[ClassInfo class]]){
+            [self.expandDictionary setValue:@(NO) forKey:[(ClassInfo *)groupInfo classID]];
+        }
+        else if([groupInfo isKindOfClass:[TeacherGroup class]]){
+            [self.expandDictionary setValue:@(NO) forKey:[(TeacherGroup *)groupInfo groupID]];
+        }
     }
-    return _selectedArray;
+    [self updateSelectToolBar];
 }
 
 - (void)onSelectButtonClicked{
+    BOOL selectAll = [[_selectAllButton titleForState:UIControlStateNormal] isEqualToString:@"全选"];
     
+    if(self.userType == UserTypeStudent){
+        for (ClassInfo *classInfo in self.dataSource) {
+            classInfo.selected = selectAll;
+            for (StudentInfo *studentInfo in classInfo.students) {
+                studentInfo.selected = selectAll;
+            }
+        }
+    }
+    else{
+        for (TeacherGroup *teacherGroup in self.dataSource) {
+            teacherGroup.selected = selectAll;
+            for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
+                teacherInfo.selected = selectAll;
+            }
+        }
+    }
+    [self updateSelectToolBar];
+    [_tableView reloadData];
 }
 
+- (BOOL)expandForSection:(NSInteger)section{
+    BOOL expand = NO;
+    if(self.userType == UserTypeStudent){
+        ClassInfo *classInfo = (ClassInfo *)self.dataSource[section];
+        expand = [[self.expandDictionary valueForKey:classInfo.classID] boolValue];
+    }
+    else{
+        TeacherGroup *teacherGroup = (TeacherGroup *)self.dataSource[section];
+        expand = [[self.expandDictionary valueForKey:teacherGroup.groupID] boolValue];
+    }
+    return expand;
+
+}
+
+- (void)updateSelectToolBar{
+    BOOL selectAll = YES;
+    NSInteger selectNum = 0;
+    if(self.userType == UserTypeStudent){
+        for (ClassInfo *classInfo in self.dataSource) {
+            if(!classInfo.selected){
+                selectAll = NO;
+            }
+            for (StudentInfo *studentInfo in classInfo.students) {
+                if(studentInfo.selected)
+                    selectNum ++;
+            }
+        }
+    }
+    else{
+        for (TeacherGroup *teacherGroup in self.dataSource) {
+            if(!teacherGroup.selected){
+                selectAll = NO;
+            }
+            for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
+                if(teacherInfo.selected){
+                    selectNum++;
+                }
+            }
+        }
+    }
+    [_selectAllButton setTitle:selectAll ? @"反选" : @"全选" forState:UIControlStateNormal];
+    [_stateLabel setText:[NSString stringWithFormat:@"已选择%zd人",selectNum]];
+}
 #pragma mark - UITableViewDelegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -178,11 +274,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(self.userType == UserTypeStudent){
         ClassInfo *classInfo = [self.dataSource objectAtIndex:section];
-        return classInfo.students.count;
+        BOOL expand = [[self.expandDictionary valueForKey:classInfo.classID] boolValue];
+        return expand ? classInfo.students.count : 0;
     }
     else{
         TeacherGroup *group = [self.dataSource objectAtIndex:section];
-        return group.teachers.count;
+        BOOL expand = [[self.expandDictionary valueForKey:group.groupID] boolValue];
+        return expand ? group.teachers.count : 0;
     }
 
 }
@@ -192,17 +290,59 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    id dataItem = self.dataSource[section];
     static NSString *reuseID = @"NotificationMemberHeaderView";
     NotificationMemberHeaderView *headerView  = [tableView dequeueReusableHeaderFooterViewWithIdentifier:reuseID];
     if(!headerView){
         headerView = [[NotificationMemberHeaderView alloc] initWithReuseIdentifier:reuseID];
     }
+    [headerView setGroupInfo:dataItem];
+    @weakify(self)
     [headerView setHeaderExpandClick:^{
-        
+        @strongify(self)
+        BOOL expand = NO;
+        NSString *key;
+        if(self.userType == UserTypeStudent){
+            ClassInfo *classInfo = (ClassInfo *)dataItem;
+            key = classInfo.classID;
+        }
+        else{
+            TeacherGroup *teacherGroup = (TeacherGroup *)dataItem;
+            key = teacherGroup.groupID;
+        }
+        expand = [[self.expandDictionary valueForKey:key] boolValue];
+        [self.expandDictionary setValue:@(!expand) forKey:key];
+        [tableView reloadData];
     }];
     [headerView setAllSelectClick:^{
-        
+        @strongify(self)
+        if(self.userType == UserTypeStudent){
+            ClassInfo *classInfo = (ClassInfo *)dataItem;
+            [classInfo setSelected:!classInfo.selected];
+            for (StudentInfo *studentInfo in classInfo.students) {
+                [studentInfo setSelected:classInfo.selected];
+            }
+        }
+        else{
+            TeacherGroup *teacherGroup = (TeacherGroup *)dataItem;
+            [teacherGroup setSelected:!teacherGroup.selected];
+            for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
+                [teacherInfo setSelected:teacherGroup.selected];
+            }
+        }
+        [self updateSelectToolBar];
+        [tableView reloadData];
     }];
+    BOOL expand = NO;
+    if(self.userType == UserTypeStudent){
+        ClassInfo *classInfo = (ClassInfo *)dataItem;
+        expand = [[self.expandDictionary valueForKey:classInfo.classID] boolValue];
+    }
+    else{
+        TeacherGroup *teacherGroup = (TeacherGroup *)dataItem;
+        expand = [[self.expandDictionary valueForKey:teacherGroup.groupID] boolValue];
+    }
+    [headerView setExpand:expand];
     return headerView;
 }
 
@@ -212,7 +352,6 @@
     if(!cell){
         cell = [[NotificationMemberItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
-    
     return cell;
 }
 
@@ -230,25 +369,74 @@
     [itemCell setUserInfo:userInfo];
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section{
-    NotificationMemberHeaderView *headerView = (NotificationMemberHeaderView *)view;
-    [headerView setExpand:NO];
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+    if(self.userType == UserTypeStudent){
+        ClassInfo *classInfo = [self.dataSource objectAtIndex:section];
+        StudentInfo *studentInfo = classInfo.students[row];
+        [studentInfo setSelected:!studentInfo.selected];
+        BOOL allSelected = YES;
+        for (StudentInfo *stuInfo in classInfo.students) {
+            if(!stuInfo.selected){
+                allSelected = NO;
+            }
+        }
+        [classInfo setSelected:allSelected];
+    }
+    else{
+        TeacherGroup *group = [self.dataSource objectAtIndex:section];
+        TeacherInfo *teacherInfo = group.teachers[row];
+        [teacherInfo setSelected:!teacherInfo.selected];
+        BOOL allSelected = YES;
+        for (teacherInfo in group.teachers) {
+            if(!teacherInfo.selected){
+                allSelected = NO;
+            }
+        }
+        [group setSelected:allSelected];
+    }
+    [self updateSelectToolBar];
+    [tableView reloadData];
 }
 
 @end
 
 @interface NotificationMemberSelectVC ()
-@property (nonatomic, strong)NSMutableArray *selectArray;
+@property (nonatomic, strong)NSArray*    classArray;
+@property (nonatomic, strong)NSArray*    groupArray;
+@property (nonatomic, strong)NSArray*    originalSourceArray;
 @end
 
 @implementation NotificationMemberSelectVC
 
+- (instancetype)initWithOriginalArray:(NSArray *)sourceArray{
+    self = [super init];
+    if(self){
+        self.originalSourceArray = sourceArray;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    self.classArray = [[LZKVStorage userKVStorage] storageValueForKey:kNotificationClassArrayKey];
+//    self.groupArray = [[LZKVStorage userKVStorage] storageValueForKey:kNotificationGroupArrayKey];
+    self.classArray = [UserCenter sharedInstance].curSchool.classes;
+    self.groupArray = [UserCenter sharedInstance].curSchool.groups;
+    for (ClassInfo *classInfo in self.classArray) {
+        classInfo.selected = NO;
+        for (StudentInfo *studentInfo in classInfo.students) {
+            studentInfo.selected = NO;
+        }
+    }
+    for (TeacherGroup *group in self.groupArray) {
+        group.selected = NO;
+        for (TeacherInfo *teacherInfo in group.teachers) {
+            teacherInfo.selected = NO;
+        }
+    }
     _segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"家长",@"同事"]];
     [_segmentCtrl setSelectedSegmentIndex:0];
     [_segmentCtrl setWidth:120];
@@ -258,23 +446,68 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(onConfirm)];
     
     _studentView = [[NotificationMemberView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
-    [_studentView setDataSource:[UserCenter sharedInstance].curSchool.classes];
     [_studentView setUserType:UserTypeStudent];
     [self.view addSubview:_studentView];
     
     _teacherView = [[NotificationMemberView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
-    [_teacherView setDataSource:[UserCenter sharedInstance].curSchool.groups];
     [_teacherView setUserType:UserTypeTeacher];
     [_teacherView setHidden:YES];
     [self.view addSubview:_teacherView];
     
+    [self reloadData];
+    
+//    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/get_publish_scope" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+//        self.classArray = [ClassInfo nh_modelArrayWithJson:responseObject.data[@"classes"]];
+//        self.groupArray = [TeacherGroup nh_modelArrayWithJson:responseObject.data[@"groups"]];
+//        [[LZKVStorage userKVStorage] saveStorageValue:self.classArray forKey:kNotificationClassArrayKey];
+//        [[LZKVStorage userKVStorage] saveStorageValue:self.groupArray forKey:kNotificationGroupArrayKey];
+//        [self reloadData];
+//    } fail:^(NSString *errMsg) {
+//        
+//    }];
 }
 
-- (NSMutableArray *)selectArray{
-    if(!_selectArray){
-        _selectArray = [NSMutableArray array];
+- (BOOL)target:(NSString *)targetID isInSource:(NSArray *)sourceArray{
+    for (id itemInfo in sourceArray) {
+        if([itemInfo isKindOfClass:[StudentInfo class]]){
+            StudentInfo *studentInfo = (StudentInfo *)itemInfo;
+            if([studentInfo.uid isEqualToString:targetID])
+                return YES;
+        }
+        else{
+            TeacherInfo *teacherInfo = (TeacherInfo *)itemInfo;
+            if([teacherInfo.uid isEqualToString:targetID])
+                return YES;
+        }
     }
-    return _selectArray;
+    return NO;
+}
+
+- (void)reloadData{
+    for (ClassInfo *classInfo in self.classArray) {
+        BOOL allSelected = YES;
+        for (StudentInfo *studentInfo in classInfo.students) {
+            studentInfo.selected = [self target:studentInfo.uid isInSource:self.originalSourceArray];
+            if(!studentInfo.selected){
+                allSelected = NO;
+            }
+        }
+        classInfo.selected = allSelected;
+    }
+    
+    for (TeacherGroup *group in self.groupArray) {
+        BOOL allSelected = YES;
+        for (TeacherInfo *teacherInfo in group.teachers) {
+            teacherInfo.selected = [self target:teacherInfo.uid isInSource:self.originalSourceArray];
+            if(!teacherInfo.selected){
+                allSelected = NO;
+            }
+        }
+        group.selected = allSelected;
+    }
+
+    [_studentView setDataSource:self.classArray];
+    [_teacherView setDataSource:self.groupArray];
 }
 
 - (void)onValueChanged{
@@ -286,7 +519,7 @@
 #pragma mark - Actions
 - (void)onConfirm{
     if(self.selectCompletion){
-        self.selectCompletion(self.selectArray);
+        self.selectCompletion(self.classArray, self.groupArray);
     }
     [self.navigationController popViewControllerAnimated:YES];
 }

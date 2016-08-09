@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ApplicationBoxVC.h"
 #import "DiscoveryVC.h"
-#import "ContactListVC.h"
+#import "ContactVC.h"
 #import "MessageVC.h"
 #import "MineVC.h"
 #import "LZTabBarButton.h"

@@ -27,9 +27,11 @@
     AvatarView*  _avatar;
     UILabel*            _nameLabel;
     UILabel*            _commentLabel;
-    UIImageView*        _genderImageView;
     UIView*             _sepLine;
-//    UIButton*           _chatButton;
+    UIButton*           _chatButton;
+    UIButton*           _phoneButton;
 }
 @property (nonatomic, strong)UserInfo *userInfo;
+@property (nonatomic, copy)void (^chatCallback)();
+@property (nonatomic, copy)void (^telephoneCallback)();
 @end

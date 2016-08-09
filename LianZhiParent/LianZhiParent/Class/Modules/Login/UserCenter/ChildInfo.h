@@ -14,20 +14,20 @@ typedef CF_ENUM(NSInteger, GenderType) {
     GenderSecret,
 };
 
-@interface SchoolInfo : TNModelItem<NSCoding>
+@interface SchoolInfo : TNModelItem
 @property (nonatomic, copy)NSString *schoolID;
 @property (nonatomic, copy)NSString *schoolName;
 @property (nonatomic, copy)NSString *logo;
 @property (nonatomic, assign)BOOL classIMEnaled;
 @end
 
-@interface TeacherInfo : UserInfo<NSCoding>
+@interface TeacherInfo : UserInfo
 @property (nonatomic, copy)NSString *course;
 //@property (nonatomic, copy)NSString *mobile;
 @property (nonatomic, copy)NSString *teacherName;
 @end
 
-@interface ClassInfo : TNModelItem<NSCoding>
+@interface ClassInfo : TNModelItem
 @property (nonatomic, copy)NSString *classID;
 @property (nonatomic, copy)NSString *className;
 @property (nonatomic, copy)NSString *logo;
@@ -37,18 +37,18 @@ typedef CF_ENUM(NSInteger, GenderType) {
 
 @end
 
-@interface FamilyInfo : UserInfo<NSCoding>
+@interface FamilyInfo : UserInfo
 @property (nonatomic, copy)NSString *relation;
 
 @end
 
 
-@interface ChildInfo : UserInfo<NSCoding>
+@interface ChildInfo : UserInfo
 //@property (nonatomic, copy)NSString *uid;
 //@property (nonatomic, copy)NSString *name;
 //@property (nonatomic, copy)NSString *avatar;
 //@property (nonatomic, copy)NSString *nickName;
-@property (nonatomic, copy)NSString *birthday;
+//@property (nonatomic, copy)NSString *birthday;
 //@property (nonatomic, copy)NSString *constellation;
 @property (nonatomic, copy)NSString *height;
 //@property (nonatomic, assign)GenderType gender;

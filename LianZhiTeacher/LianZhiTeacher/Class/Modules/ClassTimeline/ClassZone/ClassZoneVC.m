@@ -368,7 +368,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [self setSupportPullUp:YES];
     
     [_headerView setClassInfo:_classInfo];
-    [self setTitle:_classInfo.className];
+    [self setTitle:_classInfo.name];
     ClassZoneModel *model = (ClassZoneModel *)self.tableViewModel;
     [model setClassID:self.classInfo.classID];
     [self loadCache];
@@ -687,7 +687,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 {
     NSString *newsPaper = [(ClassZoneModel *)self.tableViewModel newsPaper];
     if(newsPaper.length == 0)
-        newsPaper = [NSString stringWithFormat:@"热烈庆祝我们班率先引用连枝APP智能客户端这里是我们 %@ 的掌上根据地。就让我们一起努力经营好这个大家庭吧",self.classInfo.className];
+        newsPaper = [NSString stringWithFormat:@"热烈庆祝我们班率先引用连枝APP智能客户端这里是我们 %@ 的掌上根据地。就让我们一起努力经营好这个大家庭吧",self.classInfo.name];
     [_headerView setNewsPaper:newsPaper];
     
     [self setupToolBar:_publishToolBar];
@@ -809,7 +809,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
                 if(self.targetZoneItem.photos.count > 0)
                     imageUrl = [self.targetZoneItem.photos[0] thumbnailUrl];
                 if(imageUrl.length == 0)
-                    imageUrl = self.classInfo.logoUrl;
+                    imageUrl = self.classInfo.logo;
                 
                 NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kClassZoneShareUrl,self.targetZoneItem.userInfo.uid,self.targetZoneItem.itemID];
                 [ShareActionView shareWithTitle:self.targetZoneItem.content content:nil image:[UIImage imageNamed:@"ClassZone"] imageUrl:imageUrl url:url];

@@ -16,6 +16,6 @@
     UIView*         _progressView;
     UIButton*       _captureButton;
 }
-+ (void)showWithCompletion:(void (^)(NSURL *videoPath))completion;
++ (void)showWithCompletion:(void (^)(VideoItem *videoItem))completion;
 - (void)dismiss;
 @end

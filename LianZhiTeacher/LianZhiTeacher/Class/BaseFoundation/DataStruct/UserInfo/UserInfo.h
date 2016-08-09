@@ -21,5 +21,6 @@
 @property (nonatomic, copy)NSString *avatar;
 @property (nonatomic, copy)NSString *first_letter;
 @property (nonatomic, assign)BOOL actived;
+@property (nonatomic, assign)BOOL selected;
 @end
 

@@ -7,22 +7,26 @@
 //
 
 #import "TNTableViewCell.h"
-#import "MessageDetailModel.h"
+#import "MessageFromInfo.h"
 #import "MessageVoiceButton.h"
 extern NSString *const kMessageDeleteNotitication;
 extern NSString *const kMessageDeleteModelItemKey;
 
 
-@interface MessageDetailItemCell : TNTableViewCell<UICollectionViewDelegate, UICollectionViewDataSource>
+@interface MessageDetailItemCell : TNTableViewCell
 {
     UIView*                 _bgView;
-    LogoView*               _logoView;
+    AvatarView*             _avatarView;
+    UIButton*               _deleteButton;
     UILabel*                _nameLabel;
     UILabel*                _timeLabel;
-    UIView*                 _sepLine;
     UILabel*                _contentLabel;
-    MessageVoiceButton*     _voiceButton;
-    UILabel*                _voiceSpanLabel;
-    UICollectionView*       _collectionView;
+    UIView*                 _sepLine;
+    UIImageView*            _voiceImageView;
+    UIImageView*            _videoImageView;
+    UIImageView*            _photoImageView;
+    UIImageView*            _rightArrow;
 }
+@property (nonatomic, strong)MessageFromInfo *fromInfo;
+@property (nonatomic, copy)void (^deleteCallback)();
 @end

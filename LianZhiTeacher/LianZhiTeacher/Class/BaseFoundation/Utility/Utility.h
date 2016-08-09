@@ -7,8 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <AVFoundation/AVFoundation.h>
 @interface Utility : NSObject
 + (NSString *)formatStringForTime:(NSInteger)timeInterval;
 + (NSString *)sizeAtPath:(NSString *)filePath diskMode:(BOOL)diskMode;
++ (NSString *)sizeStrForSize:(NSInteger)size;
++ (AVAsset *)avAssetFromALAsset:(ALAsset *)alasset;
 @end

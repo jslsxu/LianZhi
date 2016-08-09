@@ -65,48 +65,48 @@
                     completionBlock:(void(^_Nonnull)(NSArray<XMNAlbumModel *> * _Nullable albums))completionBlock {
     
     NSMutableArray *albumArr = [NSMutableArray array];
-    if (iOS8Later) {
-        
-
-        PHFetchOptions *option = [[PHFetchOptions alloc] init];
-        if (!pickingVideoEnable) option.predicate = [NSPredicate predicateWithFormat:@"mediaType == %ld", PHAssetMediaTypeImage];
-        
-        /** 获取只能相册，过滤其中图片为0的 */
-        PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAny options:option];
-        /** 获取普通相册，过滤其中图片为0的 */
-        PHFetchResult *albums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:option];
-    
-        [smartAlbums enumerateObjectsUsingBlock:^(PHAssetCollection *collection  , NSUInteger idx, BOOL * _Nonnull stop) {
-            PHFetchResult *fetchResult = [PHAsset fetchAssetsInAssetCollection:collection options:option];
-            if (fetchResult.count > 0 && ![[collection.localizedTitle lowercaseString] containsString:@"delegate"]) {
-                if ([collection.localizedTitle isEqualToString:@"Camera Roll"]) {
-                    [albumArr insertObject:[XMNAlbumModel albumWithResult:[fetchResult copy] name:[collection.localizedTitle copy]] atIndex:0];
-                } else {
-                    [albumArr addObject:[XMNAlbumModel albumWithResult:[fetchResult copy] name:[collection.localizedTitle copy]]];
-                }
-            }
-        }];
-        
-        for (PHAssetCollection *collection in albums) {
-            PHFetchResult *fetchResult = [PHAsset fetchAssetsInAssetCollection:collection options:option];
-            if (fetchResult.count < 1) continue;
-            if ([collection.localizedTitle isEqualToString:@"My Photo Stream"]) {
-                [albumArr insertObject:[XMNAlbumModel albumWithResult:fetchResult name:collection.localizedTitle] atIndex:1];
-            } else {
-                [albumArr addObject:[XMNAlbumModel albumWithResult:fetchResult name:collection.localizedTitle]];
-            }
-        }
-        
-//        /** 增加了根据相册内图片数量排序功能 */
-        [albumArr sortUsingComparator:^NSComparisonResult(XMNAlbumModel  *obj1, XMNAlbumModel *obj2) {
-            if (obj1.count >= obj2.count) {
-                return NSOrderedAscending;
-            }else {
-                return NSOrderedDescending;
-            }
-        }];
-        completionBlock ? completionBlock(albumArr) : nil;
-    }else {
+//    if (iOS8Later) {
+//        
+//
+//        PHFetchOptions *option = [[PHFetchOptions alloc] init];
+//        if (!pickingVideoEnable) option.predicate = [NSPredicate predicateWithFormat:@"mediaType == %ld", PHAssetMediaTypeImage];
+//        
+//        /** 获取只能相册，过滤其中图片为0的 */
+//        PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAny options:option];
+//        /** 获取普通相册，过滤其中图片为0的 */
+//        PHFetchResult *albums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAny options:option];
+//    
+//        [smartAlbums enumerateObjectsUsingBlock:^(PHAssetCollection *collection  , NSUInteger idx, BOOL * _Nonnull stop) {
+//            PHFetchResult *fetchResult = [PHAsset fetchAssetsInAssetCollection:collection options:option];
+//            if (fetchResult.count > 0 && ![[collection.localizedTitle lowercaseString] containsString:@"delegate"]) {
+//                if ([collection.localizedTitle isEqualToString:@"Camera Roll"]) {
+//                    [albumArr insertObject:[XMNAlbumModel albumWithResult:[fetchResult copy] name:[collection.localizedTitle copy]] atIndex:0];
+//                } else {
+//                    [albumArr addObject:[XMNAlbumModel albumWithResult:[fetchResult copy] name:[collection.localizedTitle copy]]];
+//                }
+//            }
+//        }];
+//        
+//        for (PHAssetCollection *collection in albums) {
+//            PHFetchResult *fetchResult = [PHAsset fetchAssetsInAssetCollection:collection options:option];
+//            if (fetchResult.count < 1) continue;
+//            if ([collection.localizedTitle isEqualToString:@"My Photo Stream"]) {
+//                [albumArr insertObject:[XMNAlbumModel albumWithResult:fetchResult name:collection.localizedTitle] atIndex:1];
+//            } else {
+//                [albumArr addObject:[XMNAlbumModel albumWithResult:fetchResult name:collection.localizedTitle]];
+//            }
+//        }
+//        
+////        /** 增加了根据相册内图片数量排序功能 */
+//        [albumArr sortUsingComparator:^NSComparisonResult(XMNAlbumModel  *obj1, XMNAlbumModel *obj2) {
+//            if (obj1.count >= obj2.count) {
+//                return NSOrderedAscending;
+//            }else {
+//                return NSOrderedDescending;
+//            }
+//        }];
+//        completionBlock ? completionBlock(albumArr) : nil;
+//    }else {
         [self.assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
             if (group == nil) {
                 NSLog(@"group nil will do it");
@@ -127,7 +127,7 @@
         } failureBlock:^(NSError *error) {
             completionBlock ? completionBlock(albumArr) : nil;
         }];
-    }
+//    }
 }
 
 
@@ -220,14 +220,14 @@
                 completionBlock:(void(^_Nonnull)(UIImage * _Nullable image))completionBlock {
     
     __block UIImage *resultImage;
-    if (iOS8Later) {
-        PHImageRequestOptions *imageRequestOption = [[PHImageRequestOptions alloc] init];
-        imageRequestOption.synchronous = YES;
-        [self.cachingImageManager requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeDefault options:imageRequestOption resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-            resultImage = result;
-            completionBlock ? completionBlock(resultImage) : nil;
-        }];
-    } else {
+//    if (iOS8Later) {
+//        PHImageRequestOptions *imageRequestOption = [[PHImageRequestOptions alloc] init];
+//        imageRequestOption.synchronous = YES;
+//        [self.cachingImageManager requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeDefault options:imageRequestOption resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+//            resultImage = result;
+//            completionBlock ? completionBlock(resultImage) : nil;
+//        }];
+//    } else {
 
         CGImageRef fullResolutionImageRef = [[(ALAsset *)asset defaultRepresentation] fullResolutionImage];
 //        // 通过 fullResolutionImage 获取到的的高清图实际上并不带上在照片应用中使用“编辑”处理的效果，需要额外在 AlAssetRepresentation 中获取这些信息
@@ -255,7 +255,7 @@
                                           scale:[[asset defaultRepresentation] scale]
                                     orientation:(UIImageOrientation)[[asset defaultRepresentation] orientation]];
         completionBlock ? completionBlock(resultImage) : nil;
-    }
+//    }
 }
 
 
@@ -270,17 +270,17 @@
                          size:(CGSize)size
               completionBlock:(void(^_Nonnull)(UIImage *_Nullable image))completionBlock {
     
-    if (iOS8Later) {
-        PHImageRequestOptions *imageRequestOptions = [[PHImageRequestOptions alloc] init];
-        imageRequestOptions.synchronous = YES;
-        imageRequestOptions.resizeMode = PHImageRequestOptionsResizeModeExact;
-        // 在 PHImageManager 中，targetSize 等 size 都是使用 px 作为单位，因此需要对targetSize 中对传入的 Size 进行处理，宽高各自乘以 ScreenScale，从而得到正确的图片
-        CGFloat screenScale = [UIScreen mainScreen].scale;
-        [self.cachingImageManager requestImageForAsset:asset targetSize:CGSizeMake(size.width * screenScale, size.height * screenScale) contentMode:PHImageContentModeAspectFit options:imageRequestOptions resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-            completionBlock ? completionBlock(result) : nil;
-        }];
-    } else {
-        
+//    if (iOS8Later) {
+//        PHImageRequestOptions *imageRequestOptions = [[PHImageRequestOptions alloc] init];
+//        imageRequestOptions.synchronous = YES;
+//        imageRequestOptions.resizeMode = PHImageRequestOptionsResizeModeExact;
+//        // 在 PHImageManager 中，targetSize 等 size 都是使用 px 作为单位，因此需要对targetSize 中对传入的 Size 进行处理，宽高各自乘以 ScreenScale，从而得到正确的图片
+//        CGFloat screenScale = [UIScreen mainScreen].scale;
+//        [self.cachingImageManager requestImageForAsset:asset targetSize:CGSizeMake(size.width * screenScale, size.height * screenScale) contentMode:PHImageContentModeAspectFit options:imageRequestOptions resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+//            completionBlock ? completionBlock(result) : nil;
+//        }];
+//    } else {
+    
         /** 判断下尺寸 是否符合一个thumb 尺寸 */
         
         UIImage *thumbnail = [UIImage imageWithCGImage:[asset thumbnail]];
@@ -297,7 +297,7 @@
             }];
         }
         
-    }
+//    }
 }
 
 
@@ -323,15 +323,15 @@
                      completionBlock:(void(^_Nonnull)(UIImageOrientation imageOrientation))completionBlock {
     
     
-    if (iOS8Later) {
-        PHImageRequestOptions *imageRequestOptions = [[PHImageRequestOptions alloc] init];
-        imageRequestOptions.synchronous = YES;
-        [self.cachingImageManager requestImageDataForAsset:asset options:imageRequestOptions resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
-            completionBlock ? completionBlock(orientation) : nil;
-        }];
-    }else {
+//    if (iOS8Later) {
+//        PHImageRequestOptions *imageRequestOptions = [[PHImageRequestOptions alloc] init];
+//        imageRequestOptions.synchronous = YES;
+//        [self.cachingImageManager requestImageDataForAsset:asset options:imageRequestOptions resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+//            completionBlock ? completionBlock(orientation) : nil;
+//        }];
+//    }else {
         completionBlock ? completionBlock([[asset valueForProperty:@"ALAssetPropertyOrientation"] integerValue]) : nil;
-    }
+//    }
 }
 
 - (void)getAssetSizeWithAsset:(id)asset completionBlock:(void(^)(CGFloat size))completionBlock {

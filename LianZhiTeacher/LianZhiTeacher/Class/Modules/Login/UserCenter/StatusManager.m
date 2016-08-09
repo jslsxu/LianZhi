@@ -150,8 +150,6 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
     
     if(self.changed == ChangedTypeSchool)
         [ApplicationDelegate logout];
-    else if(self.changed == ChangedTypeCourseAndClass || self.changed == ChangedTypeStudents || self.changed == ChangedTypeFellows)
-        [self updateUserInfo];
     [[NSNotificationCenter defaultCenter] postNotificationName:kStatusChangedNotification object:nil userInfo:nil];
     
 }

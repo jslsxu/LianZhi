@@ -12,7 +12,8 @@
 @implementation Exinfo
 + (NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
     return @{@"imgs" : [PhotoItem class],
-             @"voice" : [AudioItem class]};
+             @"voice" : [AudioItem class],
+             @"video" : [VideoItem class]};
 }
 @end
 
@@ -44,6 +45,10 @@
 + (NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
     return @{@"user": [UserInfo class],
              @"content" : [MessageContent class]};
+}
+
++ (nullable NSArray<NSString *> *)modelPropertyBlacklist{
+    return @[@"params"];
 }
 
 
@@ -81,6 +86,9 @@
             break;
         case UUMessageTypeVoice:
             reuseIdentifier = [NSString stringWithFormat:@"audio_%@",self.client_send_id];
+            break;
+        case UUMessageTypeVideo:
+            reuseIdentifier = [NSString stringWithFormat:@"video_%@",self.client_send_id];
             break;
         case UUMessageTypeRevoked:
             reuseIdentifier = @"revoked";

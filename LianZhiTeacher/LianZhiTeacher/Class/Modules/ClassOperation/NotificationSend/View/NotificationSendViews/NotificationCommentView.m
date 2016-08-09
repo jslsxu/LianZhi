@@ -42,6 +42,10 @@
     return self;
 }
 
+- (NSString *)content{
+    return [[_commentTextView text] copy];
+}
+
 #pragma mark - HPGrowingTextViewDelegate
 - (void)growingTextView:(HPGrowingTextView *)growingTextView didChangeHeight:(float)height{
     if(self.textViewWillChangeHeight){

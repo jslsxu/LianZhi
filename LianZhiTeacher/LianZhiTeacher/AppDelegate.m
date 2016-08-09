@@ -216,16 +216,16 @@ static SystemSoundID shake_sound_male_id = 0;
          [[HttpRequestEngine sharedInstance] setCommonCacheRoot:[NSString stringWithFormat:@"school_id_%@",[UserCenter sharedInstance].curSchool.schoolID]];
         HomeViewController *homeVC = [[HomeViewController alloc] init];
         self.homeVC = homeVC;
-        if([UserCenter sharedInstance].userData.firstLogin)
-        {
-            RelatedInfoVC *relatedInfoVC = [[RelatedInfoVC alloc] init];
-            [self.rootNavigation pushViewController:relatedInfoVC animated:NO];
-        }
-        if(![UserCenter sharedInstance].userData.confirmed)
-        {
-            BaseInfoModifyVC *baseInfoVC = [[BaseInfoModifyVC alloc] init];
-            [self.rootNavigation pushViewController:baseInfoVC animated:NO];
-        }
+//        if([UserCenter sharedInstance].userData.firstLogin)
+//        {
+//            RelatedInfoVC *relatedInfoVC = [[RelatedInfoVC alloc] init];
+//            [self.rootNavigation pushViewController:relatedInfoVC animated:NO];
+//        }
+//        if(![UserCenter sharedInstance].userData.confirmed)
+//        {
+//            BaseInfoModifyVC *baseInfoVC = [[BaseInfoModifyVC alloc] init];
+//            [self.rootNavigation pushViewController:baseInfoVC animated:NO];
+//        }
         [self.window setRootViewController:self.homeVC];
 //        [self showNewEditionPreview];
     };

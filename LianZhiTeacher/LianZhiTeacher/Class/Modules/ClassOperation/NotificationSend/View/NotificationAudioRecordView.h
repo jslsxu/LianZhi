@@ -24,6 +24,7 @@ typedef NS_ENUM(NSInteger, AudioRecordState){
 }
 @property (nonatomic, copy)void (^playCallback)();
 @property (nonatomic, copy)void (^deleteCallback)();
+@property (nonatomic, copy)void (^recordFinished)();
 @end
 
 @interface ListenView : UIView{

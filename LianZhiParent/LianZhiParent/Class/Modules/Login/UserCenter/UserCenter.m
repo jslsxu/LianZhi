@@ -15,20 +15,31 @@ NSString *const kUserDataStorageKey = @"UserData";
 @implementation UserData
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    TNDataWrapper *userWrapper = [dataWrapper getDataWrapperForKey:@"user"];
-    if(userWrapper)
-    {
-        UserInfo *userInfo = [[UserInfo alloc] init];
-        [userInfo parseData:userWrapper];
-        [self setUserInfo:userInfo];
+    if(!self.userInfo){
+        TNDataWrapper *userWrapper = [dataWrapper getDataWrapperForKey:@"user"];
+        if(userWrapper)
+        {
+            UserInfo *userInfo = [[UserInfo alloc] init];
+            [userInfo parseData:userWrapper];
+            [self setUserInfo:userInfo];
+        }
+        
+        self.firstLogin = [dataWrapper getBoolForKey:@"first_login"];
+        self.confirmed = [dataWrapper getBoolForKey:@"confirmed"];
+        NSString *verify = [dataWrapper getStringForKey:@"verify"];
+        if(verify.length > 0)
+            self.accessToken = verify;
+
+        TNDataWrapper *configWrapper = [dataWrapper getDataWrapperForKey:@"config"];
+        if(configWrapper.count > 0)
+        {
+            LogConfig *config = [[LogConfig alloc] init];
+            [config parseData:configWrapper];
+            [self setConfig:config];
+        }
+        self.curChildIndex = 0;
     }
-    
-    self.firstLogin = [dataWrapper getBoolForKey:@"first_login"];
-    self.confirmed = [dataWrapper getBoolForKey:@"confirmed"];
-    NSString *verify = [dataWrapper getStringForKey:@"verify"];
-    if(verify.length > 0)
-        self.accessToken = verify;
-    
+
     TNDataWrapper *childrenWrapper = [dataWrapper getDataWrapperForKey:@"children"];
     if(childrenWrapper.count > 0)
     {
@@ -42,21 +53,10 @@ NSString *const kUserDataStorageKey = @"UserData";
         [childrenArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             ChildInfo *childInfo1 = (ChildInfo *)obj1;
             ChildInfo *childInfo2 = (ChildInfo *)obj2;
-            return [childInfo1.birthday compare:childInfo2.birthday];
+            return [childInfo1.birthDay compare:childInfo2.birthDay];
         }];
         self.children = childrenArray;
     }
-    
-    
-    TNDataWrapper *configWrapper = [dataWrapper getDataWrapperForKey:@"config"];
-    if(configWrapper.count > 0)
-    {
-        LogConfig *config = [[LogConfig alloc] init];
-        [config parseData:configWrapper];
-        [self setConfig:config];
-    }
-    
-    self.curChildIndex = 0;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -168,13 +168,23 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
         [self save];
     }
 }
-
-- (void)updateUserInfo:(TNDataWrapper *)userWrapper
-{
-    [self.userData.userInfo parseData:userWrapper];
+- (void)updateUserInfoWithData:(TNDataWrapper *)userWrapper{
+    [self.userData parseData:userWrapper];
     [self save];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoChangedNotification object:nil];
+}
+
+- (void)updateUserInfo
+{
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_related_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        if(responseObject.count > 0)
+        {
+            [self updateUserInfoWithData:responseObject];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoChangedNotification object:nil];
+        }
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (void)updateChildData:(TNDataWrapper *)childWrapper
