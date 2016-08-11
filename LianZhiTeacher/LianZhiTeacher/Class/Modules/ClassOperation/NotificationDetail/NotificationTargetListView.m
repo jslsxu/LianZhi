@@ -32,8 +32,17 @@
         [_arrowImageView setCenter:CGPointMake(self.width - 10 - _arrowImageView.width / 2, self.contentView.height / 2)];
         [self.contentView addSubview:_arrowImageView];
         
+        UITapGestureRecognizer *tapgesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
+        [self addGestureRecognizer:tapgesture];
+        
     }
     return self;
+}
+
+- (void)onTap{
+    if(self.expandCallback){
+        self.expandCallback();
+    }
 }
 
 - (void)setExpand:(BOOL)expand{
@@ -43,6 +52,22 @@
         _arrowImageView.transform = transform;
     }];
 }
+
+- (void)setGroup:(id)group{
+    _group = group;
+    if([_group isKindOfClass:[ClassInfo class]]){
+        ClassInfo *classInfo = (ClassInfo *)_group;
+        [_logoView setImageWithUrl:[NSURL URLWithString:classInfo.logo]];
+        [_titleLabel setText:classInfo.name];
+    }
+    else if([_group isKindOfClass:[TeacherGroup class]]){
+        TeacherGroup *teacherGroup = (TeacherGroup *)_group;
+        [_logoView setImageWithUrl:[NSURL URLWithString:teacherGroup.logo]];
+        [_titleLabel setText:teacherGroup.groupName];
+    }
+}
+
+
 @end
 
 @implementation NotificationSendTargetCell
@@ -92,9 +117,10 @@
 
 @interface NotificationTargetListView ()<UITableViewDelegate, UITableViewDataSource>
 {
-    UITableView*        _tableView;
+   
 }
-
+@property (nonatomic, strong)UITableView* tableView;
+@property (nonatomic, strong)NSMutableDictionary* expandDic;
 @end
 
 @implementation NotificationTargetListView
@@ -111,13 +137,72 @@
     return self;
 }
 
+- (void)setTargetArray:(NSArray *)targetArray{
+    _targetArray = targetArray;
+    for (NSInteger i = 0; i < _targetArray.count; i++) {
+        NSString *groupID = [self groupIDForSection:i];
+        if(groupID.length > 0){
+            [self.expandDic setValue:@(NO) forKey:groupID];
+        }
+    }
+    [_tableView reloadData];
+}
+
+- (NSMutableDictionary *)expandDic{
+    if(_expandDic == nil){
+        _expandDic = [NSMutableDictionary dictionary];
+    }
+    return _expandDic;
+}
+
+- (NSString *)groupIDForSection:(NSInteger)section{
+    NSString *groupID = nil;
+    for (id group in _targetArray) {
+        if([group isKindOfClass:[ClassInfo class]]){
+            ClassInfo *classInfo = (ClassInfo *)group;
+            groupID = classInfo.classID;
+        }
+        else if([group isKindOfClass:[TeacherGroup class]]){
+            TeacherGroup *teacherGroup = (TeacherGroup *)group;
+            groupID = teacherGroup.groupID;
+        }
+    }
+    return groupID;
+}
+
+- (NSArray *)userArrayForSection:(NSInteger)section{
+    NSArray *userArray = nil;
+    id group = self.targetArray[section];
+    if([group isKindOfClass:[ClassInfo class]]){
+        ClassInfo *classInfo = (ClassInfo *)group;
+        if(classInfo.students.count == 0){//班级全部，从本地获取
+            for (ClassInfo *localClass in [UserCenter sharedInstance].curSchool.allClasses) {
+                if([localClass.classID isEqualToString:classInfo.classID]){
+                    userArray = localClass.students;
+                }
+            }
+        }
+    }
+    else if([group isKindOfClass:[TeacherGroup class]]){
+        TeacherGroup *teacherGroup = (TeacherGroup *)group;
+        if(teacherGroup.teachers.count == 0){
+            for (TeacherGroup *localGroup in [UserCenter sharedInstance].curSchool.groups) {
+                if([localGroup.groupID isEqualToString:teacherGroup.groupID]){
+                    userArray = localGroup.teachers;
+                }
+            }
+        }
+    }
+    return userArray;
+}
+
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    return self.targetArray.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 3;
+    return [self userArrayForSection:section].count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -134,6 +219,15 @@
     if(headerView == nil){
         headerView = [[NotificationTargetHeaderView alloc] initWithReuseIdentifier:reuseID];
     }
+    NSString *groupID = [self groupIDForSection:section];
+    BOOL expand = [[self.expandDic objectForKey:groupID] boolValue];
+    [headerView setExpand:expand];
+    @weakify(self)
+    [headerView setExpandCallback:^{
+        @strongify(self)
+        [self.expandDic setValue:@(!expand) forKey:groupID];
+        [self.tableView reloadData];
+    }];
     return headerView;
 }
 
@@ -148,7 +242,8 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     NotificationSendTargetCell *curCell = (NotificationSendTargetCell *)cell;
-    [curCell setUserInfo:[UserCenter sharedInstance].userInfo];
+    UserInfo *userInfo = [[self userArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
+    [curCell setUserInfo:userInfo];
 }
 
 

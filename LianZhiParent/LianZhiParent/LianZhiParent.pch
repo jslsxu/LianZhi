@@ -22,8 +22,12 @@
 #import "SVShareManager.h"
 #import "UserCenter.h"
 #import "LoginVC.h"
+#import "FMDB.h"
+#import "ReactiveCocoa.h"
 #import "JSMessagesViewController.h"
 #import "ShareActionView.h"
 #import "LZKVStorage.h"
+#import "LGAlertView.h"
+#import "LZVideoCacheManager.h"
 #endif
 #endif

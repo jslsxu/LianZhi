@@ -20,18 +20,9 @@
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *guidePath = [path stringByAppendingPathComponent:@"Guide"];
     NSString *htmlPath = [guidePath stringByAppendingPathComponent:@"index.html"];;
-    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:htmlPath]]];
+    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:htmlPath]]];
 }
 
-- (void)back
-{
-    if([_webView canGoBack])
-    {
-        [_webView goBack];
-    }
-    else
-        [self.navigationController popViewControllerAnimated:YES];
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

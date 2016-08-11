@@ -10,6 +10,13 @@
 
 @implementation ChatVoiceButton
 
+- (void)dealloc
+{
+    if([MLAmrPlayer shareInstance].isPlaying){
+        [[MLAmrPlayer shareInstance] stopPlaying];
+    }
+}
+
 - (void)updatePlayingSignImage
 {
     if (self.voiceState==MLPlayVoiceButtonStateDownloading)

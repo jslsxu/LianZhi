@@ -23,46 +23,22 @@
     }
     return self;
 }
+
++ (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
+    return @{@"photoID" : @"id",
+             };
+}
+
++ (NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
+    return @{@"user" : [UserInfo class]};
+}
++ (nullable NSArray<NSString *> *)modelPropertyBlacklist{
+    return @[@"publishImageItem"];
+}
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    self.photoID = [dataWrapper getStringForKey:@"id"];
-    self.thumbnailUrl = [dataWrapper getStringForKey:@"small"];
-    self.middleUrl = [dataWrapper getStringForKey:@"middle"];
-    self.originalUrl = [dataWrapper getStringForKey:@"big"];
-    self.width = [dataWrapper getFloatForKey:@"width"];
-    self.height = [dataWrapper getFloatForKey:@"height"];
-    self.uid = [dataWrapper getStringForKey:@"uid"];
-    self.canDelete = [dataWrapper getBoolForKey:@"can_edit"];
-    TNDataWrapper *userWrapper = [dataWrapper getDataWrapperForKey:@"user"];
-    if(userWrapper.count > 0)
-    {
-        UserInfo *userInfo = [[UserInfo alloc] init];
-        [userInfo parseData:userWrapper];
-        [self setUserInfo:userInfo];
-    }
-    self.comment = [dataWrapper getStringForKey:@"words"];
-    self.time = [dataWrapper getStringForKey:@"time"];
-    self.formatTimeStr = [dataWrapper getStringForKey:@"time_str"];
+    [self modelSetWithJSON:dataWrapper.data];
     
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super init];
-    if(self)
-    {
-        self.thumbnailUrl = [aDecoder decodeObjectForKey:kThumbnailUrl];
-        self.middleUrl = [aDecoder decodeObjectForKey:kMiddleUrl];
-        self.originalUrl = [aDecoder decodeObjectForKey:kOriginalUrl];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [aCoder encodeObject:self.thumbnailUrl forKey:kThumbnailUrl];
-    [aCoder encodeObject:self.middleUrl forKey:kMiddleUrl];
-    [aCoder encodeObject:self.originalUrl forKey:kOriginalUrl];
 }
 
 @end

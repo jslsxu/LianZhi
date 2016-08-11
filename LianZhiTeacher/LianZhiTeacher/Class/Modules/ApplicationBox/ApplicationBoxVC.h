@@ -17,6 +17,12 @@
 - (void)updateWithHeight:(CGFloat)height;
 @end
 
+@interface BannerItem : TNModelItem
+@property (nonatomic, copy)NSString *pic;
+@property (nonatomic, copy)NSString *url;
+
+@end
+
 @interface ApplicationItem : TNModelItem
 @property (nonatomic, copy)NSString *icon;
 @property (nonatomic, copy)NSString *name;
@@ -26,7 +32,7 @@
 @end
 
 @interface ApplicationModel : TNListModel
-
+@property (nonatomic, strong)NSArray *banner;
 @end
 
 @interface ApplicationItemCell : TNCollectionViewCell

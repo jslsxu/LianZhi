@@ -19,13 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "LianZhiTeacher/Class/Modules/Contacts/ContactTeacherView.m"
-            timestampString = "492337271.840416"
+            filePath = "LianZhiTeacher/Class/Modules/ChatVC/MessageTableViewController/JSMessagesViewController.m"
+            timestampString = "492592725.505377"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "113"
-            endingLineNumber = "113"
-            landmarkName = "-tableView:cellForRowAtIndexPath:"
+            startingLineNumber = "491"
+            endingLineNumber = "491"
+            landmarkName = "-sendMessage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -35,13 +35,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "LianZhiTeacher/Class/Modules/ChatVC/MessageTableViewController/JSMessagesViewController.m"
-            timestampString = "492433068.822554"
+            filePath = "LianZhiTeacher/Class/BaseFoundation/TNFoundation/ViewController/TNBaseWebViewController.m"
+            timestampString = "492588170.875287"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "490"
-            endingLineNumber = "490"
-            landmarkName = "-sendMessage:"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
+            landmarkName = "-updateNavigationItems"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

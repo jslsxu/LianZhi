@@ -88,6 +88,7 @@
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
     MessageDetailItem *detailItem = (MessageDetailItem *)modelItem;
     MessageNotificationDetailVC *notificationDetailVC = [[MessageNotificationDetailVC alloc] init];
+    [notificationDetailVC setMessageDetailItem:detailItem];
     [self.navigationController pushViewController:notificationDetailVC animated:YES];
 }
 

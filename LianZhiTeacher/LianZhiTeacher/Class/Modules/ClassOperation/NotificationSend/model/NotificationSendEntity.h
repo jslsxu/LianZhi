@@ -21,5 +21,5 @@
 @property(nonatomic, strong)NSMutableArray*     videoArray;
 @property(nonatomic, strong)UserInfo*           authorUser;
 - (void)removeTarget:(UserInfo *)userInfo;
-- (instancetype)initWithMessageDetailItem:(MessageDetailItem *)detailItem;
+
 @end

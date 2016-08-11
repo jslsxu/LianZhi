@@ -45,7 +45,7 @@
         TeacherInfo *teacherInfo = (TeacherInfo *)_userInfo;
         [_logoView setImageWithUrl:[NSURL URLWithString:teacherInfo.avatar]];
         [_logoView setStatus:teacherInfo.actived ? nil : @"未下载"];
-        [_nameLabel setText:teacherInfo.teacherName];
+        [_nameLabel setText:teacherInfo.name];
         [_nameLabel sizeToFit];
         [_nameLabel setFrame:CGRectMake(_logoView.right + 15, (self.height - _nameLabel.height) / 2, _nameLabel.width, _nameLabel.height)];
         

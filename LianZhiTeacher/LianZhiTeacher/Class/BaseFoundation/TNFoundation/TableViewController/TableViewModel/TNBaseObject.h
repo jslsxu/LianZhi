@@ -12,5 +12,4 @@
 + (NSArray *)nh_modelArrayWithJson:(id)json;
 
 + (instancetype)nh_modelWithJson:(id)json;
-
 @end

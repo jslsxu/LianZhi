@@ -17,6 +17,8 @@ NSString *const kCurrentChildInfoChangedNotification = @"CurrentChildInfoChanged
 static NSArray *tabDatas = nil;
 
 @interface HomeViewController ()
+@property (nonatomic, strong)ChildrenSelectView *childrenSelectView;
+@property (nonatomic, strong)NSMutableArray *subVCArray;
 @property (nonatomic, assign)NSInteger curIndex;
 @end
 
@@ -32,26 +34,31 @@ static NSArray *tabDatas = nil;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
+        self.hidesBottomBarWhenPushed = YES;
         self.edgesForExtendedLayout = UIRectEdgeNone;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNewMsgNumChanged) name:kNewMsgNumNotification object:nil];
 //        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onFoundChanged) name:kFoundNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onChildInfoChanged) name:kChildInfoChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
-        NSMutableArray *subVCs = [[NSMutableArray alloc] initWithCapacity:0];
+        self.subVCArray = [[NSMutableArray alloc] initWithCapacity:0];
+        NSMutableArray *subVCNavArray  =[NSMutableArray array];
         NSArray *subVCArray = @[@"MessageVC",@"ContactListVC",@"TreeHouseVC",@"ClassAppVC",@"DiscoveryVC"];
         
         for (NSInteger i = 0; i < subVCArray.count; i++)
         {
             NSString *className = subVCArray[i];
             TNBaseViewController *vc = [[NSClassFromString(className) alloc] init];
-            [subVCs addObject:vc];
+            vc.hidesBottomBarWhenPushed = NO;
+            [self.subVCArray addObject:vc];
+            
+            TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:vc];
+            [subVCNavArray addObject:nav];
         }
-        [self setViewControllers:subVCs];
+        [self setViewControllers:subVCNavArray];
         [self initialViewControllers];
         
-        self.messageVC = subVCs[0];
-        self.treeHouseVC = subVCs[2];
-        self.classAppVC = subVCs[3];
+        self.messageVC = self.subVCArray[0];
+        self.treeHouseVC = self.subVCArray[2];
+        self.classAppVC = self.subVCArray[3];
     }
     return self;
 }
@@ -115,7 +122,7 @@ static NSArray *tabDatas = nil;
     [treeTabButton setBadgeValue:treeAlertNum > 0 ? kStringFromValue(treeAlertNum) : nil];
     
     LZTabBarButton *discoveryButton = _tabbarButtons[4];
-    DiscoveryVC *discoveryVC = self.viewControllers[4];
+    DiscoveryVC *discoveryVC = self.subVCArray[4];
     [discoveryButton setBadgeValue:discoveryVC.hasNew ? @"" : nil];
 }
 
@@ -133,11 +140,6 @@ static NSArray *tabDatas = nil;
 //    LZTabBarButton *msgButton = [_tabbarButtons lastObject];
 //    [msgButton setBadgeValue:(foundNew ? @"" : nil)];
 //}
-
-- (void)onChildInfoChanged
-{
-    [self.avatar setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar] placeHolder:nil];
-}
 
 
 - (void)initialViewControllers
@@ -174,16 +176,16 @@ static NSArray *tabDatas = nil;
 
 }
 
+- (ChildrenSelectView *)curChildrenSelectView{
+    if(_childrenSelectView == nil){
+        _childrenSelectView = [[ChildrenSelectView alloc] initWithFrame:CGRectMake(0, 0, 40, 44)];
+    }
+    return _childrenSelectView;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    ChildrenSelectView *childrenView = [[ChildrenSelectView alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
-    [childrenView setDelegate:self];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:childrenView];
-    
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MineProfile"] style:UIBarButtonItemStylePlain target:self action:@selector(onSettingClicked)];
-    
 }
 
 
@@ -209,20 +211,6 @@ static NSArray *tabDatas = nil;
         [barButton setTitleColor:titleColor forState:UIControlStateHighlighted];
     }
 }
-
-//#pragma mark Actions
-//- (void)onSettingClicked
-//{
-//    MineVC *mineVC = [[MineVC alloc] init];
-//    [self.navigationController pushViewController:mineVC animated:YES];
-//}
-
-#pragma mark - ChildIconAction
-- (void)childrenSelectFinished:(ChildInfo *)childInfo
-{
-    [self.avatar setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar] placeHolder:nil];
-}
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

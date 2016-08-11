@@ -86,7 +86,7 @@
     
     __weak MJPhotoView *wPhotoView = self;
     __weak MJPhotoLoadingView *wLoading = _photoLoadingView;
-    NSString *targetUrl = _photo.originalUrl;
+    NSString *targetUrl = _photo.big;
 //    if([Reachability currentNetworkType] == NetworkTypeWiFi)
 //        targetUrl = _photo.originalUrl;
 //    else
@@ -120,7 +120,7 @@
 #pragma mark 加载完毕
 - (void)photoDidFinishLoadWithImage:(UIImage *)image withURL:(NSURL *)url
 {
-    if (![self.photo.originalUrl isEqualToString:[url absoluteString]]) {
+    if (![self.photo.big isEqualToString:[url absoluteString]]) {
         return;
     }
     if (image) {

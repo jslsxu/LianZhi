@@ -208,7 +208,7 @@
     {
         __block UIImage *aimage;
         __weak typeof(self) wself = self;
-        [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:photoItem.originalUrl] options:SDWebImageLowPriority progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished,NSURL *url) {
+        [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:photoItem.big] options:SDWebImageLowPriority progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished,NSURL *url) {
             __strong typeof(self) sself = wself;
             if( image && finished && sself){
                 aimage = image;

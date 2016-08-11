@@ -172,7 +172,7 @@
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     [params setValue:curChild.uid forKey:@"child_id"];
     [params setValue:self.classInfo.classID forKey:@"class_id"];
-    [params setValue:self.classInfo.schoolInfo.schoolID forKey:@"school_id"];
+    [params setValue:self.classInfo.school.schoolID forKey:@"school_id"];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM"];

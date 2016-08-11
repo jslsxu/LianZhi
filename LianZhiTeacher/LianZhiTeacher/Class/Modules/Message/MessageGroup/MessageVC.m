@@ -45,6 +45,7 @@
 @property (nonatomic, strong)MessageSegView *segView;
 @property (nonatomic, strong)NSTimer *timer;
 @property (nonatomic, assign)BOOL isNotification;
+
 @end
 
 @implementation MessageVC
@@ -86,6 +87,10 @@
         _isNotification = isNotification;
         [self.tableView reloadData];
     }
+}
+
+- (NSArray *)sourceArray{
+    return [self.messageModel arrayForType:self.isNotification];
 }
 
 - (void)viewDidLoad
@@ -271,8 +276,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *messageArray = [self.messageModel arrayForType:self.isNotification];
-    return [messageArray count];
+    return [[self sourceArray] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -282,8 +286,7 @@
     if(cell == nil)
         cell = [[MessageGroupItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     cell.delegate = self;
-    NSArray *messageArray = [self.messageModel arrayForType:self.isNotification];
-    [cell setMessageItem:messageArray[indexPath.row]];
+    [cell setMessageItem:[self sourceArray][indexPath.row]];
     return cell;
 }
 
@@ -360,9 +363,9 @@
     [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setDestructiveHandler:^(LGAlertView *alertView) {
         @strongify(self)
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-        MessageGroupItem *groupitem = (MessageGroupItem *)[self.messageModel.modelItemArray objectAtIndex:indexPath.row];
-        MessageFromInfo *fromInfo = [groupitem fromInfo];
+        MessageGroupItemCell *itemCell = (MessageGroupItemCell *)cell;
+        MessageGroupItem *groupItem = [itemCell messageItem];
+        MessageFromInfo *fromInfo = [groupItem fromInfo];
         if(!fromInfo.isNotification){
             [ChatMessageModel removeConversasionForUid:fromInfo.uid type:fromInfo.type];
         }
@@ -371,9 +374,8 @@
         [params setValue:fromInfo.uid forKey:@"from_id"];
         [params setValue:kStringFromValue(fromInfo.type) forKey:@"from_type"];
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_thread" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-            [self.messageModel.modelItemArray removeObjectAtIndex:indexPath.row];
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath]
-                                  withRowAnimation:UITableViewRowAnimationNone];
+            [self.messageModel deleteItem:groupItem.fromInfo.uid];
+            [self.tableView reloadData];
         } fail:^(NSString *errMsg) {
             
         }];

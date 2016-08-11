@@ -143,7 +143,7 @@
     if(content.length == 0 && _messageItem.audioItem)
         content = @"这是一条语音消息，点击播放收听";
     if(_messageItem.im_at){
-        NSMutableAttributedString *attrContent = [[NSMutableAttributedString alloc] initWithString:@"[有人@我]" attributes:@{NSForegroundColorAttributeName : [UIColor redColor]}];
+        NSMutableAttributedString *attrContent = [[NSMutableAttributedString alloc] initWithString:@"[有人@我]" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"F0003A"]}];
         [attrContent appendAttributedString:[[NSAttributedString alloc] initWithString:content attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"9a9a9a"]}]];
         [_contentLabel setAttributedText:attrContent];
     }

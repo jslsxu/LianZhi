@@ -205,7 +205,7 @@
     }
     _sepLine.y = spaceYStart;
     
-    NSString *author = [NSString stringWithFormat:@"来自%@老师",timelineItem.teacherInfo.teacherName];
+    NSString *author = [NSString stringWithFormat:@"来自%@老师",timelineItem.teacherInfo.name];
     [_authorLabel setText:author];
     [_authorLabel sizeToFit];
     [_authorLabel setOrigin:CGPointMake(15, _sepLine.bottom + (kBottomViewHeight - _authorLabel.height) / 2)];

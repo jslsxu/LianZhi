@@ -2,10 +2,11 @@ pod "KRVideoPlayer"
 pod "FCFileManager"
 pod "FMDB"
 pod "YYKit"
-pod "CTAssetsPickerController"
 pod "SSZipArchive"
 pod "MJRefresh"
 pod "FDFullscreenPopGesture"
 pod "Bugtags"
 pod 'Masonry'
+pod 'SCRecorder'
 pod "ReactiveCocoa", "2.5"
+pod 'LGAlertView'

@@ -23,6 +23,7 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if(self){
+        [self setClipsToBounds:YES];
         _avatarView = [[AvatarView alloc] initWithRadius:20];
         [_avatarView setOrigin:CGPointMake(10, 10)];
         [self addSubview:_avatarView];
@@ -52,8 +53,8 @@
     return self;
 }
 
-- (void)setSendEntity:(NotificationSendEntity *)sendEntity{
-    _sendEntity = sendEntity;
+- (void)setWords:(NSString *)words{
+    _words = words;
     [_avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
     [_nameLabel setText:[UserCenter sharedInstance].userInfo.name];
     [_nameLabel sizeToFit];
@@ -63,7 +64,7 @@
     [_statusLabel sizeToFit];
     [_statusLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY + 2)];
     
-    [_contentLabel setText:_sendEntity.content];
+    [_contentLabel setText:_words];
     [_contentLabel sizeToFit];
     
     [self setHeight:_contentLabel.bottom + 10];

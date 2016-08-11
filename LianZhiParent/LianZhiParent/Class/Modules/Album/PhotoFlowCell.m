@@ -27,12 +27,12 @@
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     PhotoItem *item = (PhotoItem *)modelItem;
-    if(item.photoID.length && item.thumbnailUrl.length > 0)
+    if(item.photoID.length && item.small.length > 0)
     {
         [_imageView setImage:nil];
         [self setBackgroundColor:[UIColor lightGrayColor]];
         [_imageView setFrame:self.bounds];
-        [_imageView sd_setImageWithURL:[NSURL URLWithString:item.thumbnailUrl] placeholderImage:nil];
+        [_imageView sd_setImageWithURL:[NSURL URLWithString:item.small] placeholderImage:nil];
     }
     else
     {

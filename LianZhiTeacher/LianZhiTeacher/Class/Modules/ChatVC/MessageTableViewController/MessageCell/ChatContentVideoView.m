@@ -60,16 +60,13 @@
     if(videoItem.videoUrl.length > 0){
         [_playView setHidden:YES];
          [_progressView setHidden:NO];
-        [NHFileServer server_fileInfoWithUrlString:videoItem.videoUrl progress:^(float progress) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [_progressView setProgress:progress];
-            });
-        } success:^(NSDictionary *fileInfo) {
+        [LZVideoCacheManager videoForUrl:videoItem.videoUrl progress:^(CGFloat progress) {
+             [_progressView setProgress:progress];
+        } complete:^(NSURL * fileURL) {
             [_progressView setHidden:YES];
             [_playView setHidden:NO];
-            NSURL* url = [NSURL fileURLWithPath:fileInfo[NHFilePath]];
-            [self showPlayerWithUrl:url];
-        } failure:^(NSError *error) {
+            [self showPlayerWithUrl:fileURL];
+        } fail:^(NSError *error) {
             [_progressView setHidden:YES];
             [_playView setHidden:NO];
         }];

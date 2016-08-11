@@ -195,16 +195,14 @@
 - (void)showHelp
 {
     AccountInfoListModel *infoModel = (AccountInfoListModel *)self.tableViewModel;
-    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-    [webVC setUrl:infoModel.earnUrl];
+    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:infoModel.earnUrl]];
     [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
 }
 
 - (void)onExchangeClicked
 {
     AccountInfoListModel *infoModel = (AccountInfoListModel *)self.tableViewModel;
-    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-    [webVC setUrl:infoModel.exchangeUrl];
+    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:infoModel.exchangeUrl]];
     [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
 }
 

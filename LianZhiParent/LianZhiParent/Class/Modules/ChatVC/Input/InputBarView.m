@@ -8,7 +8,8 @@
 
 #import "InputBarView.h"
 #import "MyGiftVC.h"
-#import "PhotoPickerVC.h"
+#import "VideoRecordView.h"
+#import "ClassMemberVC.h"
 #define kContentViewHeight                  48
 #define kButtonWidth                        30
 #define kButtonHeight                       30
@@ -22,6 +23,7 @@
 
 @interface InputBarView ()<PhotoPickerVCDelegate>
 @property (nonatomic,assign)NSInteger targetHeight;
+@property (nonatomic, strong)NSMutableArray *atArray;
 @end
 
 @implementation InputBarView
@@ -39,7 +41,7 @@
     {
         self.inputType = InputTypeNone;
         _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, kContentViewHeight)];
-        [_contentView setBackgroundColor:[UIColor colorWithHexString:@"d3d3d4"]];
+        [_contentView setBackgroundColor:[UIColor colorWithHexString:@"c8d7e2"]];
         UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, kLineHeight)];
         [topLine setBackgroundColor:[UIColor colorWithHexString:@"A4A4A4"]];
         [_contentView addSubview:topLine];
@@ -109,16 +111,28 @@
         _functionView = [[FunctionView alloc] initWithFrame:CGRectMake(0, _contentView.height, self.width, 180)];
         [_functionView setDelegate:self];
         [self addSubview:_functionView];
-
+        
         [self addNotifications];
     }
     return self;
+}
+
+- (NSMutableArray *)atArray{
+    if(_atArray == nil){
+        _atArray = [NSMutableArray array];
+    }
+    return _atArray;
 }
 
 - (void)setCanSendGift:(BOOL)canSendGift
 {
     _canSendGift = canSendGift;
     [_functionView setCanSendGift:_canSendGift];
+}
+
+- (void)setCanCallTelephone:(BOOL)canCallTelephone{
+    _canCallTelephone = canCallTelephone;
+    [_functionView setCanCalltelephone:_canCallTelephone];
 }
 
 - (void)layoutSubviews
@@ -130,6 +144,12 @@
 - (void)setInputType:(InputType)inputType
 {
     _inputType = inputType;
+    if(_inputType == InputTypeSound){
+        [_soundButton setImage:[UIImage imageNamed:@"SoundIconHighlighted"] forState:UIControlStateNormal];
+    }
+    else{
+        [_soundButton setImage:[UIImage imageNamed:@"SoundIconNormal"] forState:UIControlStateNormal];
+    }
     NSInteger height = kContentViewHeight;
     if(_inputType == InputTypeNone)
     {
@@ -188,16 +208,18 @@
 
 - (void)onKeyboardWillShow:(NSNotification *)notification
 {
-    CGRect keyboardBounds;
-    [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
-    self.targetHeight = keyboardBounds.size.height + _contentView.height;
-    if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidChangeHeight:)])
-        [self.inputDelegate inputBarViewDidChangeHeight:self.targetHeight];
+    if(self.window){
+        CGRect keyboardBounds;
+        [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+        self.targetHeight = keyboardBounds.size.height + _contentView.height;
+        if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidChangeHeight:)])
+            [self.inputDelegate inputBarViewDidChangeHeight:self.targetHeight];
+    }
 }
 
 - (void)onKeyboardWillHide:(NSNotification *)notification
 {
-//    self.targetHeight = _contentView.height;
+    //    self.targetHeight = _contentView.height;
 }
 
 #pragma mark - Actions
@@ -209,7 +231,7 @@
      {
          if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendVoice: time:)])
              [self.inputDelegate inputBarViewDidSendVoice:data time:time];
-    }];
+     }];
     [[UUProgressHUD sharedInstance] startRecording];
 }
 
@@ -248,7 +270,7 @@
             self.inputType = InputTypeFace;
         else
             self.inputType = InputTypeNormal;
-            
+        
     }
     else if (button == _addButton)
     {
@@ -286,10 +308,48 @@
         if(content.length > 0)
         {
             [growingTextView setText:nil];
-            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidCommit:)])
-                [self.inputDelegate inputBarViewDidCommit:content];
+            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidCommit: atArray:)]){
+                NSMutableArray *deleteArray = [NSMutableArray array];
+                for (UserInfo *user in self.atArray) {
+                    NSString *atStr = [NSString stringWithFormat:@"@%@",user.name];
+                    NSRange range = [content rangeOfString:atStr];
+                    if(range.location == NSNotFound){
+                        [deleteArray addObject:user];
+                    }
+                }
+                if(deleteArray.count > 0){
+                    [self.atArray removeObjectsInArray:deleteArray];
+                }
+                [self.inputDelegate inputBarViewDidCommit:content atArray:self.atArray];
+            }
         }
         return NO;
+    }
+    if(self.classID.length > 0 || self.groupID.length > 0){
+        if([text isEqualToString:@"@"]){
+            [growingTextView setText:[NSString stringWithFormat:@"%@@",growingTextView.text]];
+            [self setInputType:InputTypeNone];
+            ClassMemberVC *memberVC = [[ClassMemberVC alloc] init];
+            if(self.classID.length > 0){
+                [memberVC setClassID:self.classID];
+            }
+            else if(self.groupID.length > 0){
+                [memberVC setGroupID:self.groupID];
+            }
+            @weakify(self)
+            [memberVC setAtCallback:^(UserInfo *user) {
+                @strongify(self)
+                [growingTextView setText:[NSString stringWithFormat:@"%@%@",growingTextView.text,user.name]];
+                [self.atArray addObject:user];
+                [self setInputType:InputTypeNormal];
+            }];
+            [memberVC setCancelCallback:^{
+                @strongify(self)
+                [self setInputType:InputTypeNormal];
+            }];
+            TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:memberVC];
+            [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
+        }
     }
     return YES;
 }
@@ -302,18 +362,10 @@
 }
 
 #pragma mark - FUnctionViewDelegate
-- (void)functionViewDidSelectAtIndex:(NSInteger)index
+- (void)functionViewDidSelectWithType:(FunctionType)functionType
 {
-    if(index <= 1)
-    {
-        if(index == 1)
-        {
-            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-            [imagePicker setDelegate:self];
-            [imagePicker setSourceType: UIImagePickerControllerSourceTypeCamera];
-            [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
-        }
-        else
+    switch (functionType) {
+        case FunctionTypePhoto:
         {
             PhotoPickerVC *photoPickerVC = [[PhotoPickerVC alloc] init];
             [photoPickerVC setMaxToSelected:9];
@@ -321,17 +373,46 @@
             TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:photoPickerVC];
             [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
         }
+            break;
+        case FunctionTypeCamera:
+        {
+            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+            [imagePicker setDelegate:self];
+            [imagePicker setSourceType: UIImagePickerControllerSourceTypeCamera];
+            [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
+        }
+            break;
+        case FunctionTypeShortVideo:
+        {
+            [VideoRecordView showWithCompletion:^(VideoItem *videoItem) {
+                if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendVideo:)]){
+                    [self.inputDelegate inputBarViewDidSendVideo:videoItem];
+                }
+            }];
+        }
+            break;
+        case FunctionTypeSendGift:
+        {
+            MyGiftVC *myGiftVC = [[MyGiftVC alloc] init];
+            [myGiftVC setCompletion:^(GiftItem *giftItem) {
+                if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendGift:)])
+                    [self.inputDelegate inputBarViewDidSendGift:giftItem];
+            }];
+            TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:myGiftVC];
+            [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:nil];
+        }
+            break;
+        case FunctionTypeTelephone:
+        {
+            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidCallTelephone)]){
+                [self.inputDelegate inputBarViewDidCallTelephone];
+            }
+        }
+            break;
+        default:
+            break;
     }
-    else
-    {
-        MyGiftVC *myGiftVC = [[MyGiftVC alloc] init];
-        [myGiftVC setCompletion:^(GiftItem *giftItem) {
-            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendGift:)])
-                [self.inputDelegate inputBarViewDidSendGift:giftItem];
-        }];
-        TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:myGiftVC];
-        [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:nil];
-    }
+    
 }
 
 #pragma mark - PhotoPickerVCDelegate

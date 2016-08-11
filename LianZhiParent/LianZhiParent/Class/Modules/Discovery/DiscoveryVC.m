@@ -69,7 +69,18 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:ApplicationDelegate.homeVC.curChildrenSelectView];
+    [self requestData];
+}
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.navigationItem setLeftBarButtonItem:nil];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -94,12 +105,6 @@
 - (void)onStatusChanged
 {
     
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self requestData];
 }
 
 - (void)onSuccessWithResponse:(TNDataWrapper *)responseWrapper
@@ -233,18 +238,16 @@
     DicoveryType type = item.type;
     if(type == DicoveryTypeInterest)
     {
-        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
         NSString *url = [NSString appendUrl:item.url withParams:@{@"child_id" : [UserCenter sharedInstance].curChild.uid}];
-        [webVC setUrl:url];
+        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:url]];
         [webVC setTitle:item.name];
         [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
         [self setRead:1];
     }
     else if(type == DicoveryTypeFAQ)
     {
-        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userData.config.faqUrl]];
         [webVC setTitle:item.name];
-        [webVC setUrl:[UserCenter sharedInstance].userData.config.faqUrl];
         [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
         [self setRead:2];
     }
@@ -271,9 +274,8 @@
     }
     else
     {
-        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
+        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:item.url]];
         [webVC setTitle:item.name];
-        [webVC setUrl:item.url];
         [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
     }
 }

@@ -351,8 +351,8 @@
                 PhotoItem *photoItem = self.zoneItem.photos[i];
                 PublishImageItem *publishImageItem = [[PublishImageItem alloc] init];
                 [publishImageItem setPhotoID:photoItem.photoID];
-                [publishImageItem setThumbnailUrl:photoItem.thumbnailUrl];
-                [publishImageItem setOriginalUrl:photoItem.originalUrl];
+                [publishImageItem setThumbnailUrl:photoItem.small];
+                [publishImageItem setOriginalUrl:photoItem.big];
                 [photoArray addObject:publishImageItem];
             }
             [publishPhotoVC setForward:ForwardTypeClassZone];

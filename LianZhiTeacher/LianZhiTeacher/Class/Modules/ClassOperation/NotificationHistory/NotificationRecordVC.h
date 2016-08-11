@@ -7,19 +7,7 @@
 //
 
 #import "TNBaseTableViewController.h"
-
-@interface NotificationItem : TNBaseObject
-@property (nonatomic, copy)NSString *nid;
-@property (nonatomic, copy)NSString *words;
-@property (nonatomic, copy)NSString *create_time;
-@property (nonatomic, strong)AudioItem* voice;
-@property (nonatomic, strong)NSArray<PhotoItem*> *pictures;
-
-- (BOOL)hasImage;
-- (BOOL)hasAudio;
-- (BOOL)hasVideo;
-@end
-
+#import "NotificationItem.h"
 @interface NotificationRecordItemCell : DAContextMenuCell{
     UILabel*        _titleLabel;
     UILabel*        _timeLabel;

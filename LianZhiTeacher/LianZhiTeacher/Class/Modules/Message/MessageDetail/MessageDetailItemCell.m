@@ -94,15 +94,16 @@
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     MessageDetailItem *item = (MessageDetailItem *)modelItem;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:item.author.avatar]];
-    [_nameLabel setText:item.author.name];
+    [_avatarView setImageWithUrl:[NSURL URLWithString:item.from_user.avatar]];
+    [_nameLabel setText:item.from_user.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.y + 5)];
-    [_timeLabel setText:item.timeStr];
+    [_timeLabel setText:item.time_str];
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.bottom - 5 - _timeLabel.height)];
     CGFloat height = _avatarView.bottom + 15;
-    NSString *content = item.content;
+    NSString *content = item.words;
+    [_contentLabel setWidth:_bgView.width - kContentHMargin * 2];
     if(content.length > 0){
         [_contentLabel setHidden:NO];
         [_contentLabel setText:content];
@@ -149,12 +150,12 @@
 {
     MessageDetailItem *item = (MessageDetailItem *)modelItem;
     NSInteger height = kBGTopMargin + 46 + 15;
-    NSString *content = item.content;
+    NSString *content = item.words;
     if(content.length > 0){
-        CGSize contentSize = [item.content boundingRectWithSize:CGSizeMake(width - kBGViewHMargin * 2 - kContentHMargin * 2, CGFLOAT_MAX) andFont:kContentFont];
+        CGSize contentSize = [item.words boundingRectWithSize:CGSizeMake(width - kBGViewHMargin * 2 - kContentHMargin * 2, CGFLOAT_MAX) andFont:kContentFont];
         height += contentSize.height + 10;
     }
-    height += kExtraInfoHeight;
+    height += kExtraInfoHeight + kBGTopMargin;
     return @(height);
 }
 @end

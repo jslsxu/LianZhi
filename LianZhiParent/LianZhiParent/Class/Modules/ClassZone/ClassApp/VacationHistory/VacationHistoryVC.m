@@ -60,7 +60,7 @@
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.classInfo.classID forKey:@"class_id"];
-    [params setValue:self.classInfo.schoolInfo.schoolID forKey:@"school_id"];
+    [params setValue:self.classInfo.school.schoolID forKey:@"school_id"];
     [params setValue:[NSString stringWithFormat:@"%@-01",self.month] forKey:@"from_date"];
     [params setValue:[NSString stringWithFormat:@"%@-31",self.month] forKey:@"to_date"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/get" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {

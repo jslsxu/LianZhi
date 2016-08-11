@@ -158,9 +158,9 @@
     [photoBrowser setBrowserType:PhotoBrowserTypeZone];
     NSMutableArray *photos = [NSMutableArray arrayWithArray:item.photos];
     for (PhotoItem *photoItem in photos) {
-        [photoItem setUserInfo:item.user];
-        [photoItem setComment:item.detail];
-        [photoItem setFormatTimeStr:item.timeStr];
+        [photoItem setUser:item.user];
+        [photoItem setWords:item.detail];
+        [photoItem setTime_str:item.timeStr];
     }
     [photoBrowser setPhotos:photos];
     [photoBrowser setCurrentPhotoIndex:indexPath.row];

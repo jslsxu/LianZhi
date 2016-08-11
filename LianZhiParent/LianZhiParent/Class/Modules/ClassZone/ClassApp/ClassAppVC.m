@@ -16,12 +16,35 @@
 #import "ClassAlbumVC.h"
 #import "ClassSelectionVC.h"
 #import "LZAccountVC.h"
-
 #define ClassIdKey          @"userClassId"
-@interface ClassAppVC ()
+
+@implementation ApplicationBoxHeaderView
+
+- (instancetype)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if(self){
+        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:self.bounds delegate:nil placeholderImage:nil];
+        [_cycleScrollView setInfiniteLoop:YES];
+        [_cycleScrollView setPageControlStyle:SDCycleScrollViewPageContolStyleAnimated];
+        [_cycleScrollView setAutoScrollTimeInterval:3.f];
+        [self addSubview:_cycleScrollView];
+    }
+    return self;
+}
+
+- (void)updateWithHeight:(CGFloat)height{
+    [_cycleScrollView setFrame:CGRectMake(0, self.height - height, self.width, height)];
+}
+
+@end
+
+
+@interface ClassAppVC ()<SDCycleScrollViewDelegate>
 @property (nonatomic, copy)NSString *classBadge;    //班博客
 @property (nonatomic, assign)NSInteger recordNum;       //成长记录
 @property (nonatomic, assign)NSInteger appPractice; //练习
+@property (nonatomic, weak)ApplicationBoxHeaderView*    headerView;
+@property (nonatomic, weak)SDCycleScrollView*   cycleScrollView;
 @end
 
 @implementation ClassAppVC
@@ -44,11 +67,24 @@
     return self;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:ApplicationDelegate.homeVC.curChildrenSelectView];
+    [self requestData:REQUEST_REFRESH];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.navigationItem setLeftBarButtonItem:nil];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self setSupportPullDown:YES];
-    [self requestData:REQUEST_REFRESH];
+    [self.collectionView registerClass:[ApplicationBoxHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ApplicationBoxHeaderView"];
+    [self.collectionView setShowsVerticalScrollIndicator:NO];
 }
 
 - (void)onCurChildChanged
@@ -120,12 +156,12 @@
 
 - (void)TNBaseCollectionViewControllerModifyLayout:(UICollectionViewLayout *)layout
 {
-    NSInteger itemSize = (self.view.width - 15 * 2 - 10 * 2) / 3;
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)layout;
-    [flowLayout setItemSize:CGSizeMake(itemSize, itemSize)];
-    [flowLayout setMinimumInteritemSpacing:10];
-    [flowLayout setMinimumLineSpacing:10];
-    [flowLayout setSectionInset:UIEdgeInsetsMake(15, 15, 15, 15)];
+    [flowLayout setSectionInset:UIEdgeInsetsMake(0, 0, 20, 0)];
+    [flowLayout setItemSize:CGSizeMake(self.view.width / 4, MIN(self.view.width / 4 + 20, 100))];
+    [flowLayout setMinimumInteritemSpacing:0];
+    [flowLayout setMinimumLineSpacing:0];
+    [flowLayout setHeaderReferenceSize:CGSizeMake(self.view.width, self.view.width / 2)];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
@@ -148,10 +184,6 @@
     return [NSString stringWithFormat:@"%@_%@",NSStringFromClass([self class]),[UserCenter sharedInstance].curChild.uid];
 }
 
-- (void)TNBaseTableViewControllerRequestStart
-{
-    [self startLoading];
-}
 
 - (void)TNBaseTableViewControllerRequestSuccess
 {
@@ -175,14 +207,15 @@
             appItem.badge = [UserCenter sharedInstance].statusManager.practiceNum > 0 ? @"" : nil;
         }
     }
-
-    [self endLoading];
+    
+    NSArray *bannerArray = [(ClassAppModel *)self.collectionViewModel banner];
+    NSMutableArray *imageArray = [NSMutableArray array];
+    for (BannerItem *bannerItem in bannerArray) {
+        [imageArray addObject:bannerItem.pic];
+    }
+    [self.cycleScrollView setImageURLStringsGroup:imageArray];
 }
 
-- (void)TNBaseTableViewControllerRequestFailedWithError:(NSString *)errMsg
-{
-    [self endLoading];
-}
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
@@ -217,8 +250,7 @@
                 }
                 
                 void (^openWebVC)(NSString *) = ^(NSString *url){
-                    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-                    [webVC setUrl:url];
+                    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:url]];
                     [webVC setTitle:appItem.appName];
                     [self.navigationController pushViewController:webVC animated:YES];
                 };
@@ -376,6 +408,43 @@
                 }
             }
         }
+    }
+}
+
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
+    ApplicationBoxHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ApplicationBoxHeaderView" forIndexPath:indexPath];
+    self.headerView = headerView;
+    self.cycleScrollView = headerView.cycleScrollView;
+    [self.cycleScrollView setDelegate:self];
+    NSArray *bannerArray = [(ClassAppModel *)self.collectionViewModel banner];
+    NSMutableArray *imageArray = [NSMutableArray array];
+    for (BannerItem *bannerItem in bannerArray) {
+        [imageArray addObject:bannerItem.pic];
+    }
+    if(imageArray.count > 0){
+        [self.cycleScrollView setImageURLStringsGroup:imageArray];
+    }
+    return headerView;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if(scrollView.contentOffset.y <= 0){
+        [self.headerView updateWithHeight:self.view.width / 2 - scrollView.contentOffset.y];
+    }
+    else{
+        [self.headerView updateWithHeight:self.view.width / 2];
+    }
+}
+
+#pragma mark -
+- (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index
+{
+    NSArray *bannerArray = [(ClassAppModel *)self.collectionViewModel banner];
+    BannerItem *bannerItem = bannerArray[index];
+    if(bannerItem.url){
+        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:bannerItem.url]];
+        [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
     }
 }
 

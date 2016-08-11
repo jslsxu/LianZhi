@@ -1,0 +1,179 @@
+//
+//  ChatExtraInfoVC.m
+//  LianZhiTeacher
+//
+//  Created by qingxu zhou on 16/8/2.
+//  Copyright © 2016年 jslsxu. All rights reserved.
+//
+
+#import "ChatExtraIndividualInfoVC.h"
+#import "SearchChatMessageVC.h"
+
+@implementation ChatExtraUserCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if(self){
+        _avatarView = [[AvatarView alloc] initWithRadius:25];
+        [_avatarView setOrigin:CGPointMake(12, (80 - _avatarView.height) / 2)];
+        [self addSubview:_avatarView];
+        
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_avatarView.right + 10, 20, self.width - 10 - (_avatarView.right + 10), 20)];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
+        [_nameLabel setFont:[UIFont systemFontOfSize:16]];
+        [self addSubview:_nameLabel];
+        
+        _nickLabel = [[UILabel alloc] initWithFrame:CGRectMake(_avatarView.right + 10, 40, self.width - 10 - (_avatarView.right + 10), 20)];
+        [_nickLabel setTextColor:[UIColor colorWithHexString:@"28c4d8"]];
+        [_nickLabel setFont:[UIFont systemFontOfSize:12]];
+        [self addSubview:_nickLabel];
+        
+        [self setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+    }
+    return self;
+}
+
+- (void)setUserInfo:(UserInfo *)userInfo{
+    _userInfo = userInfo;
+    [_avatarView setImageWithUrl:[NSURL URLWithString:_userInfo.avatar]];
+    [_nameLabel setText:_userInfo.name];
+    [_nameLabel sizeToFit];
+    [_nameLabel setFrame:CGRectMake(_avatarView.right + 10, 20, self.width - 35 - (_avatarView.right + 10), _nameLabel.height)];
+    [_nickLabel setText:_userInfo.nick];
+    [_nickLabel sizeToFit];
+    [_nickLabel setFrame:CGRectMake(_avatarView.right + 10, 80 - 20 - _nickLabel.height, _nameLabel.width, _nickLabel.height)];
+}
+@end
+
+@interface ChatExtraIndividualInfoVC ()<UITableViewDelegate, UITableViewDataSource>
+@property (nonatomic, strong)UITableView*   tableView;
+@property (nonatomic, strong)UISwitch*      disturbSwitch;
+@end
+
+@implementation ChatExtraIndividualInfoVC
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"聊天信息";
+    
+    [self.view addSubview:self.tableView];
+}
+
+- (UITableView *)tableView{
+    if(_tableView == nil){
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStyleGrouped];
+        [_tableView setDelegate:self];
+        [_tableView setDataSource:self];
+        [_tableView setSeparatorColor:kSepLineColor];
+    }
+    return _tableView;
+}
+
+- (UISwitch *)disturbSwitch{
+    if(_disturbSwitch == nil){
+        _disturbSwitch = [[UISwitch alloc] init];
+        [_disturbSwitch addTarget:self action:@selector(onValueChanged) forControlEvents:UIControlEventValueChanged];
+    }
+    return _disturbSwitch;
+}
+
+- (void)onValueChanged{
+    
+}
+
+#pragma mark - UITableViewDelegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 2;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if(section == 0)
+        return 1;
+    else
+        return 3;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 12;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    return 0.1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.section == 0){
+        return 80;
+    }
+    else
+        return 50;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    if(section == 0){
+        NSString *reuseID = @"UserCell";
+        ChatExtraUserCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+        if(cell == nil){
+            cell = [[ChatExtraUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+        }
+        [cell setUserInfo:[UserCenter sharedInstance].userInfo];
+        return cell;
+    }
+    else{
+        NSString *reuseID = @"ExtraInfoCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+        if(cell == nil){
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+            [cell.textLabel setFont:[UIFont systemFontOfSize:16]];
+            [cell.textLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
+        }
+        if(row == 0){
+            [cell.textLabel setText:@"消息免打扰"];
+            [cell setAccessoryView:self.disturbSwitch];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        }
+        else {
+            [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
+            if(row == 1){
+                [cell.textLabel setText:@"查找聊天记录"];
+                 [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+            }
+            else if(row == 2){
+                [cell.textLabel setText:@"清空聊天记录"];
+            }
+            [cell setAccessoryView:nil];
+        }
+        return cell;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    if(section == 0){
+        
+    }
+    else{
+        if(row == 0){
+            
+        }
+        else if(row == 1){
+            SearchChatMessageVC *searchVC = [[SearchChatMessageVC alloc] init];
+            [self.navigationController pushViewController:searchVC animated:YES];
+        }
+        else if(row == 2){
+            
+        }
+    }
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+@end

@@ -10,51 +10,30 @@
 @implementation MessageDetailItem
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    self.msgID = [dataWrapper getStringForKey:@"id"];
-    self.time = [dataWrapper getStringForKey:@"time"];
-    self.content = [dataWrapper getStringForKey:@"words"];
-    self.timeStr = [dataWrapper getStringForKey:@"time_str"];
-    TNDataWrapper *audioWrapper = [dataWrapper getDataWrapperForKey:@"voice"];
-    if(audioWrapper && [audioWrapper count] > 0)
-    {
-        AudioItem *audioItem = [[AudioItem alloc] init];
-        [audioItem parseData:audioWrapper];
-        [self setAudioItem:audioItem];
-    }
-    
-    TNDataWrapper *photoWrapper = [dataWrapper getDataWrapperForKey:@"pictures"];
-    if(photoWrapper.count)
-    {
-        NSMutableArray *photoArray = [NSMutableArray array];
-        for (NSInteger i = 0; i < photoWrapper.count; i++)
-        {
-            TNDataWrapper *photoItemWrapper = [photoWrapper getDataWrapperForIndex:i];
-            PhotoItem *photoItem = [[PhotoItem alloc] init];
-            [photoItem parseData:photoItemWrapper];
-            [photoArray addObject:photoItem];
-        }
-        self.photos = photoArray;
-    }
-    
-    TNDataWrapper *userWrapper = [dataWrapper getDataWrapperForKey:@"from_user"];
-    if(userWrapper.count > 0)
-    {
-        UserInfo *userInfo = [[UserInfo alloc] init];
-        [userInfo parseData:userWrapper];
-        self.author = userInfo;
-    }
+    [self modelSetWithJSON:dataWrapper.data];
 }
 
 - (BOOL)hasAudio{
-    return self.audioItem;
+    return self.voice.audioUrl.length > 0;
 }
 
 - (BOOL)hasPhoto{
-    return self.photos.count > 0;
+    return self.pictures.count > 0;
 }
 
 - (BOOL)hasVideo{
-    return self.videoItem;
+    return self.video.videoUrl.length > 0;
+}
+
++ (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
+    return @{@"msgID" : @"id",
+             };
+}
+
++ (NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
+    return @{@"voice" : [AudioItem class],
+             @"pictures" : [PhotoItem class],
+             @"video" : [VideoItem class]};
 }
 
 @end
@@ -89,7 +68,6 @@
         MessageDetailItem *item = [[MessageDetailItem alloc] init];
         TNDataWrapper *detailWrapper = [listWrapper getDataWrapperForIndex:i];
         [item parseData:detailWrapper];
-        [item setAvatarUrl:self.avatarUrl];
         [self.modelItemArray addObject:item];
     }
     return parse;

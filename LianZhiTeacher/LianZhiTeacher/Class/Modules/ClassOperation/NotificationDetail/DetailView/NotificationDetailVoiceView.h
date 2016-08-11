@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "NotificationSendEntity.h"
 #import "NotificationVoiceView.h"
 
 @interface NotificationDetailVoiceView : UIView
-@property (nonatomic, strong)NotificationSendEntity *sendEntity;
+@property (nonatomic, strong)NSArray *voiceArray;
 @end

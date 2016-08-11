@@ -24,4 +24,5 @@
 @property (nonatomic, assign)BOOL playAlert;
 @property (nonatomic, copy)void (^unreadNumChanged)(NSInteger notificationNum, NSInteger chatNum);
 - (NSArray *)arrayForType:(BOOL)isNotification;
+- (void)deleteItem:(NSString *)itemID;
 @end

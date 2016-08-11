@@ -19,6 +19,14 @@
 
 @end
 
+@implementation BannerItem
+
+- (void)parseData:(TNDataWrapper *)dataWrapper{
+    [self modelSetWithJSON:dataWrapper.data];
+}
+
+@end
+
 @implementation ClassAppModel
 
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
@@ -38,7 +46,8 @@
             [self.modelItemArray addObject:item];
         }
     }
-
+    TNDataWrapper *bannerWrapper = [data getDataWrapperForKey:@"banner"];
+    self.banner = [BannerItem nh_modelArrayWithJson:bannerWrapper.data];
     return parse;
 }
 @end

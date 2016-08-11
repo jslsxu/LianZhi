@@ -49,18 +49,26 @@
 }
 
 - (void)adjustPosition{
-    [self.contentView setSendEntity:self.notificationSendEntity];
-    [self.voiceView setSendEntity:self.notificationSendEntity];
-    [self.voiceView setTop:self.contentView.bottom];
-    [self.videoView setSendEntity:self.notificationSendEntity];
-    [self.videoView setTop:self.voiceView.bottom];
-    [self.photoView setSendEntity:self.notificationSendEntity];
-    [self.photoView setTop:self.videoView.bottom];
+    CGFloat spaceYStart = 0;
+    [self.contentView setWords:self.notificationItem.words];
+    spaceYStart = self.contentView.bottom;
+    if([self.notificationItem hasAudio]){
+        [self.voiceView setVoiceArray:@[self.notificationItem.voice]];
+        [self.voiceView setTop:spaceYStart];
+        spaceYStart = self.voiceView.bottom;
+    }
+    if([self.notificationItem hasVideo]){
+        [self.videoView setVideoArray:@[self.notificationItem.video]];
+        [self.videoView setTop:spaceYStart];
+        spaceYStart = self.videoView.bottom;
+    }
+    [self.photoView setPhotoArray:self.notificationItem.pictures];
+    [self.photoView setTop:spaceYStart];
     [_scrollView setContentSize:CGSizeMake(_scrollView.width, self.photoView.bottom)];
 }
 
-- (void)setNotificationSendEntity:(NotificationSendEntity *)notificationSendEntity{
-    _notificationSendEntity = notificationSendEntity;
+- (void)setNotificationItem:(NotificationItem *)notificationItem{
+    _notificationItem = notificationItem;
     [self adjustPosition];
 }
 

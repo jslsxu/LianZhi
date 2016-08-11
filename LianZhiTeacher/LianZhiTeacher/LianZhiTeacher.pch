@@ -28,5 +28,6 @@
 #import "UIImageView+WebCache.h"
 #import "SDWebImageManager.h"
 #import "LGAlertView.h"
+#import "LZVideoCacheManager.h"
 #endif
 #endif

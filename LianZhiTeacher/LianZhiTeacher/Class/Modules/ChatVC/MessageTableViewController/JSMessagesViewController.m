@@ -297,6 +297,7 @@ static NSString *topChatID = nil;
         TNDataWrapper *messageItemWrapper = [response getDataWrapperForIndex:0];
         [messageItem modelSetWithJSON:messageItemWrapper.data];
         messageItem.messageStatus = MessageStatusSuccess;
+        messageItem.isTmp = NO;
         if(image)
         {
             PhotoItem *photoItem = messageItem.content.exinfo.imgs;

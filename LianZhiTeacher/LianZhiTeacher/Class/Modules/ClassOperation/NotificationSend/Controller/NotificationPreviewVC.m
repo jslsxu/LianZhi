@@ -7,9 +7,9 @@
 //
 
 #import "NotificationPreviewVC.h"
-#import "NotificationDetailView.h"
+#import "NotificationPreviewView.h"
 @interface NotificationPreviewVC (){
-    NotificationDetailView*     _detailView;
+    NotificationPreviewView*     _previewView;
 }
 
 @end
@@ -21,9 +21,9 @@
     self.title = @"通知预览";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(send)];
     
-    _detailView = [[NotificationDetailView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
-    [_detailView setNotificationSendEntity:self.sendEntity];
-    [self.view addSubview:_detailView];
+    _previewView = [[NotificationPreviewView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
+    [_previewView setNotificationSendEntity:self.sendEntity];
+    [self.view addSubview:_previewView];
 }
 
 - (void)send{
@@ -93,8 +93,13 @@
         }
         [params setValue:picSeq forKey:@"pic_seqs"];
     }
+    
+    if(self.sendEntity.voiceArray.count > 0){
+        AudioItem *audioItem = self.sendEntity.voiceArray[0];
+        [params setValue:kStringFromValue(audioItem.timeSpan) forKey:@"voice_time"];
+    }
 
-    MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:self.view];
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:[UIApplication sharedApplication].keyWindow];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/send" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         for (NSInteger i = 0; i < self.sendEntity.imageArray.count; i++)
         {
@@ -103,16 +108,19 @@
         }
         if(self.sendEntity.voiceArray.count > 0){
             AudioItem *audioItem = self.sendEntity.voiceArray[0];
-            [formData appendPartWithFileData:[NSData dataWithContentsOfFile:audioItem.audioUrl] name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
+            NSData *voiceData = [NSData dataWithContentsOfFile:audioItem.audioUrl];
+            [formData appendPartWithFileData:voiceData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
         }
         if(self.sendEntity.videoArray.count > 0){
             VideoItem *videoItem = self.sendEntity.videoArray[0];
-            [formData appendPartWithFileData:[NSData dataWithContentsOfFile:videoItem.localVideoPath] name:@"video" fileName:@"video" mimeType:@"application/octet-stream"];
+            NSData *videoData = [NSData dataWithContentsOfFile:videoItem.localVideoPath];
+            [formData appendPartWithFileData:videoData name:@"video" fileName:@"video" mimeType:@"application/octet-stream"];
             [formData appendPartWithFileData:UIImageJPEGRepresentation(videoItem.coverImage, 0.8) name:@"video_cover" fileName:@"video_cover" mimeType:@"image/jpeg"];
         }
     } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:NO];
         [ProgressHUD showSuccess:@"发送成功"];
+        [CurrentROOTNavigationVC popToRootViewControllerAnimated:YES];
     } fail:^(NSString *errMsg) {
         [hud hide:NO];
         [ProgressHUD showHintText:errMsg];

@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"个人账号";
-    self.genderType = [UserCenter sharedInstance].userInfo.gender;
+    self.genderType = [UserCenter sharedInstance].userInfo.sex;
     self.name = [UserCenter sharedInstance].userInfo.name;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
 }

@@ -57,9 +57,4 @@
     return YES;
 }
 
-- (void)loadCache:(TNListModel *)cacheModel{
-    self.nextPage = cacheModel.nextPage;
-    self.modelItemArray = [NSMutableArray arrayWithArray:cacheModel.modelItemArray];
-}
-
 @end

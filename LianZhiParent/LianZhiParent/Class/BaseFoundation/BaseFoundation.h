@@ -60,7 +60,6 @@
 #import "UIAlertView+Blocks.h"
 #import "DAContextMenuTableViewController.h"
 
-#import "CTAssetsPickerController.h"
 #import "TNFoundation.h"
 #import "MSCircleImageView.h"
 #import "LimitedTextField.h"
@@ -85,4 +84,5 @@
 #import "PoiInfoView.h"
 #import "UITouchScrollView.h"
 #import "YYInfiniteScrollView.h"
+#import "NHFileManager.h"
 #endif

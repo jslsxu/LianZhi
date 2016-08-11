@@ -53,7 +53,7 @@ NSString *const kUserDataStorageKey = @"UserData";
         [childrenArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             ChildInfo *childInfo1 = (ChildInfo *)obj1;
             ChildInfo *childInfo2 = (ChildInfo *)obj2;
-            return [childInfo1.birthDay compare:childInfo2.birthDay];
+            return [childInfo1.birthday compare:childInfo2.birthday];
         }];
         self.children = childrenArray;
     }

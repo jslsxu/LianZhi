@@ -13,14 +13,11 @@
 
 #define boundsWidth self.view.bounds.size.width
 #define boundsHeight self.view.bounds.size.height
-@interface TNBaseWebViewController ()<UIWebViewDelegate,UINavigationControllerDelegate,UINavigationBarDelegate,NJKWebViewProgressDelegate>
+@interface TNBaseWebViewController ()<UIWebViewDelegate,UINavigationControllerDelegate,UINavigationBarDelegate>
 
 @property (nonatomic)UIBarButtonItem* customBackBarItem;
 @property (nonatomic)UIBarButtonItem* closeButtonItem;
-
-@property (nonatomic)NJKWebViewProgress* progressProxy;
-@property (nonatomic)NJKWebViewProgressView* progressView;
-
+@property (nonatomic, strong)UIActivityIndicatorView*   indicator;
 @end
 
 @implementation TNBaseWebViewController
@@ -34,7 +31,6 @@
     self = [super init];
     if (self) {
         self.url = url;
-        _progressViewColor = [UIColor colorWithRed:119.0/255 green:228.0/255 blue:115.0/255 alpha:1];
     }
     return self;
 }
@@ -48,17 +44,14 @@
     //config navigation item
 //    self.navigationItem.leftItemsSupplementBackButton = YES;
     
-    self.webView.delegate = self.progressProxy;
     [self.view addSubview:self.webView];
     [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
-    
-    [self.navigationController.navigationBar addSubview:self.progressView];
+    [self.view addSubview:self.indicator];
     // Do any additional setup after loading the view.
 }
 
 -(void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
-    [self.progressView removeFromSuperview];
     self.webView.delegate = nil;
 }
 
@@ -94,7 +87,7 @@
 
 #pragma mark - webView delegate
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [self.indicator startAnimating];
 }
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
@@ -103,7 +96,7 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [self.indicator stopAnimating];
     [self updateNavigationItems];
     NSString *theTitle=[webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     if (theTitle.length > 10) {
@@ -114,15 +107,9 @@
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [self.indicator stopAnimating];
 }
 
-#pragma mark - NJProgress delegate
-
--(void)webViewProgress:(NJKWebViewProgress *)webViewProgress updateProgress:(float)progress
-{
-    [self.progressView setProgress:progress animated:NO];
-}
 
 
 #pragma mark - setters and getters
@@ -130,9 +117,13 @@
     _url = url;
 }
 
--(void)setProgressViewColor:(UIColor *)progressViewColor{
-    _progressViewColor = progressViewColor;
-    self.progressView.progressColor = progressViewColor;
+- (UIActivityIndicatorView *)indicator{
+    if(_indicator == nil){
+        _indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [_indicator setHidesWhenStopped:YES];
+        [_indicator setCenter:CGPointMake(self.view.width / 2, (self.view.height - 64) / 2)];
+    }
+    return _indicator;
 }
 
 -(UIWebView*)webView{
@@ -157,29 +148,6 @@
         _closeButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStylePlain target:self action:@selector(closeItemClicked)];
     }
     return _closeButtonItem;
-}
-
-
--(NJKWebViewProgress*)progressProxy{
-    if (!_progressProxy) {
-        _progressProxy = [[NJKWebViewProgress alloc] init];
-        _progressProxy.webViewProxyDelegate = (id)self;
-        _progressProxy.progressDelegate = (id)self;
-    }
-    return _progressProxy;
-}
-
--(NJKWebViewProgressView*)progressView{
-    if (!_progressView) {
-        CGFloat progressBarHeight = 3.0f;
-        CGRect navigaitonBarBounds = self.navigationController.navigationBar.bounds;
-        //        CGRect barFrame = CGRectMake(0, navigaitonBarBounds.size.height - progressBarHeight-0.5, navigaitonBarBounds.size.width, progressBarHeight);
-        CGRect barFrame = CGRectMake(0, navigaitonBarBounds.size.height, navigaitonBarBounds.size.width, progressBarHeight);
-        _progressView = [[NJKWebViewProgressView alloc] initWithFrame:barFrame];
-        _progressView.progressColor = self.progressViewColor;
-        _progressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-    }
-    return _progressView;
 }
 
 @end

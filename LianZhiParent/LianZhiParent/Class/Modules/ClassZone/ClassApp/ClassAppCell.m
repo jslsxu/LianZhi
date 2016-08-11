@@ -15,26 +15,19 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        [self.layer setCornerRadius:10];
-        [self.layer setMasksToBounds:YES];
-        [self setBackgroundColor:[UIColor colorWithHexString:@"dbdbdb"]];
-        _appImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - 56) / 2, 8, 56, 56)];
+        _appImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - 50) / 2, self.height - 80, 50, 50)];
         [_appImageView setClipsToBounds:YES];
         [_appImageView  setContentMode:UIViewContentModeScaleAspectFill];
         [self addSubview:_appImageView];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _appImageView.bottom, self.width, 15)];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height - 30, self.width, 30)];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-        [_nameLabel setFont:[UIFont systemFontOfSize:12]];
+        [_nameLabel setFont:[UIFont systemFontOfSize:13]];
         [_nameLabel setTextAlignment:NSTextAlignmentCenter];
         [self addSubview:_nameLabel];
         
         _indicator = [[NumIndicator alloc] initWithFrame:CGRectZero];
         [self addSubview:_indicator];
-        
-        NSInteger height = _appImageView.height + 15 + 6;
-        [_appImageView setY:(self.height - height) / 2];
-        [_nameLabel setY:_appImageView.bottom + 6];
     }
     return self;
 }

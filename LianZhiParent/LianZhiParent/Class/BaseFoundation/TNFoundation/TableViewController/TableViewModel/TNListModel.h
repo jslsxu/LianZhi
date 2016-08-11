@@ -21,5 +21,4 @@
 
 - (BOOL)hasMoreData;
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type;
-- (void)loadCache:(TNListModel *)cacheModel;
 @end

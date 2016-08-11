@@ -14,7 +14,9 @@
     UILabel*        _stateLabel;
     UIImageView*    _arrowImageView;
 }
+@property (nonatomic, strong)id group;
 @property (nonatomic, assign)BOOL expand;
+@property (nonatomic, copy)void (^expandCallback)();
 @end
 
 @interface NotificationSendTargetCell : TNTableViewCell{
@@ -27,5 +29,5 @@
 @end
 
 @interface NotificationTargetListView : UIView
-
+@property (nonatomic, strong)NSArray *targetArray;
 @end

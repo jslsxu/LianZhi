@@ -7,120 +7,95 @@
 //
 
 #import "MessageItem.h"
-#import "MessageCell.h"
 #define kPhotoMaxHeight         120
 
-@implementation MessageContent
-- (id)init
-{
-    self = [super init];
-    if(self)
-    {
-        NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
-        self.mid = kStringFromValue(timeInterval);
-        self.unread = 1;
-    }
-    return self;
+@implementation Exinfo
++ (NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
+    return @{@"imgs" : [PhotoItem class],
+             @"voice" : [AudioItem class],
+             @"video" : [VideoItem class]};
 }
-- (void)parseData:(TNDataWrapper *)dataWrapper
-{
-    self.mid = [dataWrapper getStringForKey:@"mid"];
-    self.unread = [dataWrapper getBoolForKey:@"unread"];
-    self.messageType = [dataWrapper getIntegerForKey:@"type"];
-    self.text = [dataWrapper getStringForKey:@"text"];
-    TNDataWrapper *exinfoWrapper = [dataWrapper getDataWrapperForKey:@"exinfo"];
-    if(exinfoWrapper) {
-        self.presentID = [exinfoWrapper getStringForKey:@"presnetId"];
-        self.presentName = [exinfoWrapper getStringForKey:@"presentName"];
-    }
-    TNDataWrapper *photoWrapper = [exinfoWrapper getDataWrapperForKey:@"imgs"];
-    if(photoWrapper.count > 0)
-    {
-        PhotoItem *photoItem = [[PhotoItem alloc] init];
-        [photoItem parseData:photoWrapper];
-        self.photoItem = photoItem;
-    }
-    
-    TNDataWrapper *audioWrapper = [exinfoWrapper getDataWrapperForKey:@"voice"];
-    if(audioWrapper.count > 0)
-    {
-        AudioItem *audioItem = [[AudioItem alloc] init];
-        [audioItem parseData:audioWrapper];
-        self.audioItem = audioItem;
-    }
-    
-    self.timeInterval = [dataWrapper getIntegerForKey:@"ctime"];
+@end
+
+@implementation MessageContent
++ (NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
+    return @{@"exinfo" : [Exinfo class]};
+}
+
+- (NSString *)timeStr{
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MM月dd日 HH:mm"];
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:self.timeInterval];
-    self.ctime = [formatter stringFromDate:date];
-
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:self.ctime];
+    return [formatter stringFromDate:date];
 }
 
 @end
 
 @implementation MessageItem
 
-- (id)init
-{
-    self = [super init];
-    if(self)
-    {
-        NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
-        self.client_send_id = [NSString stringWithFormat:@"%@_%ld_%ld",[UserCenter sharedInstance].userInfo.uid, timeInterval, (long)arc4random() % 100000];
-    }
-    return self;
-}
-- (void)parseData:(TNDataWrapper *)dataWrapper
-{
-    self.client_send_id = [dataWrapper getStringForKey:@"client_send_id"];
-    TNDataWrapper *userWrapper = [dataWrapper getDataWrapperForKey:@"user"];
-    UserInfo *userInfo = [[UserInfo alloc] init];
-    [userInfo parseData:userWrapper];
-    self.userInfo = userInfo;
+- (void)makeClientSendID{
+    NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
+    static long messageIndex = 1;
     
-    if([self.userInfo.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid])
-        self.from = UUMessageFromMe;
-    else
-        self.from = UUMessageFromOther;
-    
-    TNDataWrapper *messageContentWrapper = [dataWrapper getDataWrapperForKey:@"content"];
-    MessageContent *content = [[MessageContent alloc] init];
-    [content parseData:messageContentWrapper];
-    self.messageContent = content;
+    NSString *client_send_id = [NSString stringWithFormat:@"%@_%ld_%05ld",[UserCenter sharedInstance].userInfo.uid, timeInterval, messageIndex];
+    messageIndex++;
+    self.client_send_id = client_send_id;
 }
 
-- (CGFloat)cellHeight
-{
-    NSInteger height = 0;
-    if(self.messageContent.messageType == UUMessageTypeText)
-    {
-        CGSize contentSize = [self.messageContent.text boundingRectWithSize:CGSizeMake(kScreenWidth - 50 * 2 - 10 - 15, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
-        height = contentSize.height + 10 * 2;
-    }
-    else if(self.messageContent.messageType == UUMessageTypeVoice)
-        height = 32;
-    else if(self.messageContent.messageType == UUMessageTypePicture)
-    {
-        PhotoItem *photoItem = self.messageContent.photoItem;
-        if(photoItem.width > photoItem.height)//以宽为准
-            height = kPhotoMaxHeight * photoItem.height / photoItem.width;
-        else
-            height = kPhotoMaxHeight;
-    }
-    else if(self.messageContent.messageType == UUMessageTypeFace)
-    {
-        height = kFaceHeight;
-    }
-    else if(self.messageContent.messageType == UUMessageTypeRevoked || self.messageContent.messageType == UUMessageTypeReceiveGift)
-        height = 32;
-    else if (self.messageContent.messageType == UUMessageTypeGift)
-        height = 60;
++ (NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
+    return @{@"user": [UserInfo class],
+             @"content" : [MessageContent class]};
+}
+
++ (nullable NSArray<NSString *> *)modelPropertyBlacklist{
+    return @[@"params"];
+}
+
+
+- (MessageFrom)from{
+    MessageFrom fromType;
+    if([self.user.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid])
+        fromType = UUMessageFromMe;
     else
-        height = 32;
-    if(self.messageContent.hideTime)
-        return height + 10 + 10 + 5;
-    else
-        return height + 10 + 10 + 10 + 5 + kTimeLabelHeight;
+        fromType = UUMessageFromOther;
+    return fromType;
+}
+
+- (BOOL)isMyMessage{
+    return self.from == UUMessageFromMe;
+}
+
+
+- (NSString *)reuseID{
+    NSString *reuseIdentifier = @"text";
+    switch (self.content.type) {
+        case UUMessageTypeText:
+            reuseIdentifier = @"text";
+            break;
+        case UUMessageTypePicture:
+            reuseIdentifier = @"image";
+            break;
+        case UUMessageTypeFace:
+            reuseIdentifier = @"face";
+            break;
+        case UUMessageTypeGift:
+            reuseIdentifier = @"gift";
+            break;
+        case UUMessageTypeReceiveGift:
+            reuseIdentifier = @"receiveGift";
+            break;
+        case UUMessageTypeVoice:
+            reuseIdentifier = [NSString stringWithFormat:@"audio_%@",self.client_send_id];
+            break;
+        case UUMessageTypeVideo:
+            reuseIdentifier = [NSString stringWithFormat:@"video_%@",self.client_send_id];
+            break;
+        case UUMessageTypeRevoked:
+            reuseIdentifier = @"revoked";
+            break;
+        default:
+            break;
+    }
+    return reuseIdentifier;
 }
 @end

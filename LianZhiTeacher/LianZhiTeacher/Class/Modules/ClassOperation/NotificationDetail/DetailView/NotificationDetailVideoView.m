@@ -22,22 +22,22 @@
     if(self){
         self.videoViewArray = [NSMutableArray array];
         
-        
+        [self setClipsToBounds:YES];
     }
     return self;
 }
 
-- (void)setSendEntity:(NotificationSendEntity *)sendEntity{
-    _sendEntity = sendEntity;
+- (void)setVideoArray:(NSArray *)videoArray{
+    _videoArray = videoArray;
     [_videoViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [_videoViewArray removeAllObjects];
     
     CGFloat height = 0;
     NSInteger margin = 10;
     NSInteger start = 0;
-    if(_sendEntity.videoArray.count % 2 == 1){
+    if(_videoArray.count % 2 == 1){
         start = 1;
-        VideoItem *videoItem = _sendEntity.videoArray[0];
+        VideoItem *videoItem = _videoArray[0];
         VideoItemView*  videoItemView = [[VideoItemView alloc] initWithFrame:CGRectMake(margin, 0, self.width - margin * 2, (self.width - margin * 2) * 2 / 3 )];
         [videoItemView setVideoItem:videoItem];
         [videoItemView setVideoViewType:VideoViewTypePreview];
@@ -47,8 +47,8 @@
     }
     CGFloat itemWidth = (self.width - margin * 3) / 2;
     CGFloat itemHeight = itemWidth * 2 / 3;
-    for (NSInteger i = start; i < _sendEntity.videoArray.count; i++) {
-        VideoItem *videoItem = _sendEntity.videoArray[i];
+    for (NSInteger i = start; i < _videoArray.count; i++) {
+        VideoItem *videoItem = _videoArray[i];
         NSInteger row = (i - start) / 2;
         NSInteger column = (i - start) % 2;
         VideoItemView*  videoItemView = [[VideoItemView alloc] initWithFrame:CGRectMake(margin + (itemWidth + margin) * column, height + (itemHeight + margin) * row, itemWidth, itemHeight)];
@@ -57,7 +57,7 @@
         [_videoViewArray addObject:videoItemView];
         [self addSubview:videoItemView];
     }
-    NSInteger row = (_sendEntity.videoArray.count - start + 1) / 2;
+    NSInteger row = (_videoArray.count - start + 1) / 2;
     height += (itemHeight + margin) * row;
     [self setHeight:height];
 

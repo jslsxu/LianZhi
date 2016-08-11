@@ -141,7 +141,7 @@
         [cell addSubview:indicator];
     }
     ClassInfo *classInfo = self.classArray[indexPath.row];
-    [cell.textLabel setText:classInfo.className];
+    [cell.textLabel setText:classInfo.name];
     NSString *badge = self.classDic[classInfo.classID];
     NumIndicator *indicator = [cell viewWithTag:kRedDotTag];
     [indicator setIndicator:badge];

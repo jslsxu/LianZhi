@@ -20,6 +20,7 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if(self){
+        [self setClipsToBounds:YES];
         _voiceViewArray = [NSMutableArray arrayWithCapacity:0];
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, self.height - kLineHeight, self.width - 10 * 2, kLineHeight)];
         [_sepLine setBackgroundColor:kSepLineColor];
@@ -29,19 +30,19 @@
     return self;
 }
 
-- (void)setSendEntity:(NotificationSendEntity *)sendEntity{
-    _sendEntity = sendEntity;
+- (void)setVoiceArray:(NSArray *)voiceArray{
+    _voiceArray = voiceArray;
     [_voiceViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [_voiceViewArray removeAllObjects];
-    if(_sendEntity.voiceArray.count == 0){
+    if(_voiceArray.count == 0){
         [self setHeight:0];
     }
     else{
         CGFloat maxWidth = self.width - 10 * 2;
         CGFloat spaceXStart = 10;
         CGFloat spaceYStart = 10;
-        for (NSInteger i = 0; i < _sendEntity.voiceArray.count; i++) {
-            AudioItem *item = _sendEntity.voiceArray[i];
+        for (NSInteger i = 0; i < _voiceArray.count; i++) {
+            AudioItem *item = _voiceArray[i];
             AudioContentView *voiceView = [[AudioContentView alloc] initWithMaxWidth:maxWidth];
             [voiceView setAudioItem:item];
             [voiceView setOrigin:CGPointMake(spaceXStart, spaceYStart)];

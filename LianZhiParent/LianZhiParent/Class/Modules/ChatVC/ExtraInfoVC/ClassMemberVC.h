@@ -12,7 +12,7 @@
 {
     AvatarView* _avatarView;
     UILabel*    _nameLabel;
-    UIButton*   _chatButton;
+//    UIButton*   _chatButton;
     UIView*     _sepLine;
 }
 @property(nonatomic, readonly)UIButton* chatButton;
@@ -21,10 +21,10 @@
 
 @interface ClassMemberVC : TNBaseViewController
 {
-    UISwitch*       _soundSwitch;
     UITableView*    _tableView;
 }
-@property (nonatomic, assign)BOOL showSound;
 @property (nonatomic, copy)NSString *classID;
-@property (nonatomic, assign)BOOL showParentsOnly;
+@property (nonatomic, copy)NSString *groupID;
+@property (nonatomic, copy)void (^atCallback)(UserInfo *user);
+@property (nonatomic, copy)void (^cancelCallback)();
 @end

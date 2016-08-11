@@ -8,6 +8,12 @@
 
 #import "TNListModel.h"
 
+@interface BannerItem : TNModelItem
+@property (nonatomic, copy)NSString *pic;
+@property (nonatomic, copy)NSString *url;
+
+@end
+
 @interface ClassAppItem : TNModelItem
 @property (nonatomic, copy)NSString *imageUrl;
 @property (nonatomic, copy)NSString *actionUrl;
@@ -17,5 +23,5 @@
 @end
 
 @interface ClassAppModel : TNListModel
-
+@property (nonatomic, strong)NSArray *banner;
 @end

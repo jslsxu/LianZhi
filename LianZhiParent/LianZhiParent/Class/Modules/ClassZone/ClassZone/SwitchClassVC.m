@@ -35,7 +35,7 @@
 {
     _classInfo = classInfo;
     [_logoView setImageWithUrl:[NSURL URLWithString:_classInfo.logo]];
-    [_nameLabel setText:_classInfo.className];
+    [_nameLabel setText:_classInfo.name];
 }
 
 

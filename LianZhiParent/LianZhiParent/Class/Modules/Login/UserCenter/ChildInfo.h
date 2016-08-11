@@ -23,15 +23,13 @@ typedef CF_ENUM(NSInteger, GenderType) {
 
 @interface TeacherInfo : UserInfo
 @property (nonatomic, copy)NSString *course;
-//@property (nonatomic, copy)NSString *mobile;
-@property (nonatomic, copy)NSString *teacherName;
 @end
 
 @interface ClassInfo : TNModelItem
 @property (nonatomic, copy)NSString *classID;
-@property (nonatomic, copy)NSString *className;
+@property (nonatomic, copy)NSString *name;
 @property (nonatomic, copy)NSString *logo;
-@property (nonatomic, strong)SchoolInfo *schoolInfo;
+@property (nonatomic, strong)SchoolInfo *school;
 @property (nonatomic, strong)NSArray *teachers;
 @property (nonatomic, strong)NSArray *students;
 

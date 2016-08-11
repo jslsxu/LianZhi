@@ -9,23 +9,7 @@
 #import "NotificationSendEntity.h"
 
 @implementation NotificationSendEntity
-- (instancetype)initWithMessageDetailItem:(MessageDetailItem *)detailItem{
-    if(self = [super init]){
-        self.authorUser = detailItem.author;
-        self.content = detailItem.content;
-        if(detailItem.videoItem){
-            self.videoArray = [NSMutableArray arrayWithObject:detailItem.videoItem];
-        }
-        if(detailItem.audioItem){
-            self.voiceArray = [NSMutableArray arrayWithObject:detailItem.audioItem];
-        }
-        if(detailItem.photos.count > 0){
-            self.imageArray = [NSMutableArray arrayWithArray:detailItem.photos];
-        }
-        self.timeStr = detailItem.time;
-    }
-    return self;
-}
+
 - (instancetype)init{
     self = [super init];
     if(self){

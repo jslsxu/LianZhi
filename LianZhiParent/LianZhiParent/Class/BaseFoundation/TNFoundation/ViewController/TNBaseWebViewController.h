@@ -8,10 +8,26 @@
 
 #import "TNBaseViewController.h"
 
-@interface TNBaseWebViewController : TNBaseViewController<UIWebViewDelegate>
-{
-    UIWebView*                  _webView;
-    UIActivityIndicatorView*    _indicator;
-}
-@property (nonatomic, copy)NSString *url;
+@interface TNBaseWebViewController : TNBaseViewController
+/**
+ *  origin url
+ */
+@property (nonatomic, strong)NSURL* url;
+
+/**
+ *  embed webView
+ */
+@property (nonatomic, strong)UIWebView* webView;
+
+/**
+ *  get instance with url
+ *
+ *  @param url url
+ *
+ *  @return instance
+ */
+-(instancetype)initWithUrl:(NSURL*)url;
+
+
+-(void)reloadWebView;
 @end

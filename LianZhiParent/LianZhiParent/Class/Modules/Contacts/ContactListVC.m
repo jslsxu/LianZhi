@@ -60,11 +60,11 @@
     
     [_logoView setImageWithUrl:[NSURL URLWithString:classInfo.logo]];
     NSInteger vMargin = 12;
-    [_classLabel setText:classInfo.className];
+    [_classLabel setText:classInfo.name];
     [_classLabel sizeToFit];
     [_classLabel setOrigin:CGPointMake(_logoView.right + 5, vMargin)];
     
-    [_schoolLabel setText:self.classInfo.schoolInfo.schoolName];
+    [_schoolLabel setText:self.classInfo.school.schoolName];
     [_schoolLabel sizeToFit];
     [_schoolLabel setOrigin:CGPointMake(_classLabel.right + 5, _classLabel.centerY - _schoolLabel.height / 2)];
     
@@ -98,6 +98,16 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:ApplicationDelegate.homeVC.curChildrenSelectView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.navigationItem setLeftBarButtonItem:nil];
 }
 
 - (void)viewDidLoad {
@@ -196,13 +206,13 @@
     [headerView setExpandCallback:^{
         BOOL expand = [wself.expandDictionary[class.classID] boolValue];
         [wself.expandDictionary setValue:@(!expand) forKey:class.classID];
-        [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView reloadData];
     }];
     [headerView setChatCallback:^{
         JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-        [chatVC setTo_objid:class.schoolInfo.schoolID];
+        [chatVC setTo_objid:class.school.schoolID];
         [chatVC setTargetID:class.classID];
-        [chatVC setTitle:class.className];
+        [chatVC setTitle:class.name];
         [chatVC setChatType:ChatTypeClass];
         [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
     }];
@@ -248,10 +258,10 @@
             ClassInfo *classInfo = [UserCenter sharedInstance].curChild.classes[section];
             JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
             [chatVC setChatType:ChatTypeTeacher];
-            [chatVC setTo_objid:classInfo.schoolInfo.schoolID];
+            [chatVC setTo_objid:classInfo.school.schoolID];
             [chatVC setTargetID:teacherInfo.uid];
             [chatVC setMobile:teacherInfo.mobile];
-            NSString *title = [NSString stringWithFormat:@"%@",teacherInfo.teacherName];
+            NSString *title = [NSString stringWithFormat:@"%@",teacherInfo.name];
             if(teacherInfo.course)
                 title = [NSString stringWithFormat:@"%@(%@)",title, teacherInfo.course];
             [chatVC setTitle:title];

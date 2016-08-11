@@ -51,8 +51,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"选择提醒的人";
-    self.navigationItem.leftBarButtonItem  =[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+    if(self.atCallback && self.cancelCallback){
+        self.title = @"选择提醒的人";
+        self.navigationItem.leftBarButtonItem  =[[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+    }
+    else{
+        self.title = @"群成员";
+    }
     
     self.sourceArray = [NSMutableArray array];
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStylePlain];

@@ -93,7 +93,12 @@
 }
 
 - (void)onVoiceClicked{
-    [_voiceButton setVoiceWithURL:[NSURL fileURLWithPath:self.audioItem.audioUrl] withAutoPlay:YES];
+    if([self.audioItem.audioUrl hasPrefix:@"http:"]){
+        [_voiceButton setVoiceWithURL:[NSURL URLWithString:self.audioItem.audioUrl] withAutoPlay:YES];
+    }
+    else{
+        [_voiceButton setVoiceWithURL:[NSURL fileURLWithPath:self.audioItem.audioUrl] withAutoPlay:YES];
+    }
 }
 
 - (void)onRemoveClicked{

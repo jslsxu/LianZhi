@@ -10,7 +10,9 @@
 #import "MessageDetailVC.h"
 #import "HomeWorkVC.h"
 @interface MessageVC ()
+@property (nonatomic, strong)MessageSegView *segView;
 @property (nonatomic, strong)NSTimer *timer;
+@property (nonatomic, assign)BOOL isNotification;
 @end
 
 @implementation MessageVC
@@ -25,10 +27,16 @@
     [super viewWillAppear:animated];
     if(self.timer == nil)
     {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(refreshData) userInfo:nil repeats:YES];
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(refreshData) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
         [self.timer fire];
     }
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:ApplicationDelegate.homeVC.curChildrenSelectView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.navigationItem setLeftBarButtonItem:nil];
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -55,16 +63,21 @@
     [self setEdgesForExtendedLayout:UIRectEdgeNone];
     [self.tableView setFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    
-    _refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.height, self.tableView.width, self.tableView.height)];
-    _refreshHeaderView.delegate = self;
-    [self.tableView addSubview:_refreshHeaderView];
-    
-    _getMoreCell = [[TNGetMoreCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RefreshFooter"];
 
-    self.messageModel = [[MessageGroupListModel alloc] init];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurChildChanged) name:kUserCenterChangedCurChildNotification object:nil];
+    @weakify(self);
+    _segView = [[MessageSegView alloc] initWithItems:@[@"通知", @"消息"] valueChanged:^(NSInteger selectedIndex) {
+        @strongify(self);
+        [self onSegmentChanged:selectedIndex];
+    }];
+    [self.navigationItem setTitleView:_segView];
     
+    self.messageModel = [[MessageGroupListModel alloc] init];
+    [self.messageModel setUnreadNumChanged:^(NSInteger notificationNum, NSInteger chatNum) {
+        @strongify(self);
+        [self.segView setShowBadge:notificationNum > 0 ? @"" : nil atIndex:0];
+        [self.segView setShowBadge:chatNum > 0 ? @"" : nil atIndex:1];
+    }];
+//    [self.messageModel setPlayAlert:YES];
     if([self supportCache])//支持缓存，先出缓存中读取数据
     {
         id responseObject = [NSDictionary dictionaryWithContentsOfFile:[self cacheFileName]];
@@ -74,29 +87,30 @@
             [self.tableView reloadData];
         }
     }
-//    [self requestData:REQUEST_REFRESH];
     
+    [self setIsNotification:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurChildChanged) name:kUserCenterChangedCurChildNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onPublishPhotoFinished:) name:kPublishPhotoItemFinishedNotification object:nil];
+}
+
+- (void)onSegmentChanged:(NSInteger)selectedIndex{
+    self.isNotification = (selectedIndex == 0);
+}
+
+- (void)setIsNotification:(BOOL)isNotification{
+    if(_isNotification != isNotification){
+        _isNotification = isNotification;
+        [self.tableView reloadData];
+    }
+}
+
+- (NSArray *)sourceArray{
+    return [self.messageModel arrayForType:self.isNotification];
 }
 
 - (void)onPublishPhotoFinished:(NSNotification *)notification
 {
     [self requestData:REQUEST_REFRESH];
-//    MessageGroupItem *groupItem = [[MessageGroupItem alloc] init];
-//    [groupItem setMsgNum:1];
-//    MessageFromInfo *fromInfo = [[MessageFromInfo alloc] init];
-//    [fromInfo setName:@"发图片"];
-//    [fromInfo setLogoImage:[UIImage imageNamed:@"PostPhoto.png")]];
-//    [groupItem setFromInfo:fromInfo];
-//    [groupItem setContent:@"照片发送成功"];
-//    [groupItem setSoundOn:YES];
-//    [self.messageModel.modelItemArray insertObject:groupItem atIndex:0];
-//    [self.tableView reloadData];
-//    
-//    if([UserCenter sharedInstance].personalSetting.soundOn)
-//        [ApplicationDelegate playSound];
-//    if([UserCenter sharedInstance].personalSetting.shakeOn)
-//        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 }
 
 - (void)onCurChildChanged
@@ -125,15 +139,11 @@
         } fail:^(NSString *errMsg) {
             [wself onRequestFail:errMsg];
         }];
-        if(requestType == REQUEST_GETMORE)
-            [_getMoreCell startLoading];
     }
 }
 
 - (void)onRequestSuccess:(AFHTTPRequestOperation *)operation responseData:(TNDataWrapper *)responseData
 {
-    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-    [_getMoreCell stopLoading];
     [self.messageModel parseData:responseData type:operation.requestType];
     [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
     [self setShowEmptyLabel:(self.messageModel.modelItemArray.count == 0)];
@@ -149,8 +159,6 @@
 
 - (void)onRequestFail:(NSString *)errMsg
 {
-    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-    [_getMoreCell stopLoading];
     _isLoading = NO;
 //    [ProgressHUD showHintText:errMsg];
 }
@@ -188,122 +196,65 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.messageModel numOfRowsInSection:section];
+    return [[self sourceArray] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([self.messageModel hasMoreData] && indexPath.row == self.messageModel.modelItemArray.count)//家在更多
-    {
-        return _getMoreCell;
-    }
-    else
-    {
-        static NSString *CellIdentifier = @"Cell";
-        MessageGroupItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if(cell == nil)
-            cell = [[MessageGroupItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.delegate = self;
-        [cell setMessageItem:(MessageGroupItem *)[self.messageModel itemForIndexPath:indexPath]];
-        return cell;
-    }
+    static NSString *CellIdentifier = @"Cell";
+    MessageGroupItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if(cell == nil)
+        cell = [[MessageGroupItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    cell.delegate = self;
+    [cell setMessageItem:[self sourceArray][indexPath.row]];
+    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [MessageGroupItemCell cellHeight:(MessageGroupItem *)[self.messageModel itemForIndexPath:indexPath] cellWidth:tableView.width].floatValue;
+    return [MessageGroupItemCell cellHeight:nil cellWidth:tableView.width].floatValue;
 }
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    MessageGroupItem *groupItem = [self.messageModel.modelItemArray objectAtIndex:indexPath.row];
+    MessageGroupItem *groupItem = [[self sourceArray] objectAtIndex:indexPath.row];
     [groupItem setMsgNum:0];
     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    if([self.messageModel hasMoreData] && [self.messageModel.modelItemArray count] == indexPath.row)
+    if([groupItem.fromInfo isNotification])
     {
-        [self requestData:REQUEST_GETMORE];
+        MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];
+        [detailVC setFromInfo:groupItem.fromInfo];
+        [self.navigationController pushViewController:detailVC animated:YES];
+        [groupItem setMsgNum:0];
+        [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    }
+    else if(groupItem.fromInfo.type == ChatTypeAttendance)
+    {
+        
+    }
+    else if(groupItem.fromInfo.type == ChatTypePractice)
+    {
+        HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
+        [homeWorkVC setClassID:groupItem.fromInfo.classID];
+        [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
     }
     else
     {
-        if([groupItem.fromInfo isNotification])
-        {
-            MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];
-            [detailVC setFromInfo:groupItem.fromInfo];
-            [self.navigationController pushViewController:detailVC animated:YES];
-            [groupItem setMsgNum:0];
-            [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        }
-        else if(groupItem.fromInfo.type == ChatTypeAttendance)
-        {
-            
-        }
-        else if(groupItem.fromInfo.type == ChatTypePractice)
-        {
-            HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
-            [homeWorkVC setClassID:groupItem.fromInfo.classID];
-            [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
-        }
-        else
-        {
-            JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-            [chatVC setChatType:(ChatType)groupItem.fromInfo.type];
-            [chatVC setTargetID:groupItem.fromInfo.uid];
-            [chatVC setTo_objid:groupItem.fromInfo.from_obj_id];
-            [chatVC setMobile:groupItem.fromInfo.mobile];
-            NSString *title = groupItem.fromInfo.name;
-            if(groupItem.fromInfo.label.length > 0 && groupItem.fromInfo.type != ChatTypeParents)
-                title = [NSString stringWithFormat:@"%@(%@)",groupItem.fromInfo.name, groupItem.fromInfo.label];
-            [chatVC setTitle:title];
-            [self.navigationController pushViewController:chatVC animated:YES];
-        }
+        JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+        [chatVC setChatType:(ChatType)groupItem.fromInfo.type];
+        [chatVC setTargetID:groupItem.fromInfo.uid];
+        [chatVC setTo_objid:groupItem.fromInfo.from_obj_id];
+        [chatVC setMobile:groupItem.fromInfo.mobile];
+        NSString *title = groupItem.fromInfo.name;
+        if(groupItem.fromInfo.label.length > 0 && groupItem.fromInfo.type != ChatTypeParents)
+            title = [NSString stringWithFormat:@"%@(%@)",groupItem.fromInfo.name, groupItem.fromInfo.label];
+        [chatVC setTitle:title];
+        [self.navigationController pushViewController:chatVC animated:YES];
     }
 }
 
-#pragma mark -
-#pragma mark UIScrollViewDelegate Methods
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
-    [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-    
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    
-    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-    NSInteger bottomOffset = scrollView.contentSize.height - scrollView.frame.size.height;
-    bottomOffset = (bottomOffset > 0) ? bottomOffset : 0;
-    if([scrollView contentOffset].y >= (bottomOffset + 5))
-    {
-        if(!_isLoading && _getMoreCell.superview && [self.messageModel hasMoreData]) {
-            [self requestData:REQUEST_GETMORE];
-        }
-    }
-}
-
-
-#pragma mark -
-#pragma mark EGORefreshTableHeaderDelegate Methods
-
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
-    
-    [self requestData:REQUEST_REFRESH];
-    
-}
-
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
-    
-    return _isLoading; // should return if data source model is reloading
-    
-}
-
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
-    
-    return [NSDate date]; // should return date data source was last changed
-    
-}
+#pragma - cache
 
 #pragma - cache
 
@@ -314,10 +265,8 @@
 
 - (NSString *)cacheFileName
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *docDir = [paths objectAtIndex:0];
-    NSString *filePath = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@",[HttpRequestEngine sharedInstance].commonCacheRoot,NSStringFromClass([self class])]];
-    return filePath;
+    NSString *chatPath = [NHFileManager chatDirectoryPathForUid:[UserCenter sharedInstance].userInfo.uid];
+    return [chatPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_messageIndex",[UserCenter sharedInstance].curChild.uid]];
 }
 
 #pragma mark * DAContextMenuCell delegate
@@ -325,21 +274,30 @@
 - (void)contextMenuCellDidSelectDeleteOption:(DAContextMenuCell *)cell
 {
     [super contextMenuCellDidSelectDeleteOption:cell];
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    MessageGroupItem *groupitem = (MessageGroupItem *)[self.messageModel.modelItemArray objectAtIndex:indexPath.row];
-    MessageFromInfo *fromInfo = [groupitem fromInfo];
-    //删除消息
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setValue:fromInfo.uid forKey:@"from_id"];
-    [params setValue:kStringFromValue(fromInfo.type) forKey:@"from_type"];
-    
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_thread" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        [self.messageModel.modelItemArray removeObjectAtIndex:indexPath.row];
-        [self.tableView deleteRowsAtIndexPaths:@[indexPath]
-                              withRowAnimation:UITableViewRowAnimationNone];
-    } fail:^(NSString *errMsg) {
-        
+    @weakify(self)
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"是否删除该记录？" message:@"删除该记录内容也会随之清空" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除(不推荐)"];
+    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+        @strongify(self)
+        MessageGroupItemCell *itemCell = (MessageGroupItemCell *)cell;
+        MessageGroupItem *groupItem = [itemCell messageItem];
+        MessageFromInfo *fromInfo = [groupItem fromInfo];
+        if(!fromInfo.isNotification){
+            [ChatMessageModel removeConversasionForUid:fromInfo.uid type:fromInfo.type];
+        }
+        //删除消息
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setValue:fromInfo.uid forKey:@"from_id"];
+        [params setValue:kStringFromValue(fromInfo.type) forKey:@"from_type"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_thread" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [self.messageModel deleteItem:groupItem.fromInfo.uid];
+            [self.tableView reloadData];
+        } fail:^(NSString *errMsg) {
+            
+        }];
     }];
+    [alertView showAnimated:YES completionHandler:nil];
     
 }
 
@@ -349,12 +307,10 @@
     MessageGroupItem *groupItem = [self.messageModel.modelItemArray objectAtIndex:indexPath.row];
     NSString *soundOn = (groupItem.soundOn ? @"close" : @"open");
     MessageFromInfo *fromInfo = groupItem.fromInfo;
-    
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     [params setValue:fromInfo.uid forKey:@"from_id"];
     [params setValue:kStringFromValue(fromInfo.type) forKey:@"from_type"];
     [params setValue:soundOn forKey:@"sound"];
-    
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/set_thread" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         groupItem.soundOn = !groupItem.soundOn;
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];

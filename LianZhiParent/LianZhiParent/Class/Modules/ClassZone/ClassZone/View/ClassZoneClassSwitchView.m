@@ -50,7 +50,7 @@
 - (void)setClassInfo:(ClassInfo *)classInfo
 {
     _classInfo = classInfo;
-    [_classNameLabel setText:_classInfo.className];
+    [_classNameLabel setText:_classInfo.name];
 }
 
 - (void)onSwitchButtonClicked

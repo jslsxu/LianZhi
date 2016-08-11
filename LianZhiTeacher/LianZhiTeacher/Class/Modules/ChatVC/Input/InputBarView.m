@@ -308,8 +308,20 @@
         if(content.length > 0)
         {
             [growingTextView setText:nil];
-            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidCommit: atArray:)])
+            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidCommit: atArray:)]){
+                NSMutableArray *deleteArray = [NSMutableArray array];
+                for (UserInfo *user in self.atArray) {
+                    NSString *atStr = [NSString stringWithFormat:@"@%@",user.name];
+                    NSRange range = [content rangeOfString:atStr];
+                    if(range.location == NSNotFound){
+                        [deleteArray addObject:user];
+                    }
+                }
+                if(deleteArray.count > 0){
+                    [self.atArray removeObjectsInArray:deleteArray];
+                }
                 [self.inputDelegate inputBarViewDidCommit:content atArray:self.atArray];
+            }
         }
         return NO;
     }

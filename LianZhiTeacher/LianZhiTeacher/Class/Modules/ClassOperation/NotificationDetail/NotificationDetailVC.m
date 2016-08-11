@@ -32,12 +32,15 @@
     [self setRightbarButtonHighlighted:NO];
     
     _detailView = [[NotificationDetailView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
+    [_detailView setNotificationItem:self.notificationItem];
     [self.view addSubview:_detailView];
     
     _targetListView = [[NotificationTargetListView alloc] initWithFrame:_detailView.frame];
     [_targetListView setHidden:YES];
+    [_targetListView setTargetArray:self.notificationItem.targetArray];
     [self.view addSubview:_targetListView];
 }
+
 
 - (void)setRightbarButtonHighlighted:(BOOL)highlighted{
     if(_moreButton == nil){

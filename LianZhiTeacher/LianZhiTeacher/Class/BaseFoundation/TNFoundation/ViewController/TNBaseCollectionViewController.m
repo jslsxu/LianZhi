@@ -119,7 +119,7 @@
         {
             NSData *data = [NSData dataWithContentsOfFile:[self cacheFilePath]];
             if(data.length > 0){
-                [_collectionViewModel loadCache:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
+                _collectionViewModel = [NSKeyedUnarchiver unarchiveObjectWithData:data];
                 [self.collectionView reloadData];
                 if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
                     [self TNBaseTableViewControllerRequestSuccess];

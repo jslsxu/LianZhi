@@ -320,9 +320,9 @@ NSString *const kTreeHouseItemKey = @"TreeHouseItemKey";
     NSMutableArray *photos = [[NSMutableArray alloc] initWithArray:item.photos];
     for (PhotoItem *photoItem in photos) {
         [photoItem setTag:item.tag];
-        [photoItem setFormatTimeStr:item.timeStr];
-        [photoItem setUserInfo:item.user];
-        [photoItem setComment:item.detail];
+        [photoItem setTime_str:item.timeStr];
+        [photoItem setUser:item.user];
+        [photoItem setWords:item.detail];
     }
     MJPhotoBrowser *photoBrowser = [[MJPhotoBrowser alloc] init];
     [photoBrowser setPhotos:photos];

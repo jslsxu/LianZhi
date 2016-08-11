@@ -22,7 +22,7 @@
 }
 
 - (NSString *)description{
-    return [self description];
+    return [self modelDescription];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder{

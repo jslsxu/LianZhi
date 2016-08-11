@@ -52,10 +52,10 @@
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avtarView.right + 10, _bgImageView.height / 2 - 5 - _nameLabel.height)];
     
-    [_genderImageView setImage:[UIImage imageNamed:_childInfo.gender == GenderMale ? @"GenderMale.png" : @"GenderFemale.png"]];
+    [_genderImageView setImage:[UIImage imageNamed:_childInfo.sex == GenderMale ? @"GenderMale.png" : @"GenderFemale.png"]];
     [_genderImageView setOrigin:CGPointMake(_nameLabel.right + 10, _nameLabel.top + (_nameLabel.height - _genderImageView.height) / 2)];
     
-    NSString *birthday = [NSString stringWithFormat:@"%@ (%@)",_childInfo.birthDay,_childInfo.constellation];
+    NSString *birthday = [NSString stringWithFormat:@"%@ (%@)",_childInfo.birthday,_childInfo.constellation];
     [_birthdayLabel setText:birthday];
     [_birthdayLabel sizeToFit];
     [_birthdayLabel setOrigin:CGPointMake(_avtarView.right + 10, _bgImageView.height / 2 + 5)];
@@ -100,7 +100,7 @@
     if([_item isKindOfClass:[ClassInfo class]])
     {
         ClassInfo *classItem = (ClassInfo *)item;
-        name = [NSString stringWithFormat:@"%@ %@",classItem.schoolInfo.schoolName, classItem.className];
+        name = [NSString stringWithFormat:@"%@ %@",classItem.school.schoolName, classItem.name];
         logo = classItem.logo;
     }
     else

@@ -35,6 +35,7 @@
 {
     if(self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil])
     {
+        self.hidesBottomBarWhenPushed = YES;
         self.hideNavigationBar = NO;
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
@@ -49,6 +50,11 @@
     if(_loadingView.hidden == NO)
     {
         [_loadingView startAnimating];
+    }
+    
+    UINavigationController *nav = self.navigationController;
+    if(nav.viewControllers.count > 1){
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"NavBack"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     }
 }
 
@@ -69,6 +75,10 @@
     [_showError setCenter:CGPointMake(self.view.width / 2, self.view.height / 2 - 30)];
     [self.view addSubview:_showError];
     [_showError setAlpha:0.f];
+}
+
+- (void)back{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)viewDidLayoutSubviews
@@ -123,6 +133,27 @@
     [self.view bringSubviewToFront:_emptyLabel];
     [_emptyLabel setHidden:!show];
     [_emptyLabel setCenter:CGPointMake(self.view.width / 2, self.view.height / 2)];
+}
+
+- (void)addKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)onKeyboardWillShow:(NSNotification *)note
+{
+    
+}
+
+- (void)onKeyboardWillHide:(NSNotification *)note
+{
+    
+}
+- (void)resignKeyboard
+{
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning {

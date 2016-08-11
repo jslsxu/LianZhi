@@ -10,28 +10,6 @@
 
 #define kAlertSettingList           @"AlertSettingList"
 
-@implementation MessageFromInfo
-- (void)parseData:(TNDataWrapper *)dataWrapper
-{
-    self.uid = [dataWrapper getStringForKey:@"id"];
-    self.logoUrl = [dataWrapper getStringForKey:@"logo"];
-    self.name = [dataWrapper getStringForKey:@"name"];
-    self.type = [dataWrapper getIntegerForKey:@"type"];
-    self.label = [dataWrapper getStringForKey:@"label"];
-    self.from_obj_id = [dataWrapper getStringForKey:@"from_obj_id"];
-    self.mobile = [dataWrapper getStringForKey:@"mobile"];
-    self.classID = [dataWrapper getStringForKey:@"class_id"];
-    self.childID = [dataWrapper getStringForKey:@"child_id"];
-}
-
-- (BOOL)isNotification
-{
-    if(self.type == ChatTypeClass || self.type == ChatTypeParents||self.type == ChatTypeTeacher || self.type == ChatTypeGroup || self.type == ChatTypeAttendance || self.type == ChatTypePractice)
-        return NO;
-    return YES;
-}
-@end
-
 @implementation MessageGroupItem
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
@@ -46,7 +24,7 @@
 //    self.soundOn = ![[DataCenter sharedInstance] checkFromIDSilence:self.fromInfo.uid];
     NSString *sound = [dataWrapper getStringForKey:@"sound"];
     self.soundOn = ([sound isEqualToString:@"open"]);
-    
+    self.im_at = [dataWrapper getBoolForKey:@"im_at"];
 }
 @end
 
@@ -127,6 +105,43 @@
             return YES;
     }
     return NO;
+}
+
+- (NSArray *)arrayForType:(BOOL)isNotification{
+    NSMutableArray *resultArray = [NSMutableArray array];
+    for (MessageGroupItem *groupItem in self.modelItemArray) {
+        if(groupItem.fromInfo.isNotification == isNotification){
+            [resultArray addObject:groupItem];
+        }
+    }
+    return resultArray;
+}
+
+- (void)notificationUnreadNumChanged{
+    if(self.unreadNumChanged){
+        NSInteger notificationNum = 0;
+        NSInteger chatnum = 0;
+        for (MessageGroupItem *groupItem in self.modelItemArray) {
+            if(groupItem.msgNum > 0){
+                if(groupItem.fromInfo.isNotification){
+                    notificationNum += groupItem.msgNum;
+                }
+                else{
+                    chatnum += groupItem.msgNum;
+                }
+            }
+        }
+        self.unreadNumChanged(notificationNum, chatnum);
+    }
+}
+
+- (void)deleteItem:(NSString *)itemID{
+    for (MessageGroupItem *groupItem in self.modelItemArray) {
+        if([itemID isEqualToString:groupItem.fromInfo.uid]){
+            [self.modelItemArray removeObject:groupItem];
+            return;
+        }
+    }
 }
 
 @end

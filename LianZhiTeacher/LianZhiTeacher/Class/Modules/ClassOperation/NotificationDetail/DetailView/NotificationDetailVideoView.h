@@ -10,5 +10,5 @@
 #import "NotificationVideoView.h"
 
 @interface NotificationDetailVideoView : UIView
-@property (nonatomic, strong)NotificationSendEntity *sendEntity;
+@property (nonatomic, strong)NSArray *videoArray;
 @end

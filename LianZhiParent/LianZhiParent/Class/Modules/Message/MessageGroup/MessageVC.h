@@ -9,12 +9,11 @@
 #import "TNBaseTableViewController.h"
 #import "MessageGroupItemCell.h"
 #import "TreeHouseVC.h"
-@interface MessageVC : DAContextMenuTableViewController<EGORefreshTableHeaderDelegate>
+#import "MessageSegView.h"
+@interface MessageVC : DAContextMenuTableViewController
 {
     UILabel*                    _emptyLabel;
     BOOL                        _isLoading;
-    EGORefreshTableHeaderView*  _refreshHeaderView;
-    TNGetMoreCell*              _getMoreCell;
 }
 @property (nonatomic, strong)MessageGroupListModel *messageModel;
 - (NSInteger)newMessageNum;

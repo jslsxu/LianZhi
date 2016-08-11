@@ -20,7 +20,6 @@
 - (void)loginSuccess;
 - (void)logout;
 - (void)playSound;
-- (void)popAndPush:(UIViewController *)vc;
 - (NSString *)curAutoNaviKey;
 @end
 

@@ -46,7 +46,7 @@
     [_nameLabel setText:[UserCenter sharedInstance].userInfo.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, 18)];
-    GenderType gender = [UserCenter sharedInstance].userInfo.gender;
+    GenderType gender = [UserCenter sharedInstance].userInfo.sex;
     if(gender == GenderFemale)
         [_genderView setImage:[UIImage imageNamed:@"GenderFemale"]];
     else

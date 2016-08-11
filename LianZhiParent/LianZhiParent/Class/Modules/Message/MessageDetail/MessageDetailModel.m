@@ -11,38 +11,30 @@
 @implementation MessageDetailItem
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    self.msgID = [dataWrapper getStringForKey:@"id"];
-    self.time = [dataWrapper getStringForKey:@"time"];
-    self.content = [dataWrapper getStringForKey:@"words"];
-    self.timeStr = [dataWrapper getStringForKey:@"time_str"];
-    TNDataWrapper *audioWrapper = [dataWrapper getDataWrapperForKey:@"voice"];
-    if(audioWrapper && [audioWrapper count] > 0)
-    {
-        AudioItem *audioItem = [[AudioItem alloc] init];
-        [audioItem parseData:audioWrapper];
-        [self setAudioItem:audioItem];
-    }
-    
-    TNDataWrapper *pictureArrayWrapper = [dataWrapper getDataWrapperForKey:@"pictures"];
-    if(pictureArrayWrapper.count > 0)
-    {
-        NSMutableArray *pictures = [NSMutableArray array];
-        for (NSInteger i = 0; i < pictureArrayWrapper.count; i++)
-        {
-            TNDataWrapper *pictureItemWrapper = [pictureArrayWrapper getDataWrapperForIndex:i];
-            PhotoItem *photoItem = [[PhotoItem alloc] initWithDataWrapper:pictureItemWrapper];
-            [pictures addObject:photoItem];
-        }
-        self.pictureArray = pictures;
-    }
-    
-    TNDataWrapper *userWrapper = [dataWrapper getDataWrapperForKey:@"from_user"];
-    if(userWrapper.count > 0)
-    {
-        UserInfo *userInfo = [[UserInfo alloc] init];
-        [userInfo parseData:userWrapper];
-        self.author = userInfo;
-    }
+    [self modelSetWithJSON:dataWrapper.data];
+}
+
+- (BOOL)hasAudio{
+    return self.voice.audioUrl.length > 0;
+}
+
+- (BOOL)hasPhoto{
+    return self.pictures.count > 0;
+}
+
+- (BOOL)hasVideo{
+    return self.video.videoUrl.length > 0;
+}
+
++ (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
+    return @{@"msgID" : @"id",
+             };
+}
+
++ (NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
+    return @{
+             @"pictures" : [PhotoItem class],
+             };
 }
 
 @end
@@ -77,7 +69,6 @@
         MessageDetailItem *item = [[MessageDetailItem alloc] init];
         TNDataWrapper *detailWrapper = [listWrapper getDataWrapperForIndex:i];
         [item parseData:detailWrapper];
-        item.fromInfo = self.fromInfo;
         [self.modelItemArray addObject:item];
     }
     return parse;

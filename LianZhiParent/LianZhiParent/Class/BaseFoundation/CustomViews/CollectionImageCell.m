@@ -36,7 +36,7 @@
 - (void)setItem:(PhotoItem *)item
 {
     _item = item;
-    [_imageView sd_setImageWithURL:[NSURL URLWithString:_item.thumbnailUrl] placeholderImage:_item.image options:SDWebImageRetryFailed|SDWebImageLowPriority];
+    [_imageView sd_setImageWithURL:[NSURL URLWithString:_item.small] placeholderImage:_item.image options:SDWebImageRetryFailed|SDWebImageLowPriority];
     [_uploadLabel setHidden:!_item.publishImageItem];
 }
 @end

@@ -107,8 +107,7 @@
             break;
         case 4:
         {
-            TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
-            [webVC setUrl:[UserCenter sharedInstance].userData.config.introUrl];
+            TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userData.config.introUrl]];
             [webVC setTitle:@"功能介绍"];
             [self.navigationController pushViewController:webVC animated:YES];
         }

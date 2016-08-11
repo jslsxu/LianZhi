@@ -40,6 +40,14 @@
 
 @end
 
+@implementation BannerItem
+
+- (void)parseData:(TNDataWrapper *)dataWrapper{
+    [self modelSetWithJSON:dataWrapper.data];
+}
+
+@end
+
 @implementation ApplicationItem
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
@@ -57,26 +65,19 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        [self.layer setCornerRadius:10];
-        [self.layer setMasksToBounds:YES];
-        [self setBackgroundColor:[UIColor colorWithHexString:@"dbdbdb"]];
-        _appImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - 56) / 2, 8, 56, 56)];
+        _appImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - 50) / 2, self.height - 80, 50, 50)];
         [_appImageView setClipsToBounds:YES];
         [_appImageView  setContentMode:UIViewContentModeScaleAspectFill];
         [self addSubview:_appImageView];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _appImageView.bottom, self.width, 15)];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height - 30, self.width, 30)];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-        [_nameLabel setFont:[UIFont systemFontOfSize:12]];
+        [_nameLabel setFont:[UIFont systemFontOfSize:13]];
         [_nameLabel setTextAlignment:NSTextAlignmentCenter];
         [self addSubview:_nameLabel];
         
         _indicator = [[NumIndicator alloc] initWithFrame:CGRectZero];
         [self addSubview:_indicator];
-        
-        NSInteger height = _appImageView.height + 15 + 6;
-        [_appImageView setY:(self.height - height) / 2];
-        [_nameLabel setY:_appImageView.bottom + 6];
 
     }
     return self;
@@ -117,6 +118,9 @@
             [self.modelItemArray addObject:item];
         }
     }
+    
+    TNDataWrapper *bannerWrapper = [data getDataWrapperForKey:@"banner"];
+    self.banner = [BannerItem nh_modelArrayWithJson:bannerWrapper.data];
     return YES;
 }
 
@@ -151,6 +155,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     [self.collectionView registerClass:[ApplicationBoxHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ApplicationBoxHeaderView"];
     [self.collectionView setShowsVerticalScrollIndicator:NO];
@@ -164,10 +169,10 @@
 - (void)TNBaseCollectionViewControllerModifyLayout:(UICollectionViewLayout *)layout
 {
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)layout;
-    [flowLayout setSectionInset:UIEdgeInsetsMake(15, 15, 15, 15)];
-    NSInteger itemSize = (self.view.width - 15 * 2 - 10 * 2) / 3;
-    [flowLayout setItemSize:CGSizeMake(itemSize, itemSize)];
-    [flowLayout setMinimumLineSpacing:10];
+    [flowLayout setSectionInset:UIEdgeInsetsMake(0, 0, 20, 0)];
+    [flowLayout setItemSize:CGSizeMake(self.view.width / 4, MIN(self.view.width / 4 + 20, 100))];
+    [flowLayout setMinimumInteritemSpacing:0];
+    [flowLayout setMinimumLineSpacing:0];
     [flowLayout setHeaderReferenceSize:CGSizeMake(self.view.width, self.view.width / 2)];
 }
 
@@ -177,9 +182,6 @@
     [task setRequestUrl:@"app/list"];
     [task setRequestMethod:REQUEST_GET];
     [task setRequestType:requestType];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"school_id"];
-    [task setParams:params];
     [task setObserver:self];
     return task;
 }
@@ -250,7 +252,12 @@
 #pragma mark - 
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index
 {
-    
+    NSArray *bannerArray = [(ApplicationModel *)self.collectionViewModel banner];
+    BannerItem *bannerItem = bannerArray[index];
+    if(bannerItem.url){
+        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:bannerItem.url]];
+        [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
+    }
 }
 
 #pragma mark - UICollectionView
@@ -271,12 +278,12 @@
         }
     }
 
-    NSArray *imagesURLStrings = @[
-                                  @"https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a4b3d7085dee3d6d2293d48b252b5910/0e2442a7d933c89524cd5cd4d51373f0830200ea.jpg",
-                                  @"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a41eb338dd33c895a62bcb3bb72e47c2/5fdf8db1cb134954a2192ccb524e9258d1094a1e.jpg",
-                                  @"http://c.hiphotos.baidu.com/image/w%3D400/sign=c2318ff84334970a4773112fa5c8d1c0/b7fd5266d0160924c1fae5ccd60735fae7cd340d.jpg"
-                                  ];
-    [self.cycleScrollView setImageURLStringsGroup:imagesURLStrings];
+    NSArray *bannerArray = [(ApplicationModel *)self.collectionViewModel banner];
+    NSMutableArray *imageArray = [NSMutableArray array];
+    for (BannerItem *bannerItem in bannerArray) {
+        [imageArray addObject:bannerItem.pic];
+    }
+    [self.cycleScrollView setImageURLStringsGroup:imageArray];
 }
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
@@ -411,6 +418,14 @@
     self.headerView = headerView;
     self.cycleScrollView = headerView.cycleScrollView;
     [self.cycleScrollView setDelegate:self];
+    NSArray *bannerArray = [(ApplicationModel *)self.collectionViewModel banner];
+    NSMutableArray *imageArray = [NSMutableArray array];
+    for (BannerItem *bannerItem in bannerArray) {
+        [imageArray addObject:bannerItem.pic];
+    }
+    if(imageArray.count > 0){
+        [self.cycleScrollView setImageURLStringsGroup:imageArray];
+    }
     return headerView;
 }
 

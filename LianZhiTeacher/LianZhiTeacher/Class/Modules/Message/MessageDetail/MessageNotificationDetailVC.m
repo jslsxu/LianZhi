@@ -13,7 +13,6 @@
     NotificationDetailView*         _detailView;
 }
 @property (nonatomic, strong)UIButton *moreButton;
-@property (nonatomic, strong)NotificationSendEntity *notificationEntity;
 @end
 
 @implementation MessageNotificationDetailVC
@@ -23,13 +22,8 @@
     self.title = @"通知详情";
     [self setRightbarButtonHighlighted:NO];
     _detailView = [[NotificationDetailView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
-    [_detailView setNotificationSendEntity:self.notificationEntity];
+    [_detailView setNotificationItem:[NotificationItem convertFromMessageItem:self.messageDetailItem]];
     [self.view addSubview:_detailView];
-}
-
-- (void)setMessageDetailItem:(MessageDetailItem *)messageDetailItem{
-    _messageDetailItem = messageDetailItem;
-    self.notificationEntity = [[NotificationSendEntity alloc] initWithMessageDetailItem:_messageDetailItem];
 }
 
 - (void)setRightbarButtonHighlighted:(BOOL)highlighted{

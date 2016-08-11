@@ -34,7 +34,7 @@
 - (void)setPhotoItem:(PhotoItem *)photoItem
 {
     _photoItem = photoItem;
-    [_contentLabel setText:_photoItem.comment];
+    [_contentLabel setText:_photoItem.words];
 }
 
 

@@ -7,7 +7,7 @@
 //
 
 #import "TNModelItem.h"
-
+#import "VideoItem.h"
 typedef NS_ENUM(NSInteger, MessageStatus)
 {
     MessageStatusSuccess = 0,
@@ -20,8 +20,9 @@ typedef NS_ENUM(NSInteger, MessageType) {
     UUMessageTypeVoice    = 2 ,  // 语音
     UUMessageTypePicture  = 3 , // 图片
     UUMessageTypeFace     = 4 ,    // 表情
-    UUMessageTypeGift = 5,         //礼物
-    UUMessageTypeReceiveGift = 6,  //收礼物
+    UUMessageTypeGift     = 5,    //礼物
+    UUMessageTypeReceiveGift    = 6,    //收礼物
+    UUMessageTypeVideo      = 7,          //视频消息
     UUMessageTypeDeleted  = 8,      //消息被删除
     UUMessageTypeRevoked  = 9,      //消息被撤销
 };
@@ -41,30 +42,37 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
     UUMessageFromOther = 1    // 别人发得
 };
 
-@interface MessageContent : TNModelItem
-@property (nonatomic, copy)NSString *mid;
-@property (nonatomic, assign)BOOL unread;
-@property (nonatomic, assign)MessageType messageType;
-@property (nonatomic, copy)NSString *text;
-@property (nonatomic, strong)PhotoItem *photoItem;
-@property (nonatomic, strong)AudioItem *audioItem;
-@property (nonatomic, assign)NSInteger timeInterval;
-@property (nonatomic, copy)NSString *ctime;
-@property (nonatomic, assign)BOOL hideTime;
-@property (nonatomic, copy)NSString *presentID;
+@interface Exinfo : TNBaseObject
+@property (nonatomic, copy)NSString *presnetId;
 @property (nonatomic, copy)NSString *presentName;
+@property (nonatomic, strong)PhotoItem *imgs;
+@property (nonatomic, strong)AudioItem *voice;
+@property (nonatomic, strong)VideoItem *video;
 @end
 
-@interface MessageItem : TNModelItem
+@interface MessageContent : TNBaseObject
+@property (nonatomic, copy)NSString *mid;
+@property (nonatomic, assign)BOOL unread;
+@property (nonatomic, assign)MessageType type;
+@property (nonatomic, copy)NSString *text;
+@property (nonatomic, assign)NSString * timeStr;
+@property (nonatomic, assign)NSInteger ctime;
+@property (nonatomic, assign)BOOL hideTime;
+@property (nonatomic, strong)Exinfo* exinfo;
+@end
+
+@interface MessageItem : TNBaseObject
 @property (nonatomic, copy)NSString *targetUser;
 @property (nonatomic, assign)MessageStatus messageStatus;
 @property (nonatomic, assign)BOOL isTmp;
 @property (nonatomic, copy)NSString *client_send_id;
 @property (nonatomic, assign)MessageFrom from;
-@property (nonatomic, strong)UserInfo *userInfo;
-@property (nonatomic, strong)MessageContent *messageContent;
-
+@property (nonatomic, strong)UserInfo *user;
+@property (nonatomic, strong)MessageContent *content;
+@property (nonatomic, assign)NSInteger createTime;
 //
 @property (nonatomic, strong)NSDictionary *params;
-- (CGFloat)cellHeight;
+- (BOOL)isMyMessage;
+- (void)makeClientSendID;
+- (NSString *)reuseID;
 @end

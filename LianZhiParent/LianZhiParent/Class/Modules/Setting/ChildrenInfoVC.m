@@ -203,12 +203,12 @@
         ChildInfo *childInfo = childrenArray[self.curIndex];
         PersonalInfoItem *nameItem = [[PersonalInfoItem alloc] initWithKey:@"姓名" value:childInfo.name canEdit:YES];
         [nameItem setRequestKey:@"name"];
-        PersonalInfoItem *genderItem = [[PersonalInfoItem alloc] initWithKey:@"性别" value:childInfo.gender == GenderFemale ? @"美女" : @"帅哥" canEdit:YES];
+        PersonalInfoItem *genderItem = [[PersonalInfoItem alloc] initWithKey:@"性别" value:childInfo.sex == GenderFemale ? @"美女" : @"帅哥" canEdit:YES];
         [genderItem setRequestKey:@"sex"];
-        PersonalInfoItem *birthDayItem = [[PersonalInfoItem alloc] initWithKey:@"出生日期" value:childInfo.birthDay canEdit:NO];
+        PersonalInfoItem *birthDayItem = [[PersonalInfoItem alloc] initWithKey:@"出生日期" value:childInfo.birthday canEdit:NO];
         [birthDayItem setRequestKey:@"birthday"];
         
-        PersonalInfoItem *nickItem = [[PersonalInfoItem alloc] initWithKey:@"孩子昵称" value:childInfo.nickName canEdit:YES];
+        PersonalInfoItem *nickItem = [[PersonalInfoItem alloc] initWithKey:@"孩子昵称" value:childInfo.nick canEdit:YES];
         [nickItem setRequestKey:@"nick"];
         PersonalInfoItem *heightItem = [[PersonalInfoItem alloc] initWithKey:@"身高(cm)" value:(childInfo.height) canEdit:YES];
         [heightItem setKeyboardType:UIKeyboardTypeDecimalPad];
@@ -531,9 +531,9 @@
         if(section == 1)
         {
             ClassInfo *classInfo = childInfo.classes[row];
-            [cell.logoView setImageWithUrl:[NSURL URLWithString:classInfo.schoolInfo.logo]];
+            [cell.logoView setImageWithUrl:[NSURL URLWithString:classInfo.school.logo]];
             [cell.logoView setHidden:NO];
-            [cell setText:classInfo.schoolInfo.schoolName extra:classInfo.className];
+            [cell setText:classInfo.school.schoolName extra:classInfo.name];
         }
         else
         {

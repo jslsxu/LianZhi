@@ -74,8 +74,8 @@
 - (void)setPhoto:(PhotoItem *)photo
 {
     _photo = photo;
-    [deleteButton setHidden:!self.photo.canDelete];
-    [_timeLabel setText:_photo.formatTimeStr];
+    [deleteButton setHidden:!self.photo.can_edit];
+    [_timeLabel setText:_photo.time_str];
 }
 
 

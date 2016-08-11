@@ -85,6 +85,15 @@
     }
 }
 
+- (void)deleteItem:(NSString *)itemID{
+    for (MessageGroupItem *groupItem in self.modelItemArray) {
+        if([itemID isEqualToString:groupItem.fromInfo.uid]){
+            [self.modelItemArray removeObject:groupItem];
+            return;
+        }
+    }
+}
+
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
 {
     BOOL parse = [super parseData:data type:type];

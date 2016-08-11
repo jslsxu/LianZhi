@@ -161,14 +161,13 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-//    [self requestData:REQUEST_REFRESH];
-    [ApplicationDelegate.homeVC.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ActionAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(onPublishButtonClicked)]];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:ApplicationDelegate.homeVC.curChildrenSelectView];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [ApplicationDelegate.homeVC.navigationItem setRightBarButtonItem:nil];
+    [self.navigationItem setLeftBarButtonItem:nil];
 }
 
 - (void)viewDidLoad {
@@ -183,7 +182,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 //    [_publishButton addTarget:self action:@selector(onPublishButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 //    [self.view addSubview:_publishButton];
 //    [_publishButton setFrame:CGRectMake(30, self.view.height - 64 - 50 - publishButtonWidth - 15, publishButtonWidth, publishButtonWidth)];
-    
+    //    [self requestData:REQUEST_REFRESH];
+    [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ActionAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(onPublishButtonClicked)]];
     UIView *whiteLine = [[UIView alloc] initWithFrame:CGRectMake((50 - 2 / 2), 0, 2, self.view.height)];
     [whiteLine setBackgroundColor:[UIColor whiteColor]];
     [self.view addSubview:whiteLine];

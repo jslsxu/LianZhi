@@ -139,7 +139,15 @@
     else
         _numIndicator.hidden = YES;
     NSString *content = _messageItem.content;
-    _contentLabel.text = content;
+    if(_messageItem.im_at){
+        NSMutableAttributedString *attrContent = [[NSMutableAttributedString alloc] initWithString:@"[有人@我]" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"F0003A"]}];
+        [attrContent appendAttributedString:[[NSAttributedString alloc] initWithString:content attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"9a9a9a"]}]];
+        [_contentLabel setAttributedText:attrContent];
+    }
+    else{
+        _contentLabel.text = content;
+    }
+
     [_sepLine setY:_contentLabel.bottom + 10 - 0.5];
     
     _soundOff.hidden = _messageItem.soundOn;

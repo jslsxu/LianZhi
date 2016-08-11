@@ -7,31 +7,7 @@
 //
 
 #import "NotificationRecordVC.h"
-
-@implementation NotificationItem
-
-+ (nullable NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
-    return @{@"nid" : @"id"};
-}
-
-+ (nullable NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
-    return @{@"voice" : [AudioItem class],
-             @"pictures" : [PhotoItem class]};
-}
-
-- (BOOL)hasImage{
-    return self.pictures.count > 0;
-}
-
-- (BOOL)hasAudio{
-    return self.voice;
-}
-
-- (BOOL)hasVideo{
-    return YES;
-}
-
-@end
+#import "NotificationDetailVC.h"
 
 @implementation NotificationRecordItemCell
 
@@ -79,19 +55,18 @@
 
 - (void)setNotificationItem:(NotificationItem *)notificationItem{
     _notificationItem = notificationItem;
-    [_titleLabel setFrame:CGRectMake(12, 18, self.width - 12 * 2, 0)];
+    [_titleLabel setFrame:CGRectMake(12, 18, self.width - 12 * 2, 20)];
     [_titleLabel setText:_notificationItem.words];
-    [_titleLabel sizeToFit];
     [self.moreOptionsButton setTitle:@"转发" forState:UIControlStateNormal];
     [_sepLine setFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
     
     [_audioImageView setHidden:!_notificationItem.hasAudio];
     [_photoImageView setHidden:!_notificationItem.hasImage];
     [_videoImageView setHidden:!_notificationItem.hasVideo];
-    CGFloat spaceXStart = 12;
+    CGFloat spaceXStart = 20;
     CGFloat centerY = 50;
     if(_notificationItem.hasAudio){
-        [_audioImageView setCenter:CGPointMake(spaceXStart + _audioImageView.width / 2, centerY)];
+        [_audioImageView setCenter:CGPointMake(spaceXStart, centerY)];
         spaceXStart += _audioImageView.width + 15;
     }
     if(_notificationItem.hasImage){
@@ -200,6 +175,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NotificationItem *item = _notificationArray[indexPath.row];
+    NotificationDetailVC*  detailVC = [[NotificationDetailVC alloc] init];
+    [detailVC setNotificationItem:item];
+    [CurrentROOTNavigationVC pushViewController:detailVC animated:YES];
 }
 
 #pragma mark EGORefreshTableHeaderDelegate Methods

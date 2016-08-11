@@ -18,6 +18,7 @@ static SystemSoundID shake_sound_male_id = 0;
 
 #define kBaseInfoModifyKey                  @"BaseInfoModifyKey"
 @interface AppDelegate ()
+@property (nonatomic, strong)TNBaseNavigationController *loginNav;
 @end
 
 @implementation AppDelegate
@@ -49,6 +50,15 @@ static SystemSoundID shake_sound_male_id = 0;
     });
 }
 
+- (TNBaseNavigationController *)rootNavigation{
+    if(_loginNav){
+        return _loginNav;
+    }
+    else{
+        return self.homeVC.selectedViewController;
+    }
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [self setupCommonAppearance];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -70,8 +80,7 @@ static SystemSoundID shake_sound_male_id = 0;
         if([[UserCenter sharedInstance] hasLogin])
         {
             HomeViewController *homeVC = [[HomeViewController alloc] init];
-            self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:homeVC];
-            [self.window setRootViewController:self.rootNavigation];
+            [self.window setRootViewController:homeVC];
             self.homeVC = homeVC;
         }
         else
@@ -83,8 +92,8 @@ static SystemSoundID shake_sound_male_id = 0;
                     [self loginSuccess];
                 }
             }];
-            self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:loginVC];
-            [self.window setRootViewController:self.rootNavigation];
+            self.loginNav = [[TNBaseNavigationController alloc] initWithRootViewController:loginVC];
+            [self.window setRootViewController:self.loginNav];
         }
     }
     
@@ -205,22 +214,22 @@ static SystemSoundID shake_sound_male_id = 0;
                 if([child.uid isEqualToString:childID])
                     contains = YES;
             }
-            if(contains)
-            {
-                UIApplicationState appState = [[UIApplication sharedApplication] applicationState];
-                if (appState == UIApplicationStateInactive) // 后台切换到前台
-                {
-                    if([self.rootNavigation.viewControllers lastObject] == self.homeVC)
-                    {
-                        [self.homeVC selectAtIndex:0];
-                        [self.homeVC.messageVC refreshData];
-                    }
-                }
-                else if (appState == UIApplicationStateActive) // 程序在前台
-                {
-                    [self.homeVC.messageVC refreshData];
-                }
-            }
+//            if(contains)
+//            {
+//                UIApplicationState appState = [[UIApplication sharedApplication] applicationState];
+//                if (appState == UIApplicationStateInactive) // 后台切换到前台
+//                {
+//                    if([self.rootNavigation.viewControllers lastObject] == self.homeVC)
+//                    {
+//                        [self.homeVC selectAtIndex:0];
+//                        [self.homeVC.messageVC refreshData];
+//                    }
+//                }
+//                else if (appState == UIApplicationStateActive) // 程序在前台
+//                {
+//                    [self.homeVC.messageVC refreshData];
+//                }
+//            }
 
             
         }
@@ -273,18 +282,17 @@ static SystemSoundID shake_sound_male_id = 0;
         [[HttpRequestEngine sharedInstance] setCommonCacheRoot:[NSString stringWithFormat:@"child_id_%@",[UserCenter sharedInstance].curChild.uid]];
         HomeViewController *homeVC = [[HomeViewController alloc] init];
         self.homeVC = homeVC;
-        self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:homeVC];
-        if([UserCenter sharedInstance].userData.firstLogin)
-        {
-            RelatedInfoVC *relatedInfoVC = [[RelatedInfoVC alloc] init];
-            [self.rootNavigation pushViewController:relatedInfoVC animated:NO];
-        }
-        if(![UserCenter sharedInstance].userData.confirmed)
-        {
-            BaseInfoModifyVC *baseInfoVC = [[BaseInfoModifyVC alloc] init];
-            [self.rootNavigation pushViewController:baseInfoVC animated:NO];
-        }
-        [self.window setRootViewController:self.rootNavigation];
+//        if([UserCenter sharedInstance].userData.firstLogin)
+//        {
+//            RelatedInfoVC *relatedInfoVC = [[RelatedInfoVC alloc] init];
+//            [self.rootNavigation pushViewController:relatedInfoVC animated:NO];
+//        }
+//        if(![UserCenter sharedInstance].userData.confirmed)
+//        {
+//            BaseInfoModifyVC *baseInfoVC = [[BaseInfoModifyVC alloc] init];
+//            [self.rootNavigation pushViewController:baseInfoVC animated:NO];
+//        }
+        [self.window setRootViewController:self.homeVC];
         [self.window makeKeyAndVisible];
     };
     
@@ -292,8 +300,8 @@ static SystemSoundID shake_sound_male_id = 0;
     {
         PasswordModificationVC *passWordModificationVC = [[PasswordModificationVC alloc] init];
         [passWordModificationVC setCallback:callback];
-        self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:passWordModificationVC];
-        [self.window setRootViewController:self.rootNavigation];
+        self.loginNav = [[TNBaseNavigationController alloc] initWithRootViewController:passWordModificationVC];
+        [self.window setRootViewController:self.loginNav];
     }
     else
     {
@@ -318,8 +326,8 @@ static SystemSoundID shake_sound_male_id = 0;
             [self loginSuccess];
         }
     }];
-    self.rootNavigation = [[TNBaseNavigationController alloc] initWithRootViewController:loginVC];
-    [self.window setRootViewController:self.rootNavigation];
+    self.loginNav = [[TNBaseNavigationController alloc] initWithRootViewController:loginVC];
+    [self.window setRootViewController:self.loginNav];
     [[UserCenter sharedInstance] logout];
 }
 
@@ -339,16 +347,6 @@ static SystemSoundID shake_sound_male_id = 0;
 //    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);   //让手机震动
 }
 
-- (void)popAndPush:(UIViewController *)vc
-{
-    NSArray *vcArray = [self.rootNavigation viewControllers];
-    if(vcArray.count > 1)
-    {
-        [self.rootNavigation popToRootViewControllerAnimated:NO];
-        [self.homeVC selectAtIndex:0];
-    }
-    [self.rootNavigation pushViewController:vc animated:YES];
-}
 
 - (void)expendOperationGuide
 {

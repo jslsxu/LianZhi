@@ -47,7 +47,11 @@ static NSString *kLocalVideoCachePath = @"video";
 }
 
 + (NSString *)localVideoCachePath{
-    return nil;
+    NSString *videoCachePath = [[self localCachePath] stringByAppendingString:kLocalVideoCachePath];
+    if(![[NSFileManager defaultManager] fileExistsAtPath:videoCachePath]){
+        [[NSFileManager defaultManager] createDirectoryAtPath:videoCachePath withIntermediateDirectories:YES attributes:nil error:NULL];
+    }
+    return videoCachePath;
 }
 
 + (NSString *)localFilePath{

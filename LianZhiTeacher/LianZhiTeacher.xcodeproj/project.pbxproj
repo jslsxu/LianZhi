@@ -317,6 +317,9 @@
 		37FEA9651C46554500E7425B /* AccountInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FEA9641C46554500E7425B /* AccountInfoView.m */; };
 		37FEA96B1C4657E900E7425B /* GiftDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FEA96A1C4657E900E7425B /* GiftDetailView.m */; };
 		610E28126325A1D5E90E063F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85040462C9FB39754B0681EA /* libPods.a */; };
+		8D3D457A1D5B2118005EA8EA /* NotificationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45791D5B2118005EA8EA /* NotificationItem.m */; };
+		8D3D457D1D5B24A6005EA8EA /* NotificationPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D457C1D5B24A6005EA8EA /* NotificationPreviewView.m */; };
+		8D3D45831D5C1E94005EA8EA /* LZVideoCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45821D5C1E94005EA8EA /* LZVideoCacheManager.m */; };
 		8D867BC91D25042A0020A21C /* NHAudioConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB51D25042A0020A21C /* NHAudioConverter.m */; };
 		8D867BCA1D25042A0020A21C /* NHAudioTool+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB71D25042A0020A21C /* NHAudioTool+Helper.m */; };
 		8D867BCB1D25042A0020A21C /* NHAudioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB91D25042A0020A21C /* NHAudioTool.m */; };
@@ -1001,6 +1004,12 @@
 		37FEA96A1C4657E900E7425B /* GiftDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiftDetailView.m; sourceTree = "<group>"; };
 		5632BDC4D6EF5C4FF3ACF6CF /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		85040462C9FB39754B0681EA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D3D45781D5B2118005EA8EA /* NotificationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationItem.h; sourceTree = "<group>"; };
+		8D3D45791D5B2118005EA8EA /* NotificationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationItem.m; sourceTree = "<group>"; };
+		8D3D457B1D5B24A6005EA8EA /* NotificationPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationPreviewView.h; sourceTree = "<group>"; };
+		8D3D457C1D5B24A6005EA8EA /* NotificationPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationPreviewView.m; sourceTree = "<group>"; };
+		8D3D45811D5C1E94005EA8EA /* LZVideoCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZVideoCacheManager.h; sourceTree = "<group>"; };
+		8D3D45821D5C1E94005EA8EA /* LZVideoCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZVideoCacheManager.m; sourceTree = "<group>"; };
 		8D867BB41D25042A0020A21C /* NHAudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHAudioConverter.h; sourceTree = "<group>"; };
 		8D867BB51D25042A0020A21C /* NHAudioConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHAudioConverter.m; sourceTree = "<group>"; };
 		8D867BB61D25042A0020A21C /* NHAudioTool+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NHAudioTool+Helper.h"; sourceTree = "<group>"; };
@@ -2739,6 +2748,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8D3D45771D5B2106005EA8EA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8D3D45781D5B2118005EA8EA /* NotificationItem.h */,
+				8D3D45791D5B2118005EA8EA /* NotificationItem.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		8D867BB31D25042A0020A21C /* NHAudioTool */ = {
 			isa = PBXGroup;
 			children = (
@@ -2913,6 +2931,8 @@
 				8DCFD6AD1D4C5639001EDC8A /* NotificationPreviewVC.m */,
 				8D867D521D3FE2290020A21C /* NotificationMemberSelectVC.h */,
 				8D867D531D3FE2290020A21C /* NotificationMemberSelectVC.m */,
+				8D3D457B1D5B24A6005EA8EA /* NotificationPreviewView.h */,
+				8D3D457C1D5B24A6005EA8EA /* NotificationPreviewView.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3014,6 +3034,7 @@
 		8DCFD6C91D4DE18A001EDC8A /* NotificationHistory */ = {
 			isa = PBXGroup;
 			children = (
+				8D3D45771D5B2106005EA8EA /* Model */,
 				8DCFD6CA1D4DE277001EDC8A /* NotificationRecordVC.h */,
 				8DCFD6CB1D4DE277001EDC8A /* NotificationRecordVC.m */,
 				8DCFD6CD1D4DE29D001EDC8A /* NotificationDraftVC.h */,
@@ -3118,6 +3139,8 @@
 				8DCFD7501D584C08001EDC8A /* NHFileDownloadHeader.h */,
 				8DCFD7511D584C08001EDC8A /* NHFileDownloadManager */,
 				8DCFD7591D584C08001EDC8A /* NHFileServer */,
+				8D3D45811D5C1E94005EA8EA /* LZVideoCacheManager.h */,
+				8D3D45821D5C1E94005EA8EA /* LZVideoCacheManager.m */,
 			);
 			path = NHFileServer;
 			sourceTree = "<group>";
@@ -3367,11 +3390,13 @@
 				37FD6E351BB69AFE00C83AB4 /* RegisterVC.m in Sources */,
 				37FD6DEA1BAEE01C00C83AB4 /* MessageItem.m in Sources */,
 				373528771AD6557800C0F326 /* BaseInfoModifyVC.m in Sources */,
+				8D3D45831D5C1E94005EA8EA /* LZVideoCacheManager.m in Sources */,
 				37DEE4F11A57C24A009A8771 /* SettingItemCell.m in Sources */,
 				37C355DC1A3FD5CF00B948E6 /* HomeViewController.m in Sources */,
 				372C753B1C08661500A1D90B /* ClassAttendanceVC.m in Sources */,
 				3793FA9F1B7CFFF000501F77 /* UserInfo.m in Sources */,
 				8DCFD70C1D50B528001EDC8A /* SearchChatMessageVC.m in Sources */,
+				8D3D457A1D5B2118005EA8EA /* NotificationItem.m in Sources */,
 				3728A6AB1B98B22700310457 /* ResponseModel.m in Sources */,
 				3793FA891B7CFFF000501F77 /* CameraMaskView.m in Sources */,
 				3793FA9C1B7CFFF000501F77 /* AudioItem.m in Sources */,
@@ -3496,6 +3521,7 @@
 				37E93FC31A7E9CC600AD45A1 /* MJPhotoLoadingView.m in Sources */,
 				37C88F6E1A827AD2008E44DB /* LogConfig.m in Sources */,
 				8DCFD6CC1D4DE277001EDC8A /* NotificationRecordVC.m in Sources */,
+				8D3D457D1D5B24A6005EA8EA /* NotificationPreviewView.m in Sources */,
 				8D867C851D2F97080020A21C /* DNImagePickerController.m in Sources */,
 				3728A74C1B9EE5C400310457 /* PublishGrowthTimelineVC.m in Sources */,
 				8DCFD7001D503DD2001EDC8A /* NJKWebViewProgress.m in Sources */,
