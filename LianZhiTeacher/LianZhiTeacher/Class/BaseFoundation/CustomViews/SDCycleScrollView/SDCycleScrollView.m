@@ -286,6 +286,8 @@ NSString * const ID = @"cycleCell";
     
     [self setupPageControl];
     [self.mainView reloadData];
+    [self.timer invalidate];
+    [self setupTimer];
 }
 
 - (void)setImageURLStringsGroup:(NSArray *)imageURLStringsGroup
@@ -454,6 +456,8 @@ NSString * const ID = @"cycleCell";
     _mainView.dataSource = nil;
 }
 
+
+
 #pragma mark - public actions
 
 
@@ -522,7 +526,9 @@ NSString * const ID = @"cycleCell";
         pageControl.currentPage = indexOnPageControl;
     } else {
         UIPageControl *pageControl = (UIPageControl *)_pageControl;
-        pageControl.currentPage = indexOnPageControl;
+        if(indexOnPageControl != pageControl.currentPage){
+            pageControl.currentPage = indexOnPageControl;
+        }
     }
 }
 

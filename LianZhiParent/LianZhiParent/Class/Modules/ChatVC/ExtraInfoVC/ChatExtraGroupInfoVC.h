@@ -15,5 +15,5 @@
 @end
 
 @interface ChatExtraGroupInfoVC : TNBaseViewController
-
+@property (nonatomic, strong)id group;
 @end

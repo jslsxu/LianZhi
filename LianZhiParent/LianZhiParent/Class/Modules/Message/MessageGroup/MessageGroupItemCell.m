@@ -16,7 +16,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self)
     {
-        self.width = kScreenWidth;
+        [self setSize:CGSizeMake(kScreenWidth, 60)];
         [self setBackgroundColor:[UIColor whiteColor]];
         [self.moreOptionsButton setBackgroundColor:[UIColor colorWithHexString:@"c7c7c7"]];
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(10, 8, 44, 44)];
@@ -118,26 +118,39 @@
         [_schoolLabel setHidden:YES];
     }
     
+    CGFloat spaceXStart = 60;
+    CGFloat spaceXEnd = self.actualContentView.width - 5;
+//    _messageItem.fromInfo.type = ChatTypeAttendance;
     //通知图标
     if([_messageItem.fromInfo isNotification])
     {
         [_notificationIndicator setHidden:NO];
-        [_contentLabel setFrame:CGRectMake(_notificationIndicator.right + 5, 30, _soundOff.left - 5 - (_notificationIndicator.right + 5), 20)];
+        spaceXStart = _notificationIndicator.right + 5;
     }
     else
     {
         [_notificationIndicator setHidden:YES];
-        [_contentLabel setFrame:CGRectMake(60, 30, _soundOff.left - 5 - 60, 20)];
     }
     
     if(_messageItem.msgNum > 0)
     {
         [_numIndicator setHidden:NO];
         [_numIndicator setIndicator:kStringFromValue(_messageItem.msgNum)];
-        [_numIndicator setCenter:CGPointMake(_logoView.right - _numIndicator.width / 2, 6 + _numIndicator.height / 2)];
+        [_numIndicator setCenter:CGPointMake(spaceXEnd - _numIndicator.width / 2, _notificationIndicator.centerY)];
+        spaceXEnd = _numIndicator.left - 5;
     }
     else
         _numIndicator.hidden = YES;
+    
+    if(_messageItem.soundOn){
+        [_soundOff setHidden:YES];
+    }
+    else{
+        [_soundOff setHidden:NO];
+        [_soundOff setCenter:CGPointMake(spaceXEnd - _soundOff.width / 2, _notificationIndicator.centerY)];
+        spaceXEnd = _soundOff.left - 5;
+    }
+    [_contentLabel setFrame:CGRectMake(spaceXStart, 32, spaceXEnd - spaceXStart, 20)];
     NSString *content = _messageItem.content;
     if(_messageItem.im_at){
         NSMutableAttributedString *attrContent = [[NSMutableAttributedString alloc] initWithString:@"[有人@我]" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"F0003A"]}];
@@ -148,10 +161,7 @@
         _contentLabel.text = content;
     }
 
-    [_sepLine setY:_contentLabel.bottom + 10 - 0.5];
-    
-    _soundOff.hidden = _messageItem.soundOn;
-    _soundOff.y = _sepLine.y - 10 - _soundOff.height;
+    [_sepLine setY:60 - kLineHeight];
 }
 + (NSNumber *)cellHeight:(MessageGroupItem *)messageItem cellWidth:(NSInteger)width;
 {

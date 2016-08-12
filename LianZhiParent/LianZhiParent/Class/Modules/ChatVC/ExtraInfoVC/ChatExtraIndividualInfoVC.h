@@ -20,5 +20,5 @@
 @interface ChatExtraIndividualInfoVC : TNBaseViewController{
     
 }
-
+@property (nonatomic, strong)UserInfo* userInfo;
 @end

@@ -29,7 +29,6 @@ CGFloat const kAngleOffset = -90.0f;
 
 - (void)setProgress:(CGFloat)newProgress {
 	_progress = fmaxf(0.0f, fminf(1.0f, newProgress));
-    NSLog(@"progress is %f",_progress);
 	[self setNeedsDisplay];
 }
 

@@ -24,7 +24,6 @@
     UITableView*    _tableView;
 }
 @property (nonatomic, copy)NSString *classID;
-@property (nonatomic, copy)NSString *groupID;
 @property (nonatomic, copy)void (^atCallback)(UserInfo *user);
 @property (nonatomic, copy)void (^cancelCallback)();
 @end

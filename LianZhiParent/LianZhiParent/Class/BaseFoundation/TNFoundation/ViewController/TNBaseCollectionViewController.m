@@ -260,32 +260,6 @@
     
 }
 
-#pragma - cache
-
-- (BOOL)supportCache
-{
-    return NO;
-}
-
-- (NSString *)cacheFilePath
-{
-    NSString *cacheName = [self cacheFileName];
-    if(cacheName)
-    {
-        NSString *docDir = [NHFileManager localCachePath];
-        NSString *commonCacheRoot = [HttpRequestEngine sharedInstance].commonCacheRoot;
-        docDir = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@",commonCacheRoot,cacheName]];
-        return docDir;
-    }
-    return nil;
-}
-
-
-- (NSString *)cacheFileName
-{
-    return nil;
-}
-
 
 - (void)didReceiveMemoryWarning
 {

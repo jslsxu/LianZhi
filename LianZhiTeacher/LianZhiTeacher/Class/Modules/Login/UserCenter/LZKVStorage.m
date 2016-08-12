@@ -48,9 +48,7 @@
     static dispatch_once_t token = 0;
     dispatch_once(&token, ^{
         
-        NSString *storagePath = [FCFileManager pathForLibraryDirectoryWithPath:@"AppKVStorage"];
-        ;
-        __applicationStorage = [[LZKVStorage alloc] initWithPath:storagePath];
+        __applicationStorage = [[LZKVStorage alloc] initWithPath:[NHFileManager applicationStoragePath]];
     });
     
     return __applicationStorage;
@@ -65,7 +63,7 @@
     static LZKVStorage *__userStorage = nil;
     
     @synchronized(self.class) {
-        NSString *storagePath = [[NHFileManager uidDirectoryPathByUid:uid] stringByAppendingPathComponent:@"KVStorage"];
+        NSString *storagePath = [NHFileManager localCurrentUserStoragePath];
         
         if ([storagePath isEqualToString:__userStorage.path]) {
             return __userStorage;

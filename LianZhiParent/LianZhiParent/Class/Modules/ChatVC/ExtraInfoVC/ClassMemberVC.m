@@ -78,10 +78,15 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (NSMutableArray *)sourceArray{
+    if(_sourceArray == nil){
+        _sourceArray = [NSMutableArray array];
+    }
+    return _sourceArray;
+}
 - (void)loadData{
-//    @weakify(self)
-//    if(self.classID)
-//    {
+    if(self.classID)
+    {
 //        NSMutableDictionary *params = [NSMutableDictionary dictionary];
 //        [params setValue:self.classID forKey:@"class_id"];
 //        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"app/contact_of_class" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
@@ -99,16 +104,16 @@
 //        } fail:^(NSString *errMsg) {
 //            
 //        }];
-//    }
-//    else if(self.groupID)
-//    {
-//        for (TeacherGroup *group in [UserCenter sharedInstance].curSchool.groups) {
-//            if([group.groupID isEqualToString:group.groupID]){
-//                [self.sourceArray addObjectsFromArray:group.teachers];
-//            }
-//        }
-//        [self.tableView reloadData];
-//    }
+        for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes) {
+            if([classInfo.classID isEqualToString:self.classID]){
+                [self.sourceArray addObjectsFromArray:classInfo.teachers];
+                for (ChildInfo *childInfo in classInfo.students) {
+                    [self.sourceArray addObjectsFromArray:childInfo.family];
+                }
+            }
+        }
+        [self.tableView reloadData];
+    }
 
 }
 

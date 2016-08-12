@@ -151,9 +151,9 @@
     {
         [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
         [cell.switchCtl setHidden:YES];
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        NSString *docDir = [paths objectAtIndex:0];
-        [cell.extraLabel setText:[Utility sizeAtPath:docDir diskMode:YES]];
+        [NHFileManager totalCacheSizeWithCompletion:^(NSInteger totalSize) {
+            [cell.extraLabel setText:[Utility sizeStrForSize:totalSize]];
+        }];
     }
     else if(section == 3 && row > 0)
     {

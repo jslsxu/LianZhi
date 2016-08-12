@@ -28,6 +28,11 @@
     return self;
 }
 
+- (void)setHighlighted:(BOOL)highlighted{
+    [super setHighlighted:highlighted];
+    [self setBackgroundColor:[UIColor colorWithHexString:@"F0003A"]];
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];

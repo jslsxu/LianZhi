@@ -32,8 +32,5 @@
 - (void)cancelRequest;
 - (BOOL)hideErrorAlert;
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType;
-//缓存文件
-- (BOOL)supportCache;
-- (NSString *)cacheFileName;
 - (BOOL)needReload;
 @end

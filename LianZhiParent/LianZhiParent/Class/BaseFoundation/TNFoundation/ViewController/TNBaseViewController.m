@@ -166,6 +166,29 @@
     [self.view endEditing:YES];
 }
 
+#pragma - cache
+
+- (BOOL)supportCache
+{
+    return NO;
+}
+
+- (NSString *)cacheFilePath
+{
+    NSString *cacheName = [self cacheFileName];
+    if(cacheName)
+    {
+        return [[NHFileManager localCurrentUserRequestCachePath] stringByAppendingPathComponent:cacheName];
+    }
+    return nil;
+}
+
+
+- (NSString *)cacheFileName
+{
+    return nil;
+}
+
 
 - (void)dealloc
 {

@@ -69,9 +69,9 @@
     [cell setItem:_settingItems[indexPath.section]];
     if(indexPath.section == 5)
     {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        NSString *docDir = [paths objectAtIndex:0];
-        [cell setContent:[Utility sizeAtPath:docDir diskMode:YES]];
+        [NHFileManager totalCacheSizeWithCompletion:^(NSInteger totalSize) {
+            [cell setContent:[Utility sizeStrForSize:totalSize]];
+        }];
     }
     return cell;
 }
@@ -116,21 +116,12 @@
         {
             TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
             TNButtonItem *cleanItem = [TNButtonItem itemWithTitle:@"清除缓存" action:^{
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-                NSString *docDir = [paths objectAtIndex:0];
                 MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在清除缓存文件..." toView:ApplicationDelegate.window];
-                NSArray *subpathArray = [[NSFileManager defaultManager] subpathsAtPath:docDir];
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    for (NSString *subPath in subpathArray) {
-                        NSString *path = [docDir stringByAppendingPathComponent:subPath];
-                        [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
-                    }
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                        [hud hide:NO];
-                        [ProgressHUD showHintText:@"清除缓存完成"];
-                    });
-                });
+                [NHFileManager cleanCacheWithCompletion:^{
+                    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    [hud hide:NO];
+                    [ProgressHUD showHintText:@"清除缓存完成"];
+                }];
             }];
             TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"确认清除系统缓存信息吗？清除缓存不会影响您发布的信息" buttonItems:@[cancelItem, cleanItem]];
             [alertView show];

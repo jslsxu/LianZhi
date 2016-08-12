@@ -84,7 +84,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.itemArray = [[LZKVStorage applicationKVStorage] storageValueForKey:kDiscoveryCachePath];
+    self.itemArray = [[LZKVStorage userKVStorage] storageValueForKey:kDiscoveryCachePath];
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [_tableView setSeparatorColor:kCommonSeparatorColor];
     [_tableView setDelegate:self];
@@ -126,9 +126,9 @@
         self.itemArray = sectionArray;
         if(self.itemArray.count > 0){
             [[LZKVStorage userKVStorage] saveStorageValue:self.itemArray forKey:kDiscoveryCachePath];
+            [_tableView reloadData];
         }
     }
-    [_tableView reloadData];
 }
 
 - (void)requestData

@@ -19,7 +19,7 @@
 @implementation ChatMessageModel
 
 + (void)removeConversasionForUid:(NSString *)uid type:(ChatType)chatType{
-    NSString*chatPath =  [[NHFileManager chatDirectoryPathForUid:[UserCenter sharedInstance].userInfo.uid] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%zd",uid, chatType]];
+    NSString* chatPath = [[NHFileManager localCurrentUserConversationCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%zd",uid, chatType]];
     [[NSFileManager defaultManager] removeItemAtPath:chatPath error:nil];
 }
 - (void)dealloc{
@@ -138,7 +138,8 @@
 }
 
 - (NSString *)chatPath{
-    return [[NHFileManager chatDirectoryPathForUid:[UserCenter sharedInstance].userInfo.uid] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%zd",self.uid, self.type]];
+    NSString* chatPath = [[NHFileManager localCurrentUserConversationCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%zd",self.uid, self.type]];
+    return chatPath;
 }
 
 - (NSString *)latestId{

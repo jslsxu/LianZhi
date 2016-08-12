@@ -265,8 +265,7 @@
 
 - (NSString *)cacheFileName
 {
-    NSString *chatPath = [NHFileManager chatDirectoryPathForUid:[UserCenter sharedInstance].userInfo.uid];
-    return [chatPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_messageIndex",[UserCenter sharedInstance].curChild.uid]];
+    return [[NHFileManager localCurrentUserRequestCachePath] stringByAppendingPathComponent:@"messageIndex"];
 }
 
 #pragma mark * DAContextMenuCell delegate

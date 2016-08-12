@@ -151,9 +151,12 @@
     {
         [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
         [cell.switchCtl setHidden:YES];
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        NSString *docDir = [paths objectAtIndex:0];
-        [cell.extraLabel setText:[Utility sizeAtPath:docDir diskMode:YES]];
+        [NHFileManager totalCacheSizeWithCompletion:^(NSInteger totalSize) {
+            [cell.extraLabel setText:[Utility sizeStrForSize:totalSize]];
+        }];
+//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+//        NSString *docDir = [paths objectAtIndex:0];
+//        [cell.extraLabel setText:[Utility sizeAtPath:docDir diskMode:YES]];
     }
     else if(section == 3 && row > 0)
     {
@@ -229,21 +232,12 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if(indexPath.section == 4)
     {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        NSString *docDir = [paths objectAtIndex:0];
         MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在清除缓存文件..." toView:ApplicationDelegate.window];
-        NSArray *subpathArray = [[NSFileManager defaultManager] subpathsAtPath:docDir];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            for (NSString *subPath in subpathArray) {
-                NSString *path = [docDir stringByAppendingPathComponent:subPath];
-                [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                [hud hide:NO];
-                [ProgressHUD showHintText:@"清除缓存完成"];
-            });
-        });
+        [NHFileManager cleanCacheWithCompletion:^{
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [hud hide:NO];
+            [ProgressHUD showHintText:@"清除缓存完成"];
+        }];
     }
     else if (indexPath.section == 3 && indexPath.row > 0)
     {

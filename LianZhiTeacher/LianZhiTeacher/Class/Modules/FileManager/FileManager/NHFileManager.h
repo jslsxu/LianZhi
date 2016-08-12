@@ -18,19 +18,30 @@ static NSString *const LZCache = @"LZCache";
 
 + (NSString *)localCachePath;       //本地缓存文件，以后可删除的
 
-+ (NSString *)localFilePath;        //本地文件，无需删除
++ (NSString *)applicationStoragePath;
+
+/**
+ 这部分是多媒体缓存，公共缓存
+ */
++ (NSString *)localMediaDataCachePath;  //本地图片，视频，音频等数据缓存
 
 + (NSString *)localImageCachePath;  //本地图片缓存文件
-
-+ (NSString *)localRequestDataCachePath;    //本地请求缓存文件
 
 + (NSString *)localAudioCachePath;          //本地音频缓存
 
 + (NSString *)localVideoCachePath;          //本地视频缓存
 
-+ (NSString *)uidDirectoryPathByUid:(NSString *)uid;        //用户目录
 
-+ (NSString *)chatDirectoryPathForUid:(NSString *)uid;      //聊天目录
+//和用户相关的缓存
++ (NSString *)localUserPath;
+
++ (NSString *)localCurrentUserCachePath;        //当前用户缓存目录
+
++ (NSString *)localCurrentUserStoragePath;      //当前用户storage文件
+
++ (NSString *)localCurrentUserConversationCachePath;    //当前用户聊天记录缓存地址
+
++ (NSString *)localCurrentUserRequestCachePath;         //当前用户网络请求缓存地址
 
 + (NSString *)getTmpRecordPath;                             //录音的临时路径
 
@@ -39,6 +50,10 @@ static NSString *const LZCache = @"LZCache";
 + (NSString *)tmpVideoPathForPath:(NSString *)path;
 
 + (NSUInteger)fileSizeAtPath:(NSString *)filePath;
+
++ (void)totalCacheSizeWithCompletion:(void (^)(NSInteger totalSize))completion;
+
++ (void)cleanCacheWithCompletion:(void (^)())completion;
 
 + (BOOL)existsItemAtPath:(NSString *)path;
 

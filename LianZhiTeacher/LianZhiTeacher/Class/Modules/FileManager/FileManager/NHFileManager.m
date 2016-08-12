@@ -20,6 +20,11 @@ static NSString *kLocalVideoCachePath = @"video";
 
 @implementation NHFileManager
 
++ (void)createDirectory:(NSString *)path{
+    if(![[NSFileManager defaultManager] fileExistsAtPath:path]){
+        [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:NULL];
+    }
+}
 
 + (NSString *)documentPath {
     return [FCFileManager pathForDocumentsDirectory];
@@ -34,49 +39,90 @@ static NSString *kLocalVideoCachePath = @"video";
     return cahcePath;
 }
 
++ (NSString *)applicationStoragePath{
+    NSString *storagePath = [[FCFileManager pathForDocumentsDirectory] stringByAppendingPathComponent:@"ApplicationStorage"];
+    return storagePath;
+}
+
+/**
+ 这部分是多媒体缓存，公共缓存
+ */
++ (NSString *)localMediaDataCachePath{
+    NSString *mediaCachePath = [[self localCachePath] stringByAppendingPathComponent:@"mediaCache"];
+    [self createDirectory:mediaCachePath];
+    return mediaCachePath;
+}
+
 + (NSString *)localImageCachePath{
-    return nil;
-}
-
-+ (NSString *)localRequestDataCachePath{
-    return nil;
-}
-
-+ (NSString *)localAudioCachePath{
-    return nil;
+    NSString *imageCachePath = [[self localMediaDataCachePath] stringByAppendingPathComponent:@"image"];
+    [self createDirectory:imageCachePath];
+    return imageCachePath;
 }
 
 + (NSString *)localVideoCachePath{
-    NSString *videoCachePath = [[self localCachePath] stringByAppendingString:kLocalVideoCachePath];
-    if(![[NSFileManager defaultManager] fileExistsAtPath:videoCachePath]){
-        [[NSFileManager defaultManager] createDirectoryAtPath:videoCachePath withIntermediateDirectories:YES attributes:nil error:NULL];
-    }
+    NSString *videoCachePath = [[self localMediaDataCachePath] stringByAppendingPathComponent:@"video"];
+    [self createDirectory:videoCachePath];
     return videoCachePath;
 }
 
-+ (NSString *)localFilePath{
-    NSString *localFilePath = [[self documentPath] stringByAppendingPathComponent:kLocalStorePath];
-    if(![[NSFileManager defaultManager] fileExistsAtPath:localFilePath]){
-        [[NSFileManager defaultManager] createDirectoryAtPath:localFilePath withIntermediateDirectories:YES attributes:nil error:NULL];
-    }
-    return localFilePath;
++ (NSString *)localAudioCachePath{
+    NSString *audioCachePath = [[self localMediaDataCachePath] stringByAppendingPathComponent:@"audio"];
+    [self createDirectory:audioCachePath];
+    return audioCachePath;
 }
 
-//可以获得各个文件存放的文件夹的目录
-+ (NSString *)chatDirectoryPathForUid:(NSString *)uid {
-    //uid
-    NSString *pathComponent = [[self uidDirectoryPathByUid:uid] stringByAppendingPathComponent:kNHFileManagerChatDirectoryName];
-    
-    if (![FCFileManager existsItemAtPath:pathComponent] ) {
-        NSError *error;
-        if ([FCFileManager createDirectoriesForPath:pathComponent error:&error] && !error) {
-            NSLog(@"success created chat directory");
-        }
-        else {
-            NSLog(@"chatDirectoryPathForUid: %@", error.description);
+//和用户相关的缓存
++ (NSString *)localUserPath{
+    NSString *userCachePath = [[self localCachePath] stringByAppendingPathComponent:@"userCache"];
+    [self createDirectory:userCachePath];
+    return userCachePath;
+}
+
++ (NSString *)localCurrentUserCachePath{
+    if([UserCenter sharedInstance].hasLogin){
+        NSString *curUserCachePath = [[self localUserPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"uid_%@",[UserCenter sharedInstance].userInfo.uid]];
+        [self createDirectory:curUserCachePath];
+        return curUserCachePath;
+    }
+    return nil;
+}
+
++ (NSString *)localCurrentUserStoragePath{
+    if([UserCenter sharedInstance].hasLogin){
+        NSString *storagePath = [[self localCurrentUserCachePath] stringByAppendingPathComponent:@"KVStorage"];
+        return storagePath;
+    }
+    return nil;
+}
+
++ (NSString *)localCurrentUserConversationCachePath{
+    if([UserCenter sharedInstance].hasLogin){
+        NSString *schoolID = [UserCenter sharedInstance].curSchool.schoolID;
+        if(schoolID.length > 0){
+            NSString *curSchoolInfoPath = [[self localCurrentUserCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"schoolid_%@",schoolID]];
+            [self createDirectory:curSchoolInfoPath];
+            
+            NSString *curChatPath = [curSchoolInfoPath stringByAppendingPathComponent:@"chat"];
+            [self createDirectory:curChatPath];
+            return curChatPath;
         }
     }
-    return pathComponent;
+    return nil;
+}
+
++ (NSString *)localCurrentUserRequestCachePath{
+    if([UserCenter sharedInstance].hasLogin){
+        NSString *schoolID = [UserCenter sharedInstance].curSchool.schoolID;
+        if(schoolID.length > 0){
+            NSString *curSchoolInfoPath = [[self localCurrentUserCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"schoolid_%@",schoolID]];
+            [self createDirectory:curSchoolInfoPath];
+            
+            NSString *curRequestPath = [curSchoolInfoPath stringByAppendingPathComponent:@"request"];
+            [self createDirectory:curRequestPath];
+            return curRequestPath;
+        }
+    }
+    return nil;
 }
 
 + (NSString *)getTmpRecordPath{
@@ -135,6 +181,30 @@ static NSString *kLocalVideoCachePath = @"video";
     }
 
 }
+
++ (void)totalCacheSizeWithCompletion:(void (^)(NSInteger totalSize))completion{
+    NSInteger mediaSize = [Utility sizeAtPath:[self localMediaDataCachePath] diskMode:YES];
+    [[SDImageCache sharedImageCache] calculateSizeWithCompletionBlock:^(NSUInteger fileCount, NSUInteger totalSize) {
+        if(completion){
+            completion(mediaSize + totalSize);
+        }
+    }];
+    
+}
+
++ (void)cleanCacheWithCompletion:(void (^)())completion{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[NSFileManager defaultManager] removeItemAtPath:[self localMediaDataCachePath] error:nil];
+        [[SDImageCache sharedImageCache] clearDiskOnCompletion:^{
+           dispatch_async(dispatch_get_main_queue(), ^{
+               if(completion){
+                   completion();
+               }
+           });
+        }];
+    });
+}
+
 + (BOOL)existsItemAtPath:(NSString *)path {
     return [FCFileManager existsItemAtPath:path];
 }

@@ -35,8 +35,5 @@
 - (void)cancelRequest;
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType;
 - (void)reloadData;
-//缓存文件
-- (BOOL)supportCache;
-- (NSString *)cacheFileName;
 - (void)TNBaseCollectionViewControllerModifyLayout:(UICollectionViewLayout *)layout;
 @end

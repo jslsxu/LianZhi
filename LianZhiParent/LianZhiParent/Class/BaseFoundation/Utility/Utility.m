@@ -23,7 +23,7 @@
     }
 }
 
-+ (NSString *)sizeAtPath:(NSString *)filePath diskMode:(BOOL)diskMode
++ (NSUInteger)sizeAtPath:(NSString *)filePath diskMode:(BOOL)diskMode
 {
     uint64_t totalSize = 0;
     NSMutableArray *searchPaths = [NSMutableArray arrayWithObject:filePath];
@@ -55,15 +55,7 @@
             }
         }
     }
-    NSString *memSize = nil;
-    if(totalSize < 1024 * 1024)
-        memSize = [NSString stringWithFormat:@"%.1fKB",(totalSize / 1024.f)];
-    else if (totalSize < 1024 * 1024 * 1024)
-        memSize = [NSString stringWithFormat:@"%.1fM",totalSize / (1024 * 1024.f)];
-    else
-        memSize = [NSString stringWithFormat:@"%.1fG",totalSize / (1024 * 1024 * 1024.f)];
-    
-    return memSize;
+    return totalSize;
 }
 
 + (NSString *)weekdayNameForIndex:(NSInteger)day
@@ -146,6 +138,19 @@
     if(author == ALAuthorizationStatusNotDetermined || author == ALAuthorizationStatusAuthorized)
         return YES;
     return NO;
+}
+
++ (NSString *)sizeStrForSize:(NSInteger)size{
+    NSString *sizeStr;
+    if(size < 1024){
+        sizeStr = [NSString stringWithFormat:@"%zdB",size];
+    }
+    else if(size < 1024 * 1024)
+        sizeStr = [NSString stringWithFormat:@"%zdk",size / 1024];
+    else{
+        sizeStr = [NSString stringWithFormat:@"%.1fM",size / (1024 * 1024.f)];
+    }
+    return sizeStr;
 }
 
 @end

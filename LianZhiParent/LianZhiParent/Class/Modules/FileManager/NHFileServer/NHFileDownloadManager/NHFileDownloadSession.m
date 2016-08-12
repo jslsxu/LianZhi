@@ -74,7 +74,7 @@ static NSInteger const kNHFileDownloadRequestTimeOutInterver = 15;
     
     self.downloadTask = [self.manager downloadTaskWithRequest:requset progress:&progress destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
         
-        return [path URLByAppendingPathComponent:[[requset.URL.absoluteString MD5Encode] stringByAppendingPathExtension:response.suggestedFilename.pathExtension]];
+        return path;
         
     } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
         

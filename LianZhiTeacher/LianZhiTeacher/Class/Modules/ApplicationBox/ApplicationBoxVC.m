@@ -27,7 +27,7 @@
     if(self){
         _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:self.bounds delegate:nil placeholderImage:nil];
         [_cycleScrollView setInfiniteLoop:YES];
-        [_cycleScrollView setPageControlStyle:SDCycleScrollViewPageContolStyleAnimated];
+        [_cycleScrollView setPageControlStyle:SDCycleScrollViewPageContolStyleClassic];
         [_cycleScrollView setAutoScrollTimeInterval:3.f];
         [self addSubview:_cycleScrollView];
     }

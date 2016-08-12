@@ -333,9 +333,6 @@
             if(self.classID.length > 0){
                 [memberVC setClassID:self.classID];
             }
-            else if(self.groupID.length > 0){
-                [memberVC setGroupID:self.groupID];
-            }
             @weakify(self)
             [memberVC setAtCallback:^(UserInfo *user) {
                 @strongify(self)

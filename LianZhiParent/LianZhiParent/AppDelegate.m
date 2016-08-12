@@ -278,6 +278,7 @@ static SystemSoundID shake_sound_male_id = 0;
 - (void)loginSuccess
 {
     void (^callback)() = ^(){
+        self.loginNav = nil;
         self.logouted = NO;
         [[HttpRequestEngine sharedInstance] setCommonCacheRoot:[NSString stringWithFormat:@"child_id_%@",[UserCenter sharedInstance].curChild.uid]];
         HomeViewController *homeVC = [[HomeViewController alloc] init];

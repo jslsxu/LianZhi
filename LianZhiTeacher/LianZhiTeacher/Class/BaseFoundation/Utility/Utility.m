@@ -23,7 +23,7 @@
     }
 }
 
-+ (NSString *)sizeAtPath:(NSString *)filePath diskMode:(BOOL)diskMode
++ (NSUInteger)sizeAtPath:(NSString *)filePath diskMode:(BOOL)diskMode
 {
     uint64_t totalSize = 0;
     NSMutableArray *searchPaths = [NSMutableArray arrayWithObject:filePath];
@@ -55,15 +55,8 @@
             }
         }
     }
-    NSString *memSize = nil;
-    if(totalSize < 1024 * 1024)
-        memSize = [NSString stringWithFormat:@"0M"];
-    else if (totalSize < 1024 * 1024 * 1024)
-        memSize = [NSString stringWithFormat:@"%ldM",(long)totalSize / (1024 * 1024)];
-    else
-        memSize = [NSString stringWithFormat:@"%ldG",(long)totalSize / (1024 * 1024 * 1024)];
     
-    return memSize;
+    return totalSize;
 }
 
 + (NSString *)sizeStrForSize:(NSInteger)size{
