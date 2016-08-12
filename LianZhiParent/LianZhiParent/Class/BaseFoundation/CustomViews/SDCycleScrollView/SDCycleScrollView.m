@@ -286,6 +286,7 @@ NSString * const ID = @"cycleCell";
     
     [self setupPageControl];
     [self.mainView reloadData];
+    [self setupTimer];
 }
 
 - (void)setImageURLStringsGroup:(NSArray *)imageURLStringsGroup
@@ -378,6 +379,10 @@ NSString * const ID = @"cycleCell";
 
 - (void)setupTimer
 {
+    if(self.timer){
+        [self.timer invalidate];
+        self.timer = nil;
+    }
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:self.autoScrollTimeInterval target:self selector:@selector(automaticScroll) userInfo:nil repeats:YES];
     _timer = timer;
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];

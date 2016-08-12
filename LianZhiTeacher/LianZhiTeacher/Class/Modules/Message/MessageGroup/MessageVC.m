@@ -331,6 +331,7 @@
         [chatVC setTargetID:groupItem.fromInfo.uid];
         [chatVC setTo_objid:groupItem.fromInfo.from_obj_id];
         [chatVC setMobile:groupItem.fromInfo.mobile];
+        [chatVC setSoundOn:groupItem.soundOn];
         NSString *title = groupItem.fromInfo.name;
         if(groupItem.fromInfo.label.length > 0 && groupItem.fromInfo.type != ChatTypeParents)
             title = [NSString stringWithFormat:@"%@(%@)",groupItem.fromInfo.name, groupItem.fromInfo.label];

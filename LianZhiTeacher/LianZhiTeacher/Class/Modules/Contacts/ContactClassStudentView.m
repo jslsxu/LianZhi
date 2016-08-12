@@ -102,8 +102,9 @@
 - (void)setClassArray:(NSArray *)classArray{
     _classArray = classArray;
     self.expandDictionary = [NSMutableDictionary dictionary];
+    BOOL expand = (_classArray.count == 1);
     for (ClassInfo *classInfo in _classArray) {
-        [self.expandDictionary setValue:@(NO) forKey:classInfo.classID];
+        [self.expandDictionary setValue:@(expand) forKey:classInfo.classID];
     }
     [_tableView reloadData];
 }

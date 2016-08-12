@@ -152,6 +152,11 @@
     return self;
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self requestData:REQUEST_REFRESH];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -193,7 +198,7 @@
 
 - (NSString *)cacheFileName
 {
-    return [NSString stringWithFormat:@"%@_%@",[self class],[UserCenter sharedInstance].curSchool.schoolID];
+    return @"applicationBox";
 }
 
 - (void)onSchoolChanged

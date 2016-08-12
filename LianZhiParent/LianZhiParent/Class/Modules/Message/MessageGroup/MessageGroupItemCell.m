@@ -17,12 +17,14 @@
     if(self)
     {
         [self setSize:CGSizeMake(kScreenWidth, 60)];
+        [self.actualContentView setSize:self.size];
         [self setBackgroundColor:[UIColor whiteColor]];
         [self.moreOptionsButton setBackgroundColor:[UIColor colorWithHexString:@"c7c7c7"]];
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(10, 8, 44, 44)];
         [self.actualContentView addSubview:_logoView];
         
         _numIndicator = [[NumIndicator alloc] initWithFrame:CGRectZero];
+        [_numIndicator setHidden:YES];
         [self.actualContentView addSubview:_numIndicator];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 18)];

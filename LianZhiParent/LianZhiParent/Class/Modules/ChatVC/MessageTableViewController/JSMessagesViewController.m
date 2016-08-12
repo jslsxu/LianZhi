@@ -172,6 +172,24 @@ static NSString *topChatID = nil;
     
     self.navigationItem.titleView = titleView;
 }
+- (void)cleatChatRecordCompletion:(ClearChatFinished)finished{
+    @weakify(self)
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.targetID forKey:@"to_id"];
+    [params setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/clear" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        @strongify(self)
+        [self.chatMessageModel clearChatRecord];
+        [self.tableView reloadData];
+        if(finished){
+            finished(YES);
+        }
+    } fail:^(NSString *errMsg) {
+        if(finished){
+            finished(NO);
+        }
+    }];
+}
 
 - (void)showChatUserInfo
 {
@@ -180,8 +198,22 @@ static NSString *topChatID = nil;
         [self.navigationController pushViewController:chatExtraInfoVC animated:YES];
     }
     else{
+        @weakify(self)
         ChatExtraIndividualInfoVC *chatExtraInfoVC = [[ChatExtraIndividualInfoVC alloc] init];
+        [chatExtraInfoVC setUid:self.targetID];
+        [chatExtraInfoVC setChatType:self.chatType];
+        [chatExtraInfoVC setSoundOn:self.soundOn];
+        [chatExtraInfoVC setAlertChangeCallback:^(BOOL soundOn) {
+            @strongify(self)
+            self.soundOn = soundOn;
+            [self updateTitle];
+        }];
+        [chatExtraInfoVC setClearChatRecordCallback:^(ClearChatFinished clearChatFinished){
+            @strongify(self)
+            [self cleatChatRecordCompletion:clearChatFinished];
+        }];
         [self.navigationController pushViewController:chatExtraInfoVC animated:YES];
+
     }
 }
 

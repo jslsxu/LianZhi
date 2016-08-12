@@ -74,11 +74,24 @@
         _disturbSwitch = [[UISwitch alloc] init];
         [_disturbSwitch addTarget:self action:@selector(onValueChanged) forControlEvents:UIControlEventValueChanged];
     }
+    [_disturbSwitch setOn:!self.soundOn];
     return _disturbSwitch;
 }
 
 - (void)onValueChanged{
-    
+    BOOL soundOn = !self.soundOn;
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setValue:self.uid forKey:@"from_id"];
+    [params setValue:kStringFromValue(self.chatType) forKey:@"from_type"];
+    [params setValue:soundOn ? @"open" : @"close" forKey:@"sound"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/set_thread" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        self.soundOn = soundOn;
+        if(self.alertChangeCallback){
+            self.alertChangeCallback(soundOn);
+        }
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 #pragma mark - UITableViewDelegate
@@ -165,7 +178,21 @@
             [self.navigationController pushViewController:searchVC animated:YES];
         }
         else if(row == 2){
-            
+            @weakify(self)
+            LGAlertView *alertView = [LGAlertView alertViewWithTitle:@"确定要清空聊天记录吗?" message:nil style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
+            [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+                @strongify(self)
+                if(self.clearChatRecordCallback){
+                    self.clearChatRecordCallback(^(BOOL success){
+                        if(success){
+                            [ProgressHUD showSuccess:@"聊天记录已清除"];
+                        }
+                    });
+                }
+            }];
+            [alertView showAnimated:YES completionHandler:nil];
         }
     }
 }

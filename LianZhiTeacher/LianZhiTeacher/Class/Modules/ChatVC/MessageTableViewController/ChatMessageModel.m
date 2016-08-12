@@ -22,6 +22,16 @@
     NSString* chatPath = [[NHFileManager localCurrentUserConversationCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%zd",uid, chatType]];
     [[NSFileManager defaultManager] removeItemAtPath:chatPath error:nil];
 }
+
+- (void)clearChatRecord{
+    @synchronized (self) {
+        NSString *sql = [NSString stringWithFormat:@"delete FROM %@", [self tableName]];
+        [_database executeUpdate:sql];
+        [self.modelItemArray removeAllObjects];
+        self.numOfNew = 0;
+    }
+}
+
 - (void)dealloc{
     [_database close];
 }
@@ -253,44 +263,50 @@
 }
 
 - (void)sendNewMessage:(MessageItem *)message{
-    [message setTargetUser:self.targetUser];
-    [self.modelItemArray addObject:message];
-    [self sortMessage];
-    NSString *sql = [NSString stringWithFormat:@"insert into %@ values(%@,'%@','%@','%@') ",[self tableName],message.content.mid, message.client_send_id, message.content.text, [message modelToJSONString]];
-    [self.database executeUpdate:sql];
+    @synchronized (self) {
+        [message setTargetUser:self.targetUser];
+        [self.modelItemArray addObject:message];
+        [self sortMessage];
+        NSString *sql = [NSString stringWithFormat:@"insert into %@ values(%@,'%@','%@','%@') ",[self tableName],message.content.mid, message.client_send_id, message.content.text, [message modelToJSONString]];
+        [self.database executeUpdate:sql];
+    }
 }
 
 - (void)updateMessage:(MessageItem *)message{
-    NSString *sql = [NSString stringWithFormat:@"update %@ set message_id = %@, client_send_id = '%@', message_json = '%@', content = '%@' where client_send_id = '%@'",[self tableName],message.content.mid, message.client_send_id, [message modelToJSONString], message.content.text,message.client_send_id];
-    
-    [self.database executeUpdate:sql];
-    
-    for (MessageItem *messageItem in self.modelItemArray) {
-        if([message.content.mid isEqualToString:messageItem.content.mid] || [message.client_send_id isEqualToString:messageItem.client_send_id]){
-            [self.modelItemArray replaceObjectAtIndex:[self.modelItemArray indexOfObject:messageItem] withObject:message];
-            break;
+    @synchronized (self) {
+        NSString *sql = [NSString stringWithFormat:@"update %@ set message_id = %@, client_send_id = '%@', message_json = '%@', content = '%@' where client_send_id = '%@'",[self tableName],message.content.mid, message.client_send_id, [message modelToJSONString], message.content.text,message.client_send_id];
+        
+        [self.database executeUpdate:sql];
+        
+        for (MessageItem *messageItem in self.modelItemArray) {
+            if([message.content.mid isEqualToString:messageItem.content.mid] || [message.client_send_id isEqualToString:messageItem.client_send_id]){
+                [self.modelItemArray replaceObjectAtIndex:[self.modelItemArray indexOfObject:messageItem] withObject:message];
+                break;
+            }
         }
+        [self sortMessage];
     }
-    [self sortMessage];
 }
 
 - (void)deleteMessage:(MessageItem *)message{
-    NSString *sql;
-    if(message.content.mid.length > 0){
-        sql = [NSString stringWithFormat:@"delete from %@ where message_id = %@ ",[self tableName],message.content.mid];
-    }
-    else{
-        sql = [NSString stringWithFormat:@"delete from %@ where client_send_id = '%@' ",[self tableName],message.client_send_id];
-    }
-    
-    BOOL success = [self.database executeUpdate:sql];
-    if(success){
-        NSLog(@"delete success");
-    }
-    for (MessageItem *messageItem in self.modelItemArray) {
-        if([message.content.mid isEqualToString:messageItem.content.mid] || [message.client_send_id isEqualToString:messageItem.client_send_id]){
-            [self.modelItemArray removeObject:messageItem];
-            break;
+    @synchronized (self) {
+        NSString *sql;
+        if(message.content.mid.length > 0){
+            sql = [NSString stringWithFormat:@"delete from %@ where message_id = %@ ",[self tableName],message.content.mid];
+        }
+        else{
+            sql = [NSString stringWithFormat:@"delete from %@ where client_send_id = '%@' ",[self tableName],message.client_send_id];
+        }
+        
+        BOOL success = [self.database executeUpdate:sql];
+        if(success){
+            NSLog(@"delete success");
+        }
+        for (MessageItem *messageItem in self.modelItemArray) {
+            if([message.content.mid isEqualToString:messageItem.content.mid] || [message.client_send_id isEqualToString:messageItem.client_send_id]){
+                [self.modelItemArray removeObject:messageItem];
+                break;
+            }
         }
     }
 }

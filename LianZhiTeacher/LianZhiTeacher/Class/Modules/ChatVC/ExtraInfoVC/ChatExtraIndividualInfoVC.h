@@ -8,6 +8,8 @@
 
 #import "TNBaseViewController.h"
 
+typedef void(^ClearChatFinished)(BOOL success);
+
 @interface ChatExtraUserCell : TNTableViewCell
 {
     AvatarView*     _avatarView;
@@ -20,5 +22,9 @@
 @interface ChatExtraIndividualInfoVC : TNBaseViewController{
     
 }
-
+@property (nonatomic, assign)ChatType chatType;
+@property (nonatomic, copy)NSString *uid;
+@property (nonatomic, assign)BOOL soundOn;
+@property (nonatomic, copy)void (^alertChangeCallback)(BOOL soundOn);
+@property (nonatomic, copy)void (^clearChatRecordCallback)(ClearChatFinished clearChatFinished);
 @end

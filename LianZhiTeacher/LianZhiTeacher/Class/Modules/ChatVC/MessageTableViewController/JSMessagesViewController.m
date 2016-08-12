@@ -42,6 +42,7 @@ static NSString *topChatID = nil;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self updateTitle];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onReceiveGift:) name:ReceiveGiftNotification object:nil];
     _timer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(getMessage) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
@@ -119,57 +120,78 @@ static NSString *topChatID = nil;
     BOOL earMode = [UserCenter sharedInstance].personalSetting.earPhone;
     BOOL soundOn = self.soundOn;
     if(soundOn && !earMode){
-        return;
+        self.navigationItem.title = self.title;
     }
-    NSInteger maxWidth = self.view.width - 80 * 2;
-    
-    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, maxWidth, 40)];
-    NSInteger width = 0;
-    NSInteger spaceXEnd = titleView.width;
-    UIImageView *soundOffImageView = nil;
-    if(!soundOn)
-    {
-        soundOffImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TitleSoundOff"]];
-        [titleView addSubview:soundOffImageView];
-        [soundOffImageView setOrigin:CGPointMake(spaceXEnd - soundOffImageView.width, (titleView.height - soundOffImageView.height) / 2)];
-        width += soundOffImageView.width + 5;
-        spaceXEnd -= soundOffImageView.width + 5;
-    }
-    UIImageView *earPhoneImageView = nil;
-    if(earMode)
-    {
-        earPhoneImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"EarPhoneMode"]];
-        [titleView addSubview:earPhoneImageView];
-        width += earPhoneImageView.width + 5;
-        spaceXEnd -= earPhoneImageView.width + 5;
-    }
-    
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [titleLabel setFont:[UIFont systemFontOfSize:18]];
-    [titleLabel setTextColor:[UIColor colorWithHexString:@"252525"]];
-    [titleLabel setText:self.title];
-    [titleLabel sizeToFit];
-    [titleView addSubview:titleLabel];
-    width += titleLabel.width;
-    
-    if(width < maxWidth)
-    {
-        [titleLabel setOrigin:CGPointMake((titleView.width - width) / 2, (titleView.height - titleLabel.height) / 2)];
-        NSInteger spaceXStart = titleLabel.right + 5;
+    else{
+        NSInteger maxWidth = self.view.width - 80 * 2;
+        
+        UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, maxWidth, 40)];
+        NSInteger width = 0;
+        NSInteger spaceXEnd = titleView.width;
+        UIImageView *soundOffImageView = nil;
+        if(!soundOn)
+        {
+            soundOffImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TitleSoundOff"]];
+            [titleView addSubview:soundOffImageView];
+            [soundOffImageView setOrigin:CGPointMake(spaceXEnd - soundOffImageView.width, (titleView.height - soundOffImageView.height) / 2)];
+            width += soundOffImageView.width + 5;
+            spaceXEnd -= soundOffImageView.width + 5;
+        }
+        UIImageView *earPhoneImageView = nil;
         if(earMode)
         {
-            [earPhoneImageView setOrigin:CGPointMake(spaceXStart, (titleView.height - earPhoneImageView.height) / 2)];
-            spaceXStart += earPhoneImageView.width + 5;
+            earPhoneImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"EarPhoneMode"]];
+            [titleView addSubview:earPhoneImageView];
+            width += earPhoneImageView.width + 5;
+            spaceXEnd -= earPhoneImageView.width + 5;
         }
-        if(!soundOn)
-            [soundOffImageView setOrigin:CGPointMake(spaceXStart, (titleView.height - soundOffImageView.height) / 2)];
+        
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [titleLabel setFont:[UIFont systemFontOfSize:18]];
+        [titleLabel setTextColor:[UIColor colorWithHexString:@"252525"]];
+        [titleLabel setText:self.title];
+        [titleLabel sizeToFit];
+        [titleView addSubview:titleLabel];
+        width += titleLabel.width;
+        
+        if(width < maxWidth)
+        {
+            [titleLabel setOrigin:CGPointMake((titleView.width - width) / 2, (titleView.height - titleLabel.height) / 2)];
+            NSInteger spaceXStart = titleLabel.right + 5;
+            if(earMode)
+            {
+                [earPhoneImageView setOrigin:CGPointMake(spaceXStart, (titleView.height - earPhoneImageView.height) / 2)];
+                spaceXStart += earPhoneImageView.width + 5;
+            }
+            if(!soundOn)
+                [soundOffImageView setOrigin:CGPointMake(spaceXStart, (titleView.height - soundOffImageView.height) / 2)];
+        }
+        else
+        {
+            [titleLabel setFrame:CGRectMake(0, 0, spaceXEnd, titleView.height)];
+        }
+        
+        self.navigationItem.titleView = titleView;
     }
-    else
-    {
-        [titleLabel setFrame:CGRectMake(0, 0, spaceXEnd, titleView.height)];
-    }
-    
-    self.navigationItem.titleView = titleView;
+}
+
+- (void)cleatChatRecordCompletion:(ClearChatFinished)finished{
+    @weakify(self)
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.targetID forKey:@"to_id"];
+    [params setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/clear" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        @strongify(self)
+        [self.chatMessageModel clearChatRecord];
+        [self.tableView reloadData];
+        if(finished){
+            finished(YES);
+        }
+    } fail:^(NSString *errMsg) {
+        if(finished){
+            finished(NO);
+        }
+    }];
 }
 
 - (void)showChatUserInfo
@@ -179,7 +201,20 @@ static NSString *topChatID = nil;
         [self.navigationController pushViewController:chatExtraInfoVC animated:YES];
     }
     else{
+        @weakify(self)
         ChatExtraIndividualInfoVC *chatExtraInfoVC = [[ChatExtraIndividualInfoVC alloc] init];
+        [chatExtraInfoVC setUid:self.targetID];
+        [chatExtraInfoVC setChatType:self.chatType];
+        [chatExtraInfoVC setSoundOn:self.soundOn];
+        [chatExtraInfoVC setAlertChangeCallback:^(BOOL soundOn) {
+            @strongify(self)
+            self.soundOn = soundOn;
+            [self updateTitle];
+        }];
+        [chatExtraInfoVC setClearChatRecordCallback:^(ClearChatFinished clearChatFinished){
+            @strongify(self)
+            [self cleatChatRecordCompletion:clearChatFinished];
+        }];
         [self.navigationController pushViewController:chatExtraInfoVC animated:YES];
     }
 }

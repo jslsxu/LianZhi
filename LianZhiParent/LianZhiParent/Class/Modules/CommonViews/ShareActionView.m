@@ -8,7 +8,7 @@
 
 #import "ShareActionView.h"
 #define kShareViewWidth             270
-#define kShareViewHeight            220
+#define kShareViewHeight            240
 @interface ShareActionView ()
 @property (nonatomic, strong)UIImage *image;
 @property (nonatomic, copy)NSString *imageUrl;
@@ -53,7 +53,7 @@
         NSInteger vMargin = 20;
         NSInteger hMargin = 20;
         NSInteger itemWith = (_contentView.width - hMargin * 2 - innerMargin * 3) / 4;
-        NSInteger itemHeight = 70;
+        NSInteger itemHeight = 80;
         
         _shareArray = [NSMutableArray array];
         NSArray *titleArray = @[@"微信",@"朋友圈",@"QQ空间",@"QQ",@"微博",@"复制链接"];
@@ -66,7 +66,7 @@
             LZTabBarButton *tabButton = [[LZTabBarButton alloc] initWithFrame:CGRectMake(hMargin + (itemWith + innerMargin) * column, vMargin + (itemHeight) * row, itemWith, itemHeight)];
             [tabButton addTarget:self action:@selector(onActionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [tabButton setTitleColor:[UIColor colorWithHexString:@"2c2c2c"] forState:UIControlStateNormal];
-            [tabButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
+            [tabButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
             [tabButton setTitle:titleArray[i] forState:UIControlStateNormal];
             [tabButton setImage:[UIImage imageNamed:imageArray[i]] forState:UIControlStateNormal];
             [tabButton setSpacing:4];

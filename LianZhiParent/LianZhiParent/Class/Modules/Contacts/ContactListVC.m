@@ -134,8 +134,9 @@
 {
     self.expandDictionary = [NSMutableDictionary dictionary];
     NSArray *classArray = [UserCenter sharedInstance].curChild.classes;
+    BOOL expand = (classArray.count == 1);
     for (ClassInfo *classInfo in classArray) {
-        [self.expandDictionary setValue:@(NO) forKey:classInfo.classID];
+        [self.expandDictionary setValue:@(expand) forKey:classInfo.classID];
     }
     [_tableView reloadData];
 }

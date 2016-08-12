@@ -181,7 +181,7 @@
 
 - (NSString *)cacheFileName
 {
-    return [NSString stringWithFormat:@"%@_%@",NSStringFromClass([self class]),[UserCenter sharedInstance].curChild.uid];
+    return @"classApp";
 }
 
 

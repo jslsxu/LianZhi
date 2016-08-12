@@ -84,7 +84,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.itemArray = [[LZKVStorage userKVStorage] storageValueForKey:kDiscoveryCachePath];
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [_tableView setSeparatorColor:kSepLineColor];
     [_tableView setDelegate:self];
@@ -94,12 +94,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
     
-    id responseObject = [NSDictionary dictionaryWithContentsOfFile:[self cachePath]];
-    if(responseObject)
-    {
-        TNDataWrapper *dataWrapper = [TNDataWrapper dataWrapperWithObject:responseObject];
-        [self onSuccessWithResponse:dataWrapper];
-    }
 }
 
 - (void)onStatusChanged
@@ -130,6 +124,7 @@
             }
         }
         self.itemArray = sectionArray;
+        [[LZKVStorage userKVStorage] saveStorageValue:self.itemArray forKey:kDiscoveryCachePath];
     }
     [_tableView reloadData];
 }
@@ -138,21 +133,10 @@
 {
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"info/find" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"child_id" : [UserCenter sharedInstance].curChild.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         NSDictionary *data = responseObject.data;
-        [data writeToFile:[self cachePath] atomically:YES];
         [self onSuccessWithResponse:responseObject];
     } fail:^(NSString *errMsg) {
         
     }];
-}
-
-- (NSString *)cachePath
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *docDir = [paths objectAtIndex:0];
-    NSString *commonCacheRoot = [HttpRequestEngine sharedInstance].commonCacheRoot;
-    NSString *filePath = docDir;
-    filePath = [docDir stringByAppendingPathComponent:[NSString stringWithFormat:@"%@%@_%@",commonCacheRoot,kDiscoveryCachePath,[UserCenter sharedInstance].curChild.uid]];
-    return filePath;
 }
 
 - (BOOL)hasNew

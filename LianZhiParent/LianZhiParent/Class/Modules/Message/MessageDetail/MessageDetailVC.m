@@ -9,6 +9,7 @@
 #import "MessageDetailVC.h"
 #import "MessageDetailItemCell.h"
 #import "MessageDetailModel.h"
+#import "MessageNotificationDetailVC.h"
 @implementation MessageDetailVC
 
 + (void)handlePushAction:(NSString *)fromID fromType:(NSString *)fromType
@@ -90,8 +91,9 @@
 }
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
     MessageDetailItem *detailItem = (MessageDetailItem *)modelItem;
-//    MessageNotificationDetailVC *notificationDetailVC = [[MessageNotificationDetailVC alloc] init];
-//    [self.navigationController pushViewController:notificationDetailVC animated:YES];
+    MessageNotificationDetailVC *notificationDetailVC = [[MessageNotificationDetailVC alloc] init];
+    [notificationDetailVC setMessageDetailItem:detailItem];
+    [self.navigationController pushViewController:notificationDetailVC animated:YES];
 }
 
 - (void)dealloc

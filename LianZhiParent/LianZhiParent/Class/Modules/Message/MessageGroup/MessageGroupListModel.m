@@ -84,6 +84,7 @@
             if([UserCenter sharedInstance].personalSetting.shakeOn)
                 AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         }
+        [self notificationUnreadNumChanged];
     }
     return parse;
 }

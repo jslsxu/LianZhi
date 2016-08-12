@@ -17,6 +17,7 @@
     if(self)
     {
         [self setSize:CGSizeMake(kScreenWidth, 66)];
+        [self.actualContentView setSize:self.size];
         [self setBackgroundColor:[UIColor whiteColor]];
         [self.moreOptionsButton setBackgroundColor:[UIColor colorWithHexString:@"c7c7c7"]];
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(10, 8, 50, 50)];

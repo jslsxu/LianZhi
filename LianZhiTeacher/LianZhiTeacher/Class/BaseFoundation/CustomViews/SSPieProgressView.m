@@ -89,27 +89,36 @@ CGFloat const kAngleOffset = -90.0f;
 	[_pieBackgroundColor set];
 	CGContextFillEllipseInRect(context, rect);
 	
-	// Fill
-	[_pieFillColor set];
-	if (_progress > 0.0f) {
-		CGPoint center = CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
-		CGFloat radius = center.y;
-		CGFloat angle = DEGREES_TO_RADIANS((360.0f * _progress) + kAngleOffset);
-		CGPoint points[3] = {
-			CGPointMake(center.x, 0.0f),
-			center,
-			CGPointMake(center.x + radius * cosf(angle), center.y + radius * sinf(angle))
-		};
-		CGContextAddLines(context, points, sizeof(points) / sizeof(points[0]));
-		CGContextAddArc(context, center.x, center.y, radius, DEGREES_TO_RADIANS(kAngleOffset), angle, YES);
-		CGContextDrawPath(context, kCGPathEOFill);
-	}
-	
-	// Border
-	[_pieBorderColor set];
-	CGContextSetLineWidth(context, _pieBorderWidth);
-	CGRect pieInnerRect = CGRectMake(_pieBorderWidth / 2.0f, _pieBorderWidth / 2.0f, rect.size.width - _pieBorderWidth, rect.size.height - _pieBorderWidth);
-	CGContextStrokeEllipseInRect(context, pieInnerRect);	
+    if(_progress == 1.f){
+        
+    }
+    else{
+        // Fill
+        [_pieFillColor set];
+        if (_progress > 0.0f) {
+            CGPoint center = CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
+            CGFloat radius = center.y;
+            CGFloat angle = DEGREES_TO_RADIANS((360.0f * _progress) + kAngleOffset);
+            CGPoint points[3] = {
+                CGPointMake(center.x, 0.0f),
+                center,
+                CGPointMake(center.x + radius * cosf(angle), center.y + radius * sinf(angle))
+            };
+            CGContextAddLines(context, points, sizeof(points) / sizeof(points[0]));
+            CGContextAddArc(context, center.x, center.y, radius, DEGREES_TO_RADIANS(kAngleOffset), angle, YES);
+            CGContextDrawPath(context, kCGPathEOFill);
+        }
+        else if(_progress == 0.f){
+            CGRect pieInnerRect = CGRectMake(_pieBorderWidth / 2.0f, _pieBorderWidth / 2.0f, rect.size.width - _pieBorderWidth, rect.size.height - _pieBorderWidth);
+            CGContextFillEllipseInRect(context, pieInnerRect);
+        }
+        
+        // Border
+        [_pieBorderColor set];
+        CGContextSetLineWidth(context, _pieBorderWidth);
+        CGRect pieInnerRect = CGRectMake(_pieBorderWidth / 2.0f, _pieBorderWidth / 2.0f, rect.size.width - _pieBorderWidth, rect.size.height - _pieBorderWidth);
+        CGContextStrokeEllipseInRect(context, pieInnerRect);
+    }
 }
 
 
