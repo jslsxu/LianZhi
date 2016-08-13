@@ -357,6 +357,9 @@
 		8D3D45B81D5DDB09005EA8EA /* NotificationDetailVoiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45AD1D5DDB09005EA8EA /* NotificationDetailVoiceView.m */; };
 		8D3D45B91D5DDB09005EA8EA /* NotificationDetailActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45AF1D5DDB09005EA8EA /* NotificationDetailActionView.m */; };
 		8D3D45BE1D5DDB80005EA8EA /* MessageDetailItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45BD1D5DDB80005EA8EA /* MessageDetailItem.m */; };
+		8D3D45CE1D5F9438005EA8EA /* ChatTeacherInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45C91D5F9438005EA8EA /* ChatTeacherInfoVC.m */; };
+		8D3D45CF1D5F9438005EA8EA /* ChatParentInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45CB1D5F9438005EA8EA /* ChatParentInfoVC.m */; };
+		8D3D45D01D5F9438005EA8EA /* ContactInfoHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45CD1D5F9438005EA8EA /* ContactInfoHeaderCell.m */; };
 		8D867BEF1D261FFE0020A21C /* CircleProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BEE1D261FFE0020A21C /* CircleProgressView.m */; };
 		8D867C241D2A6C530020A21C /* NHAudioConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C0F1D2A6C530020A21C /* NHAudioConverter.m */; };
 		8D867C251D2A6C530020A21C /* NHAudioTool+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C111D2A6C530020A21C /* NHAudioTool+Helper.m */; };
@@ -1046,6 +1049,12 @@
 		8D3D45AF1D5DDB09005EA8EA /* NotificationDetailActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationDetailActionView.m; sourceTree = "<group>"; };
 		8D3D45BC1D5DDB80005EA8EA /* MessageDetailItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageDetailItem.h; sourceTree = "<group>"; };
 		8D3D45BD1D5DDB80005EA8EA /* MessageDetailItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageDetailItem.m; sourceTree = "<group>"; };
+		8D3D45C81D5F9438005EA8EA /* ChatTeacherInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatTeacherInfoVC.h; sourceTree = "<group>"; };
+		8D3D45C91D5F9438005EA8EA /* ChatTeacherInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatTeacherInfoVC.m; sourceTree = "<group>"; };
+		8D3D45CA1D5F9438005EA8EA /* ChatParentInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatParentInfoVC.h; sourceTree = "<group>"; };
+		8D3D45CB1D5F9438005EA8EA /* ChatParentInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatParentInfoVC.m; sourceTree = "<group>"; };
+		8D3D45CC1D5F9438005EA8EA /* ContactInfoHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactInfoHeaderCell.h; sourceTree = "<group>"; };
+		8D3D45CD1D5F9438005EA8EA /* ContactInfoHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactInfoHeaderCell.m; sourceTree = "<group>"; };
 		8D867BED1D261FFE0020A21C /* CircleProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleProgressView.h; sourceTree = "<group>"; };
 		8D867BEE1D261FFE0020A21C /* CircleProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleProgressView.m; sourceTree = "<group>"; };
 		8D867C0E1D2A6C530020A21C /* NHAudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHAudioConverter.h; sourceTree = "<group>"; };
@@ -1479,6 +1488,12 @@
 				8DCFD7AB1D5A3BDB001EDC8A /* ChatExtraGroupInfoVC.m */,
 				8DCFD7AC1D5A3BDB001EDC8A /* SearchChatMessageVC.h */,
 				8DCFD7AD1D5A3BDB001EDC8A /* SearchChatMessageVC.m */,
+				8D3D45C81D5F9438005EA8EA /* ChatTeacherInfoVC.h */,
+				8D3D45C91D5F9438005EA8EA /* ChatTeacherInfoVC.m */,
+				8D3D45CA1D5F9438005EA8EA /* ChatParentInfoVC.h */,
+				8D3D45CB1D5F9438005EA8EA /* ChatParentInfoVC.m */,
+				8D3D45CC1D5F9438005EA8EA /* ContactInfoHeaderCell.h */,
+				8D3D45CD1D5F9438005EA8EA /* ContactInfoHeaderCell.m */,
 			);
 			path = ExtraInfoVC;
 			sourceTree = "<group>";
@@ -3186,6 +3201,7 @@
 				8DCFD7D21D5AC94D001EDC8A /* VideoRecordView.m in Sources */,
 				37CFA5B51A4AF2920061D7B8 /* MessageDetailItemCell.m in Sources */,
 				37C3164F1A568F4A002E847D /* GrowthTimelineVC.m in Sources */,
+				8D3D45D01D5F9438005EA8EA /* ContactInfoHeaderCell.m in Sources */,
 				8DCFD7D81D5ADD94001EDC8A /* NJKWebViewProgress.m in Sources */,
 				37CBAF1E1A4724930063F395 /* PublishPhotoVC.m in Sources */,
 				37C88F821A83DF0D008E44DB /* ReportProblemVC.m in Sources */,
@@ -3261,6 +3277,7 @@
 				37FD70B51BBDAFED00C83AB4 /* FeedItemDetailVC.m in Sources */,
 				37CA18851AB70BCC00B49B55 /* PhotoPickerItem.m in Sources */,
 				379947E11A66B403008E4B4F /* PhotoFlowVC.m in Sources */,
+				8D3D45CF1D5F9438005EA8EA /* ChatParentInfoVC.m in Sources */,
 				370F33D01A78140B00FED3C2 /* AboutVC.m in Sources */,
 				379947E01A66B403008E4B4F /* PhotoFlowModel.m in Sources */,
 				3793F81B1B7CFFD900501F77 /* TNCollectionViewCell.m in Sources */,
@@ -3332,6 +3349,7 @@
 				8DCFD7AE1D5A3BDB001EDC8A /* ClassMemberVC.m in Sources */,
 				37CA18871AB70BCC00B49B55 /* PhotoPickerVC.m in Sources */,
 				37B52A1A1A73C24B005F80F2 /* LogConfig.m in Sources */,
+				8D3D45CE1D5F9438005EA8EA /* ChatTeacherInfoVC.m in Sources */,
 				37B7044F1A4410CD0025D684 /* PasswordModificationVC.m in Sources */,
 				8D867D231D3D232C0020A21C /* LZKVStorage.m in Sources */,
 				37BC708B1C116EC900F8B79B /* CalendarView.m in Sources */,

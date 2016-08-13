@@ -11,9 +11,10 @@
 @interface ChatExtraGroupInfoCell : TNTableViewCell{
     LogoView*        _logoView;
 }
-
+@property (nonatomic, readonly)LogoView *logoView;
 @end
 
 @interface ChatExtraGroupInfoVC : TNBaseViewController
-
+@property (nonatomic, copy)NSString *groupID;
+@property (nonatomic, assign)ChatType chatType;
 @end

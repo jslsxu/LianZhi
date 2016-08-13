@@ -198,6 +198,8 @@ static NSString *topChatID = nil;
 {
     if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup){
         ChatExtraGroupInfoVC *chatExtraInfoVC = [[ChatExtraGroupInfoVC alloc] init];
+        [chatExtraInfoVC setChatType:self.chatType];
+        [chatExtraInfoVC setGroupID:self.targetID];
         [self.navigationController pushViewController:chatExtraInfoVC animated:YES];
     }
     else{

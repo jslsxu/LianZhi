@@ -24,7 +24,11 @@
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    self.timeSpan = [dataWrapper getIntegerForKey:@"second"];
-    self.audioUrl = [dataWrapper getStringForKey:@"url"];
+    [self modelSetWithJSON:dataWrapper.data];
+}
+
++ (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
+    return @{@"timeSpan" : @"second",
+             @"audioUrl" : @"url"};
 }
 @end

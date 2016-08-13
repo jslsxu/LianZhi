@@ -34,6 +34,8 @@
 @property (nonatomic, strong)UITableView*   tableView;
 @property (nonatomic, strong)UISwitch*      disturbSwitch;
 @property (nonatomic, strong)UISwitch*      groupChatSwitch;
+@property (nonatomic, strong)NSArray*       memberArray;
+@property (nonatomic, copy)NSString*        logoUrl;
 @end
 
 @implementation ChatExtraGroupInfoVC
@@ -42,6 +44,57 @@
     [super viewDidLoad];
      self.title = @"聊天信息";
     [self.view addSubview:self.tableView];
+    [self loadData];
+}
+
+- (void)loadData{
+    if(self.chatType == ChatTypeClass){
+        @weakify(self)
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"app/contact_of_class" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"class_id" : self.groupID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            @strongify(self)
+            TNDataWrapper *classWrapper = [responseObject getDataWrapperForKey:@"class"];
+            if(classWrapper.count > 0)
+            {
+                NSMutableArray *sourceArray = [NSMutableArray array];
+                TNDataWrapper *teacherArrayWrapper = [classWrapper getDataWrapperForKey:@"teachers"];
+                if(teacherArrayWrapper.count > 0)
+                {
+                    for (NSInteger i = 0; i < teacherArrayWrapper.count; i++)
+                    {
+                        TNDataWrapper *teacherItemWrapper = [teacherArrayWrapper getDataWrapperForIndex:i];
+                        TeacherInfo *teacherInfo = [[TeacherInfo alloc] init];
+                        [teacherInfo parseData:teacherItemWrapper];
+                        [sourceArray addObject:teacherInfo];
+                    }
+                }
+                
+                TNDataWrapper *studentArrayWrapper = [classWrapper getDataWrapperForKey:@"students"];
+                if(studentArrayWrapper.count > 0)
+                {
+                    for (NSInteger i = 0; i < studentArrayWrapper.count; i++)
+                    {
+                        TNDataWrapper *studentItemWrapper = [studentArrayWrapper getDataWrapperForIndex:i];
+                        StudentInfo *studentInfo = [[StudentInfo alloc] init];
+                        [studentInfo parseData:studentItemWrapper];
+                        [sourceArray addObjectsFromArray:studentInfo.family];
+                    }
+                }
+                self.memberArray = sourceArray;
+            }
+            
+            [self.tableView reloadData];
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    }
+    else if(self.chatType == ChatTypeGroup){
+        for (TeacherGroup *teacherGroup in [UserCenter sharedInstance].curSchool.groups) {
+            if([teacherGroup.groupID isEqualToString:self.groupID]){
+                self.memberArray = [NSArray arrayWithArray:teacherGroup.teachers];
+                [self.tableView reloadData];
+            }
+        }
+    }
 }
 
 - (UITableView *)tableView{
@@ -117,6 +170,7 @@
         if(nil == cell){
             cell = [[ChatExtraGroupInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
         }
+        [cell.logoView setImageWithUrl:[NSURL URLWithString:self.logoUrl]];
         return cell;
     }
     else{
@@ -129,7 +183,7 @@
             [cell.textLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
         }
         if(section == 0){
-            [cell.textLabel setText:@"全部群成员(30)"];
+            [cell.textLabel setText:[NSString stringWithFormat:@"全部群成员(%zd)",self.memberArray.count]];
             [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         }
         else if(section == 1){
@@ -166,6 +220,12 @@
         }
         else if(row == 1){
             ClassMemberVC *memberVC = [[ClassMemberVC alloc] init];
+            if(self.chatType == ChatTypeClass){
+                [memberVC setClassID:self.groupID];
+            }
+            else{
+                [memberVC setGroupID:self.groupID];
+            }
             [self.navigationController pushViewController:memberVC animated:YES];
         }
     }

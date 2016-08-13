@@ -7,6 +7,13 @@
 //
 
 #import "TNModelItem.h"
+
+typedef CF_ENUM(NSInteger, GenderType) {
+    GenderMale = 0,
+    GenderFemale,
+    GenderSecret,
+};
+
 @interface UserInfo : TNModelItem
 @property (nonatomic, copy)NSString *uid;
 @property (nonatomic, copy)NSString *name;
@@ -14,7 +21,7 @@
 @property (nonatomic, copy)NSString *title;
 @property (nonatomic, copy)NSString *nick;
 @property (nonatomic, copy)NSString *constellation;
-@property (nonatomic, assign)NSInteger sex;
+@property (nonatomic, assign)GenderType sex;
 @property (nonatomic, copy)NSString *birthday;
 @property (nonatomic, copy)NSString *email;
 @property (nonatomic, copy)NSString *mobile;

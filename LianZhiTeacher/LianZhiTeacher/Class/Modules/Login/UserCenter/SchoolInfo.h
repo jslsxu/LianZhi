@@ -8,12 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-typedef CF_ENUM(NSInteger, GenderType) {
-    GenderMale = 0,
-    GenderFemale,
-    GenderSecret,
-};
-
 @interface SchoolInfo : TNModelItem
 @property (nonatomic, copy)NSString *schoolID;
 @property (nonatomic, copy)NSString *schoolName;

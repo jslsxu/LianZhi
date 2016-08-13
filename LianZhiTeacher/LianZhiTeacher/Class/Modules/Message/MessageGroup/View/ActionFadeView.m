@@ -9,6 +9,7 @@
 #import "ActionFadeView.h"
 #import "NotificationSendVC.h"
 #import "POP.h"
+#import "NotificationHistoryVC.h"
 #define kItemWidth                  66
 #define kItemHeight                 96
 
@@ -141,8 +142,10 @@
 
 - (void)sendNotification{
     [self dismissWithCompletion:^{
-        NotificationSendVC *sendVC = [[NotificationSendVC alloc] init];
-        [CurrentROOTNavigationVC pushViewController:sendVC animated:YES];
+//        NotificationSendVC *sendVC = [[NotificationSendVC alloc] init];
+//        [CurrentROOTNavigationVC pushViewController:sendVC animated:YES];
+        NotificationHistoryVC *notificationHistoryVC = [[NotificationHistoryVC alloc] init];
+        [CurrentROOTNavigationVC pushViewController:notificationHistoryVC animated:YES];
     }];
 }
 

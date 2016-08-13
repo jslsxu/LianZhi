@@ -320,6 +320,9 @@
 		8D3D457A1D5B2118005EA8EA /* NotificationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45791D5B2118005EA8EA /* NotificationItem.m */; };
 		8D3D457D1D5B24A6005EA8EA /* NotificationPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D457C1D5B24A6005EA8EA /* NotificationPreviewView.m */; };
 		8D3D45831D5C1E94005EA8EA /* LZVideoCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45821D5C1E94005EA8EA /* LZVideoCacheManager.m */; };
+		8D3D45C11D5F5F20005EA8EA /* ChatTeacherInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45C01D5F5F20005EA8EA /* ChatTeacherInfoVC.m */; };
+		8D3D45C41D5F5F43005EA8EA /* ChatParentInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45C31D5F5F43005EA8EA /* ChatParentInfoVC.m */; };
+		8D3D45C71D5F7EEF005EA8EA /* ContactInfoHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45C61D5F7EEF005EA8EA /* ContactInfoHeaderCell.m */; };
 		8D867BC91D25042A0020A21C /* NHAudioConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB51D25042A0020A21C /* NHAudioConverter.m */; };
 		8D867BCA1D25042A0020A21C /* NHAudioTool+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB71D25042A0020A21C /* NHAudioTool+Helper.m */; };
 		8D867BCB1D25042A0020A21C /* NHAudioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB91D25042A0020A21C /* NHAudioTool.m */; };
@@ -1010,6 +1013,12 @@
 		8D3D457C1D5B24A6005EA8EA /* NotificationPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationPreviewView.m; sourceTree = "<group>"; };
 		8D3D45811D5C1E94005EA8EA /* LZVideoCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZVideoCacheManager.h; sourceTree = "<group>"; };
 		8D3D45821D5C1E94005EA8EA /* LZVideoCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZVideoCacheManager.m; sourceTree = "<group>"; };
+		8D3D45BF1D5F5F20005EA8EA /* ChatTeacherInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatTeacherInfoVC.h; sourceTree = "<group>"; };
+		8D3D45C01D5F5F20005EA8EA /* ChatTeacherInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatTeacherInfoVC.m; sourceTree = "<group>"; };
+		8D3D45C21D5F5F43005EA8EA /* ChatParentInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatParentInfoVC.h; sourceTree = "<group>"; };
+		8D3D45C31D5F5F43005EA8EA /* ChatParentInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatParentInfoVC.m; sourceTree = "<group>"; };
+		8D3D45C51D5F7EEF005EA8EA /* ContactInfoHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactInfoHeaderCell.h; sourceTree = "<group>"; };
+		8D3D45C61D5F7EEF005EA8EA /* ContactInfoHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactInfoHeaderCell.m; sourceTree = "<group>"; };
 		8D867BB41D25042A0020A21C /* NHAudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHAudioConverter.h; sourceTree = "<group>"; };
 		8D867BB51D25042A0020A21C /* NHAudioConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHAudioConverter.m; sourceTree = "<group>"; };
 		8D867BB61D25042A0020A21C /* NHAudioTool+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NHAudioTool+Helper.h"; sourceTree = "<group>"; };
@@ -2735,6 +2744,12 @@
 				8DCFD70E1D51A1A0001EDC8A /* ChatExtraGroupInfoVC.m */,
 				8DCFD70A1D50B528001EDC8A /* SearchChatMessageVC.h */,
 				8DCFD70B1D50B528001EDC8A /* SearchChatMessageVC.m */,
+				8D3D45BF1D5F5F20005EA8EA /* ChatTeacherInfoVC.h */,
+				8D3D45C01D5F5F20005EA8EA /* ChatTeacherInfoVC.m */,
+				8D3D45C21D5F5F43005EA8EA /* ChatParentInfoVC.h */,
+				8D3D45C31D5F5F43005EA8EA /* ChatParentInfoVC.m */,
+				8D3D45C51D5F7EEF005EA8EA /* ContactInfoHeaderCell.h */,
+				8D3D45C61D5F7EEF005EA8EA /* ContactInfoHeaderCell.m */,
 			);
 			path = ExtraInfoVC;
 			sourceTree = "<group>";
@@ -3340,6 +3355,7 @@
 				3793FA701B7CFFF000501F77 /* AFURLSessionManager.m in Sources */,
 				3719A7441AA2319000FBDC2A /* NewEditionPreview.m in Sources */,
 				3793FAA51B7CFFF000501F77 /* NSString+Validate.m in Sources */,
+				8D3D45C71D5F7EEF005EA8EA /* ContactInfoHeaderCell.m in Sources */,
 				37CA18701AB70A2F00B49B55 /* AlbumGroupView.m in Sources */,
 				37F207161BE0BBFF006466F4 /* UITouchScrollView.m in Sources */,
 				378436AE1C153B31009CBBA0 /* CourseView.m in Sources */,
@@ -3474,6 +3490,7 @@
 				37FD6E761BBC51DF00C83AB4 /* StudentParentsVC.m in Sources */,
 				372774EB1A5D94EC00464461 /* GrowthTimelinePublishCell.m in Sources */,
 				8D867D201D3CE2CB0020A21C /* LZKVStorage.m in Sources */,
+				8D3D45C41D5F5F43005EA8EA /* ChatParentInfoVC.m in Sources */,
 				37D6EE371BC90C62000994A2 /* DestinationVC.m in Sources */,
 				3728A7391B9D376300310457 /* HPTextViewInternal.m in Sources */,
 				37C6B4441BF2EFC50001D54F /* SVShareManager.m in Sources */,
@@ -3599,6 +3616,7 @@
 				3793FADD1B7CFFF000501F77 /* LoadingView.m in Sources */,
 				3793FAA01B7CFFF000501F77 /* NSObject+Associative.m in Sources */,
 				3793FAA91B7CFFF000501F77 /* UIImageView+URLWithAnimation.m in Sources */,
+				8D3D45C11D5F5F20005EA8EA /* ChatTeacherInfoVC.m in Sources */,
 				3793FAB71B7CFFF000501F77 /* AmrRecordWriter.m in Sources */,
 				8D867D441D3F7BF80020A21C /* NotificationInputView.m in Sources */,
 				8D867C8B1D2F97080020A21C /* UIViewController+DNImagePicker.m in Sources */,

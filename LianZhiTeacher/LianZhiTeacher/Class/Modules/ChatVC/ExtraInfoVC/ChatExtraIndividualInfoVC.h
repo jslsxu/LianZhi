@@ -7,6 +7,7 @@
 //
 
 #import "TNBaseViewController.h"
+#import "SchoolInfo.h"
 
 typedef void(^ClearChatFinished)(BOOL success);
 

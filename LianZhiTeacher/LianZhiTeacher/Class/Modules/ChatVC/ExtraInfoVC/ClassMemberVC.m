@@ -103,9 +103,9 @@
     }
     else if(self.groupID)
     {
-        for (TeacherGroup *group in [UserCenter sharedInstance].curSchool.groups) {
-            if([group.groupID isEqualToString:group.groupID]){
-                [self.sourceArray addObjectsFromArray:group.teachers];
+        for (TeacherGroup *teacherGroup in [UserCenter sharedInstance].curSchool.groups) {
+            if([teacherGroup.groupID isEqualToString:self.groupID]){
+                [self.sourceArray addObjectsFromArray:teacherGroup.teachers];
             }
         }
         [self.tableView reloadData];
@@ -144,8 +144,8 @@
     UserInfo *userInfo = self.sourceArray[indexPath.row];
     if(self.atCallback){
         self.atCallback(userInfo);
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

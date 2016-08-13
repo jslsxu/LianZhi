@@ -37,8 +37,6 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    
-    self.title = @"";
     self.view.backgroundColor = [UIColor whiteColor];
     
     //config navigation item
@@ -129,6 +127,7 @@
 -(UIWebView*)webView{
     if (!_webView) {
         _webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
+        [_webView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
         _webView.delegate = (id)self;
         _webView.scalesPageToFit = YES;
         _webView.backgroundColor = [UIColor whiteColor];

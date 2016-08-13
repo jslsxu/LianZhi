@@ -8,7 +8,8 @@
 
 #import "ChatExtraIndividualInfoVC.h"
 #import "SearchChatMessageVC.h"
-
+#import "ChatParentInfoVC.h"
+#import "ChatTeacherInfoVC.h"
 @implementation ChatExtraUserCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
@@ -48,6 +49,8 @@
 @interface ChatExtraIndividualInfoVC ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong)UITableView*   tableView;
 @property (nonatomic, strong)UISwitch*      disturbSwitch;
+@property (nonatomic, strong)ContactTeacherInfo*    teacherInfo;
+@property (nonatomic, strong)ContactParentInfo*     parentInfo;
 @end
 
 @implementation ChatExtraIndividualInfoVC
@@ -57,6 +60,7 @@
     self.title = @"聊天信息";
     
     [self.view addSubview:self.tableView];
+    [self loadData];
 }
 
 - (UITableView *)tableView{
@@ -77,6 +81,29 @@
     [_disturbSwitch setOn:!self.soundOn];
     return _disturbSwitch;
 }
+
+- (void)loadData{
+    @weakify(self)
+    if(self.chatType == ChatTypeParents){
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_parent_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid" : self.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            @strongify(self)
+            self.parentInfo = [ContactParentInfo nh_modelWithJson:responseObject.data];
+            [self.tableView reloadData];
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    }
+    else if(self.chatType == ChatTypeTeacher){
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_teacher_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid" : self.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            @strongify(self)
+            self.teacherInfo = [ContactTeacherInfo nh_modelWithJson:responseObject.data];
+            [self.tableView reloadData];
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    }
+}
+
 
 - (void)onValueChanged{
     BOOL soundOn = !self.soundOn;
@@ -131,7 +158,11 @@
         if(cell == nil){
             cell = [[ChatExtraUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
         }
-        [cell setUserInfo:[UserCenter sharedInstance].userInfo];
+        if(self.teacherInfo)
+            [cell setUserInfo:self.teacherInfo];
+        else{
+            [cell setUserInfo:self.parentInfo];
+        }
         return cell;
     }
     else{
@@ -167,7 +198,21 @@
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     if(section == 0){
-        
+        if(self.chatType == ChatTypeTeacher){
+            if(self.teacherInfo){
+                ChatTeacherInfoVC *teacherInfoVC = [[ChatTeacherInfoVC alloc] init];
+                [teacherInfoVC setTeacherInfo:self.teacherInfo];
+                [self.navigationController pushViewController:teacherInfoVC animated:YES];
+            }
+        }
+        else if(self.chatType == ChatTypeParents){
+            if(self.parentInfo){
+                ChatParentInfoVC *parentInfoVC = [[ChatParentInfoVC alloc] init];
+                [parentInfoVC setParentInfo:self.parentInfo];
+                [self.navigationController pushViewController:parentInfoVC animated:YES];
+            }
+        }
+
     }
     else{
         if(row == 0){

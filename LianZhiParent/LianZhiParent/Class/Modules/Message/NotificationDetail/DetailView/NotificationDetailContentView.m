@@ -60,9 +60,9 @@
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY - 2 - _nameLabel.height)];
     
-    [_statusLabel setText:@"未发送"];
-    [_statusLabel sizeToFit];
-    [_statusLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY + 2)];
+//    [_statusLabel setText:@"未发送"];
+//    [_statusLabel sizeToFit];
+//    [_statusLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY + 2)];
     
     [_contentLabel setText:_words];
     [_contentLabel sizeToFit];

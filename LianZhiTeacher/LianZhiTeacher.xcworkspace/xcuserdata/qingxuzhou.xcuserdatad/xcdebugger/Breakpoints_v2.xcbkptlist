@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LianZhiTeacher/Class/Modules/ChatVC/MessageTableViewController/JSMessagesViewController.m"
-            timestampString = "492684039.334689"
+            timestampString = "492697173.827655"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "526"
-            endingLineNumber = "526"
+            startingLineNumber = "528"
+            endingLineNumber = "528"
             landmarkName = "-sendMessage:"
             landmarkType = "5">
          </BreakpointContent>
