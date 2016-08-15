@@ -199,7 +199,7 @@
 }
 
 + (nullable NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
-    return @{@"classID" : @"id"};
+    return @{@"classID" : @[@"id", @"classid"]};
 }
 
 @end

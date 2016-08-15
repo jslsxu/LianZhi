@@ -13,7 +13,7 @@
 #define kScreenHeight                   [UIScreen mainScreen].bounds.size.height
 
 #define RunTimeSysVersion               ([[UIDevice currentDevice].systemVersion floatValue])
-#define IS_IOS7_LATER                   (RunTimeSysVersion >= 7.0f)
+#define IS_IOS8_LATER                   (RunTimeSysVersion >= 8.0f)
 
 #define kCommonTeacherTintColor         [UIColor colorWithRed:39 / 255.0 green:187 / 255.0 blue:205 / 255.0 alpha:1.f]
 #define kCommonBackgroundColor          [UIColor colorWithRed:233 / 255.0 green:233 / 255.0 blue:233 / 255.0 alpha:1.f]

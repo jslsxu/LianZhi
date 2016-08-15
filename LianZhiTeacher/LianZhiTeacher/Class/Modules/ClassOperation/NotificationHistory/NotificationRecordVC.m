@@ -177,7 +177,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NotificationItem *item = _notificationArray[indexPath.row];
     NotificationDetailVC*  detailVC = [[NotificationDetailVC alloc] init];
-    [detailVC setNotificationItem:item];
+    [detailVC setNotificationID:item.nid];
     [CurrentROOTNavigationVC pushViewController:detailVC animated:YES];
 }
 

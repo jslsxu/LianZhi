@@ -10,5 +10,5 @@
 #import "MessageDetailModel.h"
 #import "NotificationItem.h"
 @interface NotificationDetailVC : TNBaseViewController
-@property (nonatomic, strong)NotificationItem* notificationItem;
+@property (nonatomic, copy)NSString *notificationID;
 @end

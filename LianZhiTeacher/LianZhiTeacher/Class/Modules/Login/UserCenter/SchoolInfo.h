@@ -51,7 +51,8 @@
 @property (nonatomic, assign)BOOL canSelected;
 @property (nonatomic, assign)BOOL selected;             //在班级操作中有用
 @property (nonatomic, assign)NSInteger num;
-
+@property (nonatomic, assign)NSInteger sent_num;
+@property (nonatomic, assign)NSInteger read_num;
 @end
 
 
@@ -62,5 +63,7 @@
 @property (nonatomic, assign)BOOL canNotice;
 @property (nonatomic, strong)NSArray *teachers;
 @property (nonatomic, assign)BOOL selected;
+@property (nonatomic, assign)NSInteger sent_num;
+@property (nonatomic, assign)NSInteger read_num;
 - (BOOL)canChat;
 @end

@@ -193,12 +193,24 @@ static NSString *topChatID = nil;
 
 - (void)showChatUserInfo
 {
+    @weakify(self)
     if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup){
         ChatExtraGroupInfoVC *chatExtraInfoVC = [[ChatExtraGroupInfoVC alloc] init];
+        [chatExtraInfoVC setChatType:self.chatType];
+        [chatExtraInfoVC setGroupID:self.targetID];
+        [chatExtraInfoVC setSoundOn:self.soundOn];
+        [chatExtraInfoVC setAlertChangeCallback:^(BOOL soundOn) {
+            @strongify(self)
+            self.soundOn = soundOn;
+            [self updateTitle];
+        }];
+        [chatExtraInfoVC setClearChatRecordCallback:^(ClearChatFinished clearChatFinished) {
+            @strongify(self)
+            [self cleatChatRecordCompletion:clearChatFinished];
+        }];
         [self.navigationController pushViewController:chatExtraInfoVC animated:YES];
     }
     else{
-        @weakify(self)
         ChatExtraIndividualInfoVC *chatExtraInfoVC = [[ChatExtraIndividualInfoVC alloc] init];
         [chatExtraInfoVC setUid:self.targetID];
         [chatExtraInfoVC setChatType:self.chatType];

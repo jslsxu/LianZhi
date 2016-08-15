@@ -7,14 +7,13 @@
 //
 
 #import "TNBaseWebViewController.h"
-
+#import <WebKit/WebKit.h>
 #import "NJKWebViewProgress.h"
 #import "NJKWebViewProgressView.h"
 
 #define boundsWidth self.view.bounds.size.width
 #define boundsHeight self.view.bounds.size.height
 @interface TNBaseWebViewController ()<UIWebViewDelegate,UINavigationControllerDelegate,UINavigationBarDelegate>
-
 @property (nonatomic)UIBarButtonItem* customBackBarItem;
 @property (nonatomic)UIBarButtonItem* closeButtonItem;
 @property (nonatomic, strong)UIActivityIndicatorView*   indicator;

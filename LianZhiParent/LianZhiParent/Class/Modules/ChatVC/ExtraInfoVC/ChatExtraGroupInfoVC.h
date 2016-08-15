@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseViewController.h"
-
+#import "ChatExtraIndividualInfoVC.h"
 @interface ChatExtraGroupInfoCell : TNTableViewCell{
     LogoView*        _logoView;
 }
@@ -15,5 +15,9 @@
 @end
 
 @interface ChatExtraGroupInfoVC : TNBaseViewController
-@property (nonatomic, strong)id group;
+@property (nonatomic, copy)NSString *groupID;
+@property (nonatomic, assign)ChatType chatType;
+@property (nonatomic, assign)BOOL soundOn;
+@property (nonatomic, copy)void (^alertChangeCallback)(BOOL soundOn);
+@property (nonatomic, copy)void (^clearChatRecordCallback)(ClearChatFinished clearChatFinished);
 @end

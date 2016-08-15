@@ -15,6 +15,7 @@
     if(self){
         self.width = kScreenWidth;
         self.height = 56;
+        [self.contentView setBackgroundColor:[UIColor whiteColor]];
         _logoView = [[LogoView alloc] initWithRadius:18];
         [_logoView setOrigin:CGPointMake(12, (56 - _logoView.height) / 2)];
         [self.contentView addSubview:_logoView];
@@ -26,11 +27,16 @@
         
         _stateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_stateLabel setFont:[UIFont systemFontOfSize:12]];
+        [_stateLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
         [self.contentView addSubview:_stateLabel];
         
         _arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"expand_indicator"]];
         [_arrowImageView setCenter:CGPointMake(self.width - 10 - _arrowImageView.width / 2, self.contentView.height / 2)];
         [self.contentView addSubview:_arrowImageView];
+        
+        UIView* sepLine = [[UIView alloc] initWithFrame:CGRectMake(12, self.height - kLineHeight, self.width - 12, kLineHeight)];
+        [sepLine setBackgroundColor:kSepLineColor];
+        [self.contentView addSubview:sepLine];
         
         UITapGestureRecognizer *tapgesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
         [self addGestureRecognizer:tapgesture];
@@ -55,16 +61,37 @@
 
 - (void)setGroup:(id)group{
     _group = group;
+    NSString *logo = nil;
+    NSString *name;
+    NSInteger total = 0;
+    NSInteger readNum = 0;
     if([_group isKindOfClass:[ClassInfo class]]){
         ClassInfo *classInfo = (ClassInfo *)_group;
-        [_logoView setImageWithUrl:[NSURL URLWithString:classInfo.logo]];
-        [_titleLabel setText:classInfo.name];
+        logo = classInfo.logo;
+        name = classInfo.name;
+        total = classInfo.sent_num;
+        readNum = classInfo.read_num;
     }
     else if([_group isKindOfClass:[TeacherGroup class]]){
         TeacherGroup *teacherGroup = (TeacherGroup *)_group;
-        [_logoView setImageWithUrl:[NSURL URLWithString:teacherGroup.logo]];
-        [_titleLabel setText:teacherGroup.groupName];
+        logo = teacherGroup.logo;
+        name = teacherGroup.groupName;
+        total = teacherGroup.sent_num;
+        readNum = teacherGroup.read_num;
     }
+    
+    [_logoView setImageWithUrl:[NSURL URLWithString:logo]];
+    NSMutableAttributedString *stateStr = [[NSMutableAttributedString alloc] initWithString:@"发送:"];
+    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(total) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
+    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 已读:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(readNum) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
+    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+    [_stateLabel setAttributedText:stateStr];
+    [_stateLabel sizeToFit];
+    [_stateLabel setOrigin:CGPointMake(_arrowImageView.left - 10 - _stateLabel.width, (self.height - _stateLabel.height) / 2)];
+    
+    [_titleLabel setFrame:CGRectMake(_logoView.right + 10, 0, _stateLabel.left - 10 - (_logoView.right + 10), self.height)];
+    [_titleLabel setText:name];
 }
 
 
@@ -94,6 +121,11 @@
         _stateImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"call_telephone"]];
 //        [_stateImageView setHidden:YES];
         [self addSubview:_stateImageView];
+        
+        UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(12, self.height - kLineHeight, self.width - 12, kLineHeight)];
+        [sepLine setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
+        [sepLine setBackgroundColor:kSepLineColor];
+        [self addSubview:sepLine];
     }
     return self;
 }
@@ -105,6 +137,14 @@
     [_titleLabel sizeToFit];
     [_titleLabel setOrigin:CGPointMake(_avatarView.right + 15, (56 - _titleLabel.height) / 2)];
     
+    if(_userInfo.has_read){
+        [_stateImageView setHidden:YES];
+        [_stateLabel setHidden:YES];
+    }
+    else{
+        [_stateImageView setHidden:NO];
+        [_stateLabel setHidden:NO];
+    }
     [_stateImageView setOrigin:CGPointMake(self.width - 10 - _stateImageView.width, (56 - _stateImageView.height) / 2)];
     [_stateLabel setOrigin:CGPointMake(_stateImageView.left - 10 - _stateLabel.width, (56 - _stateLabel.height) / 2)];
 }
@@ -157,15 +197,14 @@
 
 - (NSString *)groupIDForSection:(NSInteger)section{
     NSString *groupID = nil;
-    for (id group in _targetArray) {
-        if([group isKindOfClass:[ClassInfo class]]){
-            ClassInfo *classInfo = (ClassInfo *)group;
-            groupID = classInfo.classID;
-        }
-        else if([group isKindOfClass:[TeacherGroup class]]){
-            TeacherGroup *teacherGroup = (TeacherGroup *)group;
-            groupID = teacherGroup.groupID;
-        }
+    id group = _targetArray[section];
+    if([group isKindOfClass:[ClassInfo class]]){
+        ClassInfo *classInfo = (ClassInfo *)group;
+        groupID = classInfo.classID;
+    }
+    else if([group isKindOfClass:[TeacherGroup class]]){
+        TeacherGroup *teacherGroup = (TeacherGroup *)group;
+        groupID = teacherGroup.groupID;
     }
     return groupID;
 }
@@ -175,23 +214,11 @@
     id group = self.targetArray[section];
     if([group isKindOfClass:[ClassInfo class]]){
         ClassInfo *classInfo = (ClassInfo *)group;
-        if(classInfo.students.count == 0){//班级全部，从本地获取
-            for (ClassInfo *localClass in [UserCenter sharedInstance].curSchool.allClasses) {
-                if([localClass.classID isEqualToString:classInfo.classID]){
-                    userArray = localClass.students;
-                }
-            }
-        }
+        userArray = classInfo.students;
     }
     else if([group isKindOfClass:[TeacherGroup class]]){
         TeacherGroup *teacherGroup = (TeacherGroup *)group;
-        if(teacherGroup.teachers.count == 0){
-            for (TeacherGroup *localGroup in [UserCenter sharedInstance].curSchool.groups) {
-                if([localGroup.groupID isEqualToString:teacherGroup.groupID]){
-                    userArray = localGroup.teachers;
-                }
-            }
-        }
+        userArray = teacherGroup.teachers;
     }
     return userArray;
 }
@@ -202,7 +229,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [self userArrayForSection:section].count;
+    NSString *groupID = [self groupIDForSection:section];
+    BOOL expand = [[self.expandDic objectForKey:groupID] boolValue];
+    if(expand)
+        return [self userArrayForSection:section].count;
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -219,6 +250,7 @@
     if(headerView == nil){
         headerView = [[NotificationTargetHeaderView alloc] initWithReuseIdentifier:reuseID];
     }
+    [headerView setGroup:self.targetArray[section]];
     NSString *groupID = [self groupIDForSection:section];
     BOOL expand = [[self.expandDic objectForKey:groupID] boolValue];
     [headerView setExpand:expand];
@@ -244,8 +276,34 @@
     NotificationSendTargetCell *curCell = (NotificationSendTargetCell *)cell;
     UserInfo *userInfo = [[self userArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
     [curCell setUserInfo:userInfo];
+    if(userInfo.has_read){
+        [curCell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    }
+    else{
+        [curCell setSelectionStyle:UITableViewCellSelectionStyleDefault];
+    }
 }
 
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+     UserInfo *userInfo = [[self userArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
+    if(!userInfo.has_read && [userInfo isKindOfClass:[StudentInfo class]]){
+        StudentInfo *studentInfo = (StudentInfo *)userInfo;
+        NSMutableArray *familyArray = [NSMutableArray arrayWithCapacity:0];
+        for (NSInteger i = 0; i < studentInfo.family.count; i++) {
+            FamilyInfo *familyInfo = studentInfo.family[i];
+            [familyArray addObject:[NSString stringWithFormat:@"%@: %@",familyInfo.relation, familyInfo.mobile]];
+        }
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:familyArray cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setButtonsTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
+        [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+            FamilyInfo *familyInfo = studentInfo.family[index];
+            NSMutableString * str = [[NSMutableString alloc] initWithFormat:@"tel://%@",familyInfo.mobile];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+        }];
+        [alertView showAnimated:YES completionHandler:nil];
+    }
+}
 
 @end

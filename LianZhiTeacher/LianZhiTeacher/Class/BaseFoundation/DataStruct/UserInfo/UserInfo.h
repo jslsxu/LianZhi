@@ -29,5 +29,6 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @property (nonatomic, copy)NSString *first_letter;
 @property (nonatomic, assign)BOOL actived;
 @property (nonatomic, assign)BOOL selected;
+@property (nonatomic, assign)BOOL has_read;
 @end
 

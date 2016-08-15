@@ -323,6 +323,7 @@
 		8D3D45C11D5F5F20005EA8EA /* ChatTeacherInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45C01D5F5F20005EA8EA /* ChatTeacherInfoVC.m */; };
 		8D3D45C41D5F5F43005EA8EA /* ChatParentInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45C31D5F5F43005EA8EA /* ChatParentInfoVC.m */; };
 		8D3D45C71D5F7EEF005EA8EA /* ContactInfoHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45C61D5F7EEF005EA8EA /* ContactInfoHeaderCell.m */; };
+		8D3D45D31D6083C8005EA8EA /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45D21D6083C8005EA8EA /* NotificationManager.m */; };
 		8D867BC91D25042A0020A21C /* NHAudioConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB51D25042A0020A21C /* NHAudioConverter.m */; };
 		8D867BCA1D25042A0020A21C /* NHAudioTool+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB71D25042A0020A21C /* NHAudioTool+Helper.m */; };
 		8D867BCB1D25042A0020A21C /* NHAudioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB91D25042A0020A21C /* NHAudioTool.m */; };
@@ -1019,6 +1020,8 @@
 		8D3D45C31D5F5F43005EA8EA /* ChatParentInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatParentInfoVC.m; sourceTree = "<group>"; };
 		8D3D45C51D5F7EEF005EA8EA /* ContactInfoHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactInfoHeaderCell.h; sourceTree = "<group>"; };
 		8D3D45C61D5F7EEF005EA8EA /* ContactInfoHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactInfoHeaderCell.m; sourceTree = "<group>"; };
+		8D3D45D11D6083C8005EA8EA /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
+		8D3D45D21D6083C8005EA8EA /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
 		8D867BB41D25042A0020A21C /* NHAudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHAudioConverter.h; sourceTree = "<group>"; };
 		8D867BB51D25042A0020A21C /* NHAudioConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHAudioConverter.m; sourceTree = "<group>"; };
 		8D867BB61D25042A0020A21C /* NHAudioTool+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NHAudioTool+Helper.h"; sourceTree = "<group>"; };
@@ -3058,6 +3061,8 @@
 				8DCFD7451D57857C001EDC8A /* NotificationDraftManager.m */,
 				8DCFD6D01D4DE2BB001EDC8A /* NotificationHistoryVC.h */,
 				8DCFD6D11D4DE2BB001EDC8A /* NotificationHistoryVC.m */,
+				8D3D45D11D6083C8005EA8EA /* NotificationManager.h */,
+				8D3D45D21D6083C8005EA8EA /* NotificationManager.m */,
 			);
 			path = NotificationHistory;
 			sourceTree = "<group>";
@@ -3573,6 +3578,7 @@
 				3793FA261B7CFFF000501F77 /* MBProgressHUD+Add.m in Sources */,
 				3728A6A51B98B20700310457 /* ClassZoneClassSwitchView.m in Sources */,
 				3793FAED1B7CFFF000501F77 /* TNBaseNavigationController.m in Sources */,
+				8D3D45D31D6083C8005EA8EA /* NotificationManager.m in Sources */,
 				3793FAA81B7CFFF000501F77 /* UIImageView+Animation.m in Sources */,
 				3728A6A71B98B20700310457 /* ResponseView.m in Sources */,
 				3793FAF51B7CFFF000501F77 /* SFHFKeychainUtils.m in Sources */,

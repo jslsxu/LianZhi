@@ -16,6 +16,7 @@
     NotificationTargetListView*     _targetListView;
 }
 @property (nonatomic, strong)UIButton *moreButton;
+@property (nonatomic, strong)NotificationItem* notificationItem;
 @end
 
 @implementation NotificationDetailVC
@@ -32,15 +33,29 @@
     [self setRightbarButtonHighlighted:NO];
     
     _detailView = [[NotificationDetailView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
-    [_detailView setNotificationItem:self.notificationItem];
     [self.view addSubview:_detailView];
     
     _targetListView = [[NotificationTargetListView alloc] initWithFrame:_detailView.frame];
     [_targetListView setHidden:YES];
-    [_targetListView setTargetArray:self.notificationItem.targetArray];
     [self.view addSubview:_targetListView];
+    
+    [self loadData];
 }
 
+- (void)setNotificationItem:(NotificationItem *)notificationItem{
+    _notificationItem = notificationItem;
+    [_detailView setNotificationItem:self.notificationItem];
+    [_targetListView setTargetArray:self.notificationItem.targetArray];
+}
+
+- (void)loadData{
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/my_send_detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : self.notificationID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        NotificationItem *notification = [NotificationItem nh_modelWithJson:responseObject.data];
+        self.notificationItem = notification;
+    } fail:^(NSString *errMsg) {
+        
+    }];
+}
 
 - (void)setRightbarButtonHighlighted:(BOOL)highlighted{
     if(_moreButton == nil){

@@ -24,8 +24,7 @@
     self = [super init];
     if(self)
     {
-        if(IS_IOS7_LATER)
-            self.edgesForExtendedLayout = UIRectEdgeNone;
+        self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     return self;
 }
