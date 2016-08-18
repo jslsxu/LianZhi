@@ -14,5 +14,5 @@
     UILabel*                _numLabel;
 }
 @property (nonatomic, copy)void (^textViewWillChangeHeight)(CGFloat height);
-@property (nonatomic, readonly)NSString *content;
+@property (nonatomic, copy)NSString *content;
 @end

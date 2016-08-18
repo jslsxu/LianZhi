@@ -9,7 +9,7 @@
 #import "VideoItem.h"
 
 @implementation VideoItem
-+ (NSArray<NSString *> *)modelPropertyBlacklist{
-    return @[@"coverImage",@"localVideoPath"];
-}
+//+ (NSArray<NSString *> *)modelPropertyBlacklist{
+//    return @[@"coverImage",@"localVideoPath"];
+//}
 @end

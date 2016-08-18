@@ -13,6 +13,6 @@
     UIView*         _contentView;
     UIDatePicker*   _datePicker;
 }
-@property(nonatomic, copy)void (^completion)( NSDate *date);
-+ (void)showWithCompletion:(void (^)(NSDate *date))completion;
+@property(nonatomic, copy)void (^completion)(NSInteger timeInterval);
++ (void)showWithCompletion:(void (^)(NSInteger timeInterval))completion;
 @end

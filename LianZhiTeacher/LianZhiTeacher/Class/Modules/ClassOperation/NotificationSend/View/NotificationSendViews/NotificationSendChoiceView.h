@@ -16,6 +16,7 @@
 }
 @property (nonatomic, assign)BOOL isOn;
 @property (nonatomic, copy)NSString *infoStr;
+@property (nonatomic, copy)void (^switchCallback)(BOOL isOn);
 @property (nonatomic, copy)void (^infoAction)();
 - (instancetype)initWithFrame:(CGRect)frame title:(NSString *)title;
 @end

@@ -19,4 +19,5 @@
     UIScrollView*                   _scrollView;
     NotificationInputView*          _inputView;
 }
+- (instancetype)initWithSendEntity:(NotificationSendEntity *)sendEntity;
 @end

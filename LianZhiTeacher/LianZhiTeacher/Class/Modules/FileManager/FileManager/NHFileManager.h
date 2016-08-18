@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <FCFileManager.h>
 static NSString *const NHFIleManagerAmrExtensionKey = @"amr";
 static NSString *const NHFIleManagerWavExtensionKey = @"wav";
 static NSString *const LZCache = @"LZCache";
@@ -44,6 +44,8 @@ static NSString *const LZCache = @"LZCache";
 + (NSString *)localCurrentUserRequestCachePath;         //当前用户网络请求缓存地址
 
 + (NSString *)getTmpRecordPath;                             //录音的临时路径
+
++ (NSString *)getTmpVideoPath;                              //视频临时路径
 
 + (NSDictionary *)attribuateOfItemAtPath:(NSString *)path;
 

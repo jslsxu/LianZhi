@@ -9,7 +9,8 @@
 #import "TNTableViewCell.h"
 #import "MessageGroupListModel.h"
 #import "NumIndicator.h"
-@interface MessageGroupItemCell : DAContextMenuCell
+#import <MGSwipeTableCell/MGSwipeTableCell.h>
+@interface MessageGroupItemCell : MGSwipeTableCell
 {
     LogoView*       _logoView;
     NumIndicator*   _numIndicator;

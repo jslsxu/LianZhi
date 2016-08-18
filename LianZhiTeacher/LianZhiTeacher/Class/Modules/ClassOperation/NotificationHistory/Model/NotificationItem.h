@@ -11,8 +11,11 @@
 @interface NotificationItem : TNBaseObject
 @property (nonatomic, copy)NSString *nid;
 @property (nonatomic, copy)NSString *words;
+@property (nonatomic, assign)BOOL is_sent;          //是否已发送
+@property (nonatomic, assign)NSInteger sent_num;
+@property (nonatomic, assign)NSInteger read_num;
 @property (nonatomic, copy)UserInfo*    user;
-@property (nonatomic, copy)NSString *create_time;
+@property (nonatomic, copy)NSString *created_time;
 @property (nonatomic, strong)AudioItem* voice;
 @property (nonatomic, strong)NSArray<PhotoItem*> *pictures;
 @property (nonatomic, strong)VideoItem* video;

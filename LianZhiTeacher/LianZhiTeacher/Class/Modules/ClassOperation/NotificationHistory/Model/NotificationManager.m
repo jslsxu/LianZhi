@@ -1,0 +1,77 @@
+//
+//  NotificationManager.m
+//  LianZhiTeacher
+//
+//  Created by qingxu zhou on 16/8/14.
+//  Copyright © 2016年 jslsxu. All rights reserved.
+//
+
+#import "NotificationManager.h"
+#import "NotificationItem.h"
+
+NSString *kNotificationManagerChangedNotification = @"NotificationManagerChanged";
+NSString *kNotificationSendSuccessNotification = @"NotificationSendSuccessNotification";
+NSString *kNewNotificationToSend = @"NewNotificationToSend";
+@interface NotificationManager ()
+@property (nonatomic, strong)NSMutableArray *notificationArray;
+@end
+
+@implementation NotificationManager
+SYNTHESIZE_SINGLETON_FOR_CLASS(NotificationManager)
+
+- (instancetype)init{
+    self  = [super init];
+    if(self){
+        [self loadSendingData];
+    }
+    return self;
+}
+
+- (NSArray *)sendingNotificationArray{
+    return self.notificationArray;
+}
+
+- (void)clearSendingList{
+    [self.notificationArray removeAllObjects];
+//    [[LZKVStorage userKVStorage] saveStorageValue:nil forKey:kSendingNotificationKey];
+}
+
+- (void)save{
+//    [[LZKVStorage userKVStorage] saveStorageValue:self.sendingNotificationArray forKey:kSendingNotificationKey];
+}
+
+- (void)loadSendingData{
+//    NSArray *sendingArray = [[LZKVStorage userKVStorage] storageValueForKey:kSendingNotificationKey];
+//    self.notificationArray = [NSMutableArray arrayWithArray:sendingArray];
+    self.notificationArray = [NSMutableArray array];
+}
+
+- (void)sendNotificationValueChanged{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationManagerChangedNotification object:nil];
+}
+
+- (void)addNotification:(NotificationSendEntity *)notificationSendEntity{
+    @synchronized (self) {
+        [self.notificationArray addObject:notificationSendEntity];
+        [notificationSendEntity sendWithProgress:^(CGFloat progress) {
+            
+        } success:^(NotificationItem *notification){
+            [self.notificationArray removeObject:notificationSendEntity];
+            if(notification){
+                [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationSendSuccessNotification object:nil userInfo:@{kNewNotificationToSend : notification}];
+            }
+        } fail:^{
+            
+        }];
+        [self sendNotificationValueChanged];
+    }
+}
+
+- (void)removeNotification:(NotificationSendEntity *)notificationSendEntity{
+    @synchronized (self) {
+        [self.notificationArray removeObject:notificationSendEntity];
+//        [self save];
+        [self sendNotificationValueChanged];
+    }
+}
+@end

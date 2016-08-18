@@ -10,4 +10,5 @@
 #import "MessageDetailModel.h"
 @interface MessageNotificationDetailVC : TNBaseViewController
 @property (nonatomic, strong)MessageDetailItem* messageDetailItem;
+@property (nonatomic, copy)void (^deleteSuccessCallback)(MessageDetailItem* messageDetailItem);
 @end

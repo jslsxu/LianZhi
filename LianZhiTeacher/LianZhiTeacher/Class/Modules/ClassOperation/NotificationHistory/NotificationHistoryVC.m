@@ -85,7 +85,12 @@
 }
 
 - (void)onClear{
-    
+    if([self.recordVC.view isHidden]){
+        [self.draftVC clear];
+    }
+    else{
+        [self.recordVC clear];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

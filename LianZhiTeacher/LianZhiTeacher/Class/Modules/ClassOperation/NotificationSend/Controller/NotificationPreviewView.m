@@ -49,7 +49,7 @@
 }
 
 - (void)adjustPosition{
-    [self.contentView setWords:self.notificationSendEntity.content];
+    [self.contentView setWords:self.notificationSendEntity.words];
     [self.voiceView setVoiceArray:self.notificationSendEntity.voiceArray];
     [self.voiceView setTop:self.contentView.bottom];
     [self.videoView setVideoArray:self.notificationSendEntity.videoArray];

@@ -58,6 +58,7 @@
         NSInteger row = (i - start) / 2;
         NSInteger column = (i - start) % 2;
         UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(margin + (itemWidth + margin) * column, height + (itemHeight + margin) * row, itemWidth, itemHeight)];
+        [imageView setBackgroundColor:[UIColor colorWithHexString:@"dddddd"]];
         [imageView setContentMode:UIViewContentModeScaleAspectFill];
         [imageView setClipsToBounds:YES];
         id image = _photoArray[i];

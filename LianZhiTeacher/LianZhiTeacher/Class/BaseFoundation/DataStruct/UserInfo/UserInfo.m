@@ -18,8 +18,8 @@
              @"avatar":@"head"};
 }
 
-+ (nullable NSArray<NSString *> *)modelPropertyBlacklist{
-    return @[@"selected"];
-}
+//+ (nullable NSArray<NSString *> *)modelPropertyBlacklist{
+//    return @[@"selected"];
+//}
 
 @end

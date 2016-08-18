@@ -7,7 +7,13 @@
 //
 
 #import "TNBaseObject.h"
+#import "NotificationSendEntity.h"
 
+extern NSString* kDraftNotificationChanged;
 @interface NotificationDraftManager : TNBaseObject
-
+SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(NotificationDraftManager)
+- (NSArray *)draftArray;
+- (void)addDraft:(NotificationSendEntity *)sendEntity;
+- (void)removeDraft:(NotificationSendEntity *)sendEntity;
+- (void)clearDraft;
 @end

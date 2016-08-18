@@ -10,7 +10,7 @@
 
 @implementation NotificationSelectTimeView
 
-+ (void)showWithCompletion:(void (^)(NSDate *))completion{
++ (void)showWithCompletion:(void (^)(NSInteger timeInterval))completion{
     NotificationSelectTimeView *selectTimeView = [[NotificationSelectTimeView alloc] init];
     [selectTimeView setCompletion:completion];
     [selectTimeView show];
@@ -63,7 +63,8 @@
 
 - (void)confirm{
     if(self.completion){
-        self.completion(_datePicker.date);
+        NSDate *pickDate = _datePicker.date;
+        self.completion([pickDate timeIntervalSince1970]);
     }
     [self dismiss];
 }

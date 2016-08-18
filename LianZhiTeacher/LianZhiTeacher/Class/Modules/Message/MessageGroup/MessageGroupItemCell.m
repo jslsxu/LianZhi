@@ -17,52 +17,50 @@
     if(self)
     {
         [self setSize:CGSizeMake(kScreenWidth, 66)];
-        [self.actualContentView setSize:self.size];
         [self setBackgroundColor:[UIColor whiteColor]];
-        [self.moreOptionsButton setBackgroundColor:[UIColor colorWithHexString:@"c7c7c7"]];
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(10, 8, 50, 50)];
-        [self.actualContentView addSubview:_logoView];
+        [self.contentView addSubview:_logoView];
         
         _numIndicator = [[NumIndicator alloc] initWithFrame:CGRectZero];
-        [self.actualContentView addSubview:_numIndicator];
+        [self.contentView addSubview:_numIndicator];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 10, 180, 18)];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-        [self.actualContentView addSubview:_nameLabel];
+        [self.contentView addSubview:_nameLabel];
         
-//        _schoolLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-//        [_schoolLabel setFont:[UIFont systemFontOfSize:12]];
-//        [_schoolLabel setTextColor:[UIColor colorWithRed:86 / 255.0 green:86 / 255.0 blue:86 / 255.0 alpha:1.0]];
-//        [self.actualContentView addSubview:_schoolLabel];
+        //        _schoolLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        //        [_schoolLabel setFont:[UIFont systemFontOfSize:12]];
+        //        [_schoolLabel setTextColor:[UIColor colorWithRed:86 / 255.0 green:86 / 255.0 blue:86 / 255.0 alpha:1.0]];
+        //        [self.actualContentView addSubview:_schoolLabel];
         
         _massChatIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MassChatIndicator"]];
         [_massChatIndicator setHidden:YES];
-        [self.actualContentView addSubview:_massChatIndicator];
+        [self.contentView addSubview:_massChatIndicator];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.right + 10, 10, self.width - 10 - (_nameLabel.right + 10), 18)];
         [_timeLabel setFont:[UIFont systemFontOfSize:11]];
         [_timeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-        [self.actualContentView addSubview:_timeLabel];
+        [self.contentView addSubview:_timeLabel];
         
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(70, 0, self.width, 0.5)];
         [_sepLine setBackgroundColor:kSepLineColor];
-        [self.actualContentView addSubview:_sepLine];
+        [self.contentView addSubview:_sepLine];
         
         _soundOff = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"Nobell")]];
         [_soundOff setCenter:CGPointMake(self.width - _soundOff.width, 0)];
         [_soundOff setHidden:YES];
-        [self.actualContentView addSubview:_soundOff];
+        [self.contentView addSubview:_soundOff];
         
         _notificationIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NotificationIndicator"]];
         [_notificationIndicator setHidden:YES];
         [_notificationIndicator setOrigin:CGPointMake(70, 36 + (20 - _notificationIndicator.height) / 2)];
-        [self.actualContentView addSubview:_notificationIndicator];
+        [self.contentView addSubview:_notificationIndicator];
         
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 36, _soundOff.left - 5 - 70, 20)];
         [_contentLabel setFont:[UIFont systemFontOfSize:13]];
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
-        [self.actualContentView addSubview:_contentLabel];
+        [self.contentView addSubview:_contentLabel];
     }
     return self;
 }
@@ -70,11 +68,11 @@
 - (void)setMessageItem:(MessageGroupItem *)messageItem
 {
     _messageItem = messageItem;
-    if(_messageItem.soundOn)
-        [self.moreOptionsButton setTitle:@"设为静音" forState:UIControlStateNormal];
-    else
-        [self.moreOptionsButton setTitle:@"取消静音" forState:UIControlStateNormal];
-    [self.actualContentView setHeight:[self.class cellHeight:messageItem cellWidth:self.width].floatValue];
+    //    if(_messageItem.soundOn)
+    //        [self.moreOptionsButton setTitle:@"设为静音" forState:UIControlStateNormal];
+    //    else
+    //        [self.moreOptionsButton setTitle:@"取消静音" forState:UIControlStateNormal];
+    //    [self.actualContentView setHeight:[self.class cellHeight:messageItem cellWidth:self.width].floatValue];
     if(_messageItem.fromInfo.logoImage)
         [_logoView setImage:_messageItem.fromInfo.logoImage];
     else
@@ -118,10 +116,10 @@
         [_massChatIndicator setHidden:YES];
         [_schoolLabel setHidden:YES];
     }
-
+    
     
     CGFloat spaceXStart = 70;
-    CGFloat spaceXEnd = self.actualContentView.width - 5;
+    CGFloat spaceXEnd = self.width - 5;
     //    _messageItem.fromInfo.type = ChatTypeAttendance;
     //通知图标
     if([_messageItem.fromInfo isNotification])

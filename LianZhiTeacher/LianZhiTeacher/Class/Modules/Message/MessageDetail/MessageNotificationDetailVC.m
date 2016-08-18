@@ -41,9 +41,6 @@
 - (void)onMoreClicked{
     [self setRightbarButtonHighlighted:YES];
     @weakify(self)
-    NotificationActionItem *forwadItem = [NotificationActionItem actionItemWithTitle:@"转发到树屋" action:^{
-        
-    } destroyItem:NO];
     NotificationActionItem *shareItem = [NotificationActionItem actionItemWithTitle:@"分享" action:^{
         [ShareActionView shareWithTitle:@"分享" content:@"" image:nil imageUrl:@"" url:@""];
     } destroyItem:NO];
@@ -51,7 +48,7 @@
         @strongify(self)
         [self deleteNotification];
     } destroyItem:YES];
-    [NotificationDetailActionView showWithActions:@[forwadItem, shareItem, deleteItem] completion:^{
+    [NotificationDetailActionView showWithActions:@[ shareItem, deleteItem] completion:^{
         @strongify(self);
         [self setRightbarButtonHighlighted:NO];
     }];
@@ -64,6 +61,9 @@
     [params setValue:self.messageDetailItem.msgID forKey:@"notice_id"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         @strongify(self)
+        if(self.deleteSuccessCallback){
+            self.deleteSuccessCallback(self.messageDetailItem);
+        }
         [self.navigationController popViewControllerAnimated:YES];
     } fail:^(NSString *errMsg) {
         

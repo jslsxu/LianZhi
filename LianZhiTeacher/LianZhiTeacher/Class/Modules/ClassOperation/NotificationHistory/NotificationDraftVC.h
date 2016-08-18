@@ -17,8 +17,7 @@
     UIImageView*    _videoImageView;
     UIView*         _sepLine;
 }
-
-- (void)setData;
+@property (nonatomic, strong)NotificationSendEntity* notification;
 @end
 
 @interface NotificationDraftVC : TNBaseViewController

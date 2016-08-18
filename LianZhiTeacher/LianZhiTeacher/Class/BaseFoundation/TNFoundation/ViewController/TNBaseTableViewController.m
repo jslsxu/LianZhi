@@ -213,20 +213,13 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger count = [_tableViewModel numOfSections];
-    if([_tableViewModel hasMoreData] && _supportPullUp)
-        count ++;
     return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger numOfSections = [self numberOfSectionsInTableView:tableView];
-    if([_tableViewModel hasMoreData] && _supportPullUp && section == numOfSections - 1)
-        return 1;
-    else
-    {
-        return [_tableViewModel numOfRowsInSection:section];
-    }
+    return [_tableViewModel numOfRowsInSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -244,10 +237,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([_tableViewModel hasMoreData] && _supportPullUp && indexPath.section == [self numberOfSectionsInTableView:tableView] - 1)
-    {
-        return _getMoreCell;
-    }
     TNTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellName];
     if (!cell) {
         cell = [[NSClassFromString(self.cellName) alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellName];

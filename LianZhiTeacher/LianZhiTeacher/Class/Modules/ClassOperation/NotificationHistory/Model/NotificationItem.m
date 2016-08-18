@@ -55,7 +55,7 @@
     [notificationItem setNid:messageItem.msgID];
     [notificationItem setWords:messageItem.words];
     [notificationItem setUser:messageItem.from_user];
-    [notificationItem setCreate_time:messageItem.time_str];
+    [notificationItem setCreated_time:messageItem.time_str];
     [notificationItem setVideo:messageItem.video];
     [notificationItem setVoice:messageItem.voice];
     [notificationItem setPictures:messageItem.pictures];

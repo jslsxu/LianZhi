@@ -94,9 +94,6 @@
 		3793FA881B7CFFF000501F77 /* UIAlertView+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F9221B7CFFEF00501F77 /* UIAlertView+Blocks.m */; };
 		3793FA891B7CFFF000501F77 /* CameraMaskView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F9241B7CFFEF00501F77 /* CameraMaskView.m */; };
 		3793FA8A1B7CFFF000501F77 /* CollectionImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F9261B7CFFEF00501F77 /* CollectionImageCell.m */; };
-		3793FA8B1B7CFFF000501F77 /* DAContextMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F9291B7CFFEF00501F77 /* DAContextMenuCell.m */; };
-		3793FA8C1B7CFFF000501F77 /* DAContextMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F92B1B7CFFEF00501F77 /* DAContextMenuTableViewController.m */; };
-		3793FA8D1B7CFFF000501F77 /* DAOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F92D1B7CFFEF00501F77 /* DAOverlayView.m */; };
 		3793FA8E1B7CFFF000501F77 /* LimitedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F92F1B7CFFEF00501F77 /* LimitedTextField.m */; };
 		3793FA8F1B7CFFF000501F77 /* LZTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F9311B7CFFEF00501F77 /* LZTextField.m */; };
 		3793FA901B7CFFF000501F77 /* MSCircleImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F9331B7CFFEF00501F77 /* MSCircleImageView.m */; };
@@ -323,7 +320,8 @@
 		8D3D45C11D5F5F20005EA8EA /* ChatTeacherInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45C01D5F5F20005EA8EA /* ChatTeacherInfoVC.m */; };
 		8D3D45C41D5F5F43005EA8EA /* ChatParentInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45C31D5F5F43005EA8EA /* ChatParentInfoVC.m */; };
 		8D3D45C71D5F7EEF005EA8EA /* ContactInfoHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45C61D5F7EEF005EA8EA /* ContactInfoHeaderCell.m */; };
-		8D3D45D31D6083C8005EA8EA /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45D21D6083C8005EA8EA /* NotificationManager.m */; };
+		8D3D45E31D62F893005EA8EA /* MySendNotificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45E21D62F893005EA8EA /* MySendNotificationModel.m */; };
+		8D3D45E61D62F8A4005EA8EA /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45E51D62F8A4005EA8EA /* NotificationManager.m */; };
 		8D867BC91D25042A0020A21C /* NHAudioConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB51D25042A0020A21C /* NHAudioConverter.m */; };
 		8D867BCA1D25042A0020A21C /* NHAudioTool+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB71D25042A0020A21C /* NHAudioTool+Helper.m */; };
 		8D867BCB1D25042A0020A21C /* NHAudioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB91D25042A0020A21C /* NHAudioTool.m */; };
@@ -374,6 +372,7 @@
 		8D867D541D3FE2290020A21C /* NotificationMemberSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D531D3FE2290020A21C /* NotificationMemberSelectVC.m */; };
 		8D867D571D4128F10020A21C /* VideoRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D561D4128F10020A21C /* VideoRecordView.m */; };
 		8DA785961CA4E35900A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */; };
+		8DB8FAEA1D656E6D006B44B2 /* GiftItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB8FAE91D656E6D006B44B2 /* GiftItem.m */; };
 		8DCFD6651D43CCA6001EDC8A /* YYInfiniteScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6641D43CCA6001EDC8A /* YYInfiniteScrollView.m */; };
 		8DCFD6731D488EED001EDC8A /* ActionFadeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6721D488EED001EDC8A /* ActionFadeView.m */; };
 		8DCFD6761D48A9EE001EDC8A /* MessageSegView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6751D48A9EE001EDC8A /* MessageSegView.m */; };
@@ -604,12 +603,6 @@
 		3793F9241B7CFFEF00501F77 /* CameraMaskView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraMaskView.m; sourceTree = "<group>"; };
 		3793F9251B7CFFEF00501F77 /* CollectionImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionImageCell.h; sourceTree = "<group>"; };
 		3793F9261B7CFFEF00501F77 /* CollectionImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionImageCell.m; sourceTree = "<group>"; };
-		3793F9281B7CFFEF00501F77 /* DAContextMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAContextMenuCell.h; sourceTree = "<group>"; };
-		3793F9291B7CFFEF00501F77 /* DAContextMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAContextMenuCell.m; sourceTree = "<group>"; };
-		3793F92A1B7CFFEF00501F77 /* DAContextMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAContextMenuTableViewController.h; sourceTree = "<group>"; };
-		3793F92B1B7CFFEF00501F77 /* DAContextMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAContextMenuTableViewController.m; sourceTree = "<group>"; };
-		3793F92C1B7CFFEF00501F77 /* DAOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAOverlayView.h; sourceTree = "<group>"; };
-		3793F92D1B7CFFEF00501F77 /* DAOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAOverlayView.m; sourceTree = "<group>"; };
 		3793F92E1B7CFFEF00501F77 /* LimitedTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LimitedTextField.h; sourceTree = "<group>"; };
 		3793F92F1B7CFFEF00501F77 /* LimitedTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LimitedTextField.m; sourceTree = "<group>"; };
 		3793F9301B7CFFEF00501F77 /* LZTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZTextField.h; sourceTree = "<group>"; };
@@ -1020,8 +1013,10 @@
 		8D3D45C31D5F5F43005EA8EA /* ChatParentInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatParentInfoVC.m; sourceTree = "<group>"; };
 		8D3D45C51D5F7EEF005EA8EA /* ContactInfoHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactInfoHeaderCell.h; sourceTree = "<group>"; };
 		8D3D45C61D5F7EEF005EA8EA /* ContactInfoHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactInfoHeaderCell.m; sourceTree = "<group>"; };
-		8D3D45D11D6083C8005EA8EA /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
-		8D3D45D21D6083C8005EA8EA /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
+		8D3D45E11D62F893005EA8EA /* MySendNotificationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySendNotificationModel.h; sourceTree = "<group>"; };
+		8D3D45E21D62F893005EA8EA /* MySendNotificationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySendNotificationModel.m; sourceTree = "<group>"; };
+		8D3D45E41D62F8A4005EA8EA /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
+		8D3D45E51D62F8A4005EA8EA /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
 		8D867BB41D25042A0020A21C /* NHAudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHAudioConverter.h; sourceTree = "<group>"; };
 		8D867BB51D25042A0020A21C /* NHAudioConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHAudioConverter.m; sourceTree = "<group>"; };
 		8D867BB61D25042A0020A21C /* NHAudioTool+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NHAudioTool+Helper.h"; sourceTree = "<group>"; };
@@ -1123,6 +1118,8 @@
 		8D867D561D4128F10020A21C /* VideoRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoRecordView.m; sourceTree = "<group>"; };
 		8DA785941CA4E35900A384F0 /* NSString+UrlParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlParams.h"; sourceTree = "<group>"; };
 		8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
+		8DB8FAE81D656E6D006B44B2 /* GiftItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiftItem.h; sourceTree = "<group>"; };
+		8DB8FAE91D656E6D006B44B2 /* GiftItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiftItem.m; sourceTree = "<group>"; };
 		8DCFD6631D43CCA6001EDC8A /* YYInfiniteScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInfiniteScrollView.h; sourceTree = "<group>"; };
 		8DCFD6641D43CCA6001EDC8A /* YYInfiniteScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfiniteScrollView.m; sourceTree = "<group>"; };
 		8DCFD6711D488EED001EDC8A /* ActionFadeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionFadeView.h; sourceTree = "<group>"; };
@@ -1627,7 +1624,6 @@
 				3793F9241B7CFFEF00501F77 /* CameraMaskView.m */,
 				3793F9251B7CFFEF00501F77 /* CollectionImageCell.h */,
 				3793F9261B7CFFEF00501F77 /* CollectionImageCell.m */,
-				3793F9271B7CFFEF00501F77 /* DAContextMenuTableViewController */,
 				3793F92E1B7CFFEF00501F77 /* LimitedTextField.h */,
 				3793F92F1B7CFFEF00501F77 /* LimitedTextField.m */,
 				3793F9301B7CFFEF00501F77 /* LZTextField.h */,
@@ -1668,19 +1664,6 @@
 				3793F9221B7CFFEF00501F77 /* UIAlertView+Blocks.m */,
 			);
 			path = BlockAlertView;
-			sourceTree = "<group>";
-		};
-		3793F9271B7CFFEF00501F77 /* DAContextMenuTableViewController */ = {
-			isa = PBXGroup;
-			children = (
-				3793F9281B7CFFEF00501F77 /* DAContextMenuCell.h */,
-				3793F9291B7CFFEF00501F77 /* DAContextMenuCell.m */,
-				3793F92A1B7CFFEF00501F77 /* DAContextMenuTableViewController.h */,
-				3793F92B1B7CFFEF00501F77 /* DAContextMenuTableViewController.m */,
-				3793F92C1B7CFFEF00501F77 /* DAOverlayView.h */,
-				3793F92D1B7CFFEF00501F77 /* DAOverlayView.m */,
-			);
-			path = DAContextMenuTableViewController;
 			sourceTree = "<group>";
 		};
 		3793F9341B7CFFEF00501F77 /* PhotoBrowser */ = {
@@ -2683,6 +2666,8 @@
 				37FD6E141BB0584400C83AB4 /* ChatVoiceButton.m */,
 				37FD6DE11BAEE01C00C83AB4 /* MessageItem.h */,
 				37FD6DE21BAEE01C00C83AB4 /* MessageItem.m */,
+				8DB8FAE81D656E6D006B44B2 /* GiftItem.h */,
+				8DB8FAE91D656E6D006B44B2 /* GiftItem.m */,
 				37FD6DE31BAEE01C00C83AB4 /* UUImageAvatarBrowser.h */,
 				37FD6DE41BAEE01C00C83AB4 /* UUImageAvatarBrowser.m */,
 				37FD6DE51BAEE01C00C83AB4 /* UUMessageContentButton.h */,
@@ -2771,6 +2756,10 @@
 			children = (
 				8D3D45781D5B2118005EA8EA /* NotificationItem.h */,
 				8D3D45791D5B2118005EA8EA /* NotificationItem.m */,
+				8D3D45E41D62F8A4005EA8EA /* NotificationManager.h */,
+				8D3D45E51D62F8A4005EA8EA /* NotificationManager.m */,
+				8D3D45E11D62F893005EA8EA /* MySendNotificationModel.h */,
+				8D3D45E21D62F893005EA8EA /* MySendNotificationModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3061,8 +3050,6 @@
 				8DCFD7451D57857C001EDC8A /* NotificationDraftManager.m */,
 				8DCFD6D01D4DE2BB001EDC8A /* NotificationHistoryVC.h */,
 				8DCFD6D11D4DE2BB001EDC8A /* NotificationHistoryVC.m */,
-				8D3D45D11D6083C8005EA8EA /* NotificationManager.h */,
-				8D3D45D21D6083C8005EA8EA /* NotificationManager.m */,
 			);
 			path = NotificationHistory;
 			sourceTree = "<group>";
@@ -3207,6 +3194,7 @@
 				37C355CE1A3FD5CF00B948E6 /* Resources */,
 				05BABEE7C0968E86616EF8DC /* Embed Pods Frameworks */,
 				66468CAA0C45FA0CB9CF41AC /* Copy Pods Resources */,
+				8DB8FAE71D655CA4006B44B2 /* Bugtags dsym Auto upload */,
 			);
 			buildRules = (
 			);
@@ -3349,6 +3337,20 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		8DB8FAE71D655CA4006B44B2 /* Bugtags dsym Auto upload */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bugtags dsym Auto upload";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "SKIP_DEBUG_BUILDS=1     #在Debug模式下编译是否自动上传符号表 0 上传 1不上传\nSKIP_SIMULATOR_BUILDS=1 #在模拟器环境下编译是否自动上传符号表 0上传 1不上传\nAPP_KEY=\"642ba56fcae0559e4e33f717e3bbd980\"              #请填写应用的App Key\nAPP_SECRET=\"4e45480680106ccffd8960358ec9d26e\"           #请填写应用的App Secret，可向应用创建者索要\nSCRIPT_SRC=$(find \"$PROJECT_DIR\" -name 'Bugtags_dsym_autoupload.sh' | head -1)\nif [ ! \"${SCRIPT_SRC}\" ]; then\necho \"Bugtags: err: script not found. Make sure that you're including Bugtags.bundle in your project directory\"\nexit 1\nfi\nsource \"${SCRIPT_SRC}\"";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -3380,6 +3382,7 @@
 				8DCFD6A01D4B4BCB001EDC8A /* NotificationTargetSelectVC.m in Sources */,
 				8D867D4E1D3F7F160020A21C /* NotificationSelectTimeView.m in Sources */,
 				37DEE4E81A57C21D009A8771 /* DiscoveryVC.m in Sources */,
+				8D3D45E31D62F893005EA8EA /* MySendNotificationModel.m in Sources */,
 				8DCFD6EB1D4F3CCE001EDC8A /* ChatContentSendGiftView.m in Sources */,
 				37C890161A88FA73008E44DB /* PhotoPickerVC.m in Sources */,
 				8DCFD74B1D584BCF001EDC8A /* NHFileManager.m in Sources */,
@@ -3512,7 +3515,6 @@
 				37CA18721AB70A2F00B49B55 /* PhotoPickerCell.m in Sources */,
 				3793FA8E1B7CFFF000501F77 /* LimitedTextField.m in Sources */,
 				8D867C8E1D2F97080020A21C /* DNBadgeLabel.m in Sources */,
-				3793FA8D1B7CFFF000501F77 /* DAOverlayView.m in Sources */,
 				3728A73E1B9D376300310457 /* UUProgressHUD.m in Sources */,
 				371C6DAC1A7015AF00FA4AEC /* PublishAudioVC.m in Sources */,
 				8D867C571D2F7B550020A21C /* XMNPhotoStickLayout.m in Sources */,
@@ -3578,8 +3580,8 @@
 				3793FA261B7CFFF000501F77 /* MBProgressHUD+Add.m in Sources */,
 				3728A6A51B98B20700310457 /* ClassZoneClassSwitchView.m in Sources */,
 				3793FAED1B7CFFF000501F77 /* TNBaseNavigationController.m in Sources */,
-				8D3D45D31D6083C8005EA8EA /* NotificationManager.m in Sources */,
 				3793FAA81B7CFFF000501F77 /* UIImageView+Animation.m in Sources */,
+				8D3D45E61D62F8A4005EA8EA /* NotificationManager.m in Sources */,
 				3728A6A71B98B20700310457 /* ResponseView.m in Sources */,
 				3793FAF51B7CFFF000501F77 /* SFHFKeychainUtils.m in Sources */,
 				37C88F771A8357E9008E44DB /* ExchangeSchoolVC.m in Sources */,
@@ -3592,13 +3594,13 @@
 				3793F5101B7B286700501F77 /* MineVC.m in Sources */,
 				3793FADF1B7CFFF000501F77 /* TNGetMoreCell.m in Sources */,
 				8D867C931D2F97080020A21C /* DNUnAuthorizedTipsView.m in Sources */,
-				3793FA8B1B7CFFF000501F77 /* DAContextMenuCell.m in Sources */,
 				37D6EEF81BCBA96D000994A2 /* StudentAttendanceHeaderView.m in Sources */,
 				8DCFD75E1D584C08001EDC8A /* NHFileDownloadSession.m in Sources */,
 				37D6EEF71BCBA96D000994A2 /* StudentAttendanceCell.m in Sources */,
 				37FB1C691BE4C596004ECE2E /* HomeWorkHistoryCell.m in Sources */,
 				37FD6DEC1BAEE01C00C83AB4 /* UUMessageContentButton.m in Sources */,
 				3793FABD1B7CFFF000501F77 /* MLPlayVoiceButton.m in Sources */,
+				8DB8FAEA1D656E6D006B44B2 /* GiftItem.m in Sources */,
 				37DEE4C01A57C19C009A8771 /* MessageGroupListModel.m in Sources */,
 				37FD6DEB1BAEE01C00C83AB4 /* UUImageAvatarBrowser.m in Sources */,
 				8D867C831D2F97080020A21C /* DNAsset.m in Sources */,
@@ -3613,7 +3615,6 @@
 				3793FA8A1B7CFFF000501F77 /* CollectionImageCell.m in Sources */,
 				8DCFD6A11D4B4BCB001EDC8A /* NotificationTargetVC.m in Sources */,
 				3793FA6B1B7CFFF000501F77 /* AFNetworkReachabilityManager.m in Sources */,
-				3793FA8C1B7CFFF000501F77 /* DAContextMenuTableViewController.m in Sources */,
 				8D867BC91D25042A0020A21C /* NHAudioConverter.m in Sources */,
 				3793FADC1B7CFFF000501F77 /* EGORefreshTableHeaderView.m in Sources */,
 				8DCFD6CF1D4DE29D001EDC8A /* NotificationDraftVC.m in Sources */,

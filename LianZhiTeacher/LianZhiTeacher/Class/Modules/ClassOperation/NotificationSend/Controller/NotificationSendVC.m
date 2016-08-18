@@ -43,10 +43,20 @@ DNImagePickerControllerDelegate>
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
-        self.sendEntity = [[NotificationSendEntity alloc] init];
+        if(!self.sendEntity){
+            self.sendEntity = [[NotificationSendEntity alloc] init];
+        }
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWindowShow:) name:UIKeyboardWillShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWindowShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWindowHide:) name:UIKeyboardWillHideNotification object:nil];
+    }
+    return self;
+}
+
+- (instancetype)initWithSendEntity:(NotificationSendEntity *)sendEntity{
+    self = [super init];
+    if(self){
+        self.sendEntity = sendEntity;
     }
     return self;
 }
@@ -109,7 +119,13 @@ DNImagePickerControllerDelegate>
 }
 
 - (void)onPreview{
-    self.sendEntity.content = self.commentView.content;
+    self.sendEntity.words = self.commentView.content;
+    if(self.sendEntity.delaySend){
+        if(self.sendEntity.delaySendTime == 0){
+            [ProgressHUD showHintText:@"还没有选择延迟发送的时间"];
+            return;
+        }
+    }
     NotificationPreviewVC *previewVC = [[NotificationPreviewVC alloc] init];
     [previewVC setSendEntity:self.sendEntity];
     [self.navigationController pushViewController:previewVC animated:YES];
@@ -129,6 +145,14 @@ DNImagePickerControllerDelegate>
     [_scrollView addSubview:self.voiceView];
     [_scrollView addSubview:self.photoView];
     [_scrollView addSubview:self.videoView];
+    [self.targetContentView setTargets:self.sendEntity.targets];
+    [self.commentView setContent:self.sendEntity.words];
+    [self.smsChoiceView setIsOn:self.sendEntity.sendSms];
+    [self.timerSendView setIsOn:self.sendEntity.delaySend];
+    [self.timerSendView setInfoStr:[self.sendEntity delaySendTimeStr]];
+    [self.voiceView setVoiceArray:self.sendEntity.voiceArray];
+    [self.photoView setPhotoArray:self.sendEntity.imageArray];
+    [self.videoView setVideoArray:self.sendEntity.videoArray];
     [self adjustPosition];
 }
 
@@ -146,7 +170,6 @@ DNImagePickerControllerDelegate>
     if(_targetContentView == nil){
          @weakify(self);
         _targetContentView = [[NotificationTargetContentView alloc] initWithFrame:CGRectMake(0, 0, _scrollView.width, 0)];
-        [_targetContentView setTargets:self.sendEntity.targets];
         [_targetContentView setAddBlk:^{
             @strongify(self)
             [self onAddTarget];
@@ -172,10 +195,23 @@ DNImagePickerControllerDelegate>
     if(_timerSendView == nil){
         _timerSendView = [[NotificationSendChoiceView alloc] initWithFrame:CGRectMake(0, _smsChoiceView.bottom, _scrollView.width, 54) title:@"定时发送"];
         [_timerSendView setInfoAction:^{
-            [NotificationSelectTimeView showWithCompletion:^(NSDate *date) {
+            [NotificationSelectTimeView showWithCompletion:^(NSInteger timeInterval) {
                 @strongify(self);
-                [self updateDate:date];
+                [self updateDate:timeInterval];
             }];
+        }];
+        [_timerSendView setSwitchCallback:^(BOOL isOn) {
+            @strongify(self);
+            if(isOn){
+                self.sendEntity.delaySend = YES;
+                [NotificationSelectTimeView showWithCompletion:^(NSInteger timeInterval) {
+                    @strongify(self);
+                    [self updateDate:timeInterval];
+                }];
+            }
+            else{
+                [self updateDate:0];
+            }
         }];
     }
     return _timerSendView;
@@ -184,6 +220,7 @@ DNImagePickerControllerDelegate>
 - (NotificationCommentView *)commentView{
     if(_commentView == nil){
         _commentView = [[NotificationCommentView alloc] initWithFrame:CGRectMake(0, _timerSendView.bottom, _scrollView.width, 135)];
+        [_commentView setContent:self.sendEntity.words];
         [_commentView setTextViewWillChangeHeight:^(CGFloat height) {
             
         }];
@@ -278,12 +315,24 @@ DNImagePickerControllerDelegate>
     [self adjustPosition];
 }
 
-- (void)updateDate:(NSDate *)date{
-    self.sendEntity.sendSms = date;
-    NSDateFormatter *formater = [[NSDateFormatter alloc] init];
-    [formater setDateFormat:@"yyyy-MM-dd HH:mm"];
-    NSString *dateStr = [formater stringFromDate:date];
+- (void)updateDate:(NSInteger)timeInterval{
+    if(timeInterval > 0){
+        self.sendEntity.delaySend = YES;
+        self.sendEntity.delaySendTime = timeInterval;
+    }
+    else{
+        self.sendEntity.delaySendTime = 0;
+        self.sendEntity.delaySend = NO;
+    }
+    NSString *dateStr = nil;
+    if(timeInterval > 0){
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+        NSDateFormatter *formater = [[NSDateFormatter alloc] init];
+        [formater setDateFormat:@"yyyy-MM-dd HH:mm"];
+        dateStr = [formater stringFromDate:date];
+    }
     [_timerSendView setInfoStr:dateStr];
+    [_timerSendView setIsOn:self.sendEntity.delaySend];
 }
 
 - (void)addImage:(NSArray *)imageArray{
@@ -431,6 +480,10 @@ DNImagePickerControllerDelegate>
             return;
         }
         NSURL *url = info[UIImagePickerControllerMediaURL];
+        NSString *extasion = url.pathExtension;
+        NSString *finalPath = [[NHFileManager getTmpVideoPath] stringByAppendingPathExtension:extasion];
+        [FCFileManager moveItemAtPath:url.path toPath:finalPath overwrite:YES];
+        url = [NSURL fileURLWithPath:finalPath];
         NSData *data = [NSData dataWithContentsOfURL:url];
         NSString *sizeStr = [Utility sizeStrForSize:data.length];
         NSInteger duration = [self getVideoDuration:url];
@@ -441,7 +494,7 @@ DNImagePickerControllerDelegate>
         [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
             @strongify(self);
             VideoItem *videoItem = [[VideoItem alloc] init];
-            [videoItem setLocalVideoPath:[url path]];
+            [videoItem setLocalVideoPath:finalPath];
             [videoItem setCoverImage:[UIImage coverImageForVideo:url]];
             [videoItem setVideoTime:duration];
             [self addVideo:@[videoItem]];

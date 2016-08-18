@@ -434,7 +434,6 @@ static NSString *topChatID = nil;
     [messageItem setMessageStatus:MessageStatusSending];
     [messageItem setIsTmp:YES];
     [messageItem setUser:[UserCenter sharedInstance].userInfo];
-    [messageItem setFrom:UUMessageFromMe];
     [messageItem setContent:messageContent];
     [messageItem makeClientSendID];
     return messageItem;
@@ -499,11 +498,9 @@ static NSString *topChatID = nil;
     
     MessageItem *messageItem = [[MessageItem alloc] init];
     [messageItem setTargetUser:self.title];
-    messageItem.params = dic;
     [messageItem setMessageStatus:MessageStatusSending];
     [messageItem setIsTmp:YES];
     [messageItem setUser:[UserCenter sharedInstance].userInfo];
-    [messageItem setFrom:UUMessageFromMe];
     [messageItem setContent:messageContent];
     [messageItem makeClientSendID];
     
@@ -516,6 +513,7 @@ static NSString *topChatID = nil;
     
     
     [messageParam setValue:messageItem.client_send_id forKey:@"client_send_id"];
+    messageItem.params = dic;
     __weak typeof(self) wself = self;
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/send" withParams:messageParam constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         if(messageType == UUMessageTypeVoice)
@@ -730,37 +728,54 @@ static NSString *topChatID = nil;
 
 - (void)onResendMessage:(MessageItem *)messageItem
 {
-#warning todo重发
-//    NSDictionary *dic = messageItem.params;
-//    NSMutableDictionary *messageParam = [NSMutableDictionary dictionary];
-//    [messageParam setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"objid"];
-//    if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup)
-//        [messageParam setValue:@"0" forKey:@"to_objid"];
-//    else
-//        [messageParam setValue:self.to_objid forKey:@"to_objid"];
-//    [messageParam setValue:self.targetID forKey:@"to_id"];
-//    [messageParam setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
-//    [messageParam setValue:dic[@"type"] forKey:@"content_type"];
-//    [messageParam setValue:dic[@"strContent"] forKey:@"content"];
-//    [messageParam setValue:dic[@"strVoiceTime"] forKey:@"voice_time"];
-//    [messageParam setValue:dic[@"present_id"] forKey:@"present_id"];
-//    MessageType messageType = [dic[@"type"] integerValue];
-//    UIImage *image = dic[@"picture"];
-//    NSData *voiceData = dic[@"voice"];
-//    
-//    [messageParam setValue:messageItem.client_send_id forKey:@"client_send_id"];
-//    __weak typeof(self) wself = self;
-//    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/send" withParams:messageParam constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//        if(messageType == UUMessageTypeVoice)
-//            [formData appendPartWithFileData:voiceData name:@"file" fileName:@"file" mimeType:@"audio/AMR"];
-//        else if(messageType == UUMessageTypePicture)
-//            [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.8) name:@"file" fileName:@"file" mimeType:@"image/jpeg"];
-//    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-//        [wself appendNewMessage:responseObject replace:messageItem];
-//    } fail:^(NSString *errMsg) {
-//        messageItem.messageStatus = MessageStatusFailed;
-//        [wself.tableView reloadData];
-//    }];
+    NSDictionary *dic = messageItem.params;
+    if(!dic){
+        return;
+    }
+    NSMutableDictionary *messageParam = [NSMutableDictionary dictionary];
+    [messageParam setValue:[UserCenter sharedInstance].curSchool.schoolID forKey:@"objid"];
+    if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup)
+        [messageParam setValue:@"0" forKey:@"to_objid"];
+    else
+        [messageParam setValue:self.to_objid forKey:@"to_objid"];
+    [messageParam setValue:self.targetID forKey:@"to_id"];
+    [messageParam setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
+    [messageParam setValue:dic[@"type"] forKey:@"content_type"];
+    [messageParam setValue:dic[@"strContent"] forKey:@"content"];
+    [messageParam setValue:dic[@"strVoiceTime"] forKey:@"voice_time"];
+    [messageParam setValue:dic[@"present_id"] forKey:@"present_id"];
+    [messageParam setValue:dic[@"video_time"] forKey:@"video_time"];
+    [messageParam setValue:dic[@"im_at"] forKey:@"im_at"];
+    MessageType messageType = [dic[@"type"] integerValue];
+    UIImage *image = dic[@"picture"];
+    NSData *voiceData = dic[@"voice"];
+    UIImage* coverImage = dic[@"video_cover"];
+    NSString* localVideoPath = dic[@"video"];
+    
+    
+    [messageParam setValue:messageItem.client_send_id forKey:@"client_send_id"];
+    messageItem.params = dic;
+    __weak typeof(self) wself = self;
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/send" withParams:messageParam constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        if(messageType == UUMessageTypeVoice)
+            [formData appendPartWithFileData:voiceData name:@"file" fileName:@"file" mimeType:@"audio/AMR"];
+        else if(messageType == UUMessageTypePicture)
+            [formData appendPartWithFileData:UIImageJPEGRepresentation(image, 0.8) name:@"file" fileName:@"file" mimeType:@"image/jpeg"];
+        else if(messageType == UUMessageTypeVideo){
+            NSData *videoData = [NSData dataWithContentsOfFile:localVideoPath];
+            if(videoData){
+                [formData appendPartWithFileData:videoData name:@"video" fileName:@"video" mimeType:@"application/octet-stream"];
+            }
+            if(coverImage){
+                [formData appendPartWithFileData:UIImageJPEGRepresentation(coverImage, 0.8) name:@"video_cover" fileName:@"video_cover" mimeType:@"image/jpeg"];
+            }
+        }
+    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [wself appendNewMessage:responseObject replace:messageItem];
+    } fail:^(NSString *errMsg) {
+        messageItem.messageStatus = MessageStatusFailed;
+        [wself.tableView reloadData];
+    }];
 }
 
 - (void)onReceiveGift:(NSNotification *)notification {

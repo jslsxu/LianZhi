@@ -123,19 +123,19 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ActionAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddActionClicked:)];
     
-//    LZTabBarButton *addButton = [LZTabBarButton buttonWithType:UIButtonTypeCustom];
-//    [addButton setImage:[UIImage imageNamed:@"ActionAdd"] forState:UIControlStateNormal];
-//    [addButton addTarget:self action:@selector(onAddActionClicked:) forControlEvents:UIControlEventTouchUpInside];
-//    [addButton setSize:CGSizeMake(40, 40)];
-//    
-//    NSString *ActionAddKey = @"ActionAddKey";
-//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//    BOOL actionAddNew = [userDefaults boolForKey:ActionAddKey];
-//    if(!actionAddNew)
-//    {
-//        [addButton setBadgeValue:@""];
-//    }
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
+    //    LZTabBarButton *addButton = [LZTabBarButton buttonWithType:UIButtonTypeCustom];
+    //    [addButton setImage:[UIImage imageNamed:@"ActionAdd"] forState:UIControlStateNormal];
+    //    [addButton addTarget:self action:@selector(onAddActionClicked:) forControlEvents:UIControlEventTouchUpInside];
+    //    [addButton setSize:CGSizeMake(40, 40)];
+    //
+    //    NSString *ActionAddKey = @"ActionAddKey";
+    //    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    //    BOOL actionAddNew = [userDefaults boolForKey:ActionAddKey];
+    //    if(!actionAddNew)
+    //    {
+    //        [addButton setBadgeValue:@""];
+    //    }
+    //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
     
     self.messageModel = [[MessageGroupListModel alloc] init];
     [self.messageModel setUnreadNumChanged:^(NSInteger notificationNum, NSInteger chatNum) {
@@ -153,23 +153,23 @@
             [self.tableView reloadData];
         }
     }
-//    [self requestData:REQUEST_REFRESH];
+    //    [self requestData:REQUEST_REFRESH];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onPublishPhotoFinished:) name:kPublishPhotoItemFinishedNotification object:nil];
 }
 
 - (void)onSegmentChanged:(NSInteger)selectedIndex{
     self.isNotification = (selectedIndex == 0);
-
+    
 }
 
 - (void)onAddActionClicked:(LZTabBarButton *)button
 {
-//    NSString *ActionAddKey = @"ActionAddKey";
-//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//    [userDefaults setBool:YES forKey:ActionAddKey];
-//    [userDefaults synchronize];
-//    [button setBadgeValue:nil];
+    //    NSString *ActionAddKey = @"ActionAddKey";
+    //    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    //    [userDefaults setBool:YES forKey:ActionAddKey];
+    //    [userDefaults synchronize];
+    //    [button setBadgeValue:nil];
     [ActionFadeView showActionView];
 }
 
@@ -226,7 +226,9 @@
             [responseData.data writeToFile:[self cacheFileName] atomically:YES];
         });
     }
-    [self.tableView reloadData];
+    if(self.messageModel.hasNew){
+        [self.tableView reloadData];
+    }
     _isLoading = NO;
 }
 
@@ -266,7 +268,7 @@
             [_emptyLabel setText:@"还没有任何内容哦"];
             [self.view addSubview:_emptyLabel];
         }
-         [_emptyLabel setHidden:NO];
+        [_emptyLabel setHidden:NO];
     }
     else
     {
@@ -285,8 +287,27 @@
     MessageGroupItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if(cell == nil)
         cell = [[MessageGroupItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    cell.delegate = self;
-    [cell setMessageItem:[self sourceArray][indexPath.row]];
+    MessageGroupItem *item = [self sourceArray][indexPath.row];
+    [cell setMessageItem:item];
+    
+    @weakify(self)
+    @weakify(cell)
+    NSMutableArray *buttonArray = [NSMutableArray array];
+    MGSwipeButton * deleteButton = [MGSwipeButton buttonWithTitle:@"删除" backgroundColor:[UIColor redColor] callback:^BOOL(MGSwipeTableCell * sender){
+        @strongify(cell)
+        @strongify(self)
+        [self deleteCell:cell];
+        return YES;
+    }];
+    [buttonArray addObject:deleteButton];
+    MGSwipeButton * soundButton = [MGSwipeButton buttonWithTitle:item.soundOn ? @"静音" : @"关闭静音" backgroundColor:[UIColor colorWithHexString:@"cccccc"] callback:^BOOL(MGSwipeTableCell * sender){
+        @strongify(cell)
+        @strongify(self)
+        [self switchSoundForCell:cell];
+        return YES;
+    }];
+    [buttonArray addObject:soundButton];
+    [cell setRightButtons:buttonArray];
     return cell;
 }
 
@@ -299,7 +320,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     MessageGroupItemCell *itemCell = (MessageGroupItemCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-     MessageGroupItem *groupItem = itemCell.messageItem;
+    MessageGroupItem *groupItem = itemCell.messageItem;
     [groupItem setMsgNum:0];
     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     
@@ -323,7 +344,7 @@
     {
         
     }
-
+    
     else
     {
         JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
@@ -354,9 +375,7 @@
 
 #pragma mark * DAContextMenuCell delegate
 
-- (void)contextMenuCellDidSelectDeleteOption:(DAContextMenuCell *)cell
-{
-    [super contextMenuCellDidSelectDeleteOption:cell];
+- (void)deleteCell:(MessageGroupItemCell *)cell{
     @weakify(self)
     LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"是否删除该记录？" message:@"删除该记录内容也会随之清空" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除(不推荐)"];
     [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
@@ -384,8 +403,7 @@
     
 }
 
-- (void)contextMenuCellDidSelectMoreOption:(DAContextMenuCell *)cell
-{
+- (void)switchSoundForCell:(MessageGroupItemCell *)cell{
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     MessageGroupItem *groupItem = [self.messageModel.modelItemArray objectAtIndex:indexPath.row];
     NSString *soundOn = (groupItem.soundOn ? @"close" : @"open");
@@ -401,8 +419,6 @@
         
     }];
 }
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -9,6 +9,7 @@
 #import "MessageNotificationDetailVC.h"
 #import "NotificationDetailView.h"
 #import "NotificationDetailActionView.h"
+#import "PublishPhotoVC.h"
 @interface MessageNotificationDetailVC (){
     NotificationDetailView*         _detailView;
 }
@@ -41,17 +42,24 @@
 - (void)onMoreClicked{
     [self setRightbarButtonHighlighted:YES];
     @weakify(self)
-    NotificationActionItem *forwadItem = [NotificationActionItem actionItemWithTitle:@"转发到树屋" action:^{
-        
-    } destroyItem:NO];
+    NSMutableArray *actionArray = [NSMutableArray array];
+    if(self.messageDetailItem.pictures.count > 0){
+        NotificationActionItem *forwadItem = [NotificationActionItem actionItemWithTitle:@"转发到树屋" action:^{
+            @strongify(self)
+            [self shareToTreeHouse];
+        } destroyItem:NO];
+        [actionArray addObject:forwadItem];
+    }
     NotificationActionItem *shareItem = [NotificationActionItem actionItemWithTitle:@"分享" action:^{
-        [ShareActionView shareWithTitle:@"分享" content:@"" image:nil imageUrl:@"" url:@""];
+        [ShareActionView shareWithTitle:@"分享" content:@"" image:nil imageUrl:@"" url:@"http://www.baidu.com"];
     } destroyItem:NO];
+    [actionArray addObject:shareItem];
     NotificationActionItem *deleteItem = [NotificationActionItem actionItemWithTitle:@"删除" action:^{
         @strongify(self)
         [self deleteNotification];
     } destroyItem:YES];
-    [NotificationDetailActionView showWithActions:@[forwadItem, shareItem, deleteItem] completion:^{
+    [actionArray addObject:deleteItem];
+    [NotificationDetailActionView showWithActions:actionArray completion:^{
         @strongify(self);
         [self setRightbarButtonHighlighted:NO];
     }];
@@ -64,10 +72,33 @@
     [params setValue:self.messageDetailItem.msgID forKey:@"notice_id"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         @strongify(self)
+        if(self.deleteSuccessCallback){
+            self.deleteSuccessCallback(self.messageDetailItem);
+        }
         [self.navigationController popViewControllerAnimated:YES];
     } fail:^(NSString *errMsg) {
         
     }];
+}
+
+- (void)shareToTreeHouse{
+    PublishPhotoVC *publishPhotoVC = [[PublishPhotoVC alloc] init];
+    [publishPhotoVC setWords:self.messageDetailItem.words];
+    NSMutableArray *photoArray = [NSMutableArray array];
+    for (NSInteger i = 0; i < self.messageDetailItem.pictures.count; i++)
+    {
+        PhotoItem *photoItem = self.messageDetailItem.pictures[i];
+        PublishImageItem *publishImageItem = [[PublishImageItem alloc] init];
+        [publishImageItem setPhotoID:photoItem.photoID];
+        [publishImageItem setThumbnailUrl:photoItem.small];
+        [publishImageItem setOriginalUrl:photoItem.big];
+        [photoArray addObject:publishImageItem];
+    }
+    [publishPhotoVC setForward:ForwardTypeNotification];
+    [publishPhotoVC setOriginalImageArray:photoArray];
+    [publishPhotoVC setDelegate:ApplicationDelegate.homeVC.treeHouseVC];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:publishPhotoVC];
+    [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -188,12 +188,16 @@
 - (void)setDataSource:(NSArray *)dataSource{
     _dataSource = dataSource;
     self.expandDictionary = [NSMutableDictionary dictionary];
+    BOOL expand = NO;
+    if(_dataSource.count == 1){
+        expand = YES;
+    }
     for (id groupInfo in _dataSource) {
         if([groupInfo isKindOfClass:[ClassInfo class]]){
-            [self.expandDictionary setValue:@(NO) forKey:[(ClassInfo *)groupInfo classID]];
+            [self.expandDictionary setValue:@(expand) forKey:[(ClassInfo *)groupInfo classID]];
         }
         else if([groupInfo isKindOfClass:[TeacherGroup class]]){
-            [self.expandDictionary setValue:@(NO) forKey:[(TeacherGroup *)groupInfo groupID]];
+            [self.expandDictionary setValue:@(expand) forKey:[(TeacherGroup *)groupInfo groupID]];
         }
     }
     [self updateSelectToolBar];

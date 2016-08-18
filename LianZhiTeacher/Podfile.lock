@@ -11,6 +11,7 @@ PODS:
   - LGAlertView (2.0.13)
   - Masonry (1.0.1)
   - MBProgressHUD (0.9.2)
+  - MGSwipeTableCell (1.5.5)
   - MJRefresh (3.1.12)
   - MWPhotoBrowser (2.1.2):
     - DACircularProgress (~> 2.3)
@@ -44,6 +45,7 @@ DEPENDENCIES:
   - KRVideoPlayer
   - LGAlertView
   - Masonry
+  - MGSwipeTableCell
   - MJRefresh
   - MWPhotoBrowser
   - pop
@@ -65,6 +67,7 @@ SPEC CHECKSUMS:
   LGAlertView: 9a5dcbf4f81b02b718083539d7f222280adc9547
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
+  MGSwipeTableCell: bafeb5f351124544c9364ecbdf24c7b06a37d340
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   MWPhotoBrowser: 5836d7aa041dc05a13de380c246826578adc5ea5
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce

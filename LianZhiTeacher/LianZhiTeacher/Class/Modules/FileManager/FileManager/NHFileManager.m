@@ -7,7 +7,6 @@
 //
 
 #import "NHFileManager.h"
-#import <FCFileManager.h>
 #import "UserCenter.h"
 #import "NSString+YYAdd.h"
 
@@ -131,6 +130,12 @@ static NSString *kLocalVideoCachePath = @"video";
     return [FCFileManager pathForTemporaryDirectoryWithPath:[NSString stringWithFormat:@"%zd_%zd",timeInterval,randomValue]];
 }
 
++ (NSString *)getTmpVideoPath{
+    NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
+    NSInteger randomValue = arc4random() % 10000;
+    return [[self localVideoCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%zd_%zd",timeInterval,randomValue]];
+}
+
 + (NSString *)uidDirectoryPathByUid:(NSString *)uid {
     NSString *chatDirectory = [FCFileManager pathForDocumentsDirectoryWithPath:uid];
     if (![FCFileManager existsItemAtPath:chatDirectory]) {
@@ -147,7 +152,7 @@ static NSString *kLocalVideoCachePath = @"video";
 
 
 + (NSString *)tmpVideoPathForPath:(NSString *)path{
-    return [FCFileManager pathForTemporaryDirectoryWithPath:[NSString stringWithFormat:@"%@.mov",[path md5String]]];
+    return [[self localVideoCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.mov",[path md5String]]];
 }
 
 + (NSDictionary *)attribuateOfItemAtPath:(NSString *)path {

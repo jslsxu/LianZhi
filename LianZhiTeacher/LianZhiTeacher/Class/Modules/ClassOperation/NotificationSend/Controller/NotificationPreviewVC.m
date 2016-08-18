@@ -8,6 +8,8 @@
 
 #import "NotificationPreviewVC.h"
 #import "NotificationPreviewView.h"
+#import "NotificationManager.h"
+#import "NotificationDraftManager.h"
 @interface NotificationPreviewVC (){
     NotificationPreviewView*     _previewView;
 }
@@ -27,105 +29,17 @@
 }
 
 - (void)send{
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    NSMutableArray *classesArray = [NSMutableArray array];
-    for (ClassInfo *classInfo in self.sendEntity.classArray) {
-        NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
-        if(classInfo.selected){
-            [classDic setValue:classInfo.classID forKey:@"classid"];
-        }
-        else{
-            NSMutableArray *selectedStudents = [NSMutableArray array];
-            for (StudentInfo *studentInfo in classInfo.students) {
-                if(studentInfo.selected){
-                    [selectedStudents addObject:studentInfo.uid];
-                }
-            }
-            if(selectedStudents.count > 0){
-                [classDic setValue:classInfo.classID forKey:@"classid"];
-                [classDic setValue:selectedStudents forKey:@"students"];
-            }
-        }
-        if(classDic.count > 0){
-            [classesArray addObject:classDic];
+   [[NotificationManager sharedInstance] addNotification:self.sendEntity];
+    if([[NotificationDraftManager sharedInstance].draftArray containsObject:self.sendEntity]){
+        [[NotificationDraftManager sharedInstance] removeDraft:self.sendEntity];
+    }
+    NSArray *vcArray = [self.navigationController viewControllers];
+    for (UIViewController *vc in vcArray) {
+        if([vc isKindOfClass:NSClassFromString(@"NotificationHistoryVC")]){
+            [self.navigationController popToViewController:vc animated:YES];
+            return;
         }
     }
-    
-    NSMutableArray *groupsArray = [NSMutableArray array];
-    for (TeacherGroup *teacherGroup in self.sendEntity.groupArray) {
-        NSMutableDictionary *groupDic = [NSMutableDictionary dictionary];
-        if(teacherGroup.selected){
-            [groupDic setValue:teacherGroup.groupID forKey:@"id"];
-        }
-        else{
-            NSMutableArray *selectedTeachers = [NSMutableArray array];
-            for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
-                if(teacherInfo.selected){
-                    [selectedTeachers addObject:teacherInfo.uid];
-                }
-            }
-            if(selectedTeachers.count > 0){
-                [groupDic setValue:teacherGroup.groupID forKey:@"id"];
-                [groupDic setValue:selectedTeachers forKey:@"teachers"];
-            }
-        }
-        if(groupDic.count > 0){
-            [groupsArray addObject:groupDic];
-        }
-    }
-    if(classesArray.count == 0 && groupsArray.count == 0){
-        [ProgressHUD showHintText:@"没有选择发送对象"];
-        return;
-    }
-    [params setValue:[NSString stringWithJSONObject:classesArray] forKey:@"classes"];
-    [params setValue:[NSString stringWithJSONObject:groupsArray] forKey:@"groups"];
-    [params setValue:self.sendEntity.content forKey:@"words"];
-    if(self.sendEntity.videoArray.count > 0){
-        VideoItem *videoItem = self.sendEntity.videoArray[0];
-        [params setValue:kStringFromValue(videoItem.videoTime) forKey:@"video_time"];
-    }
-    if(self.sendEntity.imageArray.count > 0)
-    {
-        NSMutableString *picSeq = [[NSMutableString alloc] init];
-        for (NSInteger i = 0; i < self.sendEntity.imageArray.count; i++)
-        {
-            [picSeq appendFormat:@"picture_%ld,",(long)i];
-        }
-        [params setValue:picSeq forKey:@"pic_seqs"];
-    }
-    
-    if(self.sendEntity.voiceArray.count > 0){
-        AudioItem *audioItem = self.sendEntity.voiceArray[0];
-        [params setValue:kStringFromValue(audioItem.timeSpan) forKey:@"voice_time"];
-    }
-
-    MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:[UIApplication sharedApplication].keyWindow];
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/send" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        for (NSInteger i = 0; i < self.sendEntity.imageArray.count; i++)
-        {
-            NSString *filename = [NSString stringWithFormat:@"picture_%ld",(long)i];
-            [formData appendPartWithFileData:UIImageJPEGRepresentation(self.sendEntity.imageArray[i], 0.8) name:filename fileName:filename mimeType:@"image/jpeg"];
-        }
-        if(self.sendEntity.voiceArray.count > 0){
-            AudioItem *audioItem = self.sendEntity.voiceArray[0];
-            NSData *voiceData = [NSData dataWithContentsOfFile:audioItem.audioUrl];
-            [formData appendPartWithFileData:voiceData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
-        }
-        if(self.sendEntity.videoArray.count > 0){
-            VideoItem *videoItem = self.sendEntity.videoArray[0];
-            NSData *videoData = [NSData dataWithContentsOfFile:videoItem.localVideoPath];
-            [formData appendPartWithFileData:videoData name:@"video" fileName:@"video" mimeType:@"application/octet-stream"];
-            [formData appendPartWithFileData:UIImageJPEGRepresentation(videoItem.coverImage, 0.8) name:@"video_cover" fileName:@"video_cover" mimeType:@"image/jpeg"];
-        }
-    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        [hud hide:NO];
-        [ProgressHUD showSuccess:@"发送成功"];
-        [CurrentROOTNavigationVC popToRootViewControllerAnimated:YES];
-    } fail:^(NSString *errMsg) {
-        [hud hide:NO];
-        [ProgressHUD showHintText:errMsg];
-    }];
-
 }
 
 - (void)didReceiveMemoryWarning {

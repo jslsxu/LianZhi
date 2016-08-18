@@ -8,6 +8,7 @@
 
 #import "TNModelItem.h"
 #import "VideoItem.h"
+#import "GiftItem.h"
 typedef NS_ENUM(NSInteger, MessageStatus)
 {
     MessageStatusSuccess = 0,
@@ -42,12 +43,19 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
     UUMessageFromOther = 1    // 别人发得
 };
 
+@interface AtItem : TNBaseObject
+@property (nonatomic, copy)NSString *type;
+@property (nonatomic, copy)NSString *uid;
+@end
+
 @interface Exinfo : TNBaseObject
 @property (nonatomic, copy)NSString *presnetId;
 @property (nonatomic, copy)NSString *presentName;
 @property (nonatomic, strong)PhotoItem *imgs;
 @property (nonatomic, strong)AudioItem *voice;
 @property (nonatomic, strong)VideoItem *video;
+@property (nonatomic, strong)NSArray *im_at;
+@property (nonatomic, copy)NSString*    atStr;
 @end
 
 @interface MessageContent : TNBaseObject
@@ -55,10 +63,10 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property (nonatomic, assign)BOOL unread;
 @property (nonatomic, assign)MessageType type;
 @property (nonatomic, copy)NSString *text;
-@property (nonatomic, assign)NSString * timeStr;
 @property (nonatomic, assign)NSInteger ctime;
 @property (nonatomic, assign)BOOL hideTime;
 @property (nonatomic, strong)Exinfo* exinfo;
+- (NSString *)timeStr;
 @end
 
 @interface MessageItem : TNBaseObject
@@ -66,12 +74,19 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property (nonatomic, assign)MessageStatus messageStatus;
 @property (nonatomic, assign)BOOL isTmp;
 @property (nonatomic, copy)NSString *client_send_id;
-@property (nonatomic, assign)MessageFrom from;
 @property (nonatomic, strong)UserInfo *user;
 @property (nonatomic, strong)MessageContent *content;
 @property (nonatomic, assign)NSInteger createTime;
 //
 @property (nonatomic, strong)NSDictionary *params;
+- (MessageFrom)from;
++ (MessageItem *)messageItemWithText:(NSString *)text atArray:(NSArray *)atList;
++ (MessageItem *)messageItemWithAudio:(AudioItem *)audioItem;
++ (MessageItem *)messageItemWithVideo:(VideoItem *)videoItem;
++ (MessageItem *)messageItemWithImage:(PhotoItem *)photoItem;
++ (MessageItem *)messageItemWithGift:(GiftItem *)giftItem;
++ (MessageItem *)messageItemWithFace:(NSString *)face;
+- (void)sendWithProgress:(void (^)(CGFloat progress))progressBlk success:(void (^)(MessageItem *messageItem))success fail:(void (^)(NSString *errMsg))failure;
 - (BOOL)isMyMessage;
 - (void)makeClientSendID;
 - (NSString *)reuseID;

@@ -29,5 +29,6 @@
 #import "SDWebImageManager.h"
 #import "LGAlertView.h"
 #import "LZVideoCacheManager.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
 #endif
 #endif

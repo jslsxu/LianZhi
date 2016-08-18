@@ -58,6 +58,9 @@
 
 - (void)onStateButtonClicked{
     [self setIsOn:!self.isOn];
+    if(self.switchCallback){
+        self.switchCallback(self.isOn);
+    }
 }
 
 - (void)onInfoButtonClicked{

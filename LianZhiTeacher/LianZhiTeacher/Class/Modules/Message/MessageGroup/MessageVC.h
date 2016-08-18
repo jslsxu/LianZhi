@@ -18,7 +18,7 @@
 
 @end
 
-@interface MessageVC : DAContextMenuTableViewController
+@interface MessageVC : UITableViewController
 {
     SwitchSchoolButton *        _switchButton;
     MessageSegView*             _segView;
