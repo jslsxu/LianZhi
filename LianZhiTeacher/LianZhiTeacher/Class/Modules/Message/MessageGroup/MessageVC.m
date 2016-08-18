@@ -226,9 +226,7 @@
             [responseData.data writeToFile:[self cacheFileName] atomically:YES];
         });
     }
-    if(self.messageModel.hasNew){
-        [self.tableView reloadData];
-    }
+    [self.tableView reloadData];
     _isLoading = NO;
 }
 
@@ -354,8 +352,6 @@
         [chatVC setMobile:groupItem.fromInfo.mobile];
         [chatVC setSoundOn:groupItem.soundOn];
         NSString *title = groupItem.fromInfo.name;
-        if(groupItem.fromInfo.label.length > 0 && groupItem.fromInfo.type != ChatTypeParents)
-            title = [NSString stringWithFormat:@"%@(%@)",groupItem.fromInfo.name, groupItem.fromInfo.label];
         [chatVC setTitle:title];
         [self.navigationController pushViewController:chatVC animated:YES];
     }

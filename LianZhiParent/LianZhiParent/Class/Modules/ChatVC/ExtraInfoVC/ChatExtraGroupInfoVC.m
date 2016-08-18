@@ -33,7 +33,6 @@
 @interface ChatExtraGroupInfoVC ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong)UITableView*   tableView;
 @property (nonatomic, strong)UISwitch*      disturbSwitch;
-@property (nonatomic, strong)UISwitch*      groupChatSwitch;
 @end
 
 @implementation ChatExtraGroupInfoVC
@@ -63,13 +62,6 @@
     return _disturbSwitch;
 }
 
-- (UISwitch *)groupChatSwitch{
-    if(_groupChatSwitch == nil){
-        _groupChatSwitch = [[UISwitch alloc] init];
-        [_groupChatSwitch addTarget:self action:@selector(onGroupChatValueChanged) forControlEvents:UIControlEventValueChanged];
-    }
-    return _groupChatSwitch;
-}
 
 - (void)onDisturbValueChanged{
     BOOL soundOn = !self.soundOn;
@@ -93,18 +85,15 @@
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if(section == 0){
         return 2;
     }
-    else if(section == 1){
-        return 3;
-    }
     else
-        return 1;
+        return 3;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -160,11 +149,6 @@
                 [cell setAccessoryView:nil];
             }
         }
-        else if(section == 2){
-            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-            [cell.textLabel setText:@"群聊开关"];
-            [cell setAccessoryView:self.groupChatSwitch];
-        }
         return cell;
     }
 }
@@ -207,9 +191,6 @@
             }];
             [alertView showAnimated:YES completionHandler:nil];
         }
-    }
-    else{
-        
     }
 }
 

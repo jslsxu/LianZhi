@@ -8,21 +8,6 @@
 
 #import "MyGiftVC.h"
 
-@implementation GiftItem
-
-- (void)parseData:(TNDataWrapper *)dataWrapper
-{
-    self.giftID = [dataWrapper getStringForKey:@"id"];
-    self.giftName = [dataWrapper getStringForKey:@"name"];
-    self.coin = [dataWrapper getIntegerForKey:@"coin"];
-    self.url = [dataWrapper getStringForKey:@"url"];
-    self.width = [dataWrapper getFloatForKey:@"width"];
-    self.height = [dataWrapper getFloatForKey:@"height"];
-    self.ctype = [dataWrapper getIntegerForKey:@"ctype"];
-}
-
-@end
-
 @implementation GiftModel
 - (BOOL)hasMoreData
 {

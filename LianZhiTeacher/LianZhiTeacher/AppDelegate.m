@@ -356,8 +356,8 @@ static SystemSoundID shake_sound_male_id = 0;
     if(vcArray.count > 1)
     {
         [self.rootNavigation popToRootViewControllerAnimated:NO];
-        [self.homeVC selectAtIndex:0];
     }
+    [self.homeVC selectAtIndex:0];
     [self.rootNavigation pushViewController:viewController animated:YES];
 }
 

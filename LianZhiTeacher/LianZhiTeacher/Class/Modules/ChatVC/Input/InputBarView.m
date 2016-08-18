@@ -10,6 +10,8 @@
 #import "MyGiftVC.h"
 #import "VideoRecordView.h"
 #import "ClassMemberVC.h"
+#import "NHFileManager.h"
+#import "PhotoItem.h"
 #define kContentViewHeight                  48
 #define kButtonWidth                        30
 #define kButtonHeight                       30
@@ -227,10 +229,14 @@
 - (void)beginRecordVoice:(UIButton *)button
 {
     [[UUProgressHUD sharedInstance] show];
-    [[UUProgressHUD sharedInstance] setRecordCallBack:^(NSData *data, NSInteger time)
+    [[UUProgressHUD sharedInstance] setRecordCallBack:^(NSString *audioUrl, NSInteger time)
      {
-         if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendVoice: time:)])
-             [self.inputDelegate inputBarViewDidSendVoice:data time:time];
+         if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendVoice:)]){
+             AudioItem *audioItem = [[AudioItem alloc] init];
+             [audioItem setAudioUrl:audioUrl];
+             [audioItem setTimeSpan:time];
+            [self.inputDelegate inputBarViewDidSendVoice:audioItem];
+         }
      }];
     [[UUProgressHUD sharedInstance] startRecording];
 }
@@ -422,7 +428,15 @@
     NSMutableArray *photoArray = [NSMutableArray array];
     for (PublishImageItem *imageItem in selectedArray)
     {
-        [photoArray addObject:imageItem.image];
+        NSString *tmpImagePath = [NHFileManager getTmpImagePath];
+        UIImage *image = imageItem.image;
+        NSData *data = UIImageJPEGRepresentation(image, 0.8);
+        [data writeToFile:tmpImagePath atomically:YES];
+        PhotoItem *photoItem = [[PhotoItem alloc] init];
+        [photoItem setWidth:image.size.width];
+        [photoItem setHeight:image.size.height];
+        [photoItem setBig:tmpImagePath];
+        [photoArray addObject:photoItem];
     }
     if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendPhotoArray:)])
     {
@@ -443,10 +457,19 @@
     __block UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         image = [image formatImage];
+        NSString *tmpImagePath = [NHFileManager getTmpImagePath];
+        NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
+        [imageData writeToFile:tmpImagePath atomically:YES];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide:NO];
+            PhotoItem *photoItem = [[PhotoItem alloc] init];
+            [photoItem setWidth:image.size.width];
+            [photoItem setHeight:image.size.height];
+            [photoItem setBig:tmpImagePath];
+            [photoItem setSmall:tmpImagePath];
             if([wself.inputDelegate respondsToSelector:@selector(inputBarViewDidSendPhoto:)])
-                [wself.inputDelegate inputBarViewDidSendPhoto:image];
+                [wself.inputDelegate inputBarViewDidSendPhoto:photoItem];
         });
     });
     [picker dismissViewControllerAnimated:YES completion:nil];

@@ -47,6 +47,8 @@ static NSString *const LZCache = @"LZCache";
 
 + (NSString *)getTmpVideoPath;                              //视频临时路径
 
++ (NSString *)getTmpImagePath;                              //图片临时路径
+
 + (NSDictionary *)attribuateOfItemAtPath:(NSString *)path;
 
 + (NSString *)tmpVideoPathForPath:(NSString *)path;

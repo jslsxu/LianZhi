@@ -14,6 +14,7 @@
 #define kMaxRecordTime              119
 
 @interface UUProgressHUD ()<MLAudioRecorderDelegate>
+@property (nonatomic, copy)NSString *recordPath;
 @property (nonatomic, assign)RecordStatus recordStatus;
 @property (nonatomic, strong)NSTimer* timer;
 @property (nonatomic, assign)NSInteger playTime;
@@ -55,19 +56,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UUProgressHUD)
 
 - (void)performCallback
 {
-    NSData *amrData = [NSData dataWithContentsOfFile:[[AudioRecordView class] tempFilePath]];
     if(self.recordCallBack)
-        self.recordCallBack(amrData,self.playTime);
-    self.recordCallBack = nil;
+        self.recordCallBack(self.recordPath ,self.playTime);
 }
 
 - (void)setupRecorder
 {
-//    [[MLAmrPlayer shareInstance] stopPlaying];
-    NSString *filePath = [[AudioRecordView class] tempFilePath];
-    [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
+    //    [[MLAmrPlayer shareInstance] stopPlaying];
+    self.recordPath = [NHFileManager getTmpRecordPath];
+    [[NSFileManager defaultManager] removeItemAtPath:self.recordPath  error:nil];
     AmrRecordWriter *amrWriter = [[AmrRecordWriter alloc]init];
-    amrWriter.filePath = filePath;
+    amrWriter.filePath = self.recordPath ;
     amrWriter.maxSecondCount = kMaxRecordTime;
     amrWriter.maxFileSize = 1024*256;
     self.amrWriter = amrWriter;
@@ -80,7 +79,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UUProgressHUD)
         if(self.recordStatus == RecordStatusNormal)
             [_imageView setImage:[UIImage imageNamed:(imageStr)]];
     };
-
+    
     self.meterObserver = meterObserver;
     
     MLAudioRecorder *recorder = [[MLAudioRecorder alloc]init];
@@ -88,7 +87,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UUProgressHUD)
     __weak __typeof(self)weakSelf = self;
     recorder.receiveStoppedBlock = ^{
         weakSelf.meterObserver.audioQueue = nil;
-
+        
     };
     recorder.receiveErrorBlock = ^(NSError *error){
         weakSelf.meterObserver.audioQueue = nil;
@@ -98,7 +97,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UUProgressHUD)
     recorder.bufferDurationSeconds = 0.5;
     recorder.fileWriterDelegate = self.amrWriter;
     self.recorder = recorder;
-
+    
 }
 
 - (void)setRecordStatus:(RecordStatus)recordStatus
@@ -133,7 +132,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UUProgressHUD)
 - (void)countVoiceTime
 {
     self.playTime ++;
-//    [_titleLabel setText:[NSString stringWithFormat:@"还可以说%ld秒",(long)kMaxRecordTime - self.playTime]];
+    //    [_titleLabel setText:[NSString stringWithFormat:@"还可以说%ld秒",(long)kMaxRecordTime - self.playTime]];
     if (self.playTime >= kMaxRecordTime)
         [self endRecording];
 }

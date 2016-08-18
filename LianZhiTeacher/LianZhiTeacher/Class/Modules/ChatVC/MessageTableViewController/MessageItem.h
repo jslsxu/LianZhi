@@ -49,13 +49,12 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @end
 
 @interface Exinfo : TNBaseObject
-@property (nonatomic, copy)NSString *presnetId;
+@property (nonatomic, copy)NSString *presentId;
 @property (nonatomic, copy)NSString *presentName;
 @property (nonatomic, strong)PhotoItem *imgs;
 @property (nonatomic, strong)AudioItem *voice;
 @property (nonatomic, strong)VideoItem *video;
 @property (nonatomic, strong)NSArray *im_at;
-@property (nonatomic, copy)NSString*    atStr;
 @end
 
 @interface MessageContent : TNBaseObject
@@ -77,8 +76,8 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property (nonatomic, strong)UserInfo *user;
 @property (nonatomic, strong)MessageContent *content;
 @property (nonatomic, assign)NSInteger createTime;
-//
-@property (nonatomic, strong)NSDictionary *params;
+
+- (BOOL)isLocalMessage;
 - (MessageFrom)from;
 + (MessageItem *)messageItemWithText:(NSString *)text atArray:(NSArray *)atList;
 + (MessageItem *)messageItemWithAudio:(AudioItem *)audioItem;
@@ -86,7 +85,7 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 + (MessageItem *)messageItemWithImage:(PhotoItem *)photoItem;
 + (MessageItem *)messageItemWithGift:(GiftItem *)giftItem;
 + (MessageItem *)messageItemWithFace:(NSString *)face;
-- (void)sendWithProgress:(void (^)(CGFloat progress))progressBlk success:(void (^)(MessageItem *messageItem))success fail:(void (^)(NSString *errMsg))failure;
+- (void)sendWithCommonParams:(NSDictionary *)commonParams progress:(void (^)(CGFloat progress))progressBlk success:(void (^)(MessageItem *messageItem))success fail:(void (^)(NSString *errMsg))failure;
 - (BOOL)isMyMessage;
 - (void)makeClientSendID;
 - (NSString *)reuseID;

@@ -38,6 +38,14 @@
 
 @implementation MessageGroupListModel
 
+- (instancetype)init{
+    self = [super init];
+    if(self){
+        self.hasNew = YES;
+    }
+    return self;
+}
+
 - (BOOL)isNewMessage:(MessageGroupItem *)groupItem inArray:(NSArray *)originalArray
 {
     BOOL isNew = YES;

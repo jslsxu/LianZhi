@@ -187,7 +187,8 @@
         [chatVC setTargetID:classInfo.classID];
         [chatVC setChatType:ChatTypeClass];
         [chatVC setTitle:classInfo.name];
-        [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
+//        [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
+        [ApplicationDelegate popAndPush:chatVC];
     }];
     return headerView;
 }

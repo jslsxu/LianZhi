@@ -59,6 +59,17 @@ static SystemSoundID shake_sound_male_id = 0;
     }
 }
 
+- (void)popAndPush:(UIViewController *)vc
+{
+    NSArray *vcArray = [self.rootNavigation viewControllers];
+    if(vcArray.count > 1)
+    {
+        [self.rootNavigation popToRootViewControllerAnimated:NO];
+    }
+    [self.homeVC selectAtIndex:0];
+    [self.rootNavigation pushViewController:vc animated:YES];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [self setupCommonAppearance];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];

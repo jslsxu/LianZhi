@@ -30,7 +30,7 @@
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     self = [super initWithFrame:window.bounds];
     if(self){
-    
+        
         _bgButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_bgButton setFrame:self.bounds];
         [_bgButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
@@ -77,7 +77,7 @@
 - (void)configRecorder {
     _recorder = [SCRecorder recorder];
     _recorder.captureSessionPreset = [SCRecorderTools bestCaptureSessionPresetCompatibleWithAllDevices];
-//    _recorder.maxRecordDuration = CMTimeMake(30 * kVideoMaxTime, 30);
+    //    _recorder.maxRecordDuration = CMTimeMake(30 * kVideoMaxTime, 30);
     _recorder.delegate = self;
     _recorder.previewView = _previewView;
     _recorder.initializeSessionLazily = NO;
@@ -140,11 +140,17 @@
             [self.indicatorView stopAnimating];
             if(self.completion){
                 VideoItem *videoItem = [[VideoItem alloc] init];
-                [videoItem setLocalVideoPath:localVideoPath];
-                [videoItem setCoverImage:[UIImage coverImageForVideo:url]];
+                [videoItem setVideoUrl:localVideoPath];
+                NSString *imagePath = [NHFileManager getTmpImagePath];
+                UIImage *image = [UIImage coverImageForVideo:url];
+                NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
+                [imageData writeToFile:imagePath atomically:YES];
+                [videoItem setCoverUrl:imagePath];
                 CMTime videoDuration = asset.duration;
                 float videoDurationSeconds = CMTimeGetSeconds(videoDuration);
                 [videoItem setVideoTime:videoDurationSeconds];
+                [videoItem setCoverWidth:image.size.width];
+                [videoItem setCoverHeight:image.size.height];
                 self.completion(videoItem);
             }
             [self dismiss];
@@ -215,7 +221,7 @@
         _bgButton.alpha = 1.f;
         _contentView.y = self.height - _contentView.height;
     }completion:^(BOOL finished) {
-       
+        
     }];
 }
 

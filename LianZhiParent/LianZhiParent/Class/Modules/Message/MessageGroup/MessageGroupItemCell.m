@@ -137,7 +137,14 @@
     if(_messageItem.msgNum > 0)
     {
         [_numIndicator setHidden:NO];
-        [_numIndicator setIndicator:kStringFromValue(_messageItem.msgNum)];
+        NSString *indicator = nil;
+        if(_messageItem.msgNum > 99){
+            indicator = @"99+";
+        }
+        else{
+            indicator = kStringFromValue(_messageItem.msgNum);
+        }
+        [_numIndicator setIndicator:indicator];
         [_numIndicator setCenter:CGPointMake(spaceXEnd - _numIndicator.width / 2, _notificationIndicator.centerY)];
         spaceXEnd = _numIndicator.left - 5;
     }

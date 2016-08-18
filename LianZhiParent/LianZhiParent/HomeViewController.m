@@ -130,7 +130,16 @@ static NSArray *tabDatas = nil;
 {
     NSInteger newMsg = [UserCenter sharedInstance].statusManager.msgNum;
     LZTabBarButton *msgButton = (LZTabBarButton *)_tabbarButtons[0];
-    [msgButton setBadgeValue:(newMsg > 0 ? kStringFromValue(newMsg) : nil)];
+    NSString *badgeValue = nil;
+    if(newMsg > 0){
+        if(newMsg > 99){
+            badgeValue = @"99+";
+        }
+        else{
+            badgeValue = kStringFromValue(newMsg);
+        }
+    }
+    [msgButton setBadgeValue:badgeValue];
 //    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:newMsg];
 }
 
@@ -158,7 +167,7 @@ static NSArray *tabDatas = nil;
             view.hidden = YES;
         }
     }];
-    NSArray *tabItemTitleArray = @[@"消息",@"联系人",@"树屋",@"班应用",@"发现"];
+    NSArray *tabItemTitleArray = @[@"信息",@"联系人",@"树屋",@"班应用",@"发现"];
     CGFloat tabWidth = self.view.width / tabItemTitleArray.count;
     for (NSInteger i = 0; i < tabItemTitleArray.count; i++)
     {

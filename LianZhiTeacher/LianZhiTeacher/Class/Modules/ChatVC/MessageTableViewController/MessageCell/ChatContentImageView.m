@@ -32,10 +32,14 @@
     else
         [_bubbleBackgroundView setSize:CGSizeMake(kImageMaxSize * photoItem.width / photoItem.height, kImageMaxSize)];
     [_contentImageView setFrame:_bubbleBackgroundView.bounds];
-    if(photoItem.image)
-        [_contentImageView setImage:photoItem.image];
-    else
+    if(messageItem.isLocalMessage){
+        NSData *imageData = [NSData dataWithContentsOfFile:photoItem.big];
+        UIImage *image = [UIImage imageWithData:imageData];
+        [_contentImageView setImage:image];
+    }
+    else{
         [_contentImageView sd_setImageWithURL:[NSURL URLWithString:photoItem.small] placeholderImage:nil];
+    }
     [self makeMaskView:_contentImageView withImage:[_bubbleBackgroundView image]];
     [self setSize:_bubbleBackgroundView.size];
 }

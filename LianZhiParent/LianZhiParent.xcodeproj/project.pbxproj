@@ -372,6 +372,7 @@
 		8D867C301D2A6CD90020A21C /* TNBaseObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C2F1D2A6CD90020A21C /* TNBaseObject.m */; };
 		8D867D231D3D232C0020A21C /* LZKVStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D221D3D232C0020A21C /* LZKVStorage.m */; };
 		8DA785991CA4E70B00A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785981CA4E70B00A384F0 /* NSString+UrlParams.m */; };
+		8DB8FAED1D662A5A006B44B2 /* GiftItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB8FAEC1D662A5A006B44B2 /* GiftItem.m */; };
 		8DCFD6621D43CC78001EDC8A /* YYInfiniteScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6611D43CC78001EDC8A /* YYInfiniteScrollView.m */; };
 		8DCFD73A1D53641B001EDC8A /* ContactParentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7391D53641B001EDC8A /* ContactParentsView.m */; };
 		8DCFD7841D5A3B3F001EDC8A /* VideoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7821D5A3B3F001EDC8A /* VideoItem.m */; };
@@ -1081,6 +1082,8 @@
 		8D867D221D3D232C0020A21C /* LZKVStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZKVStorage.m; sourceTree = "<group>"; };
 		8DA785971CA4E70B00A384F0 /* NSString+UrlParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlParams.h"; sourceTree = "<group>"; };
 		8DA785981CA4E70B00A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
+		8DB8FAEB1D662A5A006B44B2 /* GiftItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiftItem.h; sourceTree = "<group>"; };
+		8DB8FAEC1D662A5A006B44B2 /* GiftItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiftItem.m; sourceTree = "<group>"; };
 		8DCFD6601D43CC78001EDC8A /* YYInfiniteScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInfiniteScrollView.h; sourceTree = "<group>"; };
 		8DCFD6611D43CC78001EDC8A /* YYInfiniteScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfiniteScrollView.m; sourceTree = "<group>"; };
 		8DCFD7381D53641B001EDC8A /* ContactParentsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactParentsView.h; sourceTree = "<group>"; };
@@ -1442,6 +1445,8 @@
 				3728A6EF1B9C2A0100310457 /* UUProgressHUD.m */,
 				3707E66C1C041E6E00944B8D /* MyGiftVC.h */,
 				3707E66D1C041E6E00944B8D /* MyGiftVC.m */,
+				8DB8FAEB1D662A5A006B44B2 /* GiftItem.h */,
+				8DB8FAEC1D662A5A006B44B2 /* GiftItem.m */,
 				8D2496E11CBBA88D000B979D /* GiftDetailView.h */,
 				8D2496E21CBBA88D000B979D /* GiftDetailView.m */,
 			);
@@ -3264,6 +3269,7 @@
 				3793F7BF1B7CFFD900501F77 /* DAContextMenuCell.m in Sources */,
 				37D5536F1A7EAE6F00D77F89 /* ClassAlbumVC.m in Sources */,
 				37E93F931A7DC43500AD45A1 /* TNAlertView.m in Sources */,
+				8DB8FAED1D662A5A006B44B2 /* GiftItem.m in Sources */,
 				8DCFD7A01D5A3B8B001EDC8A /* ChatContentSendGiftView.m in Sources */,
 				3793F7C71B7CFFD900501F77 /* POIListModel.m in Sources */,
 				3793F7B91B7CFFD900501F77 /* LZBadgeLabel.m in Sources */,
@@ -3478,7 +3484,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3504,9 +3510,9 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppParent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "079cfdb2-ea73-4931-a35a-4c6ce8a6fb8a";
+				PROVISIONING_PROFILE = "13ecdfad-3b6a-418f-a350-b23059f44475";
 			};
 			name = Debug;
 		};
@@ -3519,7 +3525,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
@@ -3546,9 +3552,9 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppParent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "079cfdb2-ea73-4931-a35a-4c6ce8a6fb8a";
+				PROVISIONING_PROFILE = "13ecdfad-3b6a-418f-a350-b23059f44475";
 			};
 			name = Release;
 		};

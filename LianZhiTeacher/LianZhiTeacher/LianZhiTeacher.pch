@@ -27,6 +27,7 @@
 #import "FMDB.h"
 #import "UIImageView+WebCache.h"
 #import "SDWebImageManager.h"
+#import "SDImageCache.h"
 #import "LGAlertView.h"
 #import "LZVideoCacheManager.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>

@@ -21,7 +21,7 @@ typedef NS_ENUM(NSInteger, RecordStatus){
     UIImageView*    _imageView;
     UILabel*        _titleLabel;
 }
-@property (nonatomic, copy)void (^recordCallBack)(NSData *data, NSInteger time);
+@property (nonatomic, copy)void (^recordCallBack)(NSString *recordPath, NSInteger time);
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(UUProgressHUD)
 - (void)show;
 - (void)dismiss;

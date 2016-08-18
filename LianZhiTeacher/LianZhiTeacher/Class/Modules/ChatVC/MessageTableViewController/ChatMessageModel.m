@@ -20,7 +20,18 @@
 
 + (void)removeConversasionForUid:(NSString *)uid type:(ChatType)chatType{
     NSString* chatPath = [[NHFileManager localCurrentUserConversationCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%zd",uid, chatType]];
-    [[NSFileManager defaultManager] removeItemAtPath:chatPath error:nil];
+    [NHFileManager removeItemAtPath:chatPath];
+//    if([[NSFileManager defaultManager] fileExistsAtPath:chatPath]){
+//        NSLog(@"chat path %@ exsits",chatPath);
+//    }
+//    NSError *error = nil;
+//    [[NSFileManager defaultManager] removeItemAtPath:chatPath error:&error];
+//    if(error){
+//        NSLog(@"error is %@",error);
+//    }
+//    if([[NSFileManager defaultManager] fileExistsAtPath:chatPath]){
+//        NSLog(@"chat exist");
+//    }
 }
 
 - (void)clearChatRecord{
@@ -75,16 +86,29 @@
 - (NSInteger)loadOldData{
     NSString *sql = nil;
     FMResultSet *rs = nil;
+    /**
+     
+     */
+    sql = [NSString stringWithFormat:@"select * from %@ where message_id = 0",[self tableName]];//未发送成功的
+    rs = [self.database executeQuery:sql];
+    NSInteger loadCount = 0;
+    while ([rs next]) {
+        loadCount++;
+        NSString *messageJson = [rs stringForColumn:@"message_json"];
+        MessageItem *item = [MessageItem nh_modelWithJson:messageJson];
+        [item setTargetUser:self.targetUser];
+        [self.modelItemArray addObject:item];
+    }
+    
     
     NSString *oldID = [self oldId];
     if(oldID.length > 0){
-        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE message_id < %@ order by message_id desc limit 20", [self tableName], oldID];
+        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE message_id < %zd and message_id > 0 order by message_id desc limit 20", [self tableName], [oldID integerValue]];
     }
     else{
-        sql = [NSString stringWithFormat:@"select * from %@ order by message_id desc limit 20 ", [self tableName]];
+        sql = [NSString stringWithFormat:@"select * from %@ where message_id > 0 order by message_id desc limit 20 ", [self tableName]];
     }
     rs = [self.database executeQuery:sql];
-    NSInteger loadCount = 0;
     while ([rs next]){
         loadCount ++;
         NSString *messageJson = [rs stringForColumn:@"message_json"];
@@ -128,10 +152,10 @@
     NSString *oldID = [self oldId];
     if(oldID.length > 0)
     {
-        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE message_id >= %@ and message_id < %@", [self tableName], mid, oldID];
+        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE message_id >= %zd and message_id < %zd", [self tableName], [mid integerValue], [oldID integerValue]];
     }
     else{
-        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE message_id >= %@", [self tableName], mid];
+        sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE message_id >= %zd", [self tableName], [mid integerValue]];
     }
     rs = [self.database executeQuery:sql];
     while ([rs next]) {
@@ -163,38 +187,40 @@
 }
 
 - (void)sortMessage{
-    [self.modelItemArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-        MessageItem *first = (MessageItem *)obj1;
-        MessageItem *second = (MessageItem *)obj2;
-        long long mid1 = [first.content.mid longLongValue];
-        long long mid2 = [second.content.mid longLongValue];
-        NSString* clientSendID1 = first.client_send_id;
-        NSString* clientSendID2 = second.client_send_id;
-        if(mid1 == 0 && mid2 == 0){
-            return [clientSendID1 compare:clientSendID2];
-        }
-        else{
-            if(mid1 < mid2 || mid2 == 0){
-                return NSOrderedAscending;
+    @synchronized (self) {
+        [self.modelItemArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            MessageItem *first = (MessageItem *)obj1;
+            MessageItem *second = (MessageItem *)obj2;
+            NSInteger mid1 = [first.content.mid integerValue];
+            if(mid1 == 0)
+                mid1 = NSIntegerMax;
+            NSInteger mid2 = [second.content.mid integerValue];
+            if(mid2 == 0){
+                mid2 = NSIntegerMax;
             }
-            else if(mid1 > mid2 || mid1 == 0)
-            {
-                return NSOrderedDescending;
+            NSString* clientSendID1 = first.client_send_id;
+            NSString* clientSendID2 = second.client_send_id;
+            if(mid1 == mid2){
+                return [clientSendID1 compare:clientSendID2];
             }
-            else
-                return NSOrderedSame;
+            else{
+                if(mid1 < mid2){
+                    return NSOrderedAscending;
+                }
+                else {
+                    return NSOrderedDescending;
+                }
+            }
+            
+        }];
+        MessageItem *preItem = nil;
+        for (MessageItem *messageItem in self.modelItemArray) {
+            if(messageItem.content.ctime - preItem.content.ctime <= 60 * 3){
+                messageItem.content.hideTime = YES;
+            }
+            preItem = messageItem;
         }
-        
-    }];
-    MessageItem *preItem = nil;
-    for (MessageItem *messageItem in self.modelItemArray) {
-        if(messageItem.content.ctime - preItem.content.ctime <= 60 * 3){
-            messageItem.content.hideTime = YES;
-        }
-//        if([messageItem.content.timeStr isEqualToString:preItem.content.timeStr]){
-//            messageItem.content.hideTime = YES;
-//        }
-        preItem = messageItem;
+
     }
 }
 
@@ -230,7 +256,7 @@
             if(![rs next]){
                 add = YES;
                 [self.modelItemArray addObject:messageItem];
-                 sql = [NSString stringWithFormat:@"insert into %@ values(%@,'%@','%@','%@') ",[self tableName],messageItem.content.mid, messageItem.client_send_id, messageItem.content.text, [messageItem modelToJSONString]];
+                 sql = [NSString stringWithFormat:@"insert into %@ values(%zd,'%@','%@','%@') ",[self tableName],[messageItem.content.mid integerValue], messageItem.client_send_id, messageItem.content.text, [messageItem modelToJSONString]];
                 [self.database executeUpdate:sql];
             }
         }
@@ -264,23 +290,30 @@
 
 - (void)sendNewMessage:(MessageItem *)message{
     @synchronized (self) {
-        [message setTargetUser:self.targetUser];
         [self.modelItemArray addObject:message];
         [self sortMessage];
-        NSString *sql = [NSString stringWithFormat:@"insert into %@ values(%@,'%@','%@','%@') ",[self tableName],message.content.mid, message.client_send_id, message.content.text, [message modelToJSONString]];
-        [self.database executeUpdate:sql];
+        NSString *sql = [NSString stringWithFormat:@"insert into %@ values(%zd,'%@','%@','%@') ",[self tableName],[message.content.mid integerValue], message.client_send_id, message.content.text, [message modelToJSONString]];
+        BOOL insert = [self.database executeUpdate:sql];
+        if(insert){
+            NSLog(@"insert success");
+        }
     }
 }
 
 - (void)updateMessage:(MessageItem *)message{
     @synchronized (self) {
-        NSString *sql = [NSString stringWithFormat:@"update %@ set message_id = %@, client_send_id = '%@', message_json = '%@', content = '%@' where client_send_id = '%@'",[self tableName],message.content.mid, message.client_send_id, [message modelToJSONString], message.content.text,message.client_send_id];
+        NSString *sql = [NSString stringWithFormat:@"update %@ set message_id = %zd, client_send_id = '%@', message_json = '%@', content = '%@' where client_send_id = '%@'",[self tableName],[message.content.mid integerValue], message.client_send_id, [message modelToJSONString], message.content.text,message.client_send_id];
         
-        [self.database executeUpdate:sql];
+        BOOL success = [self.database executeUpdate:sql];
+        if(success){
+            NSLog(@"update success");
+        }
         
         for (MessageItem *messageItem in self.modelItemArray) {
             if([message.content.mid isEqualToString:messageItem.content.mid] || [message.client_send_id isEqualToString:messageItem.client_send_id]){
-                [self.modelItemArray replaceObjectAtIndex:[self.modelItemArray indexOfObject:messageItem] withObject:message];
+                NSInteger index = [self.modelItemArray indexOfObject:messageItem];
+                [self.modelItemArray removeObjectAtIndex:index];
+                [self.modelItemArray insertObject:message atIndex:index];
                 break;
             }
         }
@@ -292,7 +325,7 @@
     @synchronized (self) {
         NSString *sql;
         if(message.content.mid.length > 0){
-            sql = [NSString stringWithFormat:@"delete from %@ where message_id = %@ ",[self tableName],message.content.mid];
+            sql = [NSString stringWithFormat:@"delete from %@ where message_id = %zd ",[self tableName],[message.content.mid integerValue]];
         }
         else{
             sql = [NSString stringWithFormat:@"delete from %@ where client_send_id = '%@' ",[self tableName],message.client_send_id];

@@ -43,6 +43,8 @@ static NSString *const LZCache = @"LZCache";
 + (NSString *)localCurrentUserRequestCachePath;         //当前用户网络请求缓存地址
 
 + (NSString *)getTmpRecordPath;                             //录音的临时路径
++ (NSString *)getTmpVideoPath;                              //视频临时路径
++ (NSString *)getTmpImagePath;                              //图片临时路径
 
 + (NSDictionary *)attribuateOfItemAtPath:(NSString *)path;
 

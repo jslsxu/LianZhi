@@ -26,9 +26,9 @@ typedef NS_ENUM(NSInteger, InputType)
 - (void)inputBarViewDidChangeHeight:(NSInteger)height;
 - (void)inputBarViewDidCommit:(NSString *)text atArray:(NSArray *)atArray;
 - (void)inputBarViewDidFaceSelect:(NSString *)face;
-- (void)inputBarViewDidSendPhoto:(UIImage *)image;
+- (void)inputBarViewDidSendPhoto:(PhotoItem *)photoItem;
 - (void)inputBarViewDidSendPhotoArray:(NSArray *)photoArry;
-- (void)inputBarViewDidSendVoice:(NSData *)amrData time:(NSInteger)time;
+- (void)inputBarViewDidSendVoice:(AudioItem *)audioItem;
 - (void)inputBarViewDidSendGift:(GiftItem *)giftItem;
 - (void)inputBarViewDidSendVideo:(VideoItem *)videoItem;
 - (void)inputBarViewDidCallTelephone;

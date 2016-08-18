@@ -127,13 +127,20 @@ static NSString *kLocalVideoCachePath = @"video";
 + (NSString *)getTmpRecordPath{
     NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
     NSInteger randomValue = arc4random() % 10000;
-    return [FCFileManager pathForTemporaryDirectoryWithPath:[NSString stringWithFormat:@"%zd_%zd",timeInterval,randomValue]];
+    return [[self localAudioCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%zd_%zd",timeInterval,randomValue]];
 }
 
 + (NSString *)getTmpVideoPath{
     NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
     NSInteger randomValue = arc4random() % 10000;
     return [[self localVideoCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%zd_%zd",timeInterval,randomValue]];
+}
+
++ (NSString *)getTmpImagePath{
+    static NSInteger imageIndex = 0;
+    NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
+    imageIndex++;
+    return [[self localVideoCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%zd_%zd",timeInterval,imageIndex]];
 }
 
 + (NSString *)uidDirectoryPathByUid:(NSString *)uid {

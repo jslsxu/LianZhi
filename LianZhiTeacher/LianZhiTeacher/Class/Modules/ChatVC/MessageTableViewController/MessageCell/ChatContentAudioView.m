@@ -29,7 +29,12 @@
 
 - (void)onAudioClicked{
     AudioItem *audioItem = self.messageItem.content.exinfo.voice;
-    [_playButton setVoiceWithURL:[NSURL URLWithString:audioItem.audioUrl] withAutoPlay:YES];
+    if(self.messageItem.isLocalMessage){
+        [_playButton setVoiceWithURL:[NSURL fileURLWithPath:audioItem.audioUrl] withAutoPlay:YES];
+    }
+    else{
+        [_playButton setVoiceWithURL:[NSURL URLWithString:audioItem.audioUrl] withAutoPlay:YES];
+    }
 }
 
 - (void)setMessageItem:(MessageItem *)messageItem{

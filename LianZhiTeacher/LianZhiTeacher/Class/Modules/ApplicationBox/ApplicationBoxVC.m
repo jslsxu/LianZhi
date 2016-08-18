@@ -147,7 +147,6 @@
     {
         [self setCellName:@"ApplicationItemCell"];
         [self setModelName:@"ApplicationModel"];
-        [self setHideNavigationBar:YES];
     }
     return self;
 }
@@ -160,6 +159,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setupTitle];
+//    self.title = [UserCenter sharedInstance].curSchool.schoolName;
     [self.view setBackgroundColor:[UIColor whiteColor]];
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     [self.collectionView registerClass:[ApplicationBoxHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ApplicationBoxHeaderView"];
@@ -169,6 +170,16 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
+}
+
+- (void)setupTitle{
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    [titleLabel setFont:[UIFont systemFontOfSize:18]];
+    [titleLabel setTextColor:[UIColor colorWithHexString:@"252525"]];
+    [titleLabel setText:[UserCenter sharedInstance].curSchool.schoolName];
+    [titleLabel setSize:CGSizeMake(kScreenWidth / 2, 30)];
+    [titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.navigationItem setTitleView:titleLabel];
 }
 
 - (void)TNBaseCollectionViewControllerModifyLayout:(UICollectionViewLayout *)layout
@@ -203,6 +214,7 @@
 
 - (void)onSchoolChanged
 {
+    [self setupTitle];
     [self requestData:REQUEST_REFRESH];
 }
 

@@ -215,7 +215,8 @@
         [chatVC setTargetID:class.classID];
         [chatVC setTitle:class.name];
         [chatVC setChatType:ChatTypeClass];
-        [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
+//        [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
+        [ApplicationDelegate popAndPush:chatVC];
     }];
     return headerView;
 }
@@ -263,20 +264,21 @@
             [chatVC setTargetID:teacherInfo.uid];
             [chatVC setMobile:teacherInfo.mobile];
             NSString *title = [NSString stringWithFormat:@"%@",teacherInfo.name];
-            if(teacherInfo.course)
-                title = [NSString stringWithFormat:@"%@(%@)",title, teacherInfo.course];
             [chatVC setTitle:title];
-            [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
+//            [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
+            [ApplicationDelegate popAndPush:chatVC];
         }
         else
         {
-            TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-            TNButtonItem *callItem = [TNButtonItem itemWithTitle:@"拨打电话" action:^{
-                NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",teacherInfo.mobile];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:@"该用户尚未下载使用连枝，您可打电话与用户联系" style:LGAlertViewStyleAlert buttonTitles:@[@"取消", @"拨打电话"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+            [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                if(index == 1){
+                    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",teacherInfo.mobile];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+                }
             }];
-            TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"该用户尚未下载使用连枝，您可打电话与用户联系" buttonItems:@[cancelItem, callItem]];
-            [alertView show];
+            [alertView showAnimated:YES completionHandler:nil];
         }
 
     }else{

@@ -14,6 +14,7 @@
 #define kMaxRecordTime              119
 
 @interface UUProgressHUD ()<MLAudioRecorderDelegate>
+@property (nonatomic, copy)NSString *recordPath;
 @property (nonatomic, assign)RecordStatus recordStatus;
 @property (nonatomic, strong)NSTimer* timer;
 @property (nonatomic, assign)NSInteger playTime;
@@ -55,19 +56,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UUProgressHUD)
 
 - (void)performCallback
 {
-    NSData *amrData = [NSData dataWithContentsOfFile:[[AudioRecordView class] tempFilePath]];
     if(self.recordCallBack)
-        self.recordCallBack(amrData,self.playTime);
-    self.recordCallBack = nil;
+        self.recordCallBack(self.recordPath ,self.playTime);
 }
 
 - (void)setupRecorder
 {
     //    [[MLAmrPlayer shareInstance] stopPlaying];
-    NSString *filePath = [[AudioRecordView class] tempFilePath];
-    [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
+    self.recordPath = [NHFileManager getTmpRecordPath];
+    [[NSFileManager defaultManager] removeItemAtPath:self.recordPath  error:nil];
     AmrRecordWriter *amrWriter = [[AmrRecordWriter alloc]init];
-    amrWriter.filePath = filePath;
+    amrWriter.filePath = self.recordPath ;
     amrWriter.maxSecondCount = kMaxRecordTime;
     amrWriter.maxFileSize = 1024*256;
     self.amrWriter = amrWriter;

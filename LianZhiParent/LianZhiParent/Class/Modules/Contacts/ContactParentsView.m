@@ -13,7 +13,6 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self){
-        [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         _avatarView = [[AvatarView alloc] initWithRadius:18];
         [self addSubview:_avatarView];
         
@@ -155,17 +154,53 @@
         [chatVC setChatType:ChatTypeParents];
         [chatVC setMobile:familyInfo.mobile];
         [chatVC setTitle:[NSString stringWithFormat:@"%@的%@",self.studentInfo.name,[(FamilyInfo *)familyInfo relation]]];
-        [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
+//        [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
+        [ApplicationDelegate popAndPush:chatVC];
     }];
     [itemCell setPhoneCallback:^{
-        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-        TNButtonItem *callItem = [TNButtonItem itemWithTitle:@"拨打电话" action:^{
-            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",familyInfo.mobile];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+        
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"确定拨打电话%@吗",familyInfo.mobile] style:LGAlertViewStyleAlert buttonTitles:@[@"取消", @"拨打电话"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+            if(index == 1){
+                NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",familyInfo.mobile];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+            }
         }];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"该用户尚未下载使用连枝，您可打电话与用户联系" buttonItems:@[cancelItem, callItem]];
-        [alertView show];
+        [alertView showAnimated:YES completionHandler:nil];
     }];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    FamilyInfo *familyInfo = self.studentInfo.family[indexPath.row];
+    if(familyInfo.actived)
+    {
+        NSInteger section = indexPath.section;
+        ClassInfo *classInfo = [UserCenter sharedInstance].curChild.classes[section];
+        JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+        [chatVC setChatType:ChatTypeTeacher];
+        [chatVC setTo_objid:classInfo.school.schoolID];
+        [chatVC setTargetID:familyInfo.uid];
+        [chatVC setMobile:familyInfo.mobile];
+        NSString *title = [NSString stringWithFormat:@"%@",familyInfo.name];
+        [chatVC setTitle:title];
+        //            [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
+        [ApplicationDelegate popAndPush:chatVC];
+    }
+    else
+    {
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:@"该用户尚未下载使用连枝，您可打电话与用户联系" style:LGAlertViewStyleAlert buttonTitles:@[@"取消", @"拨打电话"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+            if(index == 1){
+                NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",familyInfo.mobile];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+            }
+        }];
+        [alertView showAnimated:YES completionHandler:nil];
+    }
+
 }
 
 @end

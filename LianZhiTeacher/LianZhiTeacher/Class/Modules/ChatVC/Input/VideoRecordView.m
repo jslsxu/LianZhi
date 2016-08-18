@@ -140,11 +140,17 @@
             [self.indicatorView stopAnimating];
             if(self.completion){
                 VideoItem *videoItem = [[VideoItem alloc] init];
-                [videoItem setLocalVideoPath:localVideoPath];
-                [videoItem setCoverImage:[UIImage coverImageForVideo:url]];
+                [videoItem setVideoUrl:localVideoPath];
+                NSString *imagePath = [NHFileManager getTmpImagePath];
+                UIImage *image = [UIImage coverImageForVideo:url];
+                NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
+                [imageData writeToFile:imagePath atomically:YES];
+                [videoItem setCoverUrl:imagePath];
                 CMTime videoDuration = asset.duration;
                 float videoDurationSeconds = CMTimeGetSeconds(videoDuration);
                 [videoItem setVideoTime:videoDurationSeconds];
+                [videoItem setCoverWidth:image.size.width];
+                [videoItem setCoverHeight:image.size.height];
                 self.completion(videoItem);
             }
             [self dismiss];
