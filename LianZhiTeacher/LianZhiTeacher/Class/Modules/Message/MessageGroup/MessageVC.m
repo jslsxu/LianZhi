@@ -156,6 +156,7 @@
     //    [self requestData:REQUEST_REFRESH];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onPublishPhotoFinished:) name:kPublishPhotoItemFinishedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
 }
 
 - (void)onSegmentChanged:(NSInteger)selectedIndex{
@@ -181,13 +182,16 @@
 
 - (void)onCurSchoolChanged
 {
+    [self requestData:REQUEST_REFRESH];
+}
+
+- (void)onStatusChanged{
     BOOL hasNew = NO;
     for (NoticeItem *notice in [UserCenter sharedInstance].statusManager.notice) {
         if(![notice.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID])
             hasNew = YES;
     }
     [_switchButton setHasNew:hasNew];
-    [self requestData:REQUEST_REFRESH];
 }
 
 - (void)refreshData

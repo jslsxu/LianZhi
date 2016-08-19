@@ -6,13 +6,13 @@
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "lxr@2x.png"
+      "filename" : "icon_wo3@2x.png",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "lxr@3x.png"
+      "filename" : "icon_wo3@3x.png",
+      "scale" : "3x"
     }
   ],
   "info" : {

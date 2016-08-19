@@ -54,6 +54,7 @@
     
     [_avatarView setImageWithUrl:[NSURL URLWithString:_familyInfo.avatar]];
     [_avatarView setOrigin:CGPointMake(12, (60 - _avatarView.height) / 2)];
+    [_avatarView setStatus:_familyInfo.actived ? nil : @"未下载"];
     [_nameLabel setText:_familyInfo.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, (60 - _nameLabel.height) / 2)];

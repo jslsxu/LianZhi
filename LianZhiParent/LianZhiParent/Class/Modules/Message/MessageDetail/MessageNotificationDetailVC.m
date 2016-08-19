@@ -51,7 +51,7 @@
         [actionArray addObject:forwadItem];
     }
     NotificationActionItem *shareItem = [NotificationActionItem actionItemWithTitle:@"分享" action:^{
-        [ShareActionView shareWithTitle:@"分享" content:@"" image:nil imageUrl:@"" url:@"http://www.baidu.com"];
+        [ShareActionView shareWithTitle:@"分享" content:@"" image:[UIImage imageNamed:@"ClassZone"] imageUrl:@"" url:@"http://www.baidu.com"];
     } destroyItem:NO];
     [actionArray addObject:shareItem];
     NotificationActionItem *deleteItem = [NotificationActionItem actionItemWithTitle:@"删除" action:^{

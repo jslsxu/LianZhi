@@ -20,7 +20,7 @@
 
 + (void)removeConversasionForUid:(NSString *)uid type:(ChatType)chatType{
     NSString*chatPath =  [[NHFileManager localCurrentUserConversationCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%zd",uid, chatType]];
-    [[NSFileManager defaultManager] removeItemAtPath:chatPath error:nil];
+    [NHFileManager removeItemAtPath:chatPath];
 }
 
 - (void)clearChatRecord{

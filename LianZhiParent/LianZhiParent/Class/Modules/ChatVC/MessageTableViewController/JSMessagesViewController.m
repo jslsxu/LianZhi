@@ -66,7 +66,8 @@ static NSString *topChatID = nil;
 {
     [super viewDidLoad];
     topChatID = self.targetID;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"GroupMemberIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(showChatUserInfo)];
+    BOOL isGroup = self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:isGroup ? @"GroupInfoIcon" : @"SingleInfoIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(showChatUserInfo)];
     
     _inputView = [[InputBarView alloc] init];
     if(self.chatType == ChatTypeClass)
@@ -473,13 +474,15 @@ static NSString *topChatID = nil;
 - (void)inputBarViewDidCallTelephone{
     if(self.mobile.length > 0)
     {
-        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-        TNButtonItem *item = [TNButtonItem itemWithTitle:@"拨打" action:^{
-            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",self.mobile];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"确定拨打电话%@吗",self.mobile] style:LGAlertViewStyleAlert buttonTitles:@[@"取消", @"拨打电话"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+            if(index == 1){
+                NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",self.mobile];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+            }
         }];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"是否拨打电话%@",self.mobile] buttonItems:@[cancelItem,item]];
-        [alertView show];
+        [alertView showAnimated:YES completionHandler:nil];
     }
 }
 

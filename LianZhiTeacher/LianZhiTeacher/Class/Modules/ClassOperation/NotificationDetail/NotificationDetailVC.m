@@ -96,7 +96,7 @@
         
     } destroyItem:NO];
     NotificationActionItem *shareItem = [NotificationActionItem actionItemWithTitle:@"分享" action:^{
-        [ShareActionView shareWithTitle:@"分享" content:@"" image:nil imageUrl:@"" url:@""];
+        [ShareActionView shareWithTitle:@"分享" content:@"" image:[UIImage imageNamed:@"ClassZone"] imageUrl:@"" url:@""];
     } destroyItem:NO];
     NotificationActionItem *deleteItem = [NotificationActionItem actionItemWithTitle:@"删除" action:^{
         

@@ -56,8 +56,11 @@
 
 - (void)onPlayClicked{
     VideoItem *videoItem = self.messageItem.content.exinfo.video;
-    
-    if(videoItem.videoUrl.length > 0){
+    if(self.messageItem.isLocalMessage){
+        NSURL* url = [NSURL fileURLWithPath:videoItem.videoUrl];
+        [self showPlayerWithUrl:url];
+    }
+    else{
         [_playView setHidden:YES];
         [_progressView setHidden:NO];
         [LZVideoCacheManager videoForUrl:videoItem.videoUrl progress:^(CGFloat progress) {
@@ -71,10 +74,7 @@
             [_playView setHidden:NO];
         }];
     }
-    else if(videoItem.localVideoPath.length > 0){
-        NSURL* url = [NSURL fileURLWithPath:videoItem.localVideoPath];
-        [self showPlayerWithUrl:url];
-    }
+
 
 }
 
@@ -110,10 +110,14 @@
     [_durationLabel setText:[Utility formatStringForTime:videoItem.videoTime]];
     [_durationLabel sizeToFit];
     [_durationLabel setOrigin:CGPointMake(_coverImageView.width - _durationLabel.width - 15, _coverImageView.height - _durationLabel.height - 5)];
-    if(videoItem.coverImage)
-        [_coverImageView setImage:videoItem.coverImage];
-    else
+    if(self.messageItem.isLocalMessage){
+        NSData *imageData = [NSData dataWithContentsOfFile:videoItem.coverUrl];
+        UIImage *image = [UIImage imageWithData:imageData];
+        [_coverImageView setImage:image];
+    }
+    else{
         [_coverImageView sd_setImageWithURL:[NSURL URLWithString:videoItem.coverUrl] placeholderImage:nil];
+    }
     [self setSize:_bubbleBackgroundView.size];
 }
 

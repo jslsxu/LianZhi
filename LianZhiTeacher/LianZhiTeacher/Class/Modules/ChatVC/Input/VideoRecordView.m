@@ -121,18 +121,22 @@
 }
 
 - (void)saveCapture {
-    [self.indicatorView startAnimating];
     NSString *localVideoPath = [self tmpVideoPath];
     NSURL *url = [NSURL fileURLWithPath:localVideoPath];
     AVAsset *asset = _recorder.session.assetRepresentingSegments;
     [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
-    
+    CGFloat duration = CMTimeGetSeconds(asset.duration);
+    if(duration < 1){
+        return;
+    }
     CGSize videoSize = _previewView.bounds.size;
     AVAssetExportSession * exportSession = [AVAssetExportSession exportSessionWithAsset:asset presetName:AVAssetExportPresetMediumQuality];
     exportSession.outputFileType = AVFileTypeMPEG4;
     exportSession.shouldOptimizeForNetworkUse = YES;
-    exportSession.videoComposition = [self buildDefaultVideoCompositionWithAsset:asset targetSize:videoSize];
+    AVVideoComposition *composition = [self buildDefaultVideoCompositionWithAsset:asset targetSize:videoSize];
+    exportSession.videoComposition = composition;
     exportSession.outputURL = url;
+    [self.indicatorView startAnimating];
     @weakify(self);
     [exportSession exportAsynchronouslyWithCompletionHandler:^{
         dispatch_async(dispatch_get_main_queue(), ^{

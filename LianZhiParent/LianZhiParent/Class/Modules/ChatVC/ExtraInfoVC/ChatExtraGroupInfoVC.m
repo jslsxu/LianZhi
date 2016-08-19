@@ -33,6 +33,8 @@
 @interface ChatExtraGroupInfoVC ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong)UITableView*   tableView;
 @property (nonatomic, strong)UISwitch*      disturbSwitch;
+@property (nonatomic, strong)NSMutableArray*    memberArray;
+@property (nonatomic, strong)ClassInfo*     classInfo;
 @end
 
 @implementation ChatExtraGroupInfoVC
@@ -41,6 +43,7 @@
     [super viewDidLoad];
      self.title = @"聊天信息";
     [self.view addSubview:self.tableView];
+    [self loadData];
 }
 
 - (UITableView *)tableView{
@@ -62,6 +65,12 @@
     return _disturbSwitch;
 }
 
+- (NSMutableArray *)memberArray{
+    if(!_memberArray){
+        _memberArray = [NSMutableArray array];
+    }
+    return _memberArray;
+}
 
 - (void)onDisturbValueChanged{
     BOOL soundOn = !self.soundOn;
@@ -81,6 +90,20 @@
 
 - (void)onGroupChatValueChanged{
     
+}
+
+- (void)loadData{
+    for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes) {
+        if([classInfo.classID isEqualToString:self.groupID]){
+            self.classInfo = classInfo;
+            [self.memberArray addObjectsFromArray:classInfo.teachers];
+            for (ChildInfo *childInfo in classInfo.students) {
+                [self.memberArray addObjectsFromArray:childInfo.family];
+            }
+        }
+    }
+    [self.memberArray addObjectsFromArray:[UserCenter sharedInstance].curChild.family];
+    [self.tableView reloadData];
 }
 
 #pragma mark - UITableViewDelegate
@@ -119,6 +142,7 @@
         if(nil == cell){
             cell = [[ChatExtraGroupInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
         }
+        [cell.logoView setImageWithUrl:[NSURL URLWithString:self.classInfo.logo]];
         return cell;
     }
     else{
@@ -131,7 +155,7 @@
             [cell.textLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
         }
         if(section == 0){
-            [cell.textLabel setText:@"全部群成员(30)"];
+            [cell.textLabel setText:[NSString stringWithFormat:@"全部群成员(%zd)", self.memberArray.count]];
             [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         }
         else if(section == 1){
@@ -163,6 +187,7 @@
         }
         else if(row == 1){
             ClassMemberVC *memberVC = [[ClassMemberVC alloc] init];
+            [memberVC setClassID:self.groupID];
             [self.navigationController pushViewController:memberVC animated:YES];
         }
     }

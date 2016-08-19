@@ -112,6 +112,7 @@
                 }
             }
         }
+        [self.sourceArray addObjectsFromArray:[UserCenter sharedInstance].curChild.family];
         [self.tableView reloadData];
     }
 

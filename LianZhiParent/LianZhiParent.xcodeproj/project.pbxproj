@@ -2928,6 +2928,7 @@
 				37C35A621A40666600B948E6 /* Embed Frameworks */,
 				2A03EFE51202F4214C31AC93 /* Embed Pods Frameworks */,
 				3C5AAA034850605581020802 /* Copy Pods Resources */,
+				8D7554AB1D66A9FF00A140EE /* Bugtags dsym Auto Upload */,
 			);
 			buildRules = (
 			);
@@ -3075,6 +3076,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		8D7554AB1D66A9FF00A140EE /* Bugtags dsym Auto Upload */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bugtags dsym Auto Upload";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "SKIP_DEBUG_BUILDS=1     #在Debug模式下编译是否自动上传符号表 0 上传 1不上传\nSKIP_SIMULATOR_BUILDS=1 #在模拟器环境下编译是否自动上传符号表 0上传 1不上传\nAPP_KEY=\"18842ccaef5c44136335788e1c0de1b3\"              #请填写应用的App Key\nAPP_SECRET=\"28193837d0b310cff48aa7d50d527efa\"           #请填写应用的App Secret，可向应用创建者索要\nSCRIPT_SRC=$(find \"$PROJECT_DIR\" -name 'Bugtags_dsym_autoupload.sh' | head -1)\nif [ ! \"${SCRIPT_SRC}\" ]; then\necho \"Bugtags: err: script not found. Make sure that you're including Bugtags.bundle in your project directory\"\nexit 1\nfi\nsource \"${SCRIPT_SRC}\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
