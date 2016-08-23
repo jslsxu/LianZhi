@@ -14,7 +14,8 @@
 #import "DNAsset.h"
 #import "DNImagePickerController.h"
 #import "NotificationPreviewVC.h"
-
+#import "NotificationManager.h"
+#import "NotificationDraftManager.h"
 #define kNotificationMaxPhotoNum        9
 
 @interface NotificationSendVC ()<NotificationInputDelegate,
@@ -95,7 +96,7 @@ DNImagePickerControllerDelegate>
     [self.view setBackgroundColor:[UIColor whiteColor]];
 //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"预览" style:UIBarButtonItemStylePlain target:self action:@selector(onPreview)];
-    _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
+    _scrollView = [[UITouchScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
     [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, kActionBarHeight, 0)];
     [_scrollView setShowsVerticalScrollIndicator:NO];
     [_scrollView setAlwaysBounceVertical:YES];
@@ -108,7 +109,16 @@ DNImagePickerControllerDelegate>
     [tapGesture setCancelsTouchesInView:NO];
     [_scrollView addGestureRecognizer:tapGesture];
     
+    @weakify(self)
     _inputView = [[NotificationInputView alloc] initWithFrame:CGRectMake(0, self.view.height - 64 - kActionBarHeight, self.view.width, kActionBarHeight)];
+    [_inputView setPhotoNum:^NSInteger{
+        @strongify(self)
+        return self.sendEntity.imageArray.count;
+    }];
+    [_inputView setVideoNum:^NSInteger{
+        @strongify(self)
+        return self.sendEntity.videoArray.count;
+    }];
     [_inputView setDelegate:self];
     [self.view addSubview:_inputView];
 
@@ -119,16 +129,18 @@ DNImagePickerControllerDelegate>
 }
 
 - (void)onPreview{
-    self.sendEntity.words = self.commentView.content;
-    if(self.sendEntity.delaySend){
-        if(self.sendEntity.delaySendTime == 0){
-            [ProgressHUD showHintText:@"还没有选择延迟发送的时间"];
-            return;
-        }
+//    self.sendEntity.words = self.commentView.content;
+//    if(self.sendEntity.delaySend){
+//        if(self.sendEntity.delaySendTime == 0){
+//            [ProgressHUD showHintText:@"还没有选择延迟发送的时间"];
+//            return;
+//        }
+//    }
+    if([self checkNotification]){
+        NotificationPreviewVC *previewVC = [[NotificationPreviewVC alloc] init];
+        [previewVC setSendEntity:self.sendEntity];
+        [self.navigationController pushViewController:previewVC animated:YES];
     }
-    NotificationPreviewVC *previewVC = [[NotificationPreviewVC alloc] init];
-    [previewVC setSendEntity:self.sendEntity];
-    [self.navigationController pushViewController:previewVC animated:YES];
 }
 
 - (void)onSwipe{
@@ -185,7 +197,12 @@ DNImagePickerControllerDelegate>
 
 - (NotificationSendChoiceView *)smsChoiceView{
     if(_smsChoiceView == nil){
+        @weakify(self)
         _smsChoiceView = [[NotificationSendChoiceView alloc] initWithFrame:CGRectMake(0, _targetContentView.bottom, _scrollView.width, 54) title:@"连枝代发短信"];
+        [_smsChoiceView setSwitchCallback:^(BOOL on) {
+            @strongify(self)
+            [self.commentView setMaxWordsNum:on ? 150 : 500];
+        }];
     }
     return _smsChoiceView;
 }
@@ -193,7 +210,7 @@ DNImagePickerControllerDelegate>
 - (NotificationSendChoiceView *)timerSendView{
     @weakify(self);
     if(_timerSendView == nil){
-        _timerSendView = [[NotificationSendChoiceView alloc] initWithFrame:CGRectMake(0, _smsChoiceView.bottom, _scrollView.width, 54) title:@"定时发送"];
+        _timerSendView = [[NotificationSendChoiceView alloc] initWithFrame:CGRectMake(0, _smsChoiceView.bottom, _scrollView.width, 0) title:@"定时发送"];
         [_timerSendView setInfoAction:^{
             [NotificationSelectTimeView showWithCompletion:^(NSInteger timeInterval) {
                 @strongify(self);
@@ -219,10 +236,15 @@ DNImagePickerControllerDelegate>
 
 - (NotificationCommentView *)commentView{
     if(_commentView == nil){
+        @weakify(self)
         _commentView = [[NotificationCommentView alloc] initWithFrame:CGRectMake(0, _timerSendView.bottom, _scrollView.width, 135)];
         [_commentView setContent:self.sendEntity.words];
         [_commentView setTextViewWillChangeHeight:^(CGFloat height) {
             
+        }];
+        [_commentView setTextViewTextChanged:^(NSString *text) {
+            @strongify(self)
+            self.sendEntity.words = text;
         }];
     }
     return _commentView;
@@ -352,9 +374,23 @@ DNImagePickerControllerDelegate>
     [self adjustPosition];
 }
 
+- (BOOL)checkNotification{
+    if(self.sendEntity.targets.count == 0){
+        [ProgressHUD showHintText:@"请选择发送对象"];
+        return NO;
+    }
+    
+    if([self.sendEntity.words length] == 0){
+        [ProgressHUD showHintText:@"请输入通知内容"];
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark - NotificationInputDelegate
 
 - (void)notificationInputDidWillChangeHeight:(CGFloat)height{
+    [self.navigationItem.rightBarButtonItem setEnabled:height < 100];
     [UIView animateWithDuration:kActionAnimationDuration animations:^{
         [_inputView setY:self.view.height - height];
         [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, height, 0)];
@@ -366,6 +402,8 @@ DNImagePickerControllerDelegate>
 - (void)notificationInputPhoto:(NotificationInputView *)inputView{
     DNImagePickerController *imagePicker = [[DNImagePickerController alloc] init];
     [imagePicker setImagePickerDelegate:self];
+    [imagePicker setMaxImageCount:9 - self.sendEntity.imageArray.count];
+    [imagePicker setMaxVideoCount:1 - self.sendEntity.videoArray.count];
     [self presentViewController:imagePicker animated:YES completion:nil];
 }
 
@@ -416,7 +454,7 @@ DNImagePickerControllerDelegate>
                 else{
                     image = asset.previewImage;
                 }
-                if(image){
+                if(image && self.sendEntity.imageArray.count + addImageArray.count < 9){
                     [addImageArray addObject:image];
                 }
             }
@@ -449,6 +487,22 @@ DNImagePickerControllerDelegate>
         [self.sendEntity.voiceArray addObject:audioItem];
         [_voiceView setVoiceArray:self.sendEntity.voiceArray];
         [self adjustPosition];
+    }
+}
+
+- (void)notificationInputSend{
+    if([self checkNotification]){
+        [[NotificationManager sharedInstance] addNotification:self.sendEntity];
+        if([[NotificationDraftManager sharedInstance].draftArray containsObject:self.sendEntity]){
+            [[NotificationDraftManager sharedInstance] removeDraft:self.sendEntity];
+        }
+        NSArray *vcArray = [self.navigationController viewControllers];
+        for (UIViewController *vc in vcArray) {
+            if([vc isKindOfClass:NSClassFromString(@"NotificationHistoryVC")]){
+                [self.navigationController popToViewController:vc animated:YES];
+                return;
+            }
+        }
     }
 }
 
@@ -524,9 +578,11 @@ DNImagePickerControllerDelegate>
                     image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage]];
                 else
                     image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-                if(image)
-                {
-                    [addImageArray addObject:image];
+                if(imageArray.count + addImageArray.count < 9){
+                    if(image)
+                    {
+                        [addImageArray addObject:image];
+                    }
                 }
             }
             else if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]){

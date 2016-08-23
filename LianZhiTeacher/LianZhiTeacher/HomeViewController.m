@@ -7,11 +7,12 @@
 //
 
 #import "HomeViewController.h"
-
+#import "ExchangeSchoolVC.h"
 static NSArray *tabDatas = nil;
 
 @interface HomeViewController ()
 @property (nonatomic, assign)NSInteger curIndex;
+@property (nonatomic, strong)SwitchSchoolButton *switchSchoolButton;
 @end
 
 @implementation HomeViewController
@@ -68,6 +69,31 @@ static NSArray *tabDatas = nil;
         self.title = [UserCenter sharedInstance].curSchool.schoolName;
 }
 
+- (NSArray *)commonLeftBarButtonItems{
+    //navigation
+    if([UserCenter sharedInstance].userData.schools.count > 1)
+    {
+        if(!_switchSchoolButton){
+            _switchSchoolButton = [[SwitchSchoolButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+            [_switchSchoolButton setImage:[UIImage imageNamed:@"SwitchSchool"] forState:UIControlStateNormal];
+            [_switchSchoolButton addTarget:self action:@selector(switchSchool) forControlEvents:UIControlEventTouchUpInside];
+        }
+        UIBarButtonItem *flexibleSpaceBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFixedSpace target: nil action: nil];
+        flexibleSpaceBarButtonItem.width = -5;
+        UIBarButtonItem *switchItem = [[UIBarButtonItem alloc] initWithCustomView:_switchSchoolButton];
+        return @[flexibleSpaceBarButtonItem, switchItem];
+    }
+    else{
+        return nil;
+    }
+}
+
+- (void)switchSchool
+{
+    ExchangeSchoolVC *exchangeSchoolVC = [[ExchangeSchoolVC alloc] init];
+    [CurrentROOTNavigationVC pushViewController:exchangeSchoolVC animated:YES];
+}
+
 - (void)onStatusChanged
 {
     BOOL hasNew = NO;
@@ -75,7 +101,7 @@ static NSArray *tabDatas = nil;
         if(![notice.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID])
             hasNew = YES;
     }
-    
+    [_switchSchoolButton setHasNew:hasNew];
     LZTabBarButton *discoveryButon = _tabbarButtons[3];
     DiscoveryVC *discoveryVC = [self discoveryVC];
     [discoveryButon setBadgeValue:discoveryVC.hasNew ? @"" : nil];
@@ -183,9 +209,7 @@ static NSArray *tabDatas = nil;
         [_tabbarButtons addObject:barButton];
         [self.tabBar addSubview:barButton];
     }
-    
-    [self selectAtIndex:0];
-    
+    [self selectAtIndex:2];
 }
 
 

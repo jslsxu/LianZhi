@@ -29,4 +29,5 @@
 
 @interface ChatTeacherInfoVC : TNBaseViewController
 @property (nonatomic, strong)ContactTeacherInfo *teacherInfo;
+@property (nonatomic, copy)NSString *uid;
 @end

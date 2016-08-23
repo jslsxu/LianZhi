@@ -425,10 +425,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.classArray = [[LZKVStorage userKVStorage] storageValueForKey:kNotificationClassArrayKey];
-//    self.groupArray = [[LZKVStorage userKVStorage] storageValueForKey:kNotificationGroupArrayKey];
-    self.classArray = [UserCenter sharedInstance].curSchool.classes;
-    self.groupArray = [UserCenter sharedInstance].curSchool.groups;
+    NSMutableArray *classArray = [NSMutableArray array];
+    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes) {
+        NSDictionary *classDic = [classInfo modelToJSONObject];
+        ClassInfo *sourceClassInfo = [ClassInfo modelWithJSON:classDic];
+        [classArray addObject:sourceClassInfo];
+    }
+    self.classArray = classArray;
+    
+    NSMutableArray *groupArray = [NSMutableArray array];
+    for (TeacherGroup *group in [UserCenter sharedInstance].curSchool.groups) {
+        NSDictionary *groupDic = [group modelToJSONObject];
+        TeacherGroup *sourceGroup = [TeacherGroup modelWithJSON:groupDic];
+        [groupArray addObject:sourceGroup];
+    }
+    self.groupArray = groupArray;
+    
     for (ClassInfo *classInfo in self.classArray) {
         classInfo.selected = NO;
         for (StudentInfo *studentInfo in classInfo.students) {
@@ -459,16 +471,6 @@
     [self.view addSubview:_teacherView];
     
     [self reloadData];
-    
-//    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/get_publish_scope" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-//        self.classArray = [ClassInfo nh_modelArrayWithJson:responseObject.data[@"classes"]];
-//        self.groupArray = [TeacherGroup nh_modelArrayWithJson:responseObject.data[@"groups"]];
-//        [[LZKVStorage userKVStorage] saveStorageValue:self.classArray forKey:kNotificationClassArrayKey];
-//        [[LZKVStorage userKVStorage] saveStorageValue:self.groupArray forKey:kNotificationGroupArrayKey];
-//        [self reloadData];
-//    } fail:^(NSString *errMsg) {
-//        
-//    }];
 }
 
 - (BOOL)target:(NSString *)targetID isInSource:(NSArray *)sourceArray{

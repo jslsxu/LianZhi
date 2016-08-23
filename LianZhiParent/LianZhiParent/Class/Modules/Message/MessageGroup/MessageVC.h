@@ -12,7 +12,7 @@
 #import "MessageSegView.h"
 @interface MessageVC : DAContextMenuTableViewController
 {
-    UILabel*                    _emptyLabel;
+//    UILabel*                    _emptyLabel;
     BOOL                        _isLoading;
 }
 @property (nonatomic, strong)MessageGroupListModel *messageModel;

@@ -17,7 +17,7 @@
 @interface ChatExtraGroupInfoVC : TNBaseViewController
 @property (nonatomic, copy)NSString *groupID;
 @property (nonatomic, assign)ChatType chatType;
-@property (nonatomic, assign)BOOL soundOn;
-@property (nonatomic, copy)void (^alertChangeCallback)(BOOL soundOn);
+@property (nonatomic, assign)BOOL quietModeOn;
+@property (nonatomic, copy)void (^alertChangeCallback)(BOOL quietModeOn);
 @property (nonatomic, copy)void (^clearChatRecordCallback)(ClearChatFinished clearChatFinished);
 @end

@@ -12,6 +12,7 @@
 #import "ClassMemberVC.h"
 #import "NHFileManager.h"
 #import "PhotoItem.h"
+#import "DNImagePickerController.h"
 #define kContentViewHeight                  48
 #define kButtonWidth                        30
 #define kButtonHeight                       30
@@ -23,7 +24,7 @@
 
 #define kTextFont                           [UIFont systemFontOfSize:15]
 
-@interface InputBarView ()<PhotoPickerVCDelegate>
+@interface InputBarView ()<DNImagePickerControllerDelegate>
 @property (nonatomic,assign)NSInteger targetHeight;
 @property (nonatomic, strong)NSMutableArray *atArray;
 @end
@@ -43,7 +44,7 @@
     {
         self.inputType = InputTypeNone;
         _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, kContentViewHeight)];
-        [_contentView setBackgroundColor:[UIColor colorWithHexString:@"c8d7e2"]];
+        [_contentView setBackgroundColor:[UIColor whiteColor]];
         UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, kLineHeight)];
         [topLine setBackgroundColor:[UIColor colorWithHexString:@"A4A4A4"]];
         [_contentView addSubview:topLine];
@@ -221,7 +222,14 @@
 
 - (void)onKeyboardWillHide:(NSNotification *)notification
 {
-    //    self.targetHeight = _contentView.height;
+    if(self.window){
+        _inputType = InputTypeNormal;
+        CGRect keyboardBounds;
+        [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+        self.targetHeight = _contentView.height;
+        if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidChangeHeight:)])
+            [self.inputDelegate inputBarViewDidChangeHeight:self.targetHeight];
+    }
 }
 
 #pragma mark - Actions
@@ -373,11 +381,15 @@
     switch (functionType) {
         case FunctionTypePhoto:
         {
-            PhotoPickerVC *photoPickerVC = [[PhotoPickerVC alloc] init];
-            [photoPickerVC setMaxToSelected:9];
-            [photoPickerVC setDelegate:self];
-            TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:photoPickerVC];
-            [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
+            DNImagePickerController *imagePicker = [[DNImagePickerController alloc] init];
+            [imagePicker setFilterType:DNImagePickerFilterTypePhotos];
+            [imagePicker setImagePickerDelegate:self];
+            [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
+//            PhotoPickerVC *photoPickerVC = [[PhotoPickerVC alloc] init];
+//            [photoPickerVC setMaxToSelected:9];
+//            [photoPickerVC setDelegate:self];
+//            TNBaseNavigationController *nav = [[TNBaseNavigationController alloc] initWithRootViewController:photoPickerVC];
+//            [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
         }
             break;
         case FunctionTypeCamera:
@@ -421,33 +433,95 @@
 
 }
 
-#pragma mark - PhotoPickerVCDelegate
-- (void)photoPickerVC:(PhotoPickerVC *)photoPickerVC didFinished:(NSArray *)selectedArray
-{
-    [photoPickerVC dismissViewControllerAnimated:YES completion:nil];
-    NSMutableArray *photoArray = [NSMutableArray array];
-    for (PublishImageItem *imageItem in selectedArray)
-    {
-        NSString *tmpImagePath = [NHFileManager getTmpImagePath];
-        UIImage *image = imageItem.image;
-        NSData *data = UIImageJPEGRepresentation(image, 0.8);
-        [data writeToFile:tmpImagePath atomically:YES];
-        PhotoItem *photoItem = [[PhotoItem alloc] init];
-        [photoItem setWidth:image.size.width];
-        [photoItem setHeight:image.size.height];
-        [photoItem setBig:tmpImagePath];
-        [photoArray addObject:photoItem];
-    }
-    if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendPhotoArray:)])
-    {
-        [self.inputDelegate inputBarViewDidSendPhotoArray:photoArray];
-    }
+#pragma mark - DNImagePickerDelegate
+- (void)dnImagePickerControllerDidCancel:(DNImagePickerController *)imagePicker{
+    [imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)photoPickerVCDidCancel:(PhotoPickerVC *)photoPickerVC
-{
-    [photoPickerVC dismissViewControllerAnimated:YES completion:nil];
+- (void)dnImagePickerController:(DNImagePickerController *)imagePicker sendImages:(NSArray *)imageAssets isFullImage:(BOOL)fullImage{
+    [imagePicker dismissViewControllerAnimated:YES completion:nil];
+    if(imageAssets.count > 0){
+        NSMutableArray *addImageArray = [NSMutableArray array];
+        NSMutableArray *addVideoArray = [NSMutableArray array];
+        for (ALAsset *asset in imageAssets) {
+            if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]){
+                UIImage *image;
+                if(fullImage)
+                    image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage]];
+                else
+                    image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+                if(image)
+                {
+                    [addImageArray addObject:image];
+                }
+            }
+            else if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]){
+                NSString *filePath = [[asset.defaultRepresentation url] absoluteString];
+                NSString *tmpPath = [NHFileManager tmpVideoPathForPath:filePath];
+                NSInteger duration = [[asset valueForProperty:ALAssetPropertyDuration] integerValue];
+                if([[NSFileManager defaultManager] fileExistsAtPath:tmpPath]){
+                }
+                else{
+                    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在压缩" toView:[UIApplication sharedApplication].keyWindow];
+                    AVAsset *avAsset = [AVAsset assetWithURL:[NSURL URLWithString:filePath]];
+                    AVAssetExportSession * exportSession = [AVAssetExportSession exportSessionWithAsset:avAsset presetName:AVAssetExportPresetMediumQuality];
+                    exportSession.outputFileType = AVFileTypeMPEG4;
+                    exportSession.shouldOptimizeForNetworkUse = YES;
+                    exportSession.outputURL = [NSURL fileURLWithPath:tmpPath];
+                    [exportSession exportAsynchronouslyWithCompletionHandler:^{
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if(AVAssetExportSessionStatusCompleted == exportSession.status){
+                                [hud hide:YES];
+                            }
+                            else{
+                                [ProgressHUD showHintText:@"压缩失败"];
+                            }
+                        });
+                        
+                    }];
+                }
+                VideoItem *videoItem = [[VideoItem alloc] init];
+                [videoItem setLocalVideoPath:tmpPath];
+                [videoItem setCoverImage:[UIImage imageWithCGImage:[asset.defaultRepresentation fullScreenImage]]];
+                [videoItem setVideoTime:duration];
+                [addVideoArray addObject:videoItem];
+            }
+        }
+        if(addImageArray.count > 0){
+            MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在压缩" toView:[UIApplication sharedApplication].keyWindow];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSMutableArray *photoItemArray = [NSMutableArray array];
+                for (UIImage *image in addImageArray) {
+                    NSString *tmpImagePath = [NHFileManager getTmpImagePath];
+                    NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
+                    [imageData writeToFile:tmpImagePath atomically:YES];
+                    PhotoItem *photoItem = [[PhotoItem alloc] init];
+                    [photoItem setWidth:image.size.width];
+                    [photoItem setHeight:image.size.height];
+                    [photoItem setBig:tmpImagePath];
+                    [photoItem setSmall:tmpImagePath];
+                    [photoItemArray addObject:photoItem];
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [hud hide:YES];
+                    if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendPhotoArray:)])
+                    {
+                        [self.inputDelegate inputBarViewDidSendPhotoArray:photoItemArray];
+                    }
+                });
+            });
+        }
+        if(addVideoArray.count > 0){
+            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendVideo:)]){
+                for (VideoItem *videoItem in addVideoArray) {
+                    [self.inputDelegate inputBarViewDidSendVideo:videoItem];
+                }
+            }
+        }
+    }
+
 }
+
 
 #pragma mark - UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info

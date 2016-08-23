@@ -6,6 +6,7 @@
 static NSString *topChatID = nil;
 
 @interface JSMessagesViewController ()
+@property (nonatomic, assign)BOOL quietModeOn;
 @property (nonatomic, strong)UITableView *tableView;
 @property (nonatomic, strong)ChatMessageModel *chatMessageModel;
 @property (nonatomic, assign)BOOL isRequestHistory;
@@ -55,7 +56,7 @@ static NSString *topChatID = nil;
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/get_sound" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         @strongify(self);
         NSString *status = [responseObject getStringForKey:@"sound"];
-        self.soundOn = [status isEqualToString:@"open"];
+        self.quietModeOn = ![status isEqualToString:@"open"];
         [self updateTitle];
     } fail:^(NSString *errMsg) {
         
@@ -82,7 +83,7 @@ static NSString *topChatID = nil;
     
     [self.view addSubview:[self tableView]];
 
-    [self.chatMessageModel setTargetUser:self.title];
+    [self.chatMessageModel setTargetUser:self.name];
     [self scrollToBottom:NO];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
     [self.tableView addGestureRecognizer:tapGesture];
@@ -105,23 +106,24 @@ static NSString *topChatID = nil;
 - (ChatMessageModel *)chatMessageModel{
     if(!_chatMessageModel){
         _chatMessageModel = [[ChatMessageModel alloc] initWithUid:self.targetID type:self.chatType];
-        [_chatMessageModel setTargetUser:self.title];
+        [_chatMessageModel setTargetUser:self.name];
     }
     return _chatMessageModel;
 }
 
-- (void)setSoundOn:(BOOL)soundOn
+- (void)setQuietModeOn:(BOOL)quietModeOn
 {
-    _soundOn = soundOn;
-    [self.chatMessageModel setSoundOff:!_soundOn];
+    _quietModeOn = quietModeOn;
+    [self.chatMessageModel setQuietModeOn:self.quietModeOn];
 }
 
 - (void)updateTitle
 {
     BOOL earMode = [UserCenter sharedInstance].personalSetting.earPhone;
-    BOOL soundOn = self.soundOn;
-    if(soundOn && !earMode){
-        self.navigationItem.title = self.title;
+    BOOL quietModeOn = self.quietModeOn;
+    if(!quietModeOn && !earMode){
+        self.navigationItem.title = self.name;
+        [self.navigationItem setTitleView:nil];
     }
     else{
         NSInteger maxWidth = self.view.width - 80 * 2;
@@ -130,7 +132,7 @@ static NSString *topChatID = nil;
         NSInteger width = 0;
         NSInteger spaceXEnd = titleView.width;
         UIImageView *soundOffImageView = nil;
-        if(!soundOn)
+        if(quietModeOn)
         {
             soundOffImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TitleSoundOff"]];
             [titleView addSubview:soundOffImageView];
@@ -150,7 +152,7 @@ static NSString *topChatID = nil;
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [titleLabel setFont:[UIFont systemFontOfSize:18]];
         [titleLabel setTextColor:[UIColor colorWithHexString:@"252525"]];
-        [titleLabel setText:self.title];
+        [titleLabel setText:self.name];
         [titleLabel sizeToFit];
         [titleView addSubview:titleLabel];
         width += titleLabel.width;
@@ -164,7 +166,7 @@ static NSString *topChatID = nil;
                 [earPhoneImageView setOrigin:CGPointMake(spaceXStart, (titleView.height - earPhoneImageView.height) / 2)];
                 spaceXStart += earPhoneImageView.width + 5;
             }
-            if(!soundOn)
+            if(quietModeOn)
                 [soundOffImageView setOrigin:CGPointMake(spaceXStart, (titleView.height - soundOffImageView.height) / 2)];
         }
         else
@@ -173,6 +175,7 @@ static NSString *topChatID = nil;
         }
         
         self.navigationItem.titleView = titleView;
+        self.navigationItem.title = nil;
     }
 }
 
@@ -202,10 +205,10 @@ static NSString *topChatID = nil;
         ChatExtraGroupInfoVC *chatExtraInfoVC = [[ChatExtraGroupInfoVC alloc] init];
         [chatExtraInfoVC setChatType:self.chatType];
         [chatExtraInfoVC setGroupID:self.targetID];
-        [chatExtraInfoVC setSoundOn:self.soundOn];
-        [chatExtraInfoVC setAlertChangeCallback:^(BOOL soundOn) {
+        [chatExtraInfoVC setQuietModeOn:self.quietModeOn];
+        [chatExtraInfoVC setAlertChangeCallback:^(BOOL quietModeOn) {
             @strongify(self)
-            self.soundOn = soundOn;
+            self.quietModeOn = quietModeOn;
             [self updateTitle];
         }];
         [chatExtraInfoVC setClearChatRecordCallback:^(ClearChatFinished clearChatFinished) {
@@ -216,12 +219,13 @@ static NSString *topChatID = nil;
     }
     else{
         ChatExtraIndividualInfoVC *chatExtraInfoVC = [[ChatExtraIndividualInfoVC alloc] init];
+        [chatExtraInfoVC setToObjid:self.to_objid];
         [chatExtraInfoVC setUid:self.targetID];
         [chatExtraInfoVC setChatType:self.chatType];
-        [chatExtraInfoVC setSoundOn:self.soundOn];
-        [chatExtraInfoVC setAlertChangeCallback:^(BOOL soundOn) {
+        [chatExtraInfoVC setQuietModeOn:self.quietModeOn];
+        [chatExtraInfoVC setAlertChangeCallback:^(BOOL quietModeOn) {
             @strongify(self)
-            self.soundOn = soundOn;
+            self.quietModeOn = quietModeOn;
             [self updateTitle];
         }];
         [chatExtraInfoVC setClearChatRecordCallback:^(ClearChatFinished clearChatFinished){
@@ -356,7 +360,7 @@ static NSString *topChatID = nil;
 }
 
 - (void)commitMessage:(MessageItem *)messageItem{
-    [messageItem setTargetUser:self.title];
+    [messageItem setTargetUser:self.name];
     MessageItem *preItem = [self.chatMessageModel.messageArray lastObject];
     if(messageItem.content.ctime - preItem.content.ctime <= 60 * 3)
         [messageItem.content setHideTime:YES];
@@ -497,7 +501,7 @@ static NSString *topChatID = nil;
 - (void)onRevokeMessage:(MessageItem *)messageItem
 {
     __weak typeof(self) wself = self;
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/revoke" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"mid" : messageItem.content.mid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/revoke" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"mid" : messageItem.content.mid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         for (MessageItem *item in wself.chatMessageModel.messageArray)
         {
             if([item.content.mid isEqualToString:messageItem.content.mid])
@@ -545,9 +549,8 @@ static NSString *topChatID = nil;
 - (void)onReceiveGift:(NSNotification *)notification {
     MessageItem *messageItem = notification.userInfo[ReceiveGiftMessageKey];
     if(messageItem.content.type == UUMessageTypeGift && messageItem.content.unread && messageItem.from == UUMessageFromOther) {
-//        NSDictionary *dic = @{@"strContent": messageItem.content.exinfo.presentName,
-//                              @"type": @(UUMessageTypeReceiveGift)};
-//        [self sendMessage:dic];
+        MessageItem *receiveItem = [MessageItem messageItemWithReceiveGift:messageItem.content.exinfo.presentName];
+        [self commitMessage:receiveItem];
         //更新已读
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/read" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"mids" : messageItem.content.mid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             messageItem.content.unread = 0;

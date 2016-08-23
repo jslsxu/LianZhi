@@ -47,10 +47,12 @@
 
 - (void)setDate:(NSDate *)date
 {
-    _date = date;
+    _date = [date copy];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy年MM月dd日"];
-    [_curMonth setText:[NSString stringWithFormat:@"%@ %@",[formatter stringFromDate:self.date], [self.date weekday]]];
+    NSString *dateStr = [formatter stringFromDate:_date];
+    NSString *weekday = [Utility weekdayStr:_date];
+    [_curMonth setText:[NSString stringWithFormat:@"%@ %@", dateStr, weekday]];
     [_nextButton setEnabled:[self hasNext]];
 }
 

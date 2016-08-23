@@ -22,13 +22,13 @@
         [_avatar.layer setMasksToBounds:YES];
         [self addSubview:_avatar];
         
-        _tintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height - 13, self.width, 13)];
-        [_tintLabel setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7]];
-        [_tintLabel setTextAlignment:NSTextAlignmentCenter];
-        [_tintLabel setFont:[UIFont systemFontOfSize:9]];
-        [_tintLabel setTextColor:[UIColor whiteColor]];
-        [_tintLabel setText:@"当前"];
-        [_avatar addSubview:_tintLabel];
+//        _tintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height - 13, self.width, 13)];
+//        [_tintLabel setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7]];
+//        [_tintLabel setTextAlignment:NSTextAlignmentCenter];
+//        [_tintLabel setFont:[UIFont systemFontOfSize:9]];
+//        [_tintLabel setTextColor:[UIColor whiteColor]];
+//        [_tintLabel setText:@"当前"];
+//        [_avatar addSubview:_tintLabel];
         
         _redDot = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 8, 8)];
         [_redDot setImage:[UIImage imageNamed:@"RedDot.png"]];

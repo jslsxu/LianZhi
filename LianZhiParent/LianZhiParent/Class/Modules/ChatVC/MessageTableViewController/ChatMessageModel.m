@@ -9,7 +9,6 @@
 #import "ChatMessageModel.h"
 #import "NHFileManager.h"
 @interface ChatMessageModel ()
-@property (nonatomic, assign)BOOL firstRequestNewMessage;
 @property (nonatomic, strong)NSMutableArray* modelItemArray;
 @property (nonatomic, copy)NSString *uid;
 @property (nonatomic, assign)ChatType type;
@@ -41,7 +40,6 @@
     if(self){
         self.uid = uid;
         self.type = type;
-        self.firstRequestNewMessage = YES;
         NSString *tableName = [self tableName];
         BOOL tableExist = [self.database tableExists:tableName];
         if(!tableExist){
@@ -209,13 +207,8 @@
     }
 }
 
-- (BOOL)parseData:(NSDictionary *)data type:(RequestMessageType)type
+- (NSInteger)parseData:(NSDictionary *)data type:(RequestMessageType)type
 {
-    if(type == RequestMessageTypeLatest){
-        if(self.firstRequestNewMessage){
-            self.firstRequestNewMessage = NO;
-        }
-    }
     NSInteger originalNum = self.modelItemArray.count;
     NSArray *newMessageArray = [MessageItem nh_modelArrayWithJson:data[@"items"]];
     
@@ -230,7 +223,7 @@
             break;
         }
     }
-    BOOL add = NO;
+    NSInteger addNum = 0;
     if(newMessageArray.count > 0){
         //添加到前面
         for (NSInteger i = newMessageArray.count - 1; i >= 0; i--) {
@@ -239,16 +232,19 @@
             NSString *sql = [NSString stringWithFormat:@"select * from %@ where client_send_id = '%@'",[self tableName], messageItem.client_send_id];
             FMResultSet *rs = [self.database executeQuery:sql];
             if(![rs next]){
-                add = YES;
+                addNum++;
                 [self.modelItemArray addObject:messageItem];
                 sql = [NSString stringWithFormat:@"insert into %@ values(%zd,'%@','%@','%@') ",[self tableName],[messageItem.content.mid integerValue], messageItem.client_send_id, messageItem.content.text, [messageItem modelToJSONString]];
                 [self.database executeUpdate:sql];
             }
+            else{
+                [self updateMessage:messageItem];
+            }
         }
         
-        if(add){
+        if(addNum > 0){
             [self sortMessage];
-            if(type == RequestMessageTypeLatest && !self.firstRequestNewMessage){
+            if(type == RequestMessageTypeLatest && originalNum > 0){
                 //有新消息，播放声音
                 if([UserCenter sharedInstance].personalSetting.soundOn)
                     [ApplicationDelegate playSound];
@@ -257,7 +253,10 @@
             }
         }
     }
-    return type == RequestMessageTypeLatest && add;
+    if(type == RequestMessageTypeLatest){
+        return addNum;
+    }
+    return 0;
 }
 
 - (BOOL)canInsert:(MessageItem *)messageItem
@@ -291,7 +290,9 @@
         
         for (MessageItem *messageItem in self.modelItemArray) {
             if([message.content.mid isEqualToString:messageItem.content.mid] || [message.client_send_id isEqualToString:messageItem.client_send_id]){
-                [self.modelItemArray replaceObjectAtIndex:[self.modelItemArray indexOfObject:messageItem] withObject:message];
+                NSInteger index = [self.modelItemArray indexOfObject:messageItem];
+                [self.modelItemArray removeObject:messageItem];
+                [self.modelItemArray insertObject:message atIndex:index];
                 break;
             }
         }

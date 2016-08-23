@@ -13,7 +13,6 @@
 @property(nonatomic, copy)NSString*             send_client_id;
 @property(nonatomic, strong)NSMutableArray*     classArray;
 @property(nonatomic, strong)NSMutableArray*     groupArray;
-@property(nonatomic, strong)NSMutableArray*     targets;
 @property(nonatomic, copy)NSString*             words;
 @property(nonatomic, assign)BOOL                sendSms;
 @property(nonatomic, assign)BOOL                delaySend;
@@ -26,6 +25,7 @@
 @property(nonatomic, assign)CGFloat             uploadProgress;
 
 - (NSString *)delaySendTimeStr;
+- (NSMutableArray *)targets;
 - (void)removeTarget:(UserInfo *)userInfo;
 - (BOOL)hasVideo;
 - (BOOL)hasImage;

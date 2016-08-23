@@ -28,9 +28,20 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kUserCenterChangedSchoolNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kUserInfoChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kUserInfoVCNeedRefreshNotificaiotn object:nil];
+        [[UserCenter sharedInstance] updateUserInfo];
     }
     return self;
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.navigationItem.leftBarButtonItems = [ApplicationDelegate.homeVC commonLeftBarButtonItems];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.navigationItem.leftBarButtonItems = nil;
 }
 
 - (void)viewDidLoad {
@@ -46,8 +57,6 @@
     [self.view addSubview:_teacherView];
     
     [self reloadData];
-
-    [[UserCenter sharedInstance] updateUserInfo];
 }
 
 - (void)reloadData{

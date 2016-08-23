@@ -26,6 +26,7 @@
 @interface ExchangeSchoolVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
     NSMutableArray* _messages;
+    NSMutableDictionary*    _indicatorDic;
     UITableView*    _tableView;
 }
 @end

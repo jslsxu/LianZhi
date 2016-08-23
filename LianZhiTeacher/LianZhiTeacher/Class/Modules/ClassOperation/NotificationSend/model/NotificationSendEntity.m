@@ -26,6 +26,7 @@
         
         NSString *client_send_id = [NSString stringWithFormat:@"%@_%ld_%05ld",[UserCenter sharedInstance].userInfo.uid, timeInterval, messageIndex];
         messageIndex++;
+        self.sendSms = YES;
         self.send_client_id = client_send_id;
         self.classArray = [NSMutableArray array];
         self.groupArray = [NSMutableArray array];
@@ -63,14 +64,14 @@
     NSMutableArray *targetArray = [NSMutableArray array];
     for (ClassInfo *classInfo in self.classArray) {
         for (StudentInfo *studentInfo in classInfo.students) {
-            if(studentInfo.selected){
+            if(studentInfo.selected && ![self targets:targetArray contains:studentInfo.uid]){
                 [targetArray addObject:studentInfo];
             }
         }
     }
     for (TeacherGroup *teacherGroup in self.groupArray) {
         for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
-            if(teacherInfo.selected){
+            if(teacherInfo.selected && ![self targets:targetArray contains:teacherInfo.uid]){
                 [targetArray addObject:teacherInfo];
             }
         }
@@ -79,6 +80,16 @@
         return targetArray;
     return nil;
 }
+
+- (BOOL)targets:(NSArray *)targets contains:(NSString *)uid{
+    for (UserInfo *userInfo in targets) {
+        if([userInfo.uid isEqualToString:uid]){
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (void)removeTarget:(UserInfo *)userInfo{
     for (ClassInfo *classInfo in self.classArray) {
         for (StudentInfo *studentInfo in classInfo.students) {

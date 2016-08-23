@@ -25,4 +25,6 @@
 
 @interface ChatParentInfoVC : TNBaseViewController
 @property (nonatomic, strong)ContactParentInfo* parentInfo;
+@property (nonatomic, copy)NSString *uid;
+@property (nonatomic, copy)NSString *toObjid;
 @end

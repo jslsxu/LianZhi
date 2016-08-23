@@ -52,7 +52,7 @@
     _recordView = nil;
     if(!_photoView){
         @weakify(self);
-        _photoView = [[QuickImagePickerView alloc] initWithMaxCount:9];
+        _photoView = [[QuickImagePickerView alloc] initWithMaxImageCount:9 - self.photoNum() videoCount:1 - self.videoNum()];
         [_photoView setOrigin:CGPointMake(0, kActionBarHeight)];
         [_photoView setOnClickAlbum:^{
             @strongify(self);
@@ -82,6 +82,7 @@
     _sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_sendButton setFrame:CGRectMake(viewParent.width - 10 - 70, (viewParent.height - 32) / 2, 70, 32)];
     [_sendButton setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:_sendButton.size cornerRadius:5] forState:UIControlStateNormal];
+    [_sendButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"dddddd"] size:_sendButton.size cornerRadius:5] forState:UIControlStateDisabled];
     [_sendButton setTitle:@"发送" forState:UIControlStateNormal];
     [_sendButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
     [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -105,6 +106,7 @@
     }
     else{
         _actionType = actionType;
+        [_sendButton setEnabled:_actionType == ActionTypeNone];
         NSArray *imageArray = @[@"action_record_audio",@"action_photo",@"action_camera"];
         for (NSInteger i = 0; i < _actionButtonArray.count; i++) {
             UIButton *actionButton = _actionButtonArray[i];
@@ -145,7 +147,9 @@
 }
 
 - (void)onSendClicked{
-    
+    if([self.delegate respondsToSelector:@selector(notificationInputSend)]){
+        [self.delegate notificationInputSend];
+    }
 }
 
 @end

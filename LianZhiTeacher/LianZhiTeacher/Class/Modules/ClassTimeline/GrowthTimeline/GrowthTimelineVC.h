@@ -19,7 +19,7 @@
     UILabel*    _curMonth;
     UIButton*   _nextButton;
 }
-@property (nonatomic, strong)NSDate *date;
+@property (nonatomic, copy)NSDate *date;
 @property (nonatomic, weak)id<GrowthDatePickerDelegate> delegate;
 @end
 

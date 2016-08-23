@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, ActionType){
 - (void)notificationInputVideo:(NotificationInputView *)inputView;
 - (void)notificationInputQuickPhoto:(NSArray *)photoArray fullImage:(BOOL)isFullImage;
 - (void)notificationInputAudio:(NotificationInputView *)inputView audioItem:(AudioItem *)audioItem;
+- (void)notificationInputSend;
 @end
 
 @interface NotificationInputView : UIView
@@ -37,6 +38,8 @@ typedef NS_ENUM(NSInteger, ActionType){
     QuickImagePickerView*       _photoView;
     NSMutableArray*             _actionButtonArray;
 }
+@property (nonatomic, copy)NSInteger (^photoNum)();
+@property (nonatomic, copy)NSInteger (^videoNum)();
 @property (nonatomic, assign)ActionType actionType;
 @property (nonatomic, weak)id<NotificationInputDelegate> delegate;
 @end

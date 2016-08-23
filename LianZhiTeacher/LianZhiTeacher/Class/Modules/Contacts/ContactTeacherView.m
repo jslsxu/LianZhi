@@ -103,7 +103,7 @@
                 [chatVC setChatType:ChatTypeTeacher];
                 [chatVC setMobile:teacherInfo.mobile];
                 NSString *title = teacherInfo.name;
-                [chatVC setTitle:title];
+                [chatVC setName:title];
                 [ApplicationDelegate popAndPush:chatVC];
             }
         }];
@@ -148,7 +148,7 @@
         TeacherGroup *group = (TeacherGroup *)teacher;
         [chatVC setTargetID:group.groupID];
         [chatVC setChatType:ChatTypeGroup];
-        [chatVC setTitle:group.groupName];
+        [chatVC setName:group.groupName];
         [ApplicationDelegate popAndPush:chatVC];
     }
     else{
@@ -159,7 +159,7 @@
             [chatVC setChatType:ChatTypeTeacher];
             [chatVC setMobile:teacher.mobile];
             NSString *title = teacher.name;
-            [chatVC setTitle:title];
+            [chatVC setName:title];
             [ApplicationDelegate popAndPush:chatVC];
         }
         else{

@@ -353,7 +353,8 @@
             [photoArray addObject:publishImageItem];
         }
         [publishPhotoVC setOriginalImageArray:photoArray];
-        [publishPhotoVC setDelegate:ApplicationDelegate.homeVC.treeHouseVC];
+#warning todo
+        [publishPhotoVC setDelegate:nil];
         
         publishVC = publishPhotoVC;
     }

@@ -170,9 +170,18 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [self.navigationItem setLeftBarButtonItem:nil];
 }
 
+- (void)setTitle:(NSString *)title{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    [label setTextColor:[UIColor colorWithHexString:@"252525"]];
+    [label setFont:[UIFont systemFontOfSize:18]];
+    [label setText:title];
+    [label sizeToFit];
+    [self.navigationItem setTitleView:label];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.title = @"我的树屋";
+    self.title = @"我的树屋";
     self.shouldShowEmptyHint = YES;
     //请求网络数据
     

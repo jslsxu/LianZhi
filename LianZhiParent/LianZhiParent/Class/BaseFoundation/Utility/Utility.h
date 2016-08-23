@@ -18,4 +18,5 @@
 + (NSString *)formatStringWithTimeInterval:(NSInteger)timeInterval;
 + (BOOL)isPhotoLibraryActive;
 + (NSString *)sizeStrForSize:(NSInteger)size;
++ (NSString *)weekdayStr:(NSDate *)date;
 @end

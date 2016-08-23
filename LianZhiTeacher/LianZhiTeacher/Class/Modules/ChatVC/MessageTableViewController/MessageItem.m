@@ -118,7 +118,7 @@
 + (MessageItem *)messageItemWithText:(NSString *)text atArray:(NSArray *)atList{
     MessageItem *messageItem = [MessageItem createSendMessageItem];
     if(atList.count > 0){
-        NSMutableArray *atList = [NSMutableArray array];
+        NSMutableArray *atArray = [NSMutableArray array];
         for (UserInfo *userInfo in atList) {
             NSString *type;
             if([userInfo isKindOfClass:[TeacherInfo class]]){
@@ -127,10 +127,10 @@
             else{
                 type = @"p";
             }
-            [atList addObject:@{@"type" : type, @"uid" : userInfo.uid}];
+            [atArray addObject:@{@"type" : type, @"uid" : userInfo.uid}];
         }
-        
-        [messageItem.content.exinfo setIm_at:atList];
+        if(atArray.count > 0)
+        [messageItem.content.exinfo setIm_at:atArray];
     }
     [messageItem.content setText:text];
     [messageItem.content setType:UUMessageTypeText];
@@ -169,6 +169,14 @@
     return messageItem;
 }
 
++ (MessageItem *)messageItemWithReceiveGift:(NSString *)giftName{
+    MessageItem *messageItem = [MessageItem createSendMessageItem];
+    [messageItem.content.exinfo setPresentName:giftName];
+    [messageItem.content setType:UUMessageTypeReceiveGift];
+    return messageItem;
+
+}
+
 - (NSDictionary *)sendParams{
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     MessageType messageType = self.content.type;
@@ -192,7 +200,9 @@
         case UUMessageTypeVideo:
             [params setValue:kStringFromValue(self.content.exinfo.video.videoTime) forKey:@"video_time"];
             break;
-            
+        case UUMessageTypeReceiveGift:
+            [params setValue:self.content.exinfo.presentName forKey:@"content"];
+            break;
         default:
             break;
     }
@@ -240,6 +250,7 @@
             TNDataWrapper *messageWrapper = [responseObject getDataWrapperForIndex:0];
             MessageItem *messageItem = [MessageItem modelWithJSON:messageWrapper.data];
             messageItem.messageStatus = MessageStatusSuccess;
+            messageItem.targetUser = self.targetUser;
             messageItem.isTmp = NO;
             if(messageType == UUMessageTypeVideo){
                 VideoItem *originalVideoItem = [self.content.exinfo video];

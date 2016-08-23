@@ -39,7 +39,6 @@
 		3728A73B1B9D376300310457 /* MFWFace.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A71F1B9D376300310457 /* MFWFace.m */; };
 		3728A73C1B9D376300310457 /* ReplyBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A7211B9D376300310457 /* ReplyBox.m */; };
 		3728A73E1B9D376300310457 /* UUProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A7251B9D376300310457 /* UUProgressHUD.m */; };
-		3728A7481B9D37AF00310457 /* NSDate+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A7471B9D37AF00310457 /* NSDate+Utils.m */; };
 		3728A74C1B9EE5C400310457 /* PublishGrowthTimelineVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A74B1B9EE5C400310457 /* PublishGrowthTimelineVC.m */; };
 		3728A74F1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A74E1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m */; };
 		3728A7521B9F524000310457 /* GrowthTimelineClassChangeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A7511B9F524000310457 /* GrowthTimelineClassChangeVC.m */; };
@@ -322,6 +321,8 @@
 		8D3D45C71D5F7EEF005EA8EA /* ContactInfoHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45C61D5F7EEF005EA8EA /* ContactInfoHeaderCell.m */; };
 		8D3D45E31D62F893005EA8EA /* MySendNotificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45E21D62F893005EA8EA /* MySendNotificationModel.m */; };
 		8D3D45E61D62F8A4005EA8EA /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45E51D62F8A4005EA8EA /* NotificationManager.m */; };
+		8D7554B41D68403A00A140EE /* SwitchSchoolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554B31D68403A00A140EE /* SwitchSchoolButton.m */; };
+		8D7554F81D69733B00A140EE /* ContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554F71D69733B00A140EE /* ContactView.m */; };
 		8D867BC91D25042A0020A21C /* NHAudioConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB51D25042A0020A21C /* NHAudioConverter.m */; };
 		8D867BCA1D25042A0020A21C /* NHAudioTool+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB71D25042A0020A21C /* NHAudioTool+Helper.m */; };
 		8D867BCB1D25042A0020A21C /* NHAudioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB91D25042A0020A21C /* NHAudioTool.m */; };
@@ -499,8 +500,6 @@
 		3728A7211B9D376300310457 /* ReplyBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplyBox.m; sourceTree = "<group>"; };
 		3728A7241B9D376300310457 /* UUProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUProgressHUD.h; sourceTree = "<group>"; };
 		3728A7251B9D376300310457 /* UUProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUProgressHUD.m; sourceTree = "<group>"; };
-		3728A7461B9D37AF00310457 /* NSDate+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Utils.h"; sourceTree = "<group>"; };
-		3728A7471B9D37AF00310457 /* NSDate+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Utils.m"; sourceTree = "<group>"; };
 		3728A74A1B9EE5C400310457 /* PublishGrowthTimelineVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishGrowthTimelineVC.h; sourceTree = "<group>"; };
 		3728A74B1B9EE5C400310457 /* PublishGrowthTimelineVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishGrowthTimelineVC.m; sourceTree = "<group>"; };
 		3728A74D1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthTimelineStudentsSelectVC.h; sourceTree = "<group>"; };
@@ -1017,6 +1016,10 @@
 		8D3D45E21D62F893005EA8EA /* MySendNotificationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySendNotificationModel.m; sourceTree = "<group>"; };
 		8D3D45E41D62F8A4005EA8EA /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
 		8D3D45E51D62F8A4005EA8EA /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
+		8D7554B21D68403A00A140EE /* SwitchSchoolButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchSchoolButton.h; sourceTree = "<group>"; };
+		8D7554B31D68403A00A140EE /* SwitchSchoolButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchSchoolButton.m; sourceTree = "<group>"; };
+		8D7554F61D69733B00A140EE /* ContactView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactView.h; sourceTree = "<group>"; };
+		8D7554F71D69733B00A140EE /* ContactView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactView.m; sourceTree = "<group>"; };
 		8D867BB41D25042A0020A21C /* NHAudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHAudioConverter.h; sourceTree = "<group>"; };
 		8D867BB51D25042A0020A21C /* NHAudioConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHAudioConverter.m; sourceTree = "<group>"; };
 		8D867BB61D25042A0020A21C /* NHAudioTool+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NHAudioTool+Helper.h"; sourceTree = "<group>"; };
@@ -1750,8 +1753,6 @@
 				3793F9691B7CFFEF00501F77 /* UIColor+Addition.m */,
 				3793F96A1B7CFFEF00501F77 /* UIImage+Utility.h */,
 				3793F96B1B7CFFEF00501F77 /* UIImage+Utility.m */,
-				3728A7461B9D37AF00310457 /* NSDate+Utils.h */,
-				3728A7471B9D37AF00310457 /* NSDate+Utils.m */,
 				8DCFD7611D584D3B001EDC8A /* NSString+EnDeCoding.h */,
 				8DCFD7621D584D3B001EDC8A /* NSString+EnDeCoding.m */,
 				3793F96C1B7CFFEF00501F77 /* UIImageView */,
@@ -2218,6 +2219,8 @@
 				8DCFD6721D488EED001EDC8A /* ActionFadeView.m */,
 				8DCFD6741D48A9EE001EDC8A /* MessageSegView.h */,
 				8DCFD6751D48A9EE001EDC8A /* MessageSegView.m */,
+				8D7554B21D68403A00A140EE /* SwitchSchoolButton.h */,
+				8D7554B31D68403A00A140EE /* SwitchSchoolButton.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2738,6 +2741,8 @@
 				8D3D45C31D5F5F43005EA8EA /* ChatParentInfoVC.m */,
 				8D3D45C51D5F7EEF005EA8EA /* ContactInfoHeaderCell.h */,
 				8D3D45C61D5F7EEF005EA8EA /* ContactInfoHeaderCell.m */,
+				8D7554F61D69733B00A140EE /* ContactView.h */,
+				8D7554F71D69733B00A140EE /* ContactView.m */,
 			);
 			path = ExtraInfoVC;
 			sourceTree = "<group>";
@@ -3419,6 +3424,7 @@
 				37C355DC1A3FD5CF00B948E6 /* HomeViewController.m in Sources */,
 				372C753B1C08661500A1D90B /* ClassAttendanceVC.m in Sources */,
 				3793FA9F1B7CFFF000501F77 /* UserInfo.m in Sources */,
+				8D7554B41D68403A00A140EE /* SwitchSchoolButton.m in Sources */,
 				8DCFD70C1D50B528001EDC8A /* SearchChatMessageVC.m in Sources */,
 				8D3D457A1D5B2118005EA8EA /* NotificationItem.m in Sources */,
 				3728A6AB1B98B22700310457 /* ResponseModel.m in Sources */,
@@ -3529,7 +3535,6 @@
 				37E93F991A7DC48200AD45A1 /* TNActionSheet.m in Sources */,
 				3793FA671B7CFFF000501F77 /* AFHTTPRequestOperation.m in Sources */,
 				37FD6E381BB6F53800C83AB4 /* RegisterAuthVC.m in Sources */,
-				3728A7481B9D37AF00310457 /* NSDate+Utils.m in Sources */,
 				372774E51A5D94A900464461 /* GrowthTimelinePublishVC.m in Sources */,
 				8DCFD69E1D4B4BCB001EDC8A /* NotificationClassStudentsVC.m in Sources */,
 				3793FABA1B7CFFF000501F77 /* MLAmrPlayer.m in Sources */,
@@ -3649,6 +3654,7 @@
 				8D867C881D2F97080020A21C /* NSURL+DNIMagePickerUrlEqual.m in Sources */,
 				37F28AF21C45F8F200CC459A /* LZAccountVC.m in Sources */,
 				3728A73A1B9D376300310457 /* InputBarView.m in Sources */,
+				8D7554F81D69733B00A140EE /* ContactView.m in Sources */,
 				371C6DAE1A7015AF00FA4AEC /* PublishPhotoVC.m in Sources */,
 				3728A7381B9D376300310457 /* HPGrowingTextView.m in Sources */,
 				3793FAA71B7CFFF000501F77 /* UIImage+Utility.m in Sources */,

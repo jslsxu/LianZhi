@@ -78,7 +78,7 @@
         _disturbSwitch = [[UISwitch alloc] init];
         [_disturbSwitch addTarget:self action:@selector(onValueChanged) forControlEvents:UIControlEventValueChanged];
     }
-    [_disturbSwitch setOn:!self.soundOn];
+    [_disturbSwitch setOn:self.quietModeOn];
     return _disturbSwitch;
 }
 
@@ -106,15 +106,15 @@
 
 
 - (void)onValueChanged{
-    BOOL soundOn = !self.soundOn;
+    BOOL quietModeOn = !self.quietModeOn;
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     [params setValue:self.uid forKey:@"from_id"];
     [params setValue:kStringFromValue(self.chatType) forKey:@"from_type"];
-    [params setValue:soundOn ? @"open" : @"close" forKey:@"sound"];
+    [params setValue:quietModeOn ? @"close" : @"open"  forKey:@"sound"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/set_thread" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        self.soundOn = soundOn;
+        self.quietModeOn = quietModeOn;
         if(self.alertChangeCallback){
-            self.alertChangeCallback(soundOn);
+            self.alertChangeCallback(quietModeOn);
         }
     } fail:^(NSString *errMsg) {
         
@@ -201,6 +201,7 @@
         if(self.chatType == ChatTypeTeacher){
             if(self.teacherInfo){
                 ChatTeacherInfoVC *teacherInfoVC = [[ChatTeacherInfoVC alloc] init];
+                [teacherInfoVC setToObjid:self.toObjid];
                 [teacherInfoVC setTeacherInfo:self.teacherInfo];
                 [self.navigationController pushViewController:teacherInfoVC animated:YES];
             }
@@ -208,6 +209,7 @@
         else if(self.chatType == ChatTypeParents){
             if(self.parentInfo){
                 ChatParentInfoVC *parentInfoVC = [[ChatParentInfoVC alloc] init];
+                [parentInfoVC setToObjid:self.toObjid];
                 [parentInfoVC setParentInfo:self.parentInfo];
                 [self.navigationController pushViewController:parentInfoVC animated:YES];
             }

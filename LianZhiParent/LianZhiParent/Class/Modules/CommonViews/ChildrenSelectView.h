@@ -29,6 +29,7 @@ typedef void (^ChildInfoBlk)(NSInteger idx);
 
 @interface ChildrenSelectView : UIView
 {
+    
     UIScrollView*   _scrollView;
     NSMutableArray* _childButtonArray;
 }

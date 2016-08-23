@@ -76,6 +76,14 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
 @end
 
 @implementation PersonalInfoVC
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self){
+        self.hidesBottomBarWhenPushed = YES;
+    }
+    return self;
+}
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
@@ -90,6 +98,15 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
 {
     [super viewWillAppear:animated];
     [self setNeedsStatusBarAppearanceUpdate];
+    
+    UINavigationController *nav = self.navigationController;
+    if(nav.viewControllers.count > 1){
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"NavBack"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+    }
+}
+
+- (void)back{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];

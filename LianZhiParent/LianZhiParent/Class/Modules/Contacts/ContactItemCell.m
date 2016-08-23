@@ -65,7 +65,7 @@
     else if([_userInfo isKindOfClass:[ChildInfo class]]){
         ChildInfo* childInfo = (ChildInfo *)_userInfo;
         [_logoView setImageWithUrl:[NSURL URLWithString:childInfo.avatar]];
-        [_logoView setStatus:nil];
+        [_logoView setStatus:childInfo.actived ? nil : @"未下载"];
         [_nameLabel setText:childInfo.name];
         [_nameLabel sizeToFit];
         [_nameLabel setFrame:CGRectMake(_logoView.right + 10, (self.height - _nameLabel.height) / 2, _nameLabel.width, _nameLabel.height)];

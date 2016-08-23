@@ -10,11 +10,12 @@
 #import "ClassAppVC.h"
 #import "ContactListVC.h"
 #import "DiscoveryVC.h"
+#import "MineVC.h"
 #import "MessageVC.h"
 #import "TreeHouseVC.h"
 #import "SettingsVC.h"
 #import "LZTabBarButton.h"
-#import "ChildrenSelectView.h"
+#import "ChildrenSwitchView.h"
 extern NSString *const kCurrentChildInfoChangedNotification;
 
 @interface HomeViewController : UITabBarController
@@ -26,9 +27,9 @@ extern NSString *const kCurrentChildInfoChangedNotification;
 @property (nonatomic, strong)ContactListVC *contactListVC;
 @property (nonatomic, strong)DiscoveryVC *discoveryVC;
 @property (nonatomic, strong)MessageVC *messageVC;
-@property (nonatomic, strong)TreeHouseVC *treeHouseVC;
+@property (nonatomic, strong)MineVC *mineVC;
 
 - (void)selectAtIndex:(NSInteger)index;
-- (ChildrenSelectView *)curChildrenSelectView;
+- (ChildrenSwitchView *)curChildrenSelectView;
 @end
 

@@ -13,4 +13,5 @@
 + (NSUInteger)sizeAtPath:(NSString *)filePath diskMode:(BOOL)diskMode;
 + (NSString *)sizeStrForSize:(NSInteger)size;
 + (AVAsset *)avAssetFromALAsset:(ALAsset *)alasset;
++ (NSString *)weekdayStr:(NSDate *)date;
 @end

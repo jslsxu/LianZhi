@@ -79,9 +79,18 @@
     [super viewDidDisappear:animated];
     [self.navigationItem setLeftBarButtonItem:nil];
 }
+- (void)setTitle:(NSString *)title{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    [label setTextColor:[UIColor colorWithHexString:@"252525"]];
+    [label setFont:[UIFont systemFontOfSize:18]];
+    [label setText:title];
+    [label sizeToFit];
+    [self.navigationItem setTitleView:label];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"班应用";
     // Do any additional setup after loading the view.
     [self.collectionView registerClass:[ApplicationBoxHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ApplicationBoxHeaderView"];
     [self.collectionView setShowsVerticalScrollIndicator:NO];

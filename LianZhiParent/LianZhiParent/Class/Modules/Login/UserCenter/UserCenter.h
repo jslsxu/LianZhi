@@ -16,7 +16,7 @@ extern NSString* const kUserInfoChangedNotification;
 extern NSString* const kPersonalSettingChangedNotification;
 extern NSString* const kChildInfoChangedNotification;
 extern NSString* const kUserDataStorageKey;
-@interface UserData : TNModelItem<NSCoding>
+@interface UserData : TNModelItem
 @property (nonatomic, strong)UserInfo *userInfo;
 @property (nonatomic, copy)NSString *accessToken;
 @property (nonatomic, assign)BOOL firstLogin;

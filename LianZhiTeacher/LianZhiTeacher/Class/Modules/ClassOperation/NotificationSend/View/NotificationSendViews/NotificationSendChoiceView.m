@@ -13,6 +13,7 @@
 - (instancetype)initWithFrame:(CGRect)frame title:(NSString *)title{
     self = [super initWithFrame:frame];
     if(self){
+        [self setClipsToBounds:YES];
         _stateButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_stateButton setFrame:CGRectMake(0, 0, 42, self.height)];
         [_stateButton addTarget:self action:@selector(onStateButtonClicked) forControlEvents:UIControlEventTouchUpInside];

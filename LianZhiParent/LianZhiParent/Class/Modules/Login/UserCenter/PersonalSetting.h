@@ -8,7 +8,7 @@
 
 #import "TNModelItem.h"
 extern NSString *const kPersonalSettingKey;
-@interface PersonalSetting : TNModelItem<NSCoding>
+@interface PersonalSetting : TNModelItem
 @property (nonatomic, assign)BOOL earPhone;
 @property (nonatomic, assign)BOOL wifiSend;
 @property (nonatomic, assign)BOOL autoSave;

@@ -13,6 +13,8 @@
 @property (nonatomic, strong)MessageSegView *segView;
 @property (nonatomic, strong)NSTimer *timer;
 @property (nonatomic, assign)BOOL isNotification;
+@property (nonatomic, copy)NSString *requestChild;
+@property (nonatomic, weak)AFHTTPRequestOperation *requestOperation;
 @end
 
 @implementation MessageVC
@@ -32,6 +34,7 @@
         [self.timer fire];
     }
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:ApplicationDelegate.homeVC.curChildrenSelectView];
+    [self.navigationItem setTitleView:_segView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -69,7 +72,6 @@
         @strongify(self);
         [self onSegmentChanged:selectedIndex];
     }];
-    [self.navigationItem setTitleView:_segView];
     
     self.messageModel = [[MessageGroupListModel alloc] init];
     [self.messageModel setUnreadNumChanged:^(NSInteger notificationNum, NSInteger chatNum) {
@@ -78,15 +80,7 @@
         [self.segView setShowBadge:chatNum > 0 ? @"" : nil atIndex:1];
     }];
 //    [self.messageModel setPlayAlert:YES];
-    if([self supportCache])//支持缓存，先出缓存中读取数据
-    {
-        id responseObject = [NSDictionary dictionaryWithContentsOfFile:[self cacheFileName]];
-        if(responseObject)
-        {
-            [self.messageModel parseData:[TNDataWrapper dataWrapperWithObject:responseObject] type:REQUEST_REFRESH];
-            [self.tableView reloadData];
-        }
-    }
+    [self loadCache];
     
     [self setIsNotification:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurChildChanged) name:kUserCenterChangedCurChildNotification object:nil];
@@ -115,7 +109,19 @@
 
 - (void)onCurChildChanged
 {
-    [self requestData:REQUEST_REFRESH];
+    [self loadCache];
+}
+
+- (void)loadCache{
+    if([self supportCache])//支持缓存，先出缓存中读取数据
+    {
+        id responseObject = [NSDictionary dictionaryWithContentsOfFile:[self cacheFilePath]];
+        if(responseObject)
+        {
+            [self.messageModel parseData:[TNDataWrapper dataWrapperWithObject:responseObject] type:REQUEST_REFRESH];
+        }
+    }
+    [self.tableView reloadData];
 }
 
 - (void)refreshData
@@ -134,7 +140,8 @@
     if(!_isLoading)
     {
         __weak typeof(self) wself = self;
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/index" method:REQUEST_GET type:requestType withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        self.requestChild = [UserCenter sharedInstance].curChild.uid;
+        self.requestOperation = [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/index" method:REQUEST_GET type:requestType withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             [wself onRequestSuccess:operation responseData:responseObject];
         } fail:^(NSString *errMsg) {
             [wself onRequestFail:errMsg];
@@ -144,16 +151,18 @@
 
 - (void)onRequestSuccess:(AFHTTPRequestOperation *)operation responseData:(TNDataWrapper *)responseData
 {
-    [self.messageModel parseData:responseData type:operation.requestType];
-    [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
-    [self setShowEmptyLabel:(self.messageModel.modelItemArray.count == 0)];
-    if([self supportCache])
-    {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [responseData.data writeToFile:[self cacheFileName] atomically:YES];
-        });
+    if([self.requestChild isEqualToString:[UserCenter sharedInstance].curChild.uid]){
+        [self.messageModel parseData:responseData type:operation.requestType];
+        [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
+//        [self setShowEmptyLabel:(self.messageModel.modelItemArray.count == 0)];
+        if([self supportCache])
+        {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [responseData.data writeToFile:[self cacheFilePath] atomically:YES];
+            });
+        }
+        [self.tableView reloadData];
     }
-    [self.tableView reloadData];
     _isLoading = NO;
 }
 
@@ -172,27 +181,27 @@
     return msgNum;
 }
 
-- (void)setShowEmptyLabel:(BOOL)showEmpty
-{
-    if(showEmpty)
-    {
-        if(nil == _emptyLabel)
-        {
-            _emptyLabel = [[UILabel alloc] initWithFrame:self.view.bounds];
-            [_emptyLabel setNumberOfLines:0];
-            [_emptyLabel setTextAlignment:NSTextAlignmentCenter];
-            [_emptyLabel setLineBreakMode:NSLineBreakByWordWrapping];
-            [_emptyLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-            [_emptyLabel setFont:[UIFont systemFontOfSize:14]];
-            [_emptyLabel setText:@"还没有任何内容哦"];
-        }
-        [self.view insertSubview:_emptyLabel atIndex:0];
-    }
-    else
-    {
-        [_emptyLabel removeFromSuperview];
-    }
-}
+//- (void)setShowEmptyLabel:(BOOL)showEmpty
+//{
+//    if(showEmpty)
+//    {
+//        if(nil == _emptyLabel)
+//        {
+//            _emptyLabel = [[UILabel alloc] initWithFrame:self.view.bounds];
+//            [_emptyLabel setNumberOfLines:0];
+//            [_emptyLabel setTextAlignment:NSTextAlignmentCenter];
+//            [_emptyLabel setLineBreakMode:NSLineBreakByWordWrapping];
+//            [_emptyLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
+//            [_emptyLabel setFont:[UIFont systemFontOfSize:14]];
+//            [_emptyLabel setText:@"还没有任何内容哦"];
+//        }
+//        [self.view insertSubview:_emptyLabel atIndex:0];
+//    }
+//    else
+//    {
+//        [_emptyLabel removeFromSuperview];
+//    }
+//}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -246,9 +255,8 @@
         [chatVC setTargetID:groupItem.fromInfo.uid];
         [chatVC setTo_objid:groupItem.fromInfo.from_obj_id];
         [chatVC setMobile:groupItem.fromInfo.mobile];
-        [chatVC setSoundOn:groupItem.soundOn];
         NSString *title = groupItem.fromInfo.name;
-        [chatVC setTitle:title];
+        [chatVC setName:title];
         [self.navigationController pushViewController:chatVC animated:YES];
     }
 }
@@ -262,7 +270,7 @@
     return YES;
 }
 
-- (NSString *)cacheFileName
+- (NSString *)cacheFilePath
 {
     return [[NHFileManager localCurrentUserRequestCachePath] stringByAppendingPathComponent:@"messageIndex"];
 }

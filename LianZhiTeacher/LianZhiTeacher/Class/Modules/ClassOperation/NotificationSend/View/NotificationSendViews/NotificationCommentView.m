@@ -17,10 +17,12 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if(self){
+        self.maxWordsNum = 150;
         _commentTextView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, self.width - 10 * 2, kMinHeight - kNumLabelHeight)];
         [_commentTextView setFont:[UIFont systemFontOfSize:15]];
         [_commentTextView setPlaceholder:@"请输入正文内容"];
         [_commentTextView setDelegate:self];
+        [_commentTextView setReturnKeyType:UIReturnKeyDone];
         [_commentTextView setMinHeight:kMinHeight - kNumLabelHeight - 10];
         [_commentTextView setMaxNumberOfLines:10];
         [_commentTextView sizeToFit];
@@ -30,7 +32,7 @@
         [_numLabel setTextAlignment:NSTextAlignmentRight];
         [_numLabel setFont:[UIFont systemFontOfSize:15]];
         [_numLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
-        [_numLabel setText:[NSString stringWithFormat:@"0/%d",kMaxTextNum]];
+        [_numLabel setText:[NSString stringWithFormat:@"0/%zd",self.maxWordsNum]];
         [_numLabel setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
         [self addSubview:_numLabel];
         
@@ -42,12 +44,34 @@
     return self;
 }
 
+- (void)setMaxWordsNum:(NSInteger)maxWordsNum{
+    _maxWordsNum = maxWordsNum;
+    
+    [self formatContent];
+}
+
 - (NSString *)content{
     return [[_commentTextView text] copy];
 }
 
 - (void)setContent:(NSString *)content{
     [_commentTextView setText:content];
+    [self formatContent];
+}
+
+- (void)formatContent{
+    NSInteger length = _commentTextView.text.length;
+    NSString *resultText = _commentTextView.text;
+    if(length > self.maxWordsNum){
+        resultText = [_commentTextView.text substringToIndex:self.maxWordsNum];
+        _commentTextView.text = resultText;
+        length = self.maxWordsNum;
+    }
+    [_numLabel setText:[NSString stringWithFormat:@"%zd/%zd",length, self.maxWordsNum]];
+    if(self.textViewTextChanged){
+        self.textViewTextChanged(resultText);
+    }
+
 }
 
 #pragma mark - HPGrowingTextViewDelegate
@@ -63,12 +87,7 @@
 }
 
 - (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView{
-    NSInteger length = growingTextView.text.length;
-    if(length > kMaxTextNum){
-        growingTextView.text = [growingTextView.text substringToIndex:kMaxTextNum];
-        length = kMaxTextNum;
-    }
-    [_numLabel setText:[NSString stringWithFormat:@"%zd/%d",length, kMaxTextNum]];
+    [self formatContent];
 }
 
 - (BOOL)growingTextView:(HPGrowingTextView *)growingTextView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text

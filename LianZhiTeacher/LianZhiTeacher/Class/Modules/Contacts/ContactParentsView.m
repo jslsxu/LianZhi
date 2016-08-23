@@ -155,7 +155,7 @@
         [chatVC setTargetID:familyInfo.uid];
         [chatVC setChatType:ChatTypeParents];
         [chatVC setMobile:familyInfo.mobile];
-        [chatVC setTitle:[NSString stringWithFormat:@"%@的%@",self.studentInfo.name,[(FamilyInfo *)familyInfo relation]]];
+        [chatVC setName:[NSString stringWithFormat:@"%@的%@",self.studentInfo.name,[(FamilyInfo *)familyInfo relation]]];
         [ApplicationDelegate popAndPush:chatVC];
     }];
     [itemCell setPhoneCallback:^{
@@ -180,7 +180,7 @@
         [chatVC setTargetID:familyInfo.uid];
         [chatVC setChatType:ChatTypeParents];
         [chatVC setMobile:familyInfo.mobile];
-        [chatVC setTitle:[NSString stringWithFormat:@"%@的%@",self.studentInfo.name,[(FamilyInfo *)familyInfo relation]]];
+        [chatVC setName:[NSString stringWithFormat:@"%@的%@",self.studentInfo.name,[(FamilyInfo *)familyInfo relation]]];
         [ApplicationDelegate popAndPush:chatVC];
     }
     else{

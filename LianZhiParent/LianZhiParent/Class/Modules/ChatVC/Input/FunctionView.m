@@ -107,10 +107,10 @@
         if(![self supportType:FunctionTypeSendGift])
             [_functionArray addObject:[FunctionItem functionItemWithTitle:@"发礼物" image:@"FunctionGift" type:FunctionTypeSendGift]];
     }
-    if(self.canCalltelephone){
-        if(![self supportType:FunctionTypeTelephone])
-            [_functionArray addObject:[FunctionItem functionItemWithTitle:@"打电话" image:@"FunctionVideo" type:FunctionTypeTelephone]];
-    }
+//    if(self.canCalltelephone){
+//        if(![self supportType:FunctionTypeTelephone])
+//            [_functionArray addObject:[FunctionItem functionItemWithTitle:@"打电话" image:@"FunctionVideo" type:FunctionTypeTelephone]];
+//    }
     [_collectionView reloadData];
 }
 

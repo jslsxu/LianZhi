@@ -40,7 +40,7 @@
     self.ctime = [dataWrapper getIntegerForKey:@"ctime"];
     
     NSDate *date = [[NSDate alloc] initWithTimeIntervalSince1970:self.ctime];
-    self.weekday = [date weekday];
+    self.weekday = [Utility weekdayStr:date];
 
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MM月dd日 HH:mm"];

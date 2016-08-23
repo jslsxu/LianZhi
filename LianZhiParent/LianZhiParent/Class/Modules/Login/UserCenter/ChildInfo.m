@@ -11,10 +11,12 @@
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    self.schoolID = [dataWrapper getStringForKey:@"id"];
-    self.schoolName = [dataWrapper getStringForKey:@"name"];
-    self.logo = [dataWrapper getStringForKey:@"logo"];
-    self.classIMEnaled = [dataWrapper getBoolForKey:@"enabled_class_im"];
+    [self modelSetWithJSON:dataWrapper.data];
+}
+
++ (NSDictionary <NSString *, id> *)modelCustomPropertyMapper{
+    return @{@"schoolID" : @"id", @"schoolName" : @"name",
+             @"classIMEnaled" : @"enabled_class_im"};
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder

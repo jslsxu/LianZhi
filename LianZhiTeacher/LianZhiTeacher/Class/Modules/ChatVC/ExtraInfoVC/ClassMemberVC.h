@@ -8,6 +8,23 @@
 
 #import "TNBaseViewController.h"
 
+@interface UserGroup : TNBaseObject
+@property (nonatomic, copy)NSString *childID;
+@property (nonatomic, copy)NSString *title;
+@property (nonatomic, copy)NSString *indexkey;
+@property (nonatomic, strong)NSArray *users;
+@property (nonatomic, strong)NSArray *labelArray;
+- (void)addGroup:(UserGroup *)userGroup;
+@end
+
+@interface MemberSectionHeader : UITableViewHeaderFooterView
+{
+    UILabel*    _titleLabel;
+}
+@property (nonatomic, copy)NSString *title;
+@end
+
+
 @interface MemberCell : TNTableViewCell
 {
     AvatarView* _avatarView;
@@ -17,6 +34,7 @@
 }
 @property(nonatomic, readonly)UIButton* chatButton;
 @property (nonatomic, strong)UserInfo *userInfo;
+@property (nonatomic, copy)NSString *label;
 @end
 
 @interface ClassMemberVC : TNBaseViewController

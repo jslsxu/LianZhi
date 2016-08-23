@@ -154,7 +154,7 @@
         [chatVC setTargetID:familyInfo.uid];
         [chatVC setChatType:ChatTypeParents];
         [chatVC setMobile:familyInfo.mobile];
-        [chatVC setTitle:[NSString stringWithFormat:@"%@的%@",self.studentInfo.name,[(FamilyInfo *)familyInfo relation]]];
+        [chatVC setName:[NSString stringWithFormat:@"%@的%@",self.studentInfo.name,[(FamilyInfo *)familyInfo relation]]];
 //        [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
         [ApplicationDelegate popAndPush:chatVC];
     }];
@@ -177,16 +177,13 @@
     FamilyInfo *familyInfo = self.studentInfo.family[indexPath.row];
     if(familyInfo.actived)
     {
-        NSInteger section = indexPath.section;
-        ClassInfo *classInfo = [UserCenter sharedInstance].curChild.classes[section];
         JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-        [chatVC setChatType:ChatTypeTeacher];
-        [chatVC setTo_objid:classInfo.school.schoolID];
+        [chatVC setTo_objid:self.studentInfo.uid];
         [chatVC setTargetID:familyInfo.uid];
+        [chatVC setChatType:ChatTypeParents];
         [chatVC setMobile:familyInfo.mobile];
-        NSString *title = [NSString stringWithFormat:@"%@",familyInfo.name];
-        [chatVC setTitle:title];
-        //            [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
+        [chatVC setName:[NSString stringWithFormat:@"%@的%@",self.studentInfo.name,[(FamilyInfo *)familyInfo relation]]];
+        //        [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
         [ApplicationDelegate popAndPush:chatVC];
     }
     else

@@ -8,7 +8,7 @@
 
 #import "ChatTeacherInfoVC.h"
 #import "ContactInfoHeaderCell.h"
-
+#import "ContactView.h"
 @implementation ContactSchoolInfo
 
 + (NSDictionary<NSString *,id> *)modelContainerPropertyGenericClass{
@@ -85,12 +85,53 @@
     [super viewDidLoad];
     self.title = @"详细资料";
     [self.view addSubview:self.tableView];
+    if(!self.teacherInfo){
+        if(self.uid.length > 0){
+            @weakify(self)
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_teacher_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid" : self.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                @strongify(self)
+                self.teacherInfo = [ContactTeacherInfo nh_modelWithJson:responseObject.data];
+                [self.tableView reloadData];
+                [self showBottomView];
+            } fail:^(NSString *errMsg) {
+                
+            }];
+        }
+    }
+    else{
+        [self showBottomView];
+    }
+
+}
+
+- (void)showBottomView{
+    ContactView *contactView = [[ContactView alloc] initWithUserInfo:self.teacherInfo];
+    [contactView setChatCallback:^{
+        [self chat];
+    }];
+    [contactView setBottom:self.view.height];
+    [contactView setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
+    [self.view addSubview:contactView];
+    [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, contactView.height, 0)];
+}
+
+- (void)chat{
+    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+    [chatVC setTo_objid:[UserCenter sharedInstance].curSchool.schoolID];
+    [chatVC setTargetID:self.teacherInfo.uid];
+    [chatVC setChatType:ChatTypeTeacher];
+    [chatVC setMobile:self.teacherInfo.mobile];
+    NSString *title = self.teacherInfo.name;
+    [chatVC setName:title];
+    [ApplicationDelegate popAndPush:chatVC];
 }
 
 - (UITableView *)tableView{
     if(_tableView == nil){
         _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
         [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
+         [_tableView setShowsVerticalScrollIndicator:NO];
+        [_tableView setSeparatorColor:kSepLineColor];
         [_tableView setDelegate:self];
         [_tableView setDataSource:self];
     }
@@ -100,7 +141,12 @@
 #pragma mark - UITableViewDelegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1 + self.teacherInfo.schools.count;
+    NSInteger count = self.teacherInfo.schools.count;
+    if(count > 0){
+        return 1 + count;
+    }
+    else
+        return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

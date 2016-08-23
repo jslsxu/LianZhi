@@ -268,7 +268,7 @@
         if(kMaxResponseNum >= count)//查看详情
             extraStr = @"查看详情>";
         else
-            extraStr = [NSString stringWithFormat:@"更多评论(%ld)>",count];
+            extraStr = [NSString stringWithFormat:@"更多评论(%zd)>",count];
         [label setText:extraStr];
         [footerView addSubview:label];
         

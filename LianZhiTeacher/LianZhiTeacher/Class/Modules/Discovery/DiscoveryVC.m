@@ -81,9 +81,19 @@
     return self;
 }
 
+- (void)setTitle:(NSString *)title{
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    [titleLabel setFont:[UIFont systemFontOfSize:18]];
+    [titleLabel setTextColor:[UIColor colorWithHexString:@"252525"]];
+    [titleLabel setText:title];
+    [titleLabel setSize:CGSizeMake(kScreenWidth / 2, 30)];
+    [titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.navigationItem setTitleView:titleLabel];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.title = @"发现";
     self.itemArray = [[LZKVStorage userKVStorage] storageValueForKey:kDiscoveryCachePath];
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [_tableView setSeparatorColor:kCommonSeparatorColor];
@@ -99,6 +109,12 @@
 {
     [super viewWillAppear:animated];
     [self requestData];
+    self.navigationItem.leftBarButtonItems = [ApplicationDelegate.homeVC commonLeftBarButtonItems];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    self.navigationItem.leftBarButtonItems = nil;
 }
 
 - (void)onSuccessWithResponse:(TNDataWrapper *)responseWrapper

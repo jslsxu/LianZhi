@@ -64,9 +64,6 @@
     if(self)
     {
         self.hidesBottomBarWhenPushed = YES;
-        UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
-        [backItem setTitle:@"返回"];
-        self.navigationItem.backBarButtonItem = backItem;
     }
     return self;
 }
@@ -85,6 +82,14 @@
 {
     [super viewWillAppear:animated];
     [self setNeedsStatusBarAppearanceUpdate];
+    UINavigationController *nav = self.navigationController;
+    if(nav.viewControllers.count > 1){
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"NavBack"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+    }
+}
+
+- (void)back{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)viewDidLoad {
     [super viewDidLoad];

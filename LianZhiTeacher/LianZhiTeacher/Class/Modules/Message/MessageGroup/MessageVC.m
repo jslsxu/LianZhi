@@ -13,39 +13,16 @@
 #import "HomeWorkVC.h"
 #import "StudentAttendanceVC.h"
 #import "NotificationSendVC.h"
-#import "ExchangeSchoolVC.h"
 #import "NHFileManager.h"
 #import "ActionFadeView.h"
 #import "ChatMessageModel.h"
-@implementation SwitchSchoolButton
-
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    if(_redDot == nil)
-    {
-        _redDot = [[NumIndicator alloc] init];
-        [_redDot setIndicator:@""];
-        [_redDot setHidden:YES];
-        [self addSubview:_redDot];
-    }
-    [_redDot setCenter:CGPointMake(self.width - 7, 5)];
-}
-
-- (void)setHasNew:(BOOL)hasNew
-{
-    _hasNew = hasNew;
-    [_redDot setHidden:!_hasNew];
-}
-
-@end
 
 @interface MessageVC ()
 @property (nonatomic, strong)MessageSegView *segView;
 @property (nonatomic, strong)NSTimer *timer;
 @property (nonatomic, assign)BOOL isNotification;
-
+@property (nonatomic, weak)AFHTTPRequestOperation *requestOperation;
+@property (nonatomic, copy)NSString *requestSchool;
 @end
 
 @implementation MessageVC
@@ -65,12 +42,13 @@
         [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
         [self.timer fire];
     }
+    self.navigationItem.leftBarButtonItems = [ApplicationDelegate.homeVC commonLeftBarButtonItems];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [ApplicationDelegate homeVC].navigationItem.rightBarButtonItem = nil;
+    self.navigationItem.leftBarButtonItems = nil;
 }
 
 - (void)invalidate
@@ -100,18 +78,6 @@
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
     
-    //navigation
-    if([UserCenter sharedInstance].userData.schools.count > 1)
-    {
-        UIBarButtonItem *flexibleSpaceBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFixedSpace target: nil action: nil];
-        flexibleSpaceBarButtonItem.width = -5;
-        _switchButton = [[SwitchSchoolButton alloc] initWithFrame:CGRectMake(-10, 0, 32, 32)];
-        [_switchButton setImage:[UIImage imageNamed:@"SwitchSchool"] forState:UIControlStateNormal];
-        [_switchButton addTarget:self action:@selector(switchSchool) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIBarButtonItem *switchItem = [[UIBarButtonItem alloc] initWithCustomView:_switchButton];
-        self.navigationItem.leftBarButtonItems = @[flexibleSpaceBarButtonItem, switchItem];
-    }
     @weakify(self);
     _segView = [[MessageSegView alloc] initWithItems:@[@"通知", @"消息"] valueChanged:^(NSInteger selectedIndex) {
         @strongify(self);
@@ -123,20 +89,6 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ActionAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddActionClicked:)];
     
-    //    LZTabBarButton *addButton = [LZTabBarButton buttonWithType:UIButtonTypeCustom];
-    //    [addButton setImage:[UIImage imageNamed:@"ActionAdd"] forState:UIControlStateNormal];
-    //    [addButton addTarget:self action:@selector(onAddActionClicked:) forControlEvents:UIControlEventTouchUpInside];
-    //    [addButton setSize:CGSizeMake(40, 40)];
-    //
-    //    NSString *ActionAddKey = @"ActionAddKey";
-    //    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    //    BOOL actionAddNew = [userDefaults boolForKey:ActionAddKey];
-    //    if(!actionAddNew)
-    //    {
-    //        [addButton setBadgeValue:@""];
-    //    }
-    //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
-    
     self.messageModel = [[MessageGroupListModel alloc] init];
     [self.messageModel setUnreadNumChanged:^(NSInteger notificationNum, NSInteger chatNum) {
         @strongify(self);
@@ -144,19 +96,10 @@
         [self.segView setShowBadge:chatNum > 0 ? @"" : nil atIndex:1];
     }];
     [self.messageModel setPlayAlert:YES];
-    if([self supportCache])//支持缓存，先出缓存中读取数据
-    {
-        id responseObject = [NSDictionary dictionaryWithContentsOfFile:[self cacheFileName]];
-        if(responseObject)
-        {
-            [self.messageModel parseData:[TNDataWrapper dataWrapperWithObject:responseObject] type:REQUEST_REFRESH];
-            [self.tableView reloadData];
-        }
-    }
-    //    [self requestData:REQUEST_REFRESH];
+    [self loadCache];
+    [self.tableView reloadData];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onPublishPhotoFinished:) name:kPublishPhotoItemFinishedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
 }
 
 - (void)onSegmentChanged:(NSInteger)selectedIndex{
@@ -182,17 +125,11 @@
 
 - (void)onCurSchoolChanged
 {
-    [self requestData:REQUEST_REFRESH];
+    [self.requestOperation cancel];
+    [self loadCache];
+    [self.tableView reloadData];
 }
 
-- (void)onStatusChanged{
-    BOOL hasNew = NO;
-    for (NoticeItem *notice in [UserCenter sharedInstance].statusManager.notice) {
-        if(![notice.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID])
-            hasNew = YES;
-    }
-    [_switchButton setHasNew:hasNew];
-}
 
 - (void)refreshData
 {
@@ -205,12 +142,24 @@
         [self requestData:REQUEST_REFRESH];
 }
 
+- (void)loadCache{
+    if([self supportCache])//支持缓存，先出缓存中读取数据
+    {
+        id responseObject = [NSDictionary dictionaryWithContentsOfFile:[self cacheFilePath]];
+        if(responseObject)
+        {
+            [self.messageModel parseData:[TNDataWrapper dataWrapperWithObject:responseObject] type:REQUEST_REFRESH];
+        }
+    }
+}
+
 - (void)requestData:(REQUEST_TYPE)requestType
 {
     if(!_isLoading)
     {
         __weak typeof(self) wself = self;
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/index" method:REQUEST_GET type:requestType withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        self.requestSchool = [UserCenter sharedInstance].curSchool.schoolID;
+        self.requestOperation = [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/index" method:REQUEST_GET type:requestType withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             [wself onRequestSuccess:operation responseData:responseObject];
         } fail:^(NSString *errMsg) {
             [wself onRequestFail:errMsg];
@@ -220,17 +169,18 @@
 
 - (void)onRequestSuccess:(AFHTTPRequestOperation *)operation responseData:(TNDataWrapper *)responseData
 {
-    [self.messageModel parseData:responseData type:operation.requestType];
-    [[UserCenter sharedInstance] save];
-    [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
-    [self setShowEmptyLabel:(self.messageModel.modelItemArray.count == 0)];
-    if([self supportCache])
-    {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [responseData.data writeToFile:[self cacheFileName] atomically:YES];
-        });
+    if([self.requestSchool isEqualToString:[UserCenter sharedInstance].curSchool.schoolID]){
+        [self.messageModel parseData:responseData type:operation.requestType];
+        [[UserCenter sharedInstance] save];
+        [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
+        if([self supportCache])
+        {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [responseData.data writeToFile:[self cacheFilePath] atomically:YES];
+            });
+        }
+        [self.tableView reloadData];
     }
-    [self.tableView reloadData];
     _isLoading = NO;
 }
 
@@ -248,35 +198,7 @@
     return msgNum;
 }
 
-- (void)switchSchool
-{
-    ExchangeSchoolVC *exchangeSchoolVC = [[ExchangeSchoolVC alloc] init];
-    [self.navigationController pushViewController:exchangeSchoolVC animated:YES];
-}
 #pragma mark - UITableViewDelegate
-
-- (void)setShowEmptyLabel:(BOOL)showEmpty
-{
-    if(showEmpty)
-    {
-        if(nil == _emptyLabel)
-        {
-            _emptyLabel = [[UILabel alloc] initWithFrame:self.view.bounds];
-            [_emptyLabel setNumberOfLines:0];
-            [_emptyLabel setTextAlignment:NSTextAlignmentCenter];
-            [_emptyLabel setLineBreakMode:NSLineBreakByWordWrapping];
-            [_emptyLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-            [_emptyLabel setFont:[UIFont systemFontOfSize:14]];
-            [_emptyLabel setText:@"还没有任何内容哦"];
-            [self.view addSubview:_emptyLabel];
-        }
-        [_emptyLabel setHidden:NO];
-    }
-    else
-    {
-        [_emptyLabel setHidden:YES];
-    }
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -354,9 +276,8 @@
         [chatVC setTargetID:groupItem.fromInfo.uid];
         [chatVC setTo_objid:groupItem.fromInfo.from_obj_id];
         [chatVC setMobile:groupItem.fromInfo.mobile];
-        [chatVC setSoundOn:groupItem.soundOn];
         NSString *title = groupItem.fromInfo.name;
-        [chatVC setTitle:title];
+        [chatVC setName:title];
         [self.navigationController pushViewController:chatVC animated:YES];
     }
 }
@@ -368,7 +289,7 @@
     return YES;
 }
 
-- (NSString *)cacheFileName
+- (NSString *)cacheFilePath
 {
     return [[NHFileManager localCurrentUserRequestCachePath] stringByAppendingPathComponent:@"messageIndex"];
 }

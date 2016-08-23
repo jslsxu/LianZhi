@@ -81,9 +81,19 @@
     [super viewDidDisappear:animated];
     [self.navigationItem setLeftBarButtonItem:nil];
 }
+- (void)setTitle:(NSString *)title{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    [label setTextColor:[UIColor colorWithHexString:@"252525"]];
+    [label setFont:[UIFont systemFontOfSize:18]];
+    [label setText:title];
+    [label sizeToFit];
+    [self.navigationItem setTitleView:label];
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"发现";
     self.itemArray = [[LZKVStorage userKVStorage] storageValueForKey:kDiscoveryCachePath];
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [_tableView setSeparatorColor:kSepLineColor];

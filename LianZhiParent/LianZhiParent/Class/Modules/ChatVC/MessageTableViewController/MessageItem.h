@@ -54,7 +54,7 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property (nonatomic, strong)PhotoItem *imgs;
 @property (nonatomic, strong)AudioItem *voice;
 @property (nonatomic, strong)VideoItem *video;
-@property (nonatomic, assign)NSArray* im_at;
+@property (nonatomic, strong)NSArray* im_at;
 @end
 
 @interface MessageContent : TNBaseObject
@@ -85,6 +85,7 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 + (MessageItem *)messageItemWithImage:(PhotoItem *)photoItem;
 + (MessageItem *)messageItemWithGift:(GiftItem *)giftItem;
 + (MessageItem *)messageItemWithFace:(NSString *)face;
++ (MessageItem *)messageItemWithReceiveGift:(NSString *)giftName;
 - (void)sendWithCommonParams:(NSDictionary *)commonParams progress:(void (^)(CGFloat progress))progressBlk success:(void (^)(MessageItem *messageItem))success fail:(void (^)(NSString *errMsg))failure;
 - (BOOL)isMyMessage;
 - (void)makeClientSendID;

@@ -9,7 +9,7 @@
 #import "SchoolInfo.h"
 
 #define kParentTitle                @"家长"
-#define kTeacherTitle               @"老师"
+#define kTeacherTitle               @"同事"
 
 @interface ContactGroup : NSObject
 @property (nonatomic, copy)NSString *key;

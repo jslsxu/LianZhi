@@ -91,8 +91,8 @@ static __strong UIWindow *welcomeWindow = nil;
 
 + (void)showWelcome
 {
-    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
-    NSString *showKey = [NSString stringWithFormat:@"%@%@",kWelcomViewShowKey,version];
+    NSString *applicationVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSString *showKey = [NSString stringWithFormat:@"%@%@",kWelcomViewShowKey,applicationVersion];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     BOOL welcomeShown = [[userDefaults objectForKey:showKey] boolValue];
     if(!welcomeShown)

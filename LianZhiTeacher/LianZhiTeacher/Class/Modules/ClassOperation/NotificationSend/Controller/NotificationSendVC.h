@@ -16,7 +16,7 @@
 #import "NotificationVideoView.h"
 @interface NotificationSendVC : TNBaseViewController
 {
-    UIScrollView*                   _scrollView;
+    UITouchScrollView*                   _scrollView;
     NotificationInputView*          _inputView;
 }
 - (instancetype)initWithSendEntity:(NotificationSendEntity *)sendEntity;

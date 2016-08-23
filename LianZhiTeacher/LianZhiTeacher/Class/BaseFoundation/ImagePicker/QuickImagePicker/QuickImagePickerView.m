@@ -67,11 +67,12 @@
 
 @implementation QuickImagePickerView
 
-- (instancetype)initWithMaxCount:(NSInteger)count{
+- (instancetype)initWithMaxImageCount:(NSInteger)imageCount videoCount:(NSInteger)videoCount{
     self = [super initWithFrame:CGRectMake(0, 0, kScreenWidth, kPhotoCollectionViewHeight + kPhotoToolBarHeight)];
     if(self){
-        self.maxPreviewCount = 20;
-        self.maxCount = MIN(self.maxPreviewCount, count);
+        self.maxPreviewCount = 40;
+        self.maxImageCount = MIN(self.maxPreviewCount, imageCount);
+        self.maxVideoCount = videoCount;
         [self addSubview:self.collectionView];
         [self addSubview:self.toolBar];
         self.selectedAssets = [NSMutableArray array];
@@ -114,16 +115,16 @@
         [_toolBar addSubview:_albumButton];
         
     
-        _originalImageButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_originalImageButton setFrame:CGRectMake(_albumButton.right, 0, 80, _toolBar.height)];
-        [_originalImageButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 5)];
-        [_originalImageButton setImage:[UIImage imageNamed:@"bottom_origin_normal"] forState:UIControlStateNormal];
-        [_originalImageButton setImage:[UIImage imageNamed:@"bottom_origin_normal"] forState:UIControlStateHighlighted];
-        [_originalImageButton setTitle:@"原图" forState:UIControlStateNormal];
-        [_originalImageButton setTitleColor:kCommonTeacherTintColor forState:UIControlStateNormal];
-        [_originalImageButton.titleLabel setFont:[UIFont systemFontOfSize:17]];
-        [_originalImageButton addTarget:self action:@selector(onOriginalImageButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_toolBar addSubview:_originalImageButton];
+//        _originalImageButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_originalImageButton setFrame:CGRectMake(_albumButton.right, 0, 80, _toolBar.height)];
+//        [_originalImageButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 5)];
+//        [_originalImageButton setImage:[UIImage imageNamed:@"bottom_origin_normal"] forState:UIControlStateNormal];
+//        [_originalImageButton setImage:[UIImage imageNamed:@"bottom_origin_normal"] forState:UIControlStateHighlighted];
+//        [_originalImageButton setTitle:@"原图" forState:UIControlStateNormal];
+//        [_originalImageButton setTitleColor:kCommonTeacherTintColor forState:UIControlStateNormal];
+//        [_originalImageButton.titleLabel setFont:[UIFont systemFontOfSize:17]];
+//        [_originalImageButton addTarget:self action:@selector(onOriginalImageButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+//        [_toolBar addSubview:_originalImageButton];
         
         _sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_sendButton setFrame:CGRectMake(_toolBar.width - 10 - 60, (_toolBar.height - 30) / 2, 60, 30)];
@@ -189,20 +190,52 @@
     UIButton *button = cell.stateButton;
     XMNAssetModel *assetModel = cell.asset;
     if (!assetModel.selected) {
-        for (XMNAssetModel *model in self.selectedAssets) {
-            if(model.type != assetModel.type){
-                [ProgressHUD showHintText:@"不能同时选择照片和视频"];
-                return;
+//        for (XMNAssetModel *model in self.selectedAssets) {
+//            if(model.type != assetModel.type){
+//                [ProgressHUD showHintText:@"不能同时选择照片和视频"];
+//                return;
+//            }
+//            else if(model.type == XMNAssetTypeVideo){
+//                [ProgressHUD showHintText:@"一次只能发送1个视频"];
+//                return;
+//            }
+//        }
+        
+        if(assetModel.type == XMNAssetTypeVideo){
+            NSInteger videoCount = 0;
+            for (XMNAssetModel *model in self.selectedAssets) {
+                if(model.type == XMNAssetTypeVideo){
+                    videoCount ++;
+                }
             }
-            else if(model.type == XMNAssetTypeVideo){
+            if(videoCount < self.maxVideoCount){
+                [UIView animationWithLayer:button.layer type:XMNAnimationTypeBigger];
+                assetModel.selected = YES;
+                [self.selectedAssets addObject:assetModel];
+            }
+            else{
                 [ProgressHUD showHintText:@"一次只能发送1个视频"];
-                return;
             }
         }
-        [UIView animationWithLayer:button.layer type:XMNAnimationTypeBigger];
-        assetModel.selected = YES;
-        [self.selectedAssets addObject:assetModel];
-    }else {
+        else{
+            NSInteger imageCount = 0;
+            for (XMNAssetModel *model in self.selectedAssets) {
+                if(model.type == XMNAssetTypePhoto){
+                    imageCount ++;
+                }
+            }
+
+            if(imageCount >= self.maxImageCount){
+                [ProgressHUD showHintText:@"不能超过9张图"];
+            }
+            else{
+                [UIView animationWithLayer:button.layer type:XMNAnimationTypeBigger];
+                assetModel.selected = YES;
+                [self.selectedAssets addObject:assetModel];
+            }
+        }
+    }
+    else {
         
         assetModel.selected = NO;
         [self.selectedAssets removeObject:assetModel];

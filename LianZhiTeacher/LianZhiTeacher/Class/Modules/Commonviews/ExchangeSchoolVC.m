@@ -59,7 +59,7 @@
     [_logoView setImageWithUrl:[NSURL URLWithString:_schoolInfo.logoUrl]];
     [_nameLabel setText:_schoolInfo.schoolName];
     [_nameLabel sizeToFit];
-    [_nameLabel setOrigin:CGPointMake(_logoView.right + 10, (60 - _nameLabel.height) / 2)];
+    [_nameLabel setOrigin:CGPointMake(_logoView.right + 10, (kSchoolCellHeight - _nameLabel.height) / 2)];
 }
 
 - (void)setIsCurSchool:(BOOL)isCurSchool
@@ -81,14 +81,20 @@
 
 @implementation ExchangeSchoolVC
 
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kStatusChangedNotification object:nil];
     self.title = @"切换学校";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"%ld所",(long)[UserCenter sharedInstance].userData.schools.count] style:UIBarButtonItemStylePlain target:nil action:nil];
     [self.view setBackgroundColor:[UIColor colorWithRed:229 / 255.0 green:229 / 255.0 blue:229 / 255.0 alpha:1.f]];
     
     _messages = [NSMutableArray arrayWithArray:[UserCenter sharedInstance].userData.schools];
+    _indicatorDic = [NSMutableDictionary dictionary];
     
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     [_tableView setBackgroundColor:[UIColor clearColor]];
@@ -98,36 +104,23 @@
     [_tableView setDataSource:self];
     [self.view addSubview:_tableView];
     
-    [self requestData];
+    [self reloadData];
 }
 
-- (void)requestData
-{
+- (void)reloadData{
+    [_indicatorDic removeAllObjects];
     for (SchoolInfo *schoolInfo in _messages) {
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/index" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"school_id":schoolInfo.schoolID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-            TNDataWrapper *listWrapper = [responseObject getDataWrapperForKey:@"list"];
-            if(listWrapper.count > 0)
-            {
-                MessageGroupItem *groupItem = [[MessageGroupItem alloc] init];
-                for (NSInteger i = 0; i < listWrapper.count; i++)
-                {
-                    TNDataWrapper *firstMessageWrapper = [listWrapper getDataWrapperForIndex:i];
-                    NSInteger unread = [firstMessageWrapper getIntegerForKey:@"unread"];
-                    if(unread > 0)
-                    {
-                        [groupItem parseData:firstMessageWrapper];
-                        [_messages replaceObjectAtIndex:[_messages indexOfObject:schoolInfo] withObject:groupItem];
-                        [_tableView reloadData];
-                        break;
-                    }
-                }
+        NSInteger count = 0;
+        for (NoticeItem *noticeItem in [UserCenter sharedInstance].statusManager.notice) {
+            if([schoolInfo.schoolID isEqualToString:noticeItem.schoolID]){
+                count = noticeItem.num;
             }
-        } fail:^(NSString *errMsg) {
-            
-        }];
+        }
+        if(count > 0)
+            [_indicatorDic setValue:kStringFromValue(count) forKey:schoolInfo.schoolID];
     }
+    [_tableView reloadData];
 }
-
 
 #pragma mark - UITableViewDelegate
 
@@ -151,7 +144,7 @@
     SchoolInfo *schoolInfo = [UserCenter sharedInstance].schools[indexPath.row];
     [cell setSchoolInfo:schoolInfo];
     [cell setIsCurSchool:[schoolInfo.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID]];
-    [cell setHasNew:[_messages[indexPath.row] isKindOfClass:[MessageGroupItem class]]];
+    [cell setHasNew:[_indicatorDic valueForKey:schoolInfo.schoolID]];
     return cell;
 }
 

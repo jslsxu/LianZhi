@@ -34,19 +34,19 @@
 @implementation MessageSegView
 
 - (instancetype)initWithItems:(NSArray *)items valueChanged:(void (^)(NSInteger))callback{
-    self = [super initWithFrame:CGRectMake(0, 0, kSegItemWidth * 2 + 30 * 2, 30)];
+    self = [super initWithFrame:CGRectMake(0, 0, kSegItemWidth * 2, 30)];
     if(self){
         self.items = items;
         self.callback = callback;
         _buttonArray = [NSMutableArray array];
-        _segmentView = [[UIView alloc] initWithFrame:CGRectMake(30, 0, kSegItemWidth * 2, 30)];
+        _segmentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kSegItemWidth * 2, 30)];
         [self setupSegmentView:_segmentView];
         [self addSubview:_segmentView];
         
-        _indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        [_indicator setCenter:CGPointMake(_segmentView.right + 15, self.height / 2)];
-        [_indicator setHidesWhenStopped:YES];
-        [self addSubview:_indicator];
+//        _indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//        [_indicator setCenter:CGPointMake(_segmentView.right + 15, self.height / 2)];
+//        [_indicator setHidesWhenStopped:YES];
+//        [self addSubview:_indicator];
         [self setSelectedIndex:0];
     
     }

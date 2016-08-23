@@ -10,19 +10,10 @@
 #import "MessageGroupItemCell.h"
 #import "ClassZoneVC.h"
 #import "MessageSegView.h"
-@interface SwitchSchoolButton : UIButton
-{
-    NumIndicator*   _redDot;
-}
-@property (nonatomic, assign)BOOL hasNew;
-
-@end
-
+#import "SwitchSchoolButton.h"
 @interface MessageVC : UITableViewController
 {
-    SwitchSchoolButton *        _switchButton;
     MessageSegView*             _segView;
-    UILabel*                    _emptyLabel;
     UIButton*                   _noticeButton;
     BOOL                        _isLoading;
 }

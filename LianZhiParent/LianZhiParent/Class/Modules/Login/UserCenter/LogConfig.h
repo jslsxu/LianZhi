@@ -14,13 +14,13 @@ typedef NS_ENUM(NSInteger, TagPrivilege){
     TagPrivilegeAudio = 1 << 2,
 };
 
-@interface SubTag : TNModelItem<NSCoding>
+@interface SubTag : TNModelItem
 @property (nonatomic, copy)NSString *tagID;
 @property (nonatomic, copy)NSString *tagName;
 @property (nonatomic, assign)NSInteger content;     //tag权限
 @end
 
-@interface TagGroup : TNModelItem<NSCoding>
+@interface TagGroup : TNModelItem
 @property (nonatomic, copy)NSString *groupID;
 @property (nonatomic, copy)NSString *groupName;
 @property (nonatomic, strong)NSArray *subTags;
@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, TagPrivilege){
 @end
 
 
-@interface LogConfig : TNModelItem<NSCoding>
+@interface LogConfig : TNModelItem
 @property (nonatomic, copy)NSString *dicoveryUrl;
 @property (nonatomic, copy)NSString *introUrl;
 @property (nonatomic, copy)NSString *aboutUrl;

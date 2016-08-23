@@ -110,8 +110,18 @@
     [self.navigationItem setLeftBarButtonItem:nil];
 }
 
+- (void)setTitle:(NSString *)title{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    [label setTextColor:[UIColor colorWithHexString:@"252525"]];
+    [label setFont:[UIFont systemFontOfSize:18]];
+    [label setText:title];
+    [label sizeToFit];
+    [self.navigationItem setTitleView:label];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"联系人";
     [[UserCenter sharedInstance] updateUserInfo];
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
@@ -213,7 +223,7 @@
         JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
         [chatVC setTo_objid:class.school.schoolID];
         [chatVC setTargetID:class.classID];
-        [chatVC setTitle:class.name];
+        [chatVC setName:class.name];
         [chatVC setChatType:ChatTypeClass];
 //        [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
         [ApplicationDelegate popAndPush:chatVC];
@@ -264,7 +274,7 @@
             [chatVC setTargetID:teacherInfo.uid];
             [chatVC setMobile:teacherInfo.mobile];
             NSString *title = [NSString stringWithFormat:@"%@",teacherInfo.name];
-            [chatVC setTitle:title];
+            [chatVC setName:title];
 //            [CurrentROOTNavigationVC pushViewController:chatVC animated:YES];
             [ApplicationDelegate popAndPush:chatVC];
         }

@@ -16,6 +16,7 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <AVFoundation/AVFoundation.h>
 #import "BaseFoundation.h"
 #import "ParentDefine.h"
 #import "AppDelegate.h"
@@ -29,5 +30,6 @@
 #import "LZKVStorage.h"
 #import "LGAlertView.h"
 #import "LZVideoCacheManager.h"
+#import <YYKit/YYKit.h>
 #endif
 #endif

@@ -17,7 +17,7 @@ NSString *const kCurrentChildInfoChangedNotification = @"CurrentChildInfoChanged
 static NSArray *tabDatas = nil;
 
 @interface HomeViewController ()
-@property (nonatomic, strong)ChildrenSelectView *childrenSelectView;
+@property (nonatomic, strong)ChildrenSwitchView *childrenSelectView;
 @property (nonatomic, strong)NSMutableArray *subVCArray;
 @property (nonatomic, assign)NSInteger curIndex;
 @end
@@ -41,7 +41,7 @@ static NSArray *tabDatas = nil;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
         self.subVCArray = [[NSMutableArray alloc] initWithCapacity:0];
         NSMutableArray *subVCNavArray  =[NSMutableArray array];
-        NSArray *subVCArray = @[@"MessageVC",@"ContactListVC",@"TreeHouseVC",@"ClassAppVC",@"DiscoveryVC"];
+        NSArray *subVCArray = @[@"MessageVC",@"ContactListVC",@"ClassAppVC",@"DiscoveryVC",@"MineVC"];
         
         for (NSInteger i = 0; i < subVCArray.count; i++)
         {
@@ -57,8 +57,7 @@ static NSArray *tabDatas = nil;
         [self initialViewControllers];
         
         self.messageVC = self.subVCArray[0];
-        self.treeHouseVC = self.subVCArray[2];
-        self.classAppVC = self.subVCArray[3];
+        self.classAppVC = self.subVCArray[2];
     }
     return self;
 }
@@ -67,7 +66,17 @@ static NSArray *tabDatas = nil;
 {
     NSInteger newMsg = [UserCenter sharedInstance].statusManager.msgNum;
     LZTabBarButton *msgButton = (LZTabBarButton *)_tabbarButtons[0];
-    [msgButton setBadgeValue:(newMsg > 0 ? kStringFromValue(newMsg) : nil)];
+    NSString *badgeValue = nil;
+    if(newMsg > 0){
+        if(newMsg > 99){
+            badgeValue = @"99+";
+        }
+        else{
+            badgeValue = kStringFromValue(newMsg);
+        }
+    }
+
+    [msgButton setBadgeValue:badgeValue];
     
     NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
     NSInteger classZoneNum = 0;
@@ -108,21 +117,29 @@ static NSArray *tabDatas = nil;
     }
     
     
-    NSArray *treeNewCommentArray = [UserCenter sharedInstance].statusManager.treeNewCommentArray;
-    LZTabBarButton *treeTabButton = (LZTabBarButton *)_tabbarButtons[2];
-    NSInteger treeAlertNum = 0;
-    for (TimelineCommentItem *item in treeNewCommentArray)
-    {
-        if([item.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
-        {
-            treeAlertNum = item.alertInfo.num;
-            break;
-        }
-    }
-    [treeTabButton setBadgeValue:treeAlertNum > 0 ? kStringFromValue(treeAlertNum) : nil];
+//    NSArray *treeNewCommentArray = [UserCenter sharedInstance].statusManager.treeNewCommentArray;
+//    LZTabBarButton *treeTabButton = (LZTabBarButton *)_tabbarButtons[2];
+//    NSInteger treeAlertNum = 0;
+//    for (TimelineCommentItem *item in treeNewCommentArray)
+//    {
+//        if([item.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
+//        {
+//            treeAlertNum = item.alertInfo.num;
+//            break;
+//        }
+//    }
+//    badgeValue = nil;
+//    if(treeAlertNum > 99){
+//        badgeValue = @"99+";
+//    }
+//    else if(treeAlertNum > 0){
+//        badgeValue = kStringFromValue(treeAlertNum);
+//    }
+//    
+//    [treeTabButton setBadgeValue:badgeValue];
     
-    LZTabBarButton *discoveryButton = _tabbarButtons[4];
-    DiscoveryVC *discoveryVC = self.subVCArray[4];
+    LZTabBarButton *discoveryButton = _tabbarButtons[3];
+    DiscoveryVC *discoveryVC = self.subVCArray[3];
     [discoveryButton setBadgeValue:discoveryVC.hasNew ? @"" : nil];
 }
 
@@ -167,7 +184,7 @@ static NSArray *tabDatas = nil;
             view.hidden = YES;
         }
     }];
-    NSArray *tabItemTitleArray = @[@"信息",@"联系人",@"树屋",@"班应用",@"发现"];
+    NSArray *tabItemTitleArray = @[@"信息",@"联系人",@"应用盒",@"发现",@"我"];
     CGFloat tabWidth = self.view.width / tabItemTitleArray.count;
     for (NSInteger i = 0; i < tabItemTitleArray.count; i++)
     {
@@ -181,13 +198,12 @@ static NSArray *tabDatas = nil;
         [self.tabBar addSubview:barButton];
     }
     
-    [self selectAtIndex:0];
-
+    [self selectAtIndex:2];
 }
 
-- (ChildrenSelectView *)curChildrenSelectView{
+- (ChildrenSwitchView *)curChildrenSelectView{
     if(_childrenSelectView == nil){
-        _childrenSelectView = [[ChildrenSelectView alloc] initWithFrame:CGRectMake(0, 0, 40, 44)];
+        _childrenSelectView = [[ChildrenSwitchView alloc] initWithFrame:CGRectMake(0, 0, 80, 44)];
     }
     return _childrenSelectView;
 }
@@ -207,7 +223,7 @@ static NSArray *tabDatas = nil;
 - (void)selectAtIndex:(NSInteger)index
 {
     self.selectedIndex = index;
-    NSArray *tabImageNameArray = @[@"HomeTabMessage",@"HomeTabContacts",@"HomeTabHome",@"HomeTabClassZone",@"HomeTabDiscovery"];
+    NSArray *tabImageNameArray = @[@"HomeTabMessage",@"HomeTabContacts",@"HomeTabAppBox",@"HomeTabDiscovery",@"HomeTabMine"];
     for (NSInteger i = 0; i < _tabbarButtons.count; i++)
     {
         LZTabBarButton *barButton = _tabbarButtons[i];

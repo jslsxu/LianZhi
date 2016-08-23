@@ -9,7 +9,6 @@
 #import "ChatMessageModel.h"
 #import "NHFileManager.h"
 @interface ChatMessageModel ()
-@property (nonatomic, assign)BOOL firstRequestNewMessage;
 @property (nonatomic, strong)NSMutableArray* modelItemArray;
 @property (nonatomic, copy)NSString *uid;
 @property (nonatomic, assign)ChatType type;
@@ -51,7 +50,6 @@
     if(self){
         self.uid = uid;
         self.type = type;
-        self.firstRequestNewMessage = YES;
         NSString *tableName = [self tableName];
         BOOL tableExist = [self.database tableExists:tableName];
         if(!tableExist){
@@ -226,11 +224,6 @@
 
 - (BOOL)parseData:(NSDictionary *)data type:(RequestMessageType)type
 {
-    if(type == RequestMessageTypeLatest){
-        if(self.firstRequestNewMessage){
-            self.firstRequestNewMessage = NO;
-        }
-    }
     NSInteger originalNum = self.modelItemArray.count;
     NSArray *newMessageArray = [MessageItem nh_modelArrayWithJson:data[@"items"]];
     
@@ -259,11 +252,15 @@
                  sql = [NSString stringWithFormat:@"insert into %@ values(%zd,'%@','%@','%@') ",[self tableName],[messageItem.content.mid integerValue], messageItem.client_send_id, messageItem.content.text, [messageItem modelToJSONString]];
                 [self.database executeUpdate:sql];
             }
+            else{//替换
+                [self updateMessage:messageItem];
+
+            }
         }
         
         if(add){
             [self sortMessage];
-            if(type == RequestMessageTypeLatest && !self.firstRequestNewMessage){
+            if(type == RequestMessageTypeLatest && originalNum > 0){
                 //有新消息，播放声音
                 if([UserCenter sharedInstance].personalSetting.soundOn)
                     [ApplicationDelegate playSound];

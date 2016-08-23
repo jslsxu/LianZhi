@@ -115,6 +115,7 @@
     }
     else
     {
+        [_avatar setStatus:_userInfo.actived ? nil : @"未下载"];
         [_avatar setImageWithUrl:[NSURL URLWithString:userInfo.avatar] placeHolder:[UIImage imageNamed:(@"NoAvatarDefault.png")]];
         [_nameLabel setText:userInfo.name];
         [_nameLabel sizeToFit];
@@ -122,7 +123,6 @@
         
         if([userInfo isKindOfClass:[TeacherInfo class]] || [userInfo isKindOfClass:[FamilyInfo class]])
         {
-            [_avatar setStatus:_userInfo.actived ? nil : @"未下载"];
             TeacherInfo *teacher = (TeacherInfo *)userInfo;
             [_commentLabel setText:teacher.title];
             [_commentLabel sizeToFit];

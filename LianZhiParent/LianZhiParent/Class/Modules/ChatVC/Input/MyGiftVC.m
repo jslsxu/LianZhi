@@ -73,7 +73,7 @@
     GiftItem *giftItem = (GiftItem *)modelItem;
     [_imageView sd_setImageWithURL:[NSURL URLWithString:giftItem.url] placeholderImage:nil];
     [_titleLabel setText:giftItem.giftName];
-    [_coinLabel setText:[NSString stringWithFormat:@"%ld个连枝币",giftItem.coin]];
+    [_coinLabel setText:[NSString stringWithFormat:@"%zd个连枝币",giftItem.coin]];
     if(giftItem.num > 0)
         [_coinLabel setBackgroundColor:[UIColor colorWithHexString:@"F4A116"]];
     else
@@ -132,7 +132,7 @@
 
 - (void)setCurGiftItem:(GiftItem *)curGiftItem {
     _curGiftItem = curGiftItem;
-    [self.navigationItem.rightBarButtonItem setEnabled:_curGiftItem];
+    [self.navigationItem.rightBarButtonItem setEnabled:_curGiftItem != nil];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType

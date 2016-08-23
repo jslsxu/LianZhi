@@ -55,6 +55,7 @@
             TNDataWrapper *classWrapper = [responseObject getDataWrapperForKey:@"class"];
             if(classWrapper.count > 0)
             {
+                self.logoUrl = [classWrapper getStringForKey:@"logo"];
                 NSMutableArray *sourceArray = [NSMutableArray array];
                 TNDataWrapper *teacherArrayWrapper = [classWrapper getDataWrapperForKey:@"teachers"];
                 if(teacherArrayWrapper.count > 0)
@@ -90,6 +91,7 @@
     else if(self.chatType == ChatTypeGroup){
         for (TeacherGroup *teacherGroup in [UserCenter sharedInstance].curSchool.groups) {
             if([teacherGroup.groupID isEqualToString:self.groupID]){
+                self.logoUrl = teacherGroup.logo;
                 self.memberArray = [NSArray arrayWithArray:teacherGroup.teachers];
                 [self.tableView reloadData];
             }
@@ -112,7 +114,7 @@
         _disturbSwitch = [[UISwitch alloc] init];
         [_disturbSwitch addTarget:self action:@selector(onDisturbValueChanged) forControlEvents:UIControlEventValueChanged];
     }
-    [_disturbSwitch setOn:!self.soundOn];
+    [_disturbSwitch setOn:self.quietModeOn];
     return _disturbSwitch;
 }
 
@@ -125,15 +127,15 @@
 }
 
 - (void)onDisturbValueChanged{
-    BOOL soundOn = !self.soundOn;
+    BOOL quietModeOn = !self.quietModeOn;
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     [params setValue:self.groupID forKey:@"from_id"];
     [params setValue:kStringFromValue(self.chatType) forKey:@"from_type"];
-    [params setValue:soundOn ? @"open" : @"close" forKey:@"sound"];
+    [params setValue:quietModeOn ? @"close" : @"open" forKey:@"sound"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/set_thread" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        self.soundOn = soundOn;
+        self.quietModeOn = quietModeOn;
         if(self.alertChangeCallback){
-            self.alertChangeCallback(soundOn);
+            self.alertChangeCallback(quietModeOn);
         }
     } fail:^(NSString *errMsg) {
         
