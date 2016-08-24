@@ -323,6 +323,11 @@
 		8D3D45E61D62F8A4005EA8EA /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45E51D62F8A4005EA8EA /* NotificationManager.m */; };
 		8D7554B41D68403A00A140EE /* SwitchSchoolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554B31D68403A00A140EE /* SwitchSchoolButton.m */; };
 		8D7554F81D69733B00A140EE /* ContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554F71D69733B00A140EE /* ContactView.m */; };
+		8D7555061D6DA89400A140EE /* PBImageScrollerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554FB1D6DA89400A140EE /* PBImageScrollerViewController.m */; };
+		8D7555071D6DA89400A140EE /* PBImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554FE1D6DA89400A140EE /* PBImageScrollView.m */; };
+		8D7555081D6DA89400A140EE /* PBPresentAnimatedTransitioningController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555001D6DA89400A140EE /* PBPresentAnimatedTransitioningController.m */; };
+		8D7555091D6DA89400A140EE /* PBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555021D6DA89400A140EE /* PBViewController.m */; };
+		8D75550A1D6DA89400A140EE /* UIView+PBSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555051D6DA89400A140EE /* UIView+PBSnapshot.m */; };
 		8D867BC91D25042A0020A21C /* NHAudioConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB51D25042A0020A21C /* NHAudioConverter.m */; };
 		8D867BCA1D25042A0020A21C /* NHAudioTool+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB71D25042A0020A21C /* NHAudioTool+Helper.m */; };
 		8D867BCB1D25042A0020A21C /* NHAudioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB91D25042A0020A21C /* NHAudioTool.m */; };
@@ -1020,6 +1025,18 @@
 		8D7554B31D68403A00A140EE /* SwitchSchoolButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchSchoolButton.m; sourceTree = "<group>"; };
 		8D7554F61D69733B00A140EE /* ContactView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactView.h; sourceTree = "<group>"; };
 		8D7554F71D69733B00A140EE /* ContactView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactView.m; sourceTree = "<group>"; };
+		8D7554FA1D6DA89400A140EE /* PBImageScrollerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBImageScrollerViewController.h; sourceTree = "<group>"; };
+		8D7554FB1D6DA89400A140EE /* PBImageScrollerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBImageScrollerViewController.m; sourceTree = "<group>"; };
+		8D7554FC1D6DA89400A140EE /* PBImageScrollView+internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PBImageScrollView+internal.h"; sourceTree = "<group>"; };
+		8D7554FD1D6DA89400A140EE /* PBImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBImageScrollView.h; sourceTree = "<group>"; };
+		8D7554FE1D6DA89400A140EE /* PBImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBImageScrollView.m; sourceTree = "<group>"; };
+		8D7554FF1D6DA89400A140EE /* PBPresentAnimatedTransitioningController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBPresentAnimatedTransitioningController.h; sourceTree = "<group>"; };
+		8D7555001D6DA89400A140EE /* PBPresentAnimatedTransitioningController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBPresentAnimatedTransitioningController.m; sourceTree = "<group>"; };
+		8D7555011D6DA89400A140EE /* PBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBViewController.h; sourceTree = "<group>"; };
+		8D7555021D6DA89400A140EE /* PBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBViewController.m; sourceTree = "<group>"; };
+		8D7555031D6DA89400A140EE /* PhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoBrowser.h; sourceTree = "<group>"; };
+		8D7555041D6DA89400A140EE /* UIView+PBSnapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+PBSnapshot.h"; sourceTree = "<group>"; };
+		8D7555051D6DA89400A140EE /* UIView+PBSnapshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+PBSnapshot.m"; sourceTree = "<group>"; };
 		8D867BB41D25042A0020A21C /* NHAudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHAudioConverter.h; sourceTree = "<group>"; };
 		8D867BB51D25042A0020A21C /* NHAudioConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHAudioConverter.m; sourceTree = "<group>"; };
 		8D867BB61D25042A0020A21C /* NHAudioTool+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NHAudioTool+Helper.h"; sourceTree = "<group>"; };
@@ -1483,6 +1500,7 @@
 		3793F82B1B7CFFEF00501F77 /* BaseFoundation */ = {
 			isa = PBXGroup;
 			children = (
+				8D7554F91D6DA89400A140EE /* PhotoBrowser */,
 				8D867C3F1D2E8D130020A21C /* ImagePicker */,
 				8D867BB31D25042A0020A21C /* NHAudioTool */,
 				37D6EE3D1BCAB552000994A2 /* SVShare */,
@@ -2769,6 +2787,25 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		8D7554F91D6DA89400A140EE /* PhotoBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				8D7554FA1D6DA89400A140EE /* PBImageScrollerViewController.h */,
+				8D7554FB1D6DA89400A140EE /* PBImageScrollerViewController.m */,
+				8D7554FC1D6DA89400A140EE /* PBImageScrollView+internal.h */,
+				8D7554FD1D6DA89400A140EE /* PBImageScrollView.h */,
+				8D7554FE1D6DA89400A140EE /* PBImageScrollView.m */,
+				8D7554FF1D6DA89400A140EE /* PBPresentAnimatedTransitioningController.h */,
+				8D7555001D6DA89400A140EE /* PBPresentAnimatedTransitioningController.m */,
+				8D7555011D6DA89400A140EE /* PBViewController.h */,
+				8D7555021D6DA89400A140EE /* PBViewController.m */,
+				8D7555031D6DA89400A140EE /* PhotoBrowser.h */,
+				8D7555041D6DA89400A140EE /* UIView+PBSnapshot.h */,
+				8D7555051D6DA89400A140EE /* UIView+PBSnapshot.m */,
+			);
+			path = PhotoBrowser;
+			sourceTree = "<group>";
+		};
 		8D867BB31D25042A0020A21C /* NHAudioTool */ = {
 			isa = PBXGroup;
 			children = (
@@ -3401,6 +3438,7 @@
 				3728A6EA1B98B5F600310457 /* ActionView.m in Sources */,
 				3793FADB1B7CFFF000501F77 /* BGTableViewCell.m in Sources */,
 				8DCFD70F1D51A1A0001EDC8A /* ChatExtraGroupInfoVC.m in Sources */,
+				8D75550A1D6DA89400A140EE /* UIView+PBSnapshot.m in Sources */,
 				3793FABB1B7CFFF000501F77 /* MLDataCache.m in Sources */,
 				3793FAE71B7CFFF000501F77 /* TNCollectionViewCell.m in Sources */,
 				37DEE4DF1A57C1D8009A8771 /* ClassZoneVC.m in Sources */,
@@ -3470,6 +3508,7 @@
 				8DCFD7011D503DD2001EDC8A /* NJKWebViewProgressView.m in Sources */,
 				3793FA9D1B7CFFF000501F77 /* PhotoItem.m in Sources */,
 				37DEE4BF1A57C19C009A8771 /* MessageGroupItemCell.m in Sources */,
+				8D7555071D6DA89400A140EE /* PBImageScrollView.m in Sources */,
 				37E93FC41A7E9CC600AD45A1 /* MJPhotoProgressView.m in Sources */,
 				3793FA6D1B7CFFF000501F77 /* AFURLConnectionOperation.m in Sources */,
 				37D6EEF51BCBA96D000994A2 /* LeaveRegisterVC.m in Sources */,
@@ -3482,6 +3521,7 @@
 				37FB1C631BE4C368004ECE2E /* HomeWorkHistoryVC.m in Sources */,
 				8DCFD6C11D4C5D9E001EDC8A /* NotificationDetailPhotoView.m in Sources */,
 				37FD6E301BB4817900C83AB4 /* NewMessageCell.m in Sources */,
+				8D7555081D6DA89400A140EE /* PBPresentAnimatedTransitioningController.m in Sources */,
 				3728A6A81B98B20700310457 /* ClassZoneModel.m in Sources */,
 				3793FAF11B7CFFF000501F77 /* TaskItem.m in Sources */,
 				8DCFD75D1D584C08001EDC8A /* NHFileDownloadManager.m in Sources */,
@@ -3598,6 +3638,7 @@
 				8DCFD6761D48A9EE001EDC8A /* MessageSegView.m in Sources */,
 				3793F5101B7B286700501F77 /* MineVC.m in Sources */,
 				3793FADF1B7CFFF000501F77 /* TNGetMoreCell.m in Sources */,
+				8D7555091D6DA89400A140EE /* PBViewController.m in Sources */,
 				8D867C931D2F97080020A21C /* DNUnAuthorizedTipsView.m in Sources */,
 				37D6EEF81BCBA96D000994A2 /* StudentAttendanceHeaderView.m in Sources */,
 				8DCFD75E1D584C08001EDC8A /* NHFileDownloadSession.m in Sources */,
@@ -3715,6 +3756,7 @@
 				8D867D431D3F7BF80020A21C /* NotificationSendVC.m in Sources */,
 				8DCFD7741D588322001EDC8A /* MessageFromInfo.m in Sources */,
 				37B485041A65853C00C412D8 /* PasswordModificationVC.m in Sources */,
+				8D7555061D6DA89400A140EE /* PBImageScrollerViewController.m in Sources */,
 				8D867D471D3F7BF80020A21C /* NotificationSendTargetView.m in Sources */,
 				3793FAEE1B7CFFF000501F77 /* TNBaseTableViewController.m in Sources */,
 				37B485051A65853C00C412D8 /* PhoneLoginVC.m in Sources */,

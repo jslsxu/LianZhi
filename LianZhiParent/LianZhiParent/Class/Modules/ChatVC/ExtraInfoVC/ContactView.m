@@ -21,16 +21,16 @@
         self.userInfo = userInfo;
         UIImage *bgImage  = [[UIImage imageWithColor:kCommonParentTintColor size:CGSizeMake(10, 10) cornerRadius:5] resizableImageWithCapInsets:UIEdgeInsetsMake(5, 5, 5, 5)];
         NSMutableArray *buttonArray = [NSMutableArray array];
-        if(userInfo.mobile.length > 0){
-            UIButton *mobileButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            [mobileButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [mobileButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
-            [mobileButton setTitle:@"打电话" forState:UIControlStateNormal];
-            [mobileButton addTarget:self action:@selector(callMobile) forControlEvents:UIControlEventTouchUpInside];
-            [mobileButton setBackgroundImage:bgImage forState:UIControlStateNormal];
-            [self addSubview:mobileButton];
-            [buttonArray addObject:mobileButton];
-        }
+//        if(userInfo.mobile.length > 0){
+//            UIButton *mobileButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//            [mobileButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//            [mobileButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
+//            [mobileButton setTitle:@"打电话" forState:UIControlStateNormal];
+//            [mobileButton addTarget:self action:@selector(callMobile) forControlEvents:UIControlEventTouchUpInside];
+//            [mobileButton setBackgroundImage:bgImage forState:UIControlStateNormal];
+//            [self addSubview:mobileButton];
+//            [buttonArray addObject:mobileButton];
+//        }
         
 //        if(userInfo.actived){
             UIButton *chatButton = [UIButton buttonWithType:UIButtonTypeCustom];

@@ -85,4 +85,5 @@
 #import "UITouchScrollView.h"
 #import "YYInfiniteScrollView.h"
 #import "NHFileManager.h"
+#import "PhotoBrowser.h"
 #endif

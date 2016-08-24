@@ -13,7 +13,14 @@
 
 @implementation UserGroup
 
-
+- (void)addGroup:(UserGroup *)userGroup{
+    NSMutableArray *labelArray = [NSMutableArray arrayWithArray:self.labelArray];
+    NSMutableArray *userArray = [NSMutableArray arrayWithArray:self.users];
+    [labelArray addObjectsFromArray:userGroup.labelArray];
+    [userArray addObjectsFromArray:userGroup.users];
+    self.labelArray = labelArray;
+    self.users = userArray;
+}
 @end
 
 @implementation MemberSectionHeader
@@ -163,6 +170,23 @@
                     UserGroup *secondGroup = (UserGroup *)obj2;
                     return [firstGroup.title compare:secondGroup.title];
                 }];
+                
+                UserGroup *preGroup = nil;
+                NSMutableArray *deleteArray = [NSMutableArray array];
+                for (UserGroup *userGroup in studentArray) {
+                    if([userGroup.indexkey isEqualToString:preGroup.indexkey]){
+                        [preGroup addGroup:userGroup];
+                        [deleteArray addObject:userGroup];
+                    }
+                    else{
+                        preGroup = userGroup;
+                    }
+                }
+                if(deleteArray.count > 0){
+                    [studentArray removeObjectsInArray:deleteArray];
+                }
+
+                
                 [self.sourceArray addObjectsFromArray:studentArray];
             }
         }

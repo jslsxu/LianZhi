@@ -33,6 +33,7 @@
         self.voiceArray = [NSMutableArray array];
         self.imageArray = [NSMutableArray array];
         self.videoArray = [NSMutableArray array];
+        self.authorUser = [UserCenter sharedInstance].userInfo;
     }
     return self;
 }

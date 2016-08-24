@@ -34,7 +34,7 @@
         [self addSubview:_nameLabel];
         
         _statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_statusLabel setTextColor:kCommonParentTintColor];
+        [_statusLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
         [_statusLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_statusLabel];
         
@@ -53,21 +53,22 @@
     return self;
 }
 
-- (void)setWords:(NSString *)words{
-    _words = words;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
-    [_nameLabel setText:[UserCenter sharedInstance].userInfo.name];
+- (void)setMessageDetailItem:(MessageDetailItem *)messageDetailItem{
+    _messageDetailItem = messageDetailItem;
+    [_avatarView setImageWithUrl:[NSURL URLWithString:_messageDetailItem.from_user.avatar]];
+    [_nameLabel setText:_messageDetailItem.from_user.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY - 2 - _nameLabel.height)];
     
-//    [_statusLabel setText:@"未发送"];
-//    [_statusLabel sizeToFit];
-//    [_statusLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY + 2)];
+        [_statusLabel setText:_messageDetailItem.time_str];
+        [_statusLabel sizeToFit];
+        [_statusLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY + 2)];
     
-    [_contentLabel setText:_words];
+    [_contentLabel setText:_messageDetailItem.words];
     [_contentLabel sizeToFit];
     
     [self setHeight:_contentLabel.bottom + 10];
 }
+
 
 @end

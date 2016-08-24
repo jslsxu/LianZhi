@@ -144,7 +144,7 @@
     _notificationItem = notificationItem;
     
     CGFloat spaceXEnd = self.width - 10;
-    if(_notificationItem.is_sent){
+//    if(_notificationItem.is_sent){
         [_delayImageView setHidden:YES];
         [_timeLabel setHidden:NO];
         [_stateLabel setHidden:NO];
@@ -162,16 +162,16 @@
         [_stateLabel setAttributedText:stateStr];
         [_stateLabel sizeToFit];
         [_stateLabel setOrigin:CGPointMake(self.width - 10 - _stateLabel.width, self.height - 15 - _stateLabel.height)];
-    }
-    else{
-        [_delayImageView setHidden:NO];
-        [_stateLabel setHidden:YES];
-        [_revokeButton setHidden:NO];
-        [_revokeButton setOrigin:CGPointMake(spaceXEnd - _revokeButton.width, self.height - 13 - _revokeButton.height)];
-        [_delayImageView setOrigin:CGPointMake(spaceXEnd - _delayImageView.width, 18)];
-        spaceXEnd = spaceXEnd - _delayImageView.width - 10;
-        [_timeLabel setHidden:YES];
-    }
+//    }
+//    else{
+//        [_delayImageView setHidden:NO];
+//        [_stateLabel setHidden:YES];
+//        [_revokeButton setHidden:NO];
+//        [_revokeButton setOrigin:CGPointMake(spaceXEnd - _revokeButton.width, self.height - 13 - _revokeButton.height)];
+//        [_delayImageView setOrigin:CGPointMake(spaceXEnd - _delayImageView.width, 18)];
+//        spaceXEnd = spaceXEnd - _delayImageView.width - 10;
+//        [_timeLabel setHidden:YES];
+//    }
     [_titleLabel setFrame:CGRectMake(12, 15, spaceXEnd - 12, 20)];
     [_titleLabel setText:_notificationItem.words];
     [_sepLine setFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
@@ -262,6 +262,7 @@
         [self.tableViewModel.modelItemArray insertObject:item atIndex:0];
         [self saveModel];
         [self.tableView reloadData];
+        [self.tableView scrollToTop];
     }
 }
 

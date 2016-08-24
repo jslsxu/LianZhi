@@ -34,7 +34,7 @@
         [self addSubview:_nameLabel];
         
         _statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_statusLabel setTextColor:kCommonTeacherTintColor];
+        [_statusLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
         [_statusLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_statusLabel];
         
@@ -53,18 +53,35 @@
     return self;
 }
 
-- (void)setWords:(NSString *)words{
-    _words = words;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
-    [_nameLabel setText:[UserCenter sharedInstance].userInfo.name];
+- (void)setNotificationItem:(NotificationItem *)notificationItem{
+    _notificationItem = notificationItem;
+    [_avatarView setImageWithUrl:[NSURL URLWithString:_notificationItem.user.avatar]];
+    [_nameLabel setText:_notificationItem.user.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY - 2 - _nameLabel.height)];
     
-    [_statusLabel setText:@"未发送"];
+    [_statusLabel setText:_notificationItem.created_time];
     [_statusLabel sizeToFit];
     [_statusLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY + 2)];
     
-    [_contentLabel setText:_words];
+    [_contentLabel setText:_notificationItem.words];
+    [_contentLabel sizeToFit];
+    
+    [self setHeight:_contentLabel.bottom + 10];
+}
+
+- (void)setSendEntity:(NotificationSendEntity *)sendEntity{
+    _sendEntity = sendEntity;
+    [_avatarView setImageWithUrl:[NSURL URLWithString:_sendEntity.authorUser.avatar]];
+    [_nameLabel setText:_sendEntity.authorUser.name];
+    [_nameLabel sizeToFit];
+    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY - 2 - _nameLabel.height)];
+    
+//    [_statusLabel setText:_sendEntity.created_time];
+//    [_statusLabel sizeToFit];
+//    [_statusLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY + 2)];
+    
+    [_contentLabel setText:_sendEntity.words];
     [_contentLabel sizeToFit];
     
     [self setHeight:_contentLabel.bottom + 10];

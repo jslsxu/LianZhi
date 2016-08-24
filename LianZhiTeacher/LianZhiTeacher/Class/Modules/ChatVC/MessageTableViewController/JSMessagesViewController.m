@@ -181,10 +181,8 @@ static NSString *topChatID = nil;
 
 - (void)cleatChatRecordCompletion:(ClearChatFinished)finished{
     @weakify(self)
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:self.targetID forKey:@"to_id"];
-    [params setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/clear" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+    NSMutableDictionary *sendParams = [self sendParams];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/clear" method:REQUEST_POST type:REQUEST_REFRESH withParams:sendParams observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         @strongify(self)
         [self.chatMessageModel clearChatRecord];
         [self.tableView reloadData];
@@ -500,12 +498,16 @@ static NSString *topChatID = nil;
 #pragma mark - MessageCellDelegate
 - (void)onRevokeMessage:(MessageItem *)messageItem
 {
+    NSMutableDictionary *sendParams = [self sendParams];
+    [sendParams setValue:messageItem.content.mid forKey:@"mid"];
     __weak typeof(self) wself = self;
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/revoke" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"mid" : messageItem.content.mid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/revoke" method:REQUEST_GET type:REQUEST_REFRESH withParams:sendParams observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         for (MessageItem *item in wself.chatMessageModel.messageArray)
         {
-            if([item.content.mid isEqualToString:messageItem.content.mid])
+            if([item.content.mid isEqualToString:messageItem.content.mid]){
                 [item.content setType:UUMessageTypeRevoked];
+                [self.chatMessageModel updateMessage:item];
+            }
         }
         [wself.tableView reloadData];
     } fail:^(NSString *errMsg) {
@@ -515,8 +517,10 @@ static NSString *topChatID = nil;
 
 - (void)onDeleteMessage:(MessageItem *)messageItem
 {
+    NSMutableDictionary *sendParams = [self sendParams];
+    [sendParams setValue:messageItem.content.mid forKey:@"mid"];
     __weak typeof(self) wself = self;
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"mid" : messageItem.content.mid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:sendParams observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             for (MessageItem *item in wself.chatMessageModel.messageArray)
             {
                 if([item.content.mid isEqualToString:messageItem.content.mid])

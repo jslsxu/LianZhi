@@ -23,10 +23,6 @@
         [_revokeMessageLabel setFont:[UIFont systemFontOfSize:13]];
         [_revokeMessageLabel.layer setCornerRadius:4];
         [_revokeMessageLabel.layer setMasksToBounds:YES];
-        [_revokeMessageLabel setText:@"你撤回了一条消息"];
-        [_revokeMessageLabel sizeToFit];
-        [_revokeMessageLabel setSize:CGSizeMake(_revokeMessageLabel.width + 10, _revokeMessageLabel.height + 4)];
-        [_revokeMessageLabel setOrigin:CGPointMake((self.width - _revokeMessageLabel.width) / 2, (self.height - _revokeMessageLabel.height) / 2)];
         [self addSubview:_revokeMessageLabel];
     }
     return self;
@@ -34,6 +30,18 @@
 
 - (void)setMessageItem:(MessageItem *)messageItem{
     _messageItem = messageItem;
+    NSString *text = nil;
+    if(_messageItem.from == UUMessageFromMe){
+        text = @"你撤回了一条消息";
+    }
+    else{
+        text = @"对方撤回了一条消息";
+    }
+    [_revokeMessageLabel setText:text];
+    [_revokeMessageLabel sizeToFit];
+    [_revokeMessageLabel setSize:CGSizeMake(_revokeMessageLabel.width + 10, _revokeMessageLabel.height + 4)];
+    [_revokeMessageLabel setOrigin:CGPointMake((self.width - _revokeMessageLabel.width) / 2, (self.height - _revokeMessageLabel.height) / 2)];
+
 }
 
 + (CGFloat)contentHeightForModel:(MessageItem *)messageItem maxWidth:(CGFloat)maxWidth{

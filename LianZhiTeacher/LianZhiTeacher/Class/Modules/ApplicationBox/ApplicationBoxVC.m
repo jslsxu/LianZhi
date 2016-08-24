@@ -65,9 +65,9 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        _appImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - 50) / 2, self.height - 80, 50, 50)];
+        _appImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - 40) / 2, self.height - 80, 40, 40)];
         [_appImageView setClipsToBounds:YES];
-        [_appImageView  setContentMode:UIViewContentModeScaleAspectFill];
+        [_appImageView  setContentMode:UIViewContentModeCenter];
         [self addSubview:_appImageView];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height - 30, self.width, 30)];
@@ -332,8 +332,9 @@
         }
         else if([host isEqualToString:@"contact"])//联系人
         {
-            ContactVC *contactListVC = [[ContactVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:contactListVC animated:YES];
+//            ContactVC *contactListVC = [[ContactVC alloc] init];
+//            [CurrentROOTNavigationVC pushViewController:contactListVC animated:YES];
+            [ApplicationDelegate.homeVC selectAtIndex:1];
         }
         else if([host isEqualToString:@"class"])//班博客
         {

@@ -23,7 +23,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     _segmentCtrl  = [[UISegmentedControl alloc] initWithItems:@[@"通知详情",@"阅读人数"]];
     [_segmentCtrl setWidth:150];
     [_segmentCtrl setSelectedSegmentIndex:0];
@@ -39,6 +38,11 @@
     [_targetListView setHidden:YES];
     [self.view addSubview:_targetListView];
     
+    NSData *notificationData = [NSData dataWithContentsOfFile:[self cacheFilePath]];
+    if(notificationData){
+        self.notificationItem = [NSKeyedUnarchiver unarchiveObjectWithData:notificationData];
+    }
+    
     [self loadData];
 }
 
@@ -52,6 +56,8 @@
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/my_send_detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : self.notificationID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         NotificationItem *notification = [NotificationItem nh_modelWithJson:responseObject.data];
         self.notificationItem = notification;
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.notificationItem];
+        [data writeToFile:[self cacheFilePath] atomically:YES];
     } fail:^(NSString *errMsg) {
         
     }];
@@ -86,12 +92,12 @@
     NotificationActionItem *forwadItem = [NotificationActionItem actionItemWithTitle:@"转发" action:^{
         
     } destroyItem:NO];
-    NotificationActionItem *sendItem = [NotificationActionItem actionItemWithTitle:@"立即发送" action:^{
-        
-    } destroyItem:NO];
-    NotificationActionItem *revokeItem = [NotificationActionItem actionItemWithTitle:@"撤销" action:^{
-        
-    } destroyItem:NO];
+//    NotificationActionItem *sendItem = [NotificationActionItem actionItemWithTitle:@"立即发送" action:^{
+//        
+//    } destroyItem:NO];
+//    NotificationActionItem *revokeItem = [NotificationActionItem actionItemWithTitle:@"撤销" action:^{
+//        
+//    } destroyItem:NO];
     NotificationActionItem *editItem = [NotificationActionItem actionItemWithTitle:@"编辑" action:^{
         
     } destroyItem:NO];
@@ -102,10 +108,18 @@
         
     } destroyItem:YES];
     @weakify(self);
-    [NotificationDetailActionView showWithActions:@[forwadItem, sendItem, revokeItem, editItem, shareItem, deleteItem] completion:^{
+    [NotificationDetailActionView showWithActions:@[forwadItem, /*sendItem, revokeItem,*/ editItem, shareItem, deleteItem] completion:^{
         @strongify(self);
         [self setRightbarButtonHighlighted:NO];
     }];
+}
+
+- (BOOL)supportCache{
+    return YES;
+}
+
+- (NSString *)cacheFileName{
+    return [NSString stringWithFormat:@"mySendNotificaiton_%@",self.notificationID];
 }
 
 - (void)didReceiveMemoryWarning {

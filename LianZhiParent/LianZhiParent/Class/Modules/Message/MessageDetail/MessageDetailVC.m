@@ -70,8 +70,10 @@
 
 - (void)onMessageItemDeleteNotification:(NSNotification *)notification
 {
-    TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-    TNButtonItem *confirmItem = [TNButtonItem itemWithTitle:@"删除" action:^{
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:@"确定删除这条信息吗?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
+    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
         NSDictionary *userInfo = notification.userInfo;
         MessageDetailItem *item = (MessageDetailItem *)[userInfo objectForKey:kMessageDeleteModelItemKey];
         
@@ -85,9 +87,9 @@
         } fail:^(NSString *errMsg) {
             
         }];
+
     }];
-    TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"确定删除这条信息吗?" buttonItems:@[cancelItem, confirmItem]];
-    [alertView show];
+    [alertView showAnimated:YES completionHandler:nil];
 }
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
     MessageDetailItem *detailItem = (MessageDetailItem *)modelItem;

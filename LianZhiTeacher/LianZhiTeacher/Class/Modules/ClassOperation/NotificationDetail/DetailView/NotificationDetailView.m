@@ -50,7 +50,7 @@
 
 - (void)adjustPosition{
     CGFloat spaceYStart = 0;
-    [self.contentView setWords:self.notificationItem.words];
+    [self.contentView setNotificationItem:self.notificationItem];
     spaceYStart = self.contentView.bottom;
     if([self.notificationItem hasAudio]){
         [self.voiceView setVoiceArray:@[self.notificationItem.voice]];

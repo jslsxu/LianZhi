@@ -14,6 +14,7 @@
 @property (nonatomic, copy)NSString *indexkey;
 @property (nonatomic, strong)NSArray *users;
 @property (nonatomic, strong)NSArray *labelArray;
+- (void)addGroup:(UserGroup *)userGroup;
 @end
 
 @interface MemberSectionHeader : UITableViewHeaderFooterView

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "MessageDetailItem.h"
 @interface NotificationDetailContentView : UIView
-@property (nonatomic, copy)NSString *words;
+@property (nonatomic, strong)MessageDetailItem *messageDetailItem;
 @end

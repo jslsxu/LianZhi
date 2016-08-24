@@ -142,9 +142,7 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
 
 - (void)onMessageDeleteButtonClicked
 {
-    if(self.deleteCallback){
-        self.deleteCallback();
-    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kMessageDeleteNotitication object:nil userInfo:@{kMessageDeleteModelItemKey : self.modelItem}];
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width

@@ -179,10 +179,14 @@
 
 - (void)setTargetArray:(NSArray *)targetArray{
     _targetArray = targetArray;
+    BOOL expand = NO;
+    if(_targetArray.count == 1){
+        expand = YES;
+    }
     for (NSInteger i = 0; i < _targetArray.count; i++) {
         NSString *groupID = [self groupIDForSection:i];
         if(groupID.length > 0){
-            [self.expandDic setValue:@(NO) forKey:groupID];
+            [self.expandDic setValue:@(expand) forKey:groupID];
         }
     }
     [_tableView reloadData];

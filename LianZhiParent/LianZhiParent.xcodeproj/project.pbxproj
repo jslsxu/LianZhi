@@ -382,6 +382,11 @@
 		8D7554F01D6969E300A140EE /* JKPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554DC1D6969E300A140EE /* JKPromptView.m */; };
 		8D7554F21D696A5E00A140EE /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D7554F11D696A5E00A140EE /* AssetsLibrary.framework */; };
 		8D7554F51D696C4A00A140EE /* ContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554F41D696C4A00A140EE /* ContactView.m */; };
+		8D7555181D6DAE9700A140EE /* PBImageScrollerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D75550D1D6DAE9700A140EE /* PBImageScrollerViewController.m */; };
+		8D7555191D6DAE9700A140EE /* PBImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555101D6DAE9700A140EE /* PBImageScrollView.m */; };
+		8D75551A1D6DAE9700A140EE /* PBPresentAnimatedTransitioningController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555121D6DAE9700A140EE /* PBPresentAnimatedTransitioningController.m */; };
+		8D75551B1D6DAE9800A140EE /* PBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555141D6DAE9700A140EE /* PBViewController.m */; };
+		8D75551C1D6DAE9800A140EE /* UIView+PBSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555171D6DAE9700A140EE /* UIView+PBSnapshot.m */; };
 		8D867BEF1D261FFE0020A21C /* CircleProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BEE1D261FFE0020A21C /* CircleProgressView.m */; };
 		8D867C241D2A6C530020A21C /* NHAudioConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C0F1D2A6C530020A21C /* NHAudioConverter.m */; };
 		8D867C251D2A6C530020A21C /* NHAudioTool+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C111D2A6C530020A21C /* NHAudioTool+Helper.m */; };
@@ -1118,6 +1123,18 @@
 		8D7554F11D696A5E00A140EE /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		8D7554F31D696C4A00A140EE /* ContactView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactView.h; sourceTree = "<group>"; };
 		8D7554F41D696C4A00A140EE /* ContactView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactView.m; sourceTree = "<group>"; };
+		8D75550C1D6DAE9700A140EE /* PBImageScrollerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBImageScrollerViewController.h; sourceTree = "<group>"; };
+		8D75550D1D6DAE9700A140EE /* PBImageScrollerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBImageScrollerViewController.m; sourceTree = "<group>"; };
+		8D75550E1D6DAE9700A140EE /* PBImageScrollView+internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "PBImageScrollView+internal.h"; sourceTree = "<group>"; };
+		8D75550F1D6DAE9700A140EE /* PBImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBImageScrollView.h; sourceTree = "<group>"; };
+		8D7555101D6DAE9700A140EE /* PBImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBImageScrollView.m; sourceTree = "<group>"; };
+		8D7555111D6DAE9700A140EE /* PBPresentAnimatedTransitioningController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBPresentAnimatedTransitioningController.h; sourceTree = "<group>"; };
+		8D7555121D6DAE9700A140EE /* PBPresentAnimatedTransitioningController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBPresentAnimatedTransitioningController.m; sourceTree = "<group>"; };
+		8D7555131D6DAE9700A140EE /* PBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBViewController.h; sourceTree = "<group>"; };
+		8D7555141D6DAE9700A140EE /* PBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBViewController.m; sourceTree = "<group>"; };
+		8D7555151D6DAE9700A140EE /* PhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoBrowser.h; sourceTree = "<group>"; };
+		8D7555161D6DAE9700A140EE /* UIView+PBSnapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+PBSnapshot.h"; sourceTree = "<group>"; };
+		8D7555171D6DAE9700A140EE /* UIView+PBSnapshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+PBSnapshot.m"; sourceTree = "<group>"; };
 		8D867BED1D261FFE0020A21C /* CircleProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleProgressView.h; sourceTree = "<group>"; };
 		8D867BEE1D261FFE0020A21C /* CircleProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleProgressView.m; sourceTree = "<group>"; };
 		8D867C0E1D2A6C530020A21C /* NHAudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHAudioConverter.h; sourceTree = "<group>"; };
@@ -1588,6 +1605,7 @@
 		3793F55F1B7CFFD800501F77 /* BaseFoundation */ = {
 			isa = PBXGroup;
 			children = (
+				8D75550B1D6DAE9700A140EE /* PhotoBrowser */,
 				8D7554B51D6969E300A140EE /* DNImagePicker */,
 				8D867C0D1D2A6C530020A21C /* NHAudioTool */,
 				37D6EE841BCABED6000994A2 /* SVShare */,
@@ -2872,6 +2890,25 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		8D75550B1D6DAE9700A140EE /* PhotoBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				8D75550C1D6DAE9700A140EE /* PBImageScrollerViewController.h */,
+				8D75550D1D6DAE9700A140EE /* PBImageScrollerViewController.m */,
+				8D75550E1D6DAE9700A140EE /* PBImageScrollView+internal.h */,
+				8D75550F1D6DAE9700A140EE /* PBImageScrollView.h */,
+				8D7555101D6DAE9700A140EE /* PBImageScrollView.m */,
+				8D7555111D6DAE9700A140EE /* PBPresentAnimatedTransitioningController.h */,
+				8D7555121D6DAE9700A140EE /* PBPresentAnimatedTransitioningController.m */,
+				8D7555131D6DAE9700A140EE /* PBViewController.h */,
+				8D7555141D6DAE9700A140EE /* PBViewController.m */,
+				8D7555151D6DAE9700A140EE /* PhotoBrowser.h */,
+				8D7555161D6DAE9700A140EE /* UIView+PBSnapshot.h */,
+				8D7555171D6DAE9700A140EE /* UIView+PBSnapshot.m */,
+			);
+			path = PhotoBrowser;
+			sourceTree = "<group>";
+		};
 		8D867C0D1D2A6C530020A21C /* NHAudioTool */ = {
 			isa = PBXGroup;
 			children = (
@@ -3296,6 +3333,7 @@
 				37EAC9F01B82DEE5007BFBA1 /* iCarousel.m in Sources */,
 				37FD6E7D1BBCE47600C83AB4 /* OperationGuideVC.m in Sources */,
 				37CA18831AB70BCC00B49B55 /* AlbumGroupView.m in Sources */,
+				8D7555181D6DAE9700A140EE /* PBImageScrollerViewController.m in Sources */,
 				3793F7CB1B7CFFD900501F77 /* UTPlaceholderTextView.m in Sources */,
 				3793F81C1B7CFFD900501F77 /* TNTableViewCell.m in Sources */,
 				8DCFD79C1D5A3B8B001EDC8A /* ChatContentFaceView.m in Sources */,
@@ -3317,6 +3355,7 @@
 				8D867C241D2A6C530020A21C /* NHAudioConverter.m in Sources */,
 				37C3560B1A3FD67300B948E6 /* AppDelegate.m in Sources */,
 				3793F7CD1B7CFFD900501F77 /* TGRImageZoomAnimationController.m in Sources */,
+				8D75551A1D6DAE9700A140EE /* PBPresentAnimatedTransitioningController.m in Sources */,
 				8DCFD7841D5A3B3F001EDC8A /* VideoItem.m in Sources */,
 				3793F7DC1B7CFFD900501F77 /* UIImageView+Animation.m in Sources */,
 				3793F7E61B7CFFD900501F77 /* ProgressHUD.m in Sources */,
@@ -3342,6 +3381,7 @@
 				3793F7C41B7CFFD900501F77 /* MSCircleImageView.m in Sources */,
 				8D7554F01D6969E300A140EE /* JKPromptView.m in Sources */,
 				8D3D45991D5C48D6005EA8EA /* TADotView.m in Sources */,
+				8D75551C1D6DAE9800A140EE /* UIView+PBSnapshot.m in Sources */,
 				37BC41101A43346D005038F9 /* ConfimInfoVC.m in Sources */,
 				3793F7D11B7CFFD900501F77 /* PhotoItem.m in Sources */,
 				37F2070B1BDDD8C4006466F4 /* HomeWorkListModel.m in Sources */,
@@ -3372,6 +3412,7 @@
 				8D7554ED1D6969E300A140EE /* DNSendButton.m in Sources */,
 				37C316551A568F7B002E847D /* GrowthTimelineModel.m in Sources */,
 				8D3D45B71D5DDB09005EA8EA /* NotificationDetailView.m in Sources */,
+				8D75551B1D6DAE9800A140EE /* PBViewController.m in Sources */,
 				37C53AA31B14D5FF00C3ED69 /* RequestVacationVC.m in Sources */,
 				3793F7591B7CFFD900501F77 /* YLImageView.m in Sources */,
 				3793F7D71B7CFFD900501F77 /* NSString+JSONObject.m in Sources */,
@@ -3498,6 +3539,7 @@
 				3793F8261B7CFFD900501F77 /* TaskUploadManager.m in Sources */,
 				37CBAF1F1A4724930063F395 /* PublishSelectionView.m in Sources */,
 				8DCFD7B11D5A3BDB001EDC8A /* ChatExtraGroupInfoVC.m in Sources */,
+				8D7555191D6DAE9700A140EE /* PBImageScrollView.m in Sources */,
 				3793F7A41B7CFFD900501F77 /* AFURLSessionManager.m in Sources */,
 				3728A61B1B93F36B00310457 /* FaceSelectView.m in Sources */,
 				8D3D459A1D5C48D6005EA8EA /* TAPageControl.m in Sources */,
