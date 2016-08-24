@@ -115,7 +115,7 @@
     NSMutableArray *classesArray = [NSMutableArray array];
     for (ClassInfo *classInfo in self.classArray) {
         NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
-        if(classInfo.selected){
+        if(classInfo.selectedType == SelectedTypeAll){
             [classDic setValue:classInfo.classID forKey:@"classid"];
         }
         else{
@@ -138,7 +138,7 @@
     NSMutableArray *groupsArray = [NSMutableArray array];
     for (TeacherGroup *teacherGroup in self.groupArray) {
         NSMutableDictionary *groupDic = [NSMutableDictionary dictionary];
-        if(teacherGroup.selected){
+        if(teacherGroup.selectedType == SelectedTypeAll){
             [groupDic setValue:teacherGroup.groupID forKey:@"id"];
         }
         else{

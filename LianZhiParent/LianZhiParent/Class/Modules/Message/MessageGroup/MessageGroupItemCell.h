@@ -18,7 +18,7 @@
     UILabel*        _nameLabel;
     UILabel*        _schoolLabel;
     UILabel*        _timeLabel;
-    UIImageView*    _notificationIndicator;
+//    UIImageView*    _notificationIndicator;
     UIImageView*    _massChatIndicator;
     UILabel*        _contentLabel;
     UIView*         _sepLine;

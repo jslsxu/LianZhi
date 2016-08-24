@@ -55,6 +55,7 @@
 - (void)loadData{
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/my_send_detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : self.notificationID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         NotificationItem *notification = [NotificationItem nh_modelWithJson:responseObject.data];
+        notification.user = [UserCenter sharedInstance].userInfo;
         self.notificationItem = notification;
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.notificationItem];
         [data writeToFile:[self cacheFilePath] atomically:YES];

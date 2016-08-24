@@ -19,7 +19,7 @@
     UIImageView*    _soundOff;
     UILabel*        _nameLabel;
     UILabel*        _timeLabel;
-    UIImageView*    _notificationIndicator;
+//    UIImageView*    _notificationIndicator;
     UIImageView*    _massChatIndicator;
     UILabel*        _contentLabel;
     UIView*         _sepLine;

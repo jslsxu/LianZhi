@@ -149,7 +149,7 @@
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
 {
     MessageDetailItem *item = (MessageDetailItem *)modelItem;
-    NSInteger height = kBGTopMargin + 46 + 15;
+    NSInteger height = kBGTopMargin + 10 + 46 + 15;
     NSString *content = item.words;
     if(content.length > 0){
         CGSize contentSize = [item.words boundingRectWithSize:CGSizeMake(width - kBGViewHMargin * 2 - kContentHMargin * 2, CGFLOAT_MAX) andFont:kContentFont];

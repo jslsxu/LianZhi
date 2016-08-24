@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, SelectedType){
+    SelectedTypeNone = 0,           //没选
+    SelectedTypePartly,             //选中部分
+    SelectedTypeAll                 //全选
+};
+
 @interface SchoolInfo : TNModelItem
 @property (nonatomic, copy)NSString *schoolID;
 @property (nonatomic, copy)NSString *schoolName;
@@ -49,10 +55,14 @@
 @property (nonatomic, strong)NSMutableArray *students;
 @property (nonatomic, assign)BOOL recordEnabled;//是否开通成长记录
 @property (nonatomic, assign)BOOL canSelected;
-@property (nonatomic, assign)BOOL selected;             //在班级操作中有用
+//@property (nonatomic, assign)BOOL selected;             //在班级操作中有用
 @property (nonatomic, assign)NSInteger num;
 @property (nonatomic, assign)NSInteger sent_num;
 @property (nonatomic, assign)NSInteger read_num;
+- (SelectedType)selectedType;
+- (void)selectAll;
+- (void)clearSelect;
+- (NSInteger)selectedNum;
 @end
 
 
@@ -62,8 +72,12 @@
 @property (nonatomic, copy)NSString *groupName;
 @property (nonatomic, assign)BOOL canNotice;
 @property (nonatomic, strong)NSArray *teachers;
-@property (nonatomic, assign)BOOL selected;
+//@property (nonatomic, assign)BOOL selected;
 @property (nonatomic, assign)NSInteger sent_num;
 @property (nonatomic, assign)NSInteger read_num;
 - (BOOL)canChat;
+- (SelectedType)selectedType;
+- (void)selectAll;
+- (void)clearSelect;
+- (NSInteger)selectedNum;
 @end

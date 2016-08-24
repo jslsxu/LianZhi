@@ -201,7 +201,45 @@
 + (nullable NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
     return @{@"classID" : @[@"id", @"classid"]};
 }
+- (SelectedType)selectedType{
+    NSInteger count = 0;
+    for (StudentInfo *studentInfo in self.students) {
+        if(studentInfo.selected){
+            count ++;
+        }
+    }
+    if(count == 0){
+        return SelectedTypeNone;
+    }
+    else if(count == self.students.count){
+        return SelectedTypeAll;
+    }
+    else{
+        return SelectedTypePartly;
+    }
+}
 
+- (void)selectAll{
+    for (StudentInfo *studentInfo in self.students) {
+        studentInfo.selected = YES;
+    }
+}
+
+- (void)clearSelect{
+    for (StudentInfo *studentInfo in self.students) {
+        studentInfo.selected = NO;
+    }
+}
+
+- (NSInteger)selectedNum{
+    NSInteger count = 0;
+    for (StudentInfo *studentInfo in self.students) {
+        if(studentInfo.selected){
+            count++;
+        }
+    }
+    return count;
+}
 @end
 
 
@@ -247,6 +285,46 @@
             return YES;
     }
     return NO;
+}
+
+- (SelectedType)selectedType{
+    NSInteger count = 0;
+    for (TeacherInfo *teacherInfo in self.teachers) {
+        if(teacherInfo.selected){
+            count ++;
+        }
+    }
+    if(count == 0){
+        return SelectedTypeNone;
+    }
+    else if(count == self.teachers.count){
+        return SelectedTypeAll;
+    }
+    else{
+        return SelectedTypePartly;
+    }
+}
+
+- (void)selectAll{
+    for (TeacherInfo *teacherInfo in self.teachers) {
+        teacherInfo.selected = YES;
+    }
+}
+
+- (void)clearSelect{
+    for (TeacherInfo *teacherInfo in self.teachers) {
+        teacherInfo.selected = NO;
+    }
+}
+
+- (NSInteger)selectedNum{
+    NSInteger count = 0;
+    for (TeacherInfo *teacherInfo in self.teachers) {
+        if(teacherInfo.selected){
+            count ++;
+        }
+    }
+    return count;
 }
 
 @end

@@ -52,10 +52,10 @@
         [_soundOff setHidden:YES];
         [self.contentView addSubview:_soundOff];
         
-        _notificationIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NotificationIndicator"]];
-        [_notificationIndicator setHidden:YES];
-        [_notificationIndicator setOrigin:CGPointMake(70, 36 + (20 - _notificationIndicator.height) / 2)];
-        [self.contentView addSubview:_notificationIndicator];
+//        _notificationIndicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NotificationIndicator"]];
+//        [_notificationIndicator setHidden:YES];
+//        [_notificationIndicator setOrigin:CGPointMake(70, 36 + (20 - _notificationIndicator.height) / 2)];
+//        [self.contentView addSubview:_notificationIndicator];
         
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 36, _soundOff.left - 5 - 70, 20)];
         [_contentLabel setFont:[UIFont systemFontOfSize:13]];
@@ -122,15 +122,15 @@
     CGFloat spaceXEnd = self.width - 5;
     //    _messageItem.fromInfo.type = ChatTypeAttendance;
     //通知图标
-    if([_messageItem.fromInfo isNotification])
-    {
-        [_notificationIndicator setHidden:NO];
-        spaceXStart = _notificationIndicator.right + 5;
-    }
-    else
-    {
-        [_notificationIndicator setHidden:YES];
-    }
+//    if([_messageItem.fromInfo isNotification])
+//    {
+//        [_notificationIndicator setHidden:NO];
+//        spaceXStart = _notificationIndicator.right + 5;
+//    }
+//    else
+//    {
+//        [_notificationIndicator setHidden:YES];
+//    }
 
     if(_messageItem.msgNum > 0)
     {
@@ -143,7 +143,7 @@
             indicator = kStringFromValue(_messageItem.msgNum);
         }
         [_numIndicator setIndicator:indicator];
-        [_numIndicator setCenter:CGPointMake(spaceXEnd - _numIndicator.width / 2, _notificationIndicator.centerY)];
+        [_numIndicator setCenter:CGPointMake(spaceXEnd - _numIndicator.width / 2, 36 + (20 - _numIndicator.height) / 2)];
         spaceXEnd = _numIndicator.left - 5;
     }
     else
@@ -154,10 +154,10 @@
     }
     else{
         [_soundOff setHidden:NO];
-        [_soundOff setCenter:CGPointMake(spaceXEnd - _soundOff.width / 2, _notificationIndicator.centerY)];
+        [_soundOff setCenter:CGPointMake(spaceXEnd - _soundOff.width / 2, 36 + (20 - _soundOff.height) / 2)];
         spaceXEnd = _soundOff.left - 5;
     }
-    [_contentLabel setFrame:CGRectMake(spaceXStart, _notificationIndicator.centerY - 20 / 2, spaceXEnd - spaceXStart, 20)];
+    [_contentLabel setFrame:CGRectMake(spaceXStart, 36, spaceXEnd - spaceXStart, 20)];
     NSString *content = _messageItem.content;
     if(_messageItem.im_at){
         NSMutableAttributedString *attrContent = [[NSMutableAttributedString alloc] initWithString:@"[有人@我]" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"F0003A"]}];

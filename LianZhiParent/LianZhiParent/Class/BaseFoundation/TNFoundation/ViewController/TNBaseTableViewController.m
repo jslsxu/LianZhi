@@ -219,29 +219,16 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger count = [_tableViewModel numOfSections];
-    if([_tableViewModel hasMoreData] && _supportPullUp)
-        count ++;
     return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger numOfSections = [self numberOfSectionsInTableView:tableView];
-    if([_tableViewModel hasMoreData] && _supportPullUp && section == numOfSections - 1)
-        return 1;
-    else
-    {
-        return [_tableViewModel numOfRowsInSection:section];
-    }
+    return [_tableViewModel numOfRowsInSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([_tableViewModel hasMoreData] && indexPath.section == [self numberOfSectionsInTableView:tableView] - 1 && _supportPullUp)
-    {
-        return FOOTERVIEW_HEIGHT;
-    }
-    
     TNModelItem *item = [_tableViewModel itemForIndexPath:indexPath];
     NSNumber* (*action)(id, SEL, id,NSInteger) = (NSNumber* (*)(id, SEL,id, NSInteger)) objc_msgSend;
     NSNumber* height = action([NSClassFromString(self.cellName) class], NSSelectorFromString(CELL_HEIGHT_SEL), item, (int) _tableView.frame.size.width);
@@ -250,10 +237,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([_tableViewModel hasMoreData] && _supportPullUp && indexPath.section == [self numberOfSectionsInTableView:tableView] - 1)
-    {
-        return _getMoreCell;
-    }
     TNTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:self.cellName];
     if (!cell) {
         cell = [[NSClassFromString(self.cellName) alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellName];
@@ -269,13 +252,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ([_tableViewModel hasMoreData] && _supportPullUp && indexPath.section == [self numberOfSectionsInTableView:tableView] - 1)
-        [self requestData:REQUEST_GETMORE];
-    else
-    {
-        if([self respondsToSelector:@selector(TNBaseTableViewControllerItemSelected:atIndex:)])
-            [self TNBaseTableViewControllerItemSelected:[_tableViewModel itemForIndexPath:indexPath] atIndex:indexPath];
-    }
+    if([self respondsToSelector:@selector(TNBaseTableViewControllerItemSelected:atIndex:)])
+        [self TNBaseTableViewControllerItemSelected:[_tableViewModel itemForIndexPath:indexPath] atIndex:indexPath];
 }
 
 #pragma mark -
@@ -290,14 +268,7 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     
     [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-    NSInteger bottomOffset = scrollView.contentSize.height - scrollView.frame.size.height;
-    bottomOffset = (bottomOffset > 0) ? bottomOffset : 0;
-    if([scrollView contentOffset].y >= (bottomOffset + FOOT_MORE_OFFSET))
-    {
-        if(!_isLoading && _supportPullUp && _getMoreCell.superview && [_tableViewModel hasMoreData]) {
-            [self requestData:REQUEST_GETMORE];
-        }
-    }
+
 }
 
 

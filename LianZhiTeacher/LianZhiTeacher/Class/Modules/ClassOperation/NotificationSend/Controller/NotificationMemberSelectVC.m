@@ -58,13 +58,41 @@
         ClassInfo *classInfo = (ClassInfo *)_groupInfo;
         [_logoView sd_setImageWithURL:[NSURL URLWithString:classInfo.logo] placeholderImage:nil];
         [_nameLabel setText:classInfo.name];
-        [_allSelectButton setSelected:classInfo.selected];
+        NSInteger selectedCount = 0;
+        for (StudentInfo *studentInfo in classInfo.students) {
+            if(studentInfo.selected){
+                selectedCount ++;
+            }
+        }
+        if(selectedCount == 0){
+            [_allSelectButton setImage:[UIImage imageNamed:@"send_sms_off"] forState:UIControlStateNormal];
+        }
+        else if(selectedCount == classInfo.students.count){
+            [_allSelectButton setImage:[UIImage imageNamed:@"send_sms_on"] forState:UIControlStateNormal];
+        }
+        else{
+            [_allSelectButton setImage:[UIImage imageNamed:@"ic_xuan_selected"] forState:UIControlStateNormal];
+        }
     }
     else{
         TeacherGroup *teacherGroup = (TeacherGroup *)_groupInfo;
         [_logoView sd_setImageWithURL:[NSURL URLWithString:teacherGroup.logo] placeholderImage:nil];
         [_nameLabel setText:teacherGroup.groupName];
-        [_allSelectButton setSelected:teacherGroup.selected];
+        NSInteger selectedCount = 0;
+        for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
+            if(teacherInfo.selected){
+                selectedCount ++;
+            }
+        }
+        if(selectedCount == 0){
+            [_allSelectButton setImage:[UIImage imageNamed:@"send_sms_off"] forState:UIControlStateNormal];
+        }
+        else if(selectedCount == teacherGroup.teachers.count){
+            [_allSelectButton setImage:[UIImage imageNamed:@"send_sms_on"] forState:UIControlStateNormal];
+        }
+        else{
+            [_allSelectButton setImage:[UIImage imageNamed:@"ic_xuan_selected"] forState:UIControlStateNormal];
+        }
     }
 }
 
@@ -208,7 +236,6 @@
     
     if(self.userType == UserTypeStudent){
         for (ClassInfo *classInfo in self.dataSource) {
-            classInfo.selected = selectAll;
             for (StudentInfo *studentInfo in classInfo.students) {
                 studentInfo.selected = selectAll;
             }
@@ -216,7 +243,7 @@
     }
     else{
         for (TeacherGroup *teacherGroup in self.dataSource) {
-            teacherGroup.selected = selectAll;
+//            teacherGroup.selected = selectAll;
             for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
                 teacherInfo.selected = selectAll;
             }
@@ -243,29 +270,32 @@
 - (void)updateSelectToolBar{
     BOOL selectAll = YES;
     NSInteger selectNum = 0;
+    NSMutableDictionary *selectedDic = [NSMutableDictionary dictionary];
     if(self.userType == UserTypeStudent){
         for (ClassInfo *classInfo in self.dataSource) {
-            if(!classInfo.selected){
+            if([classInfo selectedType] != SelectedTypeAll){
                 selectAll = NO;
             }
             for (StudentInfo *studentInfo in classInfo.students) {
-                if(studentInfo.selected)
-                    selectNum ++;
+                if(studentInfo.selected){
+                    [selectedDic setValue:@"1" forKey:studentInfo.uid];
+                }
             }
         }
     }
     else{
         for (TeacherGroup *teacherGroup in self.dataSource) {
-            if(!teacherGroup.selected){
+            if([teacherGroup selectedType] != SelectedTypeAll){
                 selectAll = NO;
             }
             for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
                 if(teacherInfo.selected){
-                    selectNum++;
+                    [selectedDic setValue:@"1" forKey:teacherInfo.uid];
                 }
             }
         }
     }
+    selectNum = selectedDic.allKeys.count;
     [_selectAllButton setTitle:selectAll ? @"反选" : @"全选" forState:UIControlStateNormal];
     [_stateLabel setText:[NSString stringWithFormat:@"已选择%zd人",selectNum]];
 }
@@ -322,16 +352,20 @@
         @strongify(self)
         if(self.userType == UserTypeStudent){
             ClassInfo *classInfo = (ClassInfo *)dataItem;
-            [classInfo setSelected:!classInfo.selected];
-            for (StudentInfo *studentInfo in classInfo.students) {
-                [studentInfo setSelected:classInfo.selected];
+            if(classInfo.selectedType != SelectedTypeAll){
+                [classInfo selectAll];
+            }
+            else{
+                [classInfo clearSelect];
             }
         }
         else{
             TeacherGroup *teacherGroup = (TeacherGroup *)dataItem;
-            [teacherGroup setSelected:!teacherGroup.selected];
-            for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
-                [teacherInfo setSelected:teacherGroup.selected];
+            if(teacherGroup.selectedType != SelectedTypeAll){
+                [teacherGroup selectAll];
+            }
+            else{
+                [teacherGroup clearSelect];
             }
         }
         [self updateSelectToolBar];
@@ -381,25 +415,11 @@
         ClassInfo *classInfo = [self.dataSource objectAtIndex:section];
         StudentInfo *studentInfo = classInfo.students[row];
         [studentInfo setSelected:!studentInfo.selected];
-        BOOL allSelected = YES;
-        for (StudentInfo *stuInfo in classInfo.students) {
-            if(!stuInfo.selected){
-                allSelected = NO;
-            }
-        }
-        [classInfo setSelected:allSelected];
     }
     else{
         TeacherGroup *group = [self.dataSource objectAtIndex:section];
         TeacherInfo *teacherInfo = group.teachers[row];
         [teacherInfo setSelected:!teacherInfo.selected];
-        BOOL allSelected = YES;
-        for (teacherInfo in group.teachers) {
-            if(!teacherInfo.selected){
-                allSelected = NO;
-            }
-        }
-        [group setSelected:allSelected];
     }
     [self updateSelectToolBar];
     [tableView reloadData];
@@ -442,13 +462,11 @@
     self.groupArray = groupArray;
     
     for (ClassInfo *classInfo in self.classArray) {
-        classInfo.selected = NO;
         for (StudentInfo *studentInfo in classInfo.students) {
             studentInfo.selected = NO;
         }
     }
     for (TeacherGroup *group in self.groupArray) {
-        group.selected = NO;
         for (TeacherInfo *teacherInfo in group.teachers) {
             teacherInfo.selected = NO;
         }
@@ -490,27 +508,6 @@
 }
 
 - (void)reloadData{
-    for (ClassInfo *classInfo in self.classArray) {
-        BOOL allSelected = YES;
-        for (StudentInfo *studentInfo in classInfo.students) {
-            studentInfo.selected = [self target:studentInfo.uid isInSource:self.originalSourceArray];
-            if(!studentInfo.selected){
-                allSelected = NO;
-            }
-        }
-        classInfo.selected = allSelected;
-    }
-    
-    for (TeacherGroup *group in self.groupArray) {
-        BOOL allSelected = YES;
-        for (TeacherInfo *teacherInfo in group.teachers) {
-            teacherInfo.selected = [self target:teacherInfo.uid isInSource:self.originalSourceArray];
-            if(!teacherInfo.selected){
-                allSelected = NO;
-            }
-        }
-        group.selected = allSelected;
-    }
 
     [_studentView setDataSource:self.classArray];
     [_teacherView setDataSource:self.groupArray];

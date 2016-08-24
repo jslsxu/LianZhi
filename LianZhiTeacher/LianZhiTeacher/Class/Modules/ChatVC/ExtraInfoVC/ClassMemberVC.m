@@ -238,7 +238,7 @@
         headerView = [[MemberSectionHeader alloc] initWithReuseIdentifier:reuseID];
     }
     UserGroup *group = self.sourceArray[section];
-    [headerView setTitle:group.indexkey];
+    [headerView setTitle:group.title];
     return headerView;
 }
 

@@ -153,18 +153,7 @@
                     
                     [studentArray addObject:studentGroup];
                 }
-                ChildInfo *curChild = [UserCenter sharedInstance].curChild;
-                UserGroup *curUserGroup = [[UserGroup alloc] init];
-                [curUserGroup setToObjid:curChild.uid];
-                [curUserGroup setTitle:curChild.first_letter];
-                [curUserGroup setIndexkey:curChild.first_letter];
-                [curUserGroup setUsers:curChild.family];
-                NSMutableArray *labelArray = [NSMutableArray array];
-                for (FamilyInfo *family in curChild.family) {
-                    [labelArray addObject:[NSString stringWithFormat:@"%@的%@",curChild.name, family.relation]];
-                }
-                [curUserGroup setLabelArray:labelArray];
-                [studentArray addObject:curUserGroup];
+               
                 [studentArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
                     UserGroup *firstGroup = (UserGroup *)obj1;
                     UserGroup *secondGroup = (UserGroup *)obj2;
@@ -233,7 +222,7 @@
         headerView = [[MemberSectionHeader alloc] initWithReuseIdentifier:reuseID];
     }
     UserGroup *group = self.sourceArray[section];
-    [headerView setTitle:group.indexkey];
+    [headerView setTitle:group.title];
     return headerView;
 }
 
