@@ -496,6 +496,13 @@ static NSString *topChatID = nil;
 }
 
 #pragma mark - MessageCellDelegate
+
+- (void)onLongPressAvatar:(MessageItem *)messageItem{
+    if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup){
+        [_inputView addAtUser:messageItem.user];
+    }
+}
+
 - (void)onRevokeMessage:(MessageItem *)messageItem
 {
     NSMutableDictionary *sendParams = [self sendParams];

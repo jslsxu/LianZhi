@@ -9,6 +9,10 @@
 #import "ChatContentImageView.h"
 #import "UUImageAvatarBrowser.h"
 #define kImageMaxSize           140
+@interface ChatContentImageView ()<PBViewControllerDataSource, PBViewControllerDelegate>
+
+@end
+
 @implementation ChatContentImageView
 
 - (instancetype)initWithModel:(MessageItem *)messageItem maxWidth:(CGFloat)maxWidth{
@@ -18,7 +22,7 @@
         [_contentImageView setContentMode:UIViewContentModeScaleAspectFill];
         [_bubbleBackgroundView addSubview:_contentImageView];
         
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageClicked)];
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapedImageView)];
         [_bubbleBackgroundView addGestureRecognizer:tapGesture];
     }
     return self;
@@ -69,5 +73,52 @@
     else
         return kImageMaxSize;
 }
+
+- (void)handleTapedImageView{
+    [self _showPhotoBrowser:_contentImageView];
+}
+
+- (void)_showPhotoBrowser:(UIView *)sender {
+    PBViewController *pbViewController = [PBViewController new];
+    pbViewController.pb_dataSource = self;
+    pbViewController.pb_delegate = self;
+    pbViewController.pb_startPage = 0;
+    [CurrentROOTNavigationVC presentViewController:pbViewController animated:YES completion:nil];
+}
+
+- (NSInteger)numberOfPagesInViewController:(PBViewController *)viewController {
+    return 1;
+}
+
+- (void)viewController:(PBViewController *)viewController presentImageView:(UIImageView *)imageView forPageAtIndex:(NSInteger)index progressHandler:(void (^)(NSInteger, NSInteger))progressHandler {
+    if([self.messageItem isLocalMessage]){
+        [imageView setImage:_contentImageView.image];
+    }
+    else{
+        PhotoItem *photoItem = self.messageItem.content.exinfo.imgs;
+        UIImage *placeholder = _contentImageView.image;
+        [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.big]
+                     placeholderImage:placeholder
+                              options:0
+                             progress:progressHandler
+                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                            }];
+    }
+}
+
+- (UIView *)thumbViewForPageAtIndex:(NSInteger)index {
+    return _contentImageView;
+}
+
+#pragma mark - PBViewControllerDelegate
+
+- (void)viewController:(PBViewController *)viewController didSingleTapedPageAtIndex:(NSInteger)index presentedImage:(UIImage *)presentedImage {
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)viewController:(PBViewController *)viewController didLongPressedPageAtIndex:(NSInteger)index presentedImage:(UIImage *)presentedImage {
+    NSLog(@"didLongPressedPageAtIndex: %@", @(index));
+}
+
 
 @end

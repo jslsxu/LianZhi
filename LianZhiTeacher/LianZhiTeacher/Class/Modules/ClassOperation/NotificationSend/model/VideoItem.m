@@ -9,6 +9,9 @@
 #import "VideoItem.h"
 
 @implementation VideoItem
++ (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
+    return @{@"videoID" : @"id"};
+}
 //+ (NSArray<NSString *> *)modelPropertyBlacklist{
 //    return @[@"coverImage",@"localVideoPath"];
 //}

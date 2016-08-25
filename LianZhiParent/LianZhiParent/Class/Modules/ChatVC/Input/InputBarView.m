@@ -233,6 +233,36 @@
 }
 
 #pragma mark - Actions
+- (void)addAtUser:(UserInfo *)userInfo{
+    for (UserInfo *atUser in self.atArray) {
+        if([atUser.uid isEqualToString:userInfo.uid]){
+            return;
+        }
+    }
+    if(userInfo){
+        [self setInputType:InputTypeNormal];
+        [self.atArray addObject:userInfo];
+        NSString *text = _inputView.text;
+        _inputView.text = [NSString stringWithFormat:@"%@@%@ ",text, userInfo.name];
+    }
+}
+
+- (void)checkAtList{
+    NSMutableArray *deleteArray = [NSMutableArray array];
+    NSString *text = _inputView.text;
+    for (UserInfo *atUser in self.atArray) {
+        NSString *atStr = [NSString stringWithFormat:@"@%@",atUser.name];
+        NSRange range = [text rangeOfString:atStr];
+        if(range.location == NSNotFound){
+            [deleteArray addObject:atUser];
+        }
+    }
+    if(deleteArray.count > 0){
+        [self.atArray removeObjectsInArray:deleteArray];
+    }
+}
+
+
 #pragma mark - 录音touch事件
 - (void)beginRecordVoice:(UIButton *)button
 {
@@ -350,7 +380,7 @@
             @weakify(self)
             [memberVC setAtCallback:^(UserInfo *user) {
                 @strongify(self)
-                [growingTextView setText:[NSString stringWithFormat:@"%@%@",growingTextView.text,user.name]];
+                [growingTextView setText:[NSString stringWithFormat:@"%@%@ ",growingTextView.text,user.name]];
                 [self.atArray addObject:user];
                 [self setInputType:InputTypeNormal];
             }];
@@ -362,6 +392,7 @@
             [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
         }
     }
+    [self checkAtList];
     return YES;
 }
 

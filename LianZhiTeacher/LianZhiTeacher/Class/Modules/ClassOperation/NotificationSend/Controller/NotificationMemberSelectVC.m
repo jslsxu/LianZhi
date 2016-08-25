@@ -463,12 +463,12 @@
     
     for (ClassInfo *classInfo in self.classArray) {
         for (StudentInfo *studentInfo in classInfo.students) {
-            studentInfo.selected = NO;
+            studentInfo.selected = [self isSelected:studentInfo.uid];
         }
     }
     for (TeacherGroup *group in self.groupArray) {
         for (TeacherInfo *teacherInfo in group.teachers) {
-            teacherInfo.selected = NO;
+            teacherInfo.selected = [self isSelected:teacherInfo.uid];
         }
     }
     _segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"家长",@"同事"]];
@@ -489,6 +489,15 @@
     [self.view addSubview:_teacherView];
     
     [self reloadData];
+}
+
+- (BOOL)isSelected:(NSString *)uid{
+    for (UserInfo *userInfo in self.originalSourceArray) {
+        if([userInfo.uid isEqualToString:uid]){
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (BOOL)target:(NSString *)targetID isInSource:(NSArray *)sourceArray{

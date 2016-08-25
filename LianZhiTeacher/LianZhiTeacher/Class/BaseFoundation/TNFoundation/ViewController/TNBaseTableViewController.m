@@ -94,14 +94,6 @@
     }
 }
 
-- (void)setSupportPullUp:(BOOL)supportPullUp
-{
-    _supportPullUp = supportPullUp;
-    if(_supportPullUp)
-    {
-        _getMoreCell = [[TNGetMoreCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"RefreshFooter"];
-    }
-}
 
 - (void)showEmptyLabel:(BOOL)show
 {
@@ -118,6 +110,17 @@
     [self.tableView bringSubviewToFront:_emptyLabel];
     [_emptyLabel setHidden:!show];
     [_emptyLabel setCenter:CGPointMake(self.tableView.width / 2, self.tableView.height / 2 + 30)];
+}
+
+- (void)reloadData{
+    __weak typeof(self) wself = self;
+    if(self.supportPullUp && [_tableViewModel hasMoreData])
+        [_tableView setMj_footer:[MJRefreshFooter footerWithRefreshingBlock:^{
+            [wself requestData:REQUEST_GETMORE];
+        }]];
+    else
+        [_tableView setMj_footer:nil];
+    [_tableView reloadData];
 }
 
 - (void)requestData:(REQUEST_TYPE)requestType
@@ -140,7 +143,7 @@
                     [self TNBaseTableViewControllerRequestStart];
                 //请求开始
                 if(requestType == REQUEST_GETMORE)
-                    [_getMoreCell startLoading];
+                    [self.tableView.mj_footer endRefreshing];
             }
 
         }
@@ -148,7 +151,7 @@
         {
             _isLoading = NO;
             [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-            [_getMoreCell stopLoading];
+            [self.tableView.mj_footer endRefreshing];
         }
     }
 }
@@ -156,7 +159,7 @@
 - (void)onRequestSuccess:(AFHTTPRequestOperation *)operation responseData:(TNDataWrapper *)responseData
 {
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-    [_getMoreCell stopLoading];
+    [self.tableView.mj_footer endRefreshing];
     [_tableViewModel parseData:responseData type:operation.requestType];
     if(self.shouldShowEmptyHint)
         [self showEmptyLabel:_tableViewModel.modelItemArray.count == 0];
@@ -169,8 +172,7 @@
                 NSLog(@"save success");
         });
     }
-    if([self needReload])
-        [self.tableView reloadData];
+    [self reloadData];
     _isLoading = NO;
     if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
         [self TNBaseTableViewControllerRequestSuccess];
@@ -181,7 +183,7 @@
     if(![self hideErrorAlert])
         [ProgressHUD showHintText:errMsg];
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-    [_getMoreCell stopLoading];
+    [self.tableView.mj_footer endRefreshing];
     _isLoading = NO;
     if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestFailedWithError:)])
         [self TNBaseTableViewControllerRequestFailedWithError:errMsg];
@@ -202,10 +204,6 @@
     return NO;
 }
 
-- (BOOL)needReload
-{
-    return YES;
-}
 
 #pragma mark - 
 #pragma mark UITableViewDelegate

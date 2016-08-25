@@ -29,5 +29,6 @@
 @end
 
 @interface NotificationTargetListView : UIView
-@property (nonatomic, strong)NSArray *targetArray;
+@property (nonatomic, strong)NotificationItem* notificationItem;
+@property (nonatomic, copy)void (^notificationRefreshCallback)(NotificationItem *notification);
 @end

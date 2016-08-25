@@ -9,6 +9,7 @@
 #import "TNBaseObject.h"
 
 @interface VideoItem : TNBaseObject
+@property (nonatomic, copy)NSString *videoID;
 @property (nonatomic, copy)NSString *videoUrl;
 @property (nonatomic, copy)NSString *localVideoPath;
 @property (nonatomic, copy)NSString *coverUrl;

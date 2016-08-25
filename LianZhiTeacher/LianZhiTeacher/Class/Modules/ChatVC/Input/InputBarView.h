@@ -52,4 +52,5 @@ typedef NS_ENUM(NSInteger, InputType)
 @property (nonatomic, assign)InputType inputType;
 @property (nonatomic, weak)id<InputBarViewDelegate> inputDelegate;
 - (instancetype)initWithFrame:(CGRect)frame;
+- (void)addAtUser:(UserInfo *)userInfo;
 @end

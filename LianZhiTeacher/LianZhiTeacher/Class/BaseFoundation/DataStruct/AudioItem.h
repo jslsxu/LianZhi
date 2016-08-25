@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface AudioItem : TNModelItem
+@property (nonatomic, copy)NSString *audioID;
 @property (nonatomic, copy)NSString *audioUrl;
 @property (nonatomic, assign)NSInteger timeSpan;
 @end

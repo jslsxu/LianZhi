@@ -23,7 +23,8 @@
 }
 
 + (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
-    return @{@"timeSpan" : @"second",
+    return @{@"audioID" : @"id",
+             @"timeSpan" : @"second",
              @"audioUrl" : @"url"};
 }
 

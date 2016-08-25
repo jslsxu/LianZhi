@@ -13,6 +13,7 @@
 - (void)onDeleteMessage:(MessageItem *)messageItem;
 - (void)onResendMessage:(MessageItem *)messageItem;
 - (void)onReceiveGift:(MessageItem *)messageItem;
+- (void)onLongPressAvatar:(MessageItem *)messageItem;
 @end
 @interface MessageCell : TNTableViewCell{
     UILabel*                    _timeLabel;

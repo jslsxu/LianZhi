@@ -15,7 +15,6 @@
 @interface TNBaseTableViewController : TNBaseViewController<EGORefreshTableHeaderDelegate,UITableViewDelegate,UITableViewDataSource,TNBaseTableViewData>
 {
     UITableView*                _tableView;
-    TNGetMoreCell*              _getMoreCell;
     EGORefreshTableHeaderView*  _refreshHeaderView;
     BOOL                        _isLoading;
     TNListModel*                _tableViewModel;
@@ -32,5 +31,4 @@
 - (void)cancelRequest;
 - (BOOL)hideErrorAlert;
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType;
-- (BOOL)needReload;
 @end

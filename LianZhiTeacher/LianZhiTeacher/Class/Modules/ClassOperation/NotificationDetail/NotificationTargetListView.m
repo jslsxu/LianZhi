@@ -159,6 +159,7 @@
 {
    
 }
+@property (nonatomic, strong)NSArray *targetArray;
 @property (nonatomic, strong)UITableView* tableView;
 @property (nonatomic, strong)NSMutableDictionary* expandDic;
 @end
@@ -173,8 +174,29 @@
         [_tableView setDelegate:self];
         [_tableView setDataSource:self];
         [self addSubview:_tableView];
+        
+        @weakify(self)
+        [_tableView setMj_header:[MJRefreshStateHeader headerWithRefreshingBlock:^{
+            @strongify(self)
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/my_send_detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : self.notificationItem.nid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                [self.tableView.mj_header endRefreshing];
+                NotificationItem *notification = [NotificationItem nh_modelWithJson:responseObject.data];
+                self.notificationItem = notification;
+                if(self.notificationRefreshCallback){
+                    self.notificationRefreshCallback(self.notificationItem);
+                }
+            } fail:^(NSString *errMsg) {
+                [self.tableView.mj_header endRefreshing];
+            }];
+
+        }]];
     }
     return self;
+}
+
+- (void)setNotificationItem:(NotificationItem *)notificationItem{
+    _notificationItem = notificationItem;
+    [self setTargetArray:_notificationItem.targetArray];
 }
 
 - (void)setTargetArray:(NSArray *)targetArray{

@@ -53,6 +53,11 @@
         _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(0, _nameLabel.bottom + 5, kChatAvatarSize, kChatAvatarSize)];
         [self addSubview:_avatarView];
         
+        UILongPressGestureRecognizer *longpress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(onAvatarLongPress)];
+        [longpress setCancelsTouchesInView:YES];
+        [longpress setMinimumPressDuration:1];
+        [_avatarView addGestureRecognizer:longpress];
+        
         _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [_indicatorView setHidesWhenStopped:YES];
         [self addSubview:_indicatorView];
@@ -141,6 +146,13 @@
     return _chatContentView;
 }
 
+- (void)onAvatarLongPress{
+    if(self.messageItem.from == UUMessageFromOther){
+        if([self.delegate respondsToSelector:@selector(onLongPressAvatar:)]){
+            [self.delegate onLongPressAvatar:self.messageItem];
+        }
+    }
+}
 
 - (void)onLongPress{
     NSMutableArray *menuArray = [NSMutableArray array];

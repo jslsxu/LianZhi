@@ -37,6 +37,12 @@
     _targetListView = [[NotificationTargetListView alloc] initWithFrame:_detailView.frame];
     [_targetListView setHidden:YES];
     [self.view addSubview:_targetListView];
+    @weakify(self)
+    [_targetListView setNotificationRefreshCallback:^(NotificationItem *notificationItem) {
+        @strongify(self)
+        [self setNotificationItem:notificationItem];
+        [self saveNotification:notificationItem];
+    }];
     
     NSData *notificationData = [NSData dataWithContentsOfFile:[self cacheFilePath]];
     if(notificationData){
@@ -48,17 +54,25 @@
 
 - (void)setNotificationItem:(NotificationItem *)notificationItem{
     _notificationItem = notificationItem;
+    _notificationItem.user = [UserCenter sharedInstance].userInfo;
     [_detailView setNotificationItem:self.notificationItem];
-    [_targetListView setTargetArray:self.notificationItem.targetArray];
+    [_targetListView setNotificationItem:self.notificationItem];
+}
+
+- (void)saveNotification:(NotificationItem *)notification{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.notificationItem];
+        [data writeToFile:[self cacheFilePath] atomically:YES];
+    });
 }
 
 - (void)loadData{
+    @weakify(self)
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/my_send_detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : self.notificationID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        @strongify(self)
         NotificationItem *notification = [NotificationItem nh_modelWithJson:responseObject.data];
-        notification.user = [UserCenter sharedInstance].userInfo;
         self.notificationItem = notification;
-        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.notificationItem];
-        [data writeToFile:[self cacheFilePath] atomically:YES];
+        [self saveNotification:self.notificationItem];
     } fail:^(NSString *errMsg) {
         
     }];
