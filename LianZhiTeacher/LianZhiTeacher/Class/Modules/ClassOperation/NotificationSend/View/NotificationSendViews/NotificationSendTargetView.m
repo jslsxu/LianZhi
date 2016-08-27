@@ -35,9 +35,11 @@
         [_cancelButton setContentVerticalAlignment:UIControlContentVerticalAlignmentTop];
         [_cancelButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
         [_cancelButton setImage:[UIImage imageNamed:@"delete_target"] forState:UIControlStateNormal];
-        [_cancelButton addTarget:self action:@selector(onCancelClicked) forControlEvents:UIControlEventTouchUpInside];
         [_cancelButton setFrame:CGRectMake(0, 0, MIN(self.width, 30), self.height)];
         [self addSubview:_cancelButton];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onCancelClicked)];
+        [self addGestureRecognizer:tapGesture];
     }
     return self;
 }

@@ -16,7 +16,7 @@
 #import "NHFileManager.h"
 #import "ActionFadeView.h"
 #import "ChatMessageModel.h"
-
+#import "DakaViewController.h"
 @interface MessageVC ()
 @property (nonatomic, strong)MessageSegView *segView;
 @property (nonatomic, strong)NSTimer *timer;
@@ -250,25 +250,31 @@
     
     if([groupItem.fromInfo isNotification])
     {
-        MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];
-        [detailVC setFromInfo:groupItem.fromInfo];
-        [self.navigationController pushViewController:detailVC animated:YES];
-        [groupItem setMsgNum:0];
-        [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        if(groupItem.fromInfo.type == ChatTypeAttendance)
+        {
+            StudentAttendanceVC *classAttendanceVC = [[StudentAttendanceVC alloc] init];
+            classAttendanceVC.classID = groupItem.fromInfo.classID;
+            classAttendanceVC.targetStudentID = groupItem.fromInfo.childID;
+            [CurrentROOTNavigationVC pushViewController:classAttendanceVC animated:YES];
+        }
+        else if(groupItem.fromInfo.type == ChatTypePractice)
+        {
+            
+        }
+        else if(groupItem.fromInfo.type == ChatTypeDaka){
+            DakaViewController *dakaVC = [[DakaViewController alloc] init];
+            [dakaVC setFromInfo:groupItem.fromInfo];
+            [CurrentROOTNavigationVC pushViewController:dakaVC animated:YES];
+        }
+        else{
+            MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];
+            [detailVC setFromInfo:groupItem.fromInfo];
+            [self.navigationController pushViewController:detailVC animated:YES];
+            [groupItem setMsgNum:0];
+            [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }
     }
-    else if(groupItem.fromInfo.type == ChatTypeAttendance)
-    {
-        StudentAttendanceVC *classAttendanceVC = [[StudentAttendanceVC alloc] init];
-        classAttendanceVC.classID = groupItem.fromInfo.classID;
-        classAttendanceVC.targetStudentID = groupItem.fromInfo.childID;
-        [CurrentROOTNavigationVC pushViewController:classAttendanceVC animated:YES];
-    }
-    else if(groupItem.fromInfo.type == ChatTypePractice)
-    {
-        
-    }
-    
     else
     {
         JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];

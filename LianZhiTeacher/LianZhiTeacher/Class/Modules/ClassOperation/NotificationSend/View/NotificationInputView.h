@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "NotificationAudioRecordView.h"
+#import "NotificationSimpleAudioRecordView.h"
 #import "QuickImagePickerView.h"
 
 #define kActionAnimationDuration        0.3
@@ -32,14 +32,15 @@ typedef NS_ENUM(NSInteger, ActionType){
 
 @interface NotificationInputView : UIView
 {
-    UIView*                     _actionView;
-    UIButton*                   _sendButton;
-    NotificationAudioRecordView* _recordView;
-    QuickImagePickerView*       _photoView;
-    NSMutableArray*             _actionButtonArray;
+    UIView*                         _actionView;
+    UIButton*                       _sendButton;
+    NotificationSimpleAudioRecordView* _recordView;
+    QuickImagePickerView*           _photoView;
+    NSMutableArray*                 _actionButtonArray;
 }
 @property (nonatomic, copy)NSInteger (^photoNum)();
 @property (nonatomic, copy)NSInteger (^videoNum)();
+@property (nonatomic, copy)BOOL (^canRecord)();
 @property (nonatomic, assign)ActionType actionType;
 @property (nonatomic, weak)id<NotificationInputDelegate> delegate;
 @end

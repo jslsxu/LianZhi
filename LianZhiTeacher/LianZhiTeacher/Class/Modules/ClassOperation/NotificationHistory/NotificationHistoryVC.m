@@ -10,6 +10,7 @@
 #import "NotificationRecordVC.h"
 #import "NotificationDraftVC.h"
 #import "NotificationSendVC.h"
+
 @interface NotificationHistoryVC ()
 @property (nonatomic, strong)UISegmentedControl*    segmentCtrl;
 @property (nonatomic, strong)NotificationRecordVC*  recordVC;
@@ -18,6 +19,18 @@
 @end
 
 @implementation NotificationHistoryVC
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self){
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(upDateSegment) name:kDraftNotificationChanged object:nil];
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -57,12 +70,24 @@
 
 - (UISegmentedControl *)segmentCtrl{
     if(_segmentCtrl == nil){
-        _segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"记录",@"草稿"]];
+        NSString *draftTitle = @"草稿";
+        if([NotificationDraftManager sharedInstance].draftArray.count > 0){
+            draftTitle = [NSString stringWithFormat:@"草稿(%zd)",[NotificationDraftManager sharedInstance].draftArray.count];
+        }
+        _segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"记录",draftTitle]];
         [_segmentCtrl setWidth:120];
         [_segmentCtrl setSelectedSegmentIndex:0];
         [_segmentCtrl addTarget:self action:@selector(onValueChanged) forControlEvents:UIControlEventValueChanged];
     }
     return _segmentCtrl;
+}
+
+- (void)upDateSegment{
+    NSString *draftTitle = @"草稿";
+    if([NotificationDraftManager sharedInstance].draftArray.count > 0){
+        draftTitle = [NSString stringWithFormat:@"草稿(%zd)",[NotificationDraftManager sharedInstance].draftArray.count];
+    }
+    [self.segmentCtrl setTitle:draftTitle forSegmentAtIndex:1];
 }
 
 - (void)onValueChanged{

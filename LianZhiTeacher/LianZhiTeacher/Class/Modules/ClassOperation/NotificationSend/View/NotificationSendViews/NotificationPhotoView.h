@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "NotificationContentBaseView.h"
 @interface NotificationPhotoItemView : UIView
-@property (nonatomic, strong)UIImage*   image;
+@property (nonatomic, strong)PhotoItem *photoItem;
 @property (nonatomic, copy)void (^deleteCallback)();
+- (UIImageView *)curImageView;
 @end
 
 @interface NotificationPhotoView : NotificationContentBaseView

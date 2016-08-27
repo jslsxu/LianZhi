@@ -9,6 +9,7 @@
 #import "MessageVC.h"
 #import "MessageDetailVC.h"
 #import "HomeWorkVC.h"
+#import "DakaViewController.h"
 @interface MessageVC ()
 @property (nonatomic, strong)MessageSegView *segView;
 @property (nonatomic, strong)NSTimer *timer;
@@ -231,22 +232,29 @@
     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     if([groupItem.fromInfo isNotification])
     {
-        MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];
-        [detailVC setFromInfo:groupItem.fromInfo];
-        [self.navigationController pushViewController:detailVC animated:YES];
-        [groupItem setMsgNum:0];
-        [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    }
-    else if(groupItem.fromInfo.type == ChatTypeAttendance)
-    {
-        
-    }
-    else if(groupItem.fromInfo.type == ChatTypePractice)
-    {
-        HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
-        [homeWorkVC setClassID:groupItem.fromInfo.classID];
-        [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
+        if(groupItem.fromInfo.type == ChatTypeAttendance)
+        {
+            
+        }
+        else if(groupItem.fromInfo.type == ChatTypePractice)
+        {
+            HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
+            [homeWorkVC setClassID:groupItem.fromInfo.classID];
+            [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
+        }
+        else if(groupItem.fromInfo.type == ChatTypeDoorEntrance){
+            DakaViewController *dakaVC = [[DakaViewController alloc] init];
+            [dakaVC setFromInfo:groupItem.fromInfo];
+            [CurrentROOTNavigationVC pushViewController:dakaVC animated:YES];
+        }
+        else {
+            MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];
+            [detailVC setFromInfo:groupItem.fromInfo];
+            [self.navigationController pushViewController:detailVC animated:YES];
+            [groupItem setMsgNum:0];
+            [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }
     }
     else
     {

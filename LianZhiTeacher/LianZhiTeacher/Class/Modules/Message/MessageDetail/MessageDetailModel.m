@@ -69,6 +69,14 @@
         TNDataWrapper *detailWrapper = [listWrapper getDataWrapperForIndex:i];
         [item parseData:detailWrapper];
         [self.modelItemArray addObject:item];
+        
+        if(item.from_user.uid.length == 0){
+            UserInfo *fromUser = [[UserInfo alloc] init];
+            [fromUser setUid:self.fromInfo.uid];
+            [fromUser setAvatar:self.fromInfo.logoUrl];
+            [fromUser setName:self.fromInfo.name];
+            [item setFrom_user:fromUser];
+        }
     }
     return parse;
 }

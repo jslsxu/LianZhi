@@ -60,7 +60,7 @@
     NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
     [formmater setDateFormat:@"yyyy年MM月dd日"];
     
-    [hintLabel setText:[NSString stringWithFormat:@"今天是%@ %@",[formmater stringFromDate:date],[[NSDate date] weekday]]];
+    [hintLabel setText:[NSString stringWithFormat:@"今天是%@ %@",[formmater stringFromDate:date],[Utility weekdayStr:[NSDate date]]]];
     [hintLabel setTextAlignment:NSTextAlignmentCenter];
     [_scrollView addSubview:hintLabel];
     

@@ -7,7 +7,6 @@
 //
 
 #import "NotificationDraftVC.h"
-#import "NotificationDraftManager.h"
 #import "NotificationSendVC.h"
 @implementation NotificationDraftItemCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{

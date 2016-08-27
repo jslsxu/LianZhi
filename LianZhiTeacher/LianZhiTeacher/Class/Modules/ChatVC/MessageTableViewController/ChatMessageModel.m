@@ -84,16 +84,23 @@
 - (NSInteger)loadOldData{
     NSString *sql = nil;
     FMResultSet *rs = nil;
-    /**
-     
-     */
-    sql = [NSString stringWithFormat:@"select * from %@ where message_id = 0",[self tableName]];//未发送成功的
+    NSString *old_client_id = [self oldClientID];
+    if(old_client_id.length == 0){
+        sql = [NSString stringWithFormat:@"select * from %@ where message_id = 0",[self tableName]];//未发送成功的
+    }
+    else{
+        sql = [NSString stringWithFormat:@"select * from %@ where message_id = 0 and client_send_id < %@",[self tableName], old_client_id];//未发送成功的
+    }
+
     rs = [self.database executeQuery:sql];
     NSInteger loadCount = 0;
     while ([rs next]) {
         loadCount++;
         NSString *messageJson = [rs stringForColumn:@"message_json"];
         MessageItem *item = [MessageItem nh_modelWithJson:messageJson];
+        if(item.messageStatus != MessageStatusSuccess){
+            item.messageStatus = MessageStatusFailed;
+        }
         [item setTargetUser:self.targetUser];
         [self.modelItemArray addObject:item];
     }
@@ -111,6 +118,9 @@
         loadCount ++;
         NSString *messageJson = [rs stringForColumn:@"message_json"];
         MessageItem *item = [MessageItem nh_modelWithJson:messageJson];
+        if(item.messageStatus != MessageStatusSuccess){
+            item.messageStatus = MessageStatusFailed;
+        }
         [item setTargetUser:self.targetUser];
         [self.modelItemArray addObject:item];
     }
@@ -175,13 +185,30 @@
 }
 
 - (NSString *)latestId{
-    MessageItem *lastItem = self.modelItemArray.lastObject;
-    return lastItem.content.mid;
+    for (NSInteger i = self.modelItemArray.count - 1; i >= 0; i--) {
+        MessageItem *item = self.modelItemArray[i];
+        if(item.content.mid.length > 0)
+            return item.content.mid;
+    }
+    return nil;
 }
 
 - (NSString *)oldId{
-    MessageItem *firstItem = self.modelItemArray.firstObject;
-    return firstItem.content.mid;
+    for (NSInteger i = 0; i < self.modelItemArray.count; i++) {
+        MessageItem *item = self.modelItemArray[i];
+        if(item.content.mid.length > 0)
+            return item.content.mid;
+    }
+    return nil;
+}
+
+- (NSString *)oldClientID{
+    for (NSInteger i = 0; i < self.modelItemArray.count; i++) {
+        MessageItem *item = self.modelItemArray[i];
+        if(item.content.mid.length == 0)
+            return item.client_send_id;
+    }
+    return nil;
 }
 
 - (void)sortMessage{
@@ -305,15 +332,19 @@
         if(success){
             NSLog(@"update success");
         }
-        
+//        BOOL replaced = NO;
         for (MessageItem *messageItem in self.modelItemArray) {
             if([message.content.mid isEqualToString:messageItem.content.mid] || [message.client_send_id isEqualToString:messageItem.client_send_id]){
+//                replaced = YES;
                 NSInteger index = [self.modelItemArray indexOfObject:messageItem];
                 [self.modelItemArray removeObjectAtIndex:index];
                 [self.modelItemArray insertObject:message atIndex:index];
                 break;
             }
         }
+//        if(!replaced){
+//            [self.modelItemArray addObject:message];
+//        }
         [self sortMessage];
     }
 }

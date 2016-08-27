@@ -436,7 +436,7 @@ static const NSUInteger reusable_page_count = 3;
 }
 
 - (void)_handleLongPressAction:(UILongPressGestureRecognizer *)sender {
-    if (sender.state != UIGestureRecognizerStateEnded) {
+    if (sender.state != UIGestureRecognizerStateBegan) {
         return;
     }
     if (!self.pb_delegate) {
@@ -558,6 +558,7 @@ static const NSUInteger reusable_page_count = 3;
 - (UILongPressGestureRecognizer *)longPressGestureRecognizer {
     if (!_longPressGestureRecognizer) {
         _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(_handleLongPressAction:)];
+        [_longPressGestureRecognizer setMinimumPressDuration:1];
     }
     return _longPressGestureRecognizer;
 }

@@ -313,22 +313,35 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
      UserInfo *userInfo = [[self userArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
-    if(!userInfo.has_read && [userInfo isKindOfClass:[StudentInfo class]]){
-        StudentInfo *studentInfo = (StudentInfo *)userInfo;
-        NSMutableArray *familyArray = [NSMutableArray arrayWithCapacity:0];
-        for (NSInteger i = 0; i < studentInfo.family.count; i++) {
-            FamilyInfo *familyInfo = studentInfo.family[i];
-            [familyArray addObject:[NSString stringWithFormat:@"%@: %@",familyInfo.relation, familyInfo.mobile]];
+    if(!userInfo.has_read){
+        if([userInfo isKindOfClass:[StudentInfo class]]){
+            StudentInfo *studentInfo = (StudentInfo *)userInfo;
+            NSMutableArray *familyArray = [NSMutableArray arrayWithCapacity:0];
+            for (NSInteger i = 0; i < studentInfo.family.count; i++) {
+                FamilyInfo *familyInfo = studentInfo.family[i];
+                [familyArray addObject:[NSString stringWithFormat:@"%@: %@",familyInfo.relation, familyInfo.mobile]];
+            }
+            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:familyArray cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+            [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView setButtonsTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
+            [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                FamilyInfo *familyInfo = studentInfo.family[index];
+                NSMutableString * str = [[NSMutableString alloc] initWithFormat:@"tel://%@",familyInfo.mobile];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+            }];
+            [alertView showAnimated:YES completionHandler:nil];
         }
-        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:familyArray cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
-        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-        [alertView setButtonsTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
-        [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-            FamilyInfo *familyInfo = studentInfo.family[index];
-            NSMutableString * str = [[NSMutableString alloc] initWithFormat:@"tel://%@",familyInfo.mobile];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-        }];
-        [alertView showAnimated:YES completionHandler:nil];
+        else{
+            TeacherInfo *teacherInfo = (TeacherInfo *)userInfo;
+            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:@[[NSString stringWithFormat:@"%@: %@",teacherInfo.name, teacherInfo.mobile]] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+            [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView setButtonsTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
+            [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                NSMutableString * str = [[NSMutableString alloc] initWithFormat:@"tel://%@",teacherInfo.mobile];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+            }];
+            [alertView showAnimated:YES completionHandler:nil];
+        }
     }
 }
 

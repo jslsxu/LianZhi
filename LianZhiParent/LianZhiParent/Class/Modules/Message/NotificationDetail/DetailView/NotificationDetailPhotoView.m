@@ -43,14 +43,8 @@
         [imageView setUserInteractionEnabled:YES];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapedImageView:)];
         [imageView addGestureRecognizer:tap];
-        id image = _photoArray[0];
-        if([image isKindOfClass:[UIImage class]]){
-            [imageView setImage:image];
-        }
-        else if([image isKindOfClass:[PhotoItem class]]){
-            PhotoItem *photoItem = (PhotoItem *)image;
-            [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.small] placeholderImage:nil];
-        }
+        PhotoItem *photoItem = _photoArray[0];
+        [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.small] placeholderImage:nil];
 
         [_photoViewArray addObject:imageView];
         [self addSubview:imageView];
@@ -67,14 +61,8 @@
         [imageView setUserInteractionEnabled:YES];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapedImageView:)];
         [imageView addGestureRecognizer:tap];
-        id image = _photoArray[i];
-        if([image isKindOfClass:[UIImage class]]){
-            [imageView setImage:image];
-        }
-        else if([image isKindOfClass:[PhotoItem class]]){
-            PhotoItem *photoItem = (PhotoItem *)image;
-            [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.small] placeholderImage:nil];
-        }
+        PhotoItem *photoItem = _photoArray[i];
+        [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.small] placeholderImage:nil];
         [_photoViewArray addObject:imageView];
         [self addSubview:imageView];
     }
@@ -129,7 +117,15 @@
 }
 
 - (void)viewController:(PBViewController *)viewController didLongPressedPageAtIndex:(NSInteger)index presentedImage:(UIImage *)presentedImage {
-    NSLog(@"didLongPressedPageAtIndex: %@", @(index));
+    if(presentedImage){
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:@[@"保存到相册"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+            [Utility saveImageToAlbum:presentedImage];
+        }];
+        [alertView showAnimated:YES completionHandler:nil];
+    }
 }
 
 

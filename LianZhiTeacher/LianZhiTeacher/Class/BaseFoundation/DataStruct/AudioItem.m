@@ -32,4 +32,8 @@
 {
     [self modelSetWithJSON:dataWrapper.data];
 }
+
+- (BOOL)isLocal{
+    return self.audioID.length == 0;
+}
 @end

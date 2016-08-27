@@ -187,5 +187,43 @@
     
 }
 
++ (void)saveImageToAlbum:(UIImage *)image{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        //        MJPhoto *photo = _photos[_currentPhotoIndex];
+        UIImageWriteToSavedPhotosAlbum(image, [self class], @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    });
+}
 
++ (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    if (error) {
+        
+        if ([ALAssetsLibrary authorizationStatus] == ALAuthorizationStatusDenied)
+        {
+            [[[UIAlertView alloc] initWithTitle:@"图片保存失败😱" message:@"请检查隐私中的图片访问权限。" delegate:nil cancelButtonTitle:@"好的" otherButtonTitles:nil] show];
+        }
+        else
+        {
+            [ProgressHUD showHintText:@"图片保存失败"];
+        }
+        
+    } else {
+        [ProgressHUD showHintText:@"已保存到本地相册"];
+    }
+}
+
++ (void)saveVideoToAlbum:(NSString *)videoPath{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        UISaveVideoAtPathToSavedPhotosAlbum(videoPath, [self class], @selector(video: didFinishSavingWithError:contextInfo:), nil);
+    });
+}
+
++ (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
+    if(!error){
+        [ProgressHUD showHintText:@"已保存到本地相册"];
+    }
+    else{
+        [ProgressHUD showHintText:@"视频保存失败"];
+    }
+}
 @end

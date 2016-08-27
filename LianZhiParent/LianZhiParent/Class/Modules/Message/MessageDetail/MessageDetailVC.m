@@ -28,13 +28,36 @@
     if(self.fromInfo.label.length > 0)
         [text appendString:[NSString stringWithFormat:@"(%@)",self.fromInfo.label]];
     self.title = text;
-    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"清空" style:UIBarButtonItemStylePlain target:self action:@selector(clear)];
     [self bindTableCell:@"MessageDetailItemCell" tableModel:@"MessageDetailModel"];
     [self setSupportPullDown:YES];
     [self setSupportPullUp:YES];
     [self requestData:REQUEST_REFRESH];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMessageItemDeleteNotification:) name:kMessageDeleteNotitication object:nil];
+}
+
+- (void)clear{
+    MessageFromInfo *fromInfo = [(MessageDetailModel *)self.tableViewModel fromInfo];
+    @weakify(self)
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"确定清空吗?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"清空"];
+    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+        @strongify(self)
+        //删除消息
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setValue:fromInfo.uid forKey:@"from_id"];
+        [params setValue:kStringFromValue(fromInfo.type) forKey:@"from_type"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_thread" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [self.tableViewModel.modelItemArray removeAllObjects];
+            [self saveCache];
+            [self.tableView reloadData];
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    }];
+    [alertView showAnimated:YES completionHandler:nil];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
@@ -85,7 +108,7 @@
                 [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
             }
         } fail:^(NSString *errMsg) {
-            
+            [ProgressHUD showHintText:errMsg];
         }];
 
     }];

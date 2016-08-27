@@ -115,7 +115,7 @@
         [_contentLabel setHidden:YES];
     }
     [_sepLine setY:height];
-    
+
     
     CGFloat spaceXStart = kContentHMargin;
     [_voiceImageView setHidden:!item.hasAudio];
@@ -155,7 +155,7 @@
         CGSize contentSize = [item.words boundingRectWithSize:CGSizeMake(width - kBGViewHMargin * 2 - kContentHMargin * 2, CGFLOAT_MAX) andFont:kContentFont];
         height += contentSize.height + 10;
     }
-    height += kExtraInfoHeight + kBGTopMargin;
+    height += kExtraInfoHeight;
     return @(height);
 }
 @end

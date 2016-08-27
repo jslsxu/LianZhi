@@ -3,6 +3,8 @@
 #import "JSMessagesViewController.h"
 #import "ChatExtraGroupInfoVC.h"
 #import "ChatExtraIndividualInfoVC.h"
+#import "ChatTopNewMessageView.h"
+#import "ChatBottomNewMessageView.h"
 static NSString *topChatID = nil;
 
 @interface JSMessagesViewController ()
@@ -11,6 +13,9 @@ static NSString *topChatID = nil;
 @property (nonatomic, strong)ChatMessageModel *chatMessageModel;
 @property (nonatomic, assign)BOOL isRequestHistory;
 @property (nonatomic, assign)BOOL isRequestLatest;
+@property (nonatomic, strong)ChatTopNewMessageView *topNewIndicator;
+@property (nonatomic, strong)ChatBottomNewMessageView *bottomNewIndicator;
+@property (nonatomic, assign)BOOL firstIn;
 @end
 
 @implementation JSMessagesViewController
@@ -325,14 +330,38 @@ static NSString *topChatID = nil;
     @weakify(self);
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/get" method:REQUEST_GET type:REQUEST_GETMORE withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         @strongify(self);
+        TNDataWrapper *items = [responseObject getDataWrapperForKey:@"items"];
+        NSInteger unreadCount = 0;
+        for (NSInteger i = 0; i< items.count; i++) {
+            TNDataWrapper *messageItemWrapper = [items getDataWrapperForIndex:i];
+            TNDataWrapper *content = [messageItemWrapper getDataWrapperForKey:@"content"];
+            if([content getBoolForKey:@"unread"]){
+                unreadCount++;
+            }
+        }
         BOOL hasNew = [self.chatMessageModel parseData:responseObject.data type:RequestMessageTypeLatest];
         if(hasNew){
             BOOL shouldScrollToBottom = NO;
-            if(self.tableView.contentOffset.y + self.tableView.height > self.tableView.contentSize.height - 160)
+            if(self.tableView.contentOffset.y + self.tableView.height > self.tableView.contentSize.height - 80)
                 shouldScrollToBottom = YES;
             [self.tableView reloadData];
-            if(shouldScrollToBottom)
-                [self scrollToBottom:YES];
+            if(shouldScrollToBottom){
+                if(!self.firstIn){
+                    self.firstIn = YES;
+                    [self scrollToBottom:NO];
+                }
+                else{
+                    [self scrollToBottom:YES];
+                }
+                //如果第一个超出范围
+                if([self.tableView visibleCells].count < unreadCount){
+                    [self showTopNewMessageWithNum:unreadCount];
+                }
+            }
+            else{
+                //如果最后一个不再显示范围
+                [self showBottomNewMessageWithNum:unreadCount];
+            }
         }
     } fail:^(NSString *errMsg) {
         
@@ -385,6 +414,67 @@ static NSString *topChatID = nil;
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:modelArray.count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 }
 
+- (void)showBottomNewMessageWithNum:(NSInteger)num{
+    [self.bottomNewIndicator setMessageNum:num];
+    [self.bottomNewIndicator setOrigin:CGPointMake(self.view.width - self.bottomNewIndicator.width - 10, _inputView.top - self.bottomNewIndicator.height - 5)];
+    [UIView animateWithDuration:0.3 animations:^{
+        self.bottomNewIndicator.alpha = 1.f;
+    }];
+}
+
+- (void)showTopNewMessageWithNum:(NSInteger)num{
+    [self.topNewIndicator setMessageNum:num];
+    NSInteger count = self.chatMessageModel.messageArray.count;
+    [self.topNewIndicator setTargetItem:self.chatMessageModel.messageArray[count - num]];
+    @weakify(self)
+    [self.topNewIndicator setTopNewMessageCallback:^{
+        @strongify(self)
+        NSInteger row = [self.chatMessageModel.messageArray indexOfObject:self.topNewIndicator.targetItem];
+        [self.tableView scrollToRow:row inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:YES];
+        [self dismissTopIndicator];
+    }];
+    [self.topNewIndicator setOrigin:CGPointMake(self.view.width - self.topNewIndicator.width, 15)];
+    [UIView animateWithDuration:0.3 animations:^{
+        self.topNewIndicator.alpha = 1.f;
+    }];
+}
+
+- (void)dismissBottomIndicator{
+    [UIView animateWithDuration:0.3 animations:^{
+        self.bottomNewIndicator.alpha = 0.f;
+    }];
+}
+
+- (void)dismissTopIndicator{
+    [UIView animateWithDuration:0.3 animations:^{
+        self.topNewIndicator.alpha = 0.f;
+    }];
+}
+
+- (ChatTopNewMessageView *)topNewIndicator{
+    if(!_topNewIndicator){
+        _topNewIndicator = [[ChatTopNewMessageView alloc] init];
+        [self.view addSubview:_topNewIndicator];
+        [_topNewIndicator setAlpha:0.f];
+    }
+    return _topNewIndicator;
+}
+
+- (ChatBottomNewMessageView *)bottomNewIndicator{
+    if(!_bottomNewIndicator){
+        @weakify(self)
+        _bottomNewIndicator = [[ChatBottomNewMessageView alloc] init];
+        [_bottomNewIndicator setBottomNewCallback:^{
+           @strongify(self)
+            [self scrollToBottom:YES];
+            [self dismissBottomIndicator];
+        }];
+        [self.view addSubview:_bottomNewIndicator];
+        [_bottomNewIndicator setAlpha:0.f];
+    }
+    return _bottomNewIndicator;
+}
+
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.chatMessageModel.messageArray.count;
@@ -407,6 +497,9 @@ static NSString *topChatID = nil;
     else{
         [cell setMessageItem:messageItem];
     }
+    if(messageItem == self.topNewIndicator.targetItem){
+        [self dismissTopIndicator];
+    }
     [cell setDelegate:self];
     return cell;
 }
@@ -416,6 +509,9 @@ static NSString *topChatID = nil;
 {
     if(_inputView.inputType != InputTypeNone && scrollView.tracking)
         [_inputView setInputType:InputTypeNone];
+    if(scrollView.contentOffset.y + scrollView.height >= scrollView.contentSize.height){
+        [self dismissBottomIndicator];
+    }
 }
 
 #pragma mark - InputDelegate
@@ -545,6 +641,10 @@ static NSString *topChatID = nil;
 
 - (void)onResendMessage:(MessageItem *)messageItem
 {
+    [messageItem setMessageStatus:MessageStatusSending];
+    [messageItem setTargetUser:self.name];
+    NSInteger row = [self.chatMessageModel.messageArray indexOfObject:messageItem];
+    [self.tableView reloadRow:row inSection:0 withRowAnimation:UITableViewRowAnimationNone];
     @weakify(self)
     [messageItem sendWithCommonParams:[self sendParams] progress:^(CGFloat progress) {
         

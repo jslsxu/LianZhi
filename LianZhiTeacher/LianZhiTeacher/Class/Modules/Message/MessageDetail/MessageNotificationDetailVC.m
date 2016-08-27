@@ -41,14 +41,14 @@
 - (void)onMoreClicked{
     [self setRightbarButtonHighlighted:YES];
     @weakify(self)
-    NotificationActionItem *shareItem = [NotificationActionItem actionItemWithTitle:@"分享" action:^{
-        [ShareActionView shareWithTitle:@"分享" content:@"" image:[UIImage imageNamed:@"ClassZone"] imageUrl:@"" url:@""];
-    } destroyItem:NO];
+//    NotificationActionItem *shareItem = [NotificationActionItem actionItemWithTitle:@"分享" action:^{
+//        [ShareActionView shareWithTitle:@"分享" content:@"" image:[UIImage imageNamed:@"ClassZone"] imageUrl:@"" url:@""];
+//    } destroyItem:NO];
     NotificationActionItem *deleteItem = [NotificationActionItem actionItemWithTitle:@"删除" action:^{
         @strongify(self)
         [self deleteNotification];
     } destroyItem:YES];
-    [NotificationDetailActionView showWithActions:@[ shareItem, deleteItem] completion:^{
+    [NotificationDetailActionView showWithActions:@[ deleteItem] completion:^{
         @strongify(self);
         [self setRightbarButtonHighlighted:NO];
     }];

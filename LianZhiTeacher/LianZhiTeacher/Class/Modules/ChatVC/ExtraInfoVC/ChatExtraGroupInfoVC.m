@@ -45,6 +45,7 @@
      self.title = @"聊天信息";
     [self.view addSubview:self.tableView];
     [self loadData];
+    [self requestChatStatus];
 }
 
 - (void)loadData{
@@ -99,6 +100,18 @@
     }
 }
 
+- (void)requestChatStatus{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.groupID forKey:@"cg_id"];
+    [params setValue:self.chatType == ChatTypeClass ? @"0" : @"1" forKey:@"type"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/get_im_status" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        BOOL chatOn = [responseObject getBoolForKey:@"im_status"];
+        [self.groupChatSwitch setOn:chatOn];
+    } fail:^(NSString *errMsg) {
+        
+    }];
+}
+
 - (UITableView *)tableView{
     if(_tableView == nil){
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64) style:UITableViewStyleGrouped];
@@ -143,7 +156,15 @@
 }
 
 - (void)onGroupChatValueChanged{
-    
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.groupID forKey:@"cg_id"];
+    [params setValue:self.chatType == ChatTypeClass ? @"0" : @"1" forKey:@"type"];
+    [params setValue:kStringFromValue(_groupChatSwitch.isOn) forKey:@"im_status"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/set_im_status" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 #pragma mark - UITableViewDelegate

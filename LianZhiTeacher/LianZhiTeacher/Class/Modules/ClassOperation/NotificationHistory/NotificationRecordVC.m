@@ -9,6 +9,7 @@
 #import "NotificationRecordVC.h"
 #import "NotificationDetailVC.h"
 #import "NotificationDraftManager.h"
+#import "NotificationSendVC.h"
 
 @implementation NotificationSendingItemCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
@@ -251,9 +252,9 @@
 }
 
 - (void)onNotificationChanged{
-    NSInteger count = self.tableViewModel.modelItemArray.count + [NotificationManager sharedInstance].sendingNotificationArray.count;
+//    NSInteger count = self.tableViewModel.modelItemArray.count + [NotificationManager sharedInstance].sendingNotificationArray.count;
     [self.tableView reloadData];
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:count - 1 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:NO];
+    [self.tableView scrollToRow:0 inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:NO];
 }
 
 - (void)onNotificationSendSuccess:(NSNotification *)notification{
@@ -270,7 +271,11 @@
     MySendNotificationModel *model = (MySendNotificationModel *)self.tableViewModel;
     HttpRequestTask *task = [[HttpRequestTask alloc] init];
     [task setRequestUrl:@"notice/my_send_list"];
-    [task setParams:@{@"from" : kStringFromValue(model.modelItemArray.count)}];
+    if(requestType == REQUEST_GETMORE){
+//        NotificationItem *notification = [model.modelItemArray lastObject];
+//        [task setParams:@{@"from" : notification.nid}];
+        [task setParams:@{@"from" : kStringFromValue(model.modelItemArray.count)}];
+    }
     [task setRequestMethod:REQUEST_GET];
     return task;
 }
@@ -296,6 +301,7 @@
 
 }
 
+
 #pragma mark - UITableViewDelegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -303,7 +309,6 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger count = self.tableViewModel.modelItemArray.count + [NotificationManager sharedInstance].sendingNotificationArray.count;
-    NSLog(@"table count is %zd",count);
     return count;
 }
 
@@ -313,10 +318,30 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSInteger row = indexPath.row;
-    NSLog(@"row is %zd",row);
     MGSwipeTableCell *tableCell = nil;
-    if(self.tableViewModel.modelItemArray.count > row){//已发送的
-        NotificationItem *item = self.tableViewModel.modelItemArray[row];
+    if([NotificationManager sharedInstance].sendingNotificationArray.count > row){//已发送的
+        NotificationSendEntity *sendEntity = [NotificationManager sharedInstance].sendingNotificationArray[row];
+        if(row == 0){
+            NSLog(@"%@",sendEntity);
+        }
+        NSString *reuseID = @"NotificationSendingItemCell";
+        NotificationSendingItemCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+        if(cell == nil){
+            cell = [[NotificationSendingItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+        }
+        [cell setSendEntity:sendEntity];
+        [cell setCancelCallback:^{
+            [sendEntity cancelSend];
+            [[NotificationDraftManager sharedInstance] addDraft:sendEntity];
+            [[NotificationManager sharedInstance] removeNotification:sendEntity];
+            [ProgressHUD showHintText:@"取消成功，存入草稿"];
+            //取消发送，加入草稿
+        }];
+        tableCell = cell;
+    }
+    else{//正在发送的
+        
+        NotificationItem *item = self.tableViewModel.modelItemArray[row - [NotificationManager sharedInstance].sendingNotificationArray.count];
         NSString *reuseID = @"NotificationRecordItemCell";
         NotificationRecordItemCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
         if(cell == nil){
@@ -340,46 +365,33 @@
             [alertView setDestructiveHandler:^(LGAlertView *alertView) {
                 @strongify(self)
                 [self deleteNotificationItem:item];
-                }];
+            }];
             [alertView showAnimated:YES completionHandler:nil];
             return YES;
         }];
         [buttonArray addObject:deleteButton];
         MGSwipeButton * forwardButton = [MGSwipeButton buttonWithTitle:@"转发" backgroundColor:[UIColor colorWithHexString:@"28c4d8"] callback:^BOOL(MGSwipeTableCell * sender){
+            NotificationSendEntity *sendEntoty = [NotificationSendEntity sendEntityWithNotification:item];
+            NotificationSendVC *sendVC = [[NotificationSendVC alloc] initWithSendEntity:sendEntoty];
+            [CurrentROOTNavigationVC pushViewController:sendVC animated:YES];
             return YES;
         }];
         [buttonArray addObject:forwardButton];
         [tableCell setRightButtons:buttonArray];
-    }
-    else{//正在发送的
-        NotificationSendEntity *sendEntity = [NotificationManager sharedInstance].sendingNotificationArray[indexPath.row - self.tableViewModel.modelItemArray.count];
-        NSString *reuseID = @"NotificationSendingItemCell";
-        NotificationSendingItemCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
-        if(cell == nil){
-            cell = [[NotificationSendingItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
-        }
-        [cell setSendEntity:sendEntity];
-        [cell setCancelCallback:^{
-            [sendEntity cancelSend];
-            [[NotificationDraftManager sharedInstance] addDraft:sendEntity];
-            [[NotificationManager sharedInstance] removeNotification:sendEntity];
-            //取消发送，加入草稿
-        }];
-        tableCell = cell;
     }
     return tableCell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if(self.tableViewModel.modelItemArray.count > indexPath.row){
-        NotificationItem *item = self.tableViewModel.modelItemArray[indexPath.row];
+    if([NotificationManager sharedInstance].sendingNotificationArray.count > indexPath.row){
+    
+    }
+    else{
+        NotificationItem *item = self.tableViewModel.modelItemArray[indexPath.row - [NotificationManager sharedInstance].sendingNotificationArray.count];
         NotificationDetailVC*  detailVC = [[NotificationDetailVC alloc] init];
         [detailVC setNotificationID:item.nid];
         [CurrentROOTNavigationVC pushViewController:detailVC animated:YES];
-    }
-    else{
-        
     }
 }
 

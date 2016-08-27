@@ -31,9 +31,20 @@
     return self;
 }
 
-- (void)setImage:(UIImage *)image{
-    _image = image;
-    [self.imageView setImage:_image];
+- (UIImageView *)curImageView{
+    return self.imageView;
+}
+
+- (void)setPhotoItem:(PhotoItem *)photoItem
+{
+    _photoItem = photoItem;
+    if(_photoItem.isLocal){
+        NSData *data = [NSData dataWithContentsOfFile:_photoItem.big];
+        [self.imageView setImage:[UIImage imageWithData:data]];
+    }
+    else{
+        [self.imageView sd_setImageWithURL:[NSURL URLWithString:_photoItem.big]];
+    }
 }
 
 - (void)onRemoveButtonClicked{
@@ -44,7 +55,8 @@
 
 @end
 
-@interface NotificationPhotoView (){
+@interface NotificationPhotoView ()<PBViewControllerDataSource, PBViewControllerDelegate>
+{
     UILabel*            _titleLabel;
     NSMutableArray*     _photoViewArray;
     UIView*             _sepLine;
@@ -91,15 +103,18 @@
     NSInteger hInnerMargin = 8;
     CGFloat itemWidth = (self.width - hMargin * 2 - hInnerMargin * 2) / 3;
     for (NSInteger i = 0; i < _photoArray.count; i++) {
-        UIImage *image = _photoArray[i];
+        PhotoItem *photoItem = _photoArray[i];
         NSInteger row = i / 3;
         NSInteger column = i % 3;
         NotificationPhotoItemView *itemView = [[NotificationPhotoItemView alloc] initWithFrame:CGRectMake(hMargin + (itemWidth + hInnerMargin) * column, _titleLabel.bottom + hMargin + (itemWidth + hInnerMargin) * row, itemWidth, itemWidth)];
-        [itemView setImage:image];
+        [itemView setPhotoItem:photoItem];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapedImageView:)];
+        [itemView addGestureRecognizer:tapGesture];
         @weakify(self);
         [itemView setDeleteCallback:^{
             @strongify(self);
-            [self deleteImage:image];
+            [self deleteImage:photoItem];
         }];
         [_photoViewArray addObject:itemView];
         [self addSubview:itemView];
@@ -113,10 +128,60 @@
     }
 }
 
-- (void)deleteImage:(UIImage *)image{
+- (void)deleteImage:(PhotoItem *)image{
     if(self.deleteDataCallback){
         self.deleteDataCallback(image);
     }
 }
+
+- (void)handleTapedImageView:(UITapGestureRecognizer *)sender {
+    [self _showPhotoBrowser:sender.view];
+}
+
+- (void)_showPhotoBrowser:(UIView *)sender {
+    PBViewController *pbViewController = [PBViewController new];
+    pbViewController.pb_dataSource = self;
+    pbViewController.pb_delegate = self;
+    pbViewController.pb_startPage = [_photoViewArray indexOfObject:sender];
+    [CurrentROOTNavigationVC presentViewController:pbViewController animated:YES completion:nil];
+}
+
+- (NSInteger)numberOfPagesInViewController:(PBViewController *)viewController {
+    return self.photoArray.count;
+}
+
+- (void)viewController:(PBViewController *)viewController presentImageView:(UIImageView *)imageView forPageAtIndex:(NSInteger)index progressHandler:(void (^)(NSInteger, NSInteger))progressHandler {
+    PhotoItem *item = self.photoArray[index];
+    if(item.isLocal){
+        NSData *imageData = [NSData dataWithContentsOfFile:item.big];
+        [imageView setImage:[UIImage imageWithData:imageData]];
+    }
+    else{
+        NotificationPhotoItemView *itemView = _photoViewArray[index];
+        [imageView sd_setImageWithURL:[NSURL URLWithString:item.big]
+                     placeholderImage:itemView.curImageView.image
+                              options:0
+                             progress:progressHandler
+                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                            }];
+
+    }
+}
+
+- (UIView *)thumbViewForPageAtIndex:(NSInteger)index {
+     NotificationPhotoItemView *itemView = _photoViewArray[index];
+    return itemView.curImageView;
+}
+
+#pragma mark - PBViewControllerDelegate
+
+- (void)viewController:(PBViewController *)viewController didSingleTapedPageAtIndex:(NSInteger)index presentedImage:(UIImage *)presentedImage {
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)viewController:(PBViewController *)viewController didLongPressedPageAtIndex:(NSInteger)index presentedImage:(UIImage *)presentedImage {
+
+}
+
 
 @end

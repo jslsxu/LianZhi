@@ -10,6 +10,7 @@
 #import "NotificationDetailActionView.h"
 #import "NotificationDetailView.h"
 #import "NotificationTargetListView.h"
+#import "NotificationSendVC.h"
 @interface NotificationDetailVC (){
     UISegmentedControl*             _segmentCtrl;
     NotificationDetailView*         _detailView;
@@ -104,29 +105,59 @@
 
 - (void)onMoreClicked{
     [self setRightbarButtonHighlighted:YES];
-    NotificationActionItem *forwadItem = [NotificationActionItem actionItemWithTitle:@"转发" action:^{
-        
-    } destroyItem:NO];
-//    NotificationActionItem *sendItem = [NotificationActionItem actionItemWithTitle:@"立即发送" action:^{
-//        
-//    } destroyItem:NO];
-//    NotificationActionItem *revokeItem = [NotificationActionItem actionItemWithTitle:@"撤销" action:^{
-//        
-//    } destroyItem:NO];
-    NotificationActionItem *editItem = [NotificationActionItem actionItemWithTitle:@"编辑" action:^{
-        
-    } destroyItem:NO];
-    NotificationActionItem *shareItem = [NotificationActionItem actionItemWithTitle:@"分享" action:^{
-        [ShareActionView shareWithTitle:@"分享" content:@"" image:[UIImage imageNamed:@"ClassZone"] imageUrl:@"" url:@""];
-    } destroyItem:NO];
-    NotificationActionItem *deleteItem = [NotificationActionItem actionItemWithTitle:@"删除" action:^{
-        
-    } destroyItem:YES];
-    @weakify(self);
-    [NotificationDetailActionView showWithActions:@[forwadItem, /*sendItem, revokeItem,*/ editItem, shareItem, deleteItem] completion:^{
-        @strongify(self);
-        [self setRightbarButtonHighlighted:NO];
-    }];
+    if(self.notificationItem){
+        @weakify(self);
+        NotificationActionItem *forwadItem = [NotificationActionItem actionItemWithTitle:@"转发" action:^{
+            @strongify(self)
+            if(self.notificationItem){
+                NotificationSendVC *sendVC = [[NotificationSendVC alloc] initWithSendEntity:[NotificationSendEntity sendEntityWithNotification:self.notificationItem]];
+                [CurrentROOTNavigationVC pushViewController:sendVC animated:YES];
+            }
+        } destroyItem:NO];
+        //    NotificationActionItem *sendItem = [NotificationActionItem actionItemWithTitle:@"立即发送" action:^{
+        //
+        //    } destroyItem:NO];
+        //    NotificationActionItem *revokeItem = [NotificationActionItem actionItemWithTitle:@"撤销" action:^{
+        //
+        //    } destroyItem:NO];
+        //    NotificationActionItem *editItem = [NotificationActionItem actionItemWithTitle:@"编辑" action:^{
+        //
+        //    } destroyItem:NO];
+        //    NotificationActionItem *shareItem = [NotificationActionItem actionItemWithTitle:@"分享" action:^{
+        //        [ShareActionView shareWithTitle:@"分享" content:@"" image:[UIImage imageNamed:@"ClassZone"] imageUrl:@"" url:@""];
+        //    } destroyItem:NO];
+        NotificationActionItem *deleteItem = [NotificationActionItem actionItemWithTitle:@"删除" action:^{
+            @strongify(self)
+            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否删除这条?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
+            [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+                [self deleteNotificationItem];
+            }];
+            [alertView showAnimated:YES completionHandler:nil];
+        } destroyItem:YES];
+        [NotificationDetailActionView showWithActions:@[forwadItem, /*sendItem, revokeItem,*/  deleteItem] completion:^{
+            @strongify(self);
+            [self setRightbarButtonHighlighted:NO];
+        }];
+
+    }
+    else{
+        [ProgressHUD showHintText:@"没有获取到通知详情"];
+    }
+}
+
+- (void)deleteNotificationItem{
+    if(self.notificationItem){
+        @weakify(self)
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_send_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : self.notificationItem.nid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [ProgressHUD showHintText:@"删除成功"];
+            @strongify(self)
+            [self.navigationController popViewControllerAnimated:YES];
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    }
 }
 
 - (BOOL)supportCache{

@@ -33,12 +33,14 @@
     _photoView = nil;
     if(!_recordView){
         @weakify(self);
-        _recordView = [[NotificationAudioRecordView alloc] initWithFrame:CGRectMake(0, kActionBarHeight, self.width, kActionContentHeight)];
-        [_recordView setSendCallback:^(NSString *filePath, NSInteger duration) {
+        _recordView = [[NotificationSimpleAudioRecordView alloc] initWithFrame:CGRectMake(0, kActionBarHeight, self.width, kActionContentHeight)];
+        BOOL canRecord = YES;
+        if(self.canRecord){
+            canRecord = self.canRecord();
+        }
+        [_recordView setCanRecord:canRecord];
+        [_recordView setRecordCallback:^(AudioItem *audioItem) {
             @strongify(self);
-            AudioItem *audioItem = [[AudioItem alloc] init];
-            [audioItem setAudioUrl:filePath];
-            [audioItem setTimeSpan:duration];
             if([self.delegate respondsToSelector:@selector(notificationInputAudio:audioItem:)]){
                 [self.delegate notificationInputAudio:self audioItem:audioItem];
             }

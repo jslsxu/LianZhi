@@ -41,4 +41,8 @@
     
 }
 
+- (BOOL)isLocal{
+    return self.photoID.length == 0;
+}
+
 @end

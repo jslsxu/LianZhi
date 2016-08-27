@@ -76,6 +76,19 @@
     }
 }
 
+- (void)saveCache{
+    if([self supportCache])
+    {
+        NSData *modelData = [NSKeyedArchiver archivedDataWithRootObject:_tableViewModel];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            BOOL success = [modelData writeToFile:[self cacheFilePath] atomically:YES];
+            if(success)
+                NSLog(@"save success");
+        });
+    }
+
+}
+
 - (void)setSupportPullDown:(BOOL)supportPullDown
 {
     _supportPullDown = supportPullDown;
@@ -116,7 +129,7 @@
 - (void)reloadData{
     __weak typeof(self) wself = self;
     if(self.supportPullUp && [_tableViewModel hasMoreData])
-        [_tableView setMj_footer:[MJRefreshFooter footerWithRefreshingBlock:^{
+        [_tableView setMj_footer:[MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             [wself requestData:REQUEST_GETMORE];
         }]];
     else
@@ -147,9 +160,6 @@
             {
                 if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestStart)])
                     [self TNBaseTableViewControllerRequestStart];
-                //请求开始
-                if(requestType == REQUEST_GETMORE)
-                    [self.tableView.mj_footer endRefreshing];
             }
             
         }
@@ -169,15 +179,7 @@
     [_tableViewModel parseData:responseData type:operation.requestType];
     if(self.shouldShowEmptyHint)
         [self showEmptyLabel:_tableViewModel.modelItemArray.count == 0];
-    if([self supportCache])
-    {
-        NSData *modelData = [NSKeyedArchiver archivedDataWithRootObject:_tableViewModel];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            BOOL success = [modelData writeToFile:[self cacheFilePath] atomically:YES];
-            if(success)
-                NSLog(@"save success");
-        });
-    }
+    [self saveCache];
     [self reloadData];
     _isLoading = NO;
     if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])

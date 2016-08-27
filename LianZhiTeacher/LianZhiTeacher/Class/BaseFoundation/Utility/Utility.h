@@ -14,4 +14,6 @@
 + (NSString *)sizeStrForSize:(NSInteger)size;
 + (AVAsset *)avAssetFromALAsset:(ALAsset *)alasset;
 + (NSString *)weekdayStr:(NSDate *)date;
++ (void)saveImageToAlbum:(UIImage *)image;
++ (void)saveVideoToAlbum:(NSString *)videoPath;
 @end

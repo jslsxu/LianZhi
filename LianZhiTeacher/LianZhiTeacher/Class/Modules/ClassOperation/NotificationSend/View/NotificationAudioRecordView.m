@@ -11,7 +11,7 @@
 #import <POP.h>
 #import "NHAudioTool.h"
 
-#define kRecordMaxTime              120
+#define kRecordMaxTime              60
 @interface RecordView ()<NHAudioToolDelegate>
 @property (nonatomic, strong)NHAudioTool*   audioTool;
 @property (nonatomic, assign)NSInteger duration;

@@ -212,6 +212,10 @@
 }
 
 - (void)sendWithCommonParams:(NSDictionary *)commonParams progress:(void (^)(CGFloat progress))progressBlk success:(void (^)(MessageItem *messageItem))success fail:(void (^)(NSString *errMsg))failure{
+    if(self.messageStatus != MessageStatusSending){
+        return;
+    }
+    self.messageStatus = MessageStatusSending;
     NSMutableDictionary *sendParams = [NSMutableDictionary dictionaryWithDictionary:commonParams];
     NSDictionary *params = [self sendParams];
     for (NSString *key in params.allKeys) {

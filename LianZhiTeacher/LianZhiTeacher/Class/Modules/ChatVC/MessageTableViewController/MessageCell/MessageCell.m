@@ -62,7 +62,9 @@
         [_indicatorView setHidesWhenStopped:YES];
         [self addSubview:_indicatorView];
         
-        _sendFailImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SendFail"]];
+        _sendFailImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+        [_sendFailImageView setContentMode:UIViewContentModeCenter];
+        [_sendFailImageView setImage:[UIImage imageNamed:@"SendFail"]];
         [_sendFailImageView setHidden:YES];
         [_sendFailImageView setUserInteractionEnabled:YES];
         [self addSubview:_sendFailImageView];

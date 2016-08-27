@@ -187,11 +187,26 @@
     {
         for (TeacherGroup *teacherGroup in [UserCenter sharedInstance].curSchool.groups) {
             if([teacherGroup.groupID isEqualToString:self.groupID]){
-                UserGroup *userGroup = [[UserGroup alloc] init];
-                [userGroup setTitle:@"教师"];
-                [userGroup setIndexkey:@"师"];
-                [userGroup setUsers:teacherGroup.teachers];
-                [self.sourceArray addObject:userGroup];
+                NSMutableDictionary *groupDic = [NSMutableDictionary dictionary];
+                for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
+                    NSString *indexKey = teacherInfo.first_letter;
+                    NSMutableArray *users = groupDic[indexKey];
+                    if(users == nil){
+                        users = [NSMutableArray array];
+                        [groupDic setValue:users forKey:indexKey];
+                        UserGroup *userGroup = [[UserGroup alloc] init];
+                        [userGroup setTitle:teacherInfo.first_letter];
+                        [userGroup setIndexkey:teacherInfo.first_letter];
+                        [userGroup setUsers:users];
+                        [self.sourceArray addObject:userGroup];
+                    }
+                    [users addObject:teacherInfo];
+                }
+                [self.sourceArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                    UserGroup *firstGroup = (UserGroup *)obj1;
+                    UserGroup *secondGroup = (UserGroup *)obj2;
+                    return [firstGroup.indexkey compare:secondGroup.indexkey];
+                }];
             }
         }
         [self.tableView reloadData];
@@ -263,6 +278,10 @@
     UserGroup *group = self.sourceArray[indexPath.section];
     UserInfo *userInfo = group.users[indexPath.row];
     if(self.atCallback){
+        NSString *label = group.labelArray[indexPath.row];
+        if(label.length > 0){
+            userInfo.name = label;
+        }
         self.atCallback(userInfo);
         [self dismissViewControllerAnimated:YES completion:nil];
     }

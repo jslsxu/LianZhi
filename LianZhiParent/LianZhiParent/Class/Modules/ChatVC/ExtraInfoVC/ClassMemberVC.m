@@ -247,6 +247,10 @@
     UserGroup *group = self.sourceArray[indexPath.section];
     UserInfo *userInfo = group.users[indexPath.row];
     if(self.atCallback){
+        NSString *label = group.labelArray[indexPath.row];
+        if(label.length > 0){
+            userInfo.name = label;
+        }
         self.atCallback(userInfo);
         [self dismissViewControllerAnimated:YES completion:nil];
     }

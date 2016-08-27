@@ -36,6 +36,8 @@ typedef NS_ENUM(NSInteger, ChatType)
     ChatTypeGroup = 24,
     ChatTypePractice = 25,  //作业通知
     ChatTypeAttendance = 26,    //请假
+    ChatTypeNormalNotification = 27,    //普通通知
+    ChatTypeDaka = 28,                  //门禁通知
 };
 
 typedef NS_ENUM(NSInteger, MessageFrom) {
@@ -76,6 +78,7 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property (nonatomic, strong)UserInfo *user;
 @property (nonatomic, strong)MessageContent *content;
 @property (nonatomic, assign)NSInteger createTime;
+
 
 - (BOOL)isLocalMessage;
 - (MessageFrom)from;

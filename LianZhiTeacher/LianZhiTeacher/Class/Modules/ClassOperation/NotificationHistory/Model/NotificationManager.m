@@ -52,7 +52,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(NotificationManager)
 
 - (void)addNotification:(NotificationSendEntity *)notificationSendEntity{
     @synchronized (self) {
-        [self.notificationArray addObject:notificationSendEntity];
+        [self.notificationArray insertObject:notificationSendEntity atIndex:0];
         [notificationSendEntity sendWithProgress:^(CGFloat progress) {
             
         } success:^(NotificationItem *notification){

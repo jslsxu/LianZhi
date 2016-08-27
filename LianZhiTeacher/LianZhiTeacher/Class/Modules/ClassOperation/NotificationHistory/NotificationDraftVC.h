@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseViewController.h"
-
+#import "NotificationDraftManager.h"
 @interface NotificationDraftItemCell : TNTableViewCell
 {
     UILabel*        _titleLabel;

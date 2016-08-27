@@ -387,6 +387,10 @@
 		8D75551A1D6DAE9700A140EE /* PBPresentAnimatedTransitioningController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555121D6DAE9700A140EE /* PBPresentAnimatedTransitioningController.m */; };
 		8D75551B1D6DAE9800A140EE /* PBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555141D6DAE9700A140EE /* PBViewController.m */; };
 		8D75551C1D6DAE9800A140EE /* UIView+PBSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555171D6DAE9700A140EE /* UIView+PBSnapshot.m */; };
+		8D7555271D6FB6E700A140EE /* ChatTopNewMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555241D6FB6E700A140EE /* ChatTopNewMessageView.m */; };
+		8D7555281D6FB6E700A140EE /* ChatBottomNewMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555261D6FB6E700A140EE /* ChatBottomNewMessageView.m */; };
+		8D75553E1D71FFD200A140EE /* DakaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D75553B1D71FFD200A140EE /* DakaViewController.m */; };
+		8D75553F1D71FFD200A140EE /* DakaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D75553D1D71FFD200A140EE /* DakaCell.m */; };
 		8D867BEF1D261FFE0020A21C /* CircleProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BEE1D261FFE0020A21C /* CircleProgressView.m */; };
 		8D867C241D2A6C530020A21C /* NHAudioConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C0F1D2A6C530020A21C /* NHAudioConverter.m */; };
 		8D867C251D2A6C530020A21C /* NHAudioTool+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C111D2A6C530020A21C /* NHAudioTool+Helper.m */; };
@@ -1135,6 +1139,14 @@
 		8D7555151D6DAE9700A140EE /* PhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoBrowser.h; sourceTree = "<group>"; };
 		8D7555161D6DAE9700A140EE /* UIView+PBSnapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+PBSnapshot.h"; sourceTree = "<group>"; };
 		8D7555171D6DAE9700A140EE /* UIView+PBSnapshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+PBSnapshot.m"; sourceTree = "<group>"; };
+		8D7555231D6FB6E700A140EE /* ChatTopNewMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatTopNewMessageView.h; sourceTree = "<group>"; };
+		8D7555241D6FB6E700A140EE /* ChatTopNewMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatTopNewMessageView.m; sourceTree = "<group>"; };
+		8D7555251D6FB6E700A140EE /* ChatBottomNewMessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatBottomNewMessageView.h; sourceTree = "<group>"; };
+		8D7555261D6FB6E700A140EE /* ChatBottomNewMessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatBottomNewMessageView.m; sourceTree = "<group>"; };
+		8D75553A1D71FFD200A140EE /* DakaViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DakaViewController.h; sourceTree = "<group>"; };
+		8D75553B1D71FFD200A140EE /* DakaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DakaViewController.m; sourceTree = "<group>"; };
+		8D75553C1D71FFD200A140EE /* DakaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DakaCell.h; sourceTree = "<group>"; };
+		8D75553D1D71FFD200A140EE /* DakaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DakaCell.m; sourceTree = "<group>"; };
 		8D867BED1D261FFE0020A21C /* CircleProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleProgressView.h; sourceTree = "<group>"; };
 		8D867BEE1D261FFE0020A21C /* CircleProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleProgressView.m; sourceTree = "<group>"; };
 		8D867C0E1D2A6C530020A21C /* NHAudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHAudioConverter.h; sourceTree = "<group>"; };
@@ -1368,6 +1380,7 @@
 		3720C1041A419E76000357A5 /* Message */ = {
 			isa = PBXGroup;
 			children = (
+				8D7555391D71FFC600A140EE /* DakaDetail */,
 				8D3D45A21D5DDB09005EA8EA /* NotificationDetail */,
 				37C53AAF1B1588B900C3ED69 /* Practise */,
 				37CFA5AF1A4AF2200061D7B8 /* MessageDetail */,
@@ -1529,6 +1542,10 @@
 				8DB8FAEC1D662A5A006B44B2 /* GiftItem.m */,
 				8D2496E11CBBA88D000B979D /* GiftDetailView.h */,
 				8D2496E21CBBA88D000B979D /* GiftDetailView.m */,
+				8D7555231D6FB6E700A140EE /* ChatTopNewMessageView.h */,
+				8D7555241D6FB6E700A140EE /* ChatTopNewMessageView.m */,
+				8D7555251D6FB6E700A140EE /* ChatBottomNewMessageView.h */,
+				8D7555261D6FB6E700A140EE /* ChatBottomNewMessageView.m */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -2909,6 +2926,17 @@
 			path = PhotoBrowser;
 			sourceTree = "<group>";
 		};
+		8D7555391D71FFC600A140EE /* DakaDetail */ = {
+			isa = PBXGroup;
+			children = (
+				8D75553A1D71FFD200A140EE /* DakaViewController.h */,
+				8D75553B1D71FFD200A140EE /* DakaViewController.m */,
+				8D75553C1D71FFD200A140EE /* DakaCell.h */,
+				8D75553D1D71FFD200A140EE /* DakaCell.m */,
+			);
+			path = DakaDetail;
+			sourceTree = "<group>";
+		};
 		8D867C0D1D2A6C530020A21C /* NHAudioTool */ = {
 			isa = PBXGroup;
 			children = (
@@ -3332,6 +3360,7 @@
 				8DCFD79D1D5A3B8B001EDC8A /* ChatContentImageView.m in Sources */,
 				37EAC9F01B82DEE5007BFBA1 /* iCarousel.m in Sources */,
 				37FD6E7D1BBCE47600C83AB4 /* OperationGuideVC.m in Sources */,
+				8D7555271D6FB6E700A140EE /* ChatTopNewMessageView.m in Sources */,
 				37CA18831AB70BCC00B49B55 /* AlbumGroupView.m in Sources */,
 				8D7555181D6DAE9700A140EE /* PBImageScrollerViewController.m in Sources */,
 				3793F7CB1B7CFFD900501F77 /* UTPlaceholderTextView.m in Sources */,
@@ -3495,6 +3524,7 @@
 				37E93FDC1A7E9CF200AD45A1 /* MJPhotoProgressView.m in Sources */,
 				3793F7CE1B7CFFD900501F77 /* UIImage+AspectFit.m in Sources */,
 				37CBAF2D1A47B1E20063F395 /* TreeHouseHeaderView.m in Sources */,
+				8D75553E1D71FFD200A140EE /* DakaViewController.m in Sources */,
 				3793F7EC1B7CFFD900501F77 /* MLAudioMeterObserver.m in Sources */,
 				3728A5E81B9332FE00310457 /* ResponseView.m in Sources */,
 				3793F82A1B7CFFD900501F77 /* Utility.m in Sources */,
@@ -3525,6 +3555,7 @@
 				3793F8131B7CFFD900501F77 /* TNGetMoreCell.m in Sources */,
 				37CCE2451B886BCD007BFA4F /* ActionView.m in Sources */,
 				3793F7DA1B7CFFD900501F77 /* UIColor+Addition.m in Sources */,
+				8D75553F1D71FFD200A140EE /* DakaCell.m in Sources */,
 				8D7554E71D6969E300A140EE /* UIViewController+DNImagePicker.m in Sources */,
 				3728A69A1B98A67800310457 /* ReplyBox.m in Sources */,
 				37C6B3F71BF2E0040001D54F /* SVShareManager.m in Sources */,
@@ -3544,6 +3575,7 @@
 				3728A61B1B93F36B00310457 /* FaceSelectView.m in Sources */,
 				8D3D459A1D5C48D6005EA8EA /* TAPageControl.m in Sources */,
 				3793F7BB1B7CFFD900501F77 /* UIActionSheet+Blocks.m in Sources */,
+				8D7555281D6FB6E700A140EE /* ChatBottomNewMessageView.m in Sources */,
 				37BC708D1C116EC900F8B79B /* NSDate+convenience.m in Sources */,
 				8D867BEF1D261FFE0020A21C /* CircleProgressView.m in Sources */,
 				3731D0911C1D94EF003E17A6 /* ActionPopView.m in Sources */,

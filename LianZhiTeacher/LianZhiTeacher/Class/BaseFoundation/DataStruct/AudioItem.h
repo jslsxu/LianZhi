@@ -12,4 +12,5 @@
 @property (nonatomic, copy)NSString *audioID;
 @property (nonatomic, copy)NSString *audioUrl;
 @property (nonatomic, assign)NSInteger timeSpan;
+- (BOOL)isLocal;
 @end

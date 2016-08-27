@@ -18,16 +18,38 @@
     return @[@"operation", @"uploadProgress", @"targets"];
 }
 
++ (NotificationSendEntity *)sendEntityWithNotification:(NotificationItem *)notification{
+    NotificationSendEntity *sendEntity = [[NotificationSendEntity alloc] init];
+    sendEntity.words = notification.words;
+    for (ClassInfo *classinfo in notification.classes) {
+        for (StudentInfo *studentInfo in classinfo.students) {
+            studentInfo.selected = YES;
+        }
+    }
+    for (TeacherGroup *group in notification.groups) {
+        for (TeacherInfo *teacherInfo in group.teachers) {
+            teacherInfo.selected = YES;
+        }
+    }
+    sendEntity.classArray = [NSMutableArray arrayWithArray:notification.classes];
+    sendEntity.groupArray = [NSMutableArray arrayWithArray:notification.groups];
+    if(notification.hasVideo){
+        sendEntity.videoArray = [NSMutableArray arrayWithObject:notification.video];
+    }
+    if(notification.hasImage){
+        sendEntity.imageArray = [NSMutableArray arrayWithArray:notification.pictures];
+    }
+    if(notification.hasAudio){
+        sendEntity.voiceArray = [NSMutableArray arrayWithObject:notification.voice];
+    }
+    return sendEntity;
+}
+
+
 - (instancetype)init{
     self = [super init];
     if(self){
-        NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
-        static long messageIndex = 1;
-        
-        NSString *client_send_id = [NSString stringWithFormat:@"%@_%ld_%05ld",[UserCenter sharedInstance].userInfo.uid, timeInterval, messageIndex];
-        messageIndex++;
         self.sendSms = YES;
-        self.send_client_id = client_send_id;
         self.classArray = [NSMutableArray array];
         self.groupArray = [NSMutableArray array];
         self.voiceArray = [NSMutableArray array];
@@ -115,10 +137,10 @@
     NSMutableArray *classesArray = [NSMutableArray array];
     for (ClassInfo *classInfo in self.classArray) {
         NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
-        if(classInfo.selectedType == SelectedTypeAll){
-            [classDic setValue:classInfo.classID forKey:@"classid"];
-        }
-        else{
+//        if(classInfo.selectedType == SelectedTypeAll){
+//            [classDic setValue:classInfo.classID forKey:@"classid"];
+//        }
+//        else{
             NSMutableArray *selectedStudents = [NSMutableArray array];
             for (StudentInfo *studentInfo in classInfo.students) {
                 if(studentInfo.selected){
@@ -129,7 +151,7 @@
                 [classDic setValue:classInfo.classID forKey:@"classid"];
                 [classDic setValue:selectedStudents forKey:@"students"];
             }
-        }
+//        }
         if(classDic.count > 0){
             [classesArray addObject:classDic];
         }
@@ -138,10 +160,10 @@
     NSMutableArray *groupsArray = [NSMutableArray array];
     for (TeacherGroup *teacherGroup in self.groupArray) {
         NSMutableDictionary *groupDic = [NSMutableDictionary dictionary];
-        if(teacherGroup.selectedType == SelectedTypeAll){
-            [groupDic setValue:teacherGroup.groupID forKey:@"id"];
-        }
-        else{
+//        if(teacherGroup.selectedType == SelectedTypeAll){
+//            [groupDic setValue:teacherGroup.groupID forKey:@"id"];
+//        }
+//        else{
             NSMutableArray *selectedTeachers = [NSMutableArray array];
             for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
                 if(teacherInfo.selected){
@@ -152,7 +174,7 @@
                 [groupDic setValue:teacherGroup.groupID forKey:@"id"];
                 [groupDic setValue:selectedTeachers forKey:@"teachers"];
             }
-        }
+//        }
         if(groupDic.count > 0){
             [groupsArray addObject:groupDic];
         }
@@ -177,32 +199,64 @@
         NSMutableString *picSeq = [[NSMutableString alloc] init];
         for (NSInteger i = 0; i < self.imageArray.count; i++)
         {
-            [picSeq appendFormat:@"picture_%ld,",(long)i];
+            PhotoItem *photoItem = self.imageArray[i];
+            if(photoItem.photoID.length > 0){
+                [picSeq appendString:[NSString stringWithFormat:@"%@,",photoItem.photoID]];
+            }
+            else{
+                [picSeq appendFormat:@"picture_%ld,",(long)i];
+            }
         }
         [params setValue:picSeq forKey:@"pic_seqs"];
     }
     
     if(self.voiceArray.count > 0){
         AudioItem *audioItem = self.voiceArray[0];
-        [params setValue:kStringFromValue(audioItem.timeSpan) forKey:@"voice_time"];
+        if(audioItem.isLocal){
+            [params setValue:kStringFromValue(audioItem.timeSpan) forKey:@"voice_time"];
+        }
+        else{
+            [params setValue:audioItem.audioID forKey:@"voice_id"];
+        }
     }
+    if(self.videoArray.count > 0){
+        VideoItem *videoItem = self.videoArray[0];
+        if(!videoItem.isLocal){
+            [params setValue:videoItem.videoID forKey:@"video_id"];
+        }
+    }
+    
     self.operation = [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/send" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         for (NSInteger i = 0; i < self.imageArray.count; i++)
         {
+            PhotoItem *photoItem = self.imageArray[i];
             NSString *filename = [NSString stringWithFormat:@"picture_%ld",(long)i];
-            [formData appendPartWithFileData:UIImageJPEGRepresentation(self.imageArray[i], 0.8) name:filename fileName:filename mimeType:@"image/jpeg"];
+            if(photoItem.photoID.length > 0){
+                
+            }
+            else{
+                NSData *data = [NSData dataWithContentsOfFile:photoItem.big];
+                if(data.length > 0){
+                    [formData appendPartWithFileData:data name:filename fileName:filename mimeType:@"image/jpeg"];
+                }
+            }
+        
         }
         if(self.voiceArray.count > 0){
             AudioItem *audioItem = self.voiceArray[0];
-            NSData *voiceData = [NSData dataWithContentsOfFile:audioItem.audioUrl];
-            [formData appendPartWithFileData:voiceData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
+            if(audioItem.isLocal){
+                NSData *voiceData = [NSData dataWithContentsOfFile:audioItem.audioUrl];
+                [formData appendPartWithFileData:voiceData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
+            }
         }
         if(self.videoArray.count > 0){
             VideoItem *videoItem = self.videoArray[0];
-            NSData *videoData = [NSData dataWithContentsOfFile:videoItem.localVideoPath];
-            if(videoData){
-                [formData appendPartWithFileData:videoData name:@"video" fileName:@"video" mimeType:@"application/octet-stream"];
-                [formData appendPartWithFileData:UIImageJPEGRepresentation(videoItem.coverImage, 0.8) name:@"video_cover" fileName:@"video_cover" mimeType:@"image/jpeg"];
+            if(videoItem.isLocal){
+                NSData *videoData = [NSData dataWithContentsOfFile:videoItem.localVideoPath];
+                if(videoData){
+                    [formData appendPartWithFileData:videoData name:@"video" fileName:@"video" mimeType:@"application/octet-stream"];
+                    [formData appendPartWithFileData:UIImageJPEGRepresentation(videoItem.coverImage, 0.8) name:@"video_cover" fileName:@"video_cover" mimeType:@"image/jpeg"];
+                }
             }
         }
     } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {

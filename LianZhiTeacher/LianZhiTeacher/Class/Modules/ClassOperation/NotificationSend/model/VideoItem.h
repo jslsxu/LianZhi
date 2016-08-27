@@ -17,4 +17,5 @@
 @property (nonatomic, assign)NSInteger videoTime;
 @property (nonatomic, assign)CGFloat    coverWidth;
 @property (nonatomic, assign)CGFloat    coverHeight;
+- (BOOL)isLocal;
 @end

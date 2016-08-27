@@ -43,15 +43,15 @@
         [imageView setUserInteractionEnabled:YES];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapedImageView:)];
         [imageView addGestureRecognizer:tap];
-        id image = _photoArray[0];
-        if([image isKindOfClass:[UIImage class]]){
+        PhotoItem *photoItem = _photoArray[0];
+        if(photoItem.isLocal){
+            NSData *imageData = [NSData dataWithContentsOfFile:photoItem.big];
+            UIImage *image  =[UIImage imageWithData:imageData];
             [imageView setImage:image];
         }
-        else if([image isKindOfClass:[PhotoItem class]]){
-            PhotoItem *photoItem = (PhotoItem *)image;
-            [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.small] placeholderImage:nil];
+        else{
+             [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.small] placeholderImage:nil];
         }
-
         [_photoViewArray addObject:imageView];
         [self addSubview:imageView];
         height += imageView.height + margin;
@@ -68,14 +68,16 @@
         [imageView setUserInteractionEnabled:YES];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapedImageView:)];
         [imageView addGestureRecognizer:tap];
-        id image = _photoArray[i];
-        if([image isKindOfClass:[UIImage class]]){
+        PhotoItem *photoItem = _photoArray[i];
+        if(photoItem.isLocal){
+            NSData *imageData = [NSData dataWithContentsOfFile:photoItem.big];
+            UIImage *image  =[UIImage imageWithData:imageData];
             [imageView setImage:image];
         }
-        else if([image isKindOfClass:[PhotoItem class]]){
-            PhotoItem *photoItem = (PhotoItem *)image;
+        else{
             [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.small] placeholderImage:nil];
         }
+
         [_photoViewArray addObject:imageView];
         [self addSubview:imageView];
     }
@@ -100,22 +102,22 @@
 }
 
 - (void)viewController:(PBViewController *)viewController presentImageView:(UIImageView *)imageView forPageAtIndex:(NSInteger)index progressHandler:(void (^)(NSInteger, NSInteger))progressHandler {
-    id item = self.photoArray[index];
-    if([item isKindOfClass:[PhotoItem class]]){
-        PhotoItem *photoItem = (PhotoItem *)item;
-        NSString *url = photoItem.big;
+    PhotoItem *item = self.photoArray[index];
+    if(item.isLocal){
+        NSData *imageData = [NSData dataWithContentsOfFile:item.big];
+        [imageView setImage:[UIImage imageWithData:imageData]];
+    }
+    else{
         UIImageView *curImageView = _photoViewArray[index];
-        UIImage *placeholder = curImageView.image;
-        [imageView sd_setImageWithURL:[NSURL URLWithString:url]
-                     placeholderImage:placeholder
+        [imageView sd_setImageWithURL:[NSURL URLWithString:item.big]
+                     placeholderImage:curImageView.image
                               options:0
                              progress:progressHandler
                             completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                             }];
+        
     }
-    else if([item isKindOfClass:[UIImage class]]){
-        [imageView setImage:item];
-    }
+
 }
 
 - (UIView *)thumbViewForPageAtIndex:(NSInteger)index {
@@ -129,7 +131,15 @@
 }
 
 - (void)viewController:(PBViewController *)viewController didLongPressedPageAtIndex:(NSInteger)index presentedImage:(UIImage *)presentedImage {
-    NSLog(@"didLongPressedPageAtIndex: %@", @(index));
+    if(presentedImage){
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:@[@"保存到相册"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+            [Utility saveImageToAlbum:presentedImage];
+        }];
+        [alertView showAnimated:YES completionHandler:nil];
+    }
 }
 
 

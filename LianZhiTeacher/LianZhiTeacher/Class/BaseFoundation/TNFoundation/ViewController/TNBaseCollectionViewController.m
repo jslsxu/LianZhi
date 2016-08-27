@@ -102,7 +102,7 @@
 {
     __weak typeof(self) wself = self;
     if(self.supportPullUp && [_collectionViewModel hasMoreData])
-        [_collectionView setMj_footer:[MJRefreshFooter footerWithRefreshingBlock:^{
+        [_collectionView setMj_footer:[MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             [wself requestData:REQUEST_GETMORE];
         }]];
     else

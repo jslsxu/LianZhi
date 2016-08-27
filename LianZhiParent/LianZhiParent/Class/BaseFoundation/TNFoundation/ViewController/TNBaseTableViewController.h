@@ -27,6 +27,7 @@
 - (UITableViewStyle)tableViewStyle;
 - (void)bindTableCell:(NSString *)cellName tableModel:(NSString *)modelName;
 - (void)loadCache;
+- (void)saveCache;
 - (void)requestData:(REQUEST_TYPE)requestType;
 - (void)cancelRequest;
 - (BOOL)hideErrorAlert;

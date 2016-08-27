@@ -19,4 +19,6 @@
 + (BOOL)isPhotoLibraryActive;
 + (NSString *)sizeStrForSize:(NSInteger)size;
 + (NSString *)weekdayStr:(NSDate *)date;
++ (void)saveImageToAlbum:(UIImage *)image;
++ (void)saveVideoToAlbum:(NSString *)videoPath;
 @end

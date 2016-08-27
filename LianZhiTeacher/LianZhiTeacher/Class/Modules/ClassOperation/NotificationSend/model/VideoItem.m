@@ -15,4 +15,8 @@
 //+ (NSArray<NSString *> *)modelPropertyBlacklist{
 //    return @[@"coverImage",@"localVideoPath"];
 //}
+
+- (BOOL)isLocal{
+    return self.videoID.length == 0;
+}
 @end

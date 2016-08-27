@@ -119,6 +119,10 @@ DNImagePickerControllerDelegate>
         @strongify(self)
         return self.sendEntity.videoArray.count;
     }];
+    [_inputView setCanRecord:^BOOL{
+        @strongify(self)
+        return self.sendEntity.voiceArray.count == 0;
+    }];
     [_inputView setDelegate:self];
     [self.view addSubview:_inputView];
 
@@ -325,8 +329,8 @@ DNImagePickerControllerDelegate>
     [self adjustPosition];
 }
 
-- (void)deleteImage:(UIImage *)image{
-    [self.sendEntity.imageArray removeObject:image];
+- (void)deleteImage:(PhotoItem *)photoItem{
+    [self.sendEntity.imageArray removeObject:photoItem];
     [_photoView setPhotoArray:self.sendEntity.imageArray];
     [self adjustPosition];
 }
@@ -461,10 +465,33 @@ DNImagePickerControllerDelegate>
         }
     }
     if(addImageArray.count > 0)
-        [self addImage:addImageArray];
+    {
+        MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在压缩" toView:[UIApplication sharedApplication].keyWindow];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSMutableArray *photoItemArray = [NSMutableArray array];
+            for (UIImage *image in addImageArray) {
+                NSString *tmpImagePath = [NHFileManager getTmpImagePath];
+                NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
+                [imageData writeToFile:tmpImagePath atomically:YES];
+                PhotoItem *photoItem = [[PhotoItem alloc] init];
+                [photoItem setWidth:image.size.width];
+                [photoItem setHeight:image.size.height];
+                [photoItem setBig:tmpImagePath];
+                [photoItem setSmall:tmpImagePath];
+                [photoItemArray addObject:photoItem];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [hud hide:YES];
+                [self addImage:photoItemArray];
+            });
+        });
+
+    }
     if(addVideoArray.count > 0){
         [self addVideo:addVideoArray];
     }
+    if(addImageArray.count + addVideoArray.count > 0)
+        [_inputView setActionType:ActionTypeNone];
 }
 
 - (void)notificationInputVideo:(NotificationInputView *)inputView
@@ -472,6 +499,7 @@ DNImagePickerControllerDelegate>
 //    [VideoRecordView showWithCompletion:^(NSURL *videoPath) {
 //        
 //    }];
+    [_inputView setActionType:ActionTypeNone];
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     [imagePicker setDelegate:self];
     [imagePicker setMediaTypes:@[(NSString *)kUTTypeMovie, (NSString *)kUTTypeImage]];
@@ -487,6 +515,7 @@ DNImagePickerControllerDelegate>
         [self.sendEntity.voiceArray addObject:audioItem];
         [_voiceView setVoiceArray:self.sendEntity.voiceArray];
         [self adjustPosition];
+        [_inputView setActionType:ActionTypeNone];
     }
 }
 
@@ -578,11 +607,9 @@ DNImagePickerControllerDelegate>
                     image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage]];
                 else
                     image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
-                if(imageArray.count + addImageArray.count < 9){
-                    if(image)
-                    {
-                        [addImageArray addObject:image];
-                    }
+                if(image)
+                {
+                    [addImageArray addObject:image];
                 }
             }
             else if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]){
@@ -621,11 +648,30 @@ DNImagePickerControllerDelegate>
             }
         }
         if(addImageArray.count > 0){
-            [self addImage:addImageArray];
+            MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在压缩" toView:[UIApplication sharedApplication].keyWindow];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSMutableArray *photoItemArray = [NSMutableArray array];
+                for (UIImage *image in addImageArray) {
+                    NSString *tmpImagePath = [NHFileManager getTmpImagePath];
+                    NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
+                    [imageData writeToFile:tmpImagePath atomically:YES];
+                    PhotoItem *photoItem = [[PhotoItem alloc] init];
+                    [photoItem setWidth:image.size.width];
+                    [photoItem setHeight:image.size.height];
+                    [photoItem setBig:tmpImagePath];
+                    [photoItem setSmall:tmpImagePath];
+                    [photoItemArray addObject:photoItem];
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [hud hide:YES];
+                    [self addImage:photoItemArray];
+                });
+            });
         }
         if(addVideoArray.count > 0){
             [self addVideo:addVideoArray];
         }
+        [_inputView setActionType:ActionTypeNone];
     }
 }
 

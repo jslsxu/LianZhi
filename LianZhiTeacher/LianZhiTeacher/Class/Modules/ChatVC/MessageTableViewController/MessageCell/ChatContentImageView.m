@@ -117,7 +117,15 @@
 }
 
 - (void)viewController:(PBViewController *)viewController didLongPressedPageAtIndex:(NSInteger)index presentedImage:(UIImage *)presentedImage {
-    NSLog(@"didLongPressedPageAtIndex: %@", @(index));
+    if(presentedImage){
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:@[@"保存到相册"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+            [Utility saveImageToAlbum:presentedImage];
+        }];
+        [alertView showAnimated:YES completionHandler:nil];
+    }
 }
 
 

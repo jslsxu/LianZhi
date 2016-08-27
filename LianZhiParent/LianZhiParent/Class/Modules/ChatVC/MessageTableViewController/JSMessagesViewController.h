@@ -7,7 +7,7 @@
 #import "GiftDetailView.h"
 @interface JSMessagesViewController : TNBaseViewController <InputBarViewDelegate, MessageCellDelegate, UITableViewDelegate, UITableViewDataSource>
 {
-    InputBarView*           _inputView;
+    InputBarView*               _inputView;
     CGFloat                 _previousTextViewContentHeight;
     NSTimer*                _timer;
 }

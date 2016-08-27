@@ -105,6 +105,7 @@
     {
         TeacherGroup *group = (TeacherGroup *)_userInfo;
         [_avatar setImageWithUrl:[NSURL URLWithString:group.logo] placeHolder:[UIImage imageNamed:@"NoLogoDefault"]];
+        [_avatar setStatus:nil];
         [_commentLabel setText:nil];
         TeacherGroup *teacherGroup = (TeacherGroup *)userInfo;
         [_nameLabel setText:teacherGroup.groupName];

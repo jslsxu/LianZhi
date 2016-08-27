@@ -36,6 +36,8 @@ typedef NS_ENUM(NSInteger, ChatType)
     ChatTypeGroup = 24,
     ChatTypePractice = 25,  //作业通知
     ChatTypeAttendance = 26,    //请假
+    ChatTypeNotification = 27,  //普通通知
+    ChatTypeDoorEntrance = 28,  //门禁通知
 };
 
 typedef NS_ENUM(NSInteger, MessageFrom) {
