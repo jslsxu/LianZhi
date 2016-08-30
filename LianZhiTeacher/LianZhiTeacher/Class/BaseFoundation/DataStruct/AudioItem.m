@@ -36,4 +36,14 @@
 - (BOOL)isLocal{
     return self.audioID.length == 0;
 }
+
+- (BOOL)isSame:(AudioItem *)object{
+    if([object.audioID isEqualToString:self.audioID]){
+        return YES;
+    }
+    if([object.audioUrl isEqualToString:self.audioUrl] && object.timeSpan == self.timeSpan){
+        return YES;
+    }
+    return NO;
+}
 @end

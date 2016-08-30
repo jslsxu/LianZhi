@@ -19,46 +19,30 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "LianZhiTeacher/Class/Modules/ClassOperation/NotificationSend/model/NotificationSendEntity.m"
-            timestampString = "494002646.060356"
+            filePath = "LianZhiTeacher/Class/BaseFoundation/ImagePicker/DNImagePicker/DNImagePickerController.m"
+            timestampString = "494163446.995334"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "229"
-            endingLineNumber = "229"
-            landmarkName = "-sendWithProgress:success:fail:"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
+            landmarkName = "-viewDidLoad"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[NotificationSendEntity sendWithProgress:success:fail:]"
-                  moduleName = "LianZhiTeacher"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/qingxuzhou/LianZhi/LianZhiTeacher/LianZhiTeacher/Class/Modules/ClassOperation/NotificationSend/model/NotificationSendEntity.m"
-                  timestampString = "494011383.110761"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "229"
-                  endingLineNumber = "229"
-                  offsetFromSymbolStart = "5472">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__56-[NotificationSendEntity sendWithProgress:success:fail:]_block_invoke"
-                  moduleName = "LianZhiTeacher"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/qingxuzhou/LianZhi/LianZhiTeacher/LianZhiTeacher/Class/Modules/ClassOperation/NotificationSend/model/NotificationSendEntity.m"
-                  timestampString = "494011383.110966"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "230"
-                  endingLineNumber = "230"
-                  offsetFromSymbolStart = "52">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LianZhiTeacher/Class/Modules/ClassOperation/NotificationSend/Controller/NotificationSendVC.m"
+            timestampString = "494266548.178893"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "503"
+            endingLineNumber = "503"
+            landmarkName = "-notificationInputQuickPhoto:fullImage:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

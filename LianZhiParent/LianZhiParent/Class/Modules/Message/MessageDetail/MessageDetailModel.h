@@ -13,4 +13,5 @@
 @property (nonatomic, strong)MessageFromInfo *fromInfo;
 @property (nonatomic, assign)BOOL hasMore;
 @property (nonatomic, copy)NSString *minID;
+@property (nonatomic, assign)NSInteger newNum;
 @end

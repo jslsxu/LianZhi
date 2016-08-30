@@ -13,6 +13,12 @@ typedef NS_ENUM(NSInteger, RequestMessageType) {
     RequestMessageTypeOld
 };
 
+@interface UpdateItem : TNBaseObject
+@property (nonatomic, copy)NSString *mid;
+@property (nonatomic, assign)MessageType mtype;
+@property (nonatomic, assign)NSInteger ctime;
+@end
+
 @interface ChatMessageModel : TNBaseObject
 @property (nonatomic, copy)NSString *targetUser;
 @property (nonatomic, copy)NSString *oldId;
@@ -20,6 +26,8 @@ typedef NS_ENUM(NSInteger, RequestMessageType) {
 @property (nonatomic, assign)BOOL quietModeOn;
 @property (nonatomic, assign)BOOL needScrollBottom;
 @property (nonatomic, assign)NSInteger numOfNew;
+
+- (NSInteger)checkStatusTime;
 - (NSArray *)messageArray;
 - (instancetype)initWithUid:(NSString *)uid type:(ChatType)type;
 - (BOOL)canInsert:(MessageItem *)messageItem;

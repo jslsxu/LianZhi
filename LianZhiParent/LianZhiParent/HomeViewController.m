@@ -78,9 +78,9 @@ static NSArray *tabDatas = nil;
 
     [msgButton setBadgeValue:badgeValue];
     
-    NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+    LZTabBarButton *classAppButton = (LZTabBarButton *)_tabbarButtons[2];
+    NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;//班博客回复
     NSInteger classZoneNum = 0;
-    LZTabBarButton *classTabButton = (LZTabBarButton *)_tabbarButtons[3];
     for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
     {
         NSString *classID = classInfo.classID;
@@ -94,49 +94,43 @@ static NSArray *tabDatas = nil;
         }
     }
     if(classZoneNum > 0)
-        [classTabButton setBadgeValue:kStringFromValue(classZoneNum)];
+        [classAppButton setBadgeValue:kStringFromValue(classZoneNum)];
     else
     {
-        for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.feedClassesNew)
+        for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.feedClassesNew)//新班级博客
         {
                 classZoneNum += notice.num;
         }
         
         //成长记录
-        for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.classRecordArray)
+        for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.classRecordArray)//
         {
                 classZoneNum += notice.num;
         }
         
+        //练习
         classZoneNum += [UserCenter sharedInstance].statusManager.practiceNum;
         
-        if(classZoneNum > 0)
-            [classTabButton setBadgeValue:@""];
+        //树屋回复
+        NSArray *treeNewCommentArray = [UserCenter sharedInstance].statusManager.treeNewCommentArray;
+        NSInteger treeAlertNum = 0;
+        for (TimelineCommentItem *item in treeNewCommentArray)
+        {
+            if([item.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
+            {
+                treeAlertNum = item.alertInfo.num;
+                break;
+            }
+        }
+        
+        classZoneNum += treeAlertNum;
+        
+        if(classZoneNum > 0){
+            [classAppButton setBadgeValue:@""];
+        }
         else
-            [classTabButton setBadgeValue:nil];
+            [classAppButton setBadgeValue:nil];
     }
-    
-    
-//    NSArray *treeNewCommentArray = [UserCenter sharedInstance].statusManager.treeNewCommentArray;
-//    LZTabBarButton *treeTabButton = (LZTabBarButton *)_tabbarButtons[2];
-//    NSInteger treeAlertNum = 0;
-//    for (TimelineCommentItem *item in treeNewCommentArray)
-//    {
-//        if([item.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
-//        {
-//            treeAlertNum = item.alertInfo.num;
-//            break;
-//        }
-//    }
-//    badgeValue = nil;
-//    if(treeAlertNum > 99){
-//        badgeValue = @"99+";
-//    }
-//    else if(treeAlertNum > 0){
-//        badgeValue = kStringFromValue(treeAlertNum);
-//    }
-//    
-//    [treeTabButton setBadgeValue:badgeValue];
     
     LZTabBarButton *discoveryButton = _tabbarButtons[3];
     DiscoveryVC *discoveryVC = self.subVCArray[3];

@@ -25,7 +25,7 @@ UIImagePickerControllerDelegate,
 UINavigationControllerDelegate,
 DNImagePickerControllerDelegate>
 @property (nonatomic, strong)NotificationSendEntity *sendEntity;
-
+@property (nonatomic, strong)NotificationSendEntity *compareEntity;
 @property (nonatomic, strong)NotificationTargetContentView*  targetContentView;
 @property (nonatomic, strong)NotificationSendChoiceView*     smsChoiceView;
 @property (nonatomic, strong)NotificationSendChoiceView*     timerSendView;
@@ -44,9 +44,7 @@ DNImagePickerControllerDelegate>
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
-        if(!self.sendEntity){
-            self.sendEntity = [[NotificationSendEntity alloc] init];
-        }
+        self.interactivePopDisabled = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWindowShow:) name:UIKeyboardWillShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWindowShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWindowHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -90,8 +88,62 @@ DNImagePickerControllerDelegate>
     }];
 }
 
+- (void)back{
+    if([self.sendEntity isSame:self.compareEntity]){
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else{
+        if(self.sendType == NotificationSendDraft){
+            //草稿，覆盖
+            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"草稿已存在，是否覆盖?" style:LGAlertViewStyleAlert buttonTitles:@[@"覆盖", @"不覆盖"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+            [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                if(index == 0){
+                    [[NotificationDraftManager sharedInstance] updateDraft:self.sendEntity];
+                }
+                else if (index == 1){
+                    [self.sendEntity updateClientID];
+                    [[NotificationDraftManager sharedInstance] addDraft:self.sendEntity];
+                }
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
+            [alertView setCancelHandler:^(LGAlertView *alertView) {
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
+            [alertView showAnimated:YES completionHandler:nil];
+        }
+        else{
+            //是否保存到草稿
+            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否存入草稿箱?" style:LGAlertViewStyleAlert buttonTitles:@[@"保存", @"不保存"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+            [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                if(index == 0){
+                    [[NotificationDraftManager sharedInstance] addDraft:self.sendEntity];
+                }
+                else if (index == 1){
+                    
+                }
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
+            [alertView setCancelHandler:^(LGAlertView *alertView) {
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
+            [alertView showAnimated:YES completionHandler:nil];
+        }
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    if(!self.sendEntity){
+        self.sendEntity = [[NotificationSendEntity alloc] init];
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.sendEntity];
+        self.compareEntity = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    });
     self.title = @"发布通知";
     [self.view setBackgroundColor:[UIColor whiteColor]];
 //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
@@ -153,6 +205,7 @@ DNImagePickerControllerDelegate>
     }
 }
 
+
 - (void)setupScrollView{
     [_scrollView addSubview:self.targetContentView];
     [_scrollView addSubview:self.smsChoiceView];
@@ -205,6 +258,7 @@ DNImagePickerControllerDelegate>
         _smsChoiceView = [[NotificationSendChoiceView alloc] initWithFrame:CGRectMake(0, _targetContentView.bottom, _scrollView.width, 54) title:@"连枝代发短信"];
         [_smsChoiceView setSwitchCallback:^(BOOL on) {
             @strongify(self)
+            self.sendEntity.sendSms = on;
             [self.commentView setMaxWordsNum:on ? 150 : 500];
         }];
     }
@@ -446,7 +500,7 @@ DNImagePickerControllerDelegate>
                     }];
                 }
                 VideoItem *videoItem = [[VideoItem alloc] init];
-                [videoItem setLocalVideoPath:tmpPath];
+                [videoItem setVideoUrl:tmpPath];
                 [videoItem setCoverImage:asset.previewImage];
                 [addVideoArray addObject:videoItem];
             }
@@ -505,7 +559,7 @@ DNImagePickerControllerDelegate>
     [imagePicker setMediaTypes:@[(NSString *)kUTTypeMovie, (NSString *)kUTTypeImage]];
     [imagePicker setVideoMaximumDuration:10];
     [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-    [self presentViewController:imagePicker animated:YES completion:^{
+    [self.navigationController presentViewController:imagePicker animated:YES completion:^{
         
     }];
 }
@@ -549,44 +603,71 @@ DNImagePickerControllerDelegate>
 #pragma mark - UIImagePicerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
+    @weakify(self)
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     if([mediaType isEqualToString:(NSString *)kUTTypeImage]){
-        UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-        if(image){
-            image = [image resize:[UIScreen mainScreen].bounds.size];
-            [self addImage:@[image]];
+        if(self.sendEntity.imageArray.count >= 9){
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"最多只能选择9张图片" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+            [alertView show];
+        }
+        else{
+            UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+            if(image){
+                MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在压缩" toView:[UIApplication sharedApplication].keyWindow];
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    UIImage *resultImage = [image resize:[UIScreen mainScreen].bounds.size];
+                    NSString *tmpImagePath = [NHFileManager getTmpImagePath];
+                    NSData *imageData = UIImageJPEGRepresentation(resultImage, 0.8);
+                    [imageData writeToFile:tmpImagePath atomically:YES];
+                    PhotoItem *photoItem = [[PhotoItem alloc] init];
+                    [photoItem setWidth:resultImage.size.width];
+                    [photoItem setHeight:resultImage.size.height];
+                    [photoItem setBig:tmpImagePath];
+                    [photoItem setSmall:tmpImagePath];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [hud hide:YES];
+                        [self addImage:@[photoItem]];
+                    });
+                });
+            }
+
         }
         [picker dismissViewControllerAnimated:YES completion:nil];
     }
     else if([mediaType isEqualToString:(NSString *)kUTTypeMovie]){
         if(self.sendEntity.videoArray.count > 0){
-            return;
+            [picker dismissViewControllerAnimated:YES completion:^{
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"一次只能发送1个视频" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+                [alertView show];
+            }];
         }
-        NSURL *url = info[UIImagePickerControllerMediaURL];
-        NSString *extasion = url.pathExtension;
-        NSString *finalPath = [[NHFileManager getTmpVideoPath] stringByAppendingPathExtension:extasion];
-        [FCFileManager moveItemAtPath:url.path toPath:finalPath overwrite:YES];
-        url = [NSURL fileURLWithPath:finalPath];
-        NSData *data = [NSData dataWithContentsOfURL:url];
-        NSString *sizeStr = [Utility sizeStrForSize:data.length];
-        NSInteger duration = [self getVideoDuration:url];
-        @weakify(self)
-        LGAlertView*    alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"视频压缩后文件大小为%@",sizeStr] style:LGAlertViewStyleAlert buttonTitles:@[@"发送"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
-        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-        [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-        [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-            @strongify(self);
-            VideoItem *videoItem = [[VideoItem alloc] init];
-            [videoItem setLocalVideoPath:finalPath];
-            [videoItem setCoverImage:[UIImage coverImageForVideo:url]];
-            [videoItem setVideoTime:duration];
-            [self addVideo:@[videoItem]];
-            [picker dismissViewControllerAnimated:YES completion:nil];
-        }];
-        [alertView setCancelHandler:^(LGAlertView *alertView) {
-            [picker dismissViewControllerAnimated:YES completion:nil];
-        }];
-        [alertView showAnimated:YES completionHandler:nil];
+        else{
+            NSURL *url = info[UIImagePickerControllerMediaURL];
+            NSString *extasion = url.pathExtension;
+            NSString *finalPath = [[NHFileManager getTmpVideoPath] stringByAppendingPathExtension:extasion];
+            [FCFileManager moveItemAtPath:url.path toPath:finalPath overwrite:YES];
+            url = [NSURL fileURLWithPath:finalPath];
+            NSData *data = [NSData dataWithContentsOfURL:url];
+            NSString *sizeStr = [Utility sizeStrForSize:data.length];
+            NSInteger duration = [self getVideoDuration:url];
+            LGAlertView*    alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"视频压缩后文件大小为%@",sizeStr] style:LGAlertViewStyleAlert buttonTitles:@[@"发送"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+            [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                @strongify(self);
+                VideoItem *videoItem = [[VideoItem alloc] init];
+                [videoItem setVideoUrl:finalPath];
+                [videoItem setCoverImage:[UIImage coverImageForVideo:url]];
+                [videoItem setVideoTime:duration];
+                [self addVideo:@[videoItem]];
+                [picker dismissViewControllerAnimated:YES completion:nil];
+            }];
+            [alertView setCancelHandler:^(LGAlertView *alertView) {
+                [picker dismissViewControllerAnimated:YES completion:nil];
+            }];
+            [alertView showAnimated:YES completionHandler:nil];
+
+        }
     }
 }
 
@@ -641,7 +722,7 @@ DNImagePickerControllerDelegate>
                     }];
                 }
                 VideoItem *videoItem = [[VideoItem alloc] init];
-                [videoItem setLocalVideoPath:tmpPath];
+                [videoItem setVideoUrl:tmpPath];
                 [videoItem setCoverImage:[UIImage imageWithCGImage:[asset.defaultRepresentation fullScreenImage]]];
                 [videoItem setVideoTime:duration];
                 [addVideoArray addObject:videoItem];

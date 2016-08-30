@@ -287,11 +287,7 @@ static NSString *topChatID = nil;
         self.isRequestHistory = NO;
     }
     else{
-        NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        [params setValue:[UserCenter sharedInstance].curChild.uid forKey:@"objid"];
-        [params setValue:self.targetID forKey:@"to_id"];
-        [params setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
-        [params setValue:self.to_objid forKey:@"to_objid"];
+        NSMutableDictionary *params = [self sendParams];
         
         ChatMessageModel *messageModel = [self chatMessageModel];
         [params setValue:messageModel.oldId forKey:@"more_id"];
@@ -313,13 +309,10 @@ static NSString *topChatID = nil;
 }
 
 - (void)requestLatestMessage{
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:[UserCenter sharedInstance].curChild.uid forKey:@"objid"];
-    [params setValue:self.targetID forKey:@"to_id"];
-    [params setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
-    [params setValue:self.to_objid forKey:@"to_objid"];
+    NSMutableDictionary *params = [self sendParams];
     
     ChatMessageModel *messageModel = [self chatMessageModel];
+    [params setValue:kStringFromValue([messageModel checkStatusTime]) forKey:@"ctime"];
     [params setValue:messageModel.latestId forKey:@"more_id"];
     [params setValue:kStringFromValue(1) forKey:@"more_new"];
     @weakify(self);
@@ -421,18 +414,21 @@ static NSString *topChatID = nil;
 - (void)showTopNewMessageWithNum:(NSInteger)num{
     [self.topNewIndicator setMessageNum:num];
     NSInteger count = self.chatMessageModel.messageArray.count;
-    [self.topNewIndicator setTargetItem:self.chatMessageModel.messageArray[count - num]];
-    @weakify(self)
-    [self.topNewIndicator setTopNewMessageCallback:^{
-        @strongify(self)
-        NSInteger row = [self.chatMessageModel.messageArray indexOfObject:self.topNewIndicator.targetItem];
-        [self.tableView scrollToRow:row inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:YES];
-        [self dismissTopIndicator];
-    }];
-    [self.topNewIndicator setOrigin:CGPointMake(self.view.width - self.topNewIndicator.width, 15)];
-    [UIView animateWithDuration:0.3 animations:^{
-        self.topNewIndicator.alpha = 1.f;
-    }];
+    NSInteger targetIndex = count - num;
+    if(targetIndex < self.chatMessageModel.messageArray.count){
+        [self.topNewIndicator setTargetItem:self.chatMessageModel.messageArray[targetIndex]];
+        @weakify(self)
+        [self.topNewIndicator setTopNewMessageCallback:^{
+            @strongify(self)
+            NSInteger row = [self.chatMessageModel.messageArray indexOfObject:self.topNewIndicator.targetItem];
+            [self.tableView scrollToRow:row inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:YES];
+            [self dismissTopIndicator];
+        }];
+        [self.topNewIndicator setOrigin:CGPointMake(self.view.width - self.topNewIndicator.width, 15)];
+        [UIView animateWithDuration:0.3 animations:^{
+            self.topNewIndicator.alpha = 1.f;
+        }];
+    }
 }
 
 - (void)dismissBottomIndicator{
@@ -590,6 +586,13 @@ static NSString *topChatID = nil;
 
 #pragma mark - MessageCellDelegate
 
+- (void)onAvatarClicked:(MessageItem *)messageItem{
+    UserInfo *userInfo = messageItem.user;
+    if(self.chatType == ChatTypeParents || self.chatType == ChatTypeTeacher){
+        
+    }
+}
+
 - (void)onLongPressAvatar:(MessageItem *)messageItem{
     if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup){
         [_inputView addAtUser:messageItem.user];
@@ -608,6 +611,7 @@ static NSString *topChatID = nil;
             {
                 [item.content setType:UUMessageTypeRevoked];
                 [self.chatMessageModel updateMessage:item];
+                break;
             }
         }
         [wself.tableView reloadData];

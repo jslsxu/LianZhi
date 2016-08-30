@@ -9,6 +9,9 @@
 #import "TNBaseViewController.h"
 #import "MessageDetailModel.h"
 #import "NotificationItem.h"
+
+extern NSString *const kNotificationReadNumChangedNotification;
+
 @interface NotificationDetailVC : TNBaseViewController
 @property (nonatomic, copy)NSString *notificationID;
 @end

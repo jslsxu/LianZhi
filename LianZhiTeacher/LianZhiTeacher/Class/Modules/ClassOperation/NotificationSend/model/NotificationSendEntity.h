@@ -10,6 +10,7 @@
 #import "MessageDetailModel.h"
 #import "NotificationItem.h"
 @interface NotificationSendEntity : TNBaseObject
+@property(nonatomic, copy)NSString*             clientID;
 @property(nonatomic, strong)NSMutableArray*     classArray;
 @property(nonatomic, strong)NSMutableArray*     groupArray;
 @property(nonatomic, copy)NSString*             words;
@@ -24,6 +25,7 @@
 @property(nonatomic, assign)CGFloat             uploadProgress;
 
 + (NotificationSendEntity *)sendEntityWithNotification:(NotificationItem *)notification;
+- (void)updateClientID;
 - (NSString *)delaySendTimeStr;
 - (NSMutableArray *)targets;
 - (void)removeTarget:(UserInfo *)userInfo;
@@ -32,5 +34,6 @@
 - (BOOL)hasAudio;
 - (void)sendWithProgress:(void (^)(CGFloat progress))progress success:(void (^)(NotificationItem *notification))success fail:(void (^)())fail;
 - (void)cancelSend;
+- (BOOL)isSame:(NotificationSendEntity *)object;
 
 @end

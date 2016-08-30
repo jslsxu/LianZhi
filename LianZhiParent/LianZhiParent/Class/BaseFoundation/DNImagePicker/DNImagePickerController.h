@@ -36,7 +36,8 @@ UIKIT_EXTERN ALAssetsFilter * ALAssetsFilterFromDNImagePickerControllerFilterTyp
 
 
 @interface DNImagePickerController : UINavigationController
-
+@property (nonatomic, assign)NSInteger maxImageCount;
+@property (nonatomic, assign)NSInteger maxVideoCount;
 @property (nonatomic, assign) DNImagePickerFilterType filterType;
 @property (nonatomic, weak) id<DNImagePickerControllerDelegate> imagePickerDelegate;
 

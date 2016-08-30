@@ -36,4 +36,8 @@
              };
 }
 
++ (NSArray<NSString *> *)modelPropertyBlacklist{
+    return @[@"isNew"];
+}
+
 @end

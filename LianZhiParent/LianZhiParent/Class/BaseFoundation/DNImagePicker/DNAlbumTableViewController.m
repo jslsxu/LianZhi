@@ -163,6 +163,8 @@ static NSString* const dnalbumTableViewCellReuseIdentifier = @"dnalbumTableViewC
     ALAssetsGroup *group = self.assetsGroups[indexPath.row];
     NSURL *url = [group valueForProperty:ALAssetsGroupPropertyURL];
     DNImageFlowViewController *imageFlowViewController = [[DNImageFlowViewController alloc] initWithGroupURL:url];
+    [imageFlowViewController setMaxImageCount:self.maxImageCount];
+    [imageFlowViewController setMaxVideoCount:self.maxVideoCount];
     imageFlowViewController.title = [group valueForProperty:ALAssetsGroupPropertyName];
     [self.navigationController pushViewController:imageFlowViewController animated:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

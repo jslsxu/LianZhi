@@ -78,6 +78,11 @@
             [item setFrom_user:fromUser];
         }
     }
+    for (NSInteger i = 0; i < self.modelItemArray.count; i++) {
+        MessageDetailItem *item = self.modelItemArray[i];
+        [item setIsNew:i < self.newNum];
+    }
+    self.newNum = 0;
     return parse;
 }
 @end

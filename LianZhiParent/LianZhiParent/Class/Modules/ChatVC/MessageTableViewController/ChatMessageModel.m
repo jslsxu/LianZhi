@@ -8,11 +8,17 @@
 
 #import "ChatMessageModel.h"
 #import "NHFileManager.h"
+
+@implementation UpdateItem
+
+
+@end
 @interface ChatMessageModel ()
 @property (nonatomic, strong)NSMutableArray* modelItemArray;
 @property (nonatomic, copy)NSString *uid;
 @property (nonatomic, assign)ChatType type;
 @property (nonatomic, strong)FMDatabase *database;
+@property (nonatomic, strong)NSArray *updateArray;
 @end
 
 @implementation ChatMessageModel
@@ -196,6 +202,36 @@
     return nil;
 }
 
+- (NSInteger)checkStatusTime{
+    NSInteger time = 0;
+    if(self.updateArray.count > 0){
+        for (UpdateItem *updateTime in self.updateArray) {
+            if([self.updateArray indexOfObject:updateTime] == 0){
+                time = updateTime.ctime;
+            }
+            else{
+                if(updateTime.ctime > time){
+                    time = updateTime.ctime;
+                }
+            }
+        }
+    }
+    else{
+        if(self.modelItemArray.count > 0){
+            for (NSInteger i = self.modelItemArray.count - 1; i >= 0; i--) {
+                MessageItem *item = self.modelItemArray[i];
+                if(item.content.mid.length > 0)
+                    time = item.content.ctime;
+            }
+        }
+        else{
+            time = [[NSDate date] timeIntervalSince1970];
+        }
+    }
+    return time;
+}
+
+
 - (void)sortMessage{
     @synchronized (self) {
         [self.modelItemArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
@@ -236,7 +272,10 @@
 {
     NSInteger originalNum = self.modelItemArray.count;
     NSArray *newMessageArray = [MessageItem nh_modelArrayWithJson:data[@"items"]];
-    
+    NSArray *updateArray = [UpdateItem nh_modelArrayWithJson:data[@"revoke"]];
+    if(updateArray.count > 0){
+        [self setUpdateArray:updateArray];
+    }
     //获取原来消息列表别人发的最新的消息的id
     NSString *originalLatestID = nil;
     for (NSInteger i = self.modelItemArray.count - 1; i >=0; i--)
@@ -278,8 +317,24 @@
             }
         }
     }
+    NSInteger updateCount = 0;
+    if(updateArray.count > 0){
+        for (UpdateItem *updateItem in updateArray) {
+            for (MessageItem *item in self.modelItemArray) {
+                if([updateItem.mid isEqualToString:item.content.mid]){
+                    if(item.content.type != updateItem.mtype){
+                        item.content.type = updateItem.mtype;
+                        [self updateMessage:item];
+                        updateCount ++;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     if(type == RequestMessageTypeLatest){
-        return addNum;
+        return addNum + updateCount;
     }
     return 0;
 }

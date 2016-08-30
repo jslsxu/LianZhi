@@ -13,4 +13,5 @@
 @property (nonatomic, copy)NSString *audioUrl;
 @property (nonatomic, assign)NSInteger timeSpan;
 - (BOOL)isLocal;
+- (BOOL)isSame:(AudioItem *)object;
 @end

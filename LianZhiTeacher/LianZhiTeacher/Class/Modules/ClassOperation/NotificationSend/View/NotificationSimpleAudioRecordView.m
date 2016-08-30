@@ -52,8 +52,15 @@
 }
 
 - (void)onRecordStart{
-    [self.audioTool startToRecord];
-    [UIView animationWithLayer:_recordButton.layer type:XMNAnimationTypeSmaller];
+    if(self.canRecord){
+        [self.audioTool startToRecord];
+        [UIView animationWithLayer:_recordButton.layer type:XMNAnimationTypeSmaller];
+    }
+    else{
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:@"录音已经存在，当前仅支持1条语音，请删除后重新添加" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"确定" destructiveButtonTitle:nil];
+        [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView showAnimated:YES completionHandler:nil];
+    }
 }
 
 - (void)onRecordFinished{
@@ -80,8 +87,8 @@
     else if(self.duration > kRecordMaxTime - 10){
         if(!self.alert){
             self.alert = YES;
-//            PlaySoundUtility *playSound = [[PlaySoundUtility alloc] initForPlayingVibrate];
-//            [playSound play];
+            PlaySoundUtility *playSound = [[PlaySoundUtility alloc] initForPlayingVibrate];
+            [playSound play];
         }
         durationStr = [NSString stringWithFormat:@"剩余时间%zd秒",kRecordMaxTime - self.duration];
     }
@@ -113,9 +120,11 @@
     self.alert = NO;
 }
 - (void)audioToolDidFailedBecauseTheDurtaionWasToShort{
-    [ProgressHUD showHintText:@"录音时间太短，请重新录制"];
-    [_titleLabel setText:@"按住说话"];
-    self.alert = NO;
+    if(self.canRecord){
+        [ProgressHUD showHintText:@"录音时间太短，请重新录制"];
+        [_titleLabel setText:@"按住说话"];
+        self.alert = NO;
+    }
 }
 
 @end

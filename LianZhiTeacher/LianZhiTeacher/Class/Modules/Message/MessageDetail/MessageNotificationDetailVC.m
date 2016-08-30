@@ -57,17 +57,24 @@
 
 - (void)deleteNotification{
     @weakify(self)
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setValue:self.messageDetailItem.msgID forKey:@"notice_id"];
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        @strongify(self)
-        if(self.deleteSuccessCallback){
-            self.deleteSuccessCallback(self.messageDetailItem);
-        }
-        [self.navigationController popViewControllerAnimated:YES];
-    } fail:^(NSString *errMsg) {
-        
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"确定删除这条信息吗?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
+    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setValue:self.messageDetailItem.msgID forKey:@"notice_id"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            @strongify(self)
+            if(self.deleteSuccessCallback){
+                self.deleteSuccessCallback(self.messageDetailItem);
+            }
+            [self.navigationController popViewControllerAnimated:YES];
+        } fail:^(NSString *errMsg) {
+            
+        }];
     }];
+    [alertView showAnimated:YES completionHandler:nil];
+   
 }
 
 - (void)didReceiveMemoryWarning {

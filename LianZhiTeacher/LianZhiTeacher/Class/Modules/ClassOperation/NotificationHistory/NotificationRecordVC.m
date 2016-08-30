@@ -218,6 +218,7 @@
     if(self){
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNotificationChanged) name:kNotificationManagerChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNotificationSendSuccess:) name:kNotificationSendSuccessNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNotificationReadNumChanged:) name:kNotificationReadNumChangedNotification object:nil];
     }
     return self;
 }
@@ -225,10 +226,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self bindTableCell:@"NotificationRecordItemCell" tableModel:@"MySendNotificationModel"];
-    [self.tableView setFrame:CGRectMake(0, 0, self.view.width, self.view.height - 50)];
+    [self.tableView setFrame:CGRectMake(0, 0, self.view.width, self.view.height)];
+    [self.tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [self setSupportPullUp:YES];
     [self setSupportPullDown:YES];
     [self requestData:REQUEST_REFRESH];
+    
+    [RACObserve(_tableView, contentInset) subscribeNext:^(id x) {
+        if(_tableView.contentInset.bottom < 0){
+            [_tableView setContentInset:UIEdgeInsetsZero];
+        }
+    }];
 }
 
 
@@ -267,6 +275,20 @@
     }
 }
 
+- (void)onNotificationReadNumChanged:(NSNotification *)notification{
+    NotificationItem *item = notification.userInfo[@"notification"];
+    if(item){
+        for (NotificationItem *notificationItem in self.tableViewModel.modelItemArray) {
+            if([notificationItem.nid isEqualToString:item.nid]){
+                notificationItem.read_num = item.read_num;
+                [self.tableView reloadData];
+                [self saveModel];
+                break;
+            }
+        }
+    }
+}
+
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType{
     MySendNotificationModel *model = (MySendNotificationModel *)self.tableViewModel;
     HttpRequestTask *task = [[HttpRequestTask alloc] init];
@@ -275,6 +297,9 @@
 //        NotificationItem *notification = [model.modelItemArray lastObject];
 //        [task setParams:@{@"from" : notification.nid}];
         [task setParams:@{@"from" : kStringFromValue(model.modelItemArray.count)}];
+    }
+    else{
+        [task setParams:@{@"num" : kStringFromValue(model.modelItemArray.count)}];
     }
     [task setRequestMethod:REQUEST_GET];
     return task;
@@ -334,7 +359,7 @@
             [sendEntity cancelSend];
             [[NotificationDraftManager sharedInstance] addDraft:sendEntity];
             [[NotificationManager sharedInstance] removeNotification:sendEntity];
-            [ProgressHUD showHintText:@"取消成功，存入草稿"];
+            [ProgressHUD showHintText:@"取消成功，存入到草稿"];
             //取消发送，加入草稿
         }];
         tableCell = cell;
@@ -373,6 +398,7 @@
         MGSwipeButton * forwardButton = [MGSwipeButton buttonWithTitle:@"转发" backgroundColor:[UIColor colorWithHexString:@"28c4d8"] callback:^BOOL(MGSwipeTableCell * sender){
             NotificationSendEntity *sendEntoty = [NotificationSendEntity sendEntityWithNotification:item];
             NotificationSendVC *sendVC = [[NotificationSendVC alloc] initWithSendEntity:sendEntoty];
+            [sendVC setSendType:NotificationSendForward];
             [CurrentROOTNavigationVC pushViewController:sendVC animated:YES];
             return YES;
         }];

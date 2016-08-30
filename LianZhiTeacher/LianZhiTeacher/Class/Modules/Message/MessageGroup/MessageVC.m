@@ -245,8 +245,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     MessageGroupItemCell *itemCell = (MessageGroupItemCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     MessageGroupItem *groupItem = itemCell.messageItem;
-    [groupItem setMsgNum:0];
-    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     
     if([groupItem.fromInfo isNotification])
     {
@@ -264,6 +262,7 @@
         else if(groupItem.fromInfo.type == ChatTypeDaka){
             DakaViewController *dakaVC = [[DakaViewController alloc] init];
             [dakaVC setFromInfo:groupItem.fromInfo];
+            [dakaVC setNewNum:groupItem.msgNum];
             [CurrentROOTNavigationVC pushViewController:dakaVC animated:YES];
         }
         else{
@@ -286,6 +285,8 @@
         [chatVC setName:title];
         [self.navigationController pushViewController:chatVC animated:YES];
     }
+    [groupItem setMsgNum:0];
+    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma - cache

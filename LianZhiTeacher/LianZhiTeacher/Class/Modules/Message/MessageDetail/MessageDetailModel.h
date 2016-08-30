@@ -18,6 +18,7 @@
 @property (nonatomic, copy)NSString *time_str;
 @property (nonatomic, strong)NSArray *pictures;
 @property (nonatomic, strong)VideoItem *video;
+@property (nonatomic, assign)BOOL isNew;
 - (BOOL)hasPhoto;
 - (BOOL)hasVideo;
 - (BOOL)hasAudio;
@@ -29,4 +30,5 @@
 @property (nonatomic, assign)BOOL hasMore;
 @property (nonatomic, copy)NSString *minID;
 @property (nonatomic, strong)MessageFromInfo*   fromInfo;
+@property (nonatomic, assign)NSInteger newNum;
 @end

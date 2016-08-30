@@ -56,14 +56,17 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupSubviews) name:kUserCenterChangedCurChildNotification object:nil];
         _switchButton = [SwitchChildButton buttonWithType:UIButtonTypeCustom];
         [_switchButton setImage:[UIImage imageNamed:@"ChildrenSwitch"] forState:UIControlStateNormal];
+        [_switchButton setUserInteractionEnabled:NO];
         [_switchButton setSize:CGSizeMake(24, 24)];
-        [_switchButton addTarget:self action:@selector(switchChild) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_switchButton];
         
         _avatar = [[AvatarView alloc] initWithRadius:14];
         [self addSubview:_avatar];
-        
+    
         [self setupSubviews];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(switchChild)];
+        [self addGestureRecognizer:tapGesture];
     }
     return self;
 }

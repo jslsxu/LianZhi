@@ -11,11 +11,12 @@
 @interface VideoItem : TNBaseObject
 @property (nonatomic, copy)NSString *videoID;
 @property (nonatomic, copy)NSString *videoUrl;
-@property (nonatomic, copy)NSString *localVideoPath;
 @property (nonatomic, copy)NSString *coverUrl;
 @property (nonatomic, strong)UIImage* coverImage;
 @property (nonatomic, assign)NSInteger videoTime;
 @property (nonatomic, assign)CGFloat    coverWidth;
 @property (nonatomic, assign)CGFloat    coverHeight;
+- (NSString *)filePath;
 - (BOOL)isLocal;
+- (BOOL)isSame:(VideoItem *)object;
 @end

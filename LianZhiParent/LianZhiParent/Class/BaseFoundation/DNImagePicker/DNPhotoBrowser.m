@@ -137,13 +137,13 @@
 
 - (void)setupBarButtonItems
 {
-    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithCustomView:self.fullImageButton];
+//    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithCustomView:self.fullImageButton];
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *item3 = [[UIBarButtonItem alloc] initWithCustomView:self.sendButton];
     UIBarButtonItem *item4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     item4.width = -10;
 
-    [self.toolbar setItems:@[item1,item2,item3,item4]];
+    [self.toolbar setItems:@[/*item1,*/item2,item3,item4]];
 }
 
 - (void)updateNavigationBarAndToolBar {

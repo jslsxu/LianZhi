@@ -21,18 +21,6 @@
 + (NotificationSendEntity *)sendEntityWithNotification:(NotificationItem *)notification{
     NotificationSendEntity *sendEntity = [[NotificationSendEntity alloc] init];
     sendEntity.words = notification.words;
-    for (ClassInfo *classinfo in notification.classes) {
-        for (StudentInfo *studentInfo in classinfo.students) {
-            studentInfo.selected = YES;
-        }
-    }
-    for (TeacherGroup *group in notification.groups) {
-        for (TeacherInfo *teacherInfo in group.teachers) {
-            teacherInfo.selected = YES;
-        }
-    }
-    sendEntity.classArray = [NSMutableArray arrayWithArray:notification.classes];
-    sendEntity.groupArray = [NSMutableArray arrayWithArray:notification.groups];
     if(notification.hasVideo){
         sendEntity.videoArray = [NSMutableArray arrayWithObject:notification.video];
     }
@@ -56,8 +44,14 @@
         self.imageArray = [NSMutableArray array];
         self.videoArray = [NSMutableArray array];
         self.authorUser = [UserCenter sharedInstance].userInfo;
+        
+        [self updateClientID];
     }
     return self;
+}
+
+- (void)updateClientID{
+    self.clientID = [NSString stringWithFormat:@"%zd_%zd",[[NSDate date] timeIntervalSince1970], arc4random() % 1000];
 }
 
 - (NSString *)delaySendTimeStr{
@@ -252,7 +246,7 @@
         if(self.videoArray.count > 0){
             VideoItem *videoItem = self.videoArray[0];
             if(videoItem.isLocal){
-                NSData *videoData = [NSData dataWithContentsOfFile:videoItem.localVideoPath];
+                NSData *videoData = [NSData dataWithContentsOfFile:videoItem.videoUrl];
                 if(videoData){
                     [formData appendPartWithFileData:videoData name:@"video" fileName:@"video" mimeType:@"application/octet-stream"];
                     [formData appendPartWithFileData:UIImageJPEGRepresentation(videoItem.coverImage, 0.8) name:@"video_cover" fileName:@"video_cover" mimeType:@"image/jpeg"];
@@ -284,6 +278,72 @@
 - (void)cancelSend{
     [self.operation cancel];
     self.operation = nil;
+}
+
+- (BOOL)isSame:(NotificationSendEntity *)object{
+    if(self.words.length + object.words.length > 0 && ![self.words isEqualToString:object.words]){
+        return NO;
+    }
+    if(self.sendSms != object.sendSms){
+        return NO;
+    }
+    for (UserInfo *userInfo in self.targets) {
+        BOOL isIn = NO;
+        for (UserInfo *user in object.targets) {
+            if([userInfo.uid isEqualToString:user.uid]){
+                isIn = YES;
+            }
+        }
+        if(!isIn){
+            return NO;
+        }
+    }
+    if(self.videoArray.count != object.videoArray.count){
+        return NO;
+    }
+    for (VideoItem *videoItem in self.videoArray) {
+        BOOL isIn = NO;
+        for (VideoItem *video in object.videoArray) {
+            if([videoItem isSame:video]){
+                isIn = YES;
+            }
+        }
+        if(!isIn){
+            return NO;
+        }
+    }
+    if(self.voiceArray.count != object.voiceArray.count){
+        return NO;
+    }
+    for (AudioItem *audioItem in self.voiceArray) {
+        BOOL isIn = NO;
+        for (AudioItem *audio in object.voiceArray) {
+            if([audioItem isSame:audio]){
+                isIn = YES;
+            }
+        }
+        if(!isIn){
+            return NO;
+        }
+    }
+    
+    if(self.imageArray.count != object.imageArray.count){
+        return NO;
+    }
+    
+    for (PhotoItem *photoItem in self.imageArray) {
+        BOOL isIn = NO;
+        for (PhotoItem *photo in object.imageArray) {
+            if([photoItem isSame:photo]){
+                isIn = YES;
+            }
+        }
+        if(!isIn){
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 @end

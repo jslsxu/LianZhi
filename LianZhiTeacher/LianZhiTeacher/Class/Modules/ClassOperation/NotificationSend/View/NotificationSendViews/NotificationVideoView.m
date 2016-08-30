@@ -61,8 +61,8 @@
 
 - (void)onPlayButtonClicked{
     NSURL *url;
-    if(self.videoItem.localVideoPath.length > 0){
-        url = [NSURL fileURLWithPath:self.videoItem.localVideoPath];
+    if(self.videoItem.isLocal){
+        url = [NSURL fileURLWithPath:self.videoItem.videoUrl];
     }
     else{
         url = [NSURL URLWithString:self.videoItem.videoUrl];

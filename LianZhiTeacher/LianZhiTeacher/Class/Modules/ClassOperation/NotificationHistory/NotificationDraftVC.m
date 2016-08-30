@@ -160,7 +160,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NotificationSendEntity *sendEntity = [[[NotificationDraftManager sharedInstance] draftArray] objectAtIndex:indexPath.row];
-    NotificationSendVC *sendVC = [[NotificationSendVC alloc] initWithSendEntity:sendEntity];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:sendEntity];
+    NotificationSendEntity *copySendEntity = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    NotificationSendVC *sendVC = [[NotificationSendVC alloc] initWithSendEntity:copySendEntity];
+    [sendVC setSendType:NotificationSendDraft];
     [CurrentROOTNavigationVC pushViewController:sendVC animated:YES];
 }
 

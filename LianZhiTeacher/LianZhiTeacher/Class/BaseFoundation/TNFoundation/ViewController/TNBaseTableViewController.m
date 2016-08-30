@@ -42,7 +42,6 @@
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [self.view addSubview:_tableView];
-    
 }
 
 - (UITableViewStyle)tableViewStyle
@@ -126,10 +125,12 @@
 
 - (void)reloadData{
     __weak typeof(self) wself = self;
-    if(self.supportPullUp && [_tableViewModel hasMoreData])
-        [_tableView setMj_footer:[MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+    if(self.supportPullUp && [_tableViewModel hasMoreData]){
+        MJRefreshBackNormalFooter *footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             [wself requestData:REQUEST_GETMORE];
-        }]];
+        }];
+        [_tableView setMj_footer:footer];
+    }
     else
         [_tableView setMj_footer:nil];
     [_tableView reloadData];
@@ -172,6 +173,7 @@
     [_tableViewModel parseData:responseData type:operation.requestType];
     if(self.shouldShowEmptyHint)
         [self showEmptyLabel:_tableViewModel.modelItemArray.count == 0];
+    [self saveCache];
     [self reloadData];
     _isLoading = NO;
     if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])

@@ -412,6 +412,8 @@
             DNImagePickerController *imagePicker = [[DNImagePickerController alloc] init];
             [imagePicker setFilterType:DNImagePickerFilterTypePhotos];
             [imagePicker setImagePickerDelegate:self];
+            [imagePicker setMaxImageCount:9];
+            [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
             [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
         }
             break;

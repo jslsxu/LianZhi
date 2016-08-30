@@ -18,7 +18,6 @@
 #import "NSURL+DNIMagePickerUrlEqual.h"
 
 
-static NSUInteger const kDNImageFlowMaxSeletedNumber = 9;
 
 @interface DNImageFlowViewController () <UICollectionViewDataSource, UICollectionViewDelegate, DNAssetsViewCellDelegate, DNPhotoBrowserDelegate>
 
@@ -227,17 +226,25 @@ static NSString* const dnAssetsViewCellReuseIdentifier = @"DNAssetsViewCell";
     }
     UIBarButtonItem *firstItem = self.toolbarItems.firstObject;
     firstItem.enabled = YES;
-    if (self.selectedAssetsArray.count >= kDNImageFlowMaxSeletedNumber) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"不能超过9张图片" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alert show];
-        
-        return NO;
-    }else
-    {
-        [self addAssetsObject:asset];
-        self.sendButton.badgeValue = [NSString stringWithFormat:@"%@",@(self.selectedAssetsArray.count)];
-        return YES;
+    if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]){
+        if([self selectedImageNum] >= self.maxImageCount){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"不能超过9张图片" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            return NO;
+        }
     }
+    else{
+        if([self selectedVideoNum] >= self.maxVideoCount){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"最多只能选1个视频" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            return NO;
+        }
+    }
+    [self addAssetsObject:asset];
+    self.sendButton.badgeValue = [NSString stringWithFormat:@"%@",@(self.selectedAssetsArray.count)];
+    return YES;
 }
 
 - (void)deseletedAssets:(ALAsset *)asset
@@ -248,6 +255,26 @@ static NSString* const dnAssetsViewCellReuseIdentifier = @"DNAssetsViewCell";
         UIBarButtonItem *firstItem = self.toolbarItems.firstObject;
         firstItem.enabled = NO;
     }
+}
+
+- (NSInteger)selectedImageNum{
+    NSInteger count = 0;
+    for (ALAsset *asset in self.selectedAssetsArray) {
+        if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]){
+            count++;
+        }
+    }
+    return count;
+}
+
+- (NSInteger)selectedVideoNum{
+    NSInteger count = 0;
+    for (ALAsset *asset in self.selectedAssetsArray) {
+        if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]){
+            count++;
+        }
+    }
+    return count;
 }
 
 #pragma mark - getter/setter

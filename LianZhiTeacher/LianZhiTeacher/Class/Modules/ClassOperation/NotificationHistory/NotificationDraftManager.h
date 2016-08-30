@@ -15,5 +15,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(NotificationDraftManager)
 - (NSArray *)draftArray;
 - (void)addDraft:(NotificationSendEntity *)sendEntity;
 - (void)removeDraft:(NotificationSendEntity *)sendEntity;
+- (void)updateDraft:(NotificationSendEntity *)sendEntity;
 - (void)clearDraft;
 @end

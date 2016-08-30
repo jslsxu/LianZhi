@@ -413,9 +413,10 @@
         case FunctionTypePhoto:
         {
             DNImagePickerController *imagePicker = [[DNImagePickerController alloc] init];
-            [imagePicker setFilterType:DNImagePickerFilterTypePhotos];
+//            [imagePicker setFilterType:DNImagePickerFilterTypePhotos];
             [imagePicker setImagePickerDelegate:self];
             [imagePicker setMaxImageCount:9];
+            [imagePicker setMaxVideoCount:1];
             [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
 //            PhotoPickerVC *photoPickerVC = [[PhotoPickerVC alloc] init];
 //            [photoPickerVC setMaxToSelected:9];
@@ -513,7 +514,7 @@
                     }];
                 }
                 VideoItem *videoItem = [[VideoItem alloc] init];
-                [videoItem setLocalVideoPath:tmpPath];
+                [videoItem setVideoUrl:[tmpPath stringByExpandingTildeInPath]];
                 [videoItem setCoverImage:[UIImage imageWithCGImage:[asset.defaultRepresentation fullScreenImage]]];
                 [videoItem setVideoTime:duration];
                 [addVideoArray addObject:videoItem];

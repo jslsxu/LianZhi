@@ -16,6 +16,7 @@
 #import "ClassAlbumVC.h"
 #import "ClassSelectionVC.h"
 #import "LZAccountVC.h"
+#import "TreeHouseVC.h"
 #define ClassIdKey          @"userClassId"
 
 @implementation ApplicationBoxHeaderView
@@ -293,6 +294,10 @@
                 {
                     LZAccountVC *accountVC = [[LZAccountVC alloc] init];
                     [self.navigationController pushViewController:accountVC animated:YES];
+                }
+                else if([host isEqualToString:@"tree"]){
+                    TreeHouseVC *treeHouseVC = [[TreeHouseVC alloc] init];
+                    [CurrentROOTNavigationVC pushViewController:treeHouseVC animated:YES];
                 }
                 else
                 {

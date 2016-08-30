@@ -267,6 +267,27 @@
 
 }
 
+- (void)makeUser:(UserInfo *)user selected:(BOOL) selected{
+    if(self.userType == UserTypeStudent){
+        for (ClassInfo *classInfo in self.dataSource) {
+            for (StudentInfo *studentInfo in classInfo.students) {
+                if([studentInfo.uid isEqualToString:user.uid]){
+                    studentInfo.selected = selected;
+                }
+            }
+        }
+    }
+    else{
+        for (TeacherGroup *group in self.dataSource) {
+            for (TeacherInfo *teacherInfo in group.teachers) {
+                if([teacherInfo.uid isEqualToString:user.uid]){
+                    teacherInfo.selected = selected;
+                }
+            }
+        }
+    }
+}
+
 - (void)updateSelectToolBar{
     BOOL selectAll = YES;
     NSInteger selectNum = 0;
@@ -353,19 +374,31 @@
         if(self.userType == UserTypeStudent){
             ClassInfo *classInfo = (ClassInfo *)dataItem;
             if(classInfo.selectedType != SelectedTypeAll){
-                [classInfo selectAll];
+//                [classInfo selectAll];
+                for (StudentInfo *studentInfo in classInfo.students) {
+                    [self makeUser:studentInfo selected:YES];
+                }
             }
             else{
-                [classInfo clearSelect];
+//                [classInfo clearSelect];
+                for (StudentInfo *studentInfo in classInfo.students) {
+                    [self makeUser:studentInfo selected:NO];
+                }
             }
         }
         else{
             TeacherGroup *teacherGroup = (TeacherGroup *)dataItem;
             if(teacherGroup.selectedType != SelectedTypeAll){
-                [teacherGroup selectAll];
+//                [teacherGroup selectAll];
+                for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
+                    [self makeUser:teacherInfo selected:YES];
+                }
             }
             else{
-                [teacherGroup clearSelect];
+//                [teacherGroup clearSelect];
+                for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
+                    [self makeUser:teacherInfo selected:NO];
+                }
             }
         }
         [self updateSelectToolBar];
@@ -414,12 +447,12 @@
     if(self.userType == UserTypeStudent){
         ClassInfo *classInfo = [self.dataSource objectAtIndex:section];
         StudentInfo *studentInfo = classInfo.students[row];
-        [studentInfo setSelected:!studentInfo.selected];
+        [self makeUser:studentInfo selected:!studentInfo.selected];
     }
     else{
         TeacherGroup *group = [self.dataSource objectAtIndex:section];
         TeacherInfo *teacherInfo = group.teachers[row];
-        [teacherInfo setSelected:!teacherInfo.selected];
+        [self makeUser:teacherInfo selected:!teacherInfo.selected];
     }
     [self updateSelectToolBar];
     [tableView reloadData];
@@ -471,11 +504,6 @@
             teacherInfo.selected = [self isSelected:teacherInfo.uid];
         }
     }
-    _segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"家长",@"同事"]];
-    [_segmentCtrl setSelectedSegmentIndex:0];
-    [_segmentCtrl setWidth:120];
-    [_segmentCtrl addTarget:self action:@selector(onValueChanged) forControlEvents:UIControlEventValueChanged];
-    [self.navigationItem setTitleView:_segmentCtrl];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(onConfirm)];
     
@@ -487,6 +515,25 @@
     [_teacherView setUserType:UserTypeTeacher];
     [_teacherView setHidden:YES];
     [self.view addSubview:_teacherView];
+    
+    if(self.groupArray.count == 0 || self.groupArray.count == 0){
+        [self setTitle:@"选择联系人"];
+        if(self.groupArray.count == 0){
+            [_teacherView setHidden:YES];
+        }
+        if(self.classArray.count == 0){
+            [_studentView setHidden:YES];
+        }
+    }
+    else{
+        _segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"家长",@"同事"]];
+        [_segmentCtrl setSelectedSegmentIndex:0];
+        [_segmentCtrl setWidth:120];
+        [_segmentCtrl addTarget:self action:@selector(onValueChanged) forControlEvents:UIControlEventValueChanged];
+        [self.navigationItem setTitleView:_segmentCtrl];
+        [_studentView setHidden:NO];
+        [_teacherView setHidden:YES];
+    }
     
     [self reloadData];
 }

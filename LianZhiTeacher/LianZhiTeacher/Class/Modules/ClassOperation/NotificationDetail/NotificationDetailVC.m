@@ -11,6 +11,9 @@
 #import "NotificationDetailView.h"
 #import "NotificationTargetListView.h"
 #import "NotificationSendVC.h"
+
+NSString *const kNotificationReadNumChangedNotification = @"NotificationReadNumChangedNotification";
+
 @interface NotificationDetailVC (){
     UISegmentedControl*             _segmentCtrl;
     NotificationDetailView*         _detailView;
@@ -58,6 +61,10 @@
     _notificationItem.user = [UserCenter sharedInstance].userInfo;
     [_detailView setNotificationItem:self.notificationItem];
     [_targetListView setNotificationItem:self.notificationItem];
+    
+    if(notificationItem){
+        [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationReadNumChangedNotification object:nil userInfo:@{@"notification" : notificationItem}];
+    }
 }
 
 - (void)saveNotification:(NotificationItem *)notification{
@@ -111,6 +118,7 @@
             @strongify(self)
             if(self.notificationItem){
                 NotificationSendVC *sendVC = [[NotificationSendVC alloc] initWithSendEntity:[NotificationSendEntity sendEntityWithNotification:self.notificationItem]];
+                [sendVC setSendType:NotificationSendForward];
                 [CurrentROOTNavigationVC pushViewController:sendVC animated:YES];
             }
         } destroyItem:NO];

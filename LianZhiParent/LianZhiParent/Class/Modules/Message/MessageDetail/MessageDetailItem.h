@@ -17,6 +17,7 @@
 @property (nonatomic, copy)NSString *time_str;
 @property (nonatomic, strong)NSArray *pictures;
 @property (nonatomic, strong)VideoItem *video;
+@property (nonatomic, assign)BOOL isNew;
 - (BOOL)hasPhoto;
 - (BOOL)hasVideo;
 - (BOOL)hasAudio;

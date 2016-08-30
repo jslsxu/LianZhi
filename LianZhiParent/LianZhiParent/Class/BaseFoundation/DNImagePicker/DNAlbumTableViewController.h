@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface DNAlbumTableViewController : UITableViewController
-
+@property (nonatomic, assign)NSInteger maxImageCount;
+@property (nonatomic, assign)NSInteger maxVideoCount;
 @end

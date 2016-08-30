@@ -89,6 +89,8 @@ ALAssetsFilter * ALAssetsFilterFromDNImagePickerControllerFilterType(DNImagePick
 - (void)showAlbumList
 {
     DNAlbumTableViewController *albumTableViewController = [[DNAlbumTableViewController alloc] init];
+    [albumTableViewController setMaxImageCount:self.maxImageCount];
+    [albumTableViewController setMaxVideoCount:self.maxVideoCount];
     [self setViewControllers:@[albumTableViewController]];
 }
 

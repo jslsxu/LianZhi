@@ -110,7 +110,9 @@
 
 - (void)onCurChildChanged
 {
+    [self.requestOperation cancel];
     [self loadCache];
+    [self.tableView reloadData];
 }
 
 - (void)loadCache{
@@ -228,8 +230,6 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     MessageGroupItem *groupItem = [[self sourceArray] objectAtIndex:indexPath.row];
-    [groupItem setMsgNum:0];
-    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     if([groupItem.fromInfo isNotification])
     {
         if(groupItem.fromInfo.type == ChatTypeAttendance)
@@ -245,6 +245,7 @@
         else if(groupItem.fromInfo.type == ChatTypeDoorEntrance){
             DakaViewController *dakaVC = [[DakaViewController alloc] init];
             [dakaVC setFromInfo:groupItem.fromInfo];
+            [dakaVC setNewNum:groupItem.msgNum];
             [CurrentROOTNavigationVC pushViewController:dakaVC animated:YES];
         }
         else {
@@ -267,6 +268,8 @@
         [chatVC setName:title];
         [self.navigationController pushViewController:chatVC animated:YES];
     }
+    [groupItem setMsgNum:0];
+    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma - cache

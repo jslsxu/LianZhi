@@ -95,6 +95,12 @@
         [_contentLabel setHidden:YES];
     }
     [_bgView setHeight:height];
+    if(item.isNew){
+        [_bgView setBackgroundColor:[UIColor colorWithHexString:@"f4f9fa"]];
+    }
+    else{
+        [_bgView setBackgroundColor:[UIColor whiteColor]];
+    }
 }
 
 - (void)onMessageDeleteButtonClicked

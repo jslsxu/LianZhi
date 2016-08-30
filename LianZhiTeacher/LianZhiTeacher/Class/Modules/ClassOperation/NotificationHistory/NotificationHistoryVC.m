@@ -39,7 +39,7 @@
     
     self.recordVC = [[NotificationRecordVC alloc] init];
     self.draftVC = [[NotificationDraftVC alloc] init];
-    [self.recordVC.view setFrame:self.view.bounds];
+    [self.recordVC.view setFrame:CGRectMake(0, 0, self.view.width, self.view.height - 50)];
     [self.draftVC.view setFrame:self.view.bounds];
     [self.view addSubview:self.recordVC.view];
     [self.view addSubview:self.draftVC.view];
@@ -106,6 +106,7 @@
 
 - (void)sendNotification{
     NotificationSendVC *sendVC = [[NotificationSendVC alloc] init];
+    [sendVC setSendType:NotificationSendNormal];
     [self.navigationController pushViewController:sendVC animated:YES];
 }
 
