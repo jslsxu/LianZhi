@@ -38,6 +38,10 @@
 
 @implementation MessageItem
 
++ (NSArray <NSString *>*)modelPropertyBlacklist{
+    return @[@"isRead"];
+}
+
 - (void)makeClientSendID{
     NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
     static long messageIndex = 1;
@@ -218,31 +222,59 @@
     for (NSString *key in params.allKeys) {
         [sendParams setValue:params[key] forKey:key];
     }
-    @weakify(self)
+    NSData *voiceData = nil;
+    NSData *imageData = nil;
+    NSData *videoData = nil;
+    NSData *coverImageData = nil;
     MessageType messageType = self.content.type;
+    if(messageType == UUMessageTypeVoice){
+        AudioItem *audioItem = self.content.exinfo.voice;
+         voiceData = [NSData dataWithContentsOfFile:audioItem.audioUrl];
+        if(voiceData.length == 0){
+            [ProgressHUD showHintText:@"语音数据为空"];
+            return;
+        }
+    }
+    else if(messageType == UUMessageTypePicture){
+        PhotoItem *photoItem = self.content.exinfo.imgs;
+        imageData = [NSData dataWithContentsOfFile:photoItem.big];
+        if(imageData.length == 0){
+            [ProgressHUD showHintText:@"图片数据为空"];
+        }
+    }
+    else if(messageType == UUMessageTypeVideo){
+        VideoItem *videoItem = self.content.exinfo.video;
+        videoData = [NSData dataWithContentsOfFile:videoItem.videoUrl];
+        coverImageData = [NSData dataWithContentsOfFile:videoItem.coverUrl];
+        if(videoData.length == 0){
+            [ProgressHUD showHintText:@"视频数据为空"];
+            return;
+        }
+        if(coverImageData.length == 0){
+            [ProgressHUD showHintText:@"封面数据为空"];
+            return;
+        }
+    }
+
+    @weakify(self)
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/send" withParams:sendParams constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-        @strongify(self)
         if(messageType == UUMessageTypeVoice){
-            AudioItem *audioItem = self.content.exinfo.voice;
-            NSData *voiceData = [NSData dataWithContentsOfFile:audioItem.audioUrl];
             if(voiceData.length > 0){
                 [formData appendPartWithFileData:voiceData name:@"file" fileName:@"file" mimeType:@"audio/AMR"];
             }
         }
         else if(messageType == UUMessageTypePicture){
-            PhotoItem *photoItem = self.content.exinfo.imgs;
-            NSData *data = [NSData dataWithContentsOfFile:photoItem.big];
-            if(data.length > 0){
-                [formData appendPartWithFileData:data name:@"file" fileName:@"file" mimeType:@"image/jpeg"];
+            if(imageData.length > 0){
+                [formData appendPartWithFileData:imageData name:@"file" fileName:@"file" mimeType:@"image/jpeg"];
             }
         }
         else if(messageType == UUMessageTypeVideo){
-            VideoItem *videoitem = self.content.exinfo.video;
-            NSData *videoData = [NSData dataWithContentsOfFile:videoitem.videoUrl];
-            NSData *coverImageData = [NSData dataWithContentsOfFile:videoitem.coverUrl];
             if(videoData.length > 0 && coverImageData.length > 0){
                 [formData appendPartWithFileData:videoData name:@"video" fileName:@"video" mimeType:@"application/octet-stream"];
                 [formData appendPartWithFileData:coverImageData name:@"video_cover" fileName:@"video_cover" mimeType:@"image/jpeg"];
+            }
+            else{
+                NSLog(@"video data error !!!!!!!!!!");
             }
         }
     } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {

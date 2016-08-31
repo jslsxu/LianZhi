@@ -410,10 +410,10 @@
         case FunctionTypePhoto:
         {
             DNImagePickerController *imagePicker = [[DNImagePickerController alloc] init];
-            [imagePicker setFilterType:DNImagePickerFilterTypePhotos];
+//            [imagePicker setFilterType:DNImagePickerFilterTypePhotos];
             [imagePicker setImagePickerDelegate:self];
             [imagePicker setMaxImageCount:9];
-            [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
+            [imagePicker setMaxVideoCount:1];
             [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
         }
             break;
@@ -481,35 +481,60 @@
                 }
             }
             else if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]){
+                NSString *coverUrl = [NHFileManager getTmpImagePath];
+                UIImage *coverImage = [UIImage imageWithCGImage:[asset.defaultRepresentation fullScreenImage]];
+                NSData *imageData = UIImageJPEGRepresentation(coverImage, 0.8);
+                [imageData writeToFile:coverUrl atomically:YES];
                 NSString *filePath = [[asset.defaultRepresentation url] absoluteString];
                 NSString *tmpPath = [NHFileManager tmpVideoPathForPath:filePath];
                 NSInteger duration = [[asset valueForProperty:ALAssetPropertyDuration] integerValue];
+                [[NSFileManager defaultManager] removeItemAtPath:tmpPath error:nil];
                 if([[NSFileManager defaultManager] fileExistsAtPath:tmpPath]){
+                    [ProgressHUD showHintText:@"文件存在"];
                 }
-                else{
-                    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在压缩" toView:[UIApplication sharedApplication].keyWindow];
-                    AVAsset *avAsset = [AVAsset assetWithURL:[NSURL URLWithString:filePath]];
-                    AVAssetExportSession * exportSession = [AVAssetExportSession exportSessionWithAsset:avAsset presetName:AVAssetExportPresetMediumQuality];
-                    exportSession.outputFileType = AVFileTypeMPEG4;
-                    exportSession.shouldOptimizeForNetworkUse = YES;
-                    exportSession.outputURL = [NSURL fileURLWithPath:tmpPath];
-                    [exportSession exportAsynchronouslyWithCompletionHandler:^{
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            if(AVAssetExportSessionStatusCompleted == exportSession.status){
-                                [hud hide:YES];
+                MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在压缩" toView:[UIApplication sharedApplication].keyWindow];
+                AVAsset *avAsset = [AVURLAsset URLAssetWithURL:[asset.defaultRepresentation url] options:nil];
+                AVAssetExportSession * exportSession = [AVAssetExportSession exportSessionWithAsset:avAsset presetName:AVAssetExportPresetMediumQuality];
+                exportSession.outputFileType = AVFileTypeMPEG4;
+                exportSession.shouldOptimizeForNetworkUse = YES;
+                exportSession.outputURL = [NSURL fileURLWithPath:tmpPath];
+                
+                [exportSession exportAsynchronouslyWithCompletionHandler:^{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [hud hide:YES];
+                        if(AVAssetExportSessionStatusCompleted == exportSession.status){
+                            NSData *videoData = [NSData dataWithContentsOfFile:tmpPath];
+                            if(videoData.length > 0){
+                                VideoItem *videoItem = [[VideoItem alloc] init];
+                                [videoItem setVideoUrl:tmpPath];
+                                [videoItem setCoverUrl:coverUrl];
+                                [videoItem setVideoTime:duration];
+                                [videoItem setCoverWidth:coverImage.size.width];
+                                [videoItem setCoverHeight:coverImage.size.height];
+                                [addVideoArray addObject:videoItem];
+                                
+                                if(addVideoArray.count > 0){
+                                    if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendVideo:)]){
+                                        for (VideoItem *videoItem in addVideoArray) {
+                                            [self.inputDelegate inputBarViewDidSendVideo:videoItem];
+                                        }
+                                    }
+                                }
                             }
                             else{
                                 [ProgressHUD showHintText:@"压缩失败"];
                             }
-                        });
-                        
-                    }];
-                }
-                VideoItem *videoItem = [[VideoItem alloc] init];
-                [videoItem setLocalVideoPath:tmpPath];
-                [videoItem setCoverImage:[UIImage imageWithCGImage:[asset.defaultRepresentation fullScreenImage]]];
-                [videoItem setVideoTime:duration];
-                [addVideoArray addObject:videoItem];
+
+                        }
+                        else{
+                            
+                            [ProgressHUD showHintText:@"压缩失败"];
+                        }
+                    });
+                    
+                }];
+                
+                
             }
         }
         if(addImageArray.count > 0){
@@ -535,13 +560,6 @@
                     }
                 });
             });
-        }
-        if(addVideoArray.count > 0){
-            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendVideo:)]){
-                for (VideoItem *videoItem in addVideoArray) {
-                    [self.inputDelegate inputBarViewDidSendVideo:videoItem];
-                }
-            }
         }
     }
     
@@ -582,4 +600,6 @@
 {
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
+
+
 @end

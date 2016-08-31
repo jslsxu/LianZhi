@@ -31,17 +31,25 @@
     return NO;
 }
 
-- (NSString *)filePath{
-    if([self isLocal]){
-        if([self.videoUrl hasPrefix:@"/var/mobile"]){
-            return NSHomeDirectory();
+- (NSString *)videoUrl{
+    if([_videoUrl hasPrefix:@"/var/mobile"]){
+        NSInteger index = 0;
+        NSInteger homeIndex = 0;
+        for (NSInteger i = 0; i < _videoUrl.length; i++) {
+            NSString *s = [_videoUrl substringWithRange:NSMakeRange(i, 1)];
+            if([s isEqualToString:@"/"]){
+                index++;
+                if(index == 7){
+                    homeIndex = i;
+                    break;
+                }
+            }
         }
-        else{
-            return self.videoUrl;
-        }
+        NSString *relativePath = [_videoUrl substringFromIndex:homeIndex + 1];
+        return [NSHomeDirectory() stringByAppendingPathComponent:relativePath];
     }
     else{
-        return self.videoUrl;
+        return _videoUrl;
     }
 }
 @end

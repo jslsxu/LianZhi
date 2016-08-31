@@ -103,13 +103,12 @@ DNImagePickerControllerDelegate>
                     [[NotificationDraftManager sharedInstance] updateDraft:self.sendEntity];
                 }
                 else if (index == 1){
-                    [self.sendEntity updateClientID];
-                    [[NotificationDraftManager sharedInstance] addDraft:self.sendEntity];
+//                    [self.sendEntity updateClientID];
+//                    [[NotificationDraftManager sharedInstance] addDraft:self.sendEntity];
                 }
                 [self.navigationController popViewControllerAnimated:YES];
             }];
             [alertView setCancelHandler:^(LGAlertView *alertView) {
-                [self.navigationController popViewControllerAnimated:YES];
             }];
             [alertView showAnimated:YES completionHandler:nil];
         }
@@ -128,7 +127,6 @@ DNImagePickerControllerDelegate>
                 [self.navigationController popViewControllerAnimated:YES];
             }];
             [alertView setCancelHandler:^(LGAlertView *alertView) {
-                [self.navigationController popViewControllerAnimated:YES];
             }];
             [alertView showAnimated:YES completionHandler:nil];
         }

@@ -108,6 +108,7 @@
         if(item.messageStatus != MessageStatusSuccess){
             item.messageStatus = MessageStatusFailed;
         }
+        [item setIsRead:YES];
         [item setTargetUser:self.targetUser];
         [self.modelItemArray addObject:item];
     }
@@ -128,6 +129,7 @@
         if(item.messageStatus != MessageStatusSuccess){
             item.messageStatus = MessageStatusFailed;
         }
+        [item setIsRead:YES];
         [item setTargetUser:self.targetUser];
         [self.modelItemArray addObject:item];
     }

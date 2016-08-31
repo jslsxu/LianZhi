@@ -334,6 +334,7 @@
 		8D75552E1D71709E00A140EE /* PlaySoundUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D75552D1D71709E00A140EE /* PlaySoundUtility.m */; };
 		8D7555321D71FBE600A140EE /* DakaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555311D71FBE600A140EE /* DakaViewController.m */; };
 		8D7555381D71FC0600A140EE /* DakaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555371D71FC0600A140EE /* DakaCell.m */; };
+		8D7555451D76C22300A140EE /* DNVideoBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555441D76C22300A140EE /* DNVideoBrowserCell.m */; };
 		8D867BC91D25042A0020A21C /* NHAudioConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB51D25042A0020A21C /* NHAudioConverter.m */; };
 		8D867BCA1D25042A0020A21C /* NHAudioTool+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB71D25042A0020A21C /* NHAudioTool+Helper.m */; };
 		8D867BCB1D25042A0020A21C /* NHAudioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB91D25042A0020A21C /* NHAudioTool.m */; };
@@ -1055,6 +1056,8 @@
 		8D7555311D71FBE600A140EE /* DakaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DakaViewController.m; sourceTree = "<group>"; };
 		8D7555361D71FC0600A140EE /* DakaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DakaCell.h; sourceTree = "<group>"; };
 		8D7555371D71FC0600A140EE /* DakaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DakaCell.m; sourceTree = "<group>"; };
+		8D7555431D76C22300A140EE /* DNVideoBrowserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNVideoBrowserCell.h; sourceTree = "<group>"; };
+		8D7555441D76C22300A140EE /* DNVideoBrowserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNVideoBrowserCell.m; sourceTree = "<group>"; };
 		8D867BB41D25042A0020A21C /* NHAudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHAudioConverter.h; sourceTree = "<group>"; };
 		8D867BB51D25042A0020A21C /* NHAudioConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHAudioConverter.m; sourceTree = "<group>"; };
 		8D867BB61D25042A0020A21C /* NHAudioTool+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NHAudioTool+Helper.h"; sourceTree = "<group>"; };
@@ -2993,6 +2996,8 @@
 				8D867C751D2F97080020A21C /* DNBadgeLabel.m */,
 				8D867C761D2F97080020A21C /* DNBrowserCell.h */,
 				8D867C771D2F97080020A21C /* DNBrowserCell.m */,
+				8D7555431D76C22300A140EE /* DNVideoBrowserCell.h */,
+				8D7555441D76C22300A140EE /* DNVideoBrowserCell.m */,
 				8D867C781D2F97080020A21C /* DNFullImageButton.h */,
 				8D867C791D2F97080020A21C /* DNFullImageButton.m */,
 				8D867C7A1D2F97080020A21C /* DNSendButton.h */,
@@ -3510,6 +3515,7 @@
 				3793FA871B7CFFF000501F77 /* UIActionSheet+Blocks.m in Sources */,
 				3793FAEB1B7CFFF000501F77 /* TNModelItem.m in Sources */,
 				37E038E81A7386D3003A3A7F /* PublishNewspaperVC.m in Sources */,
+				8D7555451D76C22300A140EE /* DNVideoBrowserCell.m in Sources */,
 				8DCFD69F1D4B4BCB001EDC8A /* NotificationGroupMemberVC.m in Sources */,
 				3793FAB81B7CFFF000501F77 /* MLAudioMeterObserver.m in Sources */,
 				8D867D541D3FE2290020A21C /* NotificationMemberSelectVC.m in Sources */,

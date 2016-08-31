@@ -38,7 +38,9 @@
 @end
 
 @implementation MessageItem
-
++ (NSArray <NSString *> *)modelPropertyBlacklist{
+    return @[@"isRead"];
+}
 
 - (void)makeClientSendID{
     NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];

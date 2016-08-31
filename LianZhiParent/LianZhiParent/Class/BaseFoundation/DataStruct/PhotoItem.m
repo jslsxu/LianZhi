@@ -40,5 +40,26 @@
     [self modelSetWithJSON:dataWrapper.data];
     
 }
+//- (NSString *)big{
+//    if([_big hasPrefix:@"/var/mobile"]){
+//        NSInteger index = 0;
+//        NSInteger homeIndex = 0;
+//        for (NSInteger i = 0; i < _big.length; i++) {
+//            NSString *s = [_big substringWithRange:NSMakeRange(i, 1)];
+//            if([s isEqualToString:@"/"]){
+//                index++;
+//                if(index == 7){
+//                    homeIndex = i;
+//                    break;
+//                }
+//            }
+//        }
+//        NSString *relativePath = [_big substringFromIndex:homeIndex + 1];
+//        return [NSHomeDirectory() stringByAppendingPathComponent:relativePath];
+//    }
+//    else{
+//        return _big;
+//    }
+//}
 
 @end

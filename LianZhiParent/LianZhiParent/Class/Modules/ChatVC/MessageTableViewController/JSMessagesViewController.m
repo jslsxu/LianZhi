@@ -327,11 +327,12 @@ static NSString *topChatID = nil;
                 unreadCount++;
             }
         }
+        BOOL shouldScrollToBottom = NO;
+        if(self.tableView.contentOffset.y + self.tableView.height > self.tableView.contentSize.height - 80){
+            shouldScrollToBottom = YES;
+        }
         BOOL hasNew = [self.chatMessageModel parseData:responseObject.data type:RequestMessageTypeLatest];
         if(hasNew){
-            BOOL shouldScrollToBottom = NO;
-            if(self.tableView.contentOffset.y + self.tableView.height > self.tableView.contentSize.height - 80)
-                shouldScrollToBottom = YES;
             [self.tableView reloadData];
             if(shouldScrollToBottom){
                 if(!self.firstIn){
@@ -348,9 +349,19 @@ static NSString *topChatID = nil;
             }
             else{
                 //如果最后一个不再显示范围
-                [self showBottomNewMessageWithNum:unreadCount];
+                NSInteger count = 0;
+                for (MessageItem *item in self.chatMessageModel.messageArray) {
+                    if(!item.isRead){
+                        count++;
+                    }
+                }
+                if(count > 0){
+                    [self showBottomNewMessageWithNum:count];
+                }
+                else{
+                    [self dismissBottomIndicator];
+                }
             }
-
         }
     } fail:^(NSString *errMsg) {
         
@@ -494,6 +505,11 @@ static NSString *topChatID = nil;
     }
     [cell setDelegate:self];
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    MessageItem *messageItem = [[self chatMessageModel].messageArray objectAtIndex:indexPath.row];
+    messageItem.isRead = YES;
 }
 
 

@@ -93,6 +93,10 @@
         loadCount++;
         NSString *messageJson = [rs stringForColumn:@"message_json"];
         MessageItem *item = [MessageItem nh_modelWithJson:messageJson];
+        if(item.messageStatus != MessageStatusSuccess){
+            item.messageStatus = MessageStatusFailed;
+        }
+        [item setIsRead:YES];
         [item setTargetUser:self.targetUser];
         [self.modelItemArray addObject:item];
     }
@@ -113,6 +117,7 @@
         if(item.messageStatus != MessageStatusSuccess){
             item.messageStatus = MessageStatusFailed;
         }
+        [item setIsRead:YES];
         [item setTargetUser:self.targetUser];
         [self.modelItemArray addObject:item];
     }

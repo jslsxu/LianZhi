@@ -78,6 +78,7 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @property (nonatomic, strong)UserInfo *user;
 @property (nonatomic, strong)MessageContent *content;
 @property (nonatomic, assign)NSInteger createTime;
+@property (nonatomic, assign)BOOL isRead;
 
 - (BOOL)isLocalMessage;
 - (MessageFrom)from;

@@ -31,4 +31,27 @@
     return @{@"timeSpan" : @"second",
              @"audioUrl" : @"url"};
 }
+
+//- (NSString *)audioUrl{
+//    if([_audioUrl hasPrefix:@"/var/mobile"]){
+//        NSInteger index = 0;
+//        NSInteger homeIndex = 0;
+//        for (NSInteger i = 0; i < _audioUrl.length; i++) {
+//            NSString *s = [_audioUrl substringWithRange:NSMakeRange(i, 1)];
+//            if([s isEqualToString:@"/"]){
+//                index++;
+//                if(index == 7){
+//                    homeIndex = i;
+//                    break;
+//                }
+//            }
+//        }
+//        NSString *relativePath = [_audioUrl substringFromIndex:homeIndex + 1];
+//        return [NSHomeDirectory() stringByAppendingPathComponent:relativePath];
+//    }
+//    else{
+//        return _audioUrl;
+//    }
+//    
+//}
 @end

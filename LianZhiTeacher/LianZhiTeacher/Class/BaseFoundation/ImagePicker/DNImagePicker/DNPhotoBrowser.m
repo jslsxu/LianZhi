@@ -12,6 +12,7 @@
 #import "DNSendButton.h"
 #import "DNFullImageButton.h"
 #import "DNBrowserCell.h"
+#import "DNVideoBrowserCell.h"
 @interface DNPhotoBrowser () <UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 {
     BOOL _statusBarShouldBeHidden;
@@ -339,6 +340,7 @@
         _browserCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(-10, 0, self.view.bounds.size.width+20, self.view.bounds.size.height+1) collectionViewLayout:layout];
         _browserCollectionView.backgroundColor = [UIColor blackColor];
         [_browserCollectionView registerClass:[DNBrowserCell class] forCellWithReuseIdentifier:NSStringFromClass([DNBrowserCell class])];
+        [_browserCollectionView registerClass:[DNVideoBrowserCell class] forCellWithReuseIdentifier:NSStringFromClass([DNVideoBrowserCell class])];
         _browserCollectionView.delegate = self;
         _browserCollectionView.dataSource = self;
         _browserCollectionView.pagingEnabled = YES;
@@ -357,11 +359,29 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    DNBrowserCell *cell = (DNBrowserCell *)[collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([DNBrowserCell class]) forIndexPath:indexPath];
-    
-    cell.asset = [self.photoDataSources objectAtIndex:indexPath.row];
-    cell.photoBrowser = self;
-    return cell;
+    ALAsset *asset = [self.photoDataSources objectAtIndex:indexPath.row];
+    if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]){
+        DNVideoBrowserCell *cell = (DNVideoBrowserCell *)[collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([DNVideoBrowserCell class]) forIndexPath:indexPath];
+        
+        cell.asset = asset;
+        cell.photoBrowser = self;
+        return cell;
+    }
+    else{
+        DNBrowserCell *cell = (DNBrowserCell *)[collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([DNBrowserCell class]) forIndexPath:indexPath];
+        
+        cell.asset = asset;
+        cell.photoBrowser = self;
+        return cell;
+    }
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
+    ALAsset *asset = [self.photoDataSources objectAtIndex:indexPath.row];
+    if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]){
+        DNVideoBrowserCell *videoCell = (DNVideoBrowserCell *)cell;
+        [videoCell stopPlay];
+    }
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout

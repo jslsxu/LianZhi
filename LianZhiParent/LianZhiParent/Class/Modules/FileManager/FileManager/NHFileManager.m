@@ -158,7 +158,7 @@ static NSString *kLocalVideoCachePath = @"video";
 
 
 + (NSString *)tmpVideoPathForPath:(NSString *)path{
-    return [FCFileManager pathForTemporaryDirectoryWithPath:[NSString stringWithFormat:@"%@.mov",[path md5String]]];
+    return [[self localVideoCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.mp4",[path md5String]]];
 }
 
 + (NSDictionary *)attribuateOfItemAtPath:(NSString *)path {
