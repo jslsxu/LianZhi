@@ -8,7 +8,7 @@
 
 #import "NotificationManager.h"
 #import "NotificationItem.h"
-
+#import "NotificationDraftManager.h"
 NSString *kNotificationManagerChangedNotification = @"NotificationManagerChanged";
 NSString *kNotificationSendSuccessNotification = @"NotificationSendSuccessNotification";
 NSString *kNewNotificationToSend = @"NewNotificationToSend";
@@ -51,20 +51,29 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(NotificationManager)
 }
 
 - (void)addNotification:(NotificationSendEntity *)notificationSendEntity{
-    @synchronized (self) {
-        [self.notificationArray insertObject:notificationSendEntity atIndex:0];
-        [notificationSendEntity sendWithProgress:^(CGFloat progress) {
-            
-        } success:^(NotificationItem *notification){
-            [self.notificationArray removeObject:notificationSendEntity];
-            if(notification){
-                [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationSendSuccessNotification object:nil userInfo:@{kNewNotificationToSend : notification}];
-            }
-        } fail:^{
-            
-        }];
-        [self sendNotificationValueChanged];
-    }
+//    //判断网络，如果无网，则直接仿佛草稿箱,否则上传
+//    YYReachability *reachability = [YYReachability reachability];
+//    YYReachabilityStatus status = reachability.status;
+//    if(status == YYReachabilityStatusNone){
+//        [[NotificationDraftManager sharedInstance] addDraft:notificationSendEntity];
+//        [ProgressHUD showHintText:@"网络异常，存入到草稿"];
+//    }
+//    else{
+        @synchronized (self) {
+            [self.notificationArray insertObject:notificationSendEntity atIndex:0];
+            [notificationSendEntity sendWithProgress:^(CGFloat progress) {
+                
+            } success:^(NotificationItem *notification){
+                [self.notificationArray removeObject:notificationSendEntity];
+                if(notification){
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kNotificationSendSuccessNotification object:nil userInfo:@{kNewNotificationToSend : notification}];
+                }
+            } fail:^{
+                
+            }];
+            [self sendNotificationValueChanged];
+        }
+//    }
 }
 
 - (void)removeNotification:(NotificationSendEntity *)notificationSendEntity{

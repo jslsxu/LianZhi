@@ -161,13 +161,11 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:ApplicationDelegate.homeVC.curChildrenSelectView];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [self.navigationItem setLeftBarButtonItem:nil];
 }
 
 - (void)setTitle:(NSString *)title{

@@ -53,35 +53,10 @@ NSString *const kUserDataStorageKey = @"UserData";
         [childrenArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
             ChildInfo *childInfo1 = (ChildInfo *)obj1;
             ChildInfo *childInfo2 = (ChildInfo *)obj2;
-            return [childInfo1.birthday compare:childInfo2.birthday];
+            return [childInfo1.uid compare:childInfo2.uid];
         }];
         self.children = childrenArray;
     }
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    if(self = [super init])
-    {
-        self.userInfo = [aDecoder decodeObjectForKey:@"user"];
-        self.firstLogin = [aDecoder decodeBoolForKey:@"first_login"];
-        self.accessToken = [aDecoder decodeObjectForKey:@"verify"];
-        self.config = [aDecoder decodeObjectForKey:@"config"];
-        NSArray *childrenArray = [aDecoder decodeObjectForKey:@"children"];
-        self.children = [[NSMutableArray alloc] initWithArray:childrenArray];
-        self.curChildIndex = [aDecoder decodeIntegerForKey:@"curChildIndex"];
-    }
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
-    [aCoder encodeObject:self.userInfo forKey:@"user"];
-    [aCoder encodeBool:self.firstLogin forKey:@"first_login"];
-    [aCoder encodeObject:self.accessToken forKey:@"verify"];
-    [aCoder encodeObject:self.config forKey:@"config"];
-    [aCoder encodeObject:self.children forKey:@"children"];
-    [aCoder encodeInteger:self.curChildIndex forKey:@"curChildIndex"];
 }
 
 @end

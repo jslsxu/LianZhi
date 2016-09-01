@@ -242,12 +242,14 @@
             [homeWorkVC setClassID:groupItem.fromInfo.classID];
             [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
         }
-        else if(groupItem.fromInfo.type == ChatTypeDoorEntrance){
-            DakaViewController *dakaVC = [[DakaViewController alloc] init];
-            [dakaVC setFromInfo:groupItem.fromInfo];
-            [dakaVC setNewNum:groupItem.msgNum];
-            [CurrentROOTNavigationVC pushViewController:dakaVC animated:YES];
-        }
+//        else if(groupItem.fromInfo.type == ChatTypeDoorEntrance){
+//            DakaViewController *dakaVC = [[DakaViewController alloc] init];
+//            [dakaVC setFromInfo:groupItem.fromInfo];
+//            [CurrentROOTNavigationVC pushViewController:dakaVC animated:YES];
+//        }
+//        else if(groupItem.fromInfo.type == ChatTypeLianZhiBroadcast){
+//            
+//        }
         else {
             MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];
             [detailVC setFromInfo:groupItem.fromInfo];

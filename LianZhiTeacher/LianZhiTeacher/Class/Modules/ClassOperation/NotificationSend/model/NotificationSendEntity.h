@@ -18,6 +18,7 @@
 @property(nonatomic, assign)BOOL                delaySend;
 @property(nonatomic, assign)NSInteger           delaySendTime;
 @property(nonatomic, assign)NSString*           timeStr;
+@property(nonatomic, assign)NSInteger           createTime;
 @property(nonatomic, strong)NSMutableArray*     voiceArray;
 @property(nonatomic, strong)NSMutableArray*     imageArray;
 @property(nonatomic, strong)NSMutableArray*     videoArray;

@@ -8,12 +8,12 @@
 
 #import "TNBaseViewController.h"
 #import "LZTabBarButton.h"
-#import "SDCycleScrollView.h"
-@interface ApplicationBoxHeaderView : UICollectionReusableView
+#import "ZYBannerView.h"
+@interface ApplicationBoxHeaderView : UICollectionReusableView<ZYBannerViewDataSource, ZYBannerViewDelegate>
 {
-    SDCycleScrollView*  _cycleScrollView;
+    ZYBannerView*   _bannerView;
 }
-@property (nonatomic, readonly)SDCycleScrollView*  cycleScrollView;
+@property (nonatomic, strong)NSArray *bannerArray;
 - (void)updateWithHeight:(CGFloat)height;
 @end
 

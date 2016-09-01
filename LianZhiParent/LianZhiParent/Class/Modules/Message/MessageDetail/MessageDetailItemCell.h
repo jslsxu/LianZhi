@@ -20,6 +20,7 @@ extern NSString *const kMessageDeleteModelItemKey;
     UILabel*                _nameLabel;
     UILabel*                _timeLabel;
     UILabel*                _contentLabel;
+    UIView*                 _extraView;
     UIView*                 _sepLine;
     UIImageView*            _voiceImageView;
     UIImageView*            _videoImageView;

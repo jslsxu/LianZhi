@@ -37,6 +37,7 @@
         MessageDetailItem *item = [[MessageDetailItem alloc] init];
         TNDataWrapper *detailWrapper = [listWrapper getDataWrapperForIndex:i];
         [item parseData:detailWrapper];
+        [item setType:fromInfo.type];
         [self.modelItemArray addObject:item];
         if(item.from_user.uid.length == 0){
             UserInfo *fromUser = [[UserInfo alloc] init];
@@ -45,13 +46,6 @@
             [fromUser setName:self.fromInfo.name];
             [item setFrom_user:fromUser];
         }
-    }
-    for (NSInteger i = 0; i < self.modelItemArray.count; i++) {
-        MessageDetailItem *item = self.modelItemArray[i];
-        [item setIsNew:i < self.newNum];
-    }
-    if(self.newNum > 0){
-        self.newNum = 0;
     }
     return parse;
 }

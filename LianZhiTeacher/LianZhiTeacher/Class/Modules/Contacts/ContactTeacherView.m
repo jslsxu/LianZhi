@@ -47,6 +47,8 @@
         [_tableView setDelegate:self];
         [_tableView setDataSource:self];
         [_tableView setShowsVerticalScrollIndicator:NO];
+        [_tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
+        [_tableView setSectionIndexColor:[UIColor colorWithHexString:@"666666"]];
         [self addSubview:_tableView];
     }
     return self;

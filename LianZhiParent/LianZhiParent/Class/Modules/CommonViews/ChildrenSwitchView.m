@@ -110,8 +110,10 @@
 }
 
 - (void)switchChild{
-    [ChildrenSelectVC showChildrenSelectWithCompletion:^{
-        
-    }];
+    if([UserCenter sharedInstance].children.count > 0){
+        [ChildrenSelectVC showChildrenSelectWithCompletion:^{
+            
+        }];
+    }
 }
 @end

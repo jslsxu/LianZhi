@@ -8,10 +8,11 @@
 
 #import "TNBaseViewController.h"
 #import "ChatExtraIndividualInfoVC.h"
-@interface ChatExtraGroupInfoCell : TNTableViewCell{
-    LogoView*        _logoView;
+@interface ChatExtraGroupInfoCell : TNTableViewCell<PBViewControllerDataSource, PBViewControllerDelegate>{
+    UIImageView*        _logoView;
 }
-@property (nonatomic, readonly)LogoView *logoView;
+@property (nonatomic, readonly)UIImageView *logoView;
+@property (nonatomic, copy)NSString *logoUrl;
 @end
 
 @interface ChatExtraGroupInfoVC : TNBaseViewController

@@ -56,7 +56,7 @@
 
 - (void)setSendEntity:(NotificationSendEntity *)sendEntity{
     _sendEntity = sendEntity;
-    [_titleLabel setFrame:CGRectMake(12, 18, self.width - 12 * 2, 20)];
+    [_titleLabel setFrame:CGRectMake(12, 15, _progressView.left - 5 - 12, 20)];
     [_titleLabel setText:_sendEntity.words];
     [_sepLine setFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
     [_progressView setFProgress:_sendEntity.uploadProgress];
@@ -231,12 +231,6 @@
     [self setSupportPullUp:YES];
     [self setSupportPullDown:YES];
     [self requestData:REQUEST_REFRESH];
-    
-    [RACObserve(_tableView, contentInset) subscribeNext:^(id x) {
-        if(_tableView.contentInset.bottom < 0){
-            [_tableView setContentInset:UIEdgeInsetsZero];
-        }
-    }];
 }
 
 

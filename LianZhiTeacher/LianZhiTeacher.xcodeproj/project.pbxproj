@@ -307,7 +307,6 @@
 		37FD6E751BBC51DF00C83AB4 /* ClassMemberVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E721BBC51DF00C83AB4 /* ClassMemberVC.m */; };
 		37FD6E761BBC51DF00C83AB4 /* StudentParentsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6E741BBC51DF00C83AB4 /* StudentParentsVC.m */; };
 		37FD6FDD1BBCE55800C83AB4 /* OperationGuideVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6FDC1BBCE55800C83AB4 /* OperationGuideVC.m */; };
-		37FD70871BBCEEDE00C83AB4 /* Guide.zip in Resources */ = {isa = PBXBuildFile; fileRef = 37FD70861BBCEEDE00C83AB4 /* Guide.zip */; };
 		37FD70AE1BBD7A8000C83AB4 /* DetailCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70AD1BBD7A8000C83AB4 /* DetailCommentCell.m */; };
 		37FD70BE1BBDB7B400C83AB4 /* PraiseListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70BD1BBDB7B400C83AB4 /* PraiseListView.m */; };
 		37FEA9651C46554500E7425B /* AccountInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FEA9641C46554500E7425B /* AccountInfoView.m */; };
@@ -335,6 +334,10 @@
 		8D7555321D71FBE600A140EE /* DakaViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555311D71FBE600A140EE /* DakaViewController.m */; };
 		8D7555381D71FC0600A140EE /* DakaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555371D71FC0600A140EE /* DakaCell.m */; };
 		8D7555451D76C22300A140EE /* DNVideoBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555441D76C22300A140EE /* DNVideoBrowserCell.m */; };
+		8D75555A1D77F8BD00A140EE /* ZYBannerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555541D77F8BD00A140EE /* ZYBannerCell.m */; };
+		8D75555B1D77F8BD00A140EE /* ZYBannerFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555561D77F8BD00A140EE /* ZYBannerFooter.m */; };
+		8D75555C1D77F8BD00A140EE /* ZYBannerView.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8D7555571D77F8BD00A140EE /* ZYBannerView.bundle */; };
+		8D75555D1D77F8BD00A140EE /* ZYBannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7555591D77F8BD00A140EE /* ZYBannerView.m */; };
 		8D867BC91D25042A0020A21C /* NHAudioConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB51D25042A0020A21C /* NHAudioConverter.m */; };
 		8D867BCA1D25042A0020A21C /* NHAudioTool+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB71D25042A0020A21C /* NHAudioTool+Helper.m */; };
 		8D867BCB1D25042A0020A21C /* NHAudioTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867BB91D25042A0020A21C /* NHAudioTool.m */; };
@@ -424,13 +427,6 @@
 		8DCFD7091D50AF25001EDC8A /* ChatExtraIndividualInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7081D50AF25001EDC8A /* ChatExtraIndividualInfoVC.m */; };
 		8DCFD70C1D50B528001EDC8A /* SearchChatMessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD70B1D50B528001EDC8A /* SearchChatMessageVC.m */; };
 		8DCFD70F1D51A1A0001EDC8A /* ChatExtraGroupInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD70E1D51A1A0001EDC8A /* ChatExtraGroupInfoVC.m */; };
-		8DCFD7201D51D13D001EDC8A /* TAAbstractDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7131D51D13D001EDC8A /* TAAbstractDotView.m */; };
-		8DCFD7211D51D13D001EDC8A /* TAAnimatedDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7151D51D13D001EDC8A /* TAAnimatedDotView.m */; };
-		8DCFD7221D51D13D001EDC8A /* TADotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7171D51D13D001EDC8A /* TADotView.m */; };
-		8DCFD7231D51D13D001EDC8A /* TAPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7191D51D13D001EDC8A /* TAPageControl.m */; };
-		8DCFD7241D51D13D001EDC8A /* SDCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD71B1D51D13D001EDC8A /* SDCollectionViewCell.m */; };
-		8DCFD7251D51D13D001EDC8A /* SDCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD71D1D51D13D001EDC8A /* SDCycleScrollView.m */; };
-		8DCFD7261D51D13D001EDC8A /* UIView+SDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD71F1D51D13D001EDC8A /* UIView+SDExtension.m */; };
 		8DCFD7291D51E534001EDC8A /* ContactClassStudentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7281D51E534001EDC8A /* ContactClassStudentView.m */; };
 		8DCFD72C1D51E54E001EDC8A /* ContactTeacherView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD72B1D51E54E001EDC8A /* ContactTeacherView.m */; };
 		8DCFD72F1D51E592001EDC8A /* ContactVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD72E1D51E592001EDC8A /* ContactVC.m */; };
@@ -1001,7 +997,6 @@
 		37FD6E741BBC51DF00C83AB4 /* StudentParentsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentParentsVC.m; sourceTree = "<group>"; };
 		37FD6FDB1BBCE55800C83AB4 /* OperationGuideVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OperationGuideVC.h; sourceTree = "<group>"; };
 		37FD6FDC1BBCE55800C83AB4 /* OperationGuideVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OperationGuideVC.m; sourceTree = "<group>"; };
-		37FD70861BBCEEDE00C83AB4 /* Guide.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = Guide.zip; sourceTree = "<group>"; };
 		37FD70AC1BBD7A8000C83AB4 /* DetailCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailCommentCell.h; sourceTree = "<group>"; };
 		37FD70AD1BBD7A8000C83AB4 /* DetailCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailCommentCell.m; sourceTree = "<group>"; };
 		37FD70BC1BBDB7B400C83AB4 /* PraiseListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PraiseListView.h; sourceTree = "<group>"; };
@@ -1058,6 +1053,13 @@
 		8D7555371D71FC0600A140EE /* DakaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DakaCell.m; sourceTree = "<group>"; };
 		8D7555431D76C22300A140EE /* DNVideoBrowserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNVideoBrowserCell.h; sourceTree = "<group>"; };
 		8D7555441D76C22300A140EE /* DNVideoBrowserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNVideoBrowserCell.m; sourceTree = "<group>"; };
+		8D7555531D77F8BD00A140EE /* ZYBannerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYBannerCell.h; sourceTree = "<group>"; };
+		8D7555541D77F8BD00A140EE /* ZYBannerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYBannerCell.m; sourceTree = "<group>"; };
+		8D7555551D77F8BD00A140EE /* ZYBannerFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYBannerFooter.h; sourceTree = "<group>"; };
+		8D7555561D77F8BD00A140EE /* ZYBannerFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYBannerFooter.m; sourceTree = "<group>"; };
+		8D7555571D77F8BD00A140EE /* ZYBannerView.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ZYBannerView.bundle; sourceTree = "<group>"; };
+		8D7555581D77F8BD00A140EE /* ZYBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYBannerView.h; sourceTree = "<group>"; };
+		8D7555591D77F8BD00A140EE /* ZYBannerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYBannerView.m; sourceTree = "<group>"; };
 		8D867BB41D25042A0020A21C /* NHAudioConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NHAudioConverter.h; sourceTree = "<group>"; };
 		8D867BB51D25042A0020A21C /* NHAudioConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NHAudioConverter.m; sourceTree = "<group>"; };
 		8D867BB61D25042A0020A21C /* NHAudioTool+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NHAudioTool+Helper.h"; sourceTree = "<group>"; };
@@ -1237,20 +1239,6 @@
 		8DCFD70B1D50B528001EDC8A /* SearchChatMessageVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchChatMessageVC.m; sourceTree = "<group>"; };
 		8DCFD70D1D51A1A0001EDC8A /* ChatExtraGroupInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatExtraGroupInfoVC.h; sourceTree = "<group>"; };
 		8DCFD70E1D51A1A0001EDC8A /* ChatExtraGroupInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatExtraGroupInfoVC.m; sourceTree = "<group>"; };
-		8DCFD7121D51D13D001EDC8A /* TAAbstractDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAAbstractDotView.h; sourceTree = "<group>"; };
-		8DCFD7131D51D13D001EDC8A /* TAAbstractDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TAAbstractDotView.m; sourceTree = "<group>"; };
-		8DCFD7141D51D13D001EDC8A /* TAAnimatedDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAAnimatedDotView.h; sourceTree = "<group>"; };
-		8DCFD7151D51D13D001EDC8A /* TAAnimatedDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TAAnimatedDotView.m; sourceTree = "<group>"; };
-		8DCFD7161D51D13D001EDC8A /* TADotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TADotView.h; sourceTree = "<group>"; };
-		8DCFD7171D51D13D001EDC8A /* TADotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TADotView.m; sourceTree = "<group>"; };
-		8DCFD7181D51D13D001EDC8A /* TAPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAPageControl.h; sourceTree = "<group>"; };
-		8DCFD7191D51D13D001EDC8A /* TAPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TAPageControl.m; sourceTree = "<group>"; };
-		8DCFD71A1D51D13D001EDC8A /* SDCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDCollectionViewCell.h; sourceTree = "<group>"; };
-		8DCFD71B1D51D13D001EDC8A /* SDCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDCollectionViewCell.m; sourceTree = "<group>"; };
-		8DCFD71C1D51D13D001EDC8A /* SDCycleScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDCycleScrollView.h; sourceTree = "<group>"; };
-		8DCFD71D1D51D13D001EDC8A /* SDCycleScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDCycleScrollView.m; sourceTree = "<group>"; };
-		8DCFD71E1D51D13D001EDC8A /* UIView+SDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SDExtension.h"; sourceTree = "<group>"; };
-		8DCFD71F1D51D13D001EDC8A /* UIView+SDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SDExtension.m"; sourceTree = "<group>"; };
 		8DCFD7271D51E534001EDC8A /* ContactClassStudentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactClassStudentView.h; sourceTree = "<group>"; };
 		8DCFD7281D51E534001EDC8A /* ContactClassStudentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactClassStudentView.m; sourceTree = "<group>"; };
 		8DCFD72A1D51E54E001EDC8A /* ContactTeacherView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactTeacherView.h; sourceTree = "<group>"; };
@@ -1651,7 +1639,7 @@
 		3793F9141B7CFFEF00501F77 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
-				8DCFD7101D51D13D001EDC8A /* SDCycleScrollView */,
+				8D7555521D77F8BD00A140EE /* ZYBannerView */,
 				3793F9151B7CFFEF00501F77 /* ActionSelectView.h */,
 				3793F9161B7CFFEF00501F77 /* ActionSelectView.m */,
 				8DCFD6631D43CCA6001EDC8A /* YYInfiniteScrollView.h */,
@@ -2191,7 +2179,6 @@
 			children = (
 				37C6B44A1BF2F47D0001D54F /* ShareImage */,
 				37F206D71BD87A99006466F4 /* City.db */,
-				37FD70861BBCEEDE00C83AB4 /* Guide.zip */,
 				37FD6DFF1BB054D100C83AB4 /* WelcomeView */,
 				3725714E1A80B38C0087F178 /* Sound */,
 			);
@@ -2845,6 +2832,20 @@
 			path = DakaDetail;
 			sourceTree = "<group>";
 		};
+		8D7555521D77F8BD00A140EE /* ZYBannerView */ = {
+			isa = PBXGroup;
+			children = (
+				8D7555531D77F8BD00A140EE /* ZYBannerCell.h */,
+				8D7555541D77F8BD00A140EE /* ZYBannerCell.m */,
+				8D7555551D77F8BD00A140EE /* ZYBannerFooter.h */,
+				8D7555561D77F8BD00A140EE /* ZYBannerFooter.m */,
+				8D7555571D77F8BD00A140EE /* ZYBannerView.bundle */,
+				8D7555581D77F8BD00A140EE /* ZYBannerView.h */,
+				8D7555591D77F8BD00A140EE /* ZYBannerView.m */,
+			);
+			path = ZYBannerView;
+			sourceTree = "<group>";
+		};
 		8D867BB31D25042A0020A21C /* NHAudioTool */ = {
 			isa = PBXGroup;
 			children = (
@@ -3177,35 +3178,6 @@
 			path = NJKWebViewProgress;
 			sourceTree = "<group>";
 		};
-		8DCFD7101D51D13D001EDC8A /* SDCycleScrollView */ = {
-			isa = PBXGroup;
-			children = (
-				8DCFD7111D51D13D001EDC8A /* PageControl */,
-				8DCFD71A1D51D13D001EDC8A /* SDCollectionViewCell.h */,
-				8DCFD71B1D51D13D001EDC8A /* SDCollectionViewCell.m */,
-				8DCFD71C1D51D13D001EDC8A /* SDCycleScrollView.h */,
-				8DCFD71D1D51D13D001EDC8A /* SDCycleScrollView.m */,
-				8DCFD71E1D51D13D001EDC8A /* UIView+SDExtension.h */,
-				8DCFD71F1D51D13D001EDC8A /* UIView+SDExtension.m */,
-			);
-			path = SDCycleScrollView;
-			sourceTree = "<group>";
-		};
-		8DCFD7111D51D13D001EDC8A /* PageControl */ = {
-			isa = PBXGroup;
-			children = (
-				8DCFD7121D51D13D001EDC8A /* TAAbstractDotView.h */,
-				8DCFD7131D51D13D001EDC8A /* TAAbstractDotView.m */,
-				8DCFD7141D51D13D001EDC8A /* TAAnimatedDotView.h */,
-				8DCFD7151D51D13D001EDC8A /* TAAnimatedDotView.m */,
-				8DCFD7161D51D13D001EDC8A /* TADotView.h */,
-				8DCFD7171D51D13D001EDC8A /* TADotView.m */,
-				8DCFD7181D51D13D001EDC8A /* TAPageControl.h */,
-				8DCFD7191D51D13D001EDC8A /* TAPageControl.m */,
-			);
-			path = PageControl;
-			sourceTree = "<group>";
-		};
 		8DCFD7471D584BCF001EDC8A /* FileManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -3333,7 +3305,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				37FD70871BBCEEDE00C83AB4 /* Guide.zip in Resources */,
 				37FD6E5B1BBBDD7300C83AB4 /* small_guide5.png in Resources */,
 				37FD6E561BBBDD7300C83AB4 /* guide1.png in Resources */,
 				3793FAC41B7CFFF000501F77 /* ReceiverVoiceNodePlaying003@2x.png in Resources */,
@@ -3360,6 +3331,7 @@
 				37FD6E571BBBDD7300C83AB4 /* small_guide2.png in Resources */,
 				37C6B44D1BF2F47D0001D54F /* ClassZone.png in Resources */,
 				37FD6E521BBBDD7300C83AB4 /* guide5.png in Resources */,
+				8D75555C1D77F8BD00A140EE /* ZYBannerView.bundle in Resources */,
 				37FD6E551BBBDD7300C83AB4 /* guide2.png in Resources */,
 				3793FAC71B7CFFF000501F77 /* SenderVoiceNodePlaying001@2x.png in Resources */,
 				3793FAC51B7CFFF000501F77 /* ReceiverVoiceNodePlaying003@2x副本.png in Resources */,
@@ -3528,7 +3500,6 @@
 				8DCFD6E81D4F3CB8001EDC8A /* ChatContentVideoView.m in Sources */,
 				3793FAF31B7CFFF000501F77 /* Reachability+.m in Sources */,
 				37E93FC71A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m in Sources */,
-				8DCFD7231D51D13D001EDC8A /* TAPageControl.m in Sources */,
 				3793FA691B7CFFF000501F77 /* AFHTTPSessionManager.m in Sources */,
 				37FB1C591BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m in Sources */,
 				8DCFD6F11D4F3D35001EDC8A /* ChatContentFaceView.m in Sources */,
@@ -3540,7 +3511,6 @@
 				8DCFD7361D52523C001EDC8A /* ContactParentsView.m in Sources */,
 				37E93FC21A7E9CC600AD45A1 /* MJPhotoBrowser.m in Sources */,
 				8DCFD6821D4B2112001EDC8A /* NotificationPhotoView.m in Sources */,
-				8DCFD7261D51D13D001EDC8A /* UIView+SDExtension.m in Sources */,
 				8D867D451D3F7BF80020A21C /* NotificationAudioRecordView.m in Sources */,
 				37C355D91A3FD5CF00B948E6 /* AppDelegate.m in Sources */,
 				8DCFD6AE1D4C5639001EDC8A /* NotificationPreviewVC.m in Sources */,
@@ -3578,10 +3548,8 @@
 				8DCFD67F1D4AFD32001EDC8A /* NotificationVoiceView.m in Sources */,
 				3793FA661B7CFFF000501F77 /* AFHTTPRequestOperation+Associative.m in Sources */,
 				8D867C461D2F75B10020A21C /* QuickImagePickerView.m in Sources */,
-				8DCFD7221D51D13D001EDC8A /* TADotView.m in Sources */,
 				3793FA881B7CFFF000501F77 /* UIAlertView+Blocks.m in Sources */,
 				8DCFD6C81D4DAD79001EDC8A /* NotificationTargetListView.m in Sources */,
-				8DCFD7201D51D13D001EDC8A /* TAAbstractDotView.m in Sources */,
 				8D7555321D71FBE600A140EE /* DakaViewController.m in Sources */,
 				371C6DAB1A7015AF00FA4AEC /* PublishArticleVC.m in Sources */,
 				3793FA981B7CFFF000501F77 /* TGRImageViewController.m in Sources */,
@@ -3624,6 +3592,7 @@
 				372774E51A5D94A900464461 /* GrowthTimelinePublishVC.m in Sources */,
 				8DCFD69E1D4B4BCB001EDC8A /* NotificationClassStudentsVC.m in Sources */,
 				3793FABA1B7CFFF000501F77 /* MLAmrPlayer.m in Sources */,
+				8D75555D1D77F8BD00A140EE /* ZYBannerView.m in Sources */,
 				37DEE4FD1A57C2C0009A8771 /* ContactItemCell.m in Sources */,
 				3793FA9E1B7CFFF000501F77 /* PublishImageItem.m in Sources */,
 				3793FAE81B7CFFF000501F77 /* TNTableViewCell.m in Sources */,
@@ -3659,7 +3628,6 @@
 				37FD6E751BBC51DF00C83AB4 /* ClassMemberVC.m in Sources */,
 				3728A73B1B9D376300310457 /* MFWFace.m in Sources */,
 				8D867BE91D2614A90020A21C /* CircleProgressView.m in Sources */,
-				8DCFD7251D51D13D001EDC8A /* SDCycleScrollView.m in Sources */,
 				8D867C891D2F97080020A21C /* UIColor+Hex.m in Sources */,
 				8D75551F1D6F4C5F00A140EE /* ChatTopNewMessageView.m in Sources */,
 				3793FA721B7CFFF000501F77 /* UrlHandler.m in Sources */,
@@ -3681,7 +3649,6 @@
 				371C6E961A72217400FA4AEC /* MessageVoiceButton.m in Sources */,
 				3793FAF41B7CFFF000501F77 /* Reachability.m in Sources */,
 				8D867C4E1D2F7A280020A21C /* XMNPhotoManager.m in Sources */,
-				8DCFD7241D51D13D001EDC8A /* SDCollectionViewCell.m in Sources */,
 				3793FA6F1B7CFFF000501F77 /* AFURLResponseSerialization.m in Sources */,
 				8D7555221D6F4C6D00A140EE /* ChatBottomNewMessageView.m in Sources */,
 				8DCFD6761D48A9EE001EDC8A /* MessageSegView.m in Sources */,
@@ -3757,6 +3724,7 @@
 				8DCFD6F71D4F410D001EDC8A /* ChatBubbleContentView.m in Sources */,
 				3728A74F1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m in Sources */,
 				3793FAEC1B7CFFF000501F77 /* TNBaseCollectionViewController.m in Sources */,
+				8D75555A1D77F8BD00A140EE /* ZYBannerCell.m in Sources */,
 				8D867BD21D2506EF0020A21C /* NSString+UUID.m in Sources */,
 				3728A7521B9F524000310457 /* GrowthTimelineClassChangeVC.m in Sources */,
 				8DCFD6E51D4F3092001EDC8A /* ChatContentAudioView.m in Sources */,
@@ -3785,7 +3753,6 @@
 				37FD6E311BB4817900C83AB4 /* NewMessageModel.m in Sources */,
 				3728A7361B9D376300310457 /* FaceSelectView.m in Sources */,
 				3793FA921B7CFFF000501F77 /* POIItemCell.m in Sources */,
-				8DCFD7211D51D13D001EDC8A /* TAAnimatedDotView.m in Sources */,
 				37D6EE381BC90C62000994A2 /* LocationChange.m in Sources */,
 				3793FAF61B7CFFF000501F77 /* Utility.m in Sources */,
 				371C6DAD1A7015AF00FA4AEC /* PublishBaseVC.m in Sources */,
@@ -3809,6 +3776,7 @@
 				8D7555061D6DA89400A140EE /* PBImageScrollerViewController.m in Sources */,
 				8D867D471D3F7BF80020A21C /* NotificationSendTargetView.m in Sources */,
 				3793FAEE1B7CFFF000501F77 /* TNBaseTableViewController.m in Sources */,
+				8D75555B1D77F8BD00A140EE /* ZYBannerFooter.m in Sources */,
 				37B485051A65853C00C412D8 /* PhoneLoginVC.m in Sources */,
 				37C7339A1C4357E200BAD6CD /* AttendanceDateView.m in Sources */,
 				37C88F7F1A83D43D008E44DB /* ReportProblemVC.m in Sources */,

@@ -18,25 +18,54 @@
 #import "LZAccountVC.h"
 #import "NotificationSendVC.h"
 #import "NotificationHistoryVC.h"
-#import "SDCycleScrollView.h"
 
 @implementation ApplicationBoxHeaderView
 
 - (instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if(self){
-        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:self.bounds delegate:nil placeholderImage:nil];
-        [_cycleScrollView setInfiniteLoop:YES];
-        [_cycleScrollView setPageControlStyle:SDCycleScrollViewPageContolStyleClassic];
-        [_cycleScrollView setAutoScrollTimeInterval:3.f];
-        [self addSubview:_cycleScrollView];
+        _bannerView = [[ZYBannerView alloc] initWithFrame:self.bounds];
+        [_bannerView setDelegate:self];
+        [_bannerView setDataSource:self];
+        [_bannerView setShouldLoop:YES];
+        [_bannerView setAutoScroll:YES];
+        [_bannerView setScrollInterval:10];
+        [self addSubview:_bannerView];
     }
     return self;
 }
 
 - (void)updateWithHeight:(CGFloat)height{
-    [_cycleScrollView setFrame:CGRectMake(0, self.height - height, self.width, height)];
+    [_bannerView setFrame:CGRectMake(0, self.height - height, self.width, height)];
 }
+
+- (void)setBannerArray:(NSArray *)bannerArray{
+    _bannerArray = bannerArray;
+    [_bannerView reloadData];
+}
+
+#pragma mark - ZYBannerViewDelegate
+
+- (NSInteger)numberOfItemsInBanner:(ZYBannerView *)banner{
+    return self.bannerArray.count;
+}
+
+- (UIView *)banner:(ZYBannerView *)banner viewForItemAtIndex:(NSInteger)index{
+    BannerItem *bannerItem = self.bannerArray[index];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:banner.bounds];
+    [imageView setContentMode:UIViewContentModeScaleAspectFill];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:bannerItem.pic] placeholderImage:nil];
+    return imageView;
+}
+
+- (void)banner:(ZYBannerView *)banner didSelectItemAtIndex:(NSInteger)index{
+    BannerItem *bannerItem = self.bannerArray[index];
+    if(bannerItem.url){
+        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:bannerItem.url]];
+        [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
+    }
+}
+
 
 @end
 
@@ -67,7 +96,7 @@
     {
         _appImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - 40) / 2, self.height - 80, 40, 40)];
         [_appImageView setClipsToBounds:YES];
-        [_appImageView  setContentMode:UIViewContentModeCenter];
+        [_appImageView  setContentMode:UIViewContentModeScaleAspectFit];
         [self addSubview:_appImageView];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height - 30, self.width, 30)];
@@ -126,11 +155,10 @@
 
 @end
 
-@interface ApplicationBoxVC ()<SDCycleScrollViewDelegate>
+@interface ApplicationBoxVC ()
 @property (nonatomic, strong)NSMutableArray *appItems;
 @property (nonatomic, copy)NSString *classBadge;
 @property (nonatomic, weak)ApplicationBoxHeaderView*    headerView;
-@property (nonatomic, weak)SDCycleScrollView*   cycleScrollView;
 @end
 
 @implementation ApplicationBoxVC
@@ -273,16 +301,6 @@
     [self.collectionView reloadData];
 }
 
-#pragma mark - 
-- (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index
-{
-    NSArray *bannerArray = [(ApplicationModel *)self.collectionViewModel banner];
-    BannerItem *bannerItem = bannerArray[index];
-    if(bannerItem.url){
-        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:bannerItem.url]];
-        [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
-    }
-}
 
 #pragma mark - UICollectionView
 
@@ -301,13 +319,6 @@
             [appItem setBadge:badge];
         }
     }
-
-    NSArray *bannerArray = [(ApplicationModel *)self.collectionViewModel banner];
-    NSMutableArray *imageArray = [NSMutableArray array];
-    for (BannerItem *bannerItem in bannerArray) {
-        [imageArray addObject:bannerItem.pic];
-    }
-    [self.cycleScrollView setImageURLStringsGroup:imageArray];
 }
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
@@ -440,17 +451,9 @@
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
     ApplicationBoxHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ApplicationBoxHeaderView" forIndexPath:indexPath];
-    self.headerView = headerView;
-    self.cycleScrollView = headerView.cycleScrollView;
-    [self.cycleScrollView setDelegate:self];
     NSArray *bannerArray = [(ApplicationModel *)self.collectionViewModel banner];
-    NSMutableArray *imageArray = [NSMutableArray array];
-    for (BannerItem *bannerItem in bannerArray) {
-        [imageArray addObject:bannerItem.pic];
-    }
-    if(imageArray.count > 0){
-        [self.cycleScrollView setImageURLStringsGroup:imageArray];
-    }
+    [headerView setBannerArray:bannerArray];
+    self.headerView = headerView;
     return headerView;
 }
 

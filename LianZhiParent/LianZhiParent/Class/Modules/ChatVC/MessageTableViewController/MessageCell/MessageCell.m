@@ -161,7 +161,7 @@
 
 - (void)onAvatarClick{
     if(self.messageItem.from == UUMessageFromOther){
-        if([self.delegate respondsToSelector:@selector(onAvatarClick:)]){
+        if([self.delegate respondsToSelector:@selector(onAvatarClicked:)]){
             [self.delegate onAvatarClicked:self.messageItem];
         }
     }

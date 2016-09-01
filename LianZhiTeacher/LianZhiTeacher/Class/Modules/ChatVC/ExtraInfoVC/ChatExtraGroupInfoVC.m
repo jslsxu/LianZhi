@@ -18,15 +18,71 @@
         [self.textLabel setFont:[UIFont systemFontOfSize:15]];
         [self.textLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
         [self.textLabel setText:@"群头像"];
-        _logoView = [[LogoView alloc] initWithRadius:30];
+        _logoView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 60, 60)];
+        [_logoView.layer setCornerRadius:30];
+        [_logoView.layer setMasksToBounds:YES];
+        [_logoView setUserInteractionEnabled:YES];
         [_logoView setOrigin:CGPointMake(self.width - 35 - _logoView.width, (80 - _logoView.height) / 2)];
-        [_logoView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
         [self addSubview:_logoView];
         
-        [self setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
+        [_logoView addGestureRecognizer:tapGesture];
     }
     return self;
 }
+
+- (void)setLogoUrl:(NSString *)logoUrl{
+    _logoUrl = [logoUrl copy];
+    [_logoView sd_setImageWithURL:[NSURL URLWithString:_logoUrl] placeholderImage:[UIImage imageNamed:@"NoLogoDefault.png"]];
+}
+- (void)onTap{
+    [self _showPhotoBrowser:_logoView];
+}
+
+- (void)_showPhotoBrowser:(UIView *)sender {
+    PBViewController *pbViewController = [PBViewController new];
+    pbViewController.pb_dataSource = self;
+    pbViewController.pb_delegate = self;
+    pbViewController.pb_startPage = 0;
+    [CurrentROOTNavigationVC presentViewController:pbViewController animated:YES completion:nil];
+}
+
+- (NSInteger)numberOfPagesInViewController:(PBViewController *)viewController {
+    return 1;
+}
+
+- (void)viewController:(PBViewController *)viewController presentImageView:(UIImageView *)imageView forPageAtIndex:(NSInteger)index progressHandler:(void (^)(NSInteger, NSInteger))progressHandler {
+    UIImage *placeholder = _logoView.image;
+    [imageView sd_setImageWithURL:[NSURL URLWithString:self.logoUrl]
+                 placeholderImage:placeholder
+                          options:0
+                         progress:progressHandler
+                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                        }];
+}
+
+- (UIView *)thumbViewForPageAtIndex:(NSInteger)index {
+    return _logoView;
+}
+
+#pragma mark - PBViewControllerDelegate
+
+- (void)viewController:(PBViewController *)viewController didSingleTapedPageAtIndex:(NSInteger)index presentedImage:(UIImage *)presentedImage {
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)viewController:(PBViewController *)viewController didLongPressedPageAtIndex:(NSInteger)index presentedImage:(UIImage *)presentedImage {
+    if(presentedImage){
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:@[@"保存到相册"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+            [Utility saveImageToAlbum:presentedImage];
+        }];
+        [alertView showAnimated:YES completionHandler:nil];
+    }
+}
+
 
 @end
 
@@ -169,7 +225,11 @@
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    if(self.chatType == ChatTypeClass)
+        return 3;
+    else{
+        return 2;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -206,7 +266,15 @@
         if(nil == cell){
             cell = [[ChatExtraGroupInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
         }
-        [cell.logoView setImageWithUrl:[NSURL URLWithString:self.logoUrl]];
+        [cell setLogoUrl:self.logoUrl];
+        if(self.chatType == ChatTypeGroup){
+            [cell setAccessoryType:UITableViewCellAccessoryNone];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        }
+        else{
+            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+            [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
+        }
         return cell;
     }
     else{

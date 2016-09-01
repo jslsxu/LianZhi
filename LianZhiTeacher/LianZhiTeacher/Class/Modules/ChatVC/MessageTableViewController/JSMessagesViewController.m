@@ -5,6 +5,8 @@
 #import "ChatExtraIndividualInfoVC.h"
 #import "ChatTopNewMessageView.h"
 #import "ChatBottomNewMessageView.h"
+#import "ChatTeacherInfoVC.h"
+#import "ChatParentInfoVC.h"
 static NSString *topChatID = nil;
 
 @interface JSMessagesViewController ()
@@ -600,6 +602,29 @@ static NSString *topChatID = nil;
 }
 
 #pragma mark - MessageCellDelegate
+
+- (void)onAvatarClicked:(MessageItem *)messageItem{
+    UserInfo *userInfo = messageItem.user;
+    if(self.chatType == ChatTypeClass){
+        NSRange range = [userInfo.name rangeOfString:@"老师"];
+        if(range.location == NSNotFound){
+            ChatParentInfoVC *parentInfoVC = [[ChatParentInfoVC alloc] init];
+            [parentInfoVC setUid:userInfo.uid];
+            [self.navigationController pushViewController:parentInfoVC animated:YES];
+        }
+        else{
+            ChatTeacherInfoVC *teacherInfoVC = [[ChatTeacherInfoVC alloc] init];
+            [teacherInfoVC setUid:userInfo.uid];
+            [self.navigationController pushViewController:teacherInfoVC animated:YES];
+        }
+    }
+    else if(self.chatType == ChatTypeGroup){
+        ChatTeacherInfoVC *teacherInfoVC = [[ChatTeacherInfoVC alloc] init];
+        [teacherInfoVC setUid:userInfo.uid];
+        [self.navigationController pushViewController:teacherInfoVC animated:YES];
+    }
+}
+
 
 - (void)onLongPressAvatar:(MessageItem *)messageItem{
     if(self.chatType == ChatTypeClass || self.chatType == ChatTypeGroup){

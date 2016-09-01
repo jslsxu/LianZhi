@@ -95,7 +95,7 @@
         [_contentLabel setHidden:YES];
     }
     [_bgView setHeight:height];
-    if(item.isNew){
+    if(item.is_new){
         [_bgView setBackgroundColor:[UIColor colorWithHexString:@"f4f9fa"]];
     }
     else{

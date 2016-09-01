@@ -65,21 +65,24 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_bgView addSubview:_contentLabel];
         
+        _extraView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _bgView.width, kExtraInfoHeight)];
+        [_bgView addSubview:_extraView];
+        
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _bgView.width, kLineHeight)];
         [_sepLine setBackgroundColor:kSepLineColor];
-        [_bgView addSubview:_sepLine];
+        [_extraView addSubview:_sepLine];
         
         _voiceImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"message_hasAudio"]];
-        [_bgView addSubview:_voiceImageView];
+        [_extraView addSubview:_voiceImageView];
         
         _videoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"message_hasVideo"]];
-        [_bgView addSubview:_videoImageView];
+        [_extraView addSubview:_videoImageView];
         
         _photoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"message_hasPhoto"]];
-        [_bgView addSubview:_photoImageView];
+        [_extraView addSubview:_photoImageView];
         
         _rightArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gray_expand_indicator"]];
-        [_bgView addSubview:_rightArrow];
+        [_extraView addSubview:_rightArrow];
     }
     return self;
 }
@@ -95,6 +98,13 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     MessageDetailItem *item = (MessageDetailItem *)modelItem;
+    if(item.is_new){
+        [_bgView setBackgroundColor:[UIColor colorWithHexString:@"f4f9fa"]];
+    }
+    else{
+        [_bgView setBackgroundColor:[UIColor whiteColor]];
+    }
+    
     [_avatarView setImageWithUrl:[NSURL URLWithString:item.from_user.avatar]];
     [_nameLabel setText:item.from_user.name];
     [_nameLabel sizeToFit];
@@ -108,36 +118,49 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
     if(content.length > 0){
         [_contentLabel setHidden:NO];
         [_contentLabel setText:content];
-        [MessageDetailItemCell dynamicCalculationLabelHight:_contentLabel];
+        if(item.type == ChatTypeLianZhiBroadcast || item.type == ChatTypeDoorEntrance){
+            [_contentLabel sizeToFit];
+        }
+        else{
+            [MessageDetailItemCell dynamicCalculationLabelHight:_contentLabel];
+        }
         [_contentLabel setY:height];
         height += _contentLabel.height + 10;
     }
     else{
         [_contentLabel setHidden:YES];
     }
-    [_sepLine setY:height];
     
-    
-    CGFloat spaceXStart = kContentHMargin;
-    [_voiceImageView setHidden:!item.hasAudio];
-    [_photoImageView setHidden:!item.hasPhoto];
-    [_videoImageView setHidden:!item.hasVideo];
-    if(item.hasAudio){
-        [_voiceImageView setOrigin:CGPointMake(spaceXStart, height + (kExtraInfoHeight - _voiceImageView.height) / 2)];
-        spaceXStart += _voiceImageView.width + 15;
+    if(item.type == ChatTypeLianZhiBroadcast || item.type == ChatTypeDoorEntrance){
+        [_extraView setHidden:YES];
     }
-    if(item.hasVideo){
-        [_videoImageView setOrigin:CGPointMake(spaceXStart, height + (kExtraInfoHeight - _videoImageView.height) / 2)];
-        spaceXStart += _videoImageView.width + 15;
+    else{
+        [_extraView setHidden:NO];
+        [_extraView setY:height];
+        
+        
+        CGFloat spaceXStart = kContentHMargin;
+        [_voiceImageView setHidden:!item.hasAudio];
+        [_photoImageView setHidden:!item.hasPhoto];
+        [_videoImageView setHidden:!item.hasVideo];
+        if(item.hasAudio){
+            [_voiceImageView setOrigin:CGPointMake(spaceXStart, (kExtraInfoHeight - _voiceImageView.height) / 2)];
+            spaceXStart += _voiceImageView.width + 15;
+        }
+        if(item.hasVideo){
+            [_videoImageView setOrigin:CGPointMake(spaceXStart, (kExtraInfoHeight - _videoImageView.height) / 2)];
+            spaceXStart += _videoImageView.width + 15;
+        }
+        if(item.hasPhoto){
+            [_photoImageView setOrigin:CGPointMake(spaceXStart,  (kExtraInfoHeight - _photoImageView.height) / 2)];
+            spaceXStart += _photoImageView.width + 15;
+        }
+        
+        [_rightArrow setOrigin:CGPointMake(_bgView.width - 12 - _rightArrow.width, (kExtraInfoHeight - _rightArrow.height) / 2)];
+         height += kExtraInfoHeight;
     }
-    if(item.hasPhoto){
-        [_photoImageView setOrigin:CGPointMake(spaceXStart, height + (kExtraInfoHeight - _photoImageView.height) / 2)];
-        spaceXStart += _photoImageView.width + 15;
-    }
-    
-    [_rightArrow setOrigin:CGPointMake(_bgView.width - 12 - _rightArrow.width, height + (kExtraInfoHeight - _rightArrow.height) / 2)];
-    height += kExtraInfoHeight;
     [_bgView setHeight:height];
+
 }
 
 - (void)onMessageDeleteButtonClicked
@@ -156,10 +179,21 @@ NSString *const  kMessageDeleteModelItemKey = @"MessageDeleteModelItemKey";
         [contentLabel setNumberOfLines:0];
         [contentLabel setFont:kContentFont];
         [contentLabel setText:content];
-        [MessageDetailItemCell dynamicCalculationLabelHight:contentLabel];
+        if(item.type == ChatTypeLianZhiBroadcast || item.type == ChatTypeDoorEntrance){
+            [contentLabel sizeToFit];
+        }
+        else{
+            [MessageDetailItemCell dynamicCalculationLabelHight:contentLabel];
+        }
         height += contentLabel.height + 10;
     }
-    height += kExtraInfoHeight + kBGTopMargin;
+    if(item.type == ChatTypeLianZhiBroadcast || item.type == ChatTypeDoorEntrance){
+        
+    }
+    else{
+        height += kExtraInfoHeight;
+    }
+    height +=  kBGTopMargin;
     return @(height);
 }
 

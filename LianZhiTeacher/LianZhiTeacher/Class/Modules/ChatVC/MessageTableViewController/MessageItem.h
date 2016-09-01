@@ -30,14 +30,24 @@ typedef NS_ENUM(NSInteger, MessageType) {
 
 typedef NS_ENUM(NSInteger, ChatType)
 {
+    ChatTypeLianZhiBroadcast = 1,   //连职广播电台
+    ChatTypePhotoShare = 2,         //照片分享
+    ChatTypeGrowthRecord = 3,       //成长手册
+    ChatTypeSchoolyardNotification = 4, //校园通知
+    ChatTypeSchoolNotification = 10,             //学校
+    ChatTypeClassNotification = 11,             //班级
+    ChatTypeGradeNotification = 12,             //年级
+    ChatTypeTeacherNotification = 13,   //老师
+    ChatTypeParentsNotification = 14,   //家长
+    ChatTypeChildrenNotificaiton = 15,  //孩子
     ChatTypeTeacher = 21,
     ChatTypeParents = 22,
     ChatTypeClass = 23,
     ChatTypeGroup = 24,
     ChatTypePractice = 25,  //作业通知
     ChatTypeAttendance = 26,    //请假
-    ChatTypeNormalNotification = 27,    //普通通知
-    ChatTypeDaka = 28,                  //门禁通知
+    ChatTypeNotification = 27,  //普通通知
+    ChatTypeDoorEntrance = 28,  //门禁通知
 };
 
 typedef NS_ENUM(NSInteger, MessageFrom) {

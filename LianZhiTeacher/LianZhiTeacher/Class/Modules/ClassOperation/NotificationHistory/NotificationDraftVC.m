@@ -21,7 +21,6 @@
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_timeLabel setFont:[UIFont systemFontOfSize:14]];
         [_timeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-        [_timeLabel setText:@"05-11 11:23"];
         [self addSubview:_timeLabel];
         
         _audioImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"draft_audio"]];
@@ -46,9 +45,28 @@
 
 - (void)setNotification:(NotificationSendEntity *)notification{
     _notification = notification;
-    [_titleLabel setFrame:CGRectMake(12, 18, self.width - 12 * 2, 0)];
-    [_titleLabel setText:_notification.words];
-    [_titleLabel sizeToFit];
+    [_titleLabel setFrame:CGRectMake(12, 15, self.width - 12 * 2, 20)];
+    NSString *title = _notification.words;
+    if(title.length == 0){
+        title = @"(正文内容为空)";
+    }
+    [_titleLabel setText:title];
+    [_timeLabel sizeToFit];
+    
+    NSDate *curDate = [NSDate date];
+    NSDate *createDate = [NSDate dateWithTimeIntervalSince1970:_notification.createTime];
+    NSString *timeStr = nil;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    if(createDate.year == curDate.year){
+        [formatter setDateFormat:@"MM-dd HH:mm"];
+    }
+    else{
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    }
+    timeStr = [formatter stringFromDate:createDate];
+    [_timeLabel setText:timeStr];
+    [_timeLabel sizeToFit];
+    [_timeLabel setOrigin:CGPointMake(self.width - 10 - _timeLabel.width, 50 - _timeLabel.height / 2)];
     
     [_sepLine setFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
     [_audioImageView setHidden:!_notification.hasAudio];

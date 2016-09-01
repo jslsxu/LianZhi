@@ -132,7 +132,7 @@
         [_tableView setMj_footer:footer];
     }
     else
-        [_tableView setMj_footer:nil];
+        [_tableView.mj_footer endRefreshingWithNoMoreData];
     [_tableView reloadData];
 }
 

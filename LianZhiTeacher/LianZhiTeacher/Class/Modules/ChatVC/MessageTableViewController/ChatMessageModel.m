@@ -20,6 +20,7 @@
 @property (nonatomic, assign)ChatType type;
 @property (nonatomic, strong)FMDatabase *database;
 @property (nonatomic, strong)NSArray *updateArray;
+@property (nonatomic, copy)NSString *lastMaxMid;
 @end
 
 @implementation ChatMessageModel
@@ -194,12 +195,22 @@
 }
 
 - (NSString *)latestId{
-    for (NSInteger i = self.modelItemArray.count - 1; i >= 0; i--) {
-        MessageItem *item = self.modelItemArray[i];
-        if(item.content.mid.length > 0)
-            return item.content.mid;
+    if(self.lastMaxMid.length > 0){
+        return self.lastMaxMid;
     }
-    return nil;
+    else{
+        NSString *mid = nil;
+        for (NSInteger i = self.modelItemArray.count - 1; i >= 0; i--) {
+            MessageItem *item = self.modelItemArray[i];
+            if(item.content.mid.length > 0 ){
+                NSString *curMid = item.content.mid;
+                if(curMid.integerValue > mid.integerValue){
+                    mid = curMid;
+                }
+            }
+        }
+        return mid;
+    }
 }
 
 - (NSString *)oldId{
@@ -309,9 +320,13 @@
     }
     BOOL add = NO;
     if(newMessageArray.count > 0){
+        NSString *newMid = nil;
         //添加到前面
         for (NSInteger i = newMessageArray.count - 1; i >= 0; i--) {
             MessageItem *messageItem = newMessageArray[i];
+            if(messageItem.content.mid.integerValue > newMid.integerValue){
+                newMid = messageItem.content.mid;
+            }
             [messageItem setTargetUser:self.targetUser];
             NSString *sql = [NSString stringWithFormat:@"select * from %@ where client_send_id = '%@'",[self tableName], messageItem.client_send_id];
             FMResultSet *rs = [self.database executeQuery:sql];
@@ -325,6 +340,9 @@
                 [self updateMessage:messageItem];
 
             }
+        }
+        if(newMid.integerValue > self.lastMaxMid.integerValue && type == RequestMessageTypeLatest){
+            self.lastMaxMid = newMid;
         }
         
         if(add){

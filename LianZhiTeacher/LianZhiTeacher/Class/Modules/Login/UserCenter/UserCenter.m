@@ -53,6 +53,12 @@ NSString *const kUserDataStorageKey = @"UserData";
                 [schoolInfo parseData:schoolDataWrapper];
                 [schoolArray addObject:schoolInfo];
             }
+            
+            [schoolArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+                SchoolInfo *schoolInfo1 = (SchoolInfo *)obj1;
+                SchoolInfo *schoolInfo2 = (SchoolInfo *)obj2;
+                return [schoolInfo1.schoolID compare:schoolInfo2.schoolID];
+            }];
             self.schools = schoolArray;
         }
     }

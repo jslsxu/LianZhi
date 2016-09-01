@@ -19,6 +19,7 @@
 @property (nonatomic, assign)ChatType type;
 @property (nonatomic, strong)FMDatabase *database;
 @property (nonatomic, strong)NSArray *updateArray;
+@property (nonatomic, copy)NSString *lastMaxMid;
 @end
 
 @implementation ChatMessageModel
@@ -181,12 +182,22 @@
 }
 
 - (NSString *)latestId{
-    for (NSInteger i = self.modelItemArray.count - 1; i >= 0; i--) {
-        MessageItem *item = self.modelItemArray[i];
-        if(item.content.mid.length > 0)
-            return item.content.mid;
+    if(self.lastMaxMid.length > 0){
+        return self.lastMaxMid;
     }
-    return nil;
+    else{
+        NSString *mid = nil;
+        for (NSInteger i = self.modelItemArray.count - 1; i >= 0; i--) {
+            MessageItem *item = self.modelItemArray[i];
+            if(item.content.mid.length > 0 && item.from == UUMessageFromOther){
+                NSString *curMid = item.content.mid;
+                if(curMid.integerValue > mid.integerValue){
+                    mid = curMid;
+                }
+            }
+        }
+        return mid;
+    }
 }
 
 - (NSString *)oldId{
@@ -295,9 +306,13 @@
     NSInteger addNum = 0;
     if(newMessageArray.count > 0){
         //添加到前面
+        NSString *newMid = nil;
         for (NSInteger i = newMessageArray.count - 1; i >= 0; i--) {
             MessageItem *messageItem = newMessageArray[i];
             [messageItem setTargetUser:self.targetUser];
+            if(messageItem.content.mid.integerValue > newMid.integerValue){
+                newMid = messageItem.content.mid;
+            }
             NSString *sql = [NSString stringWithFormat:@"select * from %@ where client_send_id = '%@'",[self tableName], messageItem.client_send_id];
             FMResultSet *rs = [self.database executeQuery:sql];
             if(![rs next]){
@@ -310,7 +325,9 @@
                 [self updateMessage:messageItem];
             }
         }
-        
+        if(newMid.integerValue > self.lastMaxMid.integerValue && type == RequestMessageTypeLatest){
+            self.lastMaxMid = newMid;
+        }
         if(addNum > 0){
             [self sortMessage];
             if(type == RequestMessageTypeLatest && originalNum > 0){

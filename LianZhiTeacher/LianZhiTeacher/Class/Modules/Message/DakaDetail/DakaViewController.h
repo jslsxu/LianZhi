@@ -10,5 +10,4 @@
 
 @interface DakaViewController : TNBaseTableViewController
 @property (nonatomic, strong)MessageFromInfo *fromInfo;
-@property (nonatomic, assign)NSInteger newNum;
 @end

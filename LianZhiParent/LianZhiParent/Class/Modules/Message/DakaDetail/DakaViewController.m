@@ -24,9 +24,6 @@
     [self setSupportPullDown:YES];
     [self setSupportPullUp:YES];
     
-    MessageDetailModel *detailModel = (MessageDetailModel *)self.tableViewModel;
-    [detailModel setNewNum:self.newNum];
-    
     [self requestData:REQUEST_REFRESH];
     
 }

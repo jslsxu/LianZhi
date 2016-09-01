@@ -17,7 +17,7 @@
     {
         _appImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - 40) / 2, self.height - 80, 40, 40)];
         [_appImageView setClipsToBounds:YES];
-        [_appImageView  setContentMode:UIViewContentModeScaleAspectFill];
+        [_appImageView  setContentMode:UIViewContentModeScaleAspectFit];
         [self addSubview:_appImageView];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height - 30, self.width, 30)];

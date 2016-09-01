@@ -95,7 +95,7 @@ DNImagePickerControllerDelegate>
     else{
         if(self.sendType == NotificationSendDraft){
             //草稿，覆盖
-            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"草稿已存在，是否覆盖?" style:LGAlertViewStyleAlert buttonTitles:@[@"覆盖", @"不覆盖"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"草稿已存在，是否覆盖?" style:LGAlertViewStyleAlert buttonTitles:@[@"覆盖", @"放弃修改"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
             [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
@@ -114,15 +114,15 @@ DNImagePickerControllerDelegate>
         }
         else{
             //是否保存到草稿
-            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否存入草稿箱?" style:LGAlertViewStyleAlert buttonTitles:@[@"保存", @"不保存"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否存入草稿箱?" style:LGAlertViewStyleAlert buttonTitles:@[@"不保存", @"保存"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
             [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
                 if(index == 0){
-                    [[NotificationDraftManager sharedInstance] addDraft:self.sendEntity];
+                    
                 }
                 else if (index == 1){
-                    
+                    [[NotificationDraftManager sharedInstance] addDraft:self.sendEntity];
                 }
                 [self.navigationController popViewControllerAnimated:YES];
             }];
@@ -574,8 +574,10 @@ DNImagePickerControllerDelegate>
 - (void)notificationInputSend{
     if([self checkNotification]){
         [[NotificationManager sharedInstance] addNotification:self.sendEntity];
-        if([[NotificationDraftManager sharedInstance].draftArray containsObject:self.sendEntity]){
-            [[NotificationDraftManager sharedInstance] removeDraft:self.sendEntity];
+        if(self.sendType == NotificationSendDraft){
+            if([[NotificationDraftManager sharedInstance].draftArray containsObject:self.sendEntity]){
+                [[NotificationDraftManager sharedInstance] removeDraft:self.sendEntity];
+            }
         }
         NSArray *vcArray = [self.navigationController viewControllers];
         for (UIViewController *vc in vcArray) {

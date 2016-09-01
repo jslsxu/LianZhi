@@ -58,6 +58,9 @@
         [longpress setMinimumPressDuration:1];
         [_avatarView addGestureRecognizer:longpress];
         
+        UITapGestureRecognizer *avatarTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onAvatarClick)];
+        [_avatarView addGestureRecognizer:avatarTapGesture];
+        
         _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         [_indicatorView setHidesWhenStopped:YES];
         [self addSubview:_indicatorView];
@@ -152,6 +155,14 @@
     if(self.messageItem.from == UUMessageFromOther){
         if([self.delegate respondsToSelector:@selector(onLongPressAvatar:)]){
             [self.delegate onLongPressAvatar:self.messageItem];
+        }
+    }
+}
+
+- (void)onAvatarClick{
+    if(self.messageItem.from == UUMessageFromOther){
+        if([self.delegate respondsToSelector:@selector(onAvatarClicked:)]){
+            [self.delegate onAvatarClicked:self.messageItem];
         }
     }
 }

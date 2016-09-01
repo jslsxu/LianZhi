@@ -255,21 +255,10 @@
             classAttendanceVC.targetStudentID = groupItem.fromInfo.childID;
             [CurrentROOTNavigationVC pushViewController:classAttendanceVC animated:YES];
         }
-        else if(groupItem.fromInfo.type == ChatTypePractice)
-        {
-            
-        }
-        else if(groupItem.fromInfo.type == ChatTypeDaka){
-            DakaViewController *dakaVC = [[DakaViewController alloc] init];
-            [dakaVC setFromInfo:groupItem.fromInfo];
-            [dakaVC setNewNum:groupItem.msgNum];
-            [CurrentROOTNavigationVC pushViewController:dakaVC animated:YES];
-        }
         else{
             MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];
             [detailVC setFromInfo:groupItem.fromInfo];
             [self.navigationController pushViewController:detailVC animated:YES];
-            [groupItem setMsgNum:0];
             [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
             [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         }

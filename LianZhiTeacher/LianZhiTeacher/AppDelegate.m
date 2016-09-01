@@ -100,9 +100,9 @@ static SystemSoundID shake_sound_male_id = 0;
     if(notificationInfo)
         [self handleNotification:notificationInfo];
     [self.window makeKeyAndVisible];
-    [WelcomeView showWelcome];
+//    [WelcomeView showWelcome];
     [self startReachability];
-    [self expendOperationGuide];
+//    [self expendOperationGuide];
     [self checkNewVersion];
     return YES;
 }
@@ -362,20 +362,20 @@ static SystemSoundID shake_sound_male_id = 0;
     [self.rootNavigation pushViewController:viewController animated:YES];
 }
 
-- (void)expendOperationGuide
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-//        NSString *codeDatabase = [path stringByAppendingPathComponent:@"Guide"];
-//        if(![[NSFileManager defaultManager] fileExistsAtPath:codeDatabase])
-        {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                NSString *originalPath = [[NSBundle mainBundle] pathForResource:@"Guide" ofType:@"zip"];
-                [SSZipArchive unzipFileAtPath:originalPath toDestination:path];
-            });
-        }
-    });
-}
+//- (void)expendOperationGuide
+//{
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+////        NSString *codeDatabase = [path stringByAppendingPathComponent:@"Guide"];
+////        if(![[NSFileManager defaultManager] fileExistsAtPath:codeDatabase])
+//        {
+//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//                NSString *originalPath = [[NSBundle mainBundle] pathForResource:@"Guide" ofType:@"zip"];
+//                [SSZipArchive unzipFileAtPath:originalPath toDestination:path];
+//            });
+//        }
+//    });
+//}
 
 - (BOOL)isNewVersion
 {

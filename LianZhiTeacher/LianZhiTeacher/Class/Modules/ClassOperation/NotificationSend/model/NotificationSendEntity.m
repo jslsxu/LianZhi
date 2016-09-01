@@ -21,6 +21,7 @@
 + (NotificationSendEntity *)sendEntityWithNotification:(NotificationItem *)notification{
     NotificationSendEntity *sendEntity = [[NotificationSendEntity alloc] init];
     sendEntity.words = notification.words;
+    sendEntity.sendSms = notification.sms;
     if(notification.hasVideo){
         sendEntity.videoArray = [NSMutableArray arrayWithObject:notification.video];
     }
@@ -44,7 +45,7 @@
         self.imageArray = [NSMutableArray array];
         self.videoArray = [NSMutableArray array];
         self.authorUser = [UserCenter sharedInstance].userInfo;
-        
+        self.createTime = [[NSDate date] timeIntervalSince1970];
         [self updateClientID];
     }
     return self;
@@ -181,9 +182,9 @@
     [params setValue:[NSString stringWithJSONObject:groupsArray] forKey:@"groups"];
     [params setValue:self.words forKey:@"words"];
     [params setValue:kStringFromValue(self.sendSms) forKey:@"sms"];
-    if(self.delaySend){
-        [params setValue:kStringFromValue(self.delaySendTime) forKey:@"time_to_send"];
-    }
+//    if(self.delaySend){
+//        [params setValue:kStringFromValue(self.delaySendTime) forKey:@"time_to_send"];
+//    }
     if(self.videoArray.count > 0){
         VideoItem *videoItem = self.videoArray[0];
         [params setValue:kStringFromValue(videoItem.videoTime) forKey:@"video_time"];
@@ -260,7 +261,7 @@
             success(notificationItem);
         }
     } fail:^(NSString *errMsg) {
-        [ProgressHUD showHintText:errMsg];
+//        [ProgressHUD showHintText:errMsg];
         if(fail){
             fail();
         }

@@ -10,6 +10,7 @@
 #import "UIView+Animations.h"
 #import "ProgressHUD.h"
 #import "DNImagePickerController.h"
+#import "DNPhotoBrowser.h"
 #define kPhotoCollectionViewHeight              116
 #define kPhotoToolBarHeight                     44
 
@@ -52,7 +53,7 @@
 
 @end
 
-@interface QuickImagePickerView ()
+@interface QuickImagePickerView ()<DNPhotoBrowserDelegate>
 @property (nonatomic, strong) XMNAlbumModel*    displayAlbum;
 @property (nonatomic, copy) NSArray <XMNAssetModel *>* assets;
 @property (nonatomic, strong) NSMutableArray <XMNAssetModel *> *selectedAssets;
@@ -133,7 +134,7 @@
         [_sendButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
         [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_sendButton setTitle:@"确定" forState:UIControlStateNormal];
-        [_sendButton addTarget:self action:@selector(onSendButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_sendButton addTarget:self action:@selector(sendImages) forControlEvents:UIControlEventTouchUpInside];
         [_toolBar addSubview:_sendButton];
         
         UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _toolBar.width, kLineHeight)];
@@ -180,7 +181,7 @@
     [_originalImageButton setImage:image forState:UIControlStateHighlighted];
 }
 
-- (void)onSendButtonClicked{
+- (void)sendImages{
     if(self.sendCallback){
         self.sendCallback(self.selectedAssets, self.originalSelected);
     }
@@ -190,17 +191,6 @@
     UIButton *button = cell.stateButton;
     XMNAssetModel *assetModel = cell.asset;
     if (!assetModel.selected) {
-//        for (XMNAssetModel *model in self.selectedAssets) {
-//            if(model.type != assetModel.type){
-//                [ProgressHUD showHintText:@"不能同时选择照片和视频"];
-//                return;
-//            }
-//            else if(model.type == XMNAssetTypeVideo){
-//                [ProgressHUD showHintText:@"一次只能发送1个视频"];
-//                return;
-//            }
-//        }
-        
         if(assetModel.type == XMNAssetTypeVideo){
             NSInteger videoCount = 0;
             for (XMNAssetModel *model in self.selectedAssets) {
@@ -252,6 +242,115 @@
     }
 }
 
+- (void)updateStatus{
+    NSInteger selectCount = self.selectedAssets.count;
+    if(selectCount > 0){
+        [_sendButton setEnabled:YES];
+        [_sendButton setTitle:[NSString stringWithFormat:@"确定(%zd)",selectCount] forState:UIControlStateNormal];
+    }
+    else{
+        [_sendButton setEnabled:NO];
+        [_sendButton setTitle:@"确定" forState:UIControlStateNormal];
+    }
+}
+
+- (BOOL)selectAsset:(XMNAssetModel *)asset{
+    if(asset.type == XMNAssetTypeVideo){
+        NSInteger videoCount = [self selectedVideoNum];
+        if(videoCount < self.maxVideoCount){
+            asset.selected = YES;
+            [self.selectedAssets addObject:asset];
+        }
+        else{
+            [ProgressHUD showHintText:@"一次只能发送1个视频"];
+            return NO;
+        }
+    }
+    else{
+        NSInteger imageCount = [self selectedImageNum];
+        if(imageCount >= self.maxImageCount){
+            [ProgressHUD showHintText:@"不能超过9张图"];
+            return NO;
+        }
+        else{
+            asset.selected = YES;
+            [self.selectedAssets addObject:asset];
+        }
+    }
+    [self updateStatus];
+    return YES;
+}
+
+- (void)deselectAsset:(XMNAssetModel *)asset{
+    asset.selected = NO;
+    [self.selectedAssets removeObject:asset];
+    [self updateStatus];
+}
+
+- (BOOL)assetIsSelected:(XMNAssetModel *)asset{
+    for (XMNAssetModel *model in self.selectedAssets) {
+        if(model == asset){
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (NSInteger)selectedImageNum{
+    NSInteger imageCount = 0;
+    for (XMNAssetModel *asset in self.selectedAssets) {
+        if(asset.type == XMNAssetTypePhoto){
+            imageCount ++;
+        }
+    }
+    return imageCount;
+}
+
+- (NSInteger)selectedVideoNum{
+    NSInteger videoCount = 0;
+    for (XMNAssetModel *asset in self.selectedAssets) {
+        if(asset.type == XMNAssetTypeVideo){
+            videoCount++;
+        }
+    }
+    return videoCount;
+}
+
+- (BOOL)canSelectAsset:(XMNAssetModel *)asset{
+    if ([self assetIsSelected:asset]) {
+        return NO;
+    }
+    if(asset.type == XMNAssetTypePhoto){
+        if([self selectedImageNum] >= self.maxImageCount){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"不能超过9张图片" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            return NO;
+        }
+    }
+    else{
+        if([self selectedVideoNum] >= self.maxVideoCount){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"最多只能选1个视频" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            return NO;
+        }
+    }
+    return YES;
+
+}
+
+- (XMNAssetModel *)modelForAsset:(ALAsset *)asset{
+    NSURL *assetURL = [asset valueForProperty:ALAssetPropertyAssetURL];
+    for (XMNAssetModel *model in self.assets) {
+        NSURL *targetAssetURL = [model.asset valueForProperty:ALAssetPropertyAssetURL];
+        if([targetAssetURL.absoluteString isEqualToString:assetURL.absoluteString]){
+            return model;
+        }
+    }
+    return nil;
+}
+
 #pragma mark - UICollectionViewDelegate & UICollectionViewDataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -272,6 +371,67 @@
         [wself handleStateButtonAction:wCell];
     }];
     return pickerCell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSMutableArray *assetArray = [NSMutableArray array];
+    for (XMNAssetModel *assetModel in self.assets) {
+        ALAsset *asset = assetModel.asset;
+        [assetArray addObject:asset];
+    }
+    DNPhotoBrowser *photoBrowser = [[DNPhotoBrowser alloc] initWithPhotos:assetArray currentIndex:indexPath.row fullImage:NO];
+    [photoBrowser setDelegate:self];
+    [CurrentROOTNavigationVC pushViewController:photoBrowser animated:YES];
+}
+
+#pragma mark - DNPhotoBrowserDelegate
+- (void)sendImagesFromPhotobrowser:(DNPhotoBrowser *)photoBrowser currentAsset:(ALAsset *)asset
+{
+    if(self.selectedAssets.count > 0){
+        [self sendImages];
+        [CurrentROOTNavigationVC popViewControllerAnimated:YES];
+    }
+//    NSInteger maxCount = 0;
+//    XMNAssetModel *model = [self modelForAsset:asset];
+//    if(model.type == XMNAssetTypePhoto){
+//        maxCount = self.maxImageCount;
+//    }
+//    else if(model.type == XMNAssetTypeVideo){
+//        maxCount = self.maxVideoCount;
+//    }
+//    if (self.selectedAssets.count < maxCount) {
+//        [self selectAsset:model];
+//        [self.collectionView reloadData];
+//    }
+//    [self sendImages];
+}
+
+- (NSUInteger)seletedPhotosNumberInPhotoBrowser:(DNPhotoBrowser *)photoBrowser
+{
+    return self.selectedAssets.count;
+}
+
+- (BOOL)photoBrowser:(DNPhotoBrowser *)photoBrowser currentPhotoAssetIsSeleted:(ALAsset *)asset{
+    return [self assetIsSelected:[self modelForAsset:asset]];
+}
+
+- (BOOL)photoBrowser:(DNPhotoBrowser *)photoBrowser seletedAsset:(ALAsset *)asset
+{
+    BOOL seleted = [self selectAsset:[self modelForAsset:asset]];
+    [self.collectionView reloadData];
+    return seleted;
+}
+
+- (void)photoBrowser:(DNPhotoBrowser *)photoBrowser deseletedAsset:(ALAsset *)asset
+{
+    [self deselectAsset:[self modelForAsset:asset]];
+    [self.collectionView reloadData];
+}
+
+- (void)photoBrowser:(DNPhotoBrowser *)photoBrowser seleteFullImage:(BOOL)fullImage
+{
+    self.originalSelected = fullImage;
 }
 
 @end
