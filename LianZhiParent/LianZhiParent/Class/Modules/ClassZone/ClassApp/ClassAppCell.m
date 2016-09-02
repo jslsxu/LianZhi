@@ -15,14 +15,14 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        _appImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - 40) / 2, self.height - 80, 40, 40)];
+        _appImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - 30) / 2, self.height - 60, 30, 30)];
         [_appImageView setClipsToBounds:YES];
         [_appImageView  setContentMode:UIViewContentModeScaleAspectFit];
         [self addSubview:_appImageView];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height - 30, self.width, 30)];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height - 25, self.width, 25)];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-        [_nameLabel setFont:[UIFont systemFontOfSize:13]];
+        [_nameLabel setFont:[UIFont systemFontOfSize:12]];
         [_nameLabel setTextAlignment:NSTextAlignmentCenter];
         [self addSubview:_nameLabel];
         

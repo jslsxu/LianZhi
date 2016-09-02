@@ -128,8 +128,8 @@ static SystemSoundID shake_sound_male_id = 0;
 //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     [[UINavigationBar appearance] setBarTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearance] setTintColor:[UIColor colorWithHexString:@"252525"]];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"252525"],NSFontAttributeName:[UIFont systemFontOfSize:18]}];
+    [[UINavigationBar appearance] setTintColor:[UIColor colorWithHexString:@"525252"]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithHexString:@"525252"],NSFontAttributeName:[UIFont systemFontOfSize:18]}];
 }
 
 - (void)registerThirdParty

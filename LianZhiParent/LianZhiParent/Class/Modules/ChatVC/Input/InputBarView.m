@@ -107,6 +107,10 @@
         [_recordButton addTarget:self action:@selector(RemindDragEnter:) forControlEvents:UIControlEventTouchDragEnter];
         [_contentView addSubview:_recordButton];
         
+        UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, _contentView.height - kLineHeight, _contentView.width, kLineHeight)];
+        [bottomLine setBackgroundColor:[UIColor colorWithHexString:@"A4A4A4"]];
+        [_contentView addSubview:bottomLine];
+        
         _faceSelectView = [[FaceSelectView alloc] initWithFrame:CGRectMake(0, _contentView.height, kScreenWidth, FaceSelectHeight)];
         [self addSubview:_faceSelectView];
         _faceSelectView.delegate = self;
@@ -222,14 +226,14 @@
 
 - (void)onKeyboardWillHide:(NSNotification *)notification
 {
-    if(self.window){
-        _inputType = InputTypeNormal;
-        CGRect keyboardBounds;
-        [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
-        self.targetHeight = _contentView.height;
-        if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidChangeHeight:)])
-            [self.inputDelegate inputBarViewDidChangeHeight:self.targetHeight];
-    }
+//    if(self.window){
+//        _inputType = InputTypeNormal;
+//        CGRect keyboardBounds;
+//        [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+//        self.targetHeight = _contentView.height;
+//        if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidChangeHeight:)])
+//            [self.inputDelegate inputBarViewDidChangeHeight:self.targetHeight];
+//    }
 }
 
 #pragma mark - Actions

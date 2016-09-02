@@ -65,9 +65,8 @@
     [super viewDidLoad];
     self.title = @"个性设置";
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
-    [_tableView setSeparatorColor:[UIColor colorWithHexString:@"E0E0E0"]];
+    [_tableView setSeparatorColor:kSepLineColor];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
-    [_tableView setBackgroundColor:[UIColor clearColor]];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [self.view addSubview:_tableView];

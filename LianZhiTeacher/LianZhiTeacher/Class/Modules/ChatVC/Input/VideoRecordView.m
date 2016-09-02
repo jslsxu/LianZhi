@@ -53,6 +53,9 @@
         [_captureButton.layer setBorderWidth:2];
         [_captureButton.layer setCornerRadius:25];
         [_captureButton.layer setMasksToBounds:YES];
+        [_captureButton setTitle:@"按住拍" forState:UIControlStateNormal];
+        [_captureButton setTitleColor:kCommonTeacherTintColor forState:UIControlStateNormal];
+        [_captureButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
         [_captureButton setFrame:CGRectMake((_contentView.width - 50) / 2, _previewView.height + (60 - 50) / 2, 50, 50)];
         [_captureButton addTarget:self action:@selector(startCapture) forControlEvents:UIControlEventTouchDown];
         [_captureButton addTarget:self action:@selector(recordButtonDragExit) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchDragExit];

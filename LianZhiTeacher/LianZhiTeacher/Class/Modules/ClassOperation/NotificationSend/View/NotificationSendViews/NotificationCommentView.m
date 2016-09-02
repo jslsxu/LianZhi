@@ -67,7 +67,9 @@
         _commentTextView.text = resultText;
         length = self.maxWordsNum;
     }
-    [_numLabel setText:[NSString stringWithFormat:@"%zd/%zd",length, self.maxWordsNum]];
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:kStringFromValue(length) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}];
+    [attrStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"/%zd",self.maxWordsNum] attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"333333"]}]];
+    [_numLabel setAttributedText:attrStr];
     if(self.textViewTextChanged){
         self.textViewTextChanged(resultText);
     }

@@ -217,19 +217,21 @@
     @weakify(self)
     @weakify(cell)
     NSMutableArray *buttonArray = [NSMutableArray array];
-    MGSwipeButton * deleteButton = [MGSwipeButton buttonWithTitle:@"删除" backgroundColor:[UIColor redColor] callback:^BOOL(MGSwipeTableCell * sender){
+    MGSwipeButton * deleteButton = [MGSwipeButton buttonWithTitle:@"删除" backgroundColor:[UIColor colorWithHexString:@"e71f19"] callback:^BOOL(MGSwipeTableCell * sender){
         @strongify(cell)
         @strongify(self)
         [self deleteCell:cell];
         return YES;
     }];
+    [deleteButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [buttonArray addObject:deleteButton];
-    MGSwipeButton * soundButton = [MGSwipeButton buttonWithTitle:item.soundOn ? @"静音" : @"关闭静音" backgroundColor:[UIColor colorWithHexString:@"cccccc"] callback:^BOOL(MGSwipeTableCell * sender){
+    MGSwipeButton * soundButton = [MGSwipeButton buttonWithTitle:item.soundOn ? @"静音" : @"关闭静音" backgroundColor:[UIColor colorWithHexString:@"28c4d8"] callback:^BOOL(MGSwipeTableCell * sender){
         @strongify(cell)
         @strongify(self)
         [self switchSoundForCell:cell];
         return YES;
     }];
+    [soundButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [buttonArray addObject:soundButton];
     [cell setRightButtons:buttonArray];
     return cell;

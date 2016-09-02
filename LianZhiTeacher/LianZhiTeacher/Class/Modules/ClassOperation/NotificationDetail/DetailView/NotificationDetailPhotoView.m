@@ -34,16 +34,23 @@
     NSInteger margin = 10;
     NSInteger start = 0;
     if(_photoArray.count % 2 == 1){
+        PhotoItem *photoItem = _photoArray[0];
         start = 1;
-        
-        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(margin, 0, self.width - margin * 2, (self.width - margin * 2) * 2 / 3 )];
+        CGFloat firstWidth = self.width - margin * 2;
+        CGFloat firstHeight;
+        if(photoItem.width > 0 && photoItem.height > 0){
+            firstHeight = firstWidth * photoItem.height / photoItem.width;
+        }
+        else{
+            firstHeight = firstWidth * 2 / 3;
+        }
+        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(margin, 0, firstWidth, firstHeight)];
         [imageView setBackgroundColor:[UIColor colorWithHexString:@"dddddd"]];
         [imageView setContentMode:UIViewContentModeScaleAspectFill];
         [imageView setClipsToBounds:YES];
         [imageView setUserInteractionEnabled:YES];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapedImageView:)];
         [imageView addGestureRecognizer:tap];
-        PhotoItem *photoItem = _photoArray[0];
         if(photoItem.isLocal){
             NSData *imageData = [NSData dataWithContentsOfFile:photoItem.big];
             UIImage *image  =[UIImage imageWithData:imageData];

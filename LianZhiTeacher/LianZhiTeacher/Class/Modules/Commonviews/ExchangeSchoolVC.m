@@ -91,7 +91,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kStatusChangedNotification object:nil];
     self.title = @"切换学校";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"%ld所",(long)[UserCenter sharedInstance].userData.schools.count] style:UIBarButtonItemStylePlain target:nil action:nil];
-    [self.view setBackgroundColor:[UIColor colorWithRed:229 / 255.0 green:229 / 255.0 blue:229 / 255.0 alpha:1.f]];
     
     _messages = [NSMutableArray arrayWithArray:[UserCenter sharedInstance].userData.schools];
     _indicatorDic = [NSMutableDictionary dictionary];

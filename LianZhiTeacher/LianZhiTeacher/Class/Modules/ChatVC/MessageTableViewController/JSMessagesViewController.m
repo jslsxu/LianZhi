@@ -73,6 +73,7 @@ static NSString *topChatID = nil;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     topChatID = self.targetID;
     BOOL isGroup = (self.chatType == ChatTypeGroup || self.chatType == ChatTypeClass);
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:isGroup ? @"GroupInfoIcon" : @"SingleInfoIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(showChatUserInfo)];
@@ -602,6 +603,10 @@ static NSString *topChatID = nil;
 }
 
 #pragma mark - MessageCellDelegate
+
+- (void)onMenuShow{
+    [_inputView setInputType:InputTypeNone];
+}
 
 - (void)onAvatarClicked:(MessageItem *)messageItem{
     UserInfo *userInfo = messageItem.user;

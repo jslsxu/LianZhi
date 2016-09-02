@@ -24,6 +24,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"eeeef4"]];
 //    NSMutableString *text = [NSMutableString stringWithString:self.fromInfo.name];
 //    if(self.fromInfo.label.length > 0)
 //        [text appendString:[NSString stringWithFormat:@"(%@)",self.fromInfo.label]];

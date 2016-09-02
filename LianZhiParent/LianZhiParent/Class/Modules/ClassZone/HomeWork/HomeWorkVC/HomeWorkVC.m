@@ -16,6 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"eeeef4"]];
     self.title = @"作业练习";
     [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 10, 0)];
     [self setSupportPullDown:YES];

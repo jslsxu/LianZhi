@@ -94,14 +94,14 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        _appImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - 40) / 2, self.height - 80, 40, 40)];
+        _appImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - 30) / 2, self.height - 60, 30, 30)];
         [_appImageView setClipsToBounds:YES];
         [_appImageView  setContentMode:UIViewContentModeScaleAspectFit];
         [self addSubview:_appImageView];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height - 30, self.width, 30)];
-        [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-        [_nameLabel setFont:[UIFont systemFontOfSize:13]];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height - 25, self.width, 25)];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"525252"]];
+        [_nameLabel setFont:[UIFont systemFontOfSize:12]];
         [_nameLabel setTextAlignment:NSTextAlignmentCenter];
         [self addSubview:_nameLabel];
         
@@ -196,8 +196,6 @@
     [super viewDidLoad];
     [self setupTitle];
 //    self.title = [UserCenter sharedInstance].curSchool.schoolName;
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     [self.collectionView registerClass:[ApplicationBoxHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ApplicationBoxHeaderView"];
     [self.collectionView setShowsVerticalScrollIndicator:NO];
 
@@ -221,7 +219,7 @@
 {
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)layout;
     [flowLayout setSectionInset:UIEdgeInsetsMake(0, 0, 20, 0)];
-    [flowLayout setItemSize:CGSizeMake(self.view.width / 4, MIN(self.view.width / 4 + 20, 100))];
+    [flowLayout setItemSize:CGSizeMake(self.view.width / 4, MIN(self.view.width / 4 + 20, 80))];
     [flowLayout setMinimumInteritemSpacing:0];
     [flowLayout setMinimumLineSpacing:0];
     [flowLayout setHeaderReferenceSize:CGSizeMake(self.view.width, self.view.width / 2)];

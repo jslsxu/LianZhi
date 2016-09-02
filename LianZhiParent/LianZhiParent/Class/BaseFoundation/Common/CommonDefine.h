@@ -16,7 +16,7 @@
 #define IS_IOS7_LATER                   (RunTimeSysVersion >= 7.0f)
 
 #define kCommonParentTintColor          [UIColor colorWithRed:26 / 255.0 green:194 / 255.0 blue:130 / 255.0 alpha:1.f]
-#define kCommonBackgroundColor          [UIColor colorWithRed:233 / 255.0 green:233 / 255.0 blue:233 / 255.0 alpha:1.f]
+#define kCommonBackgroundColor          [UIColor colorWithRed:239 / 255.0 green:239 / 255.0 blue:244 / 255.0 alpha:1.f]
 #define kNormalTextColor                [UIColor colorWithRed:102 / 255.0 green:102 / 255.0 blue:102 / 255.0 alpha:1.f]
 #define kSubTextColor                   [UIColor colorWithRed:153 / 255.0 green:153 / 255.0 blue:153 / 255.0 alpha:1.f]
 #define kWarningTextColor               [UIColor colorWithRed:164 / 255.0 green:70 / 255.0 blue:73 / 255.0 alpha:1.f]

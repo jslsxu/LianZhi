@@ -28,9 +28,8 @@
         [settingItem setTitle:settingTitles[i]];
         [_settingItems addObject:settingItem];
     }
-    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-    [_tableView setBackgroundColor:[UIColor clearColor]];
-    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    [_tableView setSeparatorColor:kSepLineColor];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];

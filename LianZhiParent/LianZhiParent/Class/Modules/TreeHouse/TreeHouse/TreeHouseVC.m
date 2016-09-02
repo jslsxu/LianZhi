@@ -179,6 +179,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"eeeef4"]];
     self.title = @"我的树屋";
     self.shouldShowEmptyHint = YES;
     //请求网络数据

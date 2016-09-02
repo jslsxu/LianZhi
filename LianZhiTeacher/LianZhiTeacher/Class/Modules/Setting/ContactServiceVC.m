@@ -21,8 +21,6 @@
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         _contentView = [[UIView alloc] initWithFrame:CGRectMake(10, 0, self.width - 10 * 2, self.height)];
         [_contentView setBackgroundColor:[UIColor whiteColor]];
-        [_contentView.layer setBorderColor:[UIColor colorWithHexString:@"D8D8D8"].CGColor];
-        [_contentView.layer setBorderWidth:0.5];
         [_contentView.layer setCornerRadius:4];
         [_contentView.layer setMasksToBounds:YES];
         [self addSubview:_contentView];
@@ -52,7 +50,6 @@
     
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
-    [_tableView setBackgroundColor:[UIColor clearColor]];
     [_tableView setSeparatorColor:kSepLineColor];
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];

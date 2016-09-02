@@ -59,12 +59,13 @@
     UIButton*   sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [sendButton addTarget:self action:@selector(sendNotification) forControlEvents:UIControlEventTouchUpInside];
     [sendButton setFrame:CGRectMake(10, 10, viewParent.width - 10 * 2, viewParent.height - 10 * 2)];
-    [sendButton.layer setBorderColor:kCommonTeacherTintColor.CGColor];
-    [sendButton.layer setBorderWidth:1];
-    [sendButton.layer setCornerRadius:2];
+//    [sendButton.layer setBorderColor:kCommonTeacherTintColor.CGColor];
+//    [sendButton.layer setBorderWidth:1];
+//    [sendButton.layer setCornerRadius:2];
+    [sendButton setBackgroundImage:[[UIImage imageNamed:@"send_notification_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(4, 4, 4, 4)] forState:UIControlStateNormal];
     [sendButton setTitleColor:kCommonTeacherTintColor forState:UIControlStateNormal];
     [sendButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
-    [sendButton setTitle:@"发布通知" forState:UIControlStateNormal];
+    [sendButton setImage:[UIImage imageNamed:@"send_notification"] forState:UIControlStateNormal];
     [viewParent addSubview:sendButton];
 }
 

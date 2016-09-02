@@ -205,6 +205,9 @@
         [menu setMenuItems:menuArray];
         [menu setTargetRect:self.chatContentView.frame inView:self];
         [menu setMenuVisible:YES animated:YES];
+        if([self.delegate respondsToSelector:@selector(onMenuShow)]){
+            [self.delegate onMenuShow];
+        }
     }
 
 }

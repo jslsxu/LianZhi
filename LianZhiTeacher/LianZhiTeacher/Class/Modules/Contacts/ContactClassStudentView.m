@@ -14,7 +14,7 @@
     self = [super initWithReuseIdentifier:reuseIdentifier];
     if(self){
         [self setSize:CGSizeMake(kScreenWidth, 60)];
-        [self.contentView setBackgroundColor:[UIColor whiteColor]];
+//        [self.contentView setBackgroundColor:[UIColor whiteColor]];
         _logoView = [[LogoView alloc] initWithRadius:18];
         [self.contentView addSubview:_logoView];
         

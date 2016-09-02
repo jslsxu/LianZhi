@@ -95,7 +95,7 @@
     if(_functionArray == nil){
         _functionArray = [NSMutableArray array];
         [_functionArray addObject:[FunctionItem functionItemWithTitle:@"发照片" image:@"FunctionAlbum" type:FunctionTypePhoto]];
-        [_functionArray addObject:[FunctionItem functionItemWithTitle:@"拍摄" image:@"FunctionCamera" type:FunctionTypeCamera]];
+        [_functionArray addObject:[FunctionItem functionItemWithTitle:@"拍照片" image:@"FunctionCamera" type:FunctionTypeCamera]];
         [_functionArray addObject:[FunctionItem functionItemWithTitle:@"小视频" image:@"FunctionVideo" type:FunctionTypeShortVideo]];
     }
     return _functionArray;

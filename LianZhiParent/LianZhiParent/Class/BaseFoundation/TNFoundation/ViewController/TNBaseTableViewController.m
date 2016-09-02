@@ -26,8 +26,8 @@
     self = [super init];
     if(self)
     {
-        if(IS_IOS7_LATER)
-            self.edgesForExtendedLayout = UIRectEdgeNone;
+//        if(IS_IOS7_LATER)
+//            self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     return self;
 }
@@ -129,11 +129,14 @@
 - (void)reloadData{
     __weak typeof(self) wself = self;
     if(self.supportPullUp && [_tableViewModel hasMoreData])
-        [_tableView setMj_footer:[MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        [_tableView setMj_footer:[MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
             [wself requestData:REQUEST_GETMORE];
         }]];
-    else
-        [_tableView setMj_footer:nil];
+    else{
+        if(self.tableView.mj_footer){
+            [self.tableView.mj_footer endRefreshingWithNoMoreData];
+        }
+    }
     [_tableView reloadData];
 }
 

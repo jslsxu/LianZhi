@@ -15,6 +15,7 @@
 - (void)onReceiveGift:(MessageItem *)messageItem;
 - (void)onLongPressAvatar:(MessageItem *)messageItem;
 - (void)onAvatarClicked:(MessageItem *)messageItem;
+- (void)onMenuShow;
 @end
 @interface MessageCell : TNTableViewCell{
     UILabel*                    _timeLabel;
