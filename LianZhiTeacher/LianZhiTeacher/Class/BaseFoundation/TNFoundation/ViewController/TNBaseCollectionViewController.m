@@ -81,6 +81,19 @@
     }
 }
 
+- (void)setSupportPullUp:(BOOL)supportPullUp{
+    _supportPullUp = supportPullUp;
+    if(_supportPullUp){
+        __weak typeof(self) wself = self;
+        [_collectionView setMj_footer:[MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+            [wself requestData:REQUEST_GETMORE];
+        }]];
+    }
+    else{
+        [_collectionView setMj_footer:nil];
+    }
+}
+
 - (void)showEmptyLabel:(BOOL)show
 {
     if(_emptyLabel == nil)
@@ -100,13 +113,16 @@
 
 - (void)reloadData
 {
-    __weak typeof(self) wself = self;
-    if(self.supportPullUp && [_collectionViewModel hasMoreData])
-        [_collectionView setMj_footer:[MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-            [wself requestData:REQUEST_GETMORE];
-        }]];
-    else
-        [_collectionView setMj_footer:nil];
+    if(self.supportPullUp){
+        if(![_collectionViewModel hasMoreData]){
+            [self.collectionView.mj_footer endRefreshingWithNoMoreData];
+        }
+        else{
+            [self.collectionView.mj_footer resetNoMoreData];
+        }
+    }
+    
+    [_collectionView reloadData];
     [_collectionView reloadData];
 }
 

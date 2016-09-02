@@ -238,9 +238,10 @@
 }
 
 - (void)egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView *)scrollView {	
-	
+    UIEdgeInsets edgeInsets = scrollView.contentInset;
+    edgeInsets.top = 0;
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        [scrollView setContentInset:UIEdgeInsetsZero];
+        [scrollView setContentInset:edgeInsets];
     } completion:nil];
 	
 	[self setState:EGOOPullRefreshNormal];

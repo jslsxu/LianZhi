@@ -26,7 +26,7 @@
     self = [super init];
     if(self)
     {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
+//        self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     return self;
 }
@@ -105,6 +105,18 @@
     }
 }
 
+- (void)setSupportPullUp:(BOOL)supportPullUp{
+    _supportPullUp = supportPullUp;
+    if(_supportPullUp){
+        [self.tableView setMj_footer:[MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+            [self requestData:REQUEST_GETMORE];
+        }]];
+    }
+    else{
+        [self.tableView setMj_footer:nil];
+    }
+}
+
 
 - (void)showEmptyLabel:(BOOL)show
 {
@@ -124,15 +136,14 @@
 }
 
 - (void)reloadData{
-    __weak typeof(self) wself = self;
-    if(self.supportPullUp && [_tableViewModel hasMoreData]){
-        MJRefreshBackNormalFooter *footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-            [wself requestData:REQUEST_GETMORE];
-        }];
-        [_tableView setMj_footer:footer];
+    if(self.supportPullUp){
+        if(![_tableViewModel hasMoreData]){
+            [self.tableView.mj_footer endRefreshingWithNoMoreData];
+        }
+        else{
+            [self.tableView.mj_footer resetNoMoreData];
+        }
     }
-    else
-        [_tableView.mj_footer endRefreshingWithNoMoreData];
     [_tableView reloadData];
 }
 

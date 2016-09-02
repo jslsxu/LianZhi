@@ -193,7 +193,6 @@
     else{
         height += kExtraInfoHeight;
     }
-    height +=  kBGTopMargin;
 
     return @(height);
 }

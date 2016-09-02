@@ -43,7 +43,10 @@
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [self.view addSubview:_tableView];
-    
+
+    [RACObserve(self.tableView, contentInset) subscribeNext:^(id x) {
+        NSLog(@"bottom is %f",self.tableView.contentInset.bottom);
+    }];
 }
 
 - (UITableViewStyle)tableViewStyle
@@ -108,6 +111,17 @@
     }
 }
 
+- (void)setSupportPullUp:(BOOL)supportPullUp{
+    _supportPullUp = supportPullUp;
+    if(_supportPullUp){
+        [self.tableView setMj_footer:[MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+            [self requestData:REQUEST_GETMORE];
+        }]];
+    }
+    else{
+        [self.tableView setMj_footer:nil];
+    }
+}
 
 - (void)showEmptyLabel:(BOOL)show
 {
@@ -127,14 +141,13 @@
 }
 
 - (void)reloadData{
-    __weak typeof(self) wself = self;
-    if(self.supportPullUp && [_tableViewModel hasMoreData])
-        [_tableView setMj_footer:[MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-            [wself requestData:REQUEST_GETMORE];
-        }]];
-    else{
-        if(self.tableView.mj_footer){
+//    __weak typeof(self) wself = self;
+    if(self.supportPullUp){
+        if(![_tableViewModel hasMoreData]){
             [self.tableView.mj_footer endRefreshingWithNoMoreData];
+        }
+        else{
+            [self.tableView.mj_footer resetNoMoreData];
         }
     }
     [_tableView reloadData];
@@ -177,8 +190,12 @@
 
 - (void)onRequestSuccess:(AFHTTPRequestOperation *)operation responseData:(TNDataWrapper *)responseData
 {
-    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-   [self.tableView.mj_footer endRefreshing];
+    if(operation.requestType == REQUEST_GETMORE){
+        
+    }
+    else{
+         [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+    }
     [_tableViewModel parseData:responseData type:operation.requestType];
     if(self.shouldShowEmptyHint)
         [self showEmptyLabel:_tableViewModel.modelItemArray.count == 0];
