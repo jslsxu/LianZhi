@@ -23,6 +23,6 @@
 @property (nonatomic, weak)MessageVC *messageVC;
 - (void)selectAtIndex:(NSInteger)index;
 - (NSArray *)commonLeftBarButtonItems;
-
+- (void)showIMVC;
 @end
 

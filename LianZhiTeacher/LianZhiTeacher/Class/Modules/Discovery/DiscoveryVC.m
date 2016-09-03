@@ -164,10 +164,7 @@
 
 - (BOOL)hasNew
 {
-    NSString *guideCellKey = @"guideCellKey";
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasNewGuide = [userDefaults boolForKey:guideCellKey];
-    BOOL hasNewMsg = [UserCenter sharedInstance].statusManager.found || [UserCenter sharedInstance].statusManager.faq || !hasNewGuide;
+    BOOL hasNewMsg = [UserCenter sharedInstance].statusManager.found || [UserCenter sharedInstance].statusManager.faq;
     return hasNewMsg;
 }
 

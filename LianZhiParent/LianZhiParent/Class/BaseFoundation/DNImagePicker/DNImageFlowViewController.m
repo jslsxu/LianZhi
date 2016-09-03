@@ -390,11 +390,14 @@ static NSString* const dnAssetsViewCellReuseIdentifier = @"DNAssetsViewCell";
 #pragma mark - DNPhotoBrowserDelegate
 - (void)sendImagesFromPhotobrowser:(DNPhotoBrowser *)photoBrowser currentAsset:(ALAsset *)asset
 {
-    if (self.selectedAssetsArray.count <= 0) {
-        [self seletedAssets:asset];
-        [self.imageFlowCollectionView reloadData];
+    if(self.selectedAssetsArray.count > 0){
+        [self sendImages];
     }
-    [self sendImages];
+//    if (self.selectedAssetsArray.count <= 0) {
+//        [self seletedAssets:asset];
+//        [self.imageFlowCollectionView reloadData];
+//    }
+//    [self sendImages];
 }
 
 - (NSUInteger)seletedPhotosNumberInPhotoBrowser:(DNPhotoBrowser *)photoBrowser

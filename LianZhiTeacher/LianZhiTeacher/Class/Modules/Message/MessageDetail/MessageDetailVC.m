@@ -107,19 +107,24 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
     MessageDetailItem *detailItem = (MessageDetailItem *)modelItem;
-    MessageNotificationDetailVC *notificationDetailVC = [[MessageNotificationDetailVC alloc] init];
-    [notificationDetailVC setMessageDetailItem:detailItem];
-    @weakify(self)
-    [notificationDetailVC setDeleteSuccessCallback:^(MessageDetailItem *messageDetailItem) {
-        @strongify(self)
-        NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:detailItem];
-        if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
-        {
-            [self.tableViewModel.modelItemArray removeObject:detailItem];
-            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-        }
-    }];
-    [self.navigationController pushViewController:notificationDetailVC animated:YES];
+    if(detailItem.type == ChatTypeLianZhiBroadcast || detailItem.type == ChatTypeDoorEntrance){
+        
+    }
+    else{
+        MessageNotificationDetailVC *notificationDetailVC = [[MessageNotificationDetailVC alloc] init];
+        [notificationDetailVC setMessageDetailItem:detailItem];
+        @weakify(self)
+        [notificationDetailVC setDeleteSuccessCallback:^(MessageDetailItem *messageDetailItem) {
+            @strongify(self)
+            NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:detailItem];
+            if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
+            {
+                [self.tableViewModel.modelItemArray removeObject:detailItem];
+                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            }
+        }];
+        [self.navigationController pushViewController:notificationDetailVC animated:YES];
+    }
 }
 
 - (void)deleteItem:(MessageDetailItem *)detailItem

@@ -56,6 +56,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setupSubviews) name:kUserCenterChangedCurChildNotification object:nil];
         _switchButton = [SwitchChildButton buttonWithType:UIButtonTypeCustom];
         [_switchButton setImage:[UIImage imageNamed:@"ChildrenSwitch"] forState:UIControlStateNormal];
+        [_switchButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
         [_switchButton setUserInteractionEnabled:NO];
         [_switchButton setSize:CGSizeMake(24, 24)];
         [self addSubview:_switchButton];
@@ -103,14 +104,14 @@
     else{
         [_switchButton setHidden:NO];
         [_switchButton setOrigin:CGPointMake(0, (self.height - _switchButton.height) / 2)];
-        [_avatar setOrigin:CGPointMake(_switchButton.right + 5, (self.height - _avatar.height) / 2)];
+        [_avatar setOrigin:CGPointMake(_switchButton.right, (self.height - _avatar.height) / 2)];
     }
     [self setWidth:_avatar.right];
     [self onStatusChanged];
 }
 
 - (void)switchChild{
-    if([UserCenter sharedInstance].children.count > 0){
+    if([UserCenter sharedInstance].children.count > 1){
         [ChildrenSelectVC showChildrenSelectWithCompletion:^{
             
         }];

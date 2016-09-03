@@ -17,7 +17,6 @@
     if(self)
     {
         [self setSize:CGSizeMake(kScreenWidth, 60)];
-        [self.contentView setBackgroundColor:[UIColor whiteColor]];
         _logoView = [[LogoView alloc] initWithFrame:CGRectMake(12, (self.height - 36) / 2, 36,36)];
         [self.contentView addSubview:_logoView];
         
@@ -62,7 +61,7 @@
     NSInteger vMargin = 12;
     [_classLabel setText:classInfo.name];
     [_classLabel sizeToFit];
-    [_classLabel setOrigin:CGPointMake(_logoView.right + 5, vMargin)];
+    [_classLabel setOrigin:CGPointMake(55, vMargin)];
     
     [_schoolLabel setText:self.classInfo.school.schoolName];
     [_schoolLabel sizeToFit];
@@ -70,7 +69,7 @@
     
     [_numLabel setText:[NSString stringWithFormat:@"老师:%zd人 学生:%zd人",_classInfo.teachers.count, _classInfo.students.count]];
     [_numLabel sizeToFit];
-    [_numLabel setOrigin:CGPointMake(_logoView.right + 5, self.height - vMargin - _numLabel.height)];
+    [_numLabel setOrigin:CGPointMake(55, self.height - vMargin - _numLabel.height)];
 }
 
 - (void)onCoverButtonClicked
@@ -102,12 +101,12 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:ApplicationDelegate.homeVC.curChildrenSelectView];
+    self.navigationItem.leftBarButtonItems = [ApplicationDelegate.homeVC commonLeftBarButtonItems];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    [self.navigationItem setLeftBarButtonItem:nil];
+    [self.navigationItem setLeftBarButtonItems:nil];
 }
 
 - (void)setTitle:(NSString *)title{
@@ -247,7 +246,8 @@
     ClassInfo *class = [UserCenter sharedInstance].curChild.classes[indexPath.section];
     NSArray *teacherArray = class.teachers;
     NSInteger row = indexPath.row;
-    if(row <= teacherArray.count - 1){
+    NSInteger teacherNum = teacherArray.count;
+    if(row <= teacherNum - 1){
         [cell setUserInfo:teacherArray[row]];
     }
     else{

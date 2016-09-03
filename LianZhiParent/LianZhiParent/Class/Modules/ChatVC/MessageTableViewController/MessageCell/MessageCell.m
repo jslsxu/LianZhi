@@ -45,7 +45,7 @@
         [_timeLabel.layer setMasksToBounds:YES];
         [self addSubview:_timeLabel];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.width - 10 * 2, kChatNameLabelHeight)];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 100, kChatNameLabelHeight)];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"8f8f8f"]];
         [_nameLabel setFont:[UIFont systemFontOfSize:10]];
         [self addSubview:_nameLabel];
@@ -98,21 +98,22 @@
         spaceYStart = _timeLabel.bottom + kChatVMargin;
     }
     if(self.messageItem.isMyMessage){
-        [_nameLabel setTextAlignment:NSTextAlignmentRight];
-        [_nameLabel setText:@"我自己"];
-    }
-    else{
-        [_nameLabel setTextAlignment:NSTextAlignmentLeft];
-        [_nameLabel setText:self.messageItem.user.name];
-    }
-    [_nameLabel setY:spaceYStart];
-    spaceYStart += _nameLabel.height + kChatVMargin;
-    if(self.messageItem.isMyMessage){
         [_avatarView setOrigin:CGPointMake(self.width - kChatHMargin - _avatarView.width, spaceYStart)];
     }
     else{
         [_avatarView setOrigin:CGPointMake(kChatHMargin, spaceYStart)];
     }
+    if(self.messageItem.isMyMessage){
+        [_nameLabel setTextAlignment:NSTextAlignmentRight];
+        [_nameLabel setText:@"我自己"];
+        [_nameLabel setOrigin:CGPointMake(_avatarView.left - 5 - _nameLabel.width, spaceYStart)];
+    }
+    else{
+        [_nameLabel setTextAlignment:NSTextAlignmentLeft];
+        [_nameLabel setText:self.messageItem.user.name];
+        [_nameLabel setOrigin:CGPointMake(_avatarView.right + 5, spaceYStart)];
+    }
+    spaceYStart += _nameLabel.height + kChatVMargin;
     BOOL receiveGift = self.messageItem.content.type == UUMessageTypeReceiveGift;
     [_avatarView setHidden:receiveGift];
     [_nameLabel setHidden:receiveGift];
@@ -186,8 +187,8 @@
             }
         }
         
-        UIMenuItem *deleteMenu = [[UIMenuItem alloc] initWithTitle:@"删除" action:@selector(deleteMessage)];
-        [menuArray addObject:deleteMenu];
+//        UIMenuItem *deleteMenu = [[UIMenuItem alloc] initWithTitle:@"删除" action:@selector(deleteMessage)];
+//        [menuArray addObject:deleteMenu];
     }
     else
     {

@@ -25,7 +25,7 @@
         [self addSubview:_nameLabel];
         
         _nickLabel = [[UILabel alloc] initWithFrame:CGRectMake(_avatarView.right + 10, 40, self.width - 10 - (_avatarView.right + 10), 20)];
-        [_nickLabel setTextColor:[UIColor colorWithHexString:@"28c4d8"]];
+        [_nickLabel setTextColor:kCommonParentTintColor];
         [_nickLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_nickLabel];
         

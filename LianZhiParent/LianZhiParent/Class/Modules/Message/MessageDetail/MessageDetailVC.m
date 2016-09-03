@@ -34,8 +34,7 @@
     [self setSupportPullDown:YES];
     [self setSupportPullUp:YES];
     [self requestData:REQUEST_REFRESH];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMessageItemDeleteNotification:) name:kMessageDeleteNotitication object:nil];
+
 }
 
 - (void)clear{
@@ -117,19 +116,49 @@
 }
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
     MessageDetailItem *detailItem = (MessageDetailItem *)modelItem;
-    MessageNotificationDetailVC *notificationDetailVC = [[MessageNotificationDetailVC alloc] init];
-    [notificationDetailVC setMessageDetailItem:detailItem];
-    @weakify(self)
-    [notificationDetailVC setDeleteSuccessCallback:^(MessageDetailItem *messageDetailItem) {
-        @strongify(self)
-        NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:detailItem];
-        if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
-        {
-            [self.tableViewModel.modelItemArray removeObject:detailItem];
-            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-        }
+    if(detailItem.type == ChatTypeLianZhiBroadcast || detailItem.type == ChatTypeDoorEntrance){
+        
+    }
+    else{
+        MessageNotificationDetailVC *notificationDetailVC = [[MessageNotificationDetailVC alloc] init];
+        [notificationDetailVC setMessageDetailItem:detailItem];
+        @weakify(self)
+        [notificationDetailVC setDeleteSuccessCallback:^(MessageDetailItem *messageDetailItem) {
+            @strongify(self)
+            NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:detailItem];
+            if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
+            {
+                [self.tableViewModel.modelItemArray removeObject:detailItem];
+                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+            }
+        }];
+        [self.navigationController pushViewController:notificationDetailVC animated:YES];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    MessageDetailItem *detailItem = [self.tableViewModel.modelItemArray objectAtIndex:indexPath.row];
+    MessageDetailItemCell *itemCell = (MessageDetailItemCell *)cell;
+    [itemCell setDeleteCallback:^{
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:@"确定删除这条信息吗?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
+        [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+            
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"notice_id":(detailItem.msgID)} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:detailItem];
+                if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
+                {
+                    [self.tableViewModel.modelItemArray removeObject:detailItem];
+                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                }
+            } fail:^(NSString *errMsg) {
+                [ProgressHUD showHintText:errMsg];
+            }];
+            
+        }];
+        [alertView showAnimated:YES completionHandler:nil];
     }];
-    [self.navigationController pushViewController:notificationDetailVC animated:YES];
 }
 
 - (void)dealloc

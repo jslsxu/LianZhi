@@ -92,6 +92,7 @@
 @property (nonatomic, strong)UISwitch*      groupChatSwitch;
 @property (nonatomic, strong)NSArray*       memberArray;
 @property (nonatomic, copy)NSString*        logoUrl;
+@property (nonatomic, assign)BOOL           imDisabled;
 @end
 
 @implementation ChatExtraGroupInfoVC
@@ -157,12 +158,13 @@
 }
 
 - (void)requestChatStatus{
+    @weakify(self)
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.groupID forKey:@"cg_id"];
     [params setValue:self.chatType == ChatTypeClass ? @"0" : @"1" forKey:@"type"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/get_im_status" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        BOOL chatOn = [responseObject getBoolForKey:@"im_status"];
-        [self.groupChatSwitch setOn:chatOn];
+        @strongify(self)
+        self.imDisabled = [responseObject getBoolForKey:@"im_status"];
     } fail:^(NSString *errMsg) {
         
     }];
@@ -190,9 +192,15 @@
 - (UISwitch *)groupChatSwitch{
     if(_groupChatSwitch == nil){
         _groupChatSwitch = [[UISwitch alloc] init];
+        [_groupChatSwitch setOn:!self.imDisabled];
         [_groupChatSwitch addTarget:self action:@selector(onGroupChatValueChanged) forControlEvents:UIControlEventValueChanged];
     }
     return _groupChatSwitch;
+}
+
+- (void)setImDisabled:(BOOL)imDisabled{
+    _imDisabled = imDisabled;
+    [self.groupChatSwitch setOn:!self.imDisabled];
 }
 
 - (void)onDisturbValueChanged{
@@ -212,10 +220,11 @@
 }
 
 - (void)onGroupChatValueChanged{
+    BOOL imStatus = !_groupChatSwitch.isOn;
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.groupID forKey:@"cg_id"];
     [params setValue:self.chatType == ChatTypeClass ? @"0" : @"1" forKey:@"type"];
-    [params setValue:kStringFromValue(_groupChatSwitch.isOn) forKey:@"im_status"];
+    [params setValue:imStatus ? @"1" : @"0" forKey:@"im_status"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/set_im_status" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         
     } fail:^(NSString *errMsg) {
@@ -307,7 +316,7 @@
         }
         else if(section == 2){
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-            [cell.textLabel setText:@"群聊开关"];
+            [cell.textLabel setText:@"开启群聊"];
             [cell setAccessoryView:self.groupChatSwitch];
         }
         return cell;

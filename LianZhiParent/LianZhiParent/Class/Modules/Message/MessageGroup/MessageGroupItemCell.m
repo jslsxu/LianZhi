@@ -42,7 +42,7 @@
         [self.actualContentView addSubview:_schoolLabel];
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(_nameLabel.right + 10, 10, self.width - 10 - (_nameLabel.right + 10), 18)];
-        [_timeLabel setFont:[UIFont systemFontOfSize:10]];
+        [_timeLabel setFont:[UIFont systemFontOfSize:11]];
         [_timeLabel setTextColor:[UIColor colorWithHexString:@"9a9a9a"]];
         [self.actualContentView addSubview:_timeLabel];
         

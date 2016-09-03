@@ -36,7 +36,7 @@
 - (void)onKeyboardWillShow:(NSNotification *)note;
 - (void)onKeyboardWillHide:(NSNotification *)note;
 - (void)resignKeyboard;
-
+- (void)back;
 //缓存文件
 - (BOOL)supportCache;
 - (NSString *)cacheFileName;

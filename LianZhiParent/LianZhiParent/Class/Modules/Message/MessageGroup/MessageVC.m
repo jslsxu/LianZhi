@@ -28,19 +28,13 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if(self.timer == nil)
-    {
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(refreshData) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
-        [self.timer fire];
-    }
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:ApplicationDelegate.homeVC.curChildrenSelectView];
+    self.navigationItem.leftBarButtonItems = [ApplicationDelegate.homeVC commonLeftBarButtonItems];
     [self.navigationItem setTitleView:_segView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    [self.navigationItem setLeftBarButtonItem:nil];
+    [self.navigationItem setLeftBarButtonItems:nil];
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -48,8 +42,18 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
+        [self startTimer];
     }
     return self;
+}
+
+- (void)startTimer{
+    if(self.timer == nil)
+    {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(refreshData) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+        [self.timer fire];
+    }
 }
 
 - (void)invalidate
@@ -86,6 +90,10 @@
     [self setIsNotification:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurChildChanged) name:kUserCenterChangedCurChildNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onPublishPhotoFinished:) name:kPublishPhotoItemFinishedNotification object:nil];
+}
+
+- (void)showIMVC{
+    [self.segView setSelectedIndex:1];
 }
 
 - (void)onSegmentChanged:(NSInteger)selectedIndex{

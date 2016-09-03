@@ -48,6 +48,7 @@ typedef NS_ENUM(NSInteger, InputType)
 @property (nonatomic, copy)NSString *groupID;
 @property (nonatomic, assign)BOOL canSendGift;
 @property (nonatomic, assign)BOOL canCallTelephone;
+@property (nonatomic, assign)BOOL imDisabled;
 @property (nonatomic, assign)InputType inputType;
 @property (nonatomic, weak)id<InputBarViewDelegate> inputDelegate;
 - (instancetype)initWithFrame:(CGRect)frame;

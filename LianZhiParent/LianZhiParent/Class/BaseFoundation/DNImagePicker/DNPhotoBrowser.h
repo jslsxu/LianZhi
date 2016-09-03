@@ -29,7 +29,7 @@
 - (instancetype)initWithPhotos:(NSArray *)photosArray
                   currentIndex:(NSInteger)index
                      fullImage:(BOOL)isFullImage;
-
+- (BOOL)areControlsHidden;
 - (void)hideControls;
 - (void)toggleControls;
 @end

@@ -90,6 +90,9 @@
         [button setTitleColor:color forState:UIControlStateNormal];
         [button setTitleColor:color forState:UIControlStateHighlighted];
     }
+    if(self.callback){
+        self.callback(_selectedIndex);
+    }
 }
 
 - (void)setShowBadge:(NSString *)badge atIndex:(NSInteger)index{

@@ -99,14 +99,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:ApplicationDelegate.homeVC.curChildrenSelectView];
+    self.navigationItem.leftBarButtonItems = [ApplicationDelegate.homeVC commonLeftBarButtonItems];
     [self requestData:REQUEST_REFRESH];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [self.navigationItem setLeftBarButtonItem:nil];
+    [self.navigationItem setLeftBarButtonItems:nil];
 }
 - (void)setTitle:(NSString *)title{
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];

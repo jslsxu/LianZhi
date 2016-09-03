@@ -16,7 +16,7 @@
     if(self){
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         
-        _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(12, (kChildCellHeight - 56) / 2, 56, 56)];
+        _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(12, (kChildCellHeight - 50) / 2, 50, 50)];
         [self addSubview:_avatar];
         
         _redDot = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 6, 6)];
@@ -43,7 +43,7 @@
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
         [self addSubview:_nameLabel];
         
-        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, kChildCellHeight - kLineHeight, self.width, kLineHeight)];
+        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(_avatar.right, kChildCellHeight - kLineHeight, self.width, kLineHeight)];
         [_sepLine setBackgroundColor:kSepLineColor];
         [self addSubview:_sepLine];
 
@@ -93,7 +93,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.title = @"切换孩子";
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [_tableView setDelegate:self];

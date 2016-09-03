@@ -62,6 +62,17 @@ static NSArray *tabDatas = nil;
     return self;
 }
 
+- (void)showIMVC{
+    [self.messageVC showIMVC];
+}
+
+- (NSArray *)commonLeftBarButtonItems{
+    UIBarButtonItem *flexibleSpaceBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFixedSpace target: nil action: nil];
+    flexibleSpaceBarButtonItem.width = -5;
+    UIBarButtonItem *switchItem = [[UIBarButtonItem alloc] initWithCustomView:[self curChildrenSelectView]];
+    return @[flexibleSpaceBarButtonItem, switchItem];
+}
+
 - (void)onStatusChanged
 {
     NSInteger newMsg = [UserCenter sharedInstance].statusManager.msgNum;
@@ -184,7 +195,8 @@ static NSArray *tabDatas = nil;
     {
         CGFloat spaceX = tabWidth * i;
         LZTabBarButton *barButton = [[LZTabBarButton alloc] initWithFrame:CGRectMake(spaceX, 0, tabWidth, self.tabBar.height)];
-        [barButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
+        [barButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
+        [barButton setSpacing:4];
         [barButton setTitle:tabItemTitleArray[i] forState:UIControlStateNormal];
         [barButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [barButton addTarget:self action:@selector(onTabButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -223,7 +235,7 @@ static NSArray *tabDatas = nil;
         LZTabBarButton *barButton = _tabbarButtons[i];
         BOOL selected = (i == self.selectedIndex);
         NSString *imageName = selected ? [NSString stringWithFormat:@"%@Highlighted",tabImageNameArray[i]] : [NSString stringWithFormat:@"%@Normal",tabImageNameArray[i]];
-        UIColor *titleColor = selected ? kCommonParentTintColor : [UIColor grayColor];
+        UIColor *titleColor = selected ? [UIColor colorWithHexString:@"02c994"] : [UIColor colorWithHexString:@"595959"];
         [barButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
         [barButton setImage:[UIImage imageNamed:imageName] forState:UIControlStateHighlighted];
         [barButton setTitleColor:titleColor forState:UIControlStateNormal];

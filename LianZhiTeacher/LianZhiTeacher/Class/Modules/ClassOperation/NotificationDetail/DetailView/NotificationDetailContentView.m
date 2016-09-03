@@ -13,7 +13,6 @@
     UILabel*        _nameLabel;
     UILabel*        _statusLabel;
     UILabel*        _contentLabel;
-    UIView*         _sepLine;
 }
 
 @end
@@ -24,7 +23,7 @@
     self = [super initWithFrame:frame];
     if(self){
         [self setClipsToBounds:YES];
-        _avatarView = [[AvatarView alloc] initWithRadius:20];
+        _avatarView = [[AvatarView alloc] initWithRadius:23];
         [_avatarView setOrigin:CGPointMake(10, 10)];
         [self addSubview:_avatarView];
         
@@ -38,17 +37,13 @@
         [_statusLabel setFont:[UIFont systemFontOfSize:12]];
         [self addSubview:_statusLabel];
         
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, _avatarView.bottom + 5, self.width - 10 * 2, 0)];
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, _avatarView.bottom + 10, self.width - 10 * 2, 0)];
         [_contentLabel setFont:[UIFont systemFontOfSize:14]];
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
         [_contentLabel setNumberOfLines:0];
         [_contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [self addSubview:_contentLabel];
-        
-        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, kLineHeight, self.width - 10 * 2, kLineHeight)];
-        [_sepLine setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
-        [_sepLine setBackgroundColor:kSepLineColor];
-        [self addSubview:_sepLine];
+    
     }
     return self;
 }
@@ -58,11 +53,11 @@
     [_avatarView setImageWithUrl:[NSURL URLWithString:_notificationItem.user.avatar]];
     [_nameLabel setText:_notificationItem.user.name];
     [_nameLabel sizeToFit];
-    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY - 2 - _nameLabel.height)];
+    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY - 3 - _nameLabel.height)];
     
     [_statusLabel setText:_notificationItem.created_time];
     [_statusLabel sizeToFit];
-    [_statusLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY + 2)];
+    [_statusLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY + 3)];
     
     [_contentLabel setText:_notificationItem.words];
     [_contentLabel sizeToFit];

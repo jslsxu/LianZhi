@@ -18,6 +18,7 @@ static NSString *topChatID = nil;
 @property (nonatomic, strong)ChatTopNewMessageView *topNewIndicator;
 @property (nonatomic, strong)ChatBottomNewMessageView *bottomNewIndicator;
 @property (nonatomic, assign)BOOL firstIn;
+@property (nonatomic, assign)BOOL imDisabled;
 @end
 
 @implementation JSMessagesViewController
@@ -32,6 +33,7 @@ static NSString *topChatID = nil;
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     topChatID = nil;
 }
 
@@ -39,12 +41,15 @@ static NSString *topChatID = nil;
     return self.chatMessageModel;
 }
 
+- (void)back{
+    [self endTimer];
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_timer invalidate];
-    _timer = nil;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -52,9 +57,6 @@ static NSString *topChatID = nil;
     [super viewDidAppear:animated];
     [self updateTitle];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onReceiveGift:) name:ReceiveGiftNotification object:nil];
-    _timer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(getMessage) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    [_timer fire];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.targetID forKey:@"from_id"];
@@ -73,6 +75,8 @@ static NSString *topChatID = nil;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [ApplicationDelegate.homeVC showIMVC];
+    self.interactivePopDisabled = YES;
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     topChatID = self.targetID;
     BOOL isGroup = (self.chatType == ChatTypeGroup || self.chatType == ChatTypeClass);
@@ -96,6 +100,21 @@ static NSString *topChatID = nil;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
     [self.tableView addGestureRecognizer:tapGesture];
 
+    [self startTimer];
+}
+
+- (void)startTimer{
+    if(_timer){
+        [self endTimer];
+    }
+    _timer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(getMessage) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    [_timer fire];
+}
+
+- (void)endTimer{
+    [_timer invalidate];
+    _timer = nil;
 }
 
 - (UITableView *)tableView{
@@ -123,6 +142,16 @@ static NSString *topChatID = nil;
 {
     _quietModeOn = quietModeOn;
     [self.chatMessageModel setQuietModeOn:self.quietModeOn];
+}
+
+- (void)setImDisabled:(BOOL)imDisabled{
+    _imDisabled = imDisabled;
+    if(_imDisabled){
+        DLOG(@"群聊关闭");
+    }
+    else{
+        DLOG(@"群聊打开");
+    }
 }
 
 - (void)updateTitle
@@ -274,7 +303,21 @@ static NSString *topChatID = nil;
     else
     {
         [self requestLatestMessage];
+        if(self.chatType == ChatTypeClass){
+            [self requestIMStatus];
+        }
     }
+}
+
+- (void)requestIMStatus{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:@"0" forKey:@"type"];
+    [params setValue:self.targetID forKey:@"cg_id"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/get_im_status" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        self.imDisabled = [responseObject getBoolForKey:@"im_status"];
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (void)requestOldMessage{

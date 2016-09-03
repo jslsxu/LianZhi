@@ -109,6 +109,7 @@
         
         UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, _contentView.height - kLineHeight, _contentView.width, kLineHeight)];
         [bottomLine setBackgroundColor:[UIColor colorWithHexString:@"A4A4A4"]];
+        [bottomLine setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth];
         [_contentView addSubview:bottomLine];
         
         _faceSelectView = [[FaceSelectView alloc] initWithFrame:CGRectMake(0, _contentView.height, kScreenWidth, FaceSelectHeight)];
@@ -140,6 +141,10 @@
 - (void)setCanCallTelephone:(BOOL)canCallTelephone{
     _canCallTelephone = canCallTelephone;
     [_functionView setCanCalltelephone:_canCallTelephone];
+}
+
+- (void)setImDisabled:(BOOL)imDisabled{
+    _imDisabled = imDisabled;
 }
 
 - (void)layoutSubviews
@@ -226,14 +231,14 @@
 
 - (void)onKeyboardWillHide:(NSNotification *)notification
 {
-    if(self.window){
-        _inputType = InputTypeNormal;
-        CGRect keyboardBounds;
-        [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
-        self.targetHeight = _contentView.height;
-        if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidChangeHeight:)])
-            [self.inputDelegate inputBarViewDidChangeHeight:self.targetHeight];
-    }
+//    if(self.window){
+//        _inputType = InputTypeNormal;
+//        CGRect keyboardBounds;
+//        [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+//        self.targetHeight = _contentView.height;
+//        if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidChangeHeight:)])
+//            [self.inputDelegate inputBarViewDidChangeHeight:self.targetHeight];
+//    }
 }
 
 #pragma mark - Actions

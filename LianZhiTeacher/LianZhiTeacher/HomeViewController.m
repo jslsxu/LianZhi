@@ -75,6 +75,7 @@ static NSArray *tabDatas = nil;
     {
         if(!_switchSchoolButton){
             _switchSchoolButton = [[SwitchSchoolButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+            [_switchSchoolButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
             [_switchSchoolButton setImage:[UIImage imageNamed:@"SwitchSchool"] forState:UIControlStateNormal];
             [_switchSchoolButton addTarget:self action:@selector(switchSchool) forControlEvents:UIControlEventTouchUpInside];
         }
@@ -180,6 +181,10 @@ static NSArray *tabDatas = nil;
     TNBaseNavigationController *firstNav = self.viewControllers[3];
     return [firstNav viewControllers][0];
 }
+
+- (void)showIMVC{
+    [self.messageVC showIMVC];
+}
 - (void)initialViewControllers
 {
     if(_tabbarButtons == nil)
@@ -205,7 +210,7 @@ static NSArray *tabDatas = nil;
         [barButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
         [barButton setTitle:tabItemTitleArray[i] forState:UIControlStateNormal];
         [barButton setTitleColor:[UIColor colorWithHexString:@"595959"] forState:UIControlStateNormal];
-        [barButton setSpacing:3];
+        [barButton setSpacing:4];
         [barButton addTarget:self action:@selector(onTabButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [_tabbarButtons addObject:barButton];
         [self.tabBar addSubview:barButton];
@@ -219,6 +224,9 @@ static NSArray *tabDatas = nil;
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES];
     [self updateTitleView];
+//    for (TNBaseNavigationController *nav in self.viewControllers) {
+//        [nav.viewControllers[0] view];
+//    }
 }
 
 - (void)onTabButtonClicked:(UIButton *)button

@@ -106,10 +106,10 @@
     [_avatarView setImageWithUrl:[NSURL URLWithString:item.from_user.avatar]];
     [_nameLabel setText:item.from_user.name];
     [_nameLabel sizeToFit];
-    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.y + 5)];
+    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.centerY - 3 - _nameLabel.height)];
     [_timeLabel setText:item.time_str];
     [_timeLabel sizeToFit];
-    [_timeLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.bottom - 5 - _timeLabel.height)];
+    [_timeLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.centerY + 3 )];
     CGFloat height = _avatarView.bottom + 15;
     NSString *content = item.words;
     [_contentLabel setWidth:_bgView.width - kContentHMargin * 2];

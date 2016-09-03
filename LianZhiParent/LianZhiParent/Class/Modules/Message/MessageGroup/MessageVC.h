@@ -19,4 +19,5 @@
 - (NSInteger)newMessageNum;
 - (void)refreshData;
 - (void)invalidate;
+- (void)showIMVC;
 @end

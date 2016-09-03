@@ -82,7 +82,8 @@
 
 @interface NotificationDetailVoiceView (){
     NSMutableArray*     _voiceViewArray;
-    UIView*             _sepLine;
+    UIView*             _topLine;
+    UIView*             _bottomLine;
 }
 
 @end
@@ -94,10 +95,15 @@
     if(self){
         [self setClipsToBounds:YES];
         _voiceViewArray = [NSMutableArray arrayWithCapacity:0];
-        _sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, self.height - kLineHeight, self.width - 10 * 2, kLineHeight)];
-        [_sepLine setBackgroundColor:kSepLineColor];
-        [_sepLine setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
-        [self addSubview:_sepLine];
+        _topLine = [[UIView alloc] initWithFrame:CGRectMake(10, 0, self.width - 10 * 2, kLineHeight)];
+        [_topLine setBackgroundColor:kSepLineColor];
+        [_topLine setAutoresizingMask:UIViewAutoresizingFlexibleBottomMargin];
+        [self addSubview:_topLine];
+        
+        _bottomLine = [[UIView alloc] initWithFrame:CGRectMake(10, self.height - kLineHeight, self.width - 10 * 2, kLineHeight)];
+        [_bottomLine setBackgroundColor:kSepLineColor];
+        [_bottomLine setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
+        [self addSubview:_bottomLine];
     }
     return self;
 }

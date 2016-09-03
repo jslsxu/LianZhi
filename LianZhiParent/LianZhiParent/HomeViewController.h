@@ -30,6 +30,7 @@ extern NSString *const kCurrentChildInfoChangedNotification;
 @property (nonatomic, strong)MineVC *mineVC;
 
 - (void)selectAtIndex:(NSInteger)index;
-- (ChildrenSwitchView *)curChildrenSelectView;
+- (NSArray *)commonLeftBarButtonItems;
+- (void)showIMVC;
 @end
 

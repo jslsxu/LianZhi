@@ -72,14 +72,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:ApplicationDelegate.homeVC.curChildrenSelectView];
+    self.navigationItem.leftBarButtonItems = [ApplicationDelegate.homeVC commonLeftBarButtonItems];
     [self requestData];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [self.navigationItem setLeftBarButtonItem:nil];
+    [self.navigationItem setLeftBarButtonItems:nil];
 }
 - (void)setTitle:(NSString *)title{
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -151,10 +151,7 @@
 
 - (BOOL)hasNew
 {
-    NSString *guideCellKey = @"guideCellKey";
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL hasNewGuide = [userDefaults boolForKey:guideCellKey];
-    BOOL hasNewMsg = [UserCenter sharedInstance].statusManager.found || [UserCenter sharedInstance].statusManager.faq || !hasNewGuide;
+    BOOL hasNewMsg = [UserCenter sharedInstance].statusManager.found || [UserCenter sharedInstance].statusManager.faq;
     return hasNewMsg;
 }
 

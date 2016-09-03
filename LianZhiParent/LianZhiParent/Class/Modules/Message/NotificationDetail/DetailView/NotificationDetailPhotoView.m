@@ -44,7 +44,7 @@
         else{
             firstHeight = firstWidth * 2 / 3;
         }
-        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(margin, 0, self.width - margin * 2, (self.width - margin * 2) * 2 / 3 )];
+        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(margin, 0, firstWidth, firstHeight)];
         [imageView setBackgroundColor:[UIColor colorWithHexString:@"dddddd"]];
         [imageView setContentMode:UIViewContentModeScaleAspectFill];
         [imageView setClipsToBounds:YES];

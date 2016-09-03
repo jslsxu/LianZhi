@@ -23,7 +23,7 @@
         
         _relationLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_relationLabel setFont:[UIFont systemFontOfSize:14]];
-        [_relationLabel setTextColor:[UIColor colorWithHexString:@"28c4d8"]];
+        [_relationLabel setTextColor:kCommonParentTintColor];
         [self addSubview:_relationLabel];
         
         _phoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -109,7 +109,7 @@
         
         _headerTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(12, 0, headerView.width - 12 * 2, headerView.height)];
         [_headerTitleLabel setFont:[UIFont systemFontOfSize:14]];
-        [_headerTitleLabel setTextColor:[UIColor colorWithHexString:@"28c4d8"]];
+        [_headerTitleLabel setTextColor:kCommonParentTintColor];
         [headerView addSubview:_headerTitleLabel];
         
         UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(12, headerView.height - kLineHeight, headerView.width - 12, kLineHeight)];

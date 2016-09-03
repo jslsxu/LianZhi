@@ -95,14 +95,15 @@ DNImagePickerControllerDelegate>
     else{
         if(self.sendType == NotificationSendDraft){
             //草稿，覆盖
-            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"草稿已存在，是否覆盖?" style:LGAlertViewStyleAlert buttonTitles:@[@"覆盖", @"放弃修改"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"草稿已存在，是否覆盖?" style:LGAlertViewStyleAlert buttonTitles:@[ @"放弃修改",@"覆盖"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
             [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
                 if(index == 0){
-                    [[NotificationDraftManager sharedInstance] updateDraft:self.sendEntity];
+                
                 }
                 else if (index == 1){
+                    [[NotificationDraftManager sharedInstance] updateDraft:self.sendEntity];
 //                    [self.sendEntity updateClientID];
 //                    [[NotificationDraftManager sharedInstance] addDraft:self.sendEntity];
                 }
