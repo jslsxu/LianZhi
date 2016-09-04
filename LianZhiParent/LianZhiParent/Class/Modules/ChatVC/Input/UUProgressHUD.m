@@ -49,6 +49,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UUProgressHUD)
         [_titleLabel setTextColor:[UIColor whiteColor]];
         [_contentView addSubview:_titleLabel];
         
+        _countDownLabel = [[UILabel alloc] initWithFrame:_contentView.bounds];
+        [_countDownLabel setTextAlignment:NSTextAlignmentCenter];
+        [_countDownLabel setFont:[UIFont boldSystemFontOfSize:100]];
+        [_countDownLabel setTextColor:[UIColor whiteColor]];
+        [_countDownLabel setHidden:YES];
+        [_contentView addSubview:_countDownLabel];
+        
         [self setupRecorder];
     }
     return self;
@@ -58,6 +65,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UUProgressHUD)
 {
     if(self.recordCallBack)
         self.recordCallBack(self.recordPath ,self.playTime);
+    self.recordCallBack = nil;
 }
 
 - (void)setupRecorder
@@ -133,6 +141,19 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UUProgressHUD)
 {
     self.playTime ++;
     //    [_titleLabel setText:[NSString stringWithFormat:@"还可以说%ld秒",(long)kMaxRecordTime - self.playTime]];
+    NSInteger timeLeft = kMaxRecordTime - self.playTime;
+    if(timeLeft < 10){
+        [_imageView setHidden:YES];
+        [_titleLabel setHidden:YES];
+        [_countDownLabel setHidden:NO];
+        [_countDownLabel setText:kStringFromValue(timeLeft)];
+    }
+    else{
+        [_imageView setHidden:NO];
+        [_titleLabel setHidden:NO];
+        [_countDownLabel setHidden:YES];
+    }
+
     if (self.playTime >= kMaxRecordTime)
         [self endRecording];
 }

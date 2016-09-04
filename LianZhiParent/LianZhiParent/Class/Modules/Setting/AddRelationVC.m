@@ -149,7 +149,7 @@
     NSMutableArray *relationArray = [[NSMutableArray alloc] initWithCapacity:0];
     for (NSInteger i = 0; i< _infoArray.count; i++) {
         PersonalInfoItem *infoItem = [_infoArray objectAtIndex:i];
-        if(i >= 7)
+        if(i >= 6)
         {
             if(infoItem.relation)
             [relationArray addObject:@{@"child_id":infoItem.relation[@"child_id"],@"relation":infoItem.relation[@"relationID"]}];

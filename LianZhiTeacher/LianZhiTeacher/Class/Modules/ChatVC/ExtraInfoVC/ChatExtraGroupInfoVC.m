@@ -87,12 +87,13 @@
 
 @end
 
-@interface ChatExtraGroupInfoVC ()<UITableViewDelegate, UITableViewDataSource>
+@interface ChatExtraGroupInfoVC ()<UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @property (nonatomic, strong)UITableView*   tableView;
 @property (nonatomic, strong)UISwitch*      disturbSwitch;
 @property (nonatomic, strong)UISwitch*      groupChatSwitch;
 @property (nonatomic, strong)NSArray*       memberArray;
 @property (nonatomic, copy)NSString*        logoUrl;
+@property (nonatomic, assign)BOOL           canEditLogo;
 @property (nonatomic, assign)BOOL           imDisabled;
 @end
 
@@ -115,6 +116,7 @@
             if(classWrapper.count > 0)
             {
                 self.logoUrl = [classWrapper getStringForKey:@"logo"];
+                self.canEditLogo = [classWrapper getBoolForKey:@"is_head"];
                 NSMutableArray *sourceArray = [NSMutableArray array];
                 TNDataWrapper *teacherArrayWrapper = [classWrapper getDataWrapperForKey:@"teachers"];
                 if(teacherArrayWrapper.count > 0)
@@ -282,8 +284,14 @@
             [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         }
         else{
-            [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-            [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
+            if(self.canEditLogo){
+                [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
+            }
+            else{
+                [cell setAccessoryType:UITableViewCellAccessoryNone];
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
         }
         return cell;
     }
@@ -330,7 +338,23 @@
     NSInteger row = indexPath.row;
     if(section == 0){
         if(row == 0){
-            
+            if(self.canEditLogo){
+                LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:@"选择图片" style:LGAlertViewStyleActionSheet buttonTitles:@[@"拍摄",@"从相册选择"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+                [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+                [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+                    [imagePicker setAllowsEditing:YES];
+                    [imagePicker setDelegate:self];
+                    if(index == 0){
+                        [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+                    }
+                    else if(index == 1){
+                        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+                    }
+                    [self presentViewController:imagePicker animated:YES completion:nil];
+                }];
+                [alertView showAnimated:YES completionHandler:nil];
+            }
         }
         else if(row == 1){
             ClassMemberVC *memberVC = [[ClassMemberVC alloc] init];
@@ -373,6 +397,19 @@
     else{
         
     }
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
+    UIImage *image = info[UIImagePickerControllerEditedImage];
+    [picker dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

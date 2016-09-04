@@ -20,6 +20,7 @@ typedef NS_ENUM(NSInteger, RecordStatus){
     UIView*         _contentView;
     UIImageView*    _imageView;
     UILabel*        _titleLabel;
+    UILabel*        _countDownLabel;
 }
 @property (nonatomic, copy)void (^recordCallBack)(NSString *recordPath, NSInteger time);
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(UUProgressHUD)

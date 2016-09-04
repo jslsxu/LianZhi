@@ -144,7 +144,28 @@
 }
 
 - (void)setImDisabled:(BOOL)imDisabled{
-    _imDisabled = imDisabled;
+    if(_imDisabled != imDisabled){
+        _imDisabled = imDisabled;
+        if(_imDisabled){
+            [self setInputType:InputTypeNone];
+        }
+        [_soundButton setEnabled:!_imDisabled];
+        [_exchangeButton setEnabled:!_imDisabled];
+        [_inputView setEditable:!_imDisabled];
+        [_addButton setEnabled:!_imDisabled];
+        if(_imDisabled){
+            [_inputView setText:@"班级群聊已关闭"];
+            [_inputView setTextAlignment:NSTextAlignmentCenter];
+            [_inputView setTextColor:kCommonTeacherTintColor];
+            [self setUserInteractionEnabled:NO];
+        }
+        else{
+            [_inputView setText:@""];
+            [_inputView setTextAlignment:NSTextAlignmentLeft];
+            [_inputView setTextColor:[UIColor blackColor]];
+            [self setUserInteractionEnabled:YES];
+        }
+    }
 }
 
 - (void)layoutSubviews

@@ -152,6 +152,7 @@ static NSString *topChatID = nil;
     else{
         DLOG(@"群聊打开");
     }
+    [_inputView setImDisabled:_imDisabled];
 }
 
 - (void)updateTitle
