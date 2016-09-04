@@ -79,19 +79,15 @@
 
 - (BOOL)hasNewMessage{
     ChildInfo *curChild = [UserCenter sharedInstance].curChild;
-    BOOL hasNew = NO;
     for (ChildInfo *childInfo in [UserCenter sharedInstance].children) {
         if(![childInfo.uid isEqualToString:curChild.uid]){
-            for (NoticeItem *notice in [UserCenter sharedInstance].statusManager.notice)
+            if([[UserCenter sharedInstance].statusManager hasNewForChildID:childInfo.uid])
             {
-                if([notice.childID isEqualToString:childInfo.uid] && notice.num > 0)
-                {
-                    hasNew = YES;
-                }
+                return YES;
             }
         }
     }
-    return hasNew;
+    return NO;
 }
 
 - (void)setupSubviews{

@@ -56,6 +56,7 @@
 
 - (void)callMobile{
     LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"确定拨打电话%@吗",self.userInfo.mobile] style:LGAlertViewStyleAlert buttonTitles:@[@"取消", @"拨打电话"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
     [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
         if(index == 1){

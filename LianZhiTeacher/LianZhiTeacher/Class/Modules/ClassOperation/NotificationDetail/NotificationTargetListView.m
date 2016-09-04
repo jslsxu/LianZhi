@@ -322,6 +322,7 @@
                 [familyArray addObject:[NSString stringWithFormat:@"%@: %@",familyInfo.relation, familyInfo.mobile]];
             }
             LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:familyArray cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+            [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
             [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setButtonsTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
             [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
@@ -334,6 +335,7 @@
         else{
             TeacherInfo *teacherInfo = (TeacherInfo *)userInfo;
             LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:@[[NSString stringWithFormat:@"%@: %@",teacherInfo.name, teacherInfo.mobile]] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+            [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
             [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setButtonsTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
             [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {

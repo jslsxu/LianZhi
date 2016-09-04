@@ -109,12 +109,7 @@
 - (void)reloadData{
     [_indicatorDic removeAllObjects];
     for (SchoolInfo *schoolInfo in _messages) {
-        NSInteger count = 0;
-        for (NoticeItem *noticeItem in [UserCenter sharedInstance].statusManager.notice) {
-            if([schoolInfo.schoolID isEqualToString:noticeItem.schoolID]){
-                count = noticeItem.num;
-            }
-        }
+        NSInteger count = [[UserCenter sharedInstance].statusManager hasNewForSchool:schoolInfo.schoolID];
         if(count > 0)
             [_indicatorDic setValue:kStringFromValue(count) forKey:schoolInfo.schoolID];
     }

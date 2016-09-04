@@ -24,7 +24,7 @@
         
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_titleLabel setFont:[UIFont systemFontOfSize:14]];
-        [_titleLabel setTextColor:[UIColor colorWithHexString:@"28c4d8"]];
+        [_titleLabel setTextColor:kCommonParentTintColor];
         [_contentView addSubview:_titleLabel];
         
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];

@@ -100,11 +100,11 @@
         [_recordButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
         [_recordButton setTitle:@"按下 说话" forState:UIControlStateNormal];
         [_recordButton setTitle:@"松开 发送" forState:UIControlStateHighlighted];
-        [_recordButton addTarget:self action:@selector(beginRecordVoice:) forControlEvents:UIControlEventTouchDown];
-        [_recordButton addTarget:self action:@selector(endRecordVoice:) forControlEvents:UIControlEventTouchUpInside];
-        [_recordButton addTarget:self action:@selector(cancelRecordVoice:) forControlEvents:UIControlEventTouchUpOutside | UIControlEventTouchCancel];
-        [_recordButton addTarget:self action:@selector(RemindDragExit:) forControlEvents:UIControlEventTouchDragExit];
-        [_recordButton addTarget:self action:@selector(RemindDragEnter:) forControlEvents:UIControlEventTouchDragEnter];
+        [_recordButton addTarget:self action:@selector(beginRecordVoice) forControlEvents:UIControlEventTouchDown];
+        [_recordButton addTarget:self action:@selector(endRecordVoice) forControlEvents:UIControlEventTouchUpInside];
+        [_recordButton addTarget:self action:@selector(cancelRecordVoice) forControlEvents:UIControlEventTouchUpOutside | UIControlEventTouchCancel];
+        [_recordButton addTarget:self action:@selector(RemindDragExit) forControlEvents:UIControlEventTouchDragExit];
+        [_recordButton addTarget:self action:@selector(RemindDragEnter) forControlEvents:UIControlEventTouchDragEnter];
         [_contentView addSubview:_recordButton];
         
         UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, _contentView.height - kLineHeight, _contentView.width, kLineHeight)];
@@ -272,7 +272,7 @@
     }
 }
 #pragma mark - 录音touch事件
-- (void)beginRecordVoice:(UIButton *)button
+- (void)beginRecordVoice
 {
     [[UUProgressHUD sharedInstance] show];
     [[UUProgressHUD sharedInstance] setRecordCallBack:^(NSString *audioUrl, NSInteger time)
@@ -287,22 +287,22 @@
     [[UUProgressHUD sharedInstance] startRecording];
 }
 
-- (void)endRecordVoice:(UIButton *)button
+- (void)endRecordVoice
 {
     [[UUProgressHUD sharedInstance] endRecording];
 }
 
-- (void)cancelRecordVoice:(UIButton *)button
+- (void)cancelRecordVoice
 {
     [[UUProgressHUD sharedInstance] cancelRecording];
 }
 
-- (void)RemindDragExit:(UIButton *)button
+- (void)RemindDragExit
 {
     [[UUProgressHUD sharedInstance] remindDragExit];
 }
 
-- (void)RemindDragEnter:(UIButton *)button
+- (void)RemindDragEnter
 {
     [[UUProgressHUD sharedInstance] remindDragEnter];
 }

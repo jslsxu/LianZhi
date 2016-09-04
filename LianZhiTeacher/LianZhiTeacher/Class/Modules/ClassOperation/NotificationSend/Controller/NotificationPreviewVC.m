@@ -29,16 +29,8 @@
 }
 
 - (void)send{
-   [[NotificationManager sharedInstance] addNotification:self.sendEntity];
-    if([[NotificationDraftManager sharedInstance].draftArray containsObject:self.sendEntity]){
-        [[NotificationDraftManager sharedInstance] removeDraft:self.sendEntity];
-    }
-    NSArray *vcArray = [self.navigationController viewControllers];
-    for (UIViewController *vc in vcArray) {
-        if([vc isKindOfClass:NSClassFromString(@"NotificationHistoryVC")]){
-            [self.navigationController popToViewController:vc animated:YES];
-            return;
-        }
+    if(self.sendCallback){
+        self.sendCallback();
     }
 }
 

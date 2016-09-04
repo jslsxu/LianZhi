@@ -10,4 +10,5 @@
 #import "NotificationSendEntity.h"
 @interface NotificationPreviewVC : TNBaseViewController
 @property (nonatomic, strong)NotificationSendEntity*    sendEntity;
+@property (nonatomic, copy)void (^sendCallback)();
 @end

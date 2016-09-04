@@ -63,4 +63,5 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 @property (nonatomic, assign)NSInteger appPractice;
 @property (nonatomic, strong)NSDictionary *appLeave;
 @property (nonatomic, assign)NSInteger leaveNum;
+- (NSInteger)hasNewForSchool:(NSString *)schoolID;
 @end

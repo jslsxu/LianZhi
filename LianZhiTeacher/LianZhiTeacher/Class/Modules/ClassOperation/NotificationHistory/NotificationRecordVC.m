@@ -237,6 +237,7 @@
 - (void)clear{
     @weakify(self)
     LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否清空已发送记录?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"清空"];
+    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
     [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setDestructiveHandler:^(LGAlertView *alertView) {
@@ -379,6 +380,7 @@
         @weakify(self)
         MGSwipeButton * deleteButton = [MGSwipeButton buttonWithTitle:@"删除" backgroundColor:[UIColor redColor] callback:^BOOL(MGSwipeTableCell * sender){
             LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否删除该条记录?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
+            [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
             [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setDestructiveHandler:^(LGAlertView *alertView) {
@@ -408,9 +410,20 @@
     
     }
     else{
+        @weakify(self)
         NotificationItem *item = self.tableViewModel.modelItemArray[indexPath.row - [NotificationManager sharedInstance].sendingNotificationArray.count];
         NotificationDetailVC*  detailVC = [[NotificationDetailVC alloc] init];
         [detailVC setNotificationID:item.nid];
+        [detailVC setDeleteCallback:^(NSString *notificationID) {
+            @strongify(self)
+            for (NotificationItem *notiItem in self.tableViewModel.modelItemArray) {
+                if([notificationID isEqualToString:notiItem.nid]){
+                    [self.tableViewModel.modelItemArray removeObject:notiItem];
+                    [self.tableView reloadData];
+                    break;
+                }
+            }
+        }];
         [CurrentROOTNavigationVC pushViewController:detailVC animated:YES];
     }
 }

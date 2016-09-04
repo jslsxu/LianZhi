@@ -78,14 +78,15 @@
 
 #pragma mark - HPGrowingTextViewDelegate
 - (void)growingTextView:(HPGrowingTextView *)growingTextView didChangeHeight:(float)height{
+    [self setHeight:height + kNumLabelHeight + 10];
     if(self.textViewWillChangeHeight){
         self.textViewWillChangeHeight(height);
     }
-    [UIView animateWithDuration:0.3 animations:^{
-        [self setHeight:height + kNumLabelHeight + 10];
-    } completion:^(BOOL finished) {
-        
-    }];
+//    [UIView animateWithDuration:0.3 animations:^{
+//        [self setHeight:height + kNumLabelHeight + 10];
+//    } completion:^(BOOL finished) {
+//        
+//    }];
 }
 
 - (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView{

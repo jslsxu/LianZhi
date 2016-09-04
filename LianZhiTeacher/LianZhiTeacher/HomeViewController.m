@@ -97,12 +97,13 @@ static NSArray *tabDatas = nil;
 
 - (void)onStatusChanged
 {
-    BOOL hasNew = NO;
-    for (NoticeItem *notice in [UserCenter sharedInstance].statusManager.notice) {
-        if(![notice.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID])
-            hasNew = YES;
+    NSInteger newMsgCount = 0;
+    for (SchoolInfo *schoolInfo in [UserCenter sharedInstance].schools) {
+        if(![schoolInfo.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID]){
+            newMsgCount += [[UserCenter sharedInstance].statusManager hasNewForSchool:schoolInfo.schoolID];
+        }
     }
-    [_switchSchoolButton setHasNew:hasNew];
+    [_switchSchoolButton setHasNew:newMsgCount];
     LZTabBarButton *discoveryButon = _tabbarButtons[3];
     DiscoveryVC *discoveryVC = [self discoveryVC];
     [discoveryButon setBadgeValue:discoveryVC.hasNew ? @"" : nil];

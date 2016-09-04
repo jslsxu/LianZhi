@@ -137,6 +137,7 @@ NSString *const kNotificationReadNumChangedNotification = @"NotificationReadNumC
         NotificationActionItem *deleteItem = [NotificationActionItem actionItemWithTitle:@"删除" action:^{
             @strongify(self)
             LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否删除这条?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
+            [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
             [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setDestructiveHandler:^(LGAlertView *alertView) {
@@ -161,6 +162,9 @@ NSString *const kNotificationReadNumChangedNotification = @"NotificationReadNumC
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_send_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : self.notificationItem.nid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             [ProgressHUD showHintText:@"删除成功"];
             @strongify(self)
+            if(self.deleteCallback){
+                self.deleteCallback(self.notificationID);
+            }
             [self.navigationController popViewControllerAnimated:YES];
         } fail:^(NSString *errMsg) {
             

@@ -18,7 +18,7 @@
         [self addSubview:_avatarView];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_nameLabel setTextColor:[UIColor colorWithHexString:@"28c4d8"]];
+        [_nameLabel setTextColor:kCommonParentTintColor];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
         [self addSubview:_nameLabel];
     }

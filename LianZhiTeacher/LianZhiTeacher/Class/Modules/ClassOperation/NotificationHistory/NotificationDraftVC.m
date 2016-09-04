@@ -122,6 +122,7 @@
 
 - (void)clear{
     LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否清空全部未发草稿?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"清空"];
+    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
     [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setDestructiveHandler:^(LGAlertView *alertView) {
@@ -166,6 +167,7 @@
     @weakify(self)
     NotificationSendEntity *entity = [NotificationDraftManager sharedInstance].draftArray[indexPath.row];
     LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否删除该条草稿?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
+    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
     [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setDestructiveHandler:^(LGAlertView *alertView) {

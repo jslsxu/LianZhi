@@ -46,7 +46,7 @@
         else
         {
             NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
-            NSArray *feedClassNewArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
+//            NSArray *feedClassNewArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
             NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
             for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
             {
@@ -62,11 +62,12 @@
                     badge = kStringFromValue(count);
                 else
                 {
-                    for (ClassFeedNotice *notice in feedClassNewArray)
-                    {
-                        if([notice.classID isEqualToString:classID])
-                            count += notice.num;
-                    }
+                    count += [[UserCenter sharedInstance].statusManager newCountForClassFeed];
+//                    for (ClassFeedNotice *notice in feedClassNewArray)
+//                    {
+//                        if([notice.classID isEqualToString:classID] && [notice.childID isEqualToString:[UserCenter sharedInstance].curChild.uid])
+//                            count += notice.num;
+//                    }
                     if(count > 0)
                         badge = @"";
                 }

@@ -96,6 +96,7 @@ DNImagePickerControllerDelegate>
         if(self.sendType == NotificationSendDraft){
             //草稿，覆盖
             LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"草稿已存在，是否覆盖?" style:LGAlertViewStyleAlert buttonTitles:@[ @"放弃修改",@"覆盖"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+            [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
             [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
@@ -116,6 +117,7 @@ DNImagePickerControllerDelegate>
         else{
             //是否保存到草稿
             LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否存入草稿箱?" style:LGAlertViewStyleAlert buttonTitles:@[@"不保存", @"保存"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+            [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
             [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
@@ -193,6 +195,9 @@ DNImagePickerControllerDelegate>
 //    }
     if([self checkNotification]){
         NotificationPreviewVC *previewVC = [[NotificationPreviewVC alloc] init];
+        [previewVC setSendCallback:^{
+            
+        }];
         [previewVC setSendEntity:self.sendEntity];
         [self.navigationController pushViewController:previewVC animated:YES];
     }
@@ -204,6 +209,36 @@ DNImagePickerControllerDelegate>
     }
 }
 
+- (void)sendNotification{
+    if([self checkNotification]){
+        YYReachability *reachability = [YYReachability reachability];
+        YYReachabilityStatus status = reachability.status;
+        if(status == YYReachabilityStatusNone){
+            [ProgressHUD showHintText:@"网络异常，存入到草稿"];
+            if(self.sendType == NotificationSendDraft){
+                [[NotificationDraftManager sharedInstance] updateDraft:self.sendEntity];
+            }
+            else{
+                [[NotificationDraftManager sharedInstance] addDraft:self.sendEntity];//存入草稿
+            }
+        }
+        else{
+            [[NotificationManager sharedInstance] addNotification:self.sendEntity];
+            if(self.sendType == NotificationSendDraft){//如果是草稿，则删除草稿
+                if([[NotificationDraftManager sharedInstance].draftArray containsObject:self.sendEntity]){
+                    [[NotificationDraftManager sharedInstance] removeDraft:self.sendEntity];
+                }
+            }
+        }
+        NSArray *vcArray = [self.navigationController viewControllers];
+        for (UIViewController *vc in vcArray) {
+            if([vc isKindOfClass:NSClassFromString(@"NotificationHistoryVC")]){
+                [self.navigationController popToViewController:vc animated:YES];
+                return;
+            }
+        }
+    }
+}
 
 - (void)setupScrollView{
     [_scrollView addSubview:self.targetContentView];
@@ -258,7 +293,7 @@ DNImagePickerControllerDelegate>
         [_smsChoiceView setSwitchCallback:^(BOOL on) {
             @strongify(self)
             self.sendEntity.sendSms = on;
-            [self.commentView setMaxWordsNum:on ? 150 : 500];
+            [self.commentView setMaxWordsNum:[self.sendEntity maxCommentWordsNum]];
         }];
     }
     return _smsChoiceView;
@@ -295,9 +330,11 @@ DNImagePickerControllerDelegate>
     if(_commentView == nil){
         @weakify(self)
         _commentView = [[NotificationCommentView alloc] initWithFrame:CGRectMake(0, _timerSendView.bottom, _scrollView.width, 135)];
+        [_commentView setMaxWordsNum:[self.sendEntity maxCommentWordsNum]];
         [_commentView setContent:self.sendEntity.words];
         [_commentView setTextViewWillChangeHeight:^(CGFloat height) {
-            
+            @strongify(self)
+            [self adjustPosition];
         }];
         [_commentView setTextViewTextChanged:^(NSString *text) {
             @strongify(self)
@@ -573,21 +610,7 @@ DNImagePickerControllerDelegate>
 }
 
 - (void)notificationInputSend{
-    if([self checkNotification]){
-        [[NotificationManager sharedInstance] addNotification:self.sendEntity];
-        if(self.sendType == NotificationSendDraft){
-            if([[NotificationDraftManager sharedInstance].draftArray containsObject:self.sendEntity]){
-                [[NotificationDraftManager sharedInstance] removeDraft:self.sendEntity];
-            }
-        }
-        NSArray *vcArray = [self.navigationController viewControllers];
-        for (UIViewController *vc in vcArray) {
-            if([vc isKindOfClass:NSClassFromString(@"NotificationHistoryVC")]){
-                [self.navigationController popToViewController:vc animated:YES];
-                return;
-            }
-        }
-    }
+    [self sendNotification];
 }
 
 #pragma mark - UIGestureRecognizerDelegate
@@ -652,6 +675,8 @@ DNImagePickerControllerDelegate>
             NSString *sizeStr = [Utility sizeStrForSize:data.length];
             NSInteger duration = [self getVideoDuration:url];
             LGAlertView*    alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"视频压缩后文件大小为%@",sizeStr] style:LGAlertViewStyleAlert buttonTitles:@[@"发送"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+            [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+            [alertView setButtonsFont:[UIFont boldSystemFontOfSize:18]];
             [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {

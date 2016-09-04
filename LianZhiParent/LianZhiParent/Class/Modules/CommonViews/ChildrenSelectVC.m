@@ -91,6 +91,10 @@
     [CurrentROOTNavigationVC pushViewController:selectVC animated:YES];
 }
 
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"切换孩子";
@@ -121,13 +125,7 @@
     [cell setChildInfo:childInfo];
     [cell setIsCurChild:[childInfo.uid isEqualToString:[UserCenter sharedInstance].curChild.uid]];
     
-    BOOL hasNew = NO;
-    for (NoticeItem *notice in [UserCenter sharedInstance].statusManager.notice) {
-        if([notice.childID isEqualToString:childInfo.uid] && notice.num > 0){
-            hasNew = YES;
-        }
-    }
-    
+    BOOL hasNew = [[UserCenter sharedInstance].statusManager hasNewForChildID:childInfo.uid];
     [cell setHasNew:hasNew];
     return cell;
 }

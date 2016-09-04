@@ -96,8 +96,7 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
             TNDataWrapper *feedItemWrapper = [newFeedWrapper getDataWrapperForIndex:i];
             ClassFeedNotice *feedNotice = [[ClassFeedNotice alloc] init];
             [feedNotice parseData:feedItemWrapper];
-            if([self isCurChild:feedNotice.classID])
-                [newFeedsArray addObject:feedNotice];
+            [newFeedsArray addObject:feedNotice];
         }
         self.feedClassesNew = newFeedsArray;
     }
@@ -111,8 +110,9 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
             TNDataWrapper *classRecordItemWrapper = [newClassRecordWrapper getDataWrapperForIndex:i];
             ClassFeedNotice *recordItem = [[ClassFeedNotice alloc] init];
             [recordItem parseData:classRecordItemWrapper];
-            if([recordItem.childID isEqualToString:[UserCenter sharedInstance].curChild.uid])
-                [newClassRecordArray addObject:recordItem];
+//            if([recordItem.childID isEqualToString:[UserCenter sharedInstance].curChild.uid])
+//                [newClassRecordArray addObject:recordItem];
+            [newClassRecordArray addObject:recordItem];
         }
         self.classRecordArray = newClassRecordArray;
     }
@@ -130,8 +130,7 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
             TimelineCommentItem *commentItem = [[TimelineCommentItem alloc] init];
             [commentItem parseData:itemWrapper];
             [commentItem setObjid:[itemWrapper getStringForKey:@"class_id"]];
-            if([self isCurChild:commentItem.objid])
-                [classNewCommentArray addObject:commentItem];
+            [classNewCommentArray addObject:commentItem];
         }
         self.classNewCommentArray = classNewCommentArray;
     }
@@ -147,8 +146,9 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
             TimelineCommentItem *commentItem = [[TimelineCommentItem alloc] init];
             [commentItem parseData:itemWrapper];
             [commentItem setObjid:[itemWrapper getStringForKey:@"child_id"]];
-            if([commentItem.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
-                [treeNewCommentArray addObject:commentItem];
+            [treeNewCommentArray addObject:commentItem];
+//            if([commentItem.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
+//                [treeNewCommentArray addObject:commentItem];
         }
         self.treeNewCommentArray = treeNewCommentArray;
     }
@@ -204,6 +204,112 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
 {
     _found = found;
     [[NSNotificationCenter defaultCenter] postNotificationName:kFoundNotification object:nil];
+}
+
+- (NSInteger)newCountForClassFeed{
+    NSInteger newCount = 0;
+    NSArray *classArray = nil;
+    for (ChildInfo *childInfo in [UserCenter sharedInstance].children) {
+        if([childInfo.uid isEqualToString:[UserCenter sharedInstance].curChild.uid]){
+            classArray = childInfo.classes;
+        }
+    }
+    for (ClassFeedNotice *feedNotice in self.feedClassesNew) {
+        BOOL isIn = NO;
+        for (ClassInfo *classInfo in classArray) {
+            if([feedNotice.classID isEqualToString:classInfo.classID]){
+                isIn = YES;
+            }
+        }
+        if(isIn){
+            newCount += feedNotice.num;
+        }
+    }
+    return newCount;
+}
+- (NSInteger)newCountForClassRecord{
+    NSInteger newCount = 0;
+    for (ClassFeedNotice *feedNotice in self.classRecordArray) {
+        if([feedNotice.childID isEqualToString:[UserCenter sharedInstance].curChild.uid]){
+            newCount += feedNotice.num;
+        }
+    }
+    return newCount;
+}
+- (NSInteger)newCountForClassComment{
+    NSInteger newCount = 0;
+    for (TimelineCommentItem *commentItem in self.classNewCommentArray) {
+        if([commentItem.objid isEqualToString:[UserCenter sharedInstance].curChild.uid]){
+            newCount += commentItem.alertInfo.num;
+        }
+    }
+    return newCount;
+}
+
+- (NSInteger)newCountForTreeComment{
+    NSInteger newCount = 0;
+    for (TimelineCommentItem *commentItem in self.treeNewCommentArray) {
+        if([commentItem.objid isEqualToString:[UserCenter sharedInstance].curChild.uid]){
+            newCount += commentItem.alertInfo.num;
+        }
+    }
+    return newCount;
+}
+
+- (NSInteger)newCountForNotice{
+    NSInteger newCount = 0;
+    for (NoticeItem *noticeItem in self.notice) {
+        if([noticeItem.childID isEqualToString:[UserCenter sharedInstance].curChild.uid]){
+            newCount += noticeItem.num;
+        }
+    }
+    return newCount;
+}
+
+- (BOOL)hasNewForChildID:(NSString *)childID{
+    NSInteger newCount = 0;
+    for (NoticeItem *noticeItem in self.notice) {
+        if([noticeItem.childID isEqualToString:childID]){
+            newCount += noticeItem.num;
+        }
+    }
+    
+    NSArray *classArray = nil;
+    for (ChildInfo *childInfo in [UserCenter sharedInstance].children) {
+        if([childInfo.uid isEqualToString:childID]){
+            classArray = childInfo.classes;
+        }
+    }
+    for (ClassFeedNotice *feedNotice in self.feedClassesNew) {
+        BOOL isIn = NO;
+        for (ClassInfo *classInfo in classArray) {
+            if([feedNotice.classID isEqualToString:classInfo.classID]){
+                isIn = YES;
+            }
+        }
+        if(isIn){
+            newCount += feedNotice.num;
+        }
+    }
+    
+    for (ClassFeedNotice *feedNotice in self.classRecordArray) {
+        if([feedNotice.childID isEqualToString:childID]){
+            newCount += feedNotice.num;
+        }
+    }
+    
+    for (TimelineCommentItem *commentItem in self.classNewCommentArray) {
+        if([commentItem.objid isEqualToString:childID]){
+            newCount += commentItem.alertInfo.num;
+        }
+    }
+    
+    for (TimelineCommentItem *commentItem in self.treeNewCommentArray) {
+        if([commentItem.objid isEqualToString:childID]){
+            newCount += commentItem.alertInfo.num;
+        }
+    }
+    return newCount;
 }
 
 - (void)clean

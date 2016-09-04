@@ -70,6 +70,7 @@
     @weakify(self)
     
     LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"确定删除这条信息吗?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
+    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
     [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setDestructiveHandler:^(LGAlertView *alertView) {

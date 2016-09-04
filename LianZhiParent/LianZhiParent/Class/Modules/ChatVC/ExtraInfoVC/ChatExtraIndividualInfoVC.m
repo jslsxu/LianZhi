@@ -227,6 +227,7 @@
         else if(row == 2){
             @weakify(self)
             LGAlertView *alertView = [LGAlertView alertViewWithTitle:@"确定要清空聊天记录吗?" message:nil style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
+            [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
             [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setDestructiveHandler:^(LGAlertView *alertView) {

@@ -66,6 +66,15 @@
     return dateStr;
 }
 
+- (NSInteger)maxCommentWordsNum{
+    if(self.sendSms){
+        return 150;
+    }
+    else{
+        return 500;
+    }
+}
+
 - (BOOL)hasVideo{
     return self.videoArray.count > 0;
 }

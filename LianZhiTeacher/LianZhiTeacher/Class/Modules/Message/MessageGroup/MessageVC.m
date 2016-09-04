@@ -313,6 +313,7 @@
 - (void)deleteCell:(MessageGroupItemCell *)cell{
     @weakify(self)
     LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"是否删除该记录？" message:@"删除该记录内容也会随之清空" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除(不推荐)"];
+    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
     [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setDestructiveHandler:^(LGAlertView *alertView) {

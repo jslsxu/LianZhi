@@ -108,32 +108,36 @@ static NSArray *tabDatas = nil;
         [classAppButton setBadgeValue:kStringFromValue(classZoneNum)];
     else
     {
-        for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.feedClassesNew)//新班级博客
-        {
-                classZoneNum += notice.num;
-        }
+//        for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.feedClassesNew)//新班级博客
+//        {
+//            if([notice.childID isEqualToString:[UserCenter sharedInstance].curChild.uid]){
+//                classZoneNum += notice.num;
+//            }
+//        }
+        classZoneNum += [[UserCenter sharedInstance].statusManager newCountForClassFeed];
         
         //成长记录
-        for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.classRecordArray)//
-        {
-                classZoneNum += notice.num;
-        }
+//        for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.classRecordArray)//
+//        {
+//                classZoneNum += notice.num;
+//        }
+        classZoneNum += [[UserCenter sharedInstance].statusManager newCountForClassRecord];
         
         //练习
         classZoneNum += [UserCenter sharedInstance].statusManager.practiceNum;
         
         //树屋回复
-        NSArray *treeNewCommentArray = [UserCenter sharedInstance].statusManager.treeNewCommentArray;
-        NSInteger treeAlertNum = 0;
-        for (TimelineCommentItem *item in treeNewCommentArray)
-        {
-            if([item.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
-            {
-                treeAlertNum = item.alertInfo.num;
-                break;
-            }
-        }
-        
+//        NSArray *treeNewCommentArray = [UserCenter sharedInstance].statusManager.treeNewCommentArray;
+//        NSInteger treeAlertNum = 0;
+//        for (TimelineCommentItem *item in treeNewCommentArray)
+//        {
+//            if([item.objid isEqualToString:[UserCenter sharedInstance].curChild.uid])
+//            {
+//                treeAlertNum = item.alertInfo.num;
+//                break;
+//            }
+//        }
+        NSInteger treeAlertNum = [[UserCenter sharedInstance].statusManager newCountForTreeComment];
         classZoneNum += treeAlertNum;
         
         if(classZoneNum > 0){

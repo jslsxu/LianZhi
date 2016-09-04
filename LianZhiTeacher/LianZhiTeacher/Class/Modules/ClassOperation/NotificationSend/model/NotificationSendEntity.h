@@ -28,6 +28,7 @@
 + (NotificationSendEntity *)sendEntityWithNotification:(NotificationItem *)notification;
 - (void)updateClientID;
 - (NSString *)delaySendTimeStr;
+- (NSInteger)maxCommentWordsNum;
 - (NSMutableArray *)targets;
 - (void)removeTarget:(UserInfo *)userInfo;
 - (BOOL)hasVideo;

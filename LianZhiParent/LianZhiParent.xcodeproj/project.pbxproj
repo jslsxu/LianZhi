@@ -3695,7 +3695,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3721,9 +3721,9 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppParent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "079cfdb2-ea73-4931-a35a-4c6ce8a6fb8a";
+				PROVISIONING_PROFILE = "13ecdfad-3b6a-418f-a350-b23059f44475";
 			};
 			name = Debug;
 		};
@@ -3736,7 +3736,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
@@ -3763,9 +3763,9 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppParent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "079cfdb2-ea73-4931-a35a-4c6ce8a6fb8a";
+				PROVISIONING_PROFILE = "13ecdfad-3b6a-418f-a350-b23059f44475";
 			};
 			name = Release;
 		};

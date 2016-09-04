@@ -132,13 +132,13 @@
 
 - (void)onStatusChanged
 {
-    NSArray *classRecordArray = [UserCenter sharedInstance].statusManager.classRecordArray;
-    NSInteger recordNum = 0;
-    for (ClassFeedNotice *noticeItem in classRecordArray)
-    {
-        recordNum += noticeItem.num;
-    }
-    self.recordNum = recordNum;
+//    NSArray *classRecordArray = [UserCenter sharedInstance].statusManager.classRecordArray;
+//    NSInteger recordNum = 0;
+//    for (ClassFeedNotice *noticeItem in classRecordArray)
+//    {
+//        recordNum += noticeItem.num;
+//    }
+    self.recordNum = [[UserCenter sharedInstance].statusManager newCountForClassRecord];
     
     NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
     NSInteger classZoneNum = 0;
@@ -158,10 +158,13 @@
         self.classBadge = kStringFromValue(classZoneNum);
     else
     {
-        for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.feedClassesNew)
-        {
-            classZoneNum += notice.num;
-        }
+//        for (ClassFeedNotice *notice in [UserCenter sharedInstance].statusManager.feedClassesNew)
+//        {
+//            if([notice.childID isEqualToString:[UserCenter sharedInstance].curChild.uid]){
+//                classZoneNum += notice.num;
+//            }
+//        }
+        classZoneNum += [[UserCenter sharedInstance].statusManager newCountForClassFeed];
         
         if(classZoneNum > 0)
             self.classBadge = @"";
@@ -367,7 +370,7 @@
                         NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
                         if([host isEqualToString:@"class"])//班博客
                         {
-                            NSArray *feedClassNewArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
+//                            NSArray *feedClassNewArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
                             NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
                             for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
                             {
@@ -383,11 +386,12 @@
                                     badge = kStringFromValue(count);
                                 else
                                 {
-                                    for (ClassFeedNotice *notice in feedClassNewArray)
-                                    {
-                                        if([notice.classID isEqualToString:classID])
-                                            count += notice.num;
-                                    }
+//                                    for (ClassFeedNotice *notice in feedClassNewArray)
+//                                    {
+//                                        if([notice.classID isEqualToString:classID] && [notice.childID isEqualToString:[UserCenter sharedInstance].curChild.uid])
+//                                            count += notice.num;
+//                                    }
+                                    count += [[UserCenter sharedInstance].statusManager newCountForClassFeed];
                                     if(count > 0)
                                         badge = @"";
                                 }

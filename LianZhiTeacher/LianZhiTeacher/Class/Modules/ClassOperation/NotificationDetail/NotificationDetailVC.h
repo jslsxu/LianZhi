@@ -14,4 +14,5 @@ extern NSString *const kNotificationReadNumChangedNotification;
 
 @interface NotificationDetailVC : TNBaseViewController
 @property (nonatomic, copy)NSString *notificationID;
+@property (nonatomic, copy)void (^deleteCallback)(NSString *notificationID);
 @end

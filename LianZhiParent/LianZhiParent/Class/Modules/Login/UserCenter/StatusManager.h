@@ -58,13 +58,20 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 @property (nonatomic, assign)BOOL found;
 @property (nonatomic, assign)BOOL around;
 @property (nonatomic, assign)BOOL faq;
-@property (nonatomic, strong)NSArray *notice;
-@property (nonatomic, strong)NSArray *classRecordArray;
-@property (nonatomic, strong)NSArray *feedClassesNew;
+@property (nonatomic, strong)NSArray<NoticeItem *> *notice;
+@property (nonatomic, strong)NSArray<ClassFeedNotice *> *classRecordArray;
+@property (nonatomic, strong)NSArray<ClassFeedNotice *> *feedClassesNew;
 @property (nonatomic, strong)NSArray *classNewCommentArray;
 @property (nonatomic, strong)NSArray *treeNewCommentArray;
 @property (nonatomic, assign)NSInteger msgNum;
 @property (nonatomic, strong)NSDictionary *appPractice;
 @property (nonatomic, assign)NSInteger practiceNum;
 @property (nonatomic, assign)NSInteger appLeave;
+
+- (NSInteger)newCountForClassFeed;
+- (NSInteger)newCountForClassRecord;
+- (NSInteger)newCountForClassComment;
+- (NSInteger)newCountForTreeComment;
+- (NSInteger)newCountForNotice;
+- (BOOL)hasNewForChildID:(NSString *)childID;
 @end
