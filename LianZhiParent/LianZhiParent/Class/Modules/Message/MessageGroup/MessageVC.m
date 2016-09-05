@@ -37,9 +37,9 @@
     [self.navigationItem setLeftBarButtonItems:nil];
 }
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super init];
     if(self)
     {
         [self startTimer];
@@ -332,7 +332,7 @@
 - (void)contextMenuCellDidSelectMoreOption:(DAContextMenuCell *)cell
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    MessageGroupItem *groupItem = [self.messageModel.modelItemArray objectAtIndex:indexPath.row];
+    MessageGroupItem *groupItem = [[self sourceArray] objectAtIndex:indexPath.row];
     NSString *soundOn = (groupItem.soundOn ? @"close" : @"open");
     MessageFromInfo *fromInfo = groupItem.fromInfo;
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];

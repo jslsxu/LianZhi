@@ -35,6 +35,11 @@
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
         self.width = kScreenWidth;
+        _bgView = [[UIView alloc] initWithFrame:self.bounds];
+        [_bgView setBackgroundColor:[UIColor whiteColor]];
+        [_bgView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+        [_bgView setAlpha:0.f];
+        [self addSubview:_bgView];
         _messageItem = messageItem;
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.width - kChatTimeLabelWidth) / 2, kChatVMargin, kChatTimeLabelWidth, kChatTimeLabelHeight)];
         [_timeLabel setTextAlignment:NSTextAlignmentCenter];
@@ -120,6 +125,14 @@
     [_nameLabel setHidden:receiveGift];
     
     [self.chatContentView setMessageItem:_messageItem];
+    if([self.chatContentView isKindOfClass:[ChatContentSendGiftView class]]){
+        ChatContentSendGiftView *sendGiftView = (ChatContentSendGiftView *)self.chatContentView;
+        [sendGiftView setReceiveGiftCallback:^(MessageItem *messageItem) {
+            if([self.delegate respondsToSelector:@selector(onReceiveGift:)]){
+                [self.delegate onReceiveGift:messageItem];
+            }
+        }];
+    }
     if(self.messageItem.isMyMessage){
         [self.chatContentView setOrigin:CGPointMake(_avatarView.left - kChatHMargin - self.chatContentView.width, spaceYStart)];
         [_indicatorView setCenter:CGPointMake(self.chatContentView.left - kChatIndicatorWidth / 2, self.chatContentView.centerY)];
@@ -169,6 +182,16 @@
     }
 }
 
+//- (void)flashForAtMe{
+//    [UIView animateWithDuration:0.5 animations:^{
+//        _bgView.alpha = 1.f;
+//    }completion:^(BOOL finished) {
+//        [UIView animateWithDuration:0.5 animations:^{
+//            _bgView.alpha = 0.f;
+//        }];
+//    }];
+//}
+
 - (void)onLongPress{
     NSMutableArray *menuArray = [NSMutableArray array];
     if(_messageItem.content.type == UUMessageTypeText)
@@ -181,7 +204,7 @@
         NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
         if(timeInterval - _messageItem.content.ctime < 30)
         {
-            if(_messageItem.from == UUMessageFromMe)
+            if(_messageItem.from == UUMessageFromMe && (_messageItem.content.type != UUMessageTypeGift && _messageItem.content.type != UUMessageTypeReceiveGift && _messageItem.content.type != UUMessageTypeRevoked))
             {
                 UIMenuItem *revokeMenu = [[UIMenuItem alloc] initWithTitle:@"撤销" action:@selector(revokeMessage)];
                 [menuArray addObject:revokeMenu];

@@ -102,6 +102,7 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 + (MessageItem *)messageItemWithReceiveGift:(NSString *)giftName;
 - (void)sendWithCommonParams:(NSDictionary *)commonParams progress:(void (^)(CGFloat progress))progressBlk success:(void (^)(MessageItem *messageItem))success fail:(void (^)(NSString *errMsg))failure;
 - (BOOL)isMyMessage;
+- (BOOL)isAtMe;
 - (void)makeClientSendID;
 - (NSString *)reuseID;
 @end

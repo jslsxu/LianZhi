@@ -68,6 +68,17 @@
     return self.from == UUMessageFromMe;
 }
 
+- (BOOL)isAtMe{
+    NSArray *atList = self.content.exinfo.im_at;
+    if(atList.count > 0){
+        for (AtItem *atItem in atList) {
+            if([atItem.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid]){
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
 
 - (NSString *)reuseID{
     NSString *reuseIdentifier = @"text";

@@ -320,6 +320,7 @@
 		8D3D45C71D5F7EEF005EA8EA /* ContactInfoHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45C61D5F7EEF005EA8EA /* ContactInfoHeaderCell.m */; };
 		8D3D45E31D62F893005EA8EA /* MySendNotificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45E21D62F893005EA8EA /* MySendNotificationModel.m */; };
 		8D3D45E61D62F8A4005EA8EA /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45E51D62F8A4005EA8EA /* NotificationManager.m */; };
+		8D3E32B01D7D5B5A00C1BC77 /* ContactsLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3E32AF1D7D5B5A00C1BC77 /* ContactsLoadingView.m */; };
 		8D7554B41D68403A00A140EE /* SwitchSchoolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554B31D68403A00A140EE /* SwitchSchoolButton.m */; };
 		8D7554F81D69733B00A140EE /* ContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554F71D69733B00A140EE /* ContactView.m */; };
 		8D7555061D6DA89400A140EE /* PBImageScrollerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554FB1D6DA89400A140EE /* PBImageScrollerViewController.m */; };
@@ -1023,6 +1024,8 @@
 		8D3D45E21D62F893005EA8EA /* MySendNotificationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySendNotificationModel.m; sourceTree = "<group>"; };
 		8D3D45E41D62F8A4005EA8EA /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
 		8D3D45E51D62F8A4005EA8EA /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
+		8D3E32AE1D7D5B5A00C1BC77 /* ContactsLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsLoadingView.h; sourceTree = "<group>"; };
+		8D3E32AF1D7D5B5A00C1BC77 /* ContactsLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsLoadingView.m; sourceTree = "<group>"; };
 		8D7554B21D68403A00A140EE /* SwitchSchoolButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchSchoolButton.h; sourceTree = "<group>"; };
 		8D7554B31D68403A00A140EE /* SwitchSchoolButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchSchoolButton.m; sourceTree = "<group>"; };
 		8D7554F61D69733B00A140EE /* ContactView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactView.h; sourceTree = "<group>"; };
@@ -2441,6 +2444,8 @@
 				8DCFD72B1D51E54E001EDC8A /* ContactTeacherView.m */,
 				8DCFD72D1D51E592001EDC8A /* ContactVC.h */,
 				8DCFD72E1D51E592001EDC8A /* ContactVC.m */,
+				8D3E32AE1D7D5B5A00C1BC77 /* ContactsLoadingView.h */,
+				8D3E32AF1D7D5B5A00C1BC77 /* ContactsLoadingView.m */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -3723,6 +3728,7 @@
 				8D75552B1D7162FC00A140EE /* NotificationSimpleAudioRecordView.m in Sources */,
 				8DCFD6F71D4F410D001EDC8A /* ChatBubbleContentView.m in Sources */,
 				3728A74F1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m in Sources */,
+				8D3E32B01D7D5B5A00C1BC77 /* ContactsLoadingView.m in Sources */,
 				3793FAEC1B7CFFF000501F77 /* TNBaseCollectionViewController.m in Sources */,
 				8D75555A1D77F8BD00A140EE /* ZYBannerCell.m in Sources */,
 				8D867BD21D2506EF0020A21C /* NSString+UUID.m in Sources */,

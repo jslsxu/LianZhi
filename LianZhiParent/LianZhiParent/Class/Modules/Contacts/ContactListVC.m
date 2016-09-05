@@ -10,6 +10,7 @@
 #import "JSMessagesViewController.h"
 #import "ClassMemberVC.h"
 #import "ContactParentsView.h"
+#import "ContactsLoadingView.h"
 @implementation ContactListHeaderView
 - (id)initWithReuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -90,6 +91,7 @@
 @interface ContactListVC ()
 @property (nonatomic, strong)ContactParentsView*    parentsView;
 @property (nonatomic, strong)NSMutableDictionary* expandDictionary;
+@property (nonatomic, strong)ContactsLoadingView*   contactsLoadingView;
 @end
 
 @implementation ContactListVC
@@ -129,6 +131,8 @@
     [_tableView setDataSource:self];
     [self.view addSubview:_tableView];
     
+    [self.view addSubview:[self contactsLoadingView]];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kUserCenterChangedCurChildNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kUserInfoVCNeedRefreshNotificaiotn object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kUserInfoChangedNotification object:nil];
@@ -137,6 +141,14 @@
     UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(dismissParentsView)];
     [swipeGesture setDirection:UISwipeGestureRecognizerDirectionRight];
     [self.view addGestureRecognizer:swipeGesture];
+}
+
+- (ContactsLoadingView *)contactsLoadingView{
+    if(!_contactsLoadingView){
+        _contactsLoadingView = [[ContactsLoadingView alloc] initWithFrame:CGRectZero];
+        [_contactsLoadingView setOrigin:CGPointMake((self.view.width - _contactsLoadingView.width) / 2, (self.view.height - _contactsLoadingView.height) / 2)];
+    }
+    return _contactsLoadingView;
 }
 
 - (void)reloadData
@@ -148,6 +160,12 @@
         [self.expandDictionary setValue:@(expand) forKey:classInfo.classID];
     }
     [_tableView reloadData];
+    if(classArray.count > 0){
+        [self.contactsLoadingView dismiss];
+    }
+    else{
+        [self.contactsLoadingView show];
+    }
 }
 
 - (void)dismissParentsView{

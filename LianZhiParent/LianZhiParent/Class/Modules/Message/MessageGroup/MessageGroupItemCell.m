@@ -75,6 +75,7 @@
         [self.moreOptionsButton setTitle:@"静音" forState:UIControlStateNormal];
     else
         [self.moreOptionsButton setTitle:@"取消静音" forState:UIControlStateNormal];
+    [self.moreOptionsButton setBackgroundColor:kCommonParentTintColor];
     [self.actualContentView setHeight:[self.class cellHeight:messageItem cellWidth:self.width].floatValue];
     if(_messageItem.fromInfo.logoImage)
         [_logoView setImage:_messageItem.fromInfo.logoImage];

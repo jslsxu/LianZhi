@@ -14,4 +14,5 @@ extern NSString* const ReceiveGiftMessageKey;
     UIImageView*                _giftView;
     UILabel*                    _giftDetailLabel;
 }
+@property (nonatomic, copy)void (^receiveGiftCallback)(MessageItem *messageItem);
 @end

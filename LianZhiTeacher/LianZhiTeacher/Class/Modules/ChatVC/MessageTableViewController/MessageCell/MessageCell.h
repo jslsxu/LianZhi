@@ -18,6 +18,7 @@
 - (void)onMenuShow;
 @end
 @interface MessageCell : TNTableViewCell{
+    UIView*                     _bgView;
     UILabel*                    _timeLabel;
     UILabel*                    _nameLabel;
     AvatarView*                 _avatarView;
@@ -27,5 +28,6 @@
 @property (nonatomic, strong)MessageItem*   messageItem;
 @property (nonatomic, weak)id<MessageCellDelegate> delegate;
 - (instancetype)initWithModel:(MessageItem *)messageItem reuseID:(NSString *)reuseID;
+//- (void)flashForAtMe;
 + (CGFloat)cellHeightForModel:(MessageItem *)messageItem;
 @end

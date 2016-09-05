@@ -10,12 +10,14 @@
 #import "ContactClassStudentView.h"
 #import "ContactTeacherView.h"
 #import "ContactModel.h"
+#import "ContactsLoadingView.h"
 @interface ContactVC (){
     ContactClassStudentView*     _parentView;
     ContactTeacherView*         _teacherView;
 }
 @property (nonatomic, strong)ContactModel*  contactModel;
 @property (nonatomic, strong)UISegmentedControl*    segmentCtrl;
+@property (nonatomic, strong)ContactsLoadingView*   contactsLoadingView;
 @end
 
 @implementation ContactVC
@@ -56,6 +58,8 @@
     [_teacherView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
     [self.view addSubview:_teacherView];
     
+    [self.view addSubview:[self contactsLoadingView]];
+    
     [self reloadData];
 }
 
@@ -69,6 +73,10 @@
         [self.navigationItem setTitleView:[self segmentCtrl]];
         [self.segmentCtrl setSelectedSegmentIndex:0];
         [self onValueChanged];
+        [self.contactsLoadingView dismiss];
+    }
+    else{
+        [self.contactsLoadingView show];
     }
 }
 

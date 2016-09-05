@@ -350,6 +350,7 @@
 		8D3D45CE1D5F9438005EA8EA /* ChatTeacherInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45C91D5F9438005EA8EA /* ChatTeacherInfoVC.m */; };
 		8D3D45CF1D5F9438005EA8EA /* ChatParentInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45CB1D5F9438005EA8EA /* ChatParentInfoVC.m */; };
 		8D3D45D01D5F9438005EA8EA /* ContactInfoHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45CD1D5F9438005EA8EA /* ContactInfoHeaderCell.m */; };
+		8D3E32AD1D7D50AC00C1BC77 /* ContactsLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3E32AC1D7D50AC00C1BC77 /* ContactsLoadingView.m */; };
 		8D7554AE1D67ED5400A140EE /* ChildrenSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554AD1D67ED5400A140EE /* ChildrenSwitchView.m */; };
 		8D7554B11D67EE7200A140EE /* ChildrenSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554B01D67EE7200A140EE /* ChildrenSelectVC.m */; };
 		8D7554DD1D6969E300A140EE /* DNAlbumTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554B71D6969E300A140EE /* DNAlbumTableViewController.m */; };
@@ -1065,6 +1066,8 @@
 		8D3D45CB1D5F9438005EA8EA /* ChatParentInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatParentInfoVC.m; sourceTree = "<group>"; };
 		8D3D45CC1D5F9438005EA8EA /* ContactInfoHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactInfoHeaderCell.h; sourceTree = "<group>"; };
 		8D3D45CD1D5F9438005EA8EA /* ContactInfoHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactInfoHeaderCell.m; sourceTree = "<group>"; };
+		8D3E32AB1D7D50AC00C1BC77 /* ContactsLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsLoadingView.h; sourceTree = "<group>"; };
+		8D3E32AC1D7D50AC00C1BC77 /* ContactsLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsLoadingView.m; sourceTree = "<group>"; };
 		8D7554AC1D67ED5400A140EE /* ChildrenSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChildrenSwitchView.h; sourceTree = "<group>"; };
 		8D7554AD1D67ED5400A140EE /* ChildrenSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChildrenSwitchView.m; sourceTree = "<group>"; };
 		8D7554AF1D67EE7200A140EE /* ChildrenSelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChildrenSelectVC.h; sourceTree = "<group>"; };
@@ -1348,6 +1351,8 @@
 				3720C1481A41E3EB000357A5 /* ContactItemCell.m */,
 				8DCFD7381D53641B001EDC8A /* ContactParentsView.h */,
 				8DCFD7391D53641B001EDC8A /* ContactParentsView.m */,
+				8D3E32AB1D7D50AC00C1BC77 /* ContactsLoadingView.h */,
+				8D3E32AC1D7D50AC00C1BC77 /* ContactsLoadingView.m */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -3326,6 +3331,7 @@
 				3793F7CF1B7CFFD900501F77 /* WelcomeView.m in Sources */,
 				8D867C271D2A6C530020A21C /* amrFileCodec.mm in Sources */,
 				3793F7F11B7CFFD900501F77 /* MLPlayVoiceButton.m in Sources */,
+				8D3E32AD1D7D50AC00C1BC77 /* ContactsLoadingView.m in Sources */,
 				37CBAF791A47CCD90063F395 /* LZTabBarButton.m in Sources */,
 				3728A61D1B93F36B00310457 /* HPTextViewInternal.m in Sources */,
 				37E93FDB1A7E9CF200AD45A1 /* MJPhotoLoadingView.m in Sources */,

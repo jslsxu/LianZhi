@@ -9,12 +9,14 @@
 #import <UIKit/UIKit.h>
 
 @interface ChatTopNewMessageView : UIView{
+    AvatarView*     _avatarView;
     UIView*         _contentView;
     UIImageView*    _imageView;
     UILabel*        _titleLabel;
     
 }
 @property (nonatomic, strong)MessageItem *targetItem;
-@property (nonatomic, assign)NSInteger messageNum;
 @property (nonatomic, copy)void (^topNewMessageCallback)();
+- (void)showWithTargetItem:(MessageItem *)targetItem newMessageNum:(NSInteger)num;
+- (void)showAtWithTargetItem:(MessageItem *)targetItem;
 @end

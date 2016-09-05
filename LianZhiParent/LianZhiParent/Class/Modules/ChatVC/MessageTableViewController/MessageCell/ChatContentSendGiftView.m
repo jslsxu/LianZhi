@@ -59,7 +59,9 @@ NSString* const ReceiveGiftMessageKey = @"ReceiveGiftMessageKey";
         if(self.messageItem.content.unread)
         {
             [GiftDetailView showWithImage:self.messageItem.content.exinfo.imgs.small title:[NSString stringWithFormat:@"%@给你送了%@",self.messageItem.targetUser, self.messageItem.content.exinfo.presentName] receiveCompletion:^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:ReceiveGiftNotification object:nil userInfo:@{ReceiveGiftMessageKey : self.messageItem}];
+                if(self.receiveGiftCallback){
+                    self.receiveGiftCallback(self.messageItem);
+                }
             } valid:YES];
         }
         else {

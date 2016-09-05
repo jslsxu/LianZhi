@@ -27,8 +27,6 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        [self.layer setBorderColor:[UIColor redColor].CGColor];
-        [self.layer setBorderWidth:1];
         _imageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - 60) / 2, 10, 60, 60)];
         [self addSubview:_imageView];
         

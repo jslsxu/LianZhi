@@ -119,6 +119,14 @@
     [_nameLabel setHidden:receiveGift];
     
     [self.chatContentView setMessageItem:_messageItem];
+    if([self.chatContentView isKindOfClass:[ChatContentSendGiftView class]]){
+        ChatContentSendGiftView *sendGiftView = (ChatContentSendGiftView *)self.chatContentView;
+        [sendGiftView setReceiveGiftCallback:^(MessageItem *messageItem) {
+            if([self.delegate respondsToSelector:@selector(onReceiveGift:)]){
+                [self.delegate onReceiveGift:messageItem];
+            }
+        }];
+    }
     if(self.messageItem.isMyMessage){
         [self.chatContentView setOrigin:CGPointMake(_avatarView.left - kChatHMargin - self.chatContentView.width, spaceYStart)];
         [_indicatorView setCenter:CGPointMake(self.chatContentView.left - kChatIndicatorWidth / 2, self.chatContentView.centerY)];
@@ -180,7 +188,7 @@
         NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
         if(timeInterval - _messageItem.content.ctime < 30)
         {
-            if(_messageItem.from == UUMessageFromMe)
+            if(_messageItem.from == UUMessageFromMe && (_messageItem.content.type != UUMessageTypeGift && _messageItem.content.type != UUMessageTypeReceiveGift && _messageItem.content.type != UUMessageTypeRevoked))
             {
                 UIMenuItem *revokeMenu = [[UIMenuItem alloc] initWithTitle:@"撤销" action:@selector(revokeMessage)];
                 [menuArray addObject:revokeMenu];

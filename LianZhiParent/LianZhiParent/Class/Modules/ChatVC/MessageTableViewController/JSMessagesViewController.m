@@ -55,7 +55,6 @@ static NSString *topChatID = nil;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onReceiveGift:) name:ReceiveGiftNotification object:nil];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.targetID forKey:@"from_id"];
@@ -98,6 +97,8 @@ static NSString *topChatID = nil;
     [self scrollToBottom:NO];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
     [self.tableView addGestureRecognizer:tapGesture];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onReceiveGift:) name:ReceiveGiftNotification object:nil];
     
     [self startTimer];
 }
@@ -367,11 +368,16 @@ static NSString *topChatID = nil;
         @strongify(self);
         TNDataWrapper *items = [responseObject getDataWrapperForKey:@"items"];
         NSInteger unreadCount = 0;
+        NSString *atMid = nil;
+        MessageItem *atMessageItem;
         for (NSInteger i = 0; i< items.count; i++) {
             TNDataWrapper *messageItemWrapper = [items getDataWrapperForIndex:i];
-            TNDataWrapper *content = [messageItemWrapper getDataWrapperForKey:@"content"];
-            if([content getBoolForKey:@"unread"]){
+            MessageItem *messageItem = [MessageItem modelWithDictionary:messageItemWrapper.data];
+            if(messageItem.content.unread){
                 unreadCount++;
+                if([messageItem isAtMe]){
+                    atMid = messageItem.content.mid;
+                }
             }
         }
         BOOL shouldScrollToBottom = NO;
@@ -379,6 +385,14 @@ static NSString *topChatID = nil;
             shouldScrollToBottom = YES;
         }
         BOOL hasNew = [self.chatMessageModel parseData:responseObject.data type:RequestMessageTypeLatest];
+        if(atMid.length > 0){
+            for (NSInteger i = self.chatMessageModel.messageArray.count - 1; i >= 0; i--) {
+                MessageItem *messageItem = self.chatMessageModel.messageArray[i];
+                if([messageItem.content.mid isEqualToString:atMid]){
+                    atMessageItem = messageItem;
+                }
+            }
+        }
         if(hasNew){
             [self.tableView reloadData];
             if(shouldScrollToBottom){
@@ -389,9 +403,24 @@ static NSString *topChatID = nil;
                 else{
                     [self scrollToBottom:YES];
                 }
-                //如果第一个超出范围
-                if([self.tableView visibleCells].count < unreadCount){
-                    [self showTopNewMessageWithNum:unreadCount];
+                NSArray *visibleCells = [self.tableView visibleCells];
+                if(atMessageItem){
+                     NSInteger atIndex = [self.chatMessageModel.messageArray indexOfObject:atMessageItem];
+                    if(atIndex + visibleCells.count < self.chatMessageModel.messageArray.count){//超出显示范围
+                        [self showTopNewMessageWithAtItem:atMessageItem];
+                    }
+                    else{
+                        //如果第一个超出范围
+                        if(visibleCells.count < unreadCount){
+                            [self showTopNewMessageWithNum:unreadCount];
+                        }
+                    }
+                }
+                else{
+                    //如果第一个超出范围
+                    if(visibleCells.count < unreadCount){
+                        [self showTopNewMessageWithNum:unreadCount];
+                    }
                 }
             }
             else{
@@ -470,11 +499,10 @@ static NSString *topChatID = nil;
 }
 
 - (void)showTopNewMessageWithNum:(NSInteger)num{
-    [self.topNewIndicator setMessageNum:num];
     NSInteger count = self.chatMessageModel.messageArray.count;
     NSInteger targetIndex = count - num;
     if(targetIndex < self.chatMessageModel.messageArray.count){
-        [self.topNewIndicator setTargetItem:self.chatMessageModel.messageArray[targetIndex]];
+        [self.topNewIndicator showWithTargetItem:self.chatMessageModel.messageArray[targetIndex] newMessageNum:num];
         @weakify(self)
         [self.topNewIndicator setTopNewMessageCallback:^{
             @strongify(self)
@@ -487,6 +515,21 @@ static NSString *topChatID = nil;
             self.topNewIndicator.alpha = 1.f;
         }];
     }
+}
+
+- (void)showTopNewMessageWithAtItem:(MessageItem *)atItem{
+    [self.topNewIndicator showAtWithTargetItem:atItem];
+    @weakify(self)
+    [self.topNewIndicator setTopNewMessageCallback:^{
+        @strongify(self)
+        NSInteger row = [self.chatMessageModel.messageArray indexOfObject:self.topNewIndicator.targetItem];
+        [self.tableView scrollToRow:row inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:YES];
+        [self dismissTopIndicator];
+    }];
+    [self.topNewIndicator setOrigin:CGPointMake(self.view.width - self.topNewIndicator.width, 15)];
+    [UIView animateWithDuration:0.3 animations:^{
+        self.topNewIndicator.alpha = 1.f;
+    }];
 }
 
 - (void)dismissBottomIndicator{
@@ -737,8 +780,7 @@ static NSString *topChatID = nil;
     }];
 }
 
-- (void)onReceiveGift:(NSNotification *)notification {
-    MessageItem *messageItem = notification.userInfo[ReceiveGiftMessageKey];
+- (void)onReceiveGift:(MessageItem *)messageItem{
     if(messageItem.content.type == UUMessageTypeGift && messageItem.content.unread && messageItem.from == UUMessageFromOther) {
         MessageItem *receiveItem = [MessageItem messageItemWithReceiveGift:messageItem.content.exinfo.presentName];
         [self commitMessage:receiveItem];

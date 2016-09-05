@@ -65,8 +65,8 @@
     return [self.messageModel arrayForType:self.isNotification];
 }
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+- (instancetype)init{
+    self = [super init];
     if(self){
         
         [self startTimer];
@@ -231,20 +231,17 @@
     [cell setMessageItem:item];
     
     @weakify(self)
-    @weakify(cell)
     NSMutableArray *buttonArray = [NSMutableArray array];
     MGSwipeButton * deleteButton = [MGSwipeButton buttonWithTitle:@"删除" backgroundColor:[UIColor colorWithHexString:@"e71f19"] callback:^BOOL(MGSwipeTableCell * sender){
-        @strongify(cell)
         @strongify(self)
-        [self deleteCell:cell];
+        [self deleteGroupItem:item];
         return YES;
     }];
     [deleteButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [buttonArray addObject:deleteButton];
     MGSwipeButton * soundButton = [MGSwipeButton buttonWithTitle:item.soundOn ? @"静音" : @"关闭静音" backgroundColor:[UIColor colorWithHexString:@"28c4d8"] callback:^BOOL(MGSwipeTableCell * sender){
-        @strongify(cell)
         @strongify(self)
-        [self switchSoundForCell:cell];
+        [self switchSoundForGroupItem:item];
         return YES;
     }];
     [soundButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
@@ -310,7 +307,7 @@
 
 #pragma mark * DAContextMenuCell delegate
 
-- (void)deleteCell:(MessageGroupItemCell *)cell{
+- (void)deleteGroupItem:(MessageGroupItem *)groupItem{
     @weakify(self)
     LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"是否删除该记录？" message:@"删除该记录内容也会随之清空" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除(不推荐)"];
     [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
@@ -318,8 +315,6 @@
     [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setDestructiveHandler:^(LGAlertView *alertView) {
         @strongify(self)
-        MessageGroupItemCell *itemCell = (MessageGroupItemCell *)cell;
-        MessageGroupItem *groupItem = [itemCell messageItem];
         MessageFromInfo *fromInfo = [groupItem fromInfo];
         if(!fromInfo.isNotification){
             [ChatMessageModel removeConversasionForUid:fromInfo.uid type:fromInfo.type];
@@ -339,9 +334,7 @@
     
 }
 
-- (void)switchSoundForCell:(MessageGroupItemCell *)cell{
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    MessageGroupItem *groupItem = [self.messageModel.modelItemArray objectAtIndex:indexPath.row];
+- (void)switchSoundForGroupItem:(MessageGroupItem *)groupItem{
     NSString *soundOn = (groupItem.soundOn ? @"close" : @"open");
     MessageFromInfo *fromInfo = groupItem.fromInfo;
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
@@ -350,7 +343,7 @@
     [params setValue:soundOn forKey:@"sound"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/set_thread" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         groupItem.soundOn = !groupItem.soundOn;
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView reloadData];
     } fail:^(NSString *errMsg) {
         
     }];

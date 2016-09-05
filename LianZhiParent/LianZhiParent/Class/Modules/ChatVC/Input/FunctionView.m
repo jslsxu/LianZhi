@@ -27,7 +27,7 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
+        _imageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - 60) / 2, 10, 60, 60)];
         [self addSubview:_imageView];
         
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 70, self.width, 20)];
