@@ -72,7 +72,7 @@
 {
     _messageItem = messageItem;
     if(_messageItem.soundOn)
-        [self.moreOptionsButton setTitle:@"设为静音" forState:UIControlStateNormal];
+        [self.moreOptionsButton setTitle:@"静音" forState:UIControlStateNormal];
     else
         [self.moreOptionsButton setTitle:@"取消静音" forState:UIControlStateNormal];
     [self.actualContentView setHeight:[self.class cellHeight:messageItem cellWidth:self.width].floatValue];

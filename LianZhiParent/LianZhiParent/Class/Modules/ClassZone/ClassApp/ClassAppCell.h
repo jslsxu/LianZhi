@@ -15,4 +15,5 @@
     NumIndicator*         _indicator;
 }
 @property (nonatomic, copy)NSString *badge;
++ (CGFloat)cellHeight;
 @end

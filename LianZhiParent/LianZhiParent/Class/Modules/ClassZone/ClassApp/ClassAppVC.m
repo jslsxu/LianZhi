@@ -17,6 +17,7 @@
 #import "ClassSelectionVC.h"
 #import "LZAccountVC.h"
 #import "TreeHouseVC.h"
+#import "ClassAppCell.h"
 #define ClassIdKey          @"userClassId"
 
 @implementation ApplicationBoxHeaderView
@@ -199,7 +200,7 @@
 {
     UICollectionViewFlowLayout *flowLayout = (UICollectionViewFlowLayout *)layout;
     [flowLayout setSectionInset:UIEdgeInsetsMake(0, 0, 20, 0)];
-    [flowLayout setItemSize:CGSizeMake(self.view.width / 4, MIN(self.view.width / 4 + 20, 80))];
+    [flowLayout setItemSize:CGSizeMake(self.view.width / 4, [ClassAppCell cellHeight])];
     [flowLayout setMinimumInteritemSpacing:0];
     [flowLayout setMinimumLineSpacing:0];
     [flowLayout setHeaderReferenceSize:CGSizeMake(self.view.width, self.view.width / 2)];

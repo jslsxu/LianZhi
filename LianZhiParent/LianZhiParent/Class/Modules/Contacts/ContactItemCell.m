@@ -47,7 +47,7 @@
         [_logoView setStatus:teacherInfo.actived ? nil : @"未下载"];
         [_nameLabel setText:teacherInfo.name];
         [_nameLabel sizeToFit];
-        [_nameLabel setFrame:CGRectMake(_logoView.right + 15, (self.height - _nameLabel.height) / 2, _nameLabel.width, _nameLabel.height)];
+        [_nameLabel setFrame:CGRectMake(_logoView.right + 10, (self.height - _nameLabel.height) / 2, _nameLabel.width, _nameLabel.height)];
         
         [_commentLabel setBackgroundColor:[UIColor colorWithHexString:@"02c994"]];
         [_commentLabel setTextColor:[UIColor whiteColor]];

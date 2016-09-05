@@ -48,7 +48,7 @@
     self.contextMenuHidden = self.contextMenuView.hidden = YES;
     self.shouldDisplayContextMenuView = NO;
     self.editable = YES;
-    self.moreOptionsButtonTitle = @"设为静音";
+    self.moreOptionsButtonTitle = @"静音";
     self.deleteButtonTitle = @"删除";
     self.menuOptionButtonTitlePadding = 25.;
     self.menuOptionsAnimationDuration = 0.3;

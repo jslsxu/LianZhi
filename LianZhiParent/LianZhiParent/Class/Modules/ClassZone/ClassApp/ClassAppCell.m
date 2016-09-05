@@ -15,12 +15,13 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        _appImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - 30) / 2, self.height - 60, 30, 30)];
+        CGFloat imageWidth = [ClassAppCell imageWidth];
+        _appImageView = [[UIImageView alloc] initWithFrame:CGRectMake((self.width - imageWidth) / 2, 20, imageWidth, imageWidth)];
         [_appImageView setClipsToBounds:YES];
         [_appImageView  setContentMode:UIViewContentModeScaleAspectFit];
         [self addSubview:_appImageView];
         
-        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.height - 25, self.width, 25)];
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _appImageView.bottom + 5, self.width, 25)];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_nameLabel setFont:[UIFont systemFontOfSize:12]];
         [_nameLabel setTextAlignment:NSTextAlignmentCenter];
@@ -46,6 +47,18 @@
     [_indicator setOrigin:CGPointMake(_appImageView.right, _appImageView.y)];
     [_indicator setHidden:!_badge];
     [_indicator setIndicator:_badge];
+}
+
++ (CGFloat)imageWidth{
+    return kScreenWidth * 30 / 320;
+}
+
++ (CGFloat)cellHeight{
+    CGFloat height = 0;
+    height += 20;
+    height += [self imageWidth];
+    height += 5 + 25;
+    return height;
 }
 
 @end
