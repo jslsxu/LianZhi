@@ -27,6 +27,10 @@
     return @{@"exinfo" : [Exinfo class]};
 }
 
++ (NSDictionary<NSString *,id> *)modelCustomPropertyMapper{
+    return @{@"msgId" : @"id"};
+}
+
 - (NSString *)timeStr{
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MM月dd日 HH:mm"];

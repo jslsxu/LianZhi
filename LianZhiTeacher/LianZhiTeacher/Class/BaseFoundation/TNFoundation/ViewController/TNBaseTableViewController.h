@@ -12,16 +12,14 @@
 #import "TNListModel.h"
 #import "TNBaseViewController.h"
 
-@interface TNBaseTableViewController : TNBaseViewController<EGORefreshTableHeaderDelegate,UITableViewDelegate,UITableViewDataSource,TNBaseTableViewData>
+@interface TNBaseTableViewController : TNBaseViewController<UITableViewDelegate,UITableViewDataSource,TNBaseTableViewData>
 {
     UITableView*                _tableView;
-    EGORefreshTableHeaderView*  _refreshHeaderView;
     BOOL                        _isLoading;
     TNListModel*                _tableViewModel;
 }
 @property (nonatomic, readonly)UITableView* tableView;
 @property (nonatomic, readonly)TNListModel *tableViewModel;
-@property (nonatomic, readonly)EGORefreshTableHeaderView *refreshHeaderView;
 @property (nonatomic, assign)BOOL supportPullDown;
 @property (nonatomic, assign)BOOL supportPullUp;
 - (UITableViewStyle)tableViewStyle;

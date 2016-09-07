@@ -102,6 +102,23 @@ static NSString *topChatID = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onReceiveGift:) name:ReceiveGiftNotification object:nil];
     
     [self startTimer];
+    
+//    NSTimer *sendTimer = [NSTimer scheduledTimerWithTimeInterval:1 block:^(NSTimer * _Nonnull timer) {
+//        static NSInteger msgIndex = 0;
+//        if(msgIndex == 0){
+//            [self inputBarViewDidCommit:@"开始测试" atArray:nil];
+//        }
+//        else if(msgIndex < 30){
+//            //test
+//            [self inputBarViewDidCommit:kStringFromValue(msgIndex) atArray:nil];
+//        }
+//        else{
+//            [timer invalidate];
+//        }
+//        msgIndex ++;
+//    } repeats:YES];
+//    [[NSRunLoop currentRunLoop] addTimer:sendTimer forMode:NSRunLoopCommonModes];
+//    [sendTimer fire];
 }
 
 - (void)startTimer{
@@ -308,6 +325,7 @@ static NSString *topChatID = nil;
         if(self.chatType == ChatTypeClass){
             [self requestIMStatus];
         }
+        
     }
 }
 

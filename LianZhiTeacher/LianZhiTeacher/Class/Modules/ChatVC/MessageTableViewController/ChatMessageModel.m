@@ -321,9 +321,14 @@
     BOOL add = NO;
     if(newMessageArray.count > 0){
         NSString *newMid = nil;
+//        NSString *lastID = [self latestId];
+//        NSMutableString *midStr = [[NSMutableString alloc] init];
+//        [midStr appendString:[NSString stringWithFormat:@"%@",lastID]];
+        
         //添加到前面
         for (NSInteger i = newMessageArray.count - 1; i >= 0; i--) {
             MessageItem *messageItem = newMessageArray[i];
+//            [midStr appendString:[NSString stringWithFormat:@",%@",messageItem.content.mid]];
             if(messageItem.content.mid.integerValue > newMid.integerValue){
                 newMid = messageItem.content.mid;
             }
@@ -350,6 +355,7 @@
             }
             
         }
+//        NSLog(@"%@",midStr);
         if(newMid.integerValue > self.lastMaxMid.integerValue && type == RequestMessageTypeLatest){
             self.lastMaxMid = newMid;
         }
@@ -403,10 +409,10 @@
         [self.modelItemArray addObject:message];
         [self sortMessage];
         NSString *sql = [NSString stringWithFormat:@"insert into %@ values(%zd,'%@','%@','%@') ",[self tableName],[message.content.mid integerValue], message.client_send_id, message.content.text, [message modelToJSONString]];
-        BOOL insert = [self.database executeUpdate:sql];
-        if(insert){
-            NSLog(@"insert success");
-        }
+        [self.database executeUpdate:sql];
+//        if(insert){
+//            NSLog(@"insert success");
+//        }
     }
 }
 
@@ -414,10 +420,10 @@
     @synchronized (self) {
         NSString *sql = [NSString stringWithFormat:@"update %@ set message_id = %zd, client_send_id = '%@', message_json = '%@', content = '%@' where client_send_id = '%@'",[self tableName],[message.content.mid integerValue], message.client_send_id, [message modelToJSONString], message.content.text,message.client_send_id];
         
-        BOOL success = [self.database executeUpdate:sql];
-        if(success){
-            NSLog(@"update success");
-        }
+        [self.database executeUpdate:sql];
+//        if(success){
+//            NSLog(@"update success");
+//        }
 //        BOOL replaced = NO;
         for (MessageItem *messageItem in self.modelItemArray) {
             if([message.content.mid isEqualToString:messageItem.content.mid] || [message.client_send_id isEqualToString:messageItem.client_send_id]){
@@ -445,10 +451,10 @@
             sql = [NSString stringWithFormat:@"delete from %@ where client_send_id = '%@' ",[self tableName],message.client_send_id];
         }
         
-        BOOL success = [self.database executeUpdate:sql];
-        if(success){
-            NSLog(@"delete success");
-        }
+        [self.database executeUpdate:sql];
+//        if(success){
+//            NSLog(@"delete success");
+//        }
         for (MessageItem *messageItem in self.modelItemArray) {
             if([message.content.mid isEqualToString:messageItem.content.mid] || [message.client_send_id isEqualToString:messageItem.client_send_id]){
                 [self.modelItemArray removeObject:messageItem];

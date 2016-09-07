@@ -426,10 +426,10 @@
             sql = [NSString stringWithFormat:@"delete from %@ where client_send_id = '%@' ",[self tableName],message.client_send_id];
         }
         
-        BOOL success = [self.database executeUpdate:sql];
-        if(success){
-            NSLog(@"delete success");
-        }
+       [self.database executeUpdate:sql];
+//        if(success){
+//            NSLog(@"delete success");
+//        }
         for (MessageItem *messageItem in self.modelItemArray) {
             if([message.content.mid isEqualToString:messageItem.content.mid] || [message.client_send_id isEqualToString:messageItem.client_send_id]){
                 [self.modelItemArray removeObject:messageItem];

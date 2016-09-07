@@ -62,25 +62,28 @@
         return;
 }
 
-
 - (void)setSupportPullDown:(BOOL)supportPullDown
 {
     _supportPullDown = supportPullDown;
     if(_supportPullDown)
     {
-        if(!_refreshHeaderView)
-        {
-            _refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.collectionView.height, self.collectionView.width, self.collectionView.height)];
-            _refreshHeaderView.delegate = self;
-            [self.collectionView addSubview:_refreshHeaderView];
-        }
+        @weakify(self)
+        [self.collectionView setMj_header:[MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            @strongify(self)
+            if(!_isLoading){
+                [self requestData:REQUEST_REFRESH];
+            }
+            else{
+                [self.collectionView.mj_header endRefreshing];
+            }
+        }]];
     }
     else
     {
-        [_refreshHeaderView removeFromSuperview];
-        _refreshHeaderView = nil;
+        [self.collectionView setMj_header:nil];
     }
 }
+
 
 - (void)setSupportPullUp:(BOOL)supportPullUp{
     _supportPullUp = supportPullUp;
@@ -176,7 +179,7 @@
         [_collectionView.mj_footer endRefreshing];
     }
     else{
-        [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.collectionView];
+        [_collectionView.mj_header endRefreshing];
     }
 }
 
@@ -187,6 +190,7 @@
 
 - (void)onRequestSuccess:(AFHTTPRequestOperation *)operation responseData:(TNDataWrapper *)responseData
 {
+    [self.collectionView.mj_header endRefreshing];
     [_collectionViewModel parseData:responseData type:operation.requestType];
     if(self.shouldShowEmptyHint)
         [self showEmptyLabel:_collectionViewModel.modelItemArray.count == 0];
@@ -207,6 +211,7 @@
 
 - (void)onRequestFail:(NSString *)errMsg
 {
+    [self.collectionView.mj_header endRefreshing];
     [ProgressHUD showHintText:errMsg];
     _isLoading = NO;
     if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestFailedWithError:)])
@@ -238,43 +243,6 @@
     if([self respondsToSelector:@selector(TNBaseTableViewControllerItemSelected:atIndex:)])
         [self TNBaseTableViewControllerItemSelected:[_collectionViewModel itemForIndexPath:indexPath] atIndex:indexPath];
 }
-
-#pragma mark -
-#pragma mark UIScrollViewDelegate Methods
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
-    [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-    
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    
-    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-}
-
-
-#pragma mark -
-#pragma mark EGORefreshTableHeaderDelegate Methods
-
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
-    
-    [self requestData:REQUEST_REFRESH];
-    
-}
-
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
-    
-    return _isLoading; // should return if data source model is reloading
-    
-}
-
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
-    
-    return [NSDate date]; // should return date data source was last changed
-    
-}
-
 
 - (void)didReceiveMemoryWarning
 {

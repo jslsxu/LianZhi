@@ -70,6 +70,7 @@ typedef NS_ENUM(NSInteger, MessageFrom) {
 @end
 
 @interface MessageContent : TNBaseObject
+@property (nonatomic, copy)NSString *msgId;
 @property (nonatomic, copy)NSString *mid;
 @property (nonatomic, assign)BOOL unread;
 @property (nonatomic, assign)MessageType type;

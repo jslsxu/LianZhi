@@ -91,24 +91,29 @@
     _supportPullDown = supportPullDown;
     if(_supportPullDown)
     {
-        if(!_refreshHeaderView)
-        {
-            _refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.height, self.tableView.width, self.tableView.height)];
-            _refreshHeaderView.delegate = self;
-        }
-        if(_refreshHeaderView.superview == nil)
-            [self.tableView addSubview:_refreshHeaderView];
+        @weakify(self)
+        [self.tableView setMj_header:[MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            @strongify(self)
+            if(!_isLoading){
+                [self requestData:REQUEST_REFRESH];
+            }
+            else{
+                [self.tableView.mj_header endRefreshing];
+            }
+        }]];
     }
     else
     {
-        [_refreshHeaderView removeFromSuperview];
+        [self.tableView setMj_header:nil];
     }
 }
 
 - (void)setSupportPullUp:(BOOL)supportPullUp{
     _supportPullUp = supportPullUp;
     if(_supportPullUp){
+        @weakify(self)
         [self.tableView setMj_footer:[MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+            @strongify(self)
             if(!_isLoading){
                 [self requestData:REQUEST_GETMORE];
             }
@@ -176,7 +181,7 @@
         else
         {
             _isLoading = NO;
-            [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+            [self.tableView.mj_header endRefreshing];
             [self.tableView.mj_footer endRefreshing];
         }
     }
@@ -184,7 +189,7 @@
 
 - (void)onRequestSuccess:(AFHTTPRequestOperation *)operation responseData:(TNDataWrapper *)responseData
 {
-    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+    [self.tableView.mj_header endRefreshing];
     [self.tableView.mj_footer endRefreshing];
     [_tableViewModel parseData:responseData type:operation.requestType];
     if(self.shouldShowEmptyHint)
@@ -200,7 +205,7 @@
 {
     if(![self hideErrorAlert])
         [ProgressHUD showHintText:errMsg];
-    [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+    [self.tableView.mj_header endRefreshing];
     [self.tableView.mj_footer endRefreshing];
     _isLoading = NO;
     if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestFailedWithError:)])
@@ -265,42 +270,28 @@
         [self TNBaseTableViewControllerItemSelected:[_tableViewModel itemForIndexPath:indexPath] atIndex:indexPath];
 }
 
-#pragma mark -
-#pragma mark UIScrollViewDelegate Methods
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    
-    [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-    
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    
-    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-}
-
-
-#pragma mark -
-#pragma mark EGORefreshTableHeaderDelegate Methods
-
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
-    
-    [self requestData:REQUEST_REFRESH];
-    
-}
-
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
-    
-    return _isLoading; // should return if data source model is reloading
-    
-}
-
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
-    
-    return [NSDate date]; // should return date data source was last changed
-    
-}
-
+//#pragma mark -
+//#pragma mark EGORefreshTableHeaderDelegate Methods
+//
+//- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+//    
+//    [self requestData:REQUEST_REFRESH];
+//    
+//}
+//
+//- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+//    
+//    return _isLoading; // should return if data source model is reloading
+//    
+//}
+//
+//- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+//    
+//    return [NSDate date]; // should return date data source was last changed
+//    
+//}
+//
 
 - (void)didReceiveMemoryWarning
 {

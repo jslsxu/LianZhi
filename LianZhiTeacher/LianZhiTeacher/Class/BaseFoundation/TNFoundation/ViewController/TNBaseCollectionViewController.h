@@ -14,18 +14,16 @@
 #import "MJRefresh.h"
 #import "NetworkConnection.h"
 
-@interface TNBaseCollectionViewController : TNBaseViewController<EGORefreshTableHeaderDelegate, UICollectionViewDataSource, UICollectionViewDelegate, TNBaseTableViewData>
+@interface TNBaseCollectionViewController : TNBaseViewController<UICollectionViewDataSource, UICollectionViewDelegate, TNBaseTableViewData>
 {
     UICollectionViewLayout*     _layout;
     UICollectionView*           _collectionView;
-    EGORefreshTableHeaderView * _refreshHeaderView;
     BOOL                        _isLoading;
     TNListModel*                _collectionViewModel;
 }
 
 @property (nonatomic, readonly)TNListModel *collectionViewModel;
 @property (nonatomic, readonly)UICollectionView *collectionView;
-@property (nonatomic, readonly)EGORefreshTableHeaderView *refreshHeaderView;
 @property (nonatomic, copy)NSString *cellName;
 @property (nonatomic, copy)NSString *modelName;
 @property (nonatomic, assign)BOOL supportPullDown;
