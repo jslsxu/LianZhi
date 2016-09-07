@@ -124,16 +124,7 @@ static NSArray *tabDatas = nil;
         [appTabButton setBadgeValue:kStringFromValue(commentNum)];
     else
     {
-        //新日志
-        NSArray *newFeedArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
-        NSInteger num = 0;
-        for (ClassFeedNotice *noticeItem in newFeedArray)
-        {
-            if([noticeItem.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID])
-            {
-                num += noticeItem.num;
-            }
-        }
+        NSInteger num = [[UserCenter sharedInstance].statusManager hasNewForClassFeed];
         num += [UserCenter sharedInstance].statusManager.leaveNum;
         if(num > 0)
             [appTabButton setBadgeValue:@""];

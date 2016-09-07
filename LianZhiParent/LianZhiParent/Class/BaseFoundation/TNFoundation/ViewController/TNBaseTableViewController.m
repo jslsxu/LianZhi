@@ -147,7 +147,7 @@
             [self.tableView.mj_footer endRefreshingWithNoMoreData];
         }
         else{
-            [self.tableView.mj_footer resetNoMoreData];
+            [self.tableView.mj_footer endRefreshing];
         }
     }
     [_tableView reloadData];

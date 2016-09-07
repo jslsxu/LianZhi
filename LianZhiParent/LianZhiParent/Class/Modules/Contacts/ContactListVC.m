@@ -104,6 +104,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationItem.leftBarButtonItems = [ApplicationDelegate.homeVC commonLeftBarButtonItems];
+    [[UserCenter sharedInstance] updateUserInfo];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -123,7 +124,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"联系人";
-    [[UserCenter sharedInstance] updateUserInfo];
     _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
@@ -153,11 +153,22 @@
 
 - (void)reloadData
 {
-    self.expandDictionary = [NSMutableDictionary dictionary];
+    if(self.expandDictionary == nil){
+        self.expandDictionary = [NSMutableDictionary dictionary];
+    }
     NSArray *classArray = [UserCenter sharedInstance].curChild.classes;
     BOOL expand = (classArray.count == 1);
+    NSArray *allKeys = [self.expandDictionary allKeys];
     for (ClassInfo *classInfo in classArray) {
-        [self.expandDictionary setValue:@(expand) forKey:classInfo.classID];
+        BOOL isIn = NO;
+        for (NSString *key in allKeys) {
+            if([classInfo.classID isEqualToString:key]){
+                isIn = YES;
+            }
+        }
+        if(!isIn){
+            [self.expandDictionary setValue:@(expand) forKey:classInfo.classID];
+        }
     }
     [_tableView reloadData];
     if(classArray.count > 0){

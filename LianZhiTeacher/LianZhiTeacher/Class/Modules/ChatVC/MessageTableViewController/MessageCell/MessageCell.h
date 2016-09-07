@@ -28,6 +28,6 @@
 @property (nonatomic, strong)MessageItem*   messageItem;
 @property (nonatomic, weak)id<MessageCellDelegate> delegate;
 - (instancetype)initWithModel:(MessageItem *)messageItem reuseID:(NSString *)reuseID;
-//- (void)flashForAtMe;
+- (void)flashForAtMe;
 + (CGFloat)cellHeightForModel:(MessageItem *)messageItem;
 @end

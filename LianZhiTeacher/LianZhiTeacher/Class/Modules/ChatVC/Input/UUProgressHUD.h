@@ -13,6 +13,7 @@ typedef NS_ENUM(NSInteger, RecordStatus){
     RecordStatusDradOut,
     RecordStatusNearEnd,
     RecordStatusTooShort,
+    RecordStatusDownCount,
 };
 
 @interface UUProgressHUD : UIView
@@ -23,7 +24,7 @@ typedef NS_ENUM(NSInteger, RecordStatus){
     UILabel*        _countDownLabel;
 }
 @property (nonatomic, copy)void (^recordCallBack)(NSString *recordPath, NSInteger time);
-SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(UUProgressHUD)
+
 - (void)show;
 - (void)dismiss;
 - (void)startRecording;

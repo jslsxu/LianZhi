@@ -31,7 +31,6 @@
     if(self){
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kUserCenterChangedSchoolNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kUserInfoVCNeedRefreshNotificaiotn object:nil];
-        [[UserCenter sharedInstance] updateUserInfo];
     }
     return self;
 }
@@ -39,6 +38,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationItem.leftBarButtonItems = [ApplicationDelegate.homeVC commonLeftBarButtonItems];
+    [[UserCenter sharedInstance] updateUserInfo];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -65,13 +65,17 @@
 
 - (void)reloadData{
     [self.contactModel refresh];
+    NSInteger selectedSegmentIndex = [self.segmentCtrl selectedSegmentIndex];
+    NSInteger titleCount = [self.contactModel.titleArray count];
+    NSInteger titleIndex = MIN(selectedSegmentIndex, titleCount - 1);
+    NSInteger originalIndex = MAX(titleIndex, 0);
     if(self.contactModel.titleArray.count > 0){
         [_parentView setClassArray:self.contactModel.classes];
         [_teacherView setTeachers:self.contactModel.teachers];
         [self.navigationItem setTitleView:nil];
         [self setSegmentCtrl:nil];
         [self.navigationItem setTitleView:[self segmentCtrl]];
-        [self.segmentCtrl setSelectedSegmentIndex:0];
+        [self.segmentCtrl setSelectedSegmentIndex:originalIndex];
         [self onValueChanged];
         [self.contactsLoadingView dismiss];
     }

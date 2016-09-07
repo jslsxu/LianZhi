@@ -313,17 +313,26 @@
             if(messageItem.content.mid.integerValue > newMid.integerValue){
                 newMid = messageItem.content.mid;
             }
-            NSString *sql = [NSString stringWithFormat:@"select * from %@ where client_send_id = '%@'",[self tableName], messageItem.client_send_id];
-            FMResultSet *rs = [self.database executeQuery:sql];
-            if(![rs next]){
-                addNum++;
-                [self.modelItemArray addObject:messageItem];
-                sql = [NSString stringWithFormat:@"insert into %@ values(%zd,'%@','%@','%@') ",[self tableName],[messageItem.content.mid integerValue], messageItem.client_send_id, messageItem.content.text, [messageItem modelToJSONString]];
-                [self.database executeUpdate:sql];
+            if(messageItem.client_send_id.length > 0){
+                NSString *sql = [NSString stringWithFormat:@"select * from %@ where client_send_id = '%@'",[self tableName], messageItem.client_send_id];
+                FMResultSet *rs = [self.database executeQuery:sql];
+                if(![rs next]){
+                    addNum++;
+                    [self.modelItemArray addObject:messageItem];
+                    sql = [NSString stringWithFormat:@"insert into %@ values(%zd,'%@','%@','%@') ",[self tableName],[messageItem.content.mid integerValue], messageItem.client_send_id, messageItem.content.text, [messageItem modelToJSONString]];
+                    [self.database executeUpdate:sql];
+                }
+                else{
+                    [self updateMessage:messageItem];
+                }
             }
             else{
-                [self updateMessage:messageItem];
+                addNum++;
+                [self.modelItemArray addObject:messageItem];
+                NSString *sql = [NSString stringWithFormat:@"insert into %@ values(%zd,'%@','%@','%@') ",[self tableName],[messageItem.content.mid integerValue], messageItem.client_send_id, messageItem.content.text, [messageItem modelToJSONString]];
+                [self.database executeUpdate:sql];
             }
+            
         }
         if(newMid.integerValue > self.lastMaxMid.integerValue && type == RequestMessageTypeLatest){
             self.lastMaxMid = newMid;

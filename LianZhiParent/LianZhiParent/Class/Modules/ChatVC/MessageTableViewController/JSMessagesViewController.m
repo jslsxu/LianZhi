@@ -147,12 +147,6 @@ static NSString *topChatID = nil;
 
 - (void)setImDisabled:(BOOL)imDisabled{
     _imDisabled = imDisabled;
-    if(_imDisabled){
-        DLOG(@"群聊关闭");
-    }
-    else{
-        DLOG(@"群聊打开");
-    }
     [_inputView setImDisabled:_imDisabled];
 }
 
@@ -292,7 +286,9 @@ static NSString *topChatID = nil;
 
 - (void)onTap
 {
-    //    [_inputView setInputType:InputTypeNone];
+    if(_inputView.inputType != InputTypeNone){
+        [_inputView setInputType:InputTypeNone];
+    }
 }
 
 
@@ -508,6 +504,10 @@ static NSString *topChatID = nil;
             @strongify(self)
             NSInteger row = [self.chatMessageModel.messageArray indexOfObject:self.topNewIndicator.targetItem];
             [self.tableView scrollToRow:row inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:YES];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                MessageCell *cell = (MessageCell *)[self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+                [cell flashForAtMe];
+            });
             [self dismissTopIndicator];
         }];
         [self.topNewIndicator setOrigin:CGPointMake(self.view.width - self.topNewIndicator.width, 15)];
@@ -523,7 +523,11 @@ static NSString *topChatID = nil;
     [self.topNewIndicator setTopNewMessageCallback:^{
         @strongify(self)
         NSInteger row = [self.chatMessageModel.messageArray indexOfObject:self.topNewIndicator.targetItem];
-        [self.tableView scrollToRow:row inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:YES];
+        [self.tableView scrollToRow:row inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:NO];
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            MessageCell *cell = (MessageCell *)[self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+//            [cell flashForAtMe];
+//        });
         [self dismissTopIndicator];
     }];
     [self.topNewIndicator setOrigin:CGPointMake(self.view.width - self.topNewIndicator.width, 15)];
@@ -694,7 +698,9 @@ static NSString *topChatID = nil;
 #pragma mark - MessageCellDelegate
 
 - (void)onMenuShow{
-    [_inputView setInputType:InputTypeNone];
+    if(_inputView.inputType != InputTypeNone){
+        [_inputView setInputType:InputTypeNone];
+    }
 }
 
 - (void)onAvatarClicked:(MessageItem *)messageItem{
@@ -743,23 +749,30 @@ static NSString *topChatID = nil;
 
 - (void)onDeleteMessage:(MessageItem *)messageItem
 {
-    NSMutableDictionary *sendParams = [self sendParams];
-    [sendParams setValue:messageItem.content.mid forKey:@"mid"];
-    __weak typeof(self) wself = self;
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:sendParams observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        for (MessageItem *item in wself.chatMessageModel.messageArray)
-        {
-            if([item.content.mid isEqualToString:messageItem.content.mid])
+    if([messageItem isLocalMessage]){
+        NSInteger row = [self.chatMessageModel.messageArray indexOfObject:messageItem];
+        [self.chatMessageModel deleteMessage:messageItem];
+        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+    }
+    else{
+        NSMutableDictionary *sendParams = [self sendParams];
+        [sendParams setValue:messageItem.content.mid forKey:@"mid"];
+        __weak typeof(self) wself = self;
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:sendParams observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            for (MessageItem *item in wself.chatMessageModel.messageArray)
             {
-                NSInteger row = [wself.chatMessageModel.messageArray indexOfObject:item];
-                [wself.chatMessageModel deleteMessage:item];
-                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-                break;
+                if([item.content.mid isEqualToString:messageItem.content.mid])
+                {
+                    NSInteger row = [wself.chatMessageModel.messageArray indexOfObject:item];
+                    [wself.chatMessageModel deleteMessage:item];
+                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+                    break;
+                }
             }
-        }
-    } fail:^(NSString *errMsg) {
-        [ProgressHUD showHintText:errMsg];
-    }];
+        } fail:^(NSString *errMsg) {
+            [ProgressHUD showHintText:errMsg];
+        }];
+    }
 }
 
 - (void)onResendMessage:(MessageItem *)messageItem

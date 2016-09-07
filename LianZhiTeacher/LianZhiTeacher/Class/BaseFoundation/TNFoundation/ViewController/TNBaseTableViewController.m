@@ -109,7 +109,12 @@
     _supportPullUp = supportPullUp;
     if(_supportPullUp){
         [self.tableView setMj_footer:[MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-            [self requestData:REQUEST_GETMORE];
+            if(!_isLoading){
+                [self requestData:REQUEST_GETMORE];
+            }
+            else{
+                [self.tableView.mj_footer endRefreshing];
+            }
         }]];
     }
     else{
@@ -141,7 +146,7 @@
             [self.tableView.mj_footer endRefreshingWithNoMoreData];
         }
         else{
-            [self.tableView.mj_footer resetNoMoreData];
+            [self.tableView.mj_footer endRefreshing];
         }
     }
     [_tableView reloadData];

@@ -27,6 +27,7 @@
 @interface InputBarView ()<DNImagePickerControllerDelegate>
 @property (nonatomic,assign)NSInteger targetHeight;
 @property (nonatomic, strong)NSMutableArray *atArray;
+@property (nonatomic, strong)UUProgressHUD *audioRecordView;
 @end
 
 @implementation InputBarView
@@ -252,14 +253,14 @@
 
 - (void)onKeyboardWillHide:(NSNotification *)notification
 {
-//    if(self.window){
-//        _inputType = InputTypeNormal;
-//        CGRect keyboardBounds;
-//        [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
-//        self.targetHeight = _contentView.height;
-//        if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidChangeHeight:)])
-//            [self.inputDelegate inputBarViewDidChangeHeight:self.targetHeight];
-//    }
+    if(self.window){
+        _inputType = InputTypeNone;
+        CGRect keyboardBounds;
+        [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+        self.targetHeight = _contentView.height;
+        if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidChangeHeight:)])
+            [self.inputDelegate inputBarViewDidChangeHeight:self.targetHeight];
+    }
 }
 
 #pragma mark - Actions
@@ -295,37 +296,44 @@
 #pragma mark - 录音touch事件
 - (void)beginRecordVoice
 {
-    [[UUProgressHUD sharedInstance] show];
-    [[UUProgressHUD sharedInstance] setRecordCallBack:^(NSString *audioUrl, NSInteger time)
+    if(self.audioRecordView){
+        [self.audioRecordView removeFromSuperview];
+        self.audioRecordView = nil;
+    }
+    __weak typeof(self) wself = self;
+    self.audioRecordView = [[UUProgressHUD alloc] init];
+    [self.audioRecordView setRecordCallBack:^(NSString *audioUrl, NSInteger time)
      {
-         if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendVoice:)]){
+         if([wself.inputDelegate respondsToSelector:@selector(inputBarViewDidSendVoice:)]){
              AudioItem *audioItem = [[AudioItem alloc] init];
              [audioItem setAudioUrl:audioUrl];
              [audioItem setTimeSpan:time];
-            [self.inputDelegate inputBarViewDidSendVoice:audioItem];
+             [wself.inputDelegate inputBarViewDidSendVoice:audioItem];
          }
+         [wself.audioRecordView dismiss];
      }];
-    [[UUProgressHUD sharedInstance] startRecording];
+    [self.audioRecordView startRecording];
+    [self.audioRecordView show];
 }
 
 - (void)endRecordVoice
 {
-    [[UUProgressHUD sharedInstance] endRecording];
+    [self.audioRecordView endRecording];
 }
 
 - (void)cancelRecordVoice
 {
-    [[UUProgressHUD sharedInstance] cancelRecording];
+    [self.audioRecordView cancelRecording];
 }
 
 - (void)RemindDragExit
 {
-    [[UUProgressHUD sharedInstance] remindDragExit];
+    [self.audioRecordView remindDragExit];
 }
 
 - (void)RemindDragEnter
 {
-    [[UUProgressHUD sharedInstance] remindDragEnter];
+    [self.audioRecordView remindDragEnter];
 }
 
 - (void)onKeyboardTypeChanged:(UIButton *)button
@@ -520,10 +528,16 @@
             }
             else if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]){
                 NSString *coverUrl = [NHFileManager getTmpImagePath];
-                UIImage *coverImage = [UIImage imageWithCGImage:[asset.defaultRepresentation fullScreenImage]];
+                ALAssetRepresentation *representation = asset.defaultRepresentation;
+                UIImage *coverImage = [UIImage imageWithCGImage:[representation fullScreenImage]];
+                NSInteger size = [representation size];
+                BOOL shouldSend = [Utility checkVideoSize:size];
+                if(!shouldSend){
+                    return;
+                }
                 NSData *imageData = UIImageJPEGRepresentation(coverImage, 0.8);
                 [imageData writeToFile:coverUrl atomically:YES];
-                NSString *filePath = [[asset.defaultRepresentation url] absoluteString];
+                NSString *filePath = [[representation url] absoluteString];
                 NSString *tmpPath = [NHFileManager tmpVideoPathForPath:filePath];
                 NSInteger duration = [[asset valueForProperty:ALAssetPropertyDuration] integerValue];
                 [[NSFileManager defaultManager] removeItemAtPath:tmpPath error:nil];
@@ -537,7 +551,6 @@
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [hud hide:YES];
                         if(AVAssetExportSessionStatusCompleted == exportSession.status){
-
                             VideoItem *videoItem = [[VideoItem alloc] init];
                             [videoItem setVideoUrl:tmpPath];
                             [videoItem setCoverUrl:coverUrl];

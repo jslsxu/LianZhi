@@ -59,7 +59,7 @@
     return totalSize;
 }
 
-+ (NSString *)sizeStrForSize:(NSInteger)size{
++ (NSString *)sizeStrForSize:(long long)size{
     NSString *sizeStr;
     if(size < 1024){
         sizeStr = [NSString stringWithFormat:@"%zdB",size];
@@ -155,6 +155,18 @@
     }
     else{
         [ProgressHUD showHintText:@"视频保存失败"];
+    }
+}
+
++ (BOOL)checkVideoSize:(long long)size{
+    if(size > kMaxVideoSize){
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:@"视频文件过大" style:LGAlertViewStyleAlert buttonTitles:@[@"确定"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView showAnimated:YES completionHandler:nil];
+        return NO;
+    }
+    else{
+        return YES;
     }
 }
 

@@ -93,6 +93,7 @@
 
 - (void)updateContent{
     CGFloat spaceYStart = kChatVMargin;
+    _bgView.alpha = 0.f;
     [_avatarView setImageWithUrl:[NSURL URLWithString:self.messageItem.user.avatar]];
     if(self.messageItem.content.hideTime){
         [_timeLabel setHidden:YES];
@@ -182,15 +183,15 @@
     }
 }
 
-//- (void)flashForAtMe{
-//    [UIView animateWithDuration:0.5 animations:^{
+- (void)flashForAtMe{
+//    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
 //        _bgView.alpha = 1.f;
-//    }completion:^(BOOL finished) {
-//        [UIView animateWithDuration:0.5 animations:^{
+//    } completion:^(BOOL finished) {
+//        [UIView animateWithDuration:1 animations:^{
 //            _bgView.alpha = 0.f;
 //        }];
 //    }];
-//}
+}
 
 - (void)onLongPress{
     NSMutableArray *menuArray = [NSMutableArray array];
@@ -199,7 +200,7 @@
         UIMenuItem *copyMenu = [[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copyMessage)];
         [menuArray addObject:copyMenu];
     }
-    if(!_messageItem.isTmp)
+    if(![_messageItem isLocalMessage])
     {
         NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
         if(timeInterval - _messageItem.content.ctime < 30)
@@ -220,6 +221,8 @@
         {
             UIMenuItem *resendItem = [[UIMenuItem alloc] initWithTitle:@"重发" action:@selector(resendMessage)];
             [menuArray addObject:resendItem];
+            UIMenuItem *deleteMenu = [[UIMenuItem alloc] initWithTitle:@"删除" action:@selector(deleteMessage)];
+            [menuArray addObject:deleteMenu];
         }
     }
     

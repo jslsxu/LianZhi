@@ -171,6 +171,16 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
     [[NSNotificationCenter defaultCenter] postNotificationName:kFoundNotification object:nil];
 }
 
+- (NSInteger)hasNewForClassFeed{
+    NSInteger count = 0;
+    for (ClassFeedNotice *feedNotice in self.feedClassesNew) {
+        if([feedNotice.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID]){
+            count += feedNotice.num;
+        }
+    }
+    return count;
+}
+
 - (NSInteger)hasNewForSchool:(NSString *)schoolID{
     NSInteger newCount = 0;
     for (NoticeItem *noticeItem in self.notice) {

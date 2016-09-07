@@ -11,9 +11,10 @@
 @interface Utility : NSObject
 + (NSString *)formatStringForTime:(NSInteger)timeInterval;
 + (NSUInteger)sizeAtPath:(NSString *)filePath diskMode:(BOOL)diskMode;
-+ (NSString *)sizeStrForSize:(NSInteger)size;
++ (NSString *)sizeStrForSize:(long long)size;
 + (AVAsset *)avAssetFromALAsset:(ALAsset *)alasset;
 + (NSString *)weekdayStr:(NSDate *)date;
 + (void)saveImageToAlbum:(UIImage *)image;
 + (void)saveVideoToAlbum:(NSString *)videoPath;
++ (BOOL)checkVideoSize:(long long)size;
 @end

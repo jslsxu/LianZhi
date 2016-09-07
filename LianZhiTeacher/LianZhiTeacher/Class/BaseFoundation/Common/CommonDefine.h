@@ -46,6 +46,8 @@
 
 #define kCommonMaxNum                    500
 
+#define kMaxVideoSize                   (1024 * 1024 * 200)
+
 #define kAppStoreId                     @"967746734"
 
 #define kTeacherClientAppStoreUrl           @"https://itunes.apple.com/us/app/lian-zhi-jiao-shi-ban/id967746734?l=zh&ls=1&mt=8"

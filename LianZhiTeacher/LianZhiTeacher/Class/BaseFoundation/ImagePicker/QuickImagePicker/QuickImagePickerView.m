@@ -192,19 +192,24 @@
     XMNAssetModel *assetModel = cell.asset;
     if (!assetModel.selected) {
         if(assetModel.type == XMNAssetTypeVideo){
-            NSInteger videoCount = 0;
-            for (XMNAssetModel *model in self.selectedAssets) {
-                if(model.type == XMNAssetTypeVideo){
-                    videoCount ++;
+            if([Utility checkVideoSize:[assetModel.asset defaultRepresentation].size]){
+                NSInteger videoCount = 0;
+                for (XMNAssetModel *model in self.selectedAssets) {
+                    if(model.type == XMNAssetTypeVideo){
+                        videoCount ++;
+                    }
+                }
+                if(videoCount < self.maxVideoCount){
+                    [UIView animationWithLayer:button.layer type:XMNAnimationTypeBigger];
+                    assetModel.selected = YES;
+                    [self.selectedAssets addObject:assetModel];
+                }
+                else{
+                    [ProgressHUD showHintText:@"一次只能发送1个视频"];
                 }
             }
-            if(videoCount < self.maxVideoCount){
-                [UIView animationWithLayer:button.layer type:XMNAnimationTypeBigger];
-                assetModel.selected = YES;
-                [self.selectedAssets addObject:assetModel];
-            }
             else{
-                [ProgressHUD showHintText:@"一次只能发送1个视频"];
+                return;
             }
         }
         else{
@@ -256,13 +261,18 @@
 
 - (BOOL)selectAsset:(XMNAssetModel *)asset{
     if(asset.type == XMNAssetTypeVideo){
-        NSInteger videoCount = [self selectedVideoNum];
-        if(videoCount < self.maxVideoCount){
-            asset.selected = YES;
-            [self.selectedAssets addObject:asset];
+        if([Utility checkVideoSize:[asset.asset defaultRepresentation].size]){
+            NSInteger videoCount = [self selectedVideoNum];
+            if(videoCount < self.maxVideoCount){
+                asset.selected = YES;
+                [self.selectedAssets addObject:asset];
+            }
+            else{
+                [ProgressHUD showHintText:@"一次只能发送1个视频"];
+                return NO;
+            }
         }
         else{
-            [ProgressHUD showHintText:@"一次只能发送1个视频"];
             return NO;
         }
     }
@@ -329,10 +339,15 @@
         }
     }
     else{
-        if([self selectedVideoNum] >= self.maxVideoCount){
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"最多只能选1个视频" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alert show];
-            
+        if([Utility checkVideoSize:[asset.asset defaultRepresentation].size]){
+            if([self selectedVideoNum] >= self.maxVideoCount){
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"最多只能选1个视频" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [alert show];
+                
+                return NO;
+            }
+        }
+        else{
             return NO;
         }
     }

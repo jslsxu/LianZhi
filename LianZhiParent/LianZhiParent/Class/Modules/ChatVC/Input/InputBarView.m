@@ -27,6 +27,7 @@
 @interface InputBarView ()<DNImagePickerControllerDelegate>
 @property (nonatomic,assign)NSInteger targetHeight;
 @property (nonatomic, strong)NSMutableArray *atArray;
+@property (nonatomic, strong)UUProgressHUD *audioRecordView;
 @end
 
 @implementation InputBarView
@@ -100,11 +101,11 @@
         [_recordButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
         [_recordButton setTitle:@"按下 说话" forState:UIControlStateNormal];
         [_recordButton setTitle:@"松开 发送" forState:UIControlStateHighlighted];
-        [_recordButton addTarget:self action:@selector(beginRecordVoice:) forControlEvents:UIControlEventTouchDown];
-        [_recordButton addTarget:self action:@selector(endRecordVoice:) forControlEvents:UIControlEventTouchUpInside];
-        [_recordButton addTarget:self action:@selector(cancelRecordVoice:) forControlEvents:UIControlEventTouchUpOutside | UIControlEventTouchCancel];
-        [_recordButton addTarget:self action:@selector(RemindDragExit:) forControlEvents:UIControlEventTouchDragExit];
-        [_recordButton addTarget:self action:@selector(RemindDragEnter:) forControlEvents:UIControlEventTouchDragEnter];
+        [_recordButton addTarget:self action:@selector(beginRecordVoice) forControlEvents:UIControlEventTouchDown];
+        [_recordButton addTarget:self action:@selector(endRecordVoice) forControlEvents:UIControlEventTouchUpInside];
+        [_recordButton addTarget:self action:@selector(cancelRecordVoice) forControlEvents:UIControlEventTouchUpOutside | UIControlEventTouchCancel];
+        [_recordButton addTarget:self action:@selector(RemindDragExit) forControlEvents:UIControlEventTouchDragExit];
+        [_recordButton addTarget:self action:@selector(RemindDragEnter) forControlEvents:UIControlEventTouchDragEnter];
         [_contentView addSubview:_recordButton];
         
         UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, _contentView.height - kLineHeight, _contentView.width, kLineHeight)];
@@ -253,12 +254,14 @@
 - (void)onKeyboardWillHide:(NSNotification *)notification
 {
 //    if(self.window){
-//        _inputType = InputTypeNormal;
-//        CGRect keyboardBounds;
-//        [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
-//        self.targetHeight = _contentView.height;
-//        if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidChangeHeight:)])
-//            [self.inputDelegate inputBarViewDidChangeHeight:self.targetHeight];
+//        if(_inputType != InputTypeNormal){
+//            _inputType = InputTypeNone;
+//            CGRect keyboardBounds;
+//            [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+//            self.targetHeight = _contentView.height;
+//            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidChangeHeight:)])
+//                [self.inputDelegate inputBarViewDidChangeHeight:self.targetHeight];
+//        }
 //    }
 }
 
@@ -294,39 +297,46 @@
 
 
 #pragma mark - 录音touch事件
-- (void)beginRecordVoice:(UIButton *)button
+- (void)beginRecordVoice
 {
-    [[UUProgressHUD sharedInstance] show];
-    [[UUProgressHUD sharedInstance] setRecordCallBack:^(NSString *audioUrl, NSInteger time)
+    if(self.audioRecordView){
+        [self.audioRecordView removeFromSuperview];
+        self.audioRecordView = nil;
+    }
+    __weak typeof(self) wself = self;
+    self.audioRecordView = [[UUProgressHUD alloc] init];
+    [self.audioRecordView setRecordCallBack:^(NSString *audioUrl, NSInteger time)
      {
-         if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidSendVoice:)]){
+         if([wself.inputDelegate respondsToSelector:@selector(inputBarViewDidSendVoice:)]){
              AudioItem *audioItem = [[AudioItem alloc] init];
              [audioItem setAudioUrl:audioUrl];
              [audioItem setTimeSpan:time];
-             [self.inputDelegate inputBarViewDidSendVoice:audioItem];
+             [wself.inputDelegate inputBarViewDidSendVoice:audioItem];
          }
+         [wself.audioRecordView dismiss];
      }];
-    [[UUProgressHUD sharedInstance] startRecording];
+    [self.audioRecordView startRecording];
+    [self.audioRecordView show];
 }
 
-- (void)endRecordVoice:(UIButton *)button
+- (void)endRecordVoice
 {
-    [[UUProgressHUD sharedInstance] endRecording];
+    [self.audioRecordView endRecording];
 }
 
-- (void)cancelRecordVoice:(UIButton *)button
+- (void)cancelRecordVoice
 {
-    [[UUProgressHUD sharedInstance] cancelRecording];
+    [self.audioRecordView cancelRecording];
 }
 
-- (void)RemindDragExit:(UIButton *)button
+- (void)RemindDragExit
 {
-    [[UUProgressHUD sharedInstance] remindDragExit];
+    [self.audioRecordView remindDragExit];
 }
 
-- (void)RemindDragEnter:(UIButton *)button
+- (void)RemindDragEnter
 {
-    [[UUProgressHUD sharedInstance] remindDragEnter];
+    [self.audioRecordView remindDragEnter];
 }
 
 - (void)onKeyboardTypeChanged:(UIButton *)button

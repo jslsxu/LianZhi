@@ -59,7 +59,7 @@
         _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(kContentHMargin, 0, _bgView.width - kContentHMargin * 2, 0)];
         [_contentLabel setBackgroundColor:[UIColor clearColor]];
         [_contentLabel setLineBreakMode:NSLineBreakByTruncatingTail];
-        [_contentLabel setNumberOfLines:3];
+        [_contentLabel setNumberOfLines:0];
         [_contentLabel setFont:kContentFont];
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_bgView addSubview:_contentLabel];

@@ -43,7 +43,7 @@
 #define kStringFromValue(value)          ([@(value) description])
 
 #define kCommonMaxNum                    500
-
+#define kMaxVideoSize                   (1024 * 1024 * 200)
 #define kAppStoreID                     @"967746596"
 #define kParentClientAppStoreUrl            @"https://itunes.apple.com/us/app/lian-zhi-jia-zhang-ban/id967746596?l=zh&ls=1&mt=8"
 

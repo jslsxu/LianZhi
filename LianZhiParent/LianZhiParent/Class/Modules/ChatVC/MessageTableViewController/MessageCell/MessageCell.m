@@ -26,6 +26,7 @@
 
 @interface MessageCell ()
 @property (nonatomic, strong)UIView<IChatContentView>*   chatContentView;
+@property (nonatomic, strong)UIMenuController *menuController;
 @end
 
 @implementation MessageCell
@@ -36,6 +37,12 @@
         [self setBackgroundColor:[UIColor clearColor]];
         self.width = kScreenWidth;
         _messageItem = messageItem;
+        _bgView = [[UIView alloc] initWithFrame:self.bounds];
+        [_bgView setBackgroundColor:[UIColor whiteColor]];
+        [_bgView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+        [_bgView setAlpha:0.f];
+        [self addSubview:_bgView];
+        
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.width - kChatTimeLabelWidth) / 2, kChatVMargin, kChatTimeLabelWidth, kChatTimeLabelHeight)];
         [_timeLabel setTextAlignment:NSTextAlignmentCenter];
         [_timeLabel setFont:[UIFont systemFontOfSize:12]];
@@ -88,6 +95,7 @@
 
 - (void)updateContent{
     CGFloat spaceYStart = kChatVMargin;
+    _bgView.alpha = 0.f;
     [_avatarView setImageWithUrl:[NSURL URLWithString:self.messageItem.user.avatar]];
     if(self.messageItem.content.hideTime){
         [_timeLabel setHidden:YES];
@@ -176,6 +184,10 @@
     }
 }
 
+- (void)flashForAtMe{
+
+}
+
 - (void)onLongPress{
     NSMutableArray *menuArray = [NSMutableArray array];
     if(_messageItem.content.type == UUMessageTypeText)
@@ -183,7 +195,7 @@
         UIMenuItem *copyMenu = [[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copyMessage)];
         [menuArray addObject:copyMenu];
     }
-    if(!_messageItem.isTmp)
+    if(![_messageItem isLocalMessage])
     {
         NSInteger timeInterval = [[NSDate date] timeIntervalSince1970];
         if(timeInterval - _messageItem.content.ctime < 30)
@@ -204,6 +216,8 @@
         {
             UIMenuItem *resendItem = [[UIMenuItem alloc] initWithTitle:@"重发" action:@selector(resendMessage)];
             [menuArray addObject:resendItem];
+            UIMenuItem *deleteMenu = [[UIMenuItem alloc] initWithTitle:@"删除" action:@selector(deleteMessage)];
+            [menuArray addObject:deleteMenu];
         }
     }
     
@@ -214,6 +228,7 @@
         [menu setMenuItems:menuArray];
         [menu setTargetRect:self.chatContentView.frame inView:self];
         [menu setMenuVisible:YES animated:YES];
+        self.menuController = menu;
         if([self.delegate respondsToSelector:@selector(onMenuShow)]){
             [self.delegate onMenuShow];
         }

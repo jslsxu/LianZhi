@@ -21,4 +21,5 @@
 + (NSString *)weekdayStr:(NSDate *)date;
 + (void)saveImageToAlbum:(UIImage *)image;
 + (void)saveVideoToAlbum:(NSString *)videoPath;
++ (BOOL)checkVideoSize:(long long)size;
 @end

@@ -225,9 +225,7 @@ DNImagePickerControllerDelegate>
         else{
             [[NotificationManager sharedInstance] addNotification:self.sendEntity];
             if(self.sendType == NotificationSendDraft){//如果是草稿，则删除草稿
-                if([[NotificationDraftManager sharedInstance].draftArray containsObject:self.sendEntity]){
-                    [[NotificationDraftManager sharedInstance] removeDraft:self.sendEntity];
-                }
+                [[NotificationDraftManager sharedInstance] removeDraft:self.sendEntity];
             }
         }
         NSArray *vcArray = [self.navigationController viewControllers];
@@ -672,9 +670,15 @@ DNImagePickerControllerDelegate>
             [FCFileManager moveItemAtPath:url.path toPath:finalPath overwrite:YES];
             url = [NSURL fileURLWithPath:finalPath];
             NSData *data = [NSData dataWithContentsOfURL:url];
+            if(data.length > 1024 * 1024 * 10){
+                LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:@"视频文件过大" style:LGAlertViewStyleAlert buttonTitles:@[@"确定"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+                [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+                [alertView showAnimated:YES completionHandler:nil];
+                return;
+            }
             NSString *sizeStr = [Utility sizeStrForSize:data.length];
             NSInteger duration = [self getVideoDuration:url];
-            LGAlertView*    alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"视频压缩后文件大小为%@",sizeStr] style:LGAlertViewStyleAlert buttonTitles:@[@"发送"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+            LGAlertView*    alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"视频压缩后文件大小为%@",sizeStr] style:LGAlertViewStyleAlert buttonTitles:@[@"确定"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
             [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
             [alertView setButtonsFont:[UIFont boldSystemFontOfSize:18]];
             [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];

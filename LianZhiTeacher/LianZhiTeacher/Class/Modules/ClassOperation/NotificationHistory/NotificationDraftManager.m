@@ -33,9 +33,17 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(NotificationDraftManager)
 }
 
 - (void)removeDraft:(NotificationSendEntity *)sendEntity{
-    [self.draftNotificationArray removeObject:sendEntity];
-    [[LZKVStorage userKVStorage] saveStorageValue:self.draftArray forKey:kNotificationDraft];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kDraftNotificationChanged object:nil];
+    NSMutableArray *removedArray = [NSMutableArray array];
+    for (NotificationSendEntity *entity in self.draftNotificationArray) {
+        if([sendEntity.clientID isEqualToString:entity.clientID]){
+            [removedArray addObject:entity];
+        }
+    }
+    if(removedArray.count > 0){
+        [self.draftNotificationArray removeObjectsInArray:removedArray];
+        [[LZKVStorage userKVStorage] saveStorageValue:self.draftArray forKey:kNotificationDraft];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kDraftNotificationChanged object:nil];
+    }
 }
 
 - (void)updateDraft:(NotificationSendEntity *)sendEntity{

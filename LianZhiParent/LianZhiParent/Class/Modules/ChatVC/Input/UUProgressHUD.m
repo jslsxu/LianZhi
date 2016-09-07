@@ -11,7 +11,7 @@
 #define kContentViewWidth           160
 #define kContentViewHeight          160
 
-#define kMaxRecordTime              119
+#define kMaxRecordTime              20
 
 @interface UUProgressHUD ()<MLAudioRecorderDelegate>
 @property (nonatomic, copy)NSString *recordPath;
@@ -24,7 +24,6 @@
 @end
 
 @implementation UUProgressHUD
-SYNTHESIZE_SINGLETON_FOR_CLASS(UUProgressHUD)
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -116,7 +115,13 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UUProgressHUD)
     if(_recordStatus == RecordStatusNormal)
     {
         imageStr = @"ChatRecord1";
-        title = @"手指上滑，取消发送";
+        NSInteger timeLeft = kMaxRecordTime - self.playTime;
+        if(timeLeft >= 10){
+            title = @"手指上滑，取消发送";
+        }
+        else{
+            title = [NSString stringWithFormat:@"还可以说%zd秒",timeLeft];
+        }
     }
     else if(_recordStatus == RecordStatusDradOut)
     {
@@ -140,19 +145,23 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UUProgressHUD)
 - (void)countVoiceTime
 {
     self.playTime ++;
-    //    [_titleLabel setText:[NSString stringWithFormat:@"还可以说%ld秒",(long)kMaxRecordTime - self.playTime]];
     NSInteger timeLeft = kMaxRecordTime - self.playTime;
-    if(timeLeft < 10){
-        [_imageView setHidden:YES];
-        [_titleLabel setHidden:YES];
-        [_countDownLabel setHidden:NO];
-        [_countDownLabel setText:kStringFromValue(timeLeft)];
+    if(timeLeft < 10 && self.recordStatus == RecordStatusNormal){
+        NSString *title = [NSString stringWithFormat:@"还可以说%zd秒",timeLeft];
+        [_titleLabel setText:title];
     }
-    else{
-        [_imageView setHidden:NO];
-        [_titleLabel setHidden:NO];
-        [_countDownLabel setHidden:YES];
-    }
+//    NSInteger timeLeft = kMaxRecordTime - self.playTime;
+//    if(timeLeft < 10){
+//        [_imageView setHidden:YES];
+//        [_titleLabel setHidden:YES];
+//        [_countDownLabel setHidden:NO];
+//        [_countDownLabel setText:kStringFromValue(timeLeft)];
+//    }
+//    else{
+//        [_imageView setHidden:NO];
+//        [_titleLabel setHidden:NO];
+//        [_countDownLabel setHidden:YES];
+//    }
 
     if (self.playTime >= kMaxRecordTime)
         [self endRecording];
@@ -212,6 +221,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UUProgressHUD)
 
 - (void)dismiss
 {
+    [self.timer invalidate];
+    self.timer = nil;
     [UIView animateWithDuration:0.3 animations:^{
         self.alpha = 0.f;
     }completion:^(BOOL finished) {

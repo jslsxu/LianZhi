@@ -235,6 +235,26 @@
     }];
 }
 
+- (void)updateGroupLogo:(UIImage *)image{
+    @weakify(self)
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.groupID forKey:@"class_id"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/update_class_info" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        NSData *imageData = UIImageJPEGRepresentation(image, 0.8);
+        [formData appendPartWithFileData:imageData name:@"logo" fileName:@"logo" mimeType:@"image/jpeg"];
+    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        @strongify(self)
+        ClassInfo *classInfo = [ClassInfo modelWithJSON:responseObject.data[@"class"]];
+        if(classInfo.logo.length > 0){
+             [[SDImageCache sharedImageCache] storeImage:image forKey:classInfo.logo];
+            self.logoUrl = classInfo.logo;
+            [self.tableView reloadData];
+        }
+    } fail:^(NSString *errMsg) {
+        
+    }];
+}
+
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     if(self.chatType == ChatTypeClass)
@@ -403,6 +423,7 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     UIImage *image = info[UIImagePickerControllerEditedImage];
+    [self updateGroupLogo:image];
     [picker dismissViewControllerAnimated:YES completion:^{
         
     }];

@@ -118,7 +118,7 @@
             [self.collectionView.mj_footer endRefreshingWithNoMoreData];
         }
         else{
-            [self.collectionView.mj_footer resetNoMoreData];
+            [self.collectionView.mj_footer endRefreshing];
         }
     }
     

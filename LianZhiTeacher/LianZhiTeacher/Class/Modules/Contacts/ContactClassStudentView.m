@@ -101,10 +101,21 @@
 
 - (void)setClassArray:(NSArray *)classArray{
     _classArray = classArray;
-    self.expandDictionary = [NSMutableDictionary dictionary];
+    if(self.expandDictionary == nil){
+        self.expandDictionary = [NSMutableDictionary dictionary];
+    }
     BOOL expand = (_classArray.count == 1);
+    NSArray *allKeys = self.expandDictionary.allKeys;
     for (ClassInfo *classInfo in _classArray) {
-        [self.expandDictionary setValue:@(expand) forKey:classInfo.classID];
+        BOOL inDic = NO;
+        for (NSString *key in allKeys) {
+            if([classInfo.classID isEqualToString:key]){
+                inDic = YES;
+            }
+        }
+        if(!inDic){
+            [self.expandDictionary setValue:@(expand) forKey:classInfo.classID];
+        }
     }
     [_tableView reloadData];
 }
