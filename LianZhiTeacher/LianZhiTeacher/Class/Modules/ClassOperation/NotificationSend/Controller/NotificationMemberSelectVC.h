@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, UserType){
 
 @interface NotificationMemberItemCell : UITableViewCell{
     UIImageView*    _stateImageView;
-    UIImageView*    _avatarView;
+    AvatarView*    _avatarView;
     UILabel*        _nameLabel;
     UIView*         _sepLine;
 }

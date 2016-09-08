@@ -405,6 +405,7 @@
                     [self.atArray removeObjectsInArray:deleteArray];
                 }
                 [self.inputDelegate inputBarViewDidCommit:content atArray:self.atArray];
+                [self.atArray removeAllObjects];
             }
         }
         return NO;

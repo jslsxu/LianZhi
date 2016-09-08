@@ -194,9 +194,11 @@ DNImagePickerControllerDelegate>
 //        }
 //    }
     if([self checkNotification]){
+        @weakify(self)
         NotificationPreviewVC *previewVC = [[NotificationPreviewVC alloc] init];
         [previewVC setSendCallback:^{
-            
+            @strongify(self)
+            [self sendNotification];
         }];
         [previewVC setSendEntity:self.sendEntity];
         [self.navigationController pushViewController:previewVC animated:YES];

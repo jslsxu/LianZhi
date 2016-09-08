@@ -207,7 +207,7 @@
         {
             if(_messageItem.from == UUMessageFromMe && (_messageItem.content.type != UUMessageTypeGift && _messageItem.content.type != UUMessageTypeReceiveGift && _messageItem.content.type != UUMessageTypeRevoked))
             {
-                UIMenuItem *revokeMenu = [[UIMenuItem alloc] initWithTitle:@"撤销" action:@selector(revokeMessage)];
+                UIMenuItem *revokeMenu = [[UIMenuItem alloc] initWithTitle:@"撤回" action:@selector(revokeMessage)];
                 [menuArray addObject:revokeMenu];
             }
         }

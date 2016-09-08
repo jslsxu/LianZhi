@@ -401,6 +401,7 @@
 		8D867C301D2A6CD90020A21C /* TNBaseObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867C2F1D2A6CD90020A21C /* TNBaseObject.m */; };
 		8D867D231D3D232C0020A21C /* LZKVStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D867D221D3D232C0020A21C /* LZKVStorage.m */; };
 		8DA785991CA4E70B00A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785981CA4E70B00A384F0 /* NSString+UrlParams.m */; };
+		8DB4C05F1D8149D50099A63C /* TreeHousePublishManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB4C05E1D8149D50099A63C /* TreeHousePublishManager.m */; };
 		8DB8FAED1D662A5A006B44B2 /* GiftItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB8FAEC1D662A5A006B44B2 /* GiftItem.m */; };
 		8DCFD6621D43CC78001EDC8A /* YYInfiniteScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6611D43CC78001EDC8A /* YYInfiniteScrollView.m */; };
 		8DCFD73A1D53641B001EDC8A /* ContactParentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7391D53641B001EDC8A /* ContactParentsView.m */; };
@@ -1167,6 +1168,8 @@
 		8D867D221D3D232C0020A21C /* LZKVStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZKVStorage.m; sourceTree = "<group>"; };
 		8DA785971CA4E70B00A384F0 /* NSString+UrlParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlParams.h"; sourceTree = "<group>"; };
 		8DA785981CA4E70B00A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
+		8DB4C05D1D8149D50099A63C /* TreeHousePublishManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreeHousePublishManager.h; sourceTree = "<group>"; };
+		8DB4C05E1D8149D50099A63C /* TreeHousePublishManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeHousePublishManager.m; sourceTree = "<group>"; };
 		8DB8FAEB1D662A5A006B44B2 /* GiftItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiftItem.h; sourceTree = "<group>"; };
 		8DB8FAEC1D662A5A006B44B2 /* GiftItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiftItem.m; sourceTree = "<group>"; };
 		8DCFD6601D43CC78001EDC8A /* YYInfiniteScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInfiniteScrollView.h; sourceTree = "<group>"; };
@@ -1392,6 +1395,8 @@
 				37CCE2461B888575007BFA4F /* NewMessageVC */,
 				37CBAF0D1A4724930063F395 /* Publish */,
 				37CBAF181A4724930063F395 /* TreeHouse */,
+				8DB4C05D1D8149D50099A63C /* TreeHousePublishManager.h */,
+				8DB4C05E1D8149D50099A63C /* TreeHousePublishManager.m */,
 			);
 			path = TreeHouse;
 			sourceTree = "<group>";
@@ -3495,6 +3500,7 @@
 				8D3D45CF1D5F9438005EA8EA /* ChatParentInfoVC.m in Sources */,
 				370F33D01A78140B00FED3C2 /* AboutVC.m in Sources */,
 				379947E01A66B403008E4B4F /* PhotoFlowModel.m in Sources */,
+				8DB4C05F1D8149D50099A63C /* TreeHousePublishManager.m in Sources */,
 				3793F81B1B7CFFD900501F77 /* TNCollectionViewCell.m in Sources */,
 				37E93F1D1A795FB600AD45A1 /* ChildrenSelectView.m in Sources */,
 				37C316521A568F63002E847D /* GrowthTimelineCell.m in Sources */,

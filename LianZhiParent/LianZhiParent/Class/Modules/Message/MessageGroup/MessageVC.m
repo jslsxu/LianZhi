@@ -301,32 +301,49 @@
 - (void)contextMenuCellDidSelectDeleteOption:(DAContextMenuCell *)cell
 {
     [super contextMenuCellDidSelectDeleteOption:cell];
-    @weakify(self)
-    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"是否删除该记录？" message:@"删除该记录内容也会随之清空" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除(不推荐)"];
-    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
-    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
-        @strongify(self)
-        MessageGroupItemCell *itemCell = (MessageGroupItemCell *)cell;
-        MessageGroupItem *groupItem = [itemCell messageItem];
-        MessageFromInfo *fromInfo = [groupItem fromInfo];
-        if(!fromInfo.isNotification){
-            [ChatMessageModel removeConversasionForUid:fromInfo.uid type:fromInfo.type];
-        }
-        //删除消息
-        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-        [params setValue:fromInfo.uid forKey:@"from_id"];
-        [params setValue:kStringFromValue(fromInfo.type) forKey:@"from_type"];
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_thread" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-            [self.messageModel deleteItem:groupItem.fromInfo.uid];
-            [self.tableView reloadData];
-        } fail:^(NSString *errMsg) {
-            
-        }];
+//    @weakify(self)
+//    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"是否删除该记录？" message:@"删除该记录内容也会随之清空" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除(不推荐)"];
+//    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+//    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+//    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+//    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+//        @strongify(self)
+//        MessageGroupItemCell *itemCell = (MessageGroupItemCell *)cell;
+//        MessageGroupItem *groupItem = [itemCell messageItem];
+//        MessageFromInfo *fromInfo = [groupItem fromInfo];
+//        if(!fromInfo.isNotification){
+//            [ChatMessageModel removeConversasionForUid:fromInfo.uid type:fromInfo.type];
+//        }
+//        //删除消息
+//        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+//        [params setValue:fromInfo.uid forKey:@"from_id"];
+//        [params setValue:kStringFromValue(fromInfo.type) forKey:@"from_type"];
+//        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_thread" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+//            [self.messageModel deleteItem:groupItem.fromInfo.uid];
+//            [self.tableView reloadData];
+//        } fail:^(NSString *errMsg) {
+//            
+//        }];
+//    }];
+//    [alertView showAnimated:YES completionHandler:nil];
+//
+    MessageGroupItemCell *itemCell = (MessageGroupItemCell *)cell;
+    MessageGroupItem *groupItem = [itemCell messageItem];
+    MessageFromInfo *fromInfo = [groupItem fromInfo];
+    if(!fromInfo.isNotification){
+        [ChatMessageModel removeConversasionForUid:fromInfo.uid type:fromInfo.type];
+    }
+    //删除消息
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setValue:fromInfo.uid forKey:@"from_id"];
+    [params setValue:kStringFromValue(fromInfo.type) forKey:@"from_type"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_thread" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [self.messageModel deleteItem:groupItem.fromInfo.uid];
+        [self.tableView reloadData];
+    } fail:^(NSString *errMsg) {
+        
     }];
-    [alertView showAnimated:YES completionHandler:nil];
-    
+
 }
 
 - (void)contextMenuCellDidSelectMoreOption:(DAContextMenuCell *)cell

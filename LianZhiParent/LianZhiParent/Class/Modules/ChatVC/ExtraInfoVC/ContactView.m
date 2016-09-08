@@ -36,7 +36,7 @@
             UIButton *chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
             [chatButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [chatButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
-            [chatButton setTitle:@"发信息" forState:UIControlStateNormal];
+            [chatButton setTitle:@"发消息" forState:UIControlStateNormal];
             [chatButton addTarget:self action:@selector(chat) forControlEvents:UIControlEventTouchUpInside];
             [chatButton setBackgroundImage:bgImage forState:UIControlStateNormal];
             [self addSubview:chatButton];

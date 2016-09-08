@@ -145,9 +145,7 @@
         [_stateImageView setImage:[UIImage imageNamed:@"send_sms_off"]];
         [self addSubview:_stateImageView];
         
-        _avatarView = [[UIImageView alloc] initWithFrame:CGRectZero];
-        [_avatarView.layer setCornerRadius:18];
-        [_avatarView.layer setMasksToBounds:YES];
+        _avatarView = [[AvatarView alloc] initWithRadius:18];
         [self addSubview:_avatarView];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -165,7 +163,8 @@
 - (void)setUserInfo:(UserInfo *)userInfo{
     _userInfo = userInfo;
     [_stateImageView setImage:[UIImage imageNamed:_userInfo.selected ? @"send_sms_on" : @"send_sms_off"]];
-    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_userInfo.avatar] placeholderImage:nil];
+    [_avatarView setImageWithUrl:[NSURL URLWithString:_userInfo.avatar]];
+    [_avatarView setStatus:userInfo.actived ? nil : @"未下载"];
     [_avatarView setFrame:CGRectMake(50, (60 - 36) / 2, 36, 36)];
     [_nameLabel setText:_userInfo.name];
     [_nameLabel setFrame:CGRectMake(_avatarView.right + 10, 0, self.width - 10 - (_avatarView.right + 10), self.height)];

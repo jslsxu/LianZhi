@@ -11,7 +11,7 @@
 #define kContentViewWidth           160
 #define kContentViewHeight          160
 
-#define kMaxRecordTime              20
+#define kMaxRecordTime              119
 
 @interface UUProgressHUD ()<MLAudioRecorderDelegate>
 @property (nonatomic, copy)NSString *recordPath;
