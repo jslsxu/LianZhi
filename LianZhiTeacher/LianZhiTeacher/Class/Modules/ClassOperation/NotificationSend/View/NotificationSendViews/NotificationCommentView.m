@@ -77,6 +77,13 @@
 }
 
 #pragma mark - HPGrowingTextViewDelegate
+
+- (void)growingTextViewDidBeginEditing:(HPGrowingTextView *)growingTextView{
+    if([[MLAmrPlayer shareInstance] isPlaying]){
+        [[MLAmrPlayer shareInstance] stopPlaying];
+    }
+}
+
 - (void)growingTextView:(HPGrowingTextView *)growingTextView didChangeHeight:(float)height{
     [self setHeight:height + kNumLabelHeight + 10];
     if(self.textViewWillChangeHeight){
