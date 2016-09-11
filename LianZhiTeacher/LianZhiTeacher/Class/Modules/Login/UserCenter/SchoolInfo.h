@@ -36,7 +36,6 @@ typedef NS_ENUM(NSInteger, SelectedType){
 
 @interface FamilyInfo : UserInfo
 @property (nonatomic, copy)NSString *relation;
-
 @end
 
 @interface StudentInfo : UserInfo

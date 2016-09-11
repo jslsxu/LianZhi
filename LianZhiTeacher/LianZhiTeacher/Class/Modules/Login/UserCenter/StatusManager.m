@@ -150,13 +150,18 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
     
     if(self.changed == ChangedTypeSchool)
         [ApplicationDelegate logout];
+    else if(self.changed == ChangedTypeStudents || self.changed == ChangedTypeFellows || self.changed == ChangedTypeCourseAndClass){
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self updateSchoolInfo];
+        });
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:kStatusChangedNotification object:nil userInfo:nil];
     
 }
 
-- (void)updateUserInfo
+- (void)updateSchoolInfo
 {
-    [[UserCenter sharedInstance] updateUserInfo];
+    [[UserCenter sharedInstance] updateSchoolInfo];
 
 }
 - (void)setMsgNum:(NSInteger)msgNum
@@ -181,6 +186,22 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
     return count;
 }
 
+- (NSInteger)hasNewForClassComment{
+    NSInteger count = 0;
+    for (TimelineCommentItem *commentItem in self.classNewCommentArray) {
+        BOOL isIn = NO;
+        for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes) {
+            if([classInfo.classID isEqualToString:commentItem.classID]){
+                isIn = YES;
+            }
+        }
+        if(isIn){
+            count += commentItem.alertInfo.num;
+        }
+    }
+    return count;
+}
+
 - (NSInteger)hasNewForSchool:(NSString *)schoolID{
     NSInteger newCount = 0;
     for (NoticeItem *noticeItem in self.notice) {
@@ -192,6 +213,25 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
     for (ClassFeedNotice *feedNotice in self.feedClassesNew) {
         if([feedNotice.schoolID isEqualToString:schoolID]){
             newCount += feedNotice.num;
+        }
+    }
+    
+    NSArray *classArray = nil;
+    for (SchoolInfo *schoolInfo in [UserCenter sharedInstance].schools) {
+        if([schoolInfo.schoolID isEqualToString:schoolID]){
+            classArray = schoolInfo.classes;
+        }
+    }
+    for (TimelineCommentItem *commentItem in self.classNewCommentArray) {
+        
+        BOOL isIn = NO;
+        for (ClassInfo *classInfo in classArray) {
+            if([classInfo.classID isEqualToString:commentItem.classID]){
+                isIn = YES;
+            }
+        }
+        if(isIn){
+            newCount += commentItem.alertInfo.num;
         }
     }
     

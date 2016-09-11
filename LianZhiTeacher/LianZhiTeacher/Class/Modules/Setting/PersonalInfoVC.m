@@ -58,12 +58,15 @@
 
 @implementation PersonalInfoVC
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if(self)
-    {
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (instancetype)init{
+    self = [super init];
+    if(self){
         self.hidesBottomBarWhenPushed = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadWhenUserChanged) name:kUserInfoChangedNotification object:nil];
     }
     return self;
 }
@@ -101,6 +104,10 @@
     [self.tableView setTableHeaderView:_headerView];
 
     [self setupInfoArray];
+    [self.tableView reloadData];
+}
+
+- (void)reloadWhenUserChanged{
     [self.tableView reloadData];
 }
 

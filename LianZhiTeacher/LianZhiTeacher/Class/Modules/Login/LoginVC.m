@@ -163,7 +163,7 @@
             if(schoolsWrapper.count > 0)
             {
                 [[UserCenter sharedInstance] parseData:responseObject];
-                [[UserCenter sharedInstance] updateUserInfo];
+                [[UserCenter sharedInstance] updateSchoolInfo];
                 [self dismissViewControllerAnimated:YES completion:nil];
                 if(self.completion)
                 {

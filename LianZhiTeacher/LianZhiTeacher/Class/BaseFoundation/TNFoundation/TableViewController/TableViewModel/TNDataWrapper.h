@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@interface TNDataWrapper : NSObject
+#import "TNBaseObject.h"
+@interface TNDataWrapper : TNBaseObject
 @property (nonatomic, strong)id data;
 + (TNDataWrapper*)dataWrapperWithObject:(id)object;
 - (NSUInteger)count;

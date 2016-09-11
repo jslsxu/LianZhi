@@ -15,29 +15,26 @@ NSString *const kUserDataStorageKey = @"UserData";
 @implementation UserData
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    if(!self.userInfo){
-        TNDataWrapper *userWrapper = [dataWrapper getDataWrapperForKey:@"user"];
-        if(userWrapper)
-        {
-            UserInfo *userInfo = [[UserInfo alloc] init];
-            [userInfo parseData:userWrapper];
-            [self setUserInfo:userInfo];
-        }
-        
-        self.firstLogin = [dataWrapper getBoolForKey:@"first_login"];
-        self.confirmed = [dataWrapper getBoolForKey:@"confirmed"];
-        NSString *verify = [dataWrapper getStringForKey:@"verify"];
-        if(verify.length > 0)
-            self.accessToken = verify;
+    self.firstLogin = [dataWrapper getBoolForKey:@"first_login"];
+    self.confirmed = [dataWrapper getBoolForKey:@"confirmed"];
+    NSString *verify = [dataWrapper getStringForKey:@"verify"];
+    if(verify.length > 0)
+        self.accessToken = verify;
 
-        TNDataWrapper *configWrapper = [dataWrapper getDataWrapperForKey:@"config"];
-        if(configWrapper.count > 0)
-        {
-            LogConfig *config = [[LogConfig alloc] init];
-            [config parseData:configWrapper];
-            [self setConfig:config];
-        }
-        self.curChildIndex = 0;
+    TNDataWrapper *configWrapper = [dataWrapper getDataWrapperForKey:@"config"];
+    if(configWrapper.count > 0)
+    {
+        LogConfig *config = [[LogConfig alloc] init];
+        [config parseData:configWrapper];
+        [self setConfig:config];
+    }
+    self.curChildIndex = 0;
+    TNDataWrapper *userWrapper = [dataWrapper getDataWrapperForKey:@"user"];
+    if(userWrapper)
+    {
+        UserInfo *userInfo = [[UserInfo alloc] init];
+        [userInfo parseData:userWrapper];
+        [self setUserInfo:userInfo];
     }
 
     TNDataWrapper *childrenWrapper = [dataWrapper getDataWrapperForKey:@"children"];
@@ -57,6 +54,26 @@ NSString *const kUserDataStorageKey = @"UserData";
         }];
         self.children = childrenArray;
     }
+}
+
+- (void)updateChildren:(TNDataWrapper *)childrenWrapper{
+    if(childrenWrapper.count > 0)
+    {
+        NSMutableArray *childrenArray = [[NSMutableArray alloc] initWithCapacity:0];
+        for (NSInteger i = 0; i < childrenWrapper.count; i++) {
+            TNDataWrapper *childDataWrapper = [childrenWrapper getDataWrapperForIndex:i];
+            ChildInfo *childInfo = [[ChildInfo alloc] init];
+            [childInfo parseData:childDataWrapper];
+            [childrenArray addObject:childInfo];
+        }
+        [childrenArray sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+            ChildInfo *childInfo1 = (ChildInfo *)obj1;
+            ChildInfo *childInfo2 = (ChildInfo *)obj2;
+            return [childInfo1.uid compare:childInfo2.uid];
+        }];
+        self.children = childrenArray;
+    }
+
 }
 
 @end
@@ -144,17 +161,19 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
     }
 }
 - (void)updateUserInfoWithData:(TNDataWrapper *)userWrapper{
-    [self.userData parseData:userWrapper];
+    [self.userData.userInfo parseData:userWrapper];
     [self save];
     
 }
 
-- (void)updateUserInfo
+- (void)updateChildren
 {
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_related_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         if(responseObject.count > 0)
         {
-            [self updateUserInfoWithData:responseObject];
+            TNDataWrapper *childrenWrapper = [responseObject getDataWrapperForKey:@"children"];
+            [self.userData updateChildren:childrenWrapper];
+            [self save];
             [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoChangedNotification object:nil];
         }
     } fail:^(NSString *errMsg) {
@@ -162,10 +181,6 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
     }];
 }
 
-- (void)updateChildData:(TNDataWrapper *)childWrapper
-{
-    
-}
 
 - (void)save
 {

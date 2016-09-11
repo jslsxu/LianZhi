@@ -74,8 +74,7 @@
             {
                 TreehouseItem *item = [[TreehouseItem alloc] init];
                 [item parseData:infoWrapper];
-                if([self.delegate respondsToSelector:@selector(publishTreeHouseSuccess:)])
-                    [self.delegate publishTreeHouseSuccess:item];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kPublishPhotoItemFinishedNotification object:nil userInfo:@{kPublishPhotoItemKey : item}];
                 
             }
             [hud hide:NO];

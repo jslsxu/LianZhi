@@ -77,13 +77,19 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
 
 @implementation PersonalInfoVC
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (instancetype)init{
+    self = [super init];
     if(self){
-        self.hidesBottomBarWhenPushed = YES;
+         self.hidesBottomBarWhenPushed = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDataWhenUserChanged) name:kUserInfoChangedNotification object:nil];
     }
     return self;
 }
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
@@ -122,6 +128,10 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
     [self.tableView setTableHeaderView:_headerView];
     
     [self setupInfoArray];
+    [self.tableView reloadData];
+}
+
+- (void)reloadDataWhenUserChanged{
     [self.tableView reloadData];
 }
 

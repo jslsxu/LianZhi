@@ -7,7 +7,7 @@
 //
 
 #import "PublishPhotoVC.h"
-
+#import "TreeHousePublishManager.h"
 #define kBorderMargin                   16
 
 #define kBaseTag                        1000
@@ -240,8 +240,9 @@
     [item setDetail:detail];
     [item setUser:[UserCenter sharedInstance].userInfo];
     [item setNewSend:YES];
-    if([self.delegate respondsToSelector:@selector(publishTreeHouseSuccess:)])
-        [self.delegate publishTreeHouseSuccess:item];
+//    if([self.delegate respondsToSelector:@selector(publishTreeHouseSuccess:)])
+//        [self.delegate publishTreeHouseSuccess:item];
+    [[TreeHousePublishManager sharedInstance] startUploading:item];
     [self onBack];
 
 //    NSMutableDictionary *params = [NSMutableDictionary dictionary];

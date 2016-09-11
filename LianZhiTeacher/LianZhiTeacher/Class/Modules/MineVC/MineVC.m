@@ -70,6 +70,10 @@
 @end
 
 @implementation MineVC
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -78,6 +82,7 @@
         self.titleArray = @[@[@"我的学校",@"系统设置"],@[@"关于连枝",@"联系客服"]];
         self.imageArray = @[@[@"IconMySchool",@"IconSetting"],@[@"IconAbout",@"IconContact"]];
         self.actionArray = @[@[@"RelatedInfoVC",@"PersonalSettingVC"],@[@"AboutVC",@"ContactServiceVC"]];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kUserInfoChangedNotification object:nil];
     }
     return self;
 }
@@ -117,6 +122,10 @@
     
     //加载设置
     [[UserCenter sharedInstance] requestNoDisturbingTime];
+}
+
+- (void)reloadData{
+    [_tableView reloadData];
 }
 
 #pragma mark - UITableViewDelegate

@@ -30,7 +30,7 @@
     [_photoViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [_photoViewArray removeAllObjects];
     
-    CGFloat height = 0;
+    CGFloat height = 10;
     NSInteger margin = 10;
     NSInteger start = 0;
     if(_photoArray.count % 2 == 1){
@@ -44,7 +44,7 @@
         else{
             firstHeight = firstWidth * 2 / 3;
         }
-        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(margin, 0, firstWidth, firstHeight)];
+        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(margin, height, firstWidth, firstHeight)];
         [imageView setBackgroundColor:[UIColor colorWithHexString:@"dddddd"]];
         [imageView setContentMode:UIViewContentModeScaleAspectFill];
         [imageView setClipsToBounds:YES];

@@ -133,6 +133,7 @@
 - (void)setUserInfo:(UserInfo *)userInfo{
     _userInfo = userInfo;
     [_avatarView setImageWithUrl:[NSURL URLWithString:_userInfo.avatar] placeHolder:nil];
+    [_avatarView setStatus:_userInfo.actived ? @"" : @"未下载"];
     [_titleLabel setText:_userInfo.name];
     [_titleLabel sizeToFit];
     [_titleLabel setOrigin:CGPointMake(_avatarView.right + 15, (56 - _titleLabel.height) / 2)];

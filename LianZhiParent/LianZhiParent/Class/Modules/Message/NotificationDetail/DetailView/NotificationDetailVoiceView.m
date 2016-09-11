@@ -97,7 +97,6 @@
         _voiceViewArray = [NSMutableArray arrayWithCapacity:0];
         _topLine = [[UIView alloc] initWithFrame:CGRectMake(10, 0, self.width - 10 * 2, kLineHeight)];
         [_topLine setBackgroundColor:kSepLineColor];
-        [_topLine setAutoresizingMask:UIViewAutoresizingFlexibleBottomMargin];
         [self addSubview:_topLine];
         
         _bottomLine = [[UIView alloc] initWithFrame:CGRectMake(10, self.height - kLineHeight, self.width - 10 * 2, kLineHeight)];

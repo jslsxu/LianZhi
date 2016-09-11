@@ -89,7 +89,6 @@
     
     [self setIsNotification:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurChildChanged) name:kUserCenterChangedCurChildNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onPublishPhotoFinished:) name:kPublishPhotoItemFinishedNotification object:nil];
 }
 
 - (void)showIMVC{
@@ -111,10 +110,6 @@
     return [self.messageModel arrayForType:self.isNotification];
 }
 
-- (void)onPublishPhotoFinished:(NSNotification *)notification
-{
-    [self requestData:REQUEST_REFRESH];
-}
 
 - (void)onCurChildChanged
 {

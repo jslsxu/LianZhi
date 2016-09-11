@@ -8,13 +8,18 @@
 
 #import "TNBaseViewController.h"
 
-@interface UserGroup : TNBaseObject
+@interface MemberItem : TNBaseObject
 @property (nonatomic, copy)NSString *toObjid;
+@property (nonatomic, strong)UserInfo *userInfo;
+@property (nonatomic, copy)NSString *label;
+
+@end
+
+@interface  SectionGroup: TNBaseObject
 @property (nonatomic, copy)NSString *title;
 @property (nonatomic, copy)NSString *indexkey;
-@property (nonatomic, strong)NSArray *users;
-@property (nonatomic, strong)NSArray *labelArray;
-- (void)addGroup:(UserGroup *)userGroup;
+@property (nonatomic, copy)NSArray *memberArray;
+- (void)addGroup:(SectionGroup *)sectionGroup;
 @end
 
 @interface MemberSectionHeader : UITableViewHeaderFooterView

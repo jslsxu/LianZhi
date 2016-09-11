@@ -11,16 +11,19 @@
 #import "ChatTeacherInfoVC.h"
 #import "ChatParentInfoVC.h"
 
-@implementation UserGroup
+@implementation MemberItem
 
-- (void)addGroup:(UserGroup *)userGroup{
-    NSMutableArray *labelArray = [NSMutableArray arrayWithArray:self.labelArray];
-    NSMutableArray *userArray = [NSMutableArray arrayWithArray:self.users];
-    [labelArray addObjectsFromArray:userGroup.labelArray];
-    [userArray addObjectsFromArray:userGroup.users];
-    self.labelArray = labelArray;
-    self.users = userArray;
+
+@end
+
+@implementation SectionGroup
+
+- (void)addGroup:(SectionGroup *)sectionGroup{
+    NSMutableArray *memberArray = [NSMutableArray arrayWithArray:self.memberArray];
+    [memberArray addObjectsFromArray:sectionGroup.memberArray];
+    self.memberArray = memberArray;
 }
+
 @end
 
 @implementation MemberSectionHeader
@@ -132,37 +135,47 @@
     {
         for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes) {
             if([classInfo.classID isEqualToString:self.classID]){
-                UserGroup *teacherGroup = [[UserGroup alloc] init];
+                SectionGroup *teacherGroup = [[SectionGroup alloc] init];
                 [teacherGroup setTitle:@"教师"];
                 [teacherGroup setIndexkey:@"师"];
-                [teacherGroup setUsers:classInfo.teachers];
+                NSMutableArray *teacherArray = [NSMutableArray array];
+                for (TeacherInfo *teacherInfo in classInfo.teachers) {
+                    MemberItem *item = [[MemberItem alloc] init];
+                    [item setToObjid:classInfo.school.schoolID];
+                    [item setUserInfo:teacherInfo];
+                    [teacherArray addObject:item];
+                }
+                [teacherGroup setMemberArray:teacherArray];
                 [self.sourceArray addObject:teacherGroup];
+                
+                
                 NSMutableArray *studentArray = [NSMutableArray array];
                 for (ChildInfo *childInfo in classInfo.students) {
-                    UserGroup *studentGroup = [[UserGroup alloc] init];
-                    [studentGroup setToObjid:classInfo.school.schoolID];
-                    [studentGroup setUsers:childInfo.family];
-                    [studentGroup setIndexkey:childInfo.first_letter];
-                    [studentGroup setTitle:childInfo.first_letter];
+                    SectionGroup *sectionGroup = [[SectionGroup alloc] init];
+                    [sectionGroup setTitle:childInfo.first_letter];
+                    [sectionGroup setIndexkey:childInfo.first_letter];
                     
-                    NSMutableArray *labelArray = [NSMutableArray array];
-                    for (FamilyInfo *family in childInfo.family) {
-                        [labelArray addObject:[NSString stringWithFormat:@"%@的%@",childInfo.name, family.relation]];
+                    NSMutableArray *memberArray = [NSMutableArray array];
+                    for (FamilyInfo *familyInfo in childInfo.family) {
+                        MemberItem *item = [[MemberItem alloc] init];
+                        [item setUserInfo:familyInfo];
+                        [item setToObjid:childInfo.uid];
+                        [item setLabel:[NSString stringWithFormat:@"%@的%@",childInfo.name, familyInfo.relation]];
+                        [memberArray addObject:item];
                     }
-                    [studentGroup setLabelArray:labelArray];
-                    
-                    [studentArray addObject:studentGroup];
+                    [sectionGroup setMemberArray:memberArray];
+                    [studentArray addObject:sectionGroup];
                 }
                
                 [studentArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                    UserGroup *firstGroup = (UserGroup *)obj1;
-                    UserGroup *secondGroup = (UserGroup *)obj2;
+                    SectionGroup *firstGroup = (SectionGroup *)obj1;
+                    SectionGroup *secondGroup = (SectionGroup *)obj2;
                     return [firstGroup.title compare:secondGroup.title];
                 }];
                 
-                UserGroup *preGroup = nil;
+                SectionGroup *preGroup = nil;
                 NSMutableArray *deleteArray = [NSMutableArray array];
-                for (UserGroup *userGroup in studentArray) {
+                for (SectionGroup *userGroup in studentArray) {
                     if([userGroup.indexkey isEqualToString:preGroup.indexkey]){
                         [preGroup addGroup:userGroup];
                         [deleteArray addObject:userGroup];
@@ -191,8 +204,8 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    UserGroup *group = self.sourceArray[section];
-    return group.users.count;
+    SectionGroup *group = self.sourceArray[section];
+    return group.memberArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -205,7 +218,7 @@
 
 - (NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView{
     NSMutableArray *titleArray = [NSMutableArray array];
-    for (UserGroup *group in self.sourceArray) {
+    for (SectionGroup *group in self.sourceArray) {
         if(group.indexkey)
             [titleArray addObject:group.indexkey];
         else{
@@ -221,7 +234,7 @@
     if(headerView == nil){
         headerView = [[MemberSectionHeader alloc] initWithReuseIdentifier:reuseID];
     }
-    UserGroup *group = self.sourceArray[section];
+    SectionGroup *group = self.sourceArray[section];
     [headerView setTitle:group.title];
     return headerView;
 }
@@ -234,20 +247,22 @@
     {
         cell = [[MemberCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
-    UserGroup *group = self.sourceArray[indexPath.section];
-    UserInfo *userInfo = group.users[indexPath.row];
-    [cell setUserInfo:userInfo];
-    [cell setLabel:group.labelArray[indexPath.row]];
+    SectionGroup *group = self.sourceArray[indexPath.section];
+    MemberItem *memberItem = group.memberArray[indexPath.row];
+    [cell setUserInfo:memberItem.userInfo];
+    [cell setLabel:memberItem.label];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    UserGroup *group = self.sourceArray[indexPath.section];
-    UserInfo *userInfo = group.users[indexPath.row];
+    SectionGroup *group = self.sourceArray[indexPath.section];
+    MemberItem *item = group.memberArray[indexPath.row];
+    UserInfo *userInfo = item.userInfo;
     if(self.atCallback){
-        NSString *label = group.labelArray[indexPath.row];
+        
+        NSString *label = item.label;
         if(label.length > 0){
             userInfo.name = label;
         }
@@ -258,13 +273,14 @@
         if([userInfo isKindOfClass:[TeacherInfo class]]){
             ChatTeacherInfoVC *teacherVC = [[ChatTeacherInfoVC alloc] init];
             [teacherVC setUid:userInfo.uid];
-            [teacherVC setToObjid:group.toObjid];
+            [teacherVC setToObjid:item.toObjid];
             [self.navigationController pushViewController:teacherVC animated:YES];
         }
         else{
             ChatParentInfoVC *parentVC = [[ChatParentInfoVC alloc] init];
-            [parentVC setToObjid:group.toObjid];
+            [parentVC setToObjid:item.toObjid];
             [parentVC setUid:userInfo.uid];
+            [parentVC setLabel:item.label];
             [self.navigationController pushViewController:parentVC animated:YES];
         }
     }

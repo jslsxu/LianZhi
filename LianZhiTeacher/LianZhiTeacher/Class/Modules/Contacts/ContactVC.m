@@ -38,7 +38,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationItem.leftBarButtonItems = [ApplicationDelegate.homeVC commonLeftBarButtonItems];
-    [[UserCenter sharedInstance] updateUserInfo];
+    [[UserCenter sharedInstance] updateSchoolInfo];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -82,6 +82,14 @@
     else{
         [self.contactsLoadingView show];
     }
+}
+
+- (ContactsLoadingView *)contactsLoadingView{
+    if(!_contactsLoadingView){
+        _contactsLoadingView = [[ContactsLoadingView alloc] initWithFrame:CGRectZero];
+        [_contactsLoadingView setOrigin:CGPointMake((self.view.width - _contactsLoadingView.width) / 2, (self.view.height - _contactsLoadingView.height ) / 2)];
+    }
+    return _contactsLoadingView;
 }
 
 - (UISegmentedControl *)segmentCtrl{

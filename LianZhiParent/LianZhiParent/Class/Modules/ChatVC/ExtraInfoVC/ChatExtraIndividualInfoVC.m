@@ -85,23 +85,54 @@
 - (void)loadData{
     @weakify(self)
     if(self.chatType == ChatTypeParents){
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_parent_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid" : self.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-            @strongify(self)
-            self.parentInfo = [ContactParentInfo nh_modelWithJson:responseObject.data];
+        ContactParentInfo *parentInfo = [[LZKVStorage userKVStorage] storageValueForKey:[self cacheKey]];
+        if(parentInfo && [parentInfo isKindOfClass:[ContactParentInfo class]]){
+            self.parentInfo = parentInfo;
             [self.tableView reloadData];
-        } fail:^(NSString *errMsg) {
-            
-        }];
+        }
+        else{
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_parent_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid" : self.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                @strongify(self)
+                self.parentInfo = [ContactParentInfo nh_modelWithJson:responseObject.data];
+                if(self.parentInfo){
+                    [[LZKVStorage userKVStorage] saveStorageValue:self.parentInfo forKey:[self cacheKey]];
+                }
+                [self.tableView reloadData];
+            } fail:^(NSString *errMsg) {
+                
+            }];
+        }
     }
     else if(self.chatType == ChatTypeTeacher){
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_teacher_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid" : self.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-            @strongify(self)
-            self.teacherInfo = [ContactTeacherInfo nh_modelWithJson:responseObject.data];
+        ContactTeacherInfo *teacherInfo = [[LZKVStorage userKVStorage] storageValueForKey:[self cacheKey]];
+        if(teacherInfo && [teacherInfo isKindOfClass:[ContactTeacherInfo class]]){
+            self.teacherInfo = teacherInfo;
             [self.tableView reloadData];
-        } fail:^(NSString *errMsg) {
-            
-        }];
+        }
+        else{
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_teacher_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid" : self.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                @strongify(self)
+                self.teacherInfo = [ContactTeacherInfo nh_modelWithJson:responseObject.data];
+                if(self.teacherInfo){
+                    [[LZKVStorage userKVStorage] saveStorageValue:self.teacherInfo forKey:[self cacheKey]];
+                }
+                [self.tableView reloadData];
+            } fail:^(NSString *errMsg) {
+                
+            }];
+        }
     }
+}
+
+- (NSString *)cacheKey{
+    NSString *cacheKey = nil;
+    if(self.chatType == ChatTypeParents){
+        cacheKey = [NSString stringWithFormat:@"parentInfo_%@",self.uid];
+    }
+    else if(self.chatType == ChatTypeTeacher){
+        cacheKey = [NSString stringWithFormat:@"teacherInfo_%@",self.uid];
+    }
+    return cacheKey;
 }
 
 

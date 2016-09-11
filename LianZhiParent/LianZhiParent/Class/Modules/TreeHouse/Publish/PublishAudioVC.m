@@ -124,8 +124,7 @@
                 TreehouseItem *item = [[TreehouseItem alloc] init];
                 [item parseData:infoWrapper];
                 
-                if([self.delegate respondsToSelector:@selector(publishTreeHouseSuccess:)])
-                    [self.delegate publishTreeHouseSuccess:item];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kPublishPhotoItemFinishedNotification object:nil userInfo:@{kPublishPhotoItemKey : item}];
             }
             [ProgressHUD showSuccess:@"发布成功"];
             [self performSelector:@selector(onBack) withObject:nil afterDelay:2];

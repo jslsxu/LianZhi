@@ -223,6 +223,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     
     //当前任务完成
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kTaskItemSuccessNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTreehouseItemSendSuccess:) name:kPublishPhotoItemFinishedNotification object:nil];
 }
 
 
@@ -237,6 +238,13 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             [self startUploading:item];
         }
     }
+}
+
+- (void)onTreehouseItemSendSuccess:(NSNotification *)notification{
+    NSDictionary *userInfo = notification.userInfo;
+    TreehouseItem *item = userInfo[kPublishPhotoItemKey];
+    [self.tableViewModel.modelItemArray insertObject:item atIndex:0];
+    [self.tableView reloadData];
 }
 
 - (void)onPersonalSettingChanged
@@ -543,34 +551,34 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 }
 
-#pragma mark - PublishTreeItemDelegate
-- (void)publishTreeHouseSuccess:(TreehouseItem *)item
-{
-    [self.tableViewModel.modelItemArray insertObject:item atIndex:0];
-    [self.tableView reloadData];
-    [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
-    item.savedPath = [self saveTask:item];
-    if([item canSendDirectly])
-        [self startUploading:item];
-    else
-    {
-        if([ApplicationDelegate.hostReach currentReachabilityStatus] == ReachableViaWiFi || ([ApplicationDelegate.hostReach currentReachabilityStatus] == ReachableViaWWAN && ![UserCenter sharedInstance].personalSetting.wifiSend))
-            [self startUploading:item];
-        else
-        {
-            [item setDelay:YES];
-            if(([ApplicationDelegate.hostReach currentReachabilityStatus] == ReachableViaWWAN && [UserCenter sharedInstance].personalSetting.wifiSend))
-            {
-                NSInteger imageNum = 0;
-                for (PhotoItem *photoItem in item.photos) {
-                    if(photoItem.image)
-                        imageNum ++;
-                }
-                [ProgressHUD showHintText:[NSString stringWithFormat:@"为了帮您节省流量，您本次分享的%ld张照片将在有wifi环境时自动上传，在此之前请勿删除本地相册中的内容",(long)imageNum]];
-            }
-        }
-    }
-}
+//#pragma mark - PublishTreeItemDelegate
+//- (void)publishTreeHouseSuccess:(TreehouseItem *)item
+//{
+//    [self.tableViewModel.modelItemArray insertObject:item atIndex:0];
+//    [self.tableView reloadData];
+//    [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
+//    item.savedPath = [self saveTask:item];
+//    if([item canSendDirectly])
+//        [self startUploading:item];
+//    else
+//    {
+//        if([ApplicationDelegate.hostReach currentReachabilityStatus] == ReachableViaWiFi || ([ApplicationDelegate.hostReach currentReachabilityStatus] == ReachableViaWWAN && ![UserCenter sharedInstance].personalSetting.wifiSend))
+//            [self startUploading:item];
+//        else
+//        {
+//            [item setDelay:YES];
+//            if(([ApplicationDelegate.hostReach currentReachabilityStatus] == ReachableViaWWAN && [UserCenter sharedInstance].personalSetting.wifiSend))
+//            {
+//                NSInteger imageNum = 0;
+//                for (PhotoItem *photoItem in item.photos) {
+//                    if(photoItem.image)
+//                        imageNum ++;
+//                }
+//                [ProgressHUD showHintText:[NSString stringWithFormat:@"为了帮您节省流量，您本次分享的%ld张照片将在有wifi环境时自动上传，在此之前请勿删除本地相册中的内容",(long)imageNum]];
+//            }
+//        }
+//    }
+//}
 
 #pragma mark NSNotification
 - (void)onTreeHouseItemDelete:(NSNotification *)notification

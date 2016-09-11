@@ -40,8 +40,10 @@
 }
 
 - (void)setBannerArray:(NSArray *)bannerArray{
-    _bannerArray = bannerArray;
-    [_bannerView reloadData];
+    if(_bannerArray != bannerArray){
+        _bannerArray = bannerArray;
+        [_bannerView reloadData];
+    }
 }
 
 #pragma mark - ZYBannerViewDelegate
@@ -211,8 +213,6 @@
 //    self.title = [UserCenter sharedInstance].curSchool.schoolName;
     [self.collectionView registerClass:[ApplicationBoxHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ApplicationBoxHeaderView"];
     [self.collectionView setShowsVerticalScrollIndicator:NO];
-
-    [self requestData:REQUEST_REFRESH];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];

@@ -24,6 +24,7 @@ extern NSString* const kUserDataStorageKey;
 @property (nonatomic, strong)LogConfig *config;
 @property (nonatomic, strong)NSArray*   schools;
 @property (nonatomic, assign)NSInteger curIndex;
+- (void)updateSchools:(TNDataWrapper *)dataWrapper;
 @end
 
 
@@ -37,9 +38,9 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(UserCenter)
 - (SchoolInfo *)curSchool;
 - (UserInfo *)userInfo;
 - (void)updateUserInfoWithData:(TNDataWrapper *)userWrapper;
+- (void)updateSchoolInfo;              //更新学校联系人信息
 - (void)save;
 - (BOOL)hasLogin;
-- (void)updateUserInfo;
 - (void)changeCurSchool:(SchoolInfo *)schoolInfo;
 - (void)logout;
 - (BOOL)teachAtCurSchool;

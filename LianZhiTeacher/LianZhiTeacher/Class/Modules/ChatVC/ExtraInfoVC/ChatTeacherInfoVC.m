@@ -9,10 +9,15 @@
 #import "ChatTeacherInfoVC.h"
 #import "ContactInfoHeaderCell.h"
 #import "ContactView.h"
+
+@implementation ContactClassInfo
+
+@end
+
 @implementation ContactSchoolInfo
 
 + (NSDictionary<NSString *,id> *)modelContainerPropertyGenericClass{
-    return @{@"classes" : [NSString class]};
+    return @{@"classes" : [ContactClassInfo class]};
 }
 
 @end
@@ -51,7 +56,7 @@
     [_classViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [_classViewArray removeAllObjects];
     for (NSInteger i = 0; i < _schoolInfo.classes.count; i++) {
-        NSString *className = _schoolInfo.classes[i];
+        ContactClassInfo *classInfo = _schoolInfo.classes[i];
         UIView *classView = [[UIView alloc] initWithFrame:CGRectMake(0, _nameLabel.bottom + 36 * i, self.width, 36)];
         UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(_logoView.right + 10, 0, classView.width - _logoView.right + 10, kLineHeight)];
         [topLine setBackgroundColor:kSepLineColor];
@@ -60,7 +65,7 @@
         UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(_logoView.right + 10, 0, classView.width - 10 - (_logoView.right + 10), classView.height)];
         [nameLabel setFont:[UIFont systemFontOfSize:12]];
         [nameLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-        [nameLabel setText:className];
+        [nameLabel setText:[NSString stringWithFormat:@"%@  %@",classInfo.class_name, classInfo.course]];
         [classView addSubview:nameLabel];
         
         [self addSubview:classView];
@@ -87,15 +92,26 @@
     [self.view addSubview:self.tableView];
     if(!self.teacherInfo){
         if(self.uid.length > 0){
-            @weakify(self)
-            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_teacher_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid" : self.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                @strongify(self)
-                self.teacherInfo = [ContactTeacherInfo nh_modelWithJson:responseObject.data];
-                [self.tableView reloadData];
-                [self showBottomView];
-            } fail:^(NSString *errMsg) {
-                
-            }];
+            ContactTeacherInfo *teacherInfo = [[LZKVStorage userKVStorage] storageValueForKey:[self cacheKey]];
+            if(teacherInfo){
+                if([teacherInfo isKindOfClass:[ContactTeacherInfo class]]){
+                    self.teacherInfo = teacherInfo;
+                    [self.tableView reloadData];
+                    [self showBottomView];
+                }
+            }
+            else{
+                @weakify(self)
+                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_teacher_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid" : self.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                    @strongify(self)
+                    self.teacherInfo = [ContactTeacherInfo nh_modelWithJson:responseObject.data];
+                    [[LZKVStorage userKVStorage] saveStorageValue:self.teacherInfo forKey:[self cacheKey]];
+                    [self.tableView reloadData];
+                    [self showBottomView];
+                } fail:^(NSString *errMsg) {
+                    
+                }];
+            }
         }
     }
     else{
@@ -136,6 +152,10 @@
         [_tableView setDataSource:self];
     }
     return _tableView;
+}
+
+- (NSString *)cacheKey{
+    return [NSString stringWithFormat:@"teacherInfo_%@",self.uid];
 }
 
 #pragma mark - UITableViewDelegate

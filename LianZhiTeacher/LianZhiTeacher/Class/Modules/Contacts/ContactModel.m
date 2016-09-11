@@ -37,10 +37,10 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(ContactModel)
 }
 - (NSArray *)titleArray{
     NSMutableArray *array = [NSMutableArray array];
-    if(self.classes.count > 0){
+    if([self.classes count] > 0){
         [array addObject:kParentTitle];
     }
-    if(self.teachers.count > 0){
+    if([self.teachers count] > 0){
         [array addObject:kTeacherTitle];
     }
     return array;

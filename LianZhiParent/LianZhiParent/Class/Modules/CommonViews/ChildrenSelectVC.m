@@ -26,7 +26,7 @@
         [self addSubview:_redDot];
         
         _arrowImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:(@"RightArrow")]];
-        [_arrowImage setOrigin:CGPointMake(self.width - _arrowImage.width - 30, (60 - _arrowImage.height) / 2)];
+        [_arrowImage setOrigin:CGPointMake(self.width - _arrowImage.width - 20, (60 - _arrowImage.height) / 2)];
         [self addSubview:_arrowImage];
         
         

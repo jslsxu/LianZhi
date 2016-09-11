@@ -40,7 +40,14 @@
 
 - (void)setAsset:(XMNAssetModel *)asset{
     _asset = asset;
-    [_imageView setImage:_asset.previewImage];
+    __block UIImage *image = nil;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        ALAsset *alAsset = asset.asset;
+        image = [UIImage imageWithCGImage:[alAsset.defaultRepresentation fullScreenImage]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_imageView setImage:image];
+        });
+    });
     [_stateButton setSelected:_asset.selected];
     [_typeImageView setHidden:_asset.type != XMNAssetTypeVideo];
 }

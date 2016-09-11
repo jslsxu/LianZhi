@@ -172,8 +172,11 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
     
     if(self.changed == ChangedTypeChildren)
         [ApplicationDelegate logout];
-    else if(self.changed == ChangedTypeFamily || self.changed == ChangedTypeSchoolAndClass)
-        [self updateUserInfo];
+    else if(self.changed == ChangedTypeFamily || self.changed == ChangedTypeSchoolAndClass){
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self updateChildren];
+        });
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:kStatusChangedNotification object:nil userInfo:nil];
     
 }
@@ -188,9 +191,9 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
     return NO;
 }
 
-- (void)updateUserInfo
+- (void)updateChildren
 {
-    [[UserCenter sharedInstance] updateUserInfo];
+    [[UserCenter sharedInstance] updateChildren];
 
 }
 

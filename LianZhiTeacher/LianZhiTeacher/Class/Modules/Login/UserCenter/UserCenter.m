@@ -16,79 +16,68 @@ NSString *const kUserDataStorageKey = @"UserData";
 @implementation UserData
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    if(dataWrapper)
+    self.firstLogin = [dataWrapper getBoolForKey:@"first_login"];
+    self.confirmed = [dataWrapper getBoolForKey:@"confirmed"];
+    NSString *verify = [dataWrapper getStringForKey:@"verify"];
+    if(verify.length > 0)
+        self.accessToken = verify;
+    
+    TNDataWrapper *configWrapper = [dataWrapper getDataWrapperForKey:@"config"];
+    if(configWrapper.count)
     {
-        if(!self.userInfo){
-            TNDataWrapper *userDataWrapper = [dataWrapper getDataWrapperForKey:@"user"];
-            if(userDataWrapper.count > 0)
-            {
-                UserInfo *userInfo = [[UserInfo alloc] init];
-                [userInfo parseData:userDataWrapper];
-                [self setUserInfo:userInfo];
-            }
-            
-            self.firstLogin = [dataWrapper getBoolForKey:@"first_login"];
-            self.confirmed = [dataWrapper getBoolForKey:@"confirmed"];
-            NSString *verify = [dataWrapper getStringForKey:@"verify"];
-            if(verify.length > 0)
-                self.accessToken = verify;
-            
-            TNDataWrapper *configWrapper = [dataWrapper getDataWrapperForKey:@"config"];
-            if(configWrapper.count)
-            {
-                LogConfig *logConfig = [[LogConfig alloc] init];
-                [logConfig parseData:configWrapper];
-                self.config = logConfig;
-            }
-
+        LogConfig *logConfig = [[LogConfig alloc] init];
+        [logConfig parseData:configWrapper];
+        self.config = logConfig;
+    }
+    TNDataWrapper *userDataWrapper = [dataWrapper getDataWrapperForKey:@"user"];
+    if(userDataWrapper.count > 0)
+    {
+        UserInfo *userInfo = [[UserInfo alloc] init];
+        [userInfo parseData:userDataWrapper];
+        [self setUserInfo:userInfo];
+    }
+    
+    TNDataWrapper *schoolListWrapper = [dataWrapper getDataWrapperForKey:@"schools"];
+    if(schoolListWrapper.count > 0)
+    {
+        NSMutableArray *schoolArray = [[NSMutableArray alloc] initWithCapacity:0];
+        for (NSInteger i = 0; i < schoolListWrapper.count; i++) {
+            TNDataWrapper *schoolDataWrapper = [schoolListWrapper getDataWrapperForIndex:i];
+            SchoolInfo *schoolInfo = [[SchoolInfo alloc] init];
+            [schoolInfo parseData:schoolDataWrapper];
+            [schoolArray addObject:schoolInfo];
         }
         
-        TNDataWrapper *schoolListWrapper = [dataWrapper getDataWrapperForKey:@"schools"];
-        if(schoolListWrapper.count > 0)
-        {
-            NSMutableArray *schoolArray = [[NSMutableArray alloc] initWithCapacity:0];
-            for (NSInteger i = 0; i < schoolListWrapper.count; i++) {
-                TNDataWrapper *schoolDataWrapper = [schoolListWrapper getDataWrapperForIndex:i];
-                SchoolInfo *schoolInfo = [[SchoolInfo alloc] init];
-                [schoolInfo parseData:schoolDataWrapper];
-                [schoolArray addObject:schoolInfo];
-            }
-            
-            [schoolArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                SchoolInfo *schoolInfo1 = (SchoolInfo *)obj1;
-                SchoolInfo *schoolInfo2 = (SchoolInfo *)obj2;
-                return [schoolInfo1.schoolID compare:schoolInfo2.schoolID];
-            }];
-            self.schools = schoolArray;
-        }
+        [schoolArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            SchoolInfo *schoolInfo1 = (SchoolInfo *)obj1;
+            SchoolInfo *schoolInfo2 = (SchoolInfo *)obj2;
+            return [schoolInfo1.schoolID compare:schoolInfo2.schoolID];
+        }];
+        self.schools = schoolArray;
     }
     
 }
 
+- (void)updateSchools:(TNDataWrapper *)dataWrapper{
+    if(dataWrapper.count > 0)
+    {
+        NSMutableArray *schoolArray = [[NSMutableArray alloc] initWithCapacity:0];
+        for (NSInteger i = 0; i < dataWrapper.count; i++) {
+            TNDataWrapper *schoolDataWrapper = [dataWrapper getDataWrapperForIndex:i];
+            SchoolInfo *schoolInfo = [[SchoolInfo alloc] init];
+            [schoolInfo parseData:schoolDataWrapper];
+            [schoolArray addObject:schoolInfo];
+        }
+        
+        [schoolArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            SchoolInfo *schoolInfo1 = (SchoolInfo *)obj1;
+            SchoolInfo *schoolInfo2 = (SchoolInfo *)obj2;
+            return [schoolInfo1.schoolID compare:schoolInfo2.schoolID];
+        }];
+        self.schools = schoolArray;
+    }
 
-//- (id)initWithCoder:(NSCoder *)aDecoder
-//{
-//    if(self = [super init])
-//    {
-//        self.userInfo = [aDecoder decodeObjectForKey:@"user"];
-//        self.firstLogin = [aDecoder decodeBoolForKey:@"first_login"];
-//        self.accessToken = [aDecoder decodeObjectForKey:@"verify"];
-//        self.curIndex = [aDecoder decodeIntegerForKey:@"curIndex"];
-//        self.config = [aDecoder decodeObjectForKey:@"config"];
-//        self.schools = [aDecoder decodeObjectForKey:@"schools"];
-//    }
-//    return self;
-//}
-//
-//- (void)encodeWithCoder:(NSCoder *)aCoder
-//{
-//    [aCoder encodeObject:self.userInfo forKey:@"user"];
-//    [aCoder encodeBool:self.firstLogin forKey:@"first_login"];
-//    [aCoder encodeObject:self.accessToken forKey:@"verify"];
-//    [aCoder encodeInteger:self.curIndex forKey:@"curIndex"];
-//    [aCoder encodeObject:self.config forKey:@"config"];
-//    [aCoder encodeObject:self.schools forKey:@"schools"];
-//}
+}
 
 @end
 
@@ -152,22 +141,23 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
     return self.userData.userInfo;
 }
 
-- (void)updateUserInfo
+- (void)updateUserInfoWithData:(TNDataWrapper *)userWrapper;
 {
+    [self.userData.userInfo parseData:userWrapper];
+    [self save];
+}
+
+- (void)updateSchoolInfo{
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_related_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        if(responseObject.count > 0){
-            [self updateUserInfoWithData:responseObject];
-             [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoVCNeedRefreshNotificaiotn object:nil];
+        TNDataWrapper *schoolListWrapper = [responseObject getDataWrapperForKey:@"schools"];
+        if(schoolListWrapper.count > 0){
+            [self.userData updateSchools:schoolListWrapper];
+            [self save];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoVCNeedRefreshNotificaiotn object:nil];
         }
     } fail:^(NSString *errMsg) {
         
     }];
-}
-
-- (void)updateUserInfoWithData:(TNDataWrapper *)userWrapper
-{
-    [self.userData parseData:userWrapper];
-    [self save];
 }
 
 - (void)save

@@ -253,16 +253,15 @@
 
 - (void)onKeyboardWillHide:(NSNotification *)notification
 {
-//    if(self.window){
-//        if(_inputType != InputTypeNormal){
-//            _inputType = InputTypeNone;
-//            CGRect keyboardBounds;
-//            [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
-//            self.targetHeight = _contentView.height;
-//            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidChangeHeight:)])
-//                [self.inputDelegate inputBarViewDidChangeHeight:self.targetHeight];
-//        }
-//    }
+    if(self.window){
+        if(_inputType == InputTypeNormal){
+            CGRect keyboardBounds;
+            [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+            self.targetHeight = _contentView.height;
+            if([self.inputDelegate respondsToSelector:@selector(inputBarViewDidChangeHeight:)])
+                [self.inputDelegate inputBarViewDidChangeHeight:self.targetHeight];
+        }
+    }
 }
 
 #pragma mark - Actions

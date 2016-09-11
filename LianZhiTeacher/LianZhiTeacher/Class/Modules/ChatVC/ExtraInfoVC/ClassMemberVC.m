@@ -12,18 +12,20 @@
 #import "ChatTeacherInfoVC.h"
 #import "ChatParentInfoVC.h"
 
-@implementation UserGroup
+@implementation MemberItem
 
-- (void)addGroup:(UserGroup *)userGroup{
-    NSMutableArray *labelArray = [NSMutableArray arrayWithArray:self.labelArray];
-    NSMutableArray *userArray = [NSMutableArray arrayWithArray:self.users];
-    [labelArray addObjectsFromArray:userGroup.labelArray];
-    [userArray addObjectsFromArray:userGroup.users];
-    self.labelArray = labelArray;
-    self.users = userArray;
-}
+
 @end
 
+@implementation SectionGroup
+
+- (void)addGroup:(SectionGroup *)sectionGroup{
+    NSMutableArray *memberArray = [NSMutableArray arrayWithArray:self.memberArray];
+    [memberArray addObjectsFromArray:sectionGroup.memberArray];
+    self.memberArray = memberArray;
+}
+
+@end
 @implementation MemberSectionHeader
 
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier{
@@ -128,44 +130,50 @@
     @weakify(self)
     if(self.classID)
     {
-        NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        [params setValue:self.classID forKey:@"class_id"];
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"app/contact_of_class" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        void (^parse)(TNDataWrapper *responseObject) = ^(TNDataWrapper *responseObject){
             @strongify(self)
             TNDataWrapper *classWrapper = [responseObject getDataWrapperForKey:@"class"];
             NSArray *teacherArray = [TeacherInfo nh_modelArrayWithJson:[classWrapper getDataWrapperForKey:@"teachers"].data];
             NSArray *studentArray = [StudentInfo nh_modelArrayWithJson:[classWrapper getDataWrapperForKey:@"students"].data];
             
-            UserGroup *teacherGroup = [[UserGroup alloc] init];
+            SectionGroup *teacherGroup = [[SectionGroup alloc] init];
             [teacherGroup setTitle:@"教师"];
             [teacherGroup setIndexkey:@"师"];
-            [teacherGroup setUsers:teacherArray];
+            NSMutableArray *memberArray = [NSMutableArray array];
+            for (TeacherInfo *teacherInfo in teacherArray) {
+                MemberItem *item = [[MemberItem alloc] init];
+                [item setToObjid:[UserCenter sharedInstance].curSchool.schoolID];
+                [item setUserInfo:teacherInfo];
+                [memberArray addObject:item];
+            }
+            [teacherGroup setMemberArray:memberArray];
             [self.sourceArray addObject:teacherGroup];
-
+            
             NSMutableArray *studentGroupArray = [NSMutableArray array];
             for (StudentInfo *childInfo in studentArray) {
-                UserGroup *studentGroup = [[UserGroup alloc] init];
-                [studentGroup setChildID:childInfo.uid];
-                [studentGroup setUsers:childInfo.family];
-                [studentGroup setIndexkey:childInfo.first_letter];
-                [studentGroup setTitle:childInfo.first_letter];
+                SectionGroup *sectionGroup = [[SectionGroup alloc] init];
+                [sectionGroup setTitle:childInfo.first_letter];
+                [sectionGroup setIndexkey:childInfo.first_letter];
                 
-                NSMutableArray *labelArray = [NSMutableArray array];
-                for (FamilyInfo *family in childInfo.family) {
-                    [labelArray addObject:[NSString stringWithFormat:@"%@的%@",childInfo.name, family.relation]];
+                NSMutableArray *memberArray = [NSMutableArray array];
+                for (FamilyInfo *familyInfo in childInfo.family) {
+                    MemberItem *item = [[MemberItem alloc] init];
+                    [item setUserInfo:familyInfo];
+                    [item setToObjid:childInfo.uid];
+                    [item setLabel:[NSString stringWithFormat:@"%@的%@",childInfo.name, familyInfo.relation]];
+                    [memberArray addObject:item];
                 }
-                [studentGroup setLabelArray:labelArray];
-                
-                [studentGroupArray addObject:studentGroup];
+                [sectionGroup setMemberArray:memberArray];
+                [studentGroupArray addObject:sectionGroup];
             }
             [studentGroupArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                UserGroup *firstGroup = (UserGroup *)obj1;
-                UserGroup *secondGroup = (UserGroup *)obj2;
+                SectionGroup *firstGroup = (SectionGroup *)obj1;
+                SectionGroup *secondGroup = (SectionGroup *)obj2;
                 return [firstGroup.title compare:secondGroup.title];
             }];
-            UserGroup *preGroup = nil;
+            SectionGroup *preGroup = nil;
             NSMutableArray *deleteArray = [NSMutableArray array];
-            for (UserGroup *userGroup in studentGroupArray) {
+            for (SectionGroup *userGroup in studentGroupArray) {
                 if([userGroup.indexkey isEqualToString:preGroup.indexkey]){
                     [preGroup addGroup:userGroup];
                     [deleteArray addObject:userGroup];
@@ -179,9 +187,23 @@
             }
             [self.sourceArray addObjectsFromArray:studentGroupArray];
             [self.tableView reloadData];
-        } fail:^(NSString *errMsg) {
-            
-        }];
+        };
+        TNDataWrapper *dataWrapper = [[LZKVStorage userKVStorage] storageValueForKey:[self cacheKey]];
+        if(dataWrapper && [dataWrapper isKindOfClass:[TNDataWrapper class]]){
+            parse(dataWrapper);
+        }
+        else{
+            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+            [params setValue:self.classID forKey:@"class_id"];
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"app/contact_of_class" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                if(responseObject){
+                    [[LZKVStorage userKVStorage] saveStorageValue:responseObject forKey:[self cacheKey]];
+                }
+                parse(responseObject);
+            } fail:^(NSString *errMsg) {
+                
+            }];
+        }
     }
     else if(self.groupID)
     {
@@ -190,21 +212,27 @@
                 NSMutableDictionary *groupDic = [NSMutableDictionary dictionary];
                 for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
                     NSString *indexKey = teacherInfo.first_letter;
-                    NSMutableArray *users = groupDic[indexKey];
-                    if(users == nil){
-                        users = [NSMutableArray array];
-                        [groupDic setValue:users forKey:indexKey];
-                        UserGroup *userGroup = [[UserGroup alloc] init];
-                        [userGroup setTitle:teacherInfo.first_letter];
-                        [userGroup setIndexkey:teacherInfo.first_letter];
-                        [userGroup setUsers:users];
-                        [self.sourceArray addObject:userGroup];
+                    SectionGroup *group = groupDic[indexKey];
+                    if(!group){
+                        group = [[SectionGroup alloc] init];
+                        [group setTitle:teacherInfo.first_letter];
+                        [group setIndexkey:teacherInfo.first_letter];
+                        [groupDic setValue:group forKey:indexKey];
                     }
-                    [users addObject:teacherInfo];
+                    NSMutableArray *memberArray = [NSMutableArray arrayWithArray:group.memberArray];
+                    MemberItem *item = [[MemberItem alloc] init];
+                    [item setUserInfo:teacherInfo];
+                    [item setToObjid:[UserCenter sharedInstance].curSchool.schoolID];
+                    [memberArray addObject:item];
+                    [group setMemberArray:memberArray];
+                }
+                NSArray *allKeys = [groupDic allKeys];
+                for (NSString *key in allKeys) {
+                    [self.sourceArray addObject:groupDic[key]];
                 }
                 [self.sourceArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-                    UserGroup *firstGroup = (UserGroup *)obj1;
-                    UserGroup *secondGroup = (UserGroup *)obj2;
+                    SectionGroup *firstGroup = (SectionGroup *)obj1;
+                    SectionGroup *secondGroup = (SectionGroup *)obj2;
                     return [firstGroup.indexkey compare:secondGroup.indexkey];
                 }];
             }
@@ -212,6 +240,13 @@
         [self.tableView reloadData];
     }
 
+}
+
+- (NSString *)cacheKey{
+    if(self.classID.length > 0){
+        return [NSString stringWithFormat:@"classMember_%@",self.classID] ;
+    }
+    return nil;
 }
 
 #pragma mark
@@ -222,8 +257,8 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    UserGroup *group = self.sourceArray[section];
-    return group.users.count;
+    SectionGroup *group = self.sourceArray[section];
+    return [group.memberArray count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -236,7 +271,7 @@
 
 - (NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView{
     NSMutableArray *titleArray = [NSMutableArray array];
-    for (UserGroup *group in self.sourceArray) {
+    for (SectionGroup *group in self.sourceArray) {
         if(group.indexkey)
             [titleArray addObject:group.indexkey];
         else{
@@ -252,7 +287,7 @@
     if(headerView == nil){
         headerView = [[MemberSectionHeader alloc] initWithReuseIdentifier:reuseID];
     }
-    UserGroup *group = self.sourceArray[section];
+    SectionGroup *group = self.sourceArray[section];
     [headerView setTitle:group.title];
     return headerView;
 }
@@ -265,20 +300,21 @@
     {
         cell = [[MemberCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
-    UserGroup *group = self.sourceArray[indexPath.section];
-    UserInfo *userInfo = group.users[indexPath.row];
-    [cell setUserInfo:userInfo];
-    [cell setLabel:group.labelArray[indexPath.row]];
+    SectionGroup *group = self.sourceArray[indexPath.section];
+    MemberItem *item = group.memberArray[indexPath.row];
+    [cell setUserInfo:item.userInfo];
+    [cell setLabel:item.label];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    UserGroup *group = self.sourceArray[indexPath.section];
-    UserInfo *userInfo = group.users[indexPath.row];
+    SectionGroup *group = self.sourceArray[indexPath.section];
+    MemberItem *item = group.memberArray[indexPath.row];
+    UserInfo *userInfo = item.userInfo;
+    NSString *label = item.label;
     if(self.atCallback){
-        NSString *label = group.labelArray[indexPath.row];
         if(label.length > 0){
             userInfo.name = label;
         }
@@ -293,8 +329,9 @@
         }
         else{
             ChatParentInfoVC *parentVC = [[ChatParentInfoVC alloc] init];
+            [parentVC setLabel:label];
             [parentVC setUid:userInfo.uid];
-            [parentVC setChildID:group.childID];
+            [parentVC setChildID:item.toObjid];
             [self.navigationController pushViewController:parentVC animated:YES];
         }
     }

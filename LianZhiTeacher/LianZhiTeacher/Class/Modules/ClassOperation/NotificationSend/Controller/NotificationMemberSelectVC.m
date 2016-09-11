@@ -478,7 +478,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSMutableArray *classArray = [NSMutableArray array];
-    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes) {
+    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.allClasses) {
         NSDictionary *classDic = [classInfo modelToJSONObject];
         ClassInfo *sourceClassInfo = [ClassInfo modelWithJSON:classDic];
         [classArray addObject:sourceClassInfo];
@@ -489,7 +489,9 @@
     for (TeacherGroup *group in [UserCenter sharedInstance].curSchool.groups) {
         NSDictionary *groupDic = [group modelToJSONObject];
         TeacherGroup *sourceGroup = [TeacherGroup modelWithJSON:groupDic];
-        [groupArray addObject:sourceGroup];
+        if(sourceGroup.canNotice){
+            [groupArray addObject:sourceGroup];
+        }
     }
     self.groupArray = groupArray;
     

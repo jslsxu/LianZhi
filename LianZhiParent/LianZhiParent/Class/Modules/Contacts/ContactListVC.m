@@ -104,7 +104,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationItem.leftBarButtonItems = [ApplicationDelegate.homeVC commonLeftBarButtonItems];
-    [[UserCenter sharedInstance] updateUserInfo];
+    [[UserCenter sharedInstance] updateChildren];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -309,16 +309,16 @@
         }
         else
         {
-            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:@"该用户尚未下载使用连枝，您可打电话与用户联系" style:LGAlertViewStyleAlert buttonTitles:@[@"取消", @"拨打电话"] cancelButtonTitle:nil destructiveButtonTitle:nil];
-            [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
-            [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-            [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-                if(index == 1){
-                    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",teacherInfo.mobile];
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-                }
-            }];
-            [alertView showAnimated:YES completionHandler:nil];
+//            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:@"该用户尚未下载使用连枝，您可打电话与用户联系" style:LGAlertViewStyleAlert buttonTitles:@[@"取消", @"拨打电话"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+//            [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+//            [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+//            [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+//                if(index == 1){
+//                    NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",teacherInfo.mobile];
+//                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+//                }
+//            }];
+//            [alertView showAnimated:YES completionHandler:nil];
         }
 
     }else{

@@ -10,5 +10,6 @@
 
 @interface TreeHousePublishManager : NSObject
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(TreeHousePublishManager)
+- (void)addTreehouseItem:(TreehouseItem *)item;
 - (void)startUploading:(TreehouseItem *)item;
 @end

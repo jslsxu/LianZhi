@@ -189,8 +189,8 @@
         NSString *mid = nil;
         for (NSInteger i = self.modelItemArray.count - 1; i >= 0; i--) {
             MessageItem *item = self.modelItemArray[i];
-            if(item.content.mid.length > 0 && item.from == UUMessageFromOther){
-                NSString *curMid = item.content.mid;
+            if(item.content.uniqueId.length > 0){
+                NSString *curMid = item.content.uniqueId;
                 if(curMid.integerValue > mid.integerValue){
                     mid = curMid;
                 }
@@ -310,29 +310,29 @@
         for (NSInteger i = newMessageArray.count - 1; i >= 0; i--) {
             MessageItem *messageItem = newMessageArray[i];
             [messageItem setTargetUser:self.targetUser];
-            if(messageItem.content.mid.integerValue > newMid.integerValue){
-                newMid = messageItem.content.mid;
-            }
-            if(messageItem.client_send_id.length > 0){
-                NSString *sql = [NSString stringWithFormat:@"select * from %@ where client_send_id = '%@'",[self tableName], messageItem.client_send_id];
-                FMResultSet *rs = [self.database executeQuery:sql];
-                if(![rs next]){
-                    addNum++;
-                    [self.modelItemArray addObject:messageItem];
-                    sql = [NSString stringWithFormat:@"insert into %@ values(%zd,'%@','%@','%@') ",[self tableName],[messageItem.content.mid integerValue], messageItem.client_send_id, messageItem.content.text, [messageItem modelToJSONString]];
-                    [self.database executeUpdate:sql];
-                }
-                else{
-                    [self updateMessage:messageItem];
-                }
-            }
-            else{
-                addNum++;
-                [self.modelItemArray addObject:messageItem];
-                NSString *sql = [NSString stringWithFormat:@"insert into %@ values(%zd,'%@','%@','%@') ",[self tableName],[messageItem.content.mid integerValue], messageItem.client_send_id, messageItem.content.text, [messageItem modelToJSONString]];
-                [self.database executeUpdate:sql];
+            if(messageItem.content.uniqueId.integerValue > newMid.integerValue){
+                newMid = messageItem.content.uniqueId;
             }
             
+            //判断是否已存在，存在则更新，不存在则添加
+            NSString *sql = nil;
+            if(messageItem.client_send_id.length > 0){
+                sql = [NSString stringWithFormat:@"select * from %@ where client_send_id = '%@'",[self tableName], messageItem.client_send_id];
+            }
+            else{
+                sql = [NSString stringWithFormat:@"select * from %@ where message_id = '%@'",[self tableName], messageItem.content.mid];
+            }
+            
+            FMResultSet *rs = [self.database executeQuery:sql];
+            if(![rs next]){//不存在
+                addNum++;
+                [self.modelItemArray addObject:messageItem];
+                sql = [NSString stringWithFormat:@"insert into %@ values(%zd,'%@','%@','%@') ",[self tableName],[messageItem.content.mid integerValue], messageItem.client_send_id, messageItem.content.text, [messageItem modelToJSONString]];
+                [self.database executeUpdate:sql];
+            }
+            else{
+                [self updateMessage:messageItem];
+            }
         }
         if(newMid.integerValue > self.lastMaxMid.integerValue && type == RequestMessageTypeLatest){
             self.lastMaxMid = newMid;

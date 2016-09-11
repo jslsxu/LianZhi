@@ -28,7 +28,7 @@
 }
 
 + (NSDictionary<NSString *,id> *)modelCustomPropertyMapper{
-    return @{@"msgId" : @"id"};
+    return @{@"uniqueId" : @"id"};
 }
 
 - (NSString *)timeStr{

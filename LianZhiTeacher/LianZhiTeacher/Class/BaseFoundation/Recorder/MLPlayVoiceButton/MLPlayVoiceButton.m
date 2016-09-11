@@ -224,9 +224,9 @@
     
 #define kVoicePlaySignSideLength 20.0f
     if (self.type == MLPlayVoiceButtonTypeRight) {
-        self.playingSignImageView.frame = CGRectMake(self.frame.size.width-kVoicePlaySignSideLength-20.0f, (self.frame.size.height-kVoicePlaySignSideLength)/2, kVoicePlaySignSideLength, kVoicePlaySignSideLength);
+        self.playingSignImageView.frame = CGRectMake(self.frame.size.width-kVoicePlaySignSideLength-10.0f, (self.frame.size.height-kVoicePlaySignSideLength)/2, kVoicePlaySignSideLength, kVoicePlaySignSideLength);
     }else{
-        self.playingSignImageView.frame = CGRectMake(20, (self.frame.size.height-kVoicePlaySignSideLength)/2, kVoicePlaySignSideLength, kVoicePlaySignSideLength);
+        self.playingSignImageView.frame = CGRectMake(10, (self.frame.size.height-kVoicePlaySignSideLength)/2, kVoicePlaySignSideLength, kVoicePlaySignSideLength);
     }
     
     self.indicator.frame = self.playingSignImageView.frame;

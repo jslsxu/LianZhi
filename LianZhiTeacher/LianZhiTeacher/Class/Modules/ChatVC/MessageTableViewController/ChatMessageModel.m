@@ -202,8 +202,8 @@
         NSString *mid = nil;
         for (NSInteger i = self.modelItemArray.count - 1; i >= 0; i--) {
             MessageItem *item = self.modelItemArray[i];
-            if(item.content.mid.length > 0 ){
-                NSString *curMid = item.content.mid;
+            if(item.content.uniqueId.length > 0 ){
+                NSString *curMid = item.content.uniqueId;
                 if(curMid.integerValue > mid.integerValue){
                     mid = curMid;
                 }
@@ -318,41 +318,36 @@
             break;
         }
     }
-    BOOL add = NO;
+    NSInteger addNum = 0;
     if(newMessageArray.count > 0){
         NSString *newMid = nil;
-//        NSString *lastID = [self latestId];
-//        NSMutableString *midStr = [[NSMutableString alloc] init];
-//        [midStr appendString:[NSString stringWithFormat:@"%@",lastID]];
-        
         //添加到前面
         for (NSInteger i = newMessageArray.count - 1; i >= 0; i--) {
             MessageItem *messageItem = newMessageArray[i];
-//            [midStr appendString:[NSString stringWithFormat:@",%@",messageItem.content.mid]];
-            if(messageItem.content.mid.integerValue > newMid.integerValue){
-                newMid = messageItem.content.mid;
+            if(messageItem.content.uniqueId.integerValue > newMid.integerValue){
+                newMid = messageItem.content.uniqueId;
             }
             [messageItem setTargetUser:self.targetUser];
+            //判断是否已存在，存在则更新，不存在则添加
+            NSString *sql = nil;
             if(messageItem.client_send_id.length > 0){
-                NSString *sql = [NSString stringWithFormat:@"select * from %@ where client_send_id = '%@'",[self tableName], messageItem.client_send_id];
-                FMResultSet *rs = [self.database executeQuery:sql];
-                if(![rs next]){
-                    add = YES;
-                    [self.modelItemArray addObject:messageItem];
-                    sql = [NSString stringWithFormat:@"insert into %@ values(%zd,'%@','%@','%@') ",[self tableName],[messageItem.content.mid integerValue], messageItem.client_send_id, messageItem.content.text, [messageItem modelToJSONString]];
-                    [self.database executeUpdate:sql];
-                }
-                else{//替换
-                    [self updateMessage:messageItem];
-                    
-                }
+                sql = [NSString stringWithFormat:@"select * from %@ where client_send_id = '%@'",[self tableName], messageItem.client_send_id];
             }
             else{
-                add = YES;
+                sql = [NSString stringWithFormat:@"select * from %@ where message_id = '%@'",[self tableName], messageItem.content.mid];
+            }
+            
+            FMResultSet *rs = [self.database executeQuery:sql];
+            if(![rs next]){//不存在
+                addNum++;
                 [self.modelItemArray addObject:messageItem];
-                NSString *sql = [NSString stringWithFormat:@"insert into %@ values(%zd,'%@','%@','%@') ",[self tableName],[messageItem.content.mid integerValue], messageItem.client_send_id, messageItem.content.text, [messageItem modelToJSONString]];
+                sql = [NSString stringWithFormat:@"insert into %@ values(%zd,'%@','%@','%@') ",[self tableName],[messageItem.content.mid integerValue], messageItem.client_send_id, messageItem.content.text, [messageItem modelToJSONString]];
                 [self.database executeUpdate:sql];
             }
+            else{
+                [self updateMessage:messageItem];
+            }
+
             
         }
 //        NSLog(@"%@",midStr);
@@ -360,7 +355,7 @@
             self.lastMaxMid = newMid;
         }
         
-        if(add){
+        if(addNum > 0){
             [self sortMessage];
             if(type == RequestMessageTypeLatest && originalNum > 0){
                 //有新消息，播放声音
@@ -388,7 +383,7 @@
         }
     }
     
-    return type == RequestMessageTypeLatest && (add + updateCount);
+    return type == RequestMessageTypeLatest && (addNum + updateCount);
 }
 
 - (BOOL)canInsert:(MessageItem *)messageItem

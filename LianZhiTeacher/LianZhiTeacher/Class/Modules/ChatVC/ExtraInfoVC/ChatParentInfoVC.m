@@ -124,15 +124,28 @@
     [self.view addSubview:self.tableView];
     if(!self.parentInfo){
         if(self.uid.length > 0){
-            @weakify(self)
-            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_parent_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid" : self.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                @strongify(self)
-                self.parentInfo = [ContactParentInfo nh_modelWithJson:responseObject.data];
-                [self.tableView reloadData];
-                [self showBottomView];
-            } fail:^(NSString *errMsg) {
-                
-            }];
+            ContactParentInfo *parentInfo = [[LZKVStorage userKVStorage] storageValueForKey:[self cacheKey]];
+            if(parentInfo){
+                if([parentInfo isKindOfClass:[ContactParentInfo class]]){
+                    self.parentInfo = parentInfo;
+                    [self.tableView reloadData];
+                    [self showBottomView];
+                }
+            }
+            else{
+                @weakify(self)
+                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_parent_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid" : self.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                    @strongify(self)
+                    self.parentInfo = [ContactParentInfo nh_modelWithJson:responseObject.data];
+                    if(self.parentInfo){
+                        [[LZKVStorage userKVStorage] saveStorageValue:self.parentInfo forKey:[self cacheKey]];
+                    }
+                    [self.tableView reloadData];
+                    [self showBottomView];
+                } fail:^(NSString *errMsg) {
+                    
+                }];
+            }
         }
     }
     else{
@@ -157,7 +170,8 @@
     [chatVC setTargetID:self.parentInfo.uid];
     [chatVC setChatType:ChatTypeParents];
     [chatVC setMobile:self.parentInfo.mobile];
-    [chatVC setName:self.parentInfo.name];
+//    [chatVC setName:self.parentInfo.name];
+    [chatVC setName:self.label];
     [ApplicationDelegate popAndPush:chatVC];
 }
 
@@ -171,6 +185,10 @@
         [_tableView setDataSource:self];
     }
     return _tableView;
+}
+
+- (NSString *)cacheKey{
+    return [NSString stringWithFormat:@"parentInfo_%@",self.uid];
 }
 
 #pragma mark - UITableViewDelegate

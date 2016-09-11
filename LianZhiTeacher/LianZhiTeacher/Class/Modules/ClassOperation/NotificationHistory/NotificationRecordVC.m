@@ -10,6 +10,7 @@
 #import "NotificationDetailVC.h"
 #import "NotificationDraftManager.h"
 #import "NotificationSendVC.h"
+#import "ContactsLoadingView.h"
 
 @implementation NotificationSendingItemCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
@@ -205,6 +206,7 @@
 @end
 
 @interface NotificationRecordVC ()
+@property (nonatomic, strong)ContactsLoadingView *notificationLoadingView;
 @end
 
 @implementation NotificationRecordVC
@@ -231,8 +233,19 @@
     [self setSupportPullUp:YES];
     [self setSupportPullDown:YES];
     [self requestData:REQUEST_REFRESH];
+    [self.view addSubview:[self notificationLoadingView]];
+    if(self.tableViewModel.modelItemArray.count == 0){
+        [self.notificationLoadingView show];
+    }
 }
 
+- (ContactsLoadingView *)notificationLoadingView{
+    if(_notificationLoadingView == nil){
+        _notificationLoadingView = [[ContactsLoadingView alloc] init];
+        [_notificationLoadingView setCenter:CGPointMake(self.view.width / 2, self.view.height / 2)];
+    }
+    return _notificationLoadingView;
+}
 
 - (void)clear{
     @weakify(self)
@@ -323,6 +336,10 @@
 
 
 #pragma mark - UITableViewDelegate
+
+- (void)TNBaseTableViewControllerRequestSuccess{
+    [self.notificationLoadingView dismiss];
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;

@@ -34,7 +34,7 @@
     if(self){
         NSDate *date = [NSDate date];
         _dayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_dayLabel setFont:[UIFont systemFontOfSize:40]];
+        [_dayLabel setFont:[UIFont systemFontOfSize:45]];
         [_dayLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
         [_dayLabel setText:kStringFromValue([date day])];
         [_dayLabel sizeToFit];
@@ -45,7 +45,7 @@
         [_weekdayLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
         [_weekdayLabel setText:[Utility weekdayStr:date]];
         [_weekdayLabel sizeToFit];
-        [_weekdayLabel setOrigin:CGPointMake(_dayLabel.right + 10, _dayLabel.y + 5)];
+        [_weekdayLabel setOrigin:CGPointMake(_dayLabel.right + 10, _dayLabel.y + 10)];
         [self addSubview:_weekdayLabel];
         
         _monthLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -53,7 +53,7 @@
         [_monthLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
         [_monthLabel setText:[NSString stringWithFormat:@"%02zd/%zd",[date month], [date year]]];
         [_monthLabel sizeToFit];
-        [_monthLabel setOrigin:CGPointMake(_weekdayLabel.left, _dayLabel.bottom - _monthLabel.height - 5)];
+        [_monthLabel setOrigin:CGPointMake(_weekdayLabel.left, _dayLabel.bottom - _monthLabel.height - 10)];
         [self addSubview:_monthLabel];
         
         _temperatureLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -66,6 +66,9 @@
         
         self.locationManager = [[CLLocationManager alloc] init];
         [self.locationManager setDelegate:self];
+        if (IS_IOS8_LATER) {
+            [self.locationManager requestWhenInUseAuthorization];
+        }
         [self.locationManager startUpdatingLocation];
     }
     return self;

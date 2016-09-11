@@ -8,6 +8,11 @@
 
 #import "TNBaseViewController.h"
 
+@interface ContactClassInfo : TNBaseObject
+@property (nonatomic, copy)NSString *class_name;
+@property (nonatomic, copy)NSString *course;
+@end
+
 @interface ContactSchoolInfo : TNBaseObject
 @property (nonatomic, copy)NSString *logo;
 @property (nonatomic, copy)NSString *name;

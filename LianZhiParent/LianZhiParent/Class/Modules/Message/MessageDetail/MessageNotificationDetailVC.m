@@ -104,8 +104,6 @@
     }
     [publishPhotoVC setForward:ForwardTypeNotification];
     [publishPhotoVC setOriginalImageArray:photoArray];
-#warning todo
-    [publishPhotoVC setDelegate:nil];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:publishPhotoVC];
     [CurrentROOTNavigationVC presentViewController:nav animated:YES completion:nil];
 }

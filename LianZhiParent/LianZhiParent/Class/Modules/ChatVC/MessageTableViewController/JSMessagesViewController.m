@@ -18,6 +18,7 @@ static NSString *topChatID = nil;
 @property (nonatomic, assign)BOOL isRequestLatest;
 @property (nonatomic, strong)ChatTopNewMessageView *topNewIndicator;
 @property (nonatomic, strong)ChatBottomNewMessageView *bottomNewIndicator;
+@property (nonatomic, assign)BOOL showTopAlert;
 @property (nonatomic, assign)BOOL firstIn;
 @property (nonatomic, assign)BOOL imDisabled;
 @end
@@ -107,7 +108,7 @@ static NSString *topChatID = nil;
 //        if(msgIndex == 0){
 //            [self inputBarViewDidCommit:@"开始测试" atArray:nil];
 //        }
-//        else if(msgIndex < 30){
+//        else if(msgIndex < 20){
 //            //test
 //            [self inputBarViewDidCommit:kStringFromValue(msgIndex) atArray:nil];
 //        }
@@ -377,7 +378,7 @@ static NSString *topChatID = nil;
     [params setValue:messageModel.latestId forKey:@"more_id"];
     [params setValue:kStringFromValue(1) forKey:@"more_new"];
     @weakify(self);
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/get" method:REQUEST_GET type:REQUEST_GETMORE withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/getx" method:REQUEST_GET type:REQUEST_GETMORE withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         @strongify(self);
         TNDataWrapper *items = [responseObject getDataWrapperForKey:@"items"];
         NSInteger unreadCount = 0;
@@ -535,6 +536,10 @@ static NSString *topChatID = nil;
 }
 
 - (void)showTopNewMessageWithAtItem:(MessageItem *)atItem{
+    if(self.showTopAlert){
+        return;
+    }
+    self.showTopAlert = YES;
     [self.topNewIndicator showAtWithTargetItem:atItem];
     @weakify(self)
     [self.topNewIndicator setTopNewMessageCallback:^{

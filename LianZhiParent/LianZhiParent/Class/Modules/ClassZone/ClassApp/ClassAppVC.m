@@ -41,8 +41,10 @@
 }
 
 - (void)setBannerArray:(NSArray *)bannerArray{
-    _bannerArray = bannerArray;
-    [_bannerView reloadData];
+    if(_bannerArray != bannerArray){
+        _bannerArray = bannerArray;
+        [_bannerView reloadData];
+    }
 }
 
 #pragma mark - ZYBannerViewDelegate

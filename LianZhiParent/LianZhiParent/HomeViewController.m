@@ -90,20 +90,8 @@ static NSArray *tabDatas = nil;
     [msgButton setBadgeValue:badgeValue];
     
     LZTabBarButton *classAppButton = (LZTabBarButton *)_tabbarButtons[2];
-    NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;//班博客回复
-    NSInteger classZoneNum = 0;
-    for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
-    {
-        NSString *classID = classInfo.classID;
-        for (TimelineCommentItem *item in classNewCommentArray)
-        {
-            if([item.objid isEqualToString:classID])
-            {
-                classZoneNum = item.alertInfo.num;
-                break;
-            }
-        }
-    }
+
+    NSInteger classZoneNum = [[UserCenter sharedInstance].statusManager newCountForClassComment];
     if(classZoneNum > 0)
         [classAppButton setBadgeValue:kStringFromValue(classZoneNum)];
     else

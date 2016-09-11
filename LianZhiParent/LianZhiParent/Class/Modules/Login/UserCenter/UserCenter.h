@@ -24,6 +24,8 @@ extern NSString* const kUserDataStorageKey;
 @property (nonatomic, assign)BOOL confirmed;
 @property (nonatomic, strong)NSMutableArray*   children;
 @property (nonatomic, assign)NSInteger curChildIndex;
+
+- (void)updateChildren:(TNDataWrapper *)childrenWrapper;
 @end
 
 @interface UserCenter : TNModelItem
@@ -33,12 +35,11 @@ extern NSString* const kUserDataStorageKey;
 @property (nonatomic, strong)StatusManager *statusManager;
 - (UserInfo *)userInfo;
 - (NSArray *)children;
-- (void)updateChildData:(TNDataWrapper *)childWrapper;
 - (ChildInfo *)curChild;
 - (void)setCurChild:(ChildInfo *)curChild;
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(UserCenter)
 - (void)updateUserInfoWithData:(TNDataWrapper *)userWrapper;
-- (void)updateUserInfo;
+- (void)updateChildren;
 - (void)save;
 - (BOOL)hasLogin;
 - (void)logout;

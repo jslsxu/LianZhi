@@ -109,17 +109,7 @@ static NSArray *tabDatas = nil;
     [discoveryButon setBadgeValue:discoveryVC.hasNew ? @"" : nil];
     
     LZTabBarButton *appTabButton = _tabbarButtons[2];
-    //新动态
-    NSArray *newCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
-    NSInteger commentNum = 0;
-    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
-    {
-        for (TimelineCommentItem *commentItem in newCommentArray)
-        {
-            if([commentItem.classID isEqualToString:classInfo.classID] && commentItem.alertInfo.num > 0)
-                commentNum += commentItem.alertInfo.num;
-        }
-    }
+    NSInteger commentNum = [[UserCenter sharedInstance].statusManager hasNewForClassComment];
     if(commentNum > 0)
         [appTabButton setBadgeValue:kStringFromValue(commentNum)];
     else
