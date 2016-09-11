@@ -100,18 +100,16 @@
                     [self showBottomView];
                 }
             }
-            else{
-                @weakify(self)
-                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_teacher_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid" : self.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                    @strongify(self)
-                    self.teacherInfo = [ContactTeacherInfo nh_modelWithJson:responseObject.data];
-                    [[LZKVStorage userKVStorage] saveStorageValue:self.teacherInfo forKey:[self cacheKey]];
-                    [self.tableView reloadData];
-                    [self showBottomView];
-                } fail:^(NSString *errMsg) {
-                    
-                }];
-            }
+            @weakify(self)
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_teacher_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid" : self.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                @strongify(self)
+                self.teacherInfo = [ContactTeacherInfo nh_modelWithJson:responseObject.data];
+                [[LZKVStorage userKVStorage] saveStorageValue:self.teacherInfo forKey:[self cacheKey]];
+                [self.tableView reloadData];
+                [self showBottomView];
+            } fail:^(NSString *errMsg) {
+                
+            }];
         }
     }
     else{

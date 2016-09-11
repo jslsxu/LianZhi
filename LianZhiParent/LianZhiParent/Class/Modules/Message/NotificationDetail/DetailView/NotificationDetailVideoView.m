@@ -9,6 +9,13 @@
 #import "NotificationDetailVideoView.h"
 #import "KRVideoPlayerController.h"
 
+@interface VideoItemView ()
+@property (nonatomic, strong)UIImageView *coverImageView;
+@property (nonatomic, strong)UIView   *darkCoverView;
+@property (nonatomic, strong)SSPieProgressView *progressView;
+@property (nonatomic, strong)UIButton* playButton;
+@end
+
 @implementation VideoItemView
 
 - (instancetype)initWithFrame:(CGRect)frame{
@@ -24,30 +31,18 @@
         [_darkCoverView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.3]];
         [self addSubview:_darkCoverView];
         
-        _playButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_playButton addTarget:self action:@selector(onPlayButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_playButton setImage:[UIImage imageNamed:@"play_small"] forState:UIControlStateNormal];
-        [self addSubview:_playButton];
+        _progressView = [[SSPieProgressView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+        [_progressView setCenter:CGPointMake(self.width / 2, self.height / 2)];
+        [_progressView setHidden:YES];
+        [_coverImageView addSubview:_progressView];
         
-        _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_deleteButton setFrame:CGRectMake(self.width - 30, 0, 30, 30)];
-        [_deleteButton addTarget:self action:@selector(onDeleteButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_deleteButton setImage:[UIImage imageNamed:@"media_delete"] forState:UIControlStateNormal];
-        [self addSubview:_deleteButton];
+        _playButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_playButton setFrame:self.bounds];
+        [_playButton addTarget:self action:@selector(onPlayButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [_playButton setImage:[UIImage imageNamed:@"preview_play"] forState:UIControlStateNormal];
+        [self addSubview:_playButton];
     }
     return self;
-}
-
-- (void)setVideoViewType:(VideoViewType)videoViewType{
-    _videoViewType = videoViewType;
-    if(_videoViewType == VideoViewTypeEdit){
-        [_deleteButton setHidden:NO];
-        [_playButton setImage:[UIImage imageNamed:@"play_small"] forState:UIControlStateNormal];
-    }
-    else{
-        [_deleteButton setHidden:YES];
-        [_playButton setImage:[UIImage imageNamed:@"preview_play"] forState:UIControlStateNormal];
-    }
 }
 
 - (void)setVideoItem:(VideoItem *)videoItem{
@@ -61,20 +56,34 @@
 }
 
 - (void)onPlayButtonClicked{
-    NSURL *url;
-    if(self.videoItem.localVideoPath.length > 0){
-        url = [NSURL fileURLWithPath:self.videoItem.localVideoPath];
+    if([[MLAmrPlayer shareInstance] isPlaying]){
+        [[MLAmrPlayer shareInstance] stopPlaying];
     }
-    else{
-        url = [NSURL URLWithString:self.videoItem.videoUrl];
-    }
-    MPMoviePlayerViewController *playerVC = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
-    [CurrentROOTNavigationVC presentMoviePlayerViewControllerAnimated:playerVC];
+    @weakify(self)
+    [_playButton setHidden:YES];
+    [_progressView setHidden:NO];
+    [LZVideoCacheManager videoForUrl:self.videoItem.videoUrl progress:^(CGFloat progress) {
+        @strongify(self)
+        [self.progressView setProgress:progress];
+    } complete:^(NSURL * fileURL) {
+        @strongify(self)
+        [self.progressView setHidden:YES];
+        [self.playButton setHidden:NO];
+        [self showPlayerWithUrl:fileURL];
+    } fail:^(NSError *error) {
+        @strongify(self)
+        [self.progressView setHidden:YES];
+        [self.playButton setHidden:NO];
+    }];
 }
 
-- (void)onDeleteButtonClicked{
-    if(self.deleteCallback){
-        self.deleteCallback();
+- (void)showPlayerWithUrl:(NSURL *)url{
+    if(url){
+        MPMoviePlayerViewController *playerVC = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
+        [CurrentROOTNavigationVC presentMoviePlayerViewControllerAnimated:playerVC];
+    }
+    else{
+        [ProgressHUD showHintText:@"视频不存在"];
     }
 }
 
@@ -113,7 +122,6 @@
         VideoItem *videoItem = _videoArray[0];
         VideoItemView*  videoItemView = [[VideoItemView alloc] initWithFrame:CGRectMake(margin, 0, self.width - margin * 2, (self.width - margin * 2) * 2 / 3 )];
         [videoItemView setVideoItem:videoItem];
-        [videoItemView setVideoViewType:VideoViewTypePreview];
         [_videoViewArray addObject:videoItemView];
         [self addSubview:videoItemView];
         height += videoItemView.height + margin;
@@ -126,7 +134,6 @@
         NSInteger column = (i - start) % 2;
         VideoItemView*  videoItemView = [[VideoItemView alloc] initWithFrame:CGRectMake(margin + (itemWidth + margin) * column, height + (itemHeight + margin) * row, itemWidth, itemHeight)];
         [videoItemView setVideoItem:videoItem];
-        [videoItemView setVideoViewType:VideoViewTypePreview];
         [_videoViewArray addObject:videoItemView];
         [self addSubview:videoItemView];
     }

@@ -141,7 +141,9 @@
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [NotificationDraftManager sharedInstance].draftArray.count;
+    NSInteger count = [[NotificationDraftManager sharedInstance].draftArray count];
+    [self showEmptyLabel:count == 0];
+    return count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

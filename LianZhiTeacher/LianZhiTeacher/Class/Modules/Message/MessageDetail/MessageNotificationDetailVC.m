@@ -40,6 +40,9 @@
 
 - (void)onMoreClicked{
     [self setRightbarButtonHighlighted:YES];
+    if([[MLAmrPlayer shareInstance] isPlaying]){
+        [[MLAmrPlayer shareInstance] stopPlaying];
+    }
     @weakify(self)
 //    NotificationActionItem *shareItem = [NotificationActionItem actionItemWithTitle:@"分享" action:^{
 //        [ShareActionView shareWithTitle:@"分享" content:@"" image:[UIImage imageNamed:@"ClassZone"] imageUrl:@"" url:@""];

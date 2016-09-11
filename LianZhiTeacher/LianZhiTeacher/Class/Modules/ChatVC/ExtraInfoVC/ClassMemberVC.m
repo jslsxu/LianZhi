@@ -192,18 +192,16 @@
         if(dataWrapper && [dataWrapper isKindOfClass:[TNDataWrapper class]]){
             parse(dataWrapper);
         }
-        else{
-            NSMutableDictionary *params = [NSMutableDictionary dictionary];
-            [params setValue:self.classID forKey:@"class_id"];
-            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"app/contact_of_class" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                if(responseObject){
-                    [[LZKVStorage userKVStorage] saveStorageValue:responseObject forKey:[self cacheKey]];
-                }
-                parse(responseObject);
-            } fail:^(NSString *errMsg) {
-                
-            }];
-        }
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:self.classID forKey:@"class_id"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"app/contact_of_class" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            if(responseObject){
+                [[LZKVStorage userKVStorage] saveStorageValue:responseObject forKey:[self cacheKey]];
+            }
+            parse(responseObject);
+        } fail:^(NSString *errMsg) {
+            
+        }];
     }
     else if(self.groupID)
     {

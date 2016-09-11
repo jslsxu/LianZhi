@@ -41,6 +41,9 @@
 
 - (void)onMoreClicked{
     [self setRightbarButtonHighlighted:YES];
+    if([[MLAmrPlayer shareInstance] isPlaying]){
+        [[MLAmrPlayer shareInstance] stopPlaying];
+    }
     @weakify(self)
     NSMutableArray *actionArray = [NSMutableArray array];
     if(self.messageDetailItem.pictures.count > 0){

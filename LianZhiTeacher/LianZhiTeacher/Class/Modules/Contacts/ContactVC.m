@@ -82,6 +82,7 @@
     else{
         [self.contactsLoadingView show];
     }
+    [self showEmptyLabel:titleCount == 0 && self.contactsLoadingView.hidden];
 }
 
 - (ContactsLoadingView *)contactsLoadingView{

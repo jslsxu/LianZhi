@@ -568,6 +568,8 @@
 
     [_studentView setDataSource:self.classArray];
     [_teacherView setDataSource:self.groupArray];
+    BOOL showEmpty = [self.classArray count] == 0 && [self.groupArray count] == 0;
+    [self showEmptyLabel:showEmpty];
 }
 
 - (void)onValueChanged{

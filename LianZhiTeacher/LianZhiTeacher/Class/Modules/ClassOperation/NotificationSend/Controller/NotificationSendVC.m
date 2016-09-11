@@ -89,6 +89,7 @@ DNImagePickerControllerDelegate>
 }
 
 - (void)back{
+    [self stopPlayAudio];
     if([self.sendEntity isSame:self.compareEntity]){
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -186,6 +187,7 @@ DNImagePickerControllerDelegate>
 }
 
 - (void)onPreview{
+    [self stopPlayAudio];
 //    self.sendEntity.words = self.commentView.content;
 //    if(self.sendEntity.delaySend){
 //        if(self.sendEntity.delaySendTime == 0){
@@ -212,6 +214,7 @@ DNImagePickerControllerDelegate>
 }
 
 - (void)sendNotification{
+    [self stopPlayAudio];
     if([self checkNotification]){
         YYReachability *reachability = [YYReachability reachability];
         YYReachabilityStatus status = reachability.status;
@@ -381,6 +384,7 @@ DNImagePickerControllerDelegate>
 }
 
 - (void)onAddTarget{
+    [self stopPlayAudio];
     NotificationMemberSelectVC *targetSelectVC = [[NotificationMemberSelectVC alloc] initWithOriginalArray:self.sendEntity.targets];
     [targetSelectVC setSelectCompletion:^(NSArray *classArray, NSArray *groupArray) {
 //        NSMutableArray *targetArray = [NSMutableArray array];
@@ -466,6 +470,12 @@ DNImagePickerControllerDelegate>
     [sendVideoArray addObjectsFromArray:videoArray];
     [self.videoView setVideoArray:sendVideoArray];
     [self adjustPosition];
+}
+
+- (void)stopPlayAudio{
+    if([MLAmrPlayer shareInstance].isPlaying){
+        [[MLAmrPlayer shareInstance] stopPlaying];
+    }
 }
 
 - (BOOL)checkNotification{

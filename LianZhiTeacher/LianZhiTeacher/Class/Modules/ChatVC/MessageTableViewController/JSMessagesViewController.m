@@ -412,6 +412,7 @@ static NSString *topChatID = nil;
                 }
             }
         }
+        BOOL isFirstIn = self.firstIn;
         if(hasNew){
             [self.tableView reloadData];
             if(shouldScrollToBottom){
@@ -425,19 +426,19 @@ static NSString *topChatID = nil;
                 NSArray *visibleCells = [self.tableView visibleCells];
                 if(atMessageItem){
                     NSInteger atIndex = [self.chatMessageModel.messageArray indexOfObject:atMessageItem];
-                    if(atIndex + visibleCells.count < self.chatMessageModel.messageArray.count){//超出显示范围
+                    if(atIndex + visibleCells.count < self.chatMessageModel.messageArray.count && !isFirstIn){//超出显示范围
                         [self showTopNewMessageWithAtItem:atMessageItem];
                     }
                     else{
                         //如果第一个超出范围
-                        if(visibleCells.count < unreadCount){
+                        if(visibleCells.count < unreadCount && !isFirstIn){
                             [self showTopNewMessageWithNum:unreadCount];
                         }
                     }
                 }
                 else{
                     //如果第一个超出范围
-                    if(visibleCells.count < unreadCount){
+                    if(visibleCells.count < unreadCount && !isFirstIn){
                         [self showTopNewMessageWithNum:unreadCount];
                     }
                 }

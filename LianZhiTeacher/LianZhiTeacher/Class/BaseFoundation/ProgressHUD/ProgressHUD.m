@@ -46,6 +46,9 @@
 
 + (void)showHintText:(NSString *)text
 {
+    if(text.length == 0){
+        return;
+    }
     [[self shared] hudMake:text];
 }
 

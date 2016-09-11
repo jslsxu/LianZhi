@@ -216,24 +216,29 @@
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
 {
-    HttpRequestTask *task = [[HttpRequestTask alloc] init];
-    [task setRequestUrl:@"class/space"];
-    [task setRequestMethod:REQUEST_GET];
-    [task setRequestType:requestType];
-    [task setObserver:self];
-    
-    ClassZoneModel *model = (ClassZoneModel *)self.tableViewModel;
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:0];
-    if(requestType == REQUEST_GETMORE)
-        [params setValue:@"old" forKey:@"mode"];
-    else
-        [params setValue:@"new" forKey:@"mode"];
-    [params setValue:model.minID forKey:@"min_id"];
-    [params setValue:self.classInfo.classID forKey:@"class_id"];
-    
-    [params setValue:@(20) forKey:@"num"];
-    [task setParams:params];
-    return task;
+    if([self.classInfo.classID length] > 0){
+        HttpRequestTask *task = [[HttpRequestTask alloc] init];
+        [task setRequestUrl:@"class/space"];
+        [task setRequestMethod:REQUEST_GET];
+        [task setRequestType:requestType];
+        [task setObserver:self];
+        
+        ClassZoneModel *model = (ClassZoneModel *)self.tableViewModel;
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:0];
+        if(requestType == REQUEST_GETMORE)
+            [params setValue:@"old" forKey:@"mode"];
+        else
+            [params setValue:@"new" forKey:@"mode"];
+        [params setValue:model.minID forKey:@"min_id"];
+        [params setValue:self.classInfo.classID forKey:@"class_id"];
+        
+        [params setValue:@(20) forKey:@"num"];
+        [task setParams:params];
+        return task;
+    }
+    else{
+        return nil;
+    }
 }
 
 #pragma mark - ClassZoneItemCellDelegate

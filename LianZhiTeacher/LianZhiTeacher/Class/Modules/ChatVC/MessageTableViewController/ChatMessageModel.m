@@ -413,7 +413,14 @@
 
 - (void)updateMessage:(MessageItem *)message{
     @synchronized (self) {
-        NSString *sql = [NSString stringWithFormat:@"update %@ set message_id = %zd, client_send_id = '%@', message_json = '%@', content = '%@' where client_send_id = '%@'",[self tableName],[message.content.mid integerValue], message.client_send_id, [message modelToJSONString], message.content.text,message.client_send_id];
+        NSString *sql = nil;
+        if(message.client_send_id.length > 0){
+            sql = [NSString stringWithFormat:@"update %@ set message_id = %zd, client_send_id = '%@', message_json = '%@', content = '%@' where client_send_id = '%@'",[self tableName],[message.content.mid integerValue], message.client_send_id, [message modelToJSONString], message.content.text,message.client_send_id];
+        }
+        else{
+            sql = [NSString stringWithFormat:@"update %@ set message_id = %zd, client_send_id = '%@', message_json = '%@', content = '%@' where message_id = %zd",[self tableName],[message.content.mid integerValue], message.client_send_id, [message modelToJSONString], message.content.text,[message.content.mid integerValue]];
+        }
+
         
         [self.database executeUpdate:sql];
 //        if(success){

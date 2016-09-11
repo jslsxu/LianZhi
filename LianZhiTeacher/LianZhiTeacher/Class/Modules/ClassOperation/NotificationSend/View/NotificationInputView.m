@@ -141,6 +141,9 @@
 }
 
 - (void)onActionButtonClicked:(UIButton *)button{
+    if([[MLAmrPlayer shareInstance] isPlaying]){
+        [[MLAmrPlayer shareInstance] stopPlaying];
+    }
     NSInteger index = [_actionButtonArray indexOfObject:button];
     ActionType type = index + ActionTypeRecordAudio;
     if(_actionType != type || type == ActionTypeCamera){

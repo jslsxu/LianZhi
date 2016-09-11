@@ -187,31 +187,33 @@
     return msgNum;
 }
 
-//- (void)setShowEmptyLabel:(BOOL)showEmpty
-//{
-//    if(showEmpty)
-//    {
-//        if(nil == _emptyLabel)
-//        {
-//            _emptyLabel = [[UILabel alloc] initWithFrame:self.view.bounds];
-//            [_emptyLabel setNumberOfLines:0];
-//            [_emptyLabel setTextAlignment:NSTextAlignmentCenter];
-//            [_emptyLabel setLineBreakMode:NSLineBreakByWordWrapping];
-//            [_emptyLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-//            [_emptyLabel setFont:[UIFont systemFontOfSize:14]];
-//            [_emptyLabel setText:@"还没有任何内容哦"];
-//        }
-//        [self.view insertSubview:_emptyLabel atIndex:0];
-//    }
-//    else
-//    {
-//        [_emptyLabel removeFromSuperview];
-//    }
-//}
+- (void)setShowEmptyLabel:(BOOL)showEmpty
+{
+    if(showEmpty)
+    {
+        if(nil == _emptyLabel)
+        {
+            _emptyLabel = [[UILabel alloc] initWithFrame:self.view.bounds];
+            [_emptyLabel setNumberOfLines:0];
+            [_emptyLabel setTextAlignment:NSTextAlignmentCenter];
+            [_emptyLabel setLineBreakMode:NSLineBreakByWordWrapping];
+            [_emptyLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
+            [_emptyLabel setFont:[UIFont systemFontOfSize:14]];
+            [_emptyLabel setText:@"还没有任何内容哦"];
+        }
+        [self.view insertSubview:_emptyLabel atIndex:0];
+    }
+    else
+    {
+        [_emptyLabel removeFromSuperview];
+    }
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[self sourceArray] count];
+    NSInteger count = [[self sourceArray] count];
+    [self setShowEmptyLabel:count == 0];
+    return count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

@@ -7,21 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
-typedef NS_ENUM(NSInteger, VideoViewType){
-    VideoViewTypeEdit,
-    VideoViewTypePreview
-};
+#import "SSPieProgressView.h"
 @interface VideoItemView : UIView
-{
-    UIImageView*        _coverImageView;
-    UIView*             _darkCoverView;
-    UIButton*           _deleteButton;
-    UIButton*           _playButton;
-}
-@property (nonatomic, assign)VideoViewType videoViewType;
+
 @property (nonatomic, strong)VideoItem *videoItem;
-@property (nonatomic, copy)void (^deleteCallback)();
 @end
 
 @interface NotificationDetailVideoView : UIView

@@ -73,6 +73,9 @@
 
 - (void)dealloc
 {
+    if([MLAmrPlayer shareInstance].isPlaying){
+        [[MLAmrPlayer shareInstance] stopPlaying];
+    }
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 

@@ -13,6 +13,7 @@
 #import "SwitchSchoolButton.h"
 @interface MessageVC : UITableViewController
 {
+    UILabel*                    _emptyLabel;
     MessageSegView*             _segView;
     UIButton*                   _noticeButton;
     BOOL                        _isLoading;

@@ -110,7 +110,7 @@
 - (void)loadData{
     if(self.chatType == ChatTypeClass){
         @weakify(self)
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"app/contact_of_class" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"class_id" : self.groupID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        void (^parse)(TNDataWrapper *responseObject) = ^(TNDataWrapper *responseObject){
             @strongify(self)
             TNDataWrapper *classWrapper = [responseObject getDataWrapperForKey:@"class"];
             if(classWrapper.count > 0)
@@ -145,6 +145,16 @@
             }
             
             [self.tableView reloadData];
+        };
+        TNDataWrapper *responseObject = [[LZKVStorage userKVStorage] storageValueForKey:[self cacheKey]];
+        if(responseObject){
+            parse(responseObject);
+        }
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"app/contact_of_class" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"class_id" : self.groupID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            parse(responseObject);
+            if(responseObject){
+                [[LZKVStorage userKVStorage] saveStorageValue:responseObject forKey:[self cacheKey]];
+            }
         } fail:^(NSString *errMsg) {
             
         }];
@@ -158,6 +168,10 @@
             }
         }
     }
+}
+
+- (NSString *)cacheKey{
+    return [NSString stringWithFormat:@"groupInfo_%@",self.groupID];
 }
 
 - (void)requestChatStatus{
@@ -244,7 +258,7 @@
         [formData appendPartWithFileData:imageData name:@"logo" fileName:@"logo" mimeType:@"image/jpeg"];
     } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         @strongify(self)
-        ClassInfo *classInfo = [ClassInfo modelWithJSON:responseObject.data[@"class"]];
+        ClassInfo *classInfo = [ClassInfo modelWithJSON:responseObject.data[@"info"]];
         if(classInfo.logo.length > 0){
              [[SDImageCache sharedImageCache] storeImage:image forKey:classInfo.logo];
             self.logoUrl = classInfo.logo;

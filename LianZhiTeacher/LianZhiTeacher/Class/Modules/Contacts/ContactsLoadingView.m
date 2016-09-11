@@ -39,7 +39,7 @@
         
         [self setSize:CGSizeMake(kItemDotWidth * 3 + kItemDotWidth / 2 * 2, kItemDotWidth + 8 + _textLabel.height)];
         [_textLabel setOrigin:CGPointMake((self.width - _textLabel.width) / 2, self.height - _textLabel.height)];
-        [self setAlpha:0.f];
+        [self setHidden:YES];
     }
     return self;
 }
@@ -56,7 +56,7 @@
 }
 
 - (void)show{
-    [self setAlpha:1.f];
+    [self setHidden:NO];
     if(self.timer){
         [self.timer invalidate];
     }
@@ -71,7 +71,7 @@
 
 - (void)dismiss{
     [self.timer invalidate];
-    [self setAlpha:0.f];
+    [self setHidden:YES];
 }
 
 @end

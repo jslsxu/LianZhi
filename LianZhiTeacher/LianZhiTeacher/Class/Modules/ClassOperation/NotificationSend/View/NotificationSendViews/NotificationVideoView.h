@@ -9,18 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "NotificationSendEntity.h"
 #import "NotificationContentBaseView.h"
-
+#import "SSPieProgressView.h"
 typedef NS_ENUM(NSInteger, VideoViewType){
     VideoViewTypeEdit,
     VideoViewTypePreview
 };
 @interface VideoItemView : UIView
-{
-    UIImageView*        _coverImageView;
-    UIView*             _darkCoverView;
-    UIButton*           _deleteButton;
-    UIButton*           _playButton;
-}
+
 @property (nonatomic, assign)VideoViewType videoViewType;
 @property (nonatomic, strong)VideoItem *videoItem;
 @property (nonatomic, copy)void (^deleteCallback)();

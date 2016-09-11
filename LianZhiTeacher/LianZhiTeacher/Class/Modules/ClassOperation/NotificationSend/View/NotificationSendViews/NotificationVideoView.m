@@ -8,6 +8,14 @@
 
 #import "NotificationVideoView.h"
 #import <MediaPlayer/MediaPlayer.h>
+
+@interface VideoItemView ()
+@property (nonatomic, strong)UIImageView *coverImageView;
+@property (nonatomic, strong)UIView   *darkCoverView;
+@property (nonatomic, strong)SSPieProgressView *progressView;
+@property (nonatomic, strong)UIButton*    deleteButton;
+@property (nonatomic, strong)UIButton* playButton;
+@end
 @implementation VideoItemView
 
 - (instancetype)initWithFrame:(CGRect)frame{
@@ -22,6 +30,11 @@
         _darkCoverView = [[UIView alloc] initWithFrame:self.bounds];
         [_darkCoverView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.3]];
         [self addSubview:_darkCoverView];
+        
+        _progressView = [[SSPieProgressView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+        [_progressView setCenter:CGPointMake(self.width / 2, self.height / 2)];
+        [_progressView setHidden:YES];
+        [_coverImageView addSubview:_progressView];
         
         _playButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_playButton addTarget:self action:@selector(onPlayButtonClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -60,15 +73,42 @@
 }
 
 - (void)onPlayButtonClicked{
+    if([[MLAmrPlayer shareInstance] isPlaying]){
+        [[MLAmrPlayer shareInstance] stopPlaying];
+    }
     NSURL *url;
     if(self.videoItem.isLocal){
         url = [NSURL fileURLWithPath:self.videoItem.videoUrl];
+        [self showPlayerWithUrl:url];
     }
     else{
-        url = [NSURL URLWithString:self.videoItem.videoUrl];
+        @weakify(self)
+        [_playButton setHidden:YES];
+        [_progressView setHidden:NO];
+        [LZVideoCacheManager videoForUrl:self.videoItem.videoUrl progress:^(CGFloat progress) {
+            @strongify(self)
+            [self.progressView setProgress:progress];
+        } complete:^(NSURL * fileURL) {
+            @strongify(self)
+            [self.progressView setHidden:YES];
+            [self.playButton setHidden:NO];
+            [self showPlayerWithUrl:fileURL];
+        } fail:^(NSError *error) {
+            @strongify(self)
+            [self.progressView setHidden:YES];
+            [self.playButton setHidden:NO];
+        }];
     }
-    MPMoviePlayerViewController *playerVC = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
-    [CurrentROOTNavigationVC presentMoviePlayerViewControllerAnimated:playerVC];
+}
+
+- (void)showPlayerWithUrl:(NSURL *)url{
+    if(url){
+        MPMoviePlayerViewController *playerVC = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
+        [CurrentROOTNavigationVC presentMoviePlayerViewControllerAnimated:playerVC];
+    }
+    else{
+        [ProgressHUD showHintText:@"视频不存在"];
+    }
 }
 
 - (void)onDeleteButtonClicked{

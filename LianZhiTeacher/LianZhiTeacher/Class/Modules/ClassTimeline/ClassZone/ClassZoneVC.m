@@ -664,23 +664,26 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
 {
-    HttpRequestTask *task = [[HttpRequestTask alloc] init];
-    [task setRequestUrl:@"class/space"];
-    [task setRequestMethod:REQUEST_GET];
-    [task setRequestType:requestType];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    ClassZoneModel *model = (ClassZoneModel *)self.tableViewModel;
-    if(requestType == REQUEST_GETMORE)
-        [params setValue:@"old" forKey:@"mode"];
-    else
-        [params setValue:@"new" forKey:@"mode"];
-    [params setValue:model.minID forKey:@"min_id"];
-    [params setValue:self.classInfo.classID forKey:@"class_id"];
-    
-    [params setValue:@(20) forKey:@"num"];
-    [task setParams:params];
-    [task setObserver:self];
-    return task;
+    if([self.classInfo.classID length] > 0){
+        HttpRequestTask *task = [[HttpRequestTask alloc] init];
+        [task setRequestUrl:@"class/space"];
+        [task setRequestMethod:REQUEST_GET];
+        [task setRequestType:requestType];
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        ClassZoneModel *model = (ClassZoneModel *)self.tableViewModel;
+        if(requestType == REQUEST_GETMORE)
+            [params setValue:@"old" forKey:@"mode"];
+        else
+            [params setValue:@"new" forKey:@"mode"];
+        [params setValue:model.minID forKey:@"min_id"];
+        [params setValue:self.classInfo.classID forKey:@"class_id"];
+        
+        [params setValue:@(20) forKey:@"num"];
+        [task setParams:params];
+        [task setObserver:self];
+        return task;
+    }
+    return nil;
 }
 
 - (void)TNBaseTableViewControllerRequestSuccess

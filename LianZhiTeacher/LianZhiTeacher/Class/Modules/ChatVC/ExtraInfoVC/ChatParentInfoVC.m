@@ -132,20 +132,18 @@
                     [self showBottomView];
                 }
             }
-            else{
-                @weakify(self)
-                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_parent_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid" : self.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                    @strongify(self)
-                    self.parentInfo = [ContactParentInfo nh_modelWithJson:responseObject.data];
-                    if(self.parentInfo){
-                        [[LZKVStorage userKVStorage] saveStorageValue:self.parentInfo forKey:[self cacheKey]];
-                    }
-                    [self.tableView reloadData];
-                    [self showBottomView];
-                } fail:^(NSString *errMsg) {
-                    
-                }];
-            }
+            @weakify(self)
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_parent_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"uid" : self.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                @strongify(self)
+                self.parentInfo = [ContactParentInfo nh_modelWithJson:responseObject.data];
+                if(self.parentInfo){
+                    [[LZKVStorage userKVStorage] saveStorageValue:self.parentInfo forKey:[self cacheKey]];
+                }
+                [self.tableView reloadData];
+                [self showBottomView];
+            } fail:^(NSString *errMsg) {
+                
+            }];
         }
     }
     else{

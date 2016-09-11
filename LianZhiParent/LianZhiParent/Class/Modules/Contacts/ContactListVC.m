@@ -209,7 +209,10 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [UserCenter sharedInstance].curChild.classes.count;
+    NSInteger count = [[UserCenter sharedInstance].curChild.classes count];
+    BOOL showEmpty = count == 0 && self.contactsLoadingView.hidden;
+    [self showEmptyLabel:showEmpty];
+    return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
