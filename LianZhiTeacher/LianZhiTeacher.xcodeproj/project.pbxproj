@@ -321,6 +321,7 @@
 		8D3D45E31D62F893005EA8EA /* MySendNotificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45E21D62F893005EA8EA /* MySendNotificationModel.m */; };
 		8D3D45E61D62F8A4005EA8EA /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45E51D62F8A4005EA8EA /* NotificationManager.m */; };
 		8D3E32B01D7D5B5A00C1BC77 /* ContactsLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3E32AF1D7D5B5A00C1BC77 /* ContactsLoadingView.m */; };
+		8D41BBEB1D86D1B50062CD0E /* EmptyHintView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D41BBEA1D86D1B50062CD0E /* EmptyHintView.m */; };
 		8D7554B41D68403A00A140EE /* SwitchSchoolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554B31D68403A00A140EE /* SwitchSchoolButton.m */; };
 		8D7554F81D69733B00A140EE /* ContactView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554F71D69733B00A140EE /* ContactView.m */; };
 		8D7555061D6DA89400A140EE /* PBImageScrollerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D7554FB1D6DA89400A140EE /* PBImageScrollerViewController.m */; };
@@ -1026,6 +1027,8 @@
 		8D3D45E51D62F8A4005EA8EA /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
 		8D3E32AE1D7D5B5A00C1BC77 /* ContactsLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactsLoadingView.h; sourceTree = "<group>"; };
 		8D3E32AF1D7D5B5A00C1BC77 /* ContactsLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactsLoadingView.m; sourceTree = "<group>"; };
+		8D41BBE91D86D1B50062CD0E /* EmptyHintView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmptyHintView.h; sourceTree = "<group>"; };
+		8D41BBEA1D86D1B50062CD0E /* EmptyHintView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptyHintView.m; sourceTree = "<group>"; };
 		8D7554B21D68403A00A140EE /* SwitchSchoolButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchSchoolButton.h; sourceTree = "<group>"; };
 		8D7554B31D68403A00A140EE /* SwitchSchoolButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchSchoolButton.m; sourceTree = "<group>"; };
 		8D7554F61D69733B00A140EE /* ContactView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactView.h; sourceTree = "<group>"; };
@@ -1655,6 +1658,8 @@
 				3793F9181B7CFFEF00501F77 /* AudioRecordView.m */,
 				8DCFD77A1D59C68D001EDC8A /* SSPieProgressView.h */,
 				8DCFD77B1D59C68D001EDC8A /* SSPieProgressView.m */,
+				8D41BBE91D86D1B50062CD0E /* EmptyHintView.h */,
+				8D41BBEA1D86D1B50062CD0E /* EmptyHintView.m */,
 				3793F9191B7CFFEF00501F77 /* BasicControls */,
 				3793F91C1B7CFFEF00501F77 /* BlockAlertView */,
 				3793F9231B7CFFEF00501F77 /* CameraMaskView.h */,
@@ -3492,6 +3497,7 @@
 				3793FA871B7CFFF000501F77 /* UIActionSheet+Blocks.m in Sources */,
 				3793FAEB1B7CFFF000501F77 /* TNModelItem.m in Sources */,
 				37E038E81A7386D3003A3A7F /* PublishNewspaperVC.m in Sources */,
+				8D41BBEB1D86D1B50062CD0E /* EmptyHintView.m in Sources */,
 				8D7555451D76C22300A140EE /* DNVideoBrowserCell.m in Sources */,
 				8DCFD69F1D4B4BCB001EDC8A /* NotificationGroupMemberVC.m in Sources */,
 				3793FAB81B7CFFF000501F77 /* MLAudioMeterObserver.m in Sources */,
@@ -3880,7 +3886,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3902,9 +3908,9 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "13ecdfad-3b6a-418f-a350-b23059f44475";
+				PROVISIONING_PROFILE = "1e73bb12-5426-4577-8996-779f060f2fde";
 			};
 			name = Debug;
 		};
@@ -3915,7 +3921,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3937,9 +3943,9 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "13ecdfad-3b6a-418f-a350-b23059f44475";
+				PROVISIONING_PROFILE = "1e73bb12-5426-4577-8996-779f060f2fde";
 			};
 			name = Release;
 		};

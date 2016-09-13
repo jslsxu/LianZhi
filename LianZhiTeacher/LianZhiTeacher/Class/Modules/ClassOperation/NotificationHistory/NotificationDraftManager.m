@@ -11,11 +11,26 @@ NSString* kDraftNotificationChanged = @"DraftNotificationChanged";
 #define kNotificationDraft     @"NotificationDraft"
 
 @interface NotificationDraftManager ()
+@property (nonatomic, copy)NSString *userStoragePath;
 @property (nonatomic, strong)NSMutableArray *draftNotificationArray;
 @end
 
 @implementation NotificationDraftManager
-SYNTHESIZE_SINGLETON_FOR_CLASS(NotificationDraftManager)
+
++ (instancetype)sharedInstance{
+    static NotificationDraftManager *draftManager = nil;
+    @synchronized (self) {
+        NSString *storagePath = [NHFileManager localCurrentUserStoragePath];
+        
+        if ([storagePath isEqualToString:draftManager.userStoragePath]) {
+            return draftManager;
+        }
+        
+        draftManager = [[NotificationDraftManager alloc] init];
+        [draftManager setUserStoragePath:storagePath];
+    }
+    return draftManager;
+}
 - (instancetype)init{
     self = [super init];
     if(self){

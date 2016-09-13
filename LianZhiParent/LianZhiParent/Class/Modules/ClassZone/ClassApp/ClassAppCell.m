@@ -23,7 +23,7 @@
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _appImageView.bottom + 5, self.width, 25)];
         [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-        [_nameLabel setFont:[UIFont systemFontOfSize:12]];
+        [_nameLabel setFont:[UIFont systemFontOfSize:13]];
         [_nameLabel setTextAlignment:NSTextAlignmentCenter];
         [self addSubview:_nameLabel];
         

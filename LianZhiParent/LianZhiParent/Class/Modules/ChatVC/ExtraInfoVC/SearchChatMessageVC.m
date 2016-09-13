@@ -81,7 +81,7 @@
 @interface SearchChatMessageVC ()<UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 @property (nonatomic, strong)UISearchBar*           searchBar;
 @property (nonatomic, strong)UITableView*           tableView;
-@property (nonatomic, strong)NSArray*               searchResultArray;
+@property (nonatomic, strong)NSMutableArray*        searchResultArray;
 @end
 
 @implementation SearchChatMessageVC
@@ -93,6 +93,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"查找聊天记录";
+    self.searchResultArray = [NSMutableArray array];
     _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 44)];
     [_searchBar setBackgroundColor:[UIColor whiteColor]];
     [_searchBar setDelegate:self];
@@ -105,6 +106,13 @@
     [self.view addSubview:_tableView];
     
     [self addKeyboardNotifications];
+}
+
+- (EmptyHintView *)emptyView{
+    if(!_emptyView){
+        _emptyView = [[EmptyHintView alloc] initWithImage:@"NoSearchChatRecord" title:@"暂时没有聊天记录"];
+    }
+    return _emptyView;
 }
 
 - (void)onKeyboardWillShow:(NSNotification *)note{
@@ -138,17 +146,47 @@
             targetVC = (JSMessagesViewController *)vc;
         }
     }
+
     ChatMessageModel *messageModel = [targetVC curChatMessageModel];
-    self.searchResultArray = [messageModel searchMessageWithKeyword:keyword];
+    NSArray *resultArray = [messageModel searchMessageWithKeyword:keyword from:self.searchResultArray.count];
+    [self.searchResultArray addObjectsFromArray:resultArray];
+    [self.tableView reloadData];
+    if(self.searchResultArray.count == 0){
+        [self.tableView setMj_footer:nil];
+    }
+    else{
+        if(self.tableView.mj_footer == nil){
+            @weakify(self)
+            [self.tableView setMj_footer:[MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+                @strongify(self)
+                [self searchResultForKeyword:[self.searchBar text]];
+            }]];
+        }
+        else{
+            if(resultArray.count == 20){
+                [self.tableView.mj_footer endRefreshing];
+            }
+            else {
+                [self.tableView.mj_footer endRefreshingWithNoMoreData];
+            }
+        }
+    }
+}
+
+- (void)clear{
+    [self.searchResultArray removeAllObjects];
     [self.tableView reloadData];
 }
 
+
 #pragma mark - UISearchBarDelegate
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    [self clear];
     [self searchResultForKeyword:searchText];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    [self clear];
      [self searchResultForKeyword:searchBar.text];
 }
 

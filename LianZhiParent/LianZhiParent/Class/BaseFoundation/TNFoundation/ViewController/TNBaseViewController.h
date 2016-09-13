@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "TNModelItem.h"
 #import "LoadingView.h"
+#import "EmptyHintView.h"
 @protocol TNBaseTableViewData <NSObject>
 @optional
 - (void)TNBaseTableViewControllerRequestStart;
@@ -19,11 +20,13 @@
 
 @interface TNBaseViewController : UIViewController
 {
+    EmptyHintView*  _emptyView;
     UILabel*        _emptyLabel;
     LoadingView *   _loadingView;
     UIImageView*    _showError;
     BOOL            _hasSetup;
 }
+@property (nonatomic, strong)EmptyHintView* emptyView;
 @property (nonatomic, assign)BOOL hideNavigationBar;
 @property (nonatomic, assign)BOOL shouldShowEmptyHint;
 @property (nonatomic, assign)BOOL interactivePopDisabled;
@@ -31,6 +34,7 @@
 - (void)startLoading;
 - (void)endLoading;
 - (void)showEmptyLabel:(BOOL)show;
+- (void)showEmptyView:(BOOL)show;
 - (void)showError;
 - (void)addKeyboardNotifications;
 - (void)onKeyboardWillShow:(NSNotification *)note;

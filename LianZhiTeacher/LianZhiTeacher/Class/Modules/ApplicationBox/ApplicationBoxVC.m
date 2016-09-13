@@ -29,7 +29,7 @@
         [_bannerView setDataSource:self];
         [_bannerView setShouldLoop:YES];
         [_bannerView setAutoScroll:YES];
-        [_bannerView setScrollInterval:10];
+        [_bannerView setScrollInterval:5];
         [self addSubview:_bannerView];
     }
     return self;
@@ -103,8 +103,8 @@
         [self addSubview:_appImageView];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _appImageView.bottom + 5, self.width, 25)];
-        [_nameLabel setTextColor:[UIColor colorWithHexString:@"525252"]];
-        [_nameLabel setFont:[UIFont systemFontOfSize:12]];
+        [_nameLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [_nameLabel setFont:[UIFont systemFontOfSize:13]];
         [_nameLabel setTextAlignment:NSTextAlignmentCenter];
         [self addSubview:_nameLabel];
         
@@ -235,7 +235,7 @@
     [flowLayout setItemSize:CGSizeMake(self.view.width / 4, [ApplicationItemCell cellHeight])];
     [flowLayout setMinimumInteritemSpacing:0];
     [flowLayout setMinimumLineSpacing:0];
-    [flowLayout setHeaderReferenceSize:CGSizeMake(self.view.width, self.view.width / 2)];
+    [flowLayout setHeaderReferenceSize:CGSizeMake(self.view.width, self.view.width * 29 / 64)];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType

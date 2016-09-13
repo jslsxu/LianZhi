@@ -37,7 +37,7 @@ typedef NS_ENUM(NSInteger, RequestMessageType) {
 - (void)sendNewMessage:(MessageItem *)message;
 - (void)updateMessage:(MessageItem *)message;
 - (void)deleteMessage:(MessageItem *)message;
-- (NSArray *)searchMessageWithKeyword:(NSString *)keyword;
+- (NSArray *)searchMessageWithKeyword:(NSString *)keyword from:(NSInteger)from;
 - (void)loadForSearchItem:(NSString *)mid;
 - (void)clearChatRecord;
 + (void)removeConversasionForUid:(NSString *)uid type:(ChatType)chatType;

@@ -809,8 +809,10 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             else
             {
                 NSString *imageUrl = nil;
-                if(self.targetZoneItem.photos.count > 0)
-                    imageUrl = [self.targetZoneItem.photos[0] thumbnailUrl];
+                if(self.targetZoneItem.photos.count > 0){
+                    PhotoItem *photoitem = [self.targetZoneItem.photos firstObject];
+                    imageUrl = photoitem.small;
+                }
                 if(imageUrl.length == 0)
                     imageUrl = self.classInfo.logo;
                 

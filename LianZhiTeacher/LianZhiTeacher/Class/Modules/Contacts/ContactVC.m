@@ -82,13 +82,20 @@
     else{
         [self.contactsLoadingView show];
     }
-    [self showEmptyLabel:titleCount == 0 && self.contactsLoadingView.hidden];
+    [self showEmptyView:titleCount == 0 && self.contactsLoadingView.hidden];
+}
+
+- (EmptyHintView *)emptyView{
+    if(!_emptyView){
+        _emptyView = [[EmptyHintView alloc] initWithImage:@"NoContacts" title:@"暂时没有联系人"];
+    }
+    return _emptyView;
 }
 
 - (ContactsLoadingView *)contactsLoadingView{
     if(!_contactsLoadingView){
         _contactsLoadingView = [[ContactsLoadingView alloc] initWithFrame:CGRectZero];
-        [_contactsLoadingView setOrigin:CGPointMake((self.view.width - _contactsLoadingView.width) / 2, (self.view.height - _contactsLoadingView.height ) / 2)];
+        [_contactsLoadingView setCenter:CGPointMake(self.view.width / 2, (kScreenHeight - 64 - 44) / 2)];
     }
     return _contactsLoadingView;
 }

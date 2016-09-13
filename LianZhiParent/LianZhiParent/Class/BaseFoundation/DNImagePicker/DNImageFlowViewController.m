@@ -398,6 +398,12 @@ static NSString* const dnAssetsViewCellReuseIdentifier = @"DNAssetsViewCell";
     if(self.selectedAssetsArray.count > 0){
         [self sendImages];
     }
+    else{
+        BOOL selected = [self seletedAssets:asset];
+        if(selected){
+            [self sendImages];
+        }
+    }
 //    if (self.selectedAssetsArray.count <= 0) {
 //        [self seletedAssets:asset];
 //        [self.imageFlowCollectionView reloadData];

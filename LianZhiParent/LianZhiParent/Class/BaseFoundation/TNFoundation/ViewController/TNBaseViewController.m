@@ -135,6 +135,16 @@
     [_emptyLabel setCenter:CGPointMake(self.view.width / 2, self.view.height / 2)];
 }
 
+- (void)showEmptyView:(BOOL)show
+{
+    if([self.emptyView superview] == nil){
+        [self.view addSubview:self.emptyView];
+    }
+    [self.view bringSubviewToFront:self.emptyView];
+    [self.emptyView setHidden:!show];
+    [self.emptyView setCenter:CGPointMake(self.view.width / 2, self.view.height / 2)];
+}
+
 - (void)addKeyboardNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

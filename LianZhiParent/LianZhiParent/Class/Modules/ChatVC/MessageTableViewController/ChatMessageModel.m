@@ -135,13 +135,13 @@
     return _modelItemArray;
 }
 
-- (NSArray *)searchMessageWithKeyword:(NSString *)keyword{
+- (NSArray *)searchMessageWithKeyword:(NSString *)keyword from:(NSInteger)from{
     if(keyword.length == 0)
         return nil;
     NSMutableArray* searchResultArray = [NSMutableArray array];
     NSString *sql = nil;
     FMResultSet *rs = nil;
-    sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE content like '%%%@%%' order by message_id desc ", [self tableName], keyword];
+    sql = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE content like '%%%@%%' order by message_id desc limit %zd,20", [self tableName], keyword, from];
     rs = [self.database executeQuery:sql];
     while ([rs next]) {
         NSString *messageJson = [rs stringForColumn:@"message_json"];
@@ -320,7 +320,7 @@
                 sql = [NSString stringWithFormat:@"select * from %@ where client_send_id = '%@'",[self tableName], messageItem.client_send_id];
             }
             else{
-                sql = [NSString stringWithFormat:@"select * from %@ where message_id = '%@'",[self tableName], messageItem.content.mid];
+                sql = [NSString stringWithFormat:@"select * from %@ where message_id = %zd",[self tableName], [messageItem.content.mid integerValue]];
             }
             
             FMResultSet *rs = [self.database executeQuery:sql];
@@ -404,20 +404,23 @@
         }
         
         [self.database executeUpdate:sql];
-        
+        NSLog(@"before num is %zd",[[self messageArray] count]);
         BOOL replaced = NO;
         for (MessageItem *messageItem in self.modelItemArray) {
-            if([message.content.mid isEqualToString:messageItem.content.mid] || [message.client_send_id isEqualToString:messageItem.client_send_id]){
+            BOOL isSame = NO;
+            if(messageItem.client_send_id.length > 0 && message.client_send_id.length > 0){
+                isSame = [messageItem.client_send_id isEqualToString:message.client_send_id];
+            }
+            else{
+                isSame = [messageItem.content.mid isEqualToString:message.content.mid];
+            }
+            if(isSame){
                 replaced = YES;
                 NSInteger index = [self.modelItemArray indexOfObject:messageItem];
-                [self.modelItemArray removeObjectAtIndex:index];
-                [self.modelItemArray insertObject:message atIndex:index];
+                [self.modelItemArray replaceObjectAtIndex:index withObject:message];
                 break;
             }
         }
-//        if(!replaced){
-//            [self.modelItemArray addObject:message];
-//        }
         [self sortMessage];
     }
 }

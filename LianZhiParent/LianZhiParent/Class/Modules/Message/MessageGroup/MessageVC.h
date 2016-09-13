@@ -12,7 +12,8 @@
 #import "MessageSegView.h"
 @interface MessageVC : DAContextMenuTableViewController
 {
-    UILabel*                    _emptyLabel;
+    EmptyHintView*              _notificationHintView;
+    EmptyHintView*              _chatMessageHintView;
     BOOL                        _isLoading;
 }
 @property (nonatomic, strong)MessageGroupListModel *messageModel;

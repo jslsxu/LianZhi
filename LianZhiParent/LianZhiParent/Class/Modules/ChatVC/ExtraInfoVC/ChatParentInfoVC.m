@@ -9,10 +9,19 @@
 #import "ChatParentInfoVC.h"
 #import "ContactInfoHeaderCell.h"
 #import "ContactView.h"
+
+@implementation ContactParentSchoolInfo
+
++ (NSDictionary<NSString *,id> *)modelContainerPropertyGenericClass{
+    return @{@"classes" : [NSString class]};
+}
+
+@end
+
 @implementation ContactParentChildInfo
 
 + (NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
-    return @{@"schools" : [ContactSchoolInfo class]};
+    return @{@"schools" : [ContactParentSchoolInfo class]};
 }
 @end
 @implementation ContactParentInfo
@@ -85,7 +94,7 @@
     else{
         NSInteger count = 0;
         for (NSInteger i = 0; i < childInfo.schools.count; i++) {
-            ContactSchoolInfo *schoolInfo = childInfo.schools[i];
+            ContactParentSchoolInfo *schoolInfo = childInfo.schools[i];
             for (NSInteger j = 0; j < schoolInfo.classes.count; i++) {
                 if(count + i == index){
                     return [NSString stringWithFormat:@"%@  %@",schoolInfo.name, schoolInfo.classes[j]];
@@ -104,7 +113,7 @@
 
 + (NSInteger)infoNumForChild:(ContactParentChildInfo *)childInfo{
     NSInteger count = 2;
-    for (ContactSchoolInfo *schoolInfo in childInfo.schools) {
+    for (ContactParentSchoolInfo *schoolInfo in childInfo.schools) {
         count += schoolInfo.classes.count;
     }
     return count;
@@ -143,7 +152,7 @@
                 [self.tableView reloadData];
                 [self showBottomView];
             } fail:^(NSString *errMsg) {
-                
+                [self showEmptyView:!self.parentInfo];
             }];
         }
     }
@@ -154,6 +163,13 @@
 
 - (NSString *)cacheKey{
     return [NSString stringWithFormat:@"parentInfo_%@",self.uid];
+}
+
+- (EmptyHintView *)emptyView{
+    if(!_emptyView){
+        _emptyView = [[EmptyHintView alloc] initWithImage:@"NoInfo" title:@"网络不给力"];
+    }
+    return _emptyView;
 }
 
 - (void)showBottomView{

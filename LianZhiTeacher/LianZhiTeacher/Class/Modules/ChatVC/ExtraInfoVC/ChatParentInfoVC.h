@@ -8,8 +8,16 @@
 
 #import "TNBaseViewController.h"
 #import "ChatTeacherInfoVC.h"
+
+@interface ContactParentSchoolInfo : TNBaseObject
+@property (nonatomic, copy)NSString *logo;
+@property (nonatomic, copy)NSString *name;
+@property (nonatomic, copy)NSString *url;
+@property (nonatomic, copy)NSArray* classes;
+@end
+
 @interface ContactParentChildInfo : UserInfo
-@property (nonatomic, strong)NSArray<ContactSchoolInfo *>* schools;
+@property (nonatomic, strong)NSArray<ContactParentSchoolInfo *>* schools;
 @end
 
 @interface ContactParentInfo : UserInfo

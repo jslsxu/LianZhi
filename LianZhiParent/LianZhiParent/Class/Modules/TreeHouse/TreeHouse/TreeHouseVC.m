@@ -421,8 +421,10 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
                 return;
             }
             NSString *imageUrl = nil;
-            if(self.targetTreeHouseItem.photos.count > 0)
-                imageUrl = [self.targetTreeHouseItem.photos[0] thumbnailUrl];
+            if(self.targetTreeHouseItem.photos.count > 0){
+                PhotoItem *photoItem = [self.targetTreeHouseItem.photos firstObject];
+                imageUrl = photoItem.small;
+            }
              NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kTreeHouseShareUrl,self.targetTreeHouseItem.user.uid,self.targetTreeHouseItem.itemID];
             [ShareActionView shareWithTitle:self.targetTreeHouseItem.detail content:nil image:[UIImage imageNamed:@"TreeHouse"] imageUrl:imageUrl url:url];
         }

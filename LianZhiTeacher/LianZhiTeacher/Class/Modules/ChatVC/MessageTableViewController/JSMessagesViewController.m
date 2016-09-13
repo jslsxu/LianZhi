@@ -302,14 +302,18 @@ static NSString *topChatID = nil;
     }
     [self.chatMessageModel loadForSearchItem:messageItem.content.mid];
     [self.tableView reloadData];
-    [self.tableView scrollToRow:0 inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:NO];
+    if([self.chatMessageModel.messageArray count] > 0){
+        [self.tableView scrollToRow:0 inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:NO];
+    }
     //如果当前没有，去数据库查
     
 }
 
 - (void)onTap
 {
-    [_inputView setInputType:InputTypeNone];
+    if(_inputView.inputType != InputTypeNone){
+        [_inputView setInputType:InputTypeNone];
+    }
 }
 
 
@@ -531,7 +535,9 @@ static NSString *topChatID = nil;
         [self.topNewIndicator setTopNewMessageCallback:^{
             @strongify(self)
             NSInteger row = [self.chatMessageModel.messageArray indexOfObject:self.topNewIndicator.targetItem];
-            [self.tableView scrollToRow:row inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:YES];
+            if(row >= 0 && row < [self.chatMessageModel.messageArray count]){
+                [self.tableView scrollToRow:row inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:YES];
+            }
             [self dismissTopIndicator];
         }];
         [self.topNewIndicator setOrigin:CGPointMake(self.view.width - self.topNewIndicator.width, 15)];
@@ -547,7 +553,9 @@ static NSString *topChatID = nil;
     [self.topNewIndicator setTopNewMessageCallback:^{
         @strongify(self)
         NSInteger row = [self.chatMessageModel.messageArray indexOfObject:self.topNewIndicator.targetItem];
-        [self.tableView scrollToRow:row inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:NO];
+        if(row >= 0 && row < [self.chatMessageModel.messageArray count]){
+            [self.tableView scrollToRow:row inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:NO];
+        }
 //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //            MessageCell *cell = (MessageCell *)[self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
 //            [cell flashForAtMe];
@@ -786,7 +794,7 @@ static NSString *topChatID = nil;
         NSMutableDictionary *sendParams = [self sendParams];
         [sendParams setValue:messageItem.content.mid forKey:@"mid"];
         __weak typeof(self) wself = self;
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:sendParams observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/del" method:REQUEST_GET type:REQUEST_REFRESH withParams:sendParams observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             for (MessageItem *item in wself.chatMessageModel.messageArray)
             {
                 if([item.content.mid isEqualToString:messageItem.content.mid])
@@ -824,13 +832,13 @@ static NSString *topChatID = nil;
 - (void)onReceiveGift:(MessageItem *)messageItem
 {
     if(messageItem.content.type == UUMessageTypeGift && messageItem.content.unread && messageItem.from == UUMessageFromOther) {
-        MessageItem *receiveItem = [MessageItem messageItemWithReceiveGift:messageItem.content.exinfo.presentName];
-        [self commitMessage:receiveItem];
         //更新已读
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/read" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"mids" : messageItem.content.mid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             messageItem.content.unread = 0;
             [self.chatMessageModel updateMessage:messageItem];
-            [self.tableView reloadData];
+//            [self.tableView reloadData];
+            MessageItem *receiveItem = [MessageItem messageItemWithReceiveGift:messageItem.content.exinfo.presentName];
+            [self commitMessage:receiveItem];
         } fail:^(NSString *errMsg) {
             
         }];

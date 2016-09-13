@@ -15,7 +15,6 @@
     if(self){
         self.width = kScreenWidth;
         self.height = 56;
-        [self.contentView setBackgroundColor:[UIColor whiteColor]];
         _logoView = [[LogoView alloc] initWithRadius:18];
         [_logoView setOrigin:CGPointMake(12, (56 - _logoView.height) / 2)];
         [self.contentView addSubview:_logoView];
@@ -177,7 +176,7 @@
         [self addSubview:_tableView];
         
         @weakify(self)
-        [_tableView setMj_header:[MJRefreshStateHeader headerWithRefreshingBlock:^{
+        [_tableView setMj_header:[MJRefreshNormalHeader headerWithRefreshingBlock:^{
             @strongify(self)
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/my_send_detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : self.notificationItem.nid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
                 [self.tableView.mj_header endRefreshing];

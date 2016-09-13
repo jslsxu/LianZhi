@@ -189,6 +189,7 @@
 
 - (void)onRequestSuccess:(AFHTTPRequestOperation *)operation responseData:(TNDataWrapper *)responseData
 {
+    _isLoading = NO;
     [self.tableView.mj_header endRefreshing];
     [self.tableView.mj_footer endRefreshing];
     [_tableViewModel parseData:responseData type:operation.requestType];
@@ -196,7 +197,6 @@
         [self showEmptyLabel:_tableViewModel.modelItemArray.count == 0];
     [self saveCache];
     [self reloadData];
-    _isLoading = NO;
     if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
         [self TNBaseTableViewControllerRequestSuccess];
 }

@@ -11,9 +11,11 @@
 #import "ClassZoneVC.h"
 #import "MessageSegView.h"
 #import "SwitchSchoolButton.h"
+#import "EmptyHintView.h"
 @interface MessageVC : UITableViewController
 {
-    UILabel*                    _emptyLabel;
+    EmptyHintView*              _notificationHintView;
+    EmptyHintView*              _chatMessageHintView;
     MessageSegView*             _segView;
     UIButton*                   _noticeButton;
     BOOL                        _isLoading;

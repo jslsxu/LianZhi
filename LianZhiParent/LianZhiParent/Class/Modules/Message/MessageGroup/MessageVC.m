@@ -187,32 +187,36 @@
     return msgNum;
 }
 
-- (void)setShowEmptyLabel:(BOOL)showEmpty
-{
-    if(showEmpty)
-    {
-        if(nil == _emptyLabel)
-        {
-            _emptyLabel = [[UILabel alloc] initWithFrame:self.view.bounds];
-            [_emptyLabel setNumberOfLines:0];
-            [_emptyLabel setTextAlignment:NSTextAlignmentCenter];
-            [_emptyLabel setLineBreakMode:NSLineBreakByWordWrapping];
-            [_emptyLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-            [_emptyLabel setFont:[UIFont systemFontOfSize:14]];
-            [_emptyLabel setText:@"还没有任何内容哦"];
+- (void)showEmptyView:(BOOL)show{
+    
+    UIView *emptyView;
+    if(self.isNotification){
+        if(_notificationHintView == nil){
+            _notificationHintView = [[EmptyHintView alloc] initWithImage:@"NoNotification" title:@"暂时没有通知记录"];
         }
-        [self.view insertSubview:_emptyLabel atIndex:0];
+        emptyView = _notificationHintView;
+        [_chatMessageHintView setHidden:YES];
     }
-    else
-    {
-        [_emptyLabel removeFromSuperview];
+    else{
+        if(_chatMessageHintView == nil){
+            _chatMessageHintView = [[EmptyHintView alloc] initWithImage:@"NoChatMessage" title:@"暂时没有消息记录"];
+        }
+        emptyView = _chatMessageHintView;
+        [_notificationHintView setHidden:YES];
     }
+    if([emptyView superview] == nil){
+        [self.view addSubview:emptyView];
+    }
+    [self.view bringSubviewToFront:emptyView];
+    [emptyView setHidden:!show];
+    [emptyView setCenter:CGPointMake(self.view.width / 2, self.view.height / 2)];
 }
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger count = [[self sourceArray] count];
-    [self setShowEmptyLabel:count == 0];
+    [self showEmptyView:count == 0];
     return count;
 }
 
@@ -298,48 +302,38 @@
 - (void)contextMenuCellDidSelectDeleteOption:(DAContextMenuCell *)cell
 {
     [super contextMenuCellDidSelectDeleteOption:cell];
-//    @weakify(self)
-//    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"是否删除该记录？" message:@"删除该记录内容也会随之清空" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除(不推荐)"];
-//    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
-//    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-//    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-//    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
-//        @strongify(self)
-//        MessageGroupItemCell *itemCell = (MessageGroupItemCell *)cell;
-//        MessageGroupItem *groupItem = [itemCell messageItem];
-//        MessageFromInfo *fromInfo = [groupItem fromInfo];
-//        if(!fromInfo.isNotification){
-//            [ChatMessageModel removeConversasionForUid:fromInfo.uid type:fromInfo.type];
-//        }
-//        //删除消息
-//        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-//        [params setValue:fromInfo.uid forKey:@"from_id"];
-//        [params setValue:kStringFromValue(fromInfo.type) forKey:@"from_type"];
-//        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_thread" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-//            [self.messageModel deleteItem:groupItem.fromInfo.uid];
-//            [self.tableView reloadData];
-//        } fail:^(NSString *errMsg) {
-//            
-//        }];
-//    }];
-//    [alertView showAnimated:YES completionHandler:nil];
-//
     MessageGroupItemCell *itemCell = (MessageGroupItemCell *)cell;
     MessageGroupItem *groupItem = [itemCell messageItem];
-    MessageFromInfo *fromInfo = [groupItem fromInfo];
-    if(!fromInfo.isNotification){
-        [ChatMessageModel removeConversasionForUid:fromInfo.uid type:fromInfo.type];
+    void (^delete)(MessageGroupItem *) = ^(MessageGroupItem *deleteGroupItem){
+        MessageFromInfo *fromInfo = [deleteGroupItem fromInfo];
+        if(!fromInfo.isNotification){
+            [ChatMessageModel removeConversasionForUid:fromInfo.uid type:fromInfo.type];
+        }
+        //删除消息
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setValue:fromInfo.uid forKey:@"from_id"];
+        [params setValue:kStringFromValue(fromInfo.type) forKey:@"from_type"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_thread" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [self.messageModel deleteItem:deleteGroupItem.fromInfo.uid];
+            [self.tableView reloadData];
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    };
+    if([groupItem.fromInfo isNotification]){
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"是否删除该记录？" message:@"删除该记录内容也会随之清空" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除(不推荐)"];
+        [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+        [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+            delete(groupItem);
+        }];
+        [alertView showAnimated:YES completionHandler:nil];
+    
     }
-    //删除消息
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setValue:fromInfo.uid forKey:@"from_id"];
-    [params setValue:kStringFromValue(fromInfo.type) forKey:@"from_type"];
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_thread" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        [self.messageModel deleteItem:groupItem.fromInfo.uid];
-        [self.tableView reloadData];
-    } fail:^(NSString *errMsg) {
-        
-    }];
+    else{
+        delete(groupItem);
+    }
 
 }
 

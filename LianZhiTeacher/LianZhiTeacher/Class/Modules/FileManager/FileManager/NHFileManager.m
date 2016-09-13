@@ -88,8 +88,13 @@ static NSString *kLocalVideoCachePath = @"video";
 
 + (NSString *)localCurrentUserStoragePath{
     if([UserCenter sharedInstance].hasLogin){
-        NSString *storagePath = [[self localCurrentUserCachePath] stringByAppendingPathComponent:@"KVStorage"];
-        return storagePath;
+        NSString *schoolID = [UserCenter sharedInstance].curSchool.schoolID;
+        if(schoolID.length > 0){
+            NSString *schoolInfoPath = [[self localCurrentUserCachePath] stringByAppendingPathComponent:[NSString stringWithFormat:@"schoolid_%@",schoolID]];
+            [self createDirectory:schoolInfoPath];
+            NSString *storagePath = [schoolInfoPath stringByAppendingPathComponent:@"KVStorage"];
+            return storagePath;
+        }
     }
     return nil;
 }

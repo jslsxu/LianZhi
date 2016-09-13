@@ -108,7 +108,7 @@
                 [self.tableView reloadData];
                 [self showBottomView];
             } fail:^(NSString *errMsg) {
-                
+                [self showEmptyView:!self.teacherInfo];
             }];
         }
     }
@@ -119,6 +119,13 @@
 
 - (NSString *)cacheKey{
     return [NSString stringWithFormat:@"teacherInfo_%@",self.uid];
+}
+
+- (EmptyHintView *)emptyView{
+    if(!_emptyView){
+        _emptyView = [[EmptyHintView alloc] initWithImage:@"NoInfo" title:@"网络不给力"];
+    }
+    return _emptyView;
 }
 
 - (void)showBottomView{

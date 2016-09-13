@@ -324,8 +324,10 @@
                 return;
             }
             NSString *imageUrl = nil;
-            if(self.targetClassZoneItem.photos.count > 0)
-                imageUrl = [self.targetClassZoneItem.photos[0] thumbnailUrl];
+            if(self.targetClassZoneItem.photos.count > 0){
+                PhotoItem *photoItem = [self.targetClassZoneItem.photos firstObject];
+                imageUrl = photoItem.small;
+            }
             NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kClassZoneShareUrl,self.targetClassZoneItem.userInfo.uid,self.targetClassZoneItem.itemID];
             [ShareActionView shareWithTitle:self.targetClassZoneItem.content content:nil image:[UIImage imageNamed:@"ClassZone"] imageUrl:imageUrl url:url];
         }

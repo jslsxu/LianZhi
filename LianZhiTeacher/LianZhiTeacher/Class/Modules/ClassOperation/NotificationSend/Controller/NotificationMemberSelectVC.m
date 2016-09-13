@@ -514,15 +514,14 @@
     
     _teacherView = [[NotificationMemberView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
     [_teacherView setUserType:UserTypeTeacher];
-    [_teacherView setHidden:YES];
     [self.view addSubview:_teacherView];
     
-    if(self.groupArray.count == 0 || self.groupArray.count == 0){
+    if([self.classArray count] == 0 || [self.groupArray count] == 0){
         [self setTitle:@"选择联系人"];
-        if(self.groupArray.count == 0){
+        if([self.groupArray count] == 0){
             [_teacherView setHidden:YES];
         }
-        if(self.classArray.count == 0){
+        if([self.classArray count] == 0){
             [_studentView setHidden:YES];
         }
     }

@@ -107,10 +107,16 @@ NSString *const kNotificationReadNumChangedNotification = @"NotificationReadNumC
     else{
         [_detailView setHidden:YES];
         [_targetListView setHidden:NO];
+        if([[MLAmrPlayer shareInstance] isPlaying]){
+            [[MLAmrPlayer shareInstance] stopPlaying];
+        }
     }
 }
 
 - (void)onMoreClicked{
+    if([[MLAmrPlayer shareInstance] isPlaying]){
+        [[MLAmrPlayer shareInstance] stopPlaying];
+    }
     [self setRightbarButtonHighlighted:YES];
     if(self.notificationItem){
         @weakify(self);

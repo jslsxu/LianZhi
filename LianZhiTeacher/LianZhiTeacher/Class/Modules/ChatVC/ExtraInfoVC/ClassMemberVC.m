@@ -131,6 +131,7 @@
     if(self.classID)
     {
         void (^parse)(TNDataWrapper *responseObject) = ^(TNDataWrapper *responseObject){
+            [self.sourceArray removeAllObjects];
             @strongify(self)
             TNDataWrapper *classWrapper = [responseObject getDataWrapperForKey:@"class"];
             NSArray *teacherArray = [TeacherInfo nh_modelArrayWithJson:[classWrapper getDataWrapperForKey:@"teachers"].data];

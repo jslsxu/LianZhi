@@ -503,9 +503,11 @@
             return;
         }
         NSString *imageUrl = nil;
-        if(self.treeHouseItem.photos.count > 0)
-            imageUrl = [self.treeHouseItem.photos[0] thumbnailUrl];
-          NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kTreeHouseShareUrl,self.treeHouseItem.user.uid,self.treeHouseItem.itemID];
+        if(self.treeHouseItem.photos.count > 0){
+            PhotoItem *photoItem = [self.treeHouseItem.photos firstObject];
+            imageUrl = photoItem.small;
+        }
+        NSString *url = [NSString stringWithFormat:@"%@?uid=%@&feed_id=%@",kTreeHouseShareUrl,self.treeHouseItem.user.uid,self.treeHouseItem.itemID];
         [ShareActionView shareWithTitle:self.treeHouseItem.detail content:nil image:[UIImage imageNamed:@"TreeHouse"] imageUrl:imageUrl url:url];
     }
 }

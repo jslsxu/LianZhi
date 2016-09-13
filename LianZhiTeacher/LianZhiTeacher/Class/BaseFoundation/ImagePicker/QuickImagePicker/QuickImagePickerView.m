@@ -414,6 +414,15 @@
         [self sendImages];
         [CurrentROOTNavigationVC popViewControllerAnimated:YES];
     }
+    else{
+        XMNAssetModel *model = [self modelForAsset:asset];
+        BOOL selected = [self canSelectAsset:model];
+        if(selected){
+            [self selectAsset:model];
+            [self sendImages];
+            [CurrentROOTNavigationVC popViewControllerAnimated:YES];
+        }
+    }
 //    NSInteger maxCount = 0;
 //    XMNAssetModel *model = [self modelForAsset:asset];
 //    if(model.type == XMNAssetTypePhoto){

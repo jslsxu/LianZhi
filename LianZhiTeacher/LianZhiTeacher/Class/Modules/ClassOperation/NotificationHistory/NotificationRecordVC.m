@@ -227,24 +227,30 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self bindTableCell:@"NotificationRecordItemCell" tableModel:@"MySendNotificationModel"];
+    [self.view setHeight:kScreenHeight - 64];
     [self.tableView setFrame:CGRectMake(0, 0, self.view.width, self.view.height)];
+    [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 50, 0)];
     [self.tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    [self bindTableCell:@"NotificationRecordItemCell" tableModel:@"MySendNotificationModel"];
     [self setSupportPullUp:YES];
     [self setSupportPullDown:YES];
     [self requestData:REQUEST_REFRESH];
     [self.view addSubview:[self notificationLoadingView]];
-    if(self.tableViewModel.modelItemArray.count == 0){
-        [self.notificationLoadingView show];
-    }
 }
 
 - (ContactsLoadingView *)notificationLoadingView{
     if(_notificationLoadingView == nil){
         _notificationLoadingView = [[ContactsLoadingView alloc] init];
-        [_notificationLoadingView setCenter:CGPointMake(self.view.width / 2, self.view.height / 2)];
+        [_notificationLoadingView setCenter:CGPointMake(self.view.width / 2, (kScreenHeight - 64) / 2)];
     }
     return _notificationLoadingView;
+}
+
+- (EmptyHintView *)emptyView{
+    if(!_emptyView){
+        _emptyView = [[EmptyHintView alloc] initWithImage:@"NoSendNotification" title:@"暂时没有通知记录"];
+    }
+    return _emptyView;
 }
 
 - (void)clear{
@@ -268,9 +274,11 @@
 }
 
 - (void)onNotificationChanged{
-//    NSInteger count = self.tableViewModel.modelItemArray.count + [NotificationManager sharedInstance].sendingNotificationArray.count;
+    NSInteger count = self.tableViewModel.modelItemArray.count + [NotificationManager sharedInstance].sendingNotificationArray.count;
     [self.tableView reloadData];
-    [self.tableView scrollToRow:0 inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:NO];
+    if(count > 0){
+        [self.tableView scrollToRow:0 inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:NO];
+    }
 }
 
 - (void)onNotificationSendSuccess:(NSNotification *)notification{
@@ -337,7 +345,18 @@
 
 #pragma mark - UITableViewDelegate
 
+- (void)TNBaseTableViewControllerRequestStart{
+    if(self.tableViewModel.modelItemArray.count == 0){
+        [self.notificationLoadingView show];
+        [self showEmptyView:NO];
+    }
+}
+
 - (void)TNBaseTableViewControllerRequestSuccess{
+    [self.notificationLoadingView dismiss];
+}
+
+- (void)TNBaseTableViewControllerRequestFailedWithError:(NSString *)errMsg{
     [self.notificationLoadingView dismiss];
 }
 
@@ -346,8 +365,8 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger count = self.tableViewModel.modelItemArray.count + [NotificationManager sharedInstance].sendingNotificationArray.count;
-    BOOL showEmpty = count == 0 && self.notificationLoadingView.hidden;
-    [self showEmptyLabel:showEmpty];
+    BOOL showEmpty = count == 0;
+    [self showEmptyView:showEmpty && !self->_isLoading];
     return count;
 }
 

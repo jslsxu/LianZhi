@@ -118,6 +118,14 @@
     [_tableView setDelegate:self];
     [_tableView setDataSource:self];
     [self.view addSubview:_tableView];
+
+}
+
+- (EmptyHintView *)emptyView{
+    if(_emptyView == nil){
+        _emptyView = [[EmptyHintView alloc] initWithImage:@"NoDraft" title:@"暂时没有草稿记录"];
+    }
+    return _emptyView;
 }
 
 - (void)clear{
@@ -142,7 +150,7 @@
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger count = [[NotificationDraftManager sharedInstance].draftArray count];
-    [self showEmptyLabel:count == 0];
+    [self showEmptyView:count == 0];
     return count;
 }
 

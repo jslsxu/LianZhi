@@ -30,7 +30,7 @@
         [_bannerView setDataSource:self];
         [_bannerView setShouldLoop:YES];
         [_bannerView setAutoScroll:YES];
-        [_bannerView setScrollInterval:10];
+        [_bannerView setScrollInterval:5];
         [self addSubview:_bannerView];
     }
     return self;
@@ -205,7 +205,7 @@
     [flowLayout setItemSize:CGSizeMake(self.view.width / 4, [ClassAppCell cellHeight])];
     [flowLayout setMinimumInteritemSpacing:0];
     [flowLayout setMinimumLineSpacing:0];
-    [flowLayout setHeaderReferenceSize:CGSizeMake(self.view.width, self.view.width / 2)];
+    [flowLayout setHeaderReferenceSize:CGSizeMake(self.view.width, self.view.width * 29 / 64)];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
