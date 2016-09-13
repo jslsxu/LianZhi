@@ -538,6 +538,13 @@
     [self reloadData];
 }
 
+- (EmptyHintView *)emptyView{
+    if(!_emptyView){
+        _emptyView = [[EmptyHintView alloc] initWithImage:@"NoContacts" title:@"暂时没有联系人"];
+    }
+    return _emptyView;
+}
+
 - (BOOL)isSelected:(NSString *)uid{
     for (UserInfo *userInfo in self.originalSourceArray) {
         if([userInfo.uid isEqualToString:uid]){
@@ -568,7 +575,7 @@
     [_studentView setDataSource:self.classArray];
     [_teacherView setDataSource:self.groupArray];
     BOOL showEmpty = [self.classArray count] == 0 && [self.groupArray count] == 0;
-    [self showEmptyLabel:showEmpty];
+    [self showEmptyView:showEmpty];
 }
 
 - (void)onValueChanged{

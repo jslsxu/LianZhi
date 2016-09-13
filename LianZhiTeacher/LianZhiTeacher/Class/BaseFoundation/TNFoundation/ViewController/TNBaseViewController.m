@@ -82,6 +82,7 @@
         [self setupSubviews];
         _hasSetup = YES;
     }
+    [self.emptyView setCenter:CGPointMake(self.view.width / 2, self.view.height / 2)];
 }
 
 - (void)back{

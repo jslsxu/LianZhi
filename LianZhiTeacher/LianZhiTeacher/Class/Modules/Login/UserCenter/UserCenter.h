@@ -33,6 +33,7 @@ extern NSString* const kUserDataStorageKey;
 @property (nonatomic, strong)UserData *userData;
 @property (nonatomic, strong)PersonalSetting *personalSetting;
 @property (nonatomic, strong)StatusManager *statusManager;
+@property (nonatomic, assign)BOOL isLoadingContacts;
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(UserCenter)
 - (NSArray *)schools;
 - (SchoolInfo *)curSchool;

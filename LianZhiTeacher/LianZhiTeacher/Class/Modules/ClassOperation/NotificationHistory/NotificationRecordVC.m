@@ -379,9 +379,6 @@
     MGSwipeTableCell *tableCell = nil;
     if([NotificationManager sharedInstance].sendingNotificationArray.count > row){//已发送的
         NotificationSendEntity *sendEntity = [NotificationManager sharedInstance].sendingNotificationArray[row];
-        if(row == 0){
-            NSLog(@"%@",sendEntity);
-        }
         NSString *reuseID = @"NotificationSendingItemCell";
         NotificationSendingItemCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
         if(cell == nil){

@@ -33,6 +33,7 @@ extern NSString* const kUserDataStorageKey;
 @property (nonatomic, strong)UserData *userData;
 @property (nonatomic, strong)PersonalSetting *personalSetting;
 @property (nonatomic, strong)StatusManager *statusManager;
+@property (nonatomic, assign)BOOL isLoadingContacts;
 - (UserInfo *)userInfo;
 - (NSArray *)children;
 - (ChildInfo *)curChild;

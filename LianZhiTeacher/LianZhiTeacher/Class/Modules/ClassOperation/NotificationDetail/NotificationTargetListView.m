@@ -178,16 +178,19 @@
         @weakify(self)
         [_tableView setMj_header:[MJRefreshNormalHeader headerWithRefreshingBlock:^{
             @strongify(self)
-            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/my_send_detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : self.notificationItem.nid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                [self.tableView.mj_header endRefreshing];
-                NotificationItem *notification = [NotificationItem nh_modelWithJson:responseObject.data];
-                self.notificationItem = notification;
-                if(self.notificationRefreshCallback){
-                    self.notificationRefreshCallback(self.notificationItem);
-                }
-            } fail:^(NSString *errMsg) {
-                [self.tableView.mj_header endRefreshing];
-            }];
+            NSString *nid = self.notificationItem.nid;
+            if(nid){
+                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/my_send_detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : self.notificationItem.nid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                    [self.tableView.mj_header endRefreshing];
+                    NotificationItem *notification = [NotificationItem nh_modelWithJson:responseObject.data];
+                    self.notificationItem = notification;
+                    if(self.notificationRefreshCallback){
+                        self.notificationRefreshCallback(self.notificationItem);
+                    }
+                } fail:^(NSString *errMsg) {
+                    [self.tableView.mj_header endRefreshing];
+                }];
+            }
 
         }]];
     }
@@ -324,7 +327,9 @@
             LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:familyArray cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
             [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
             [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setButtonsTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
+            [alertView setCancelButtonTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
             [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
                 FamilyInfo *familyInfo = studentInfo.family[index];
                 NSMutableString * str = [[NSMutableString alloc] initWithFormat:@"tel://%@",familyInfo.mobile];
@@ -336,8 +341,10 @@
             TeacherInfo *teacherInfo = (TeacherInfo *)userInfo;
             LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:@[[NSString stringWithFormat:@"%@: %@",teacherInfo.name, teacherInfo.mobile]] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
             [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+            [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setButtonsTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
+            [alertView setCancelButtonTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
             [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
                 NSMutableString * str = [[NSMutableString alloc] initWithFormat:@"tel://%@",teacherInfo.mobile];
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];

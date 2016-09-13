@@ -57,7 +57,7 @@
     [_logoView setImageWithUrl:[NSURL URLWithString:_classInfo.logo]];
     [_nameLabel setText:_classInfo.name];
     [_nameLabel sizeToFit];
-    [_nameLabel setOrigin:CGPointMake(_logoView.right + 10, (self.height - _nameLabel.height) / 2)];
+    [_nameLabel setOrigin:CGPointMake(_logoView.right + 15, (self.height - _nameLabel.height) / 2)];
     [_numLabel setText:[NSString stringWithFormat:@"%zd名学生",_classInfo.students.count]];
     [_numLabel sizeToFit];
     [_numLabel setOrigin:CGPointMake(_nameLabel.right + 10, (self.height - _numLabel.height) / 2)];

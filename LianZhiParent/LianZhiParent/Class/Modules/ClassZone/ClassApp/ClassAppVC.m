@@ -18,7 +18,8 @@
 #import "LZAccountVC.h"
 #import "TreeHouseVC.h"
 #import "ClassAppCell.h"
-#define ClassIdKey          @"userClassId"
+#define ClassIdKey                  @"userClassId"
+#define kBannerHeight               (kScreenWidth * 29 / 64)
 
 @implementation ApplicationBoxHeaderView
 
@@ -205,7 +206,7 @@
     [flowLayout setItemSize:CGSizeMake(self.view.width / 4, [ClassAppCell cellHeight])];
     [flowLayout setMinimumInteritemSpacing:0];
     [flowLayout setMinimumLineSpacing:0];
-    [flowLayout setHeaderReferenceSize:CGSizeMake(self.view.width, self.view.width * 29 / 64)];
+    [flowLayout setHeaderReferenceSize:CGSizeMake(self.view.width, kBannerHeight)];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
@@ -465,10 +466,10 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     if(scrollView.contentOffset.y <= 0){
-        [self.headerView updateWithHeight:self.view.width / 2 - scrollView.contentOffset.y];
+        [self.headerView updateWithHeight:kBannerHeight - scrollView.contentOffset.y];
     }
     else{
-        [self.headerView updateWithHeight:self.view.width / 2];
+        [self.headerView updateWithHeight:kBannerHeight];
     }
 }
 

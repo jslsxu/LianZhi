@@ -148,16 +148,21 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
 }
 
 - (void)updateSchoolInfo{
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_related_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        TNDataWrapper *schoolListWrapper = [responseObject getDataWrapperForKey:@"schools"];
-        if(schoolListWrapper.count > 0){
-            [self.userData updateSchools:schoolListWrapper];
-            [self save];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoVCNeedRefreshNotificaiotn object:nil];
-        }
-    } fail:^(NSString *errMsg) {
-        
-    }];
+    if(!self.isLoadingContacts){
+        self.isLoadingContacts = YES;
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_related_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            self.isLoadingContacts = NO;
+            TNDataWrapper *schoolListWrapper = [responseObject getDataWrapperForKey:@"schools"];
+            if(schoolListWrapper.count > 0){
+                [self.userData updateSchools:schoolListWrapper];
+                [self save];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoVCNeedRefreshNotificaiotn object:nil];
+            }
+        } fail:^(NSString *errMsg) {
+            self.isLoadingContacts = NO;
+             [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoVCNeedRefreshNotificaiotn object:nil];
+        }];
+    }
 }
 
 - (void)save

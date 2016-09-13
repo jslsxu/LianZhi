@@ -168,17 +168,22 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
 
 - (void)updateChildren
 {
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_related_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        if(responseObject.count > 0)
-        {
-            TNDataWrapper *childrenWrapper = [responseObject getDataWrapperForKey:@"children"];
-            [self.userData updateChildren:childrenWrapper];
-            [self save];
+    if(!self.isLoadingContacts){
+        self.isLoadingContacts = YES;
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/get_related_info" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            self.isLoadingContacts = NO;
+            if(responseObject.count > 0)
+            {
+                TNDataWrapper *childrenWrapper = [responseObject getDataWrapperForKey:@"children"];
+                [self.userData updateChildren:childrenWrapper];
+                [self save];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoChangedNotification object:nil];
+            }
+        } fail:^(NSString *errMsg) {
+            self.isLoadingContacts = NO;
             [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoChangedNotification object:nil];
-        }
-    } fail:^(NSString *errMsg) {
-        
-    }];
+        }];
+    }
 }
 
 

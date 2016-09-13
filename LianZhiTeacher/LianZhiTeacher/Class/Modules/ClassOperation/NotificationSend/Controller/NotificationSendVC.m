@@ -387,23 +387,42 @@ DNImagePickerControllerDelegate>
     [self stopPlayAudio];
     NotificationMemberSelectVC *targetSelectVC = [[NotificationMemberSelectVC alloc] initWithOriginalArray:self.sendEntity.targets];
     [targetSelectVC setSelectCompletion:^(NSArray *classArray, NSArray *groupArray) {
-//        NSMutableArray *targetArray = [NSMutableArray array];
-//        for (ClassInfo *classInfo in classArray) {
-//            for (StudentInfo *studentInfo in classInfo.students) {
-//                if(studentInfo.selected){
-//                    [targetArray addObject:studentInfo];
-//                }
-//            }
-//        }
-//        for (TeacherGroup *teacherGroup in groupArray) {
-//            for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
-//                if(teacherInfo.selected){
-//                    [targetArray addObject:teacherInfo];
-//                }
-//            }
-//        }
-        [self.sendEntity setClassArray:[NSMutableArray arrayWithArray:classArray]];
-        [self.sendEntity setGroupArray:[NSMutableArray arrayWithArray:groupArray]];
+        NSMutableArray *selectedClassArray = [NSMutableArray array];
+        for (ClassInfo *classInfo in classArray) {
+            BOOL groupSelected = NO;
+            for (StudentInfo *studentInfo in classInfo.students) {
+                if(studentInfo.selected){
+                    groupSelected = YES;
+                }
+            }
+            if(groupSelected){
+                [selectedClassArray addObject:classInfo];
+            }
+        }
+        NSMutableArray *selectedGroupArray = [NSMutableArray array];
+        for (TeacherGroup *teacherGroup in groupArray) {
+            BOOL groupSelected = NO;
+            for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
+                if(teacherInfo.selected){
+                    groupSelected = YES;
+                }
+            }
+            if(groupSelected){
+                [selectedGroupArray addObject:teacherGroup];
+            }
+        }
+        if([selectedClassArray count] > 0){
+            [self.sendEntity setClassArray:selectedClassArray];
+        }
+        else{
+            [self.sendEntity setClassArray:nil];
+        }
+        if([selectedGroupArray count] > 0){
+            [self.sendEntity setGroupArray:selectedGroupArray];
+        }
+        else{
+            [self.sendEntity setGroupArray:nil];
+        }
         [self.targetContentView setTargets:self.sendEntity.targets];
         [self adjustPosition];
     }];

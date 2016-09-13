@@ -77,10 +77,15 @@
         [self.navigationItem setTitleView:[self segmentCtrl]];
         [self.segmentCtrl setSelectedSegmentIndex:originalIndex];
         [self onValueChanged];
-        [self.contactsLoadingView dismiss];
     }
     else{
+        
+    }
+    if([UserCenter sharedInstance].isLoadingContacts && titleCount == 0){
         [self.contactsLoadingView show];
+    }
+    else{
+        [self.contactsLoadingView dismiss];
     }
     [self showEmptyView:titleCount == 0 && self.contactsLoadingView.hidden];
 }

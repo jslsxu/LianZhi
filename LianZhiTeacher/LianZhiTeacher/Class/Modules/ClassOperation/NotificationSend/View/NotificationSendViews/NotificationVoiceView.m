@@ -180,9 +180,15 @@
 }
 
 - (void)deleteVoice:(AudioItem *)audioItem{
-    if(self.deleteDataCallback){
-        self.deleteDataCallback(audioItem);
-    }
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:@"确定要删除语音吗" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
+    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+        if(self.deleteDataCallback){
+            self.deleteDataCallback(audioItem);
+        }
+    }];
+    [alertView showAnimated:YES completionHandler:nil];
 }
 
 @end

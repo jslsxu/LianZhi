@@ -375,6 +375,7 @@
             if(self.canEditLogo){
                 LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:@"选择图片" style:LGAlertViewStyleActionSheet buttonTitles:@[@"拍摄",@"从相册选择"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
                 [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+                [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
                 [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
                     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
                     [imagePicker setAllowsEditing:YES];

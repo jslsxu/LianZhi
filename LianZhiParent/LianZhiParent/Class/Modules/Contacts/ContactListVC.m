@@ -178,12 +178,13 @@
         }
     }
     [_tableView reloadData];
-    if(classArray.count > 0){
-        [self.contactsLoadingView dismiss];
-    }
-    else{
+    if([UserCenter sharedInstance].isLoadingContacts && [classArray count] == 0){
         [self.contactsLoadingView show];
     }
+    else{
+        [self.contactsLoadingView dismiss];
+    }
+    [self showEmptyView:[classArray count] == 0 && self.contactsLoadingView.hidden];
 }
 
 - (void)dismissParentsView{
@@ -217,8 +218,8 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger count = [[UserCenter sharedInstance].curChild.classes count];
-    BOOL showEmpty = count == 0 ;
-    [self showEmptyView:showEmpty];
+//    BOOL showEmpty = count == 0 ;
+//    [self showEmptyView:showEmpty && self.contactsLoadingView.hidden];
     return count;
 }
 
