@@ -156,11 +156,11 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(UserCenter)
             if(schoolListWrapper.count > 0){
                 [self.userData updateSchools:schoolListWrapper];
                 [self save];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoVCNeedRefreshNotificaiotn object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoContactsChangedNotificaiotn object:nil];
             }
         } fail:^(NSString *errMsg) {
             self.isLoadingContacts = NO;
-             [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoVCNeedRefreshNotificaiotn object:nil];
+             [[NSNotificationCenter defaultCenter] postNotificationName:kUserInfoContactsChangedNotificaiotn object:nil];
         }];
     }
 }

@@ -19,12 +19,6 @@
 
 @property (strong, nonatomic) NSURLSessionDownloadTask *downloadTask;
 
-@property (copy, nonatomic) SuccessBlock completionHandler;
-
-@property (copy, nonatomic) FailureBlock failureHandler;
-
-@property (copy, nonatomic) ProgressBlock progressHandler;
-
 
 @end
 
@@ -34,7 +28,7 @@ static NSInteger const kNHFileDownloadRequestTimeOutInterver = 15;
 @implementation NHFileDownloadSession
 - (void)dealloc
 {
-
+    
 }
 @synthesize urlRequest = _urlRequest;
 @synthesize manager = _manager;
@@ -69,7 +63,9 @@ static NSInteger const kNHFileDownloadRequestTimeOutInterver = 15;
     
     NSProgress *progress = [NSProgress progressWithTotalUnitCount:1];
     
-    self.progressHandler = [progressHandler copy];
+    self.progressHandler = progressHandler;
+    self.completionHandler = completionHanlder;
+    self.failureHandler = failureHandler;
     self.urlRequest = requset;
     
     self.downloadTask = [self.manager downloadTaskWithRequest:requset progress:&progress destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
@@ -80,18 +76,18 @@ static NSInteger const kNHFileDownloadRequestTimeOutInterver = 15;
         
         self.response = response;
         
-        if (error && failureHandler) {
-            failureHandler(error);
+        if (error && self.failureHandler) {
+            self.failureHandler(error);
         }
-        else if (completionHanlder) {
-            completionHanlder(filePath);
+        else if (self.completionHandler) {
+            self.completionHandler(filePath);
         }
     }];
     
     [self.downloadTask resume];
     
     [progress addObserver:self forKeyPath:NHFileDownloadProgressKeyPath options:NSKeyValueObservingOptionNew context:NULL];
-
+    
     return self.downloadTask;
 }
 

@@ -96,7 +96,7 @@
 - (void)updateContent{
     CGFloat spaceYStart = kChatVMargin;
     _bgView.alpha = 0.f;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:self.messageItem.user.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:self.messageItem.user.avatar]];
     if(self.messageItem.content.hideTime){
         [_timeLabel setHidden:YES];
     }

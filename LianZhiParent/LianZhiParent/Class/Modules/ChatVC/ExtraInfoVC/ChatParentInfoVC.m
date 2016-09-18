@@ -41,6 +41,9 @@
         [_avatar setOrigin:CGPointMake(12, 12)];
         [self addSubview:_avatar];
         
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onAvatarTap)];
+        [_avatar addGestureRecognizer:tapGesture];
+        
         _infoViewArray = [NSMutableArray array];
     }
     return self;
@@ -48,7 +51,7 @@
 
 - (void)setChildInfo:(ContactParentChildInfo *)childInfo{
     _childInfo = childInfo;
-    [_avatar setImageWithUrl:[NSURL URLWithString:_childInfo.avatar]];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:_childInfo.avatar]];
     [_infoViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [_infoViewArray removeAllObjects];
     
@@ -82,6 +85,10 @@
         [self addSubview:infoView];
         [_infoViewArray addObject:infoView];
     }
+}
+
+- (void)onAvatarTap{
+    [[PBImageController sharedInstance] showForView:_avatar placeHolder:_avatar.image url:self.childInfo.avatar];
 }
 
 + (NSString *)infoForInfo:(ContactParentChildInfo *)childInfo atIndex:(NSInteger)index{

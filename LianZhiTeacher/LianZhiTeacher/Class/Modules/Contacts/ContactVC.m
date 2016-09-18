@@ -30,7 +30,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kUserCenterChangedSchoolNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kUserInfoVCNeedRefreshNotificaiotn object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kUserInfoContactsChangedNotificaiotn object:nil];
+        self.contactModel = [[ContactModel alloc] init];
     }
     return self;
 }
@@ -48,7 +49,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.contactModel = [[ContactModel alloc] init];
     
     _parentView = [[ContactClassStudentView alloc] initWithFrame:self.view.bounds];
     [_parentView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];

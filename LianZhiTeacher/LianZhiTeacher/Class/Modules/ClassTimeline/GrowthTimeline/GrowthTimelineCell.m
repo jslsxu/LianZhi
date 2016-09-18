@@ -70,7 +70,7 @@
 {
     GrowthTimelineItem *timelineItem = (GrowthTimelineItem *)modelItem;
     StudentInfo *userInfo = timelineItem.student;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:userInfo.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:userInfo.avatar]];
     [_nickNameLabel setText:userInfo.name];
     
     UIButton *feelingButton = _statusArray[0];

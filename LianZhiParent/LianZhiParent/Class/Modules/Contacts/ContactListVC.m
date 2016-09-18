@@ -58,7 +58,7 @@
 {
     _classInfo = classInfo;
     
-    [_logoView setImageWithUrl:[NSURL URLWithString:classInfo.logo]];
+    [_logoView sd_setImageWithURL:[NSURL URLWithString:classInfo.logo]];
     NSInteger vMargin = 12;
     [_classLabel setText:classInfo.name];
     [_classLabel sizeToFit];

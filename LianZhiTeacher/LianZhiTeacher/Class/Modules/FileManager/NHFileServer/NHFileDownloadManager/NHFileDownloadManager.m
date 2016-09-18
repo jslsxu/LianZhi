@@ -63,6 +63,24 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(NHFileDownloadManager)
     
     NHFileDownloadSession *session = self.downLoadTasks[string];
     if (session) {
+        @weakify(self)
+        SuccessBlock completionBlk = ^(NSURL *fileUrl){
+            if(successHandler){
+                successHandler(fileUrl);
+            }
+            @strongify(self)
+            [self.downLoadTasks removeObjectForKey: string];
+        };
+        FailureBlock failBlk = ^(NSError *error){
+            if(failureHandler){
+                failureHandler(error);
+            }
+            @strongify(self)
+            [self.downLoadTasks removeObjectForKey: string];
+        };
+        [session setProgressHandler:progressHandler];
+        [session setCompletionHandler:completionBlk];
+        [session setFailureHandler:failBlk];
         [session resume];
         return session;
     }
@@ -74,15 +92,27 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(NHFileDownloadManager)
         NSURL *url = [NSURL fileURLWithPath: cachePathString];
         
         [session downloadFileWithRequest:request distinationUrl:url progress:progressHandler completion:^(NSURL *fileUrl) {
-            successHandler(fileUrl);
+            if(successHandler){
+                successHandler(fileUrl);
+            }
             [self.downLoadTasks removeObjectForKey: string];
             
-        } failure:failureHandler];
+        } failure:^(NSError *error){
+            if(failureHandler){
+                failureHandler(error);
+            }
+            [self.downLoadTasks removeObjectForKey: string];
+        }];
         
         [self.downLoadTasks setObject: session forKey: string];
         
         return session;
     }
+}
+
+- (BOOL)isProcessingWithUrlString:(NSString *)string{
+    NHFileDownloadSession *session = self.downLoadTasks[string];
+    return (session != nil);
 }
 
 - (void)cancelDownloadingWithUrlString:(NSString *)urlString {

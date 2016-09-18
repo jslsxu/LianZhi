@@ -54,7 +54,7 @@
     _classInfo = classInfo;
     [_logoView setOrigin:CGPointMake(15, (self.height - _logoView.height) / 2)];
     [_chatButton setFrame:CGRectMake(self.width  - 50, 0, 50, self.height)];
-    [_logoView setImageWithUrl:[NSURL URLWithString:_classInfo.logo]];
+    [_logoView sd_setImageWithURL:[NSURL URLWithString:_classInfo.logo]];
     [_nameLabel setText:_classInfo.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_logoView.right + 15, (self.height - _nameLabel.height) / 2)];

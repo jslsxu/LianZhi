@@ -104,7 +104,7 @@
     {
         UserInfo *userInfo = _praiseArray[i];
         AvatarView *avatar = [[AvatarView alloc] initWithFrame:CGRectMake(spaceXStart, (_praiseListView.height - itemWIdth) / 2, itemWIdth, itemWIdth)];
-        [avatar setImageWithUrl:[NSURL URLWithString:userInfo.avatar]];
+        [avatar sd_setImageWithURL:[NSURL URLWithString:userInfo.avatar]];
         [_praiseListView addSubview:avatar];
         spaceXStart += (itemWIdth + innerMargin);
     }

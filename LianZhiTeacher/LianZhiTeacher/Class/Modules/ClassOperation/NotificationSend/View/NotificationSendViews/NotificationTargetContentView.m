@@ -63,6 +63,7 @@
 }
 
 - (void)layoutSubviews{
+    [super layoutSubviews];
 //    [_addButton setCenterY:self.height / 2];
 }
 

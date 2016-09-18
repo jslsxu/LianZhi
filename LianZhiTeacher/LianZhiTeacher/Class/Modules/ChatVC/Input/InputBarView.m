@@ -171,6 +171,7 @@
 
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
     [_faceSelectView setY:_contentView.height];
     [_functionView setY:_contentView.height];
 }
@@ -532,8 +533,7 @@
                 NSString *coverUrl = [NHFileManager getTmpImagePath];
                 ALAssetRepresentation *representation = asset.defaultRepresentation;
                 UIImage *coverImage = [UIImage imageWithCGImage:[representation fullScreenImage]];
-                NSInteger size = [representation size];
-                BOOL shouldSend = [Utility checkVideoSize:size];
+                BOOL shouldSend = [Utility checkVideo:asset];
                 if(!shouldSend){
                     return;
                 }

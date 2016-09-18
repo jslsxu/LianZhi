@@ -153,7 +153,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
     [viewParent addSubview:idLabel];
     
     _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(12, 40, 60, 60)];
-    [_avatar setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
     [viewParent addSubview:_avatar];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onAvatarTap)];

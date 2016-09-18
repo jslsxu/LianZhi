@@ -53,7 +53,7 @@
     [_titleLabel setText:@"@我"];
     [_titleLabel sizeToFit];
     [_avatarView setHidden:NO];
-    [_avatarView setImageWithUrl:[NSURL URLWithString:_targetItem.user.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_targetItem.user.avatar]];
     [_titleLabel setOrigin:CGPointMake(_avatarView.right + 6, (_contentView.height - _titleLabel.height) / 2)];
     [_imageView setOrigin:CGPointMake(_titleLabel.right + 5, (_contentView.height - _imageView.height) / 2)];
     [_contentView setSize:CGSizeMake(_imageView.right + 10 + 15, 32)];

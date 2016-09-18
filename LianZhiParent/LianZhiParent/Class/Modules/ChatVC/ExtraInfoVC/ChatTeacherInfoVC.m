@@ -49,7 +49,7 @@
 
 - (void)setSchoolInfo:(ContactSchoolInfo *)schoolInfo{
     _schoolInfo = schoolInfo;
-    [_logoView setImageWithUrl:[NSURL URLWithString:_schoolInfo.logo]];
+    [_logoView sd_setImageWithURL:[NSURL URLWithString:_schoolInfo.logo]];
     [_nameLabel setFrame:CGRectMake(_logoView.right + 10, 0, self.width - 10 - (_logoView.right + 10), 70)];
     [_nameLabel setText:_schoolInfo.name];
     [_classViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];

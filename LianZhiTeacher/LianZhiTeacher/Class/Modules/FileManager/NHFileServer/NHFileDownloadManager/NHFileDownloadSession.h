@@ -17,6 +17,12 @@
 
 @property (strong, readonly, nonatomic) AFURLSessionManager *manager;
 
+@property (copy, nonatomic) SuccessBlock completionHandler;
+
+@property (copy, nonatomic) FailureBlock failureHandler;
+
+@property (copy, nonatomic) ProgressBlock progressHandler;
+
 - (instancetype)initWithSessionConfiguration:(NSURLSessionConfiguration *)configuration;
 
 

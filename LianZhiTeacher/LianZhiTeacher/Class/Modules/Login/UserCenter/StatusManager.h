@@ -9,7 +9,7 @@
 #import "TNModelItem.h"
 extern NSString *const kNewMsgNumNotification;
 extern NSString *const kFoundNotification;
-extern NSString *const kUserInfoVCNeedRefreshNotificaiotn;
+extern NSString *const kUserInfoContactsChangedNotificaiotn;
 extern NSString *const kStatusChangedNotification;
 extern NSString *const kTimelineNewCommentNotification;
 

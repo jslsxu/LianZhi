@@ -42,7 +42,7 @@
 
 - (void)refresh
 {
-    [_avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
     [_nameLabel setText:[UserCenter sharedInstance].userInfo.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, 18)];

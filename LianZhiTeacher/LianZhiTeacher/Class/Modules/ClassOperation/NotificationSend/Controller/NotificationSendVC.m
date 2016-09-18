@@ -659,8 +659,13 @@ DNImagePickerControllerDelegate>
     @weakify(self)
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     if([mediaType isEqualToString:(NSString *)kUTTypeImage]){
+        UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            //        MJPhoto *photo = _photos[_currentPhotoIndex];
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+        });
         if(self.sendEntity.imageArray.count >= 9){
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"最多只能选择9张图片" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"最多只能选择9张图片，拍摄内容已保存" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
             [alertView show];
         }
         else{
@@ -688,9 +693,13 @@ DNImagePickerControllerDelegate>
         [picker dismissViewControllerAnimated:YES completion:nil];
     }
     else if([mediaType isEqualToString:(NSString *)kUTTypeMovie]){
+        NSURL *url = info[UIImagePickerControllerMediaURL];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            UISaveVideoAtPathToSavedPhotosAlbum(url.path, nil, nil, nil);
+        });
         if(self.sendEntity.videoArray.count > 0){
             [picker dismissViewControllerAnimated:YES completion:^{
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"一次只能发送1个视频" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"一次只能发送1个视频,拍摄内容已保存" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
                 [alertView show];
             }];
         }
@@ -835,6 +844,5 @@ DNImagePickerControllerDelegate>
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 @end

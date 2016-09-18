@@ -14,7 +14,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(SVShareManager)
     [ShareSDK registerApp:AppKey_ShareSDK
           activePlatforms:@[@(SSDKPlatformTypeSinaWeibo),
                             @(SSDKPlatformTypeWechat),
-                            @(SSDKPlatformTypeQQ)]
+                            @(SSDKPlatformTypeQQ),]
                  onImport:^(SSDKPlatformType platformType) {
                      switch (platformType)
                      {

@@ -22,4 +22,6 @@
 + (void)saveImageToAlbum:(UIImage *)image;
 + (void)saveVideoToAlbum:(NSString *)videoPath;
 + (BOOL)checkVideoSize:(long long)size;
++ (BOOL)checkVideo:(ALAsset *)asset;
++ (NSString *)durationText:(NSInteger)duration;
 @end

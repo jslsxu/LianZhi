@@ -56,6 +56,7 @@
 }
 
 - (NSString *)big{
+    NSInteger spaceCount = iOS8Later ? 7 : 5;
     if([_big hasPrefix:@"/var/mobile"]){
         NSInteger index = 0;
         NSInteger homeIndex = 0;
@@ -63,7 +64,7 @@
             NSString *s = [_big substringWithRange:NSMakeRange(i, 1)];
             if([s isEqualToString:@"/"]){
                 index++;
-                if(index == 7){
+                if(index == spaceCount){
                     homeIndex = i;
                     break;
                 }

@@ -136,7 +136,7 @@
 {
     _modelItem = modelItem;
     StudentInfo *student = _modelItem.studentInfo;
-    [_avatar setImageWithUrl:[NSURL URLWithString:student.avatar]];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:student.avatar]];
     [_nameLabel setText:student.name];
     if(student.sex == GenderFemale)
         [_genderLabel setText:@"小美女"];

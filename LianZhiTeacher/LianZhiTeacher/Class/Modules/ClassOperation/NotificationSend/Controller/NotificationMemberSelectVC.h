@@ -52,7 +52,6 @@ typedef NS_ENUM(NSInteger, UserType){
 
 
 @interface NotificationMemberSelectVC : TNBaseViewController{
-    UISegmentedControl*     _segmentCtrl;
     NotificationMemberView* _studentView;
     NotificationMemberView* _teacherView;
 }

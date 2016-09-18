@@ -56,7 +56,7 @@
 - (void)setSchoolInfo:(SchoolInfo *)schoolInfo
 {
     _schoolInfo = schoolInfo;
-    [_logoView setImageWithUrl:[NSURL URLWithString:_schoolInfo.logoUrl]];
+    [_logoView sd_setImageWithURL:[NSURL URLWithString:_schoolInfo.logoUrl]];
     [_nameLabel setText:_schoolInfo.schoolName];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_logoView.right + 10, (kSchoolCellHeight - _nameLabel.height) / 2)];

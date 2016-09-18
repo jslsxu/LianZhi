@@ -189,7 +189,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     ClassZoneItem *item = (ClassZoneItem *)self.modelItem;
-    [_avatar setImageWithUrl:[NSURL URLWithString:item.userInfo.avatar]];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:item.userInfo.avatar]];
     [_nameLabel setText:item.userInfo.title];
     [_nameLabel sizeToFit];
     

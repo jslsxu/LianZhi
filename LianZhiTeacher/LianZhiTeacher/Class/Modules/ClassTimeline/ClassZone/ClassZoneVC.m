@@ -31,7 +31,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         
         
         _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(5, (self.height - 20) / 2, 20, 20)];
-        [_avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
+        [_avatarView sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
         [self addSubview:_avatarView];
         
         _indicatorLabel = [[UILabel alloc] initWithFrame:CGRectMake(_avatarView.right + 15, 0, self.width - 10 - (_avatarView.right + 5), self.height)];
@@ -50,7 +50,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (void)setCommentItem:(TimelineCommentItem *)commentItem
 {
     _commentItem = commentItem;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:_commentItem.alertInfo.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_commentItem.alertInfo.avatar]];
     [_indicatorLabel setText:[NSString stringWithFormat:@"%ld条新消息",(long)_commentItem.alertInfo.num]];
 }
 
@@ -304,7 +304,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self)
     {
-        
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+        [self addNotifications];
     }
     return self;
 }
@@ -322,21 +323,22 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 //        [userDefaults synchronize];
 //    }
 //}
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
-    
-//    self.title = @"班空间";
-    self.shouldShowEmptyHint = YES;
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onClassZoneDeleteItemNotification:) name:kClassZoneItemDeleteNotification object:nil];
+- (void)addNotifications{
+     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCurSchoolChanged) name:kUserCenterChangedSchoolNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNetworkStatusChanged) name:kReachabilityChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNetworkStatusChanged) name:kPersonalSettingChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNetworkStatusChanged) name:UIApplicationDidBecomeActiveNotification object:nil];
     //上传成功
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refresh) name:kTaskItemSuccessNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onStatusChanged) name:kStatusChangedNotification object:nil];
+}
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
+    
+//    self.title = @"班空间";
+    self.shouldShowEmptyHint = YES;
     
     _replyBox = [[ReplyBox alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - REPLY_BOX_HEIGHT, self.view.width, REPLY_BOX_HEIGHT)];
     [_replyBox setDelegate:self];
@@ -559,54 +561,6 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     }
 }
 
-
-
-
-- (void)onClassZoneDeleteItemNotification:(NSNotification *)notification
-{
-    NSDictionary *userInfo = notification.userInfo;
-    ClassZoneItem *item = (ClassZoneItem *)[userInfo objectForKey:kClassZoneItemDeleteKey];
-    if(!item.newSent)
-    {
-        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"保留" action:nil];
-        TNButtonItem *confirmItem = [TNButtonItem itemWithTitle:@"删除" action:^{
-            NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-            [params setValue:self.classInfo.classID forKey:@"class_id"];
-            [params setValue:item.itemID forKey:@"feed_id"];
-            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/delete_feed" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:item];
-                if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
-                {
-                    [self.tableViewModel.modelItemArray removeObject:item];
-                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-                    [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
-                }
-            } fail:^(NSString *errMsg) {
-                
-            }];
-        }];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"确定删除原创内容?" buttonItems:@[cancelItem,confirmItem]];
-        [alertView show];
-    }
-    else
-    {
-        
-        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-        TNButtonItem *confirmItem = [TNButtonItem itemWithTitle:@"删除" action:^{
-            [item.operation cancel];
-            NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:item];
-            if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
-            {
-                [self.tableViewModel.modelItemArray removeObject:item];
-                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-                [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
-            }
-        }];
-        
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"是否确认删除日记?" buttonItems:@[cancelItem, confirmItem]];
-        [alertView show];
-    }
-}
 
 #pragma mark - ActionPopView
 - (void)popActionViewDidSelectedAtIndex:(NSInteger)index
@@ -842,6 +796,49 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             
         }];
         [self.navigationController pushViewController:feedItemDetailVC animated:YES];
+    }
+}
+
+- (void)onClassZoneItemDelete:(ClassZoneItem *)item{
+    if(!item.newSent)
+    {
+        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"保留" action:nil];
+        TNButtonItem *confirmItem = [TNButtonItem itemWithTitle:@"删除" action:^{
+            NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+            [params setValue:self.classInfo.classID forKey:@"class_id"];
+            [params setValue:item.itemID forKey:@"feed_id"];
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/delete_feed" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:item];
+                if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
+                {
+                    [self.tableViewModel.modelItemArray removeObject:item];
+                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
+                }
+            } fail:^(NSString *errMsg) {
+                
+            }];
+        }];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"确定删除原创内容?" buttonItems:@[cancelItem,confirmItem]];
+        [alertView show];
+    }
+    else
+    {
+        
+        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+        TNButtonItem *confirmItem = [TNButtonItem itemWithTitle:@"删除" action:^{
+            [item.operation cancel];
+            NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:item];
+            if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
+            {
+                [self.tableViewModel.modelItemArray removeObject:item];
+                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
+            }
+        }];
+        
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"是否确认删除日记?" buttonItems:@[cancelItem, confirmItem]];
+        [alertView show];
     }
 }
 

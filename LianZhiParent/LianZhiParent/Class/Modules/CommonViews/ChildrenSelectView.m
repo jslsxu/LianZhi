@@ -43,7 +43,7 @@
 {
     _childInfo = childInfo;
     _redDot.hidden = !childInfo.hasNew;
-    [_avatar setImageWithUrl:[NSURL URLWithString:childInfo.avatar] placeHolder:nil];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:childInfo.avatar] placeholderImage:nil];
 }
 
 - (void)setChildSelected:(BOOL)childSelected

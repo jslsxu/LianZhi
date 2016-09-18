@@ -18,7 +18,6 @@
 {
     UICollectionViewLayout*     _layout;
     UICollectionView*           _collectionView;
-    BOOL                        _isLoading;
     TNListModel*                _collectionViewModel;
 }
 

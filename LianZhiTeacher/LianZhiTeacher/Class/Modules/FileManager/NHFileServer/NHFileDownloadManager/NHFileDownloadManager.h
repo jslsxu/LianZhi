@@ -51,6 +51,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(NHFileDownloadManager)
                                          failure:(FailureBlock)failureHandler;
 
 
+- (BOOL)isProcessingWithUrlString:(NSString *)string;
+
 - (void)cancelDownloadingWithUrlString:(NSString *)urlString;
 
 - (void)suspendDownloadingWithUrlString:(NSString *)urlString;

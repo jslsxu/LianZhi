@@ -25,7 +25,7 @@
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         self.width = kScreenWidth;
         _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(15, (kAvatarCellHeight - 46) / 2, 46, 46)];
-        [_avatarView setImageWithUrl:nil];
+        [_avatarView sd_setImageWithURL:nil];
         [self addSubview:_avatarView];
         
         _modifyLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -46,7 +46,7 @@
 - (void)setChildInfo:(ChildInfo *)childInfo
 {
     _childInfo = childInfo;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:_childInfo.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_childInfo.avatar]];
 }
 
 @end
@@ -136,7 +136,7 @@
 - (void)setChildInfo:(ChildInfo *)childInfo
 {
     _childInfo = childInfo;
-    [_avatar setImageWithUrl:[NSURL URLWithString:_childInfo.avatar]];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:_childInfo.avatar]];
     [_nameLabel setText:_childInfo.name];
 }
 
@@ -531,14 +531,14 @@
         if(section == 1)
         {
             ClassInfo *classInfo = childInfo.classes[row];
-            [cell.logoView setImageWithUrl:[NSURL URLWithString:classInfo.school.logo]];
+            [cell.logoView sd_setImageWithURL:[NSURL URLWithString:classInfo.school.logo]];
             [cell.logoView setHidden:NO];
             [cell setText:classInfo.school.schoolName extra:classInfo.name];
         }
         else
         {
             FamilyInfo *familyInfo = childInfo.family[row];
-            [cell.logoView setImageWithUrl:[NSURL URLWithString:familyInfo.avatar]];
+            [cell.logoView sd_setImageWithURL:[NSURL URLWithString:familyInfo.avatar]];
             [cell.logoView setHidden:NO];
             [cell setText:[NSString stringWithFormat:@"%@(%@)",familyInfo.name,familyInfo.relation] extra:[NSString stringWithFormat:@"(%@)",familyInfo.mobile]];
         }

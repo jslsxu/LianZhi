@@ -10,15 +10,15 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "NHFileServer.h"
 #import "SSPieProgressView.h"
+#import "VideoPlayerManager.h"
 #define kVideoMaxSize               140
 @interface ChatContentVideoView (){
     UIImageView*        _coverImageView;
-    UIImageView*        _playView;
-    SSPieProgressView* _progressView;
     UILabel*            _durationLabel;
     MBProgressHUD*      _progressHUD;
 }
-
+@property (nonatomic, strong)SSPieProgressView *progressView;
+@property (nonatomic, strong)UIImageView*   playView;
 @end
 
 @implementation ChatContentVideoView
@@ -58,34 +58,33 @@
     VideoItem *videoItem = self.messageItem.content.exinfo.video;
     if(self.messageItem.isLocalMessage){
         NSURL* url = [NSURL fileURLWithPath:videoItem.videoUrl];
-        [self showPlayerWithUrl:url];
+        [[VideoPlayerManager sharedInstance] playWithUrl:url];
     }
     else{
         [_playView setHidden:YES];
         [_progressView setHidden:NO];
-        [LZVideoCacheManager videoForUrl:videoItem.videoUrl progress:^(CGFloat progress) {
-            [_progressView setProgress:progress];
+        NSString *videoPath = videoItem.videoUrl;
+        @weakify(self)
+        [LZVideoCacheManager videoForUrl:videoPath progress:^(CGFloat progress) {
+            @strongify(self)
+            [self.progressView setProgress:progress];
         } complete:^(NSURL * fileURL) {
-            [_progressView setHidden:YES];
-            [_playView setHidden:NO];
-            [self showPlayerWithUrl:fileURL];
+            @strongify(self)
+            [self.progressView setHidden:YES];
+            [self.playView setHidden:NO];
+            NSString *localPath = [LZVideoCacheManager videoPathForKey:videoPath];
+            if([localPath isEqualToString:[fileURL path]]){
+                [[VideoPlayerManager sharedInstance] playWithUrl:fileURL];
+            }
         } fail:^(NSError *error) {
-            [_progressView setHidden:YES];
-            [_playView setHidden:NO];
+            @strongify(self)
+            [self.progressView setProgress:0];
+            [self.progressView setHidden:YES];
+            [self.playView setHidden:NO];
         }];
     }
 
 
-}
-
-- (void)showPlayerWithUrl:(NSURL *)url{
-    if(url){
-        MPMoviePlayerViewController *playerVC = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
-        [CurrentROOTNavigationVC presentMoviePlayerViewControllerAnimated:playerVC];
-    }
-    else{
-        [ProgressHUD showHintText:@"视频不存在"];
-    }
 }
 
 - (void)setMessageItem:(MessageItem *)messageItem{
@@ -103,9 +102,15 @@
     [_coverImageView setFrame:_bubbleBackgroundView.bounds];
     [_playView setFrame:_coverImageView.bounds];
     [_progressView setCenter:CGPointMake(_coverImageView.width / 2, _coverImageView.height / 2)];
-    [_progressView setProgress:0];
-    [_progressView setHidden:YES];
-    [_playView setHidden:NO];
+    if([videoItem isDownloading]){
+        [_progressView setHidden:NO];
+        [_playView setHidden:YES];
+    }
+    else{
+        [_progressView setHidden:YES];
+        [_progressView setProgress:0];
+        [_playView setHidden:NO];
+    }
     [self makeMaskView:_coverImageView withImage:[_bubbleBackgroundView image]];
     [_durationLabel setText:[Utility formatStringForTime:videoItem.videoTime]];
     [_durationLabel sizeToFit];

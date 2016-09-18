@@ -11,7 +11,7 @@
 #import "NotificationDetailView.h"
 #import "NotificationTargetListView.h"
 #import "NotificationSendVC.h"
-
+#import "ContactsLoadingView.h"
 NSString *const kNotificationReadNumChangedNotification = @"NotificationReadNumChangedNotification";
 
 @interface NotificationDetailVC (){
@@ -21,6 +21,7 @@ NSString *const kNotificationReadNumChangedNotification = @"NotificationReadNumC
 }
 @property (nonatomic, strong)UIButton *moreButton;
 @property (nonatomic, strong)NotificationItem* notificationItem;
+@property (nonatomic, strong)ContactsLoadingView *contactsLoadingView;
 @end
 
 @implementation NotificationDetailVC
@@ -47,12 +48,11 @@ NSString *const kNotificationReadNumChangedNotification = @"NotificationReadNumC
         [self setNotificationItem:notificationItem];
         [self saveNotification:notificationItem];
     }];
-    
     NSData *notificationData = [NSData dataWithContentsOfFile:[self cacheFilePath]];
     if(notificationData){
         self.notificationItem = [NSKeyedUnarchiver unarchiveObjectWithData:notificationData];
     }
-    
+
     [self loadData];
 }
 
@@ -74,15 +74,29 @@ NSString *const kNotificationReadNumChangedNotification = @"NotificationReadNumC
     });
 }
 
+- (ContactsLoadingView *)contactsLoadingView{
+    if(!_contactsLoadingView){
+        _contactsLoadingView = [[ContactsLoadingView alloc] initWithFrame:CGRectZero];
+        [_contactsLoadingView setCenter:CGPointMake(self.view.width / 2, (kScreenHeight - 64) / 2)];
+        [self.view addSubview:_contactsLoadingView];
+    }
+    return _contactsLoadingView;
+}
+
 - (void)loadData{
+    if(self.notificationItem == nil){
+        [self.contactsLoadingView show];
+    }
     @weakify(self)
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/my_send_detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : self.notificationID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         @strongify(self)
+        [self.contactsLoadingView dismiss];
         NotificationItem *notification = [NotificationItem nh_modelWithJson:responseObject.data];
         self.notificationItem = notification;
         [self saveNotification:self.notificationItem];
     } fail:^(NSString *errMsg) {
-        
+        @strongify(self)
+        [self.contactsLoadingView dismiss];
     }];
 }
 

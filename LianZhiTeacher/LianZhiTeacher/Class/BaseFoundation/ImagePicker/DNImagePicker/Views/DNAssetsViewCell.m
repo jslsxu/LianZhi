@@ -12,6 +12,7 @@
 @interface DNAssetsViewCell ()
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIImageView *videoIndicator;
+@property (nonatomic, strong) UILabel*  durationLabel;
 @property (nonatomic, strong) UIButton *checkButton;
 @property (nonatomic, strong) UIImageView *checkImageView;
 
@@ -45,9 +46,15 @@
     }
     if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]){
         [self.videoIndicator setHidden:YES];
+        [self.durationLabel setHidden:YES];
     }
     else{
         [self.videoIndicator setHidden:NO];
+        [self.durationLabel setHidden:NO];
+        NSInteger duration = [[asset valueForProperty:ALAssetPropertyDuration] integerValue];
+        [self.durationLabel setText:[Utility durationText:duration]];
+        [self.durationLabel sizeToFit];
+        [self.durationLabel setOrigin:CGPointMake(self.width - self.durationLabel.width - 3, self.height - self.durationLabel.height - 5)];
     }
 }
 
@@ -116,6 +123,17 @@
         [self addSubview:_videoIndicator];
     }
     return _videoIndicator;
+}
+
+- (UILabel *)durationLabel{
+    if(_durationLabel == nil){
+        _durationLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_durationLabel setBackgroundColor:[UIColor clearColor]];
+        [_durationLabel setFont:[UIFont systemFontOfSize:13]];
+        [_durationLabel setTextColor:[UIColor whiteColor]];
+        [self addSubview:_durationLabel];
+    }
+    return _durationLabel;
 }
 
 - (UIButton *)checkButton

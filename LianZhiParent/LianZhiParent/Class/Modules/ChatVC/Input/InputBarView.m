@@ -171,6 +171,7 @@
 
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
     [_faceSelectView setY:_contentView.height];
     [_functionView setY:_contentView.height];
 }

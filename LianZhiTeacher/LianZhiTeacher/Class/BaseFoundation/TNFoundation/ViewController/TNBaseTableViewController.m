@@ -94,7 +94,7 @@
         @weakify(self)
         [self.tableView setMj_header:[MJRefreshNormalHeader headerWithRefreshingBlock:^{
             @strongify(self)
-            if(!_isLoading){
+            if(!self.isLoading){
                 [self requestData:REQUEST_REFRESH];
             }
             else{
@@ -114,7 +114,7 @@
         @weakify(self)
         [self.tableView setMj_footer:[MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             @strongify(self)
-            if(!_isLoading){
+            if(!self.isLoading){
                 [self requestData:REQUEST_GETMORE];
             }
             else{
@@ -159,12 +159,12 @@
 
 - (void)requestData:(REQUEST_TYPE)requestType
 {
-    if(!_isLoading)
+    if(!self.isLoading)
     {
         HttpRequestTask *task = [self makeRequestTaskWithType:requestType];
         if(task)
         {
-            _isLoading = YES;
+            self.isLoading = YES;
             __weak typeof(self) wself = self;
             AFHTTPRequestOperation *operation = [[HttpRequestEngine sharedInstance] makeRequestFromUrl:task.requestUrl method:task.requestMethod type:requestType withParams:task.params observer:task.observer completion:^(AFHTTPRequestOperation *operation, TNDataWrapper * responseObject) {
                 [wself onRequestSuccess:operation responseData:responseObject];
@@ -180,7 +180,7 @@
         }
         else
         {
-            _isLoading = NO;
+            self.isLoading = NO;
             [self.tableView.mj_header endRefreshing];
             [self.tableView.mj_footer endRefreshing];
         }
@@ -189,7 +189,7 @@
 
 - (void)onRequestSuccess:(AFHTTPRequestOperation *)operation responseData:(TNDataWrapper *)responseData
 {
-    _isLoading = NO;
+    self.isLoading = NO;
     [self.tableView.mj_header endRefreshing];
     [self.tableView.mj_footer endRefreshing];
     [_tableViewModel parseData:responseData type:operation.requestType];
@@ -207,7 +207,7 @@
         [ProgressHUD showHintText:errMsg];
     [self.tableView.mj_header endRefreshing];
     [self.tableView.mj_footer endRefreshing];
-    _isLoading = NO;
+    self.isLoading = NO;
     if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestFailedWithError:)])
         [self TNBaseTableViewControllerRequestFailedWithError:errMsg];
 }

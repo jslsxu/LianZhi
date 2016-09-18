@@ -106,7 +106,9 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
 
 - (void)onDeleteButtonClicked
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kClassZoneItemDeleteNotification object:nil userInfo:@{kClassZoneItemDeleteKey : self.modelItem}];
+    if([self.delegate respondsToSelector:@selector(onClassZoneItemDelete:)]){
+        [self.delegate onClassZoneItemDelete:(ClassZoneItem *)self.modelItem];
+    }
 }
 
 - (void)onVoiceButtonClicked
@@ -183,7 +185,7 @@ NSString *const kClassZoneItemDeleteKey = @"ClassZoneItemDeleteKey";
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     ClassZoneItem *item = (ClassZoneItem *)self.modelItem;
-    [_avatar setImageWithUrl:[NSURL URLWithString:item.userInfo.avatar]];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:item.userInfo.avatar]];
     if([item.userInfo.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid])
         [_nameLabel setText:@"我"];
     else

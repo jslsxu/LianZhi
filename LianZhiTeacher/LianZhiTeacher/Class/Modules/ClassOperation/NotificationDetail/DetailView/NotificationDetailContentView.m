@@ -13,6 +13,7 @@
     UILabel*        _nameLabel;
     UILabel*        _statusLabel;
     UILabel*        _contentLabel;
+    UIView*        _bottomLine;
 }
 
 @end
@@ -44,13 +45,18 @@
         [_contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [self addSubview:_contentLabel];
     
+        _bottomLine = [[UIView alloc] initWithFrame:CGRectMake(10, self.height - kLineHeight, self.width - 10 * 2, kLineHeight)];
+        [_bottomLine setBackgroundColor:kSepLineColor];
+        [_bottomLine setHidden:YES];
+        [_bottomLine setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
+        [self addSubview:_bottomLine];
     }
     return self;
 }
 
 - (void)setNotificationItem:(NotificationItem *)notificationItem{
     _notificationItem = notificationItem;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:_notificationItem.user.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_notificationItem.user.avatar]];
     [_nameLabel setText:_notificationItem.user.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY - 3 - _nameLabel.height)];
@@ -63,11 +69,13 @@
     [_contentLabel sizeToFit];
     
     [self setHeight:_contentLabel.bottom + 10];
+    BOOL onlyText = ![_notificationItem hasAudio] && ![_notificationItem hasImage] && ![_notificationItem hasVideo];
+    [_bottomLine setHidden:!onlyText];
 }
 
 - (void)setSendEntity:(NotificationSendEntity *)sendEntity{
     _sendEntity = sendEntity;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:_sendEntity.authorUser.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_sendEntity.authorUser.avatar]];
     [_nameLabel setText:_sendEntity.authorUser.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY - 2 - _nameLabel.height)];
@@ -80,6 +88,8 @@
     [_contentLabel sizeToFit];
     
     [self setHeight:_contentLabel.bottom + 10];
+    BOOL onlyText = ![_sendEntity hasAudio] && ![_sendEntity hasImage] && ![_sendEntity hasVideo];
+    [_bottomLine setHidden:!onlyText];
 }
 
 @end

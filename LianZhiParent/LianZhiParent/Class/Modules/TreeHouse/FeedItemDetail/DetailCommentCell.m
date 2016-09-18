@@ -53,7 +53,7 @@
 - (void)setResponseItem:(ResponseItem *)responseItem
 {
     _responseItem = responseItem;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:_responseItem.sendUser.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_responseItem.sendUser.avatar]];
     [_nameLabel setText:_responseItem.sendUser.name];
     [_timeLabel setText:[_responseItem.commentItem.ctime substringFromIndex:5]];
     NSMutableString *content = [[NSMutableString alloc] init];

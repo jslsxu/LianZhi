@@ -43,7 +43,7 @@
     _userInfo = userInfo;
     if([_userInfo isKindOfClass:[TeacherInfo class]]){
         TeacherInfo *teacherInfo = (TeacherInfo *)_userInfo;
-        [_logoView setImageWithUrl:[NSURL URLWithString:teacherInfo.avatar]];
+        [_logoView sd_setImageWithURL:[NSURL URLWithString:teacherInfo.avatar]];
         [_logoView setStatus:teacherInfo.actived ? nil : @"未下载"];
         [_nameLabel setText:teacherInfo.name];
         [_nameLabel sizeToFit];
@@ -64,7 +64,7 @@
     }
     else if([_userInfo isKindOfClass:[ChildInfo class]]){
         ChildInfo* childInfo = (ChildInfo *)_userInfo;
-        [_logoView setImageWithUrl:[NSURL URLWithString:childInfo.avatar]];
+        [_logoView sd_setImageWithURL:[NSURL URLWithString:childInfo.avatar]];
         [_logoView setStatus:childInfo.actived ? nil : @"未下载"];
         [_nameLabel setText:childInfo.name];
         [_nameLabel sizeToFit];

@@ -63,8 +63,8 @@
     [viewParent addSubview:bgImageView];
     
     AvatarView *avatar = [[AvatarView alloc] initWithFrame:CGRectMake(10, 5, 40, 40)];
-    [avatar setBorderColor:[UIColor lightGrayColor]];
-    [avatar setBorderWidth:2];
+    [avatar.layer setBorderColor:[UIColor lightGrayColor].CGColor];
+    [avatar.layer setBorderWidth:2];
     [bgImageView addSubview:avatar];
     
 }

@@ -40,7 +40,7 @@
 - (void)setFamilyInfo:(FamilyInfo *)familyInfo
 {
     _familyInfo = familyInfo;
-    [_avatar setImageWithUrl:[NSURL URLWithString:_familyInfo.avatar]];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:_familyInfo.avatar]];
     [_avatar setStatus:_familyInfo.actived ? nil : @"未下载"];
     [_nameLabel setText:_familyInfo.name];
 }

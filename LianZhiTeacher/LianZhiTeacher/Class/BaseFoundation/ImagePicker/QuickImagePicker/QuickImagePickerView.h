@@ -14,6 +14,7 @@
     UIImageView*    _imageView;
     UIButton*       _stateButton;
     UIImageView*    _typeImageView;
+    UILabel*        _durationLabel;
 }
 @property (nonatomic, nonnull, readonly)UIButton *stateButton;
 @property (nonatomic, nonnull, strong)XMNAssetModel *asset;

@@ -24,6 +24,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"eeeef4"]];
     NSMutableString *text = [NSMutableString stringWithString:self.fromInfo.name];
     if(self.fromInfo.label.length > 0)
@@ -31,10 +32,10 @@
     self.title = text;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"清空" style:UIBarButtonItemStylePlain target:self action:@selector(clear)];
     [self bindTableCell:@"MessageDetailItemCell" tableModel:@"MessageDetailModel"];
+    
     [self setSupportPullDown:YES];
     [self setSupportPullUp:YES];
     [self requestData:REQUEST_REFRESH];
-
 }
 
 - (void)clear{
@@ -92,30 +93,6 @@
     return [NSString stringWithFormat:@"%@_%@_%@",[self class],self.fromInfo.uid,kStringFromValue(self.fromInfo.type)];
 }
 
-- (void)onMessageItemDeleteNotification:(NSNotification *)notification
-{
-    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:@"确定删除这条信息吗?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
-    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
-    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
-        NSDictionary *userInfo = notification.userInfo;
-        MessageDetailItem *item = (MessageDetailItem *)[userInfo objectForKey:kMessageDeleteModelItemKey];
-        
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"notice_id":(item.msgID)} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-            NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:item];
-            if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
-            {
-                [self.tableViewModel.modelItemArray removeObject:item];
-                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-            }
-        } fail:^(NSString *errMsg) {
-            [ProgressHUD showHintText:errMsg];
-        }];
-
-    }];
-    [alertView showAnimated:YES completionHandler:nil];
-}
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
     MessageDetailItem *detailItem = (MessageDetailItem *)modelItem;
     if(detailItem.type == ChatTypeLianZhiBroadcast || detailItem.type == ChatTypeDoorEntrance){
@@ -139,6 +116,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    __weak typeof(self) wself = self;
     MessageDetailItem *detailItem = [self.tableViewModel.modelItemArray objectAtIndex:indexPath.row];
     MessageDetailItemCell *itemCell = (MessageDetailItemCell *)cell;
     [itemCell setDeleteCallback:^{
@@ -149,11 +127,11 @@
         [alertView setDestructiveHandler:^(LGAlertView *alertView) {
             
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"notice_id":(detailItem.msgID)} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:detailItem];
-                if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
+                NSInteger index = [wself.tableViewModel.modelItemArray indexOfObject:detailItem];
+                if(index >= 0 && index < wself.tableViewModel.modelItemArray.count)
                 {
-                    [self.tableViewModel.modelItemArray removeObject:detailItem];
-                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    [wself.tableViewModel.modelItemArray removeObject:detailItem];
+                    [wself.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                 }
             } fail:^(NSString *errMsg) {
                 [ProgressHUD showHintText:errMsg];

@@ -51,7 +51,7 @@
     if([modelItem isKindOfClass:[StudentInfo class]])
     {
         StudentInfo *studentInfo = (StudentInfo *)modelItem;
-        [_avatarView setImageWithUrl:[NSURL URLWithString:studentInfo.avatar]];
+        [_avatarView sd_setImageWithURL:[NSURL URLWithString:studentInfo.avatar]];
         [_nameLabel setText:studentInfo.name];
         [_nameLabel sizeToFit];
         [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, (self.height - _nameLabel.height) / 2)];
@@ -62,7 +62,7 @@
     else
     {
         TeacherInfo *teacherInfo = (TeacherInfo *)modelItem;
-        [_avatarView setImageWithUrl:[NSURL URLWithString:teacherInfo.avatar]];
+        [_avatarView sd_setImageWithURL:[NSURL URLWithString:teacherInfo.avatar]];
         [_nameLabel setText:teacherInfo.name];
         [_nameLabel sizeToFit];
         [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, (self.height - _nameLabel.height) / 2)];

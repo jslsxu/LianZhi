@@ -177,20 +177,19 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [self.navigationItem setTitleView:label];
 }
 
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self){
+        [self addNotification];
+    }
+    return self;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"eeeef4"]];
     self.title = @"我的树屋";
     self.shouldShowEmptyHint = YES;
     //请求网络数据
-    
-//    CGFloat publishButtonWidth = 40;
-//    _publishButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    [_publishButton setImage:[UIImage imageNamed:@"TreeHouseEdit.png"] forState:UIControlStateNormal];
-//    [_publishButton addTarget:self action:@selector(onPublishButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:_publishButton];
-//    [_publishButton setFrame:CGRectMake(30, self.view.height - 64 - 50 - publishButtonWidth - 15, publishButtonWidth, publishButtonWidth)];
-    //    [self requestData:REQUEST_REFRESH];
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ActionAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(onPublishButtonClicked)]];
     UIView *whiteLine = [[UIView alloc] initWithFrame:CGRectMake((50 - 2 / 2), 0, 2, self.view.height)];
     [whiteLine setBackgroundColor:[UIColor whiteColor]];
@@ -210,6 +209,9 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [self setSupportPullUp:YES];
     [self requestData:REQUEST_REFRESH];
     
+}
+
+- (void)addNotification{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTreeHouseItemDelete:) name:kTreeHouseItemDeleteNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTreeHouseItemTagDelete:) name:kTreeHouseItemTagDeleteNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTreeHouseItemTagSelect:) name:kTreeHouseItemTagSelectNotification object:nil];
@@ -437,12 +439,13 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     //自己发的删除
     if([[UserCenter sharedInstance].userInfo.uid isEqualToString:responseItem.sendUser.uid])
     {
+        __weak typeof(self) wself = self;
         TreehouseItem *zoneItem = (TreehouseItem *)cell.modelItem;
         TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除评论" action:^{
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : zoneItem.itemID, @"types" : @"1"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
                 [ProgressHUD showSuccess:@"删除成功"];
                 [zoneItem.responseModel removeResponse:responseItem];
-                [self.tableView reloadData];
+                [wself.tableView reloadData];
             } fail:^(NSString *errMsg) {
                 [ProgressHUD showHintText:errMsg];
             }];
@@ -465,19 +468,19 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 {
     if(!treeItem.newSend)
     {
+        __weak typeof(self) wself = self;
         TreeHouseItemDetailVC *detailVC = [[TreeHouseItemDetailVC alloc] init];
         [detailVC setTreeHouseItem:treeItem];
         [detailVC setDeleteCallBack:^{
             NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:treeItem];
             if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
             {
-                [self.tableViewModel.modelItemArray removeObject:treeItem];
-                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-                [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
+                [wself.tableViewModel.modelItemArray removeObject:treeItem];
+                [wself.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
             }
         }];
         [detailVC setModifyCallBack:^{
-            [self.tableView reloadData];
+            [wself.tableView reloadData];
         }];
         [self.navigationController pushViewController:detailVC animated:YES];
     }
@@ -492,6 +495,12 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (NSString *)cacheFileName
 {
     return [NSString stringWithFormat:@"%@_%@",NSStringFromClass([self class]),[UserCenter sharedInstance].curChild.uid];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    NSInteger num = [super tableView:tableView numberOfRowsInSection:section];
+    [self showEmptyLabel:num == 0];
+    return num;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -591,15 +600,16 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     {
         if(!item.newSend)
         {
+            __weak typeof(self) wself = self;
             TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
             TNButtonItem *confirmItem = [TNButtonItem itemWithTitle:@"删除" action:^{
                 [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"tree/delete_feed" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"feed_id":item.itemID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
                     NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:item];
                     if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
                     {
-                        [self.tableViewModel.modelItemArray removeObject:item];
-                        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-                        [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
+                        [wself.tableViewModel.modelItemArray removeObject:item];
+                        [wself.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                        [wself showEmptyLabel:wself.tableViewModel.modelItemArray.count == 0];
                     }
                 } fail:^(NSString *errMsg) {
                     
@@ -611,16 +621,17 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         }
         else
         {
+            __weak typeof(self) wself = self;
             TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
             TNButtonItem *confirmItem = [TNButtonItem itemWithTitle:@"删除" action:^{
                 if(item.uploadOperation)
                     [item.uploadOperation cancel];
-                NSInteger index = [self.tableViewModel.modelItemArray indexOfObject:item];
-                if(index >= 0 && index < self.tableViewModel.modelItemArray.count)
+                NSInteger index = [wself.tableViewModel.modelItemArray indexOfObject:item];
+                if(index >= 0 && index < wself.tableViewModel.modelItemArray.count)
                 {
-                    [self.tableViewModel.modelItemArray removeObject:item];
-                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-                    [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
+                    [wself.tableViewModel.modelItemArray removeObject:item];
+                    [wself.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+                    [wself showEmptyLabel:wself.tableViewModel.modelItemArray.count == 0];
                 }
             }];
             
@@ -632,12 +643,13 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)onTreeHouseItemTagDelete:(NSNotification *)notification
 {
+    __weak typeof(self) wself = self;
     NSDictionary *userInfo = notification.userInfo;
     TreehouseItem *item = userInfo[kTreeHouseItemKey];
     TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除" action:^{
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"tree/delete_feed_tag" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"feed_id":item.itemID} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             [item setTag:nil];
-            [self.tableView reloadData];
+            [wself.tableView reloadData];
         } fail:^(NSString *errMsg) {
             
         }];
@@ -740,6 +752,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)pickerViewFinished:(ActionSelectView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
+    __weak typeof(self) wself = self;
     NSInteger firstIndex = [pickerView.pickerView selectedRowInComponent:0];
     NSInteger secondIndex = [pickerView.pickerView selectedRowInComponent:1];
     TagGroup *group = [self.tagSourceArray objectAtIndex:firstIndex];
@@ -749,8 +762,8 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [params setValue:self.itemForTag.itemID forKey:@"feed_id"];
     [params setValue:tag.tagID forKey:@"tag_id"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"/tree/add_feed_tag" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        [self.itemForTag setTag:tag.tagName];
-        [self.tableView reloadData];
+        [wself.itemForTag setTag:tag.tagName];
+        [wself.tableView reloadData];
     } fail:^(NSString *errMsg) {
         
     }];

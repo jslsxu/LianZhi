@@ -92,7 +92,7 @@
 - (void)setTreeHouseItem:(TreehouseItem *)treeHouseItem
 {
     _treeHouseItem = treeHouseItem;
-    [_avatar setImageWithUrl:[NSURL URLWithString:_treeHouseItem.user.avatar]];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:_treeHouseItem.user.avatar]];
     [_deleteButon setHidden:!_treeHouseItem.canEdit];
     [_nameLabel setText:_treeHouseItem.user.name];
     [_nameLabel sizeToFit];

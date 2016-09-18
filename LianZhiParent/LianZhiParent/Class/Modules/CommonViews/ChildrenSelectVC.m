@@ -54,7 +54,7 @@
 - (void)setChildInfo:(ChildInfo *)childInfo
 {
     _childInfo = childInfo;
-    [_avatar setImageWithUrl:[NSURL URLWithString:_childInfo.avatar]];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:_childInfo.avatar]];
     [_nameLabel setText:_childInfo.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatar.right + 10, (kChildCellHeight - _nameLabel.height) / 2)];

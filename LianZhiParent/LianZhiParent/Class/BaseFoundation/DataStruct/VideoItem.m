@@ -7,13 +7,17 @@
 //
 
 #import "VideoItem.h"
-
+#import "NHFileDownloadManager.h"
 @implementation VideoItem
++ (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
+    return @{@"videoID" : @"id"};
+}
 + (NSArray<NSString *> *)modelPropertyBlacklist{
     return @[@"coverImage",@"localVideoPath"];
 }
 
 - (NSString *)videoUrl{
+    NSInteger spaceCount = iOS8Later ? 7 : 5;
     if([_videoUrl hasPrefix:@"/var/mobile"]){
         NSInteger index = 0;
         NSInteger homeIndex = 0;
@@ -21,7 +25,7 @@
             NSString *s = [_videoUrl substringWithRange:NSMakeRange(i, 1)];
             if([s isEqualToString:@"/"]){
                 index++;
-                if(index == 7){
+                if(index == spaceCount){
                     homeIndex = i;
                     break;
                 }
@@ -33,5 +37,16 @@
     else{
         return _videoUrl;
     }
+}
+
+- (BOOL)isLocal{
+    return self.videoID.length == 0;
+}
+
+- (BOOL)isDownloading{
+    if(![self isLocal]){
+        return [kNHFileDownloadManager isProcessingWithUrlString:self.videoUrl];
+    }
+    return NO;
 }
 @end

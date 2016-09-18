@@ -41,6 +41,7 @@
 
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
     NSInteger hMargin = 10;
     NSInteger VMargin = 10;
     NSInteger width = 36 * 2 + hMargin;

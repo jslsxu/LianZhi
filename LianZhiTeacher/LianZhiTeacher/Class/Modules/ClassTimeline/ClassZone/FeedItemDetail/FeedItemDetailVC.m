@@ -90,7 +90,7 @@
 - (void)setZoneItem:(ClassZoneItem *)zoneItem
 {
     _zoneItem = zoneItem;
-    [_avatar setImageWithUrl:[NSURL URLWithString:_zoneItem.userInfo.avatar]];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:_zoneItem.userInfo.avatar]];
     [_deleteButon setHidden:!_zoneItem.canEdit];
     [_nameLabel setText:_zoneItem.userInfo.name];
     [_nameLabel sizeToFit];

@@ -14,6 +14,9 @@
 
 #define RunTimeSysVersion               ([[UIDevice currentDevice].systemVersion floatValue])
 #define IS_IOS7_LATER                   (RunTimeSysVersion >= 7.0f)
+#define iOS7Later                       ([UIDevice currentDevice].systemVersion.floatValue >= 7.0f)
+#define iOS8Later                       ([UIDevice currentDevice].systemVersion.floatValue >= 8.0f)
+#define iOS9Later                       ([UIDevice currentDevice].systemVersion.floatValue >= 9.0f)
 
 #define kCommonParentTintColor          [UIColor colorWithRed:26 / 255.0 green:194 / 255.0 blue:130 / 255.0 alpha:1.f]
 #define kCommonBackgroundColor          [UIColor colorWithRed:239 / 255.0 green:239 / 255.0 blue:244 / 255.0 alpha:1.f]

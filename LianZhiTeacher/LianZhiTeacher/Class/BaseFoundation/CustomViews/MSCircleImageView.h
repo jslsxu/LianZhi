@@ -8,25 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MSCircleImageView : UIView
-@property (nonatomic, strong)UIImage *image;
-@property (nonatomic, assign) BOOL disableClip;
-
-@property (nonatomic, assign) CGFloat borderWidth;
-@property (nonatomic, strong) UIColor *borderColor;
-
-- (instancetype)initWithRadius:(CGFloat)radius;
-- (void)setImageWithUrl:(NSURL *)url placeHolder:(UIImage *)placeHolder;
-- (void)setImageWithUrl:(NSURL *)url;
-@end
-
-@interface AvatarView : MSCircleImageView
+@interface AvatarView : UIImageView
 {
     UILabel*    _statusLabel;
 }
 @property (nonatomic, copy)NSString *status;
+- (instancetype)initWithRadius:(CGFloat)radius;
 @end
 
-@interface LogoView : MSCircleImageView
+@interface LogoView : AvatarView
 
 @end

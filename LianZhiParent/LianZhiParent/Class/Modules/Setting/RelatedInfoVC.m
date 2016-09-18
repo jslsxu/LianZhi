@@ -47,7 +47,7 @@
 - (void)setChildInfo:(ChildInfo *)childInfo
 {
     _childInfo = childInfo;
-    [_avtarView setImageWithUrl:[NSURL URLWithString:_childInfo.avatar]];
+    [_avtarView sd_setImageWithURL:[NSURL URLWithString:_childInfo.avatar]];
     [_nameLabel setText:_childInfo.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avtarView.right + 10, _bgImageView.height / 2 - 5 - _nameLabel.height)];
@@ -110,7 +110,7 @@
         logo = familyItem.avatar;
         mobile = familyItem.mobile;
     }
-    [_logoView setImageWithUrl:[NSURL URLWithString:logo]];
+    [_logoView sd_setImageWithURL:[NSURL URLWithString:logo]];
     [_mobileLabel setText:[mobile stringByReplacingCharactersInRange:NSMakeRange(3, 4) withString:@"****"]];
     [_mobileLabel sizeToFit];
     [_mobileLabel setOrigin:CGPointMake(_bgImageView.width - 10 - _mobileLabel.width, (_bgImageView.height - _mobileLabel.height) / 2)];

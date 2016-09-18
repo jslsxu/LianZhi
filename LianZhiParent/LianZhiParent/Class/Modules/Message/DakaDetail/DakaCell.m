@@ -65,7 +65,7 @@
 
 - (void)setFromInfo:(MessageFromInfo *)fromInfo{
     _fromInfo = fromInfo;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:_fromInfo.logoUrl]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_fromInfo.logoUrl]];
     [_nameLabel setText:_fromInfo.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.y + 5)];
@@ -74,7 +74,7 @@
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     MessageDetailItem *item = (MessageDetailItem *)modelItem;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:item.from_user.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:item.from_user.avatar]];
     [_nameLabel setText:item.from_user.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.y + 5)];

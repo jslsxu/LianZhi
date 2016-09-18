@@ -286,9 +286,9 @@
 {
     if (nil == _checkButton) {
         _checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _checkButton.frame = CGRectMake(0, 0, 25, 25);
-        [_checkButton setImage:[UIImage imageNamed:@"photo_check_selected"] forState:UIControlStateSelected];
-        [_checkButton setImage:[UIImage imageNamed:@"photo_check_default"] forState:UIControlStateNormal];
+        _checkButton.frame = CGRectMake(0, 0, 24, 24);
+        [_checkButton setBackgroundImage:[UIImage imageNamed:@"photo_check_selected"] forState:UIControlStateSelected];
+        [_checkButton setBackgroundImage:[UIImage imageNamed:@"photo_check_default"] forState:UIControlStateNormal];
         [_checkButton addTarget:self action:@selector(checkButtonAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _checkButton;

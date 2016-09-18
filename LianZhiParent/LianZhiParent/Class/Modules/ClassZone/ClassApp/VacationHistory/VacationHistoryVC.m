@@ -25,7 +25,7 @@
     [headerView setBackgroundColor:[UIColor colorWithHexString:@"04aa73"]];
     
     AvatarView *avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(20, 20, 60, 60)];
-    [avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar]];
+    [avatarView sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar]];
     [headerView addSubview:avatarView];
     
     _descLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarView.right + 20, 20, headerView.width - 20 - (avatarView.right + 20), headerView.height - 20 * 2)];

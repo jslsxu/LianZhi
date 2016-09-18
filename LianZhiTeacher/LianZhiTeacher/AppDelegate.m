@@ -55,16 +55,14 @@ static SystemSoundID shake_sound_male_id = 0;
 
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setBackgroundColor:[UIColor whiteColor]];
-   [ self setupCommonAppearance];
+    [self setupCommonAppearance];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self cleanOldData];
-        [Bugtags startWithAppKey:kBugtagsKey invocationEvent:[self isInhouse] ?  BTGInvocationEventBubble : BTGInvocationEventNone];
-        [[SVShareManager sharedInstance] initialize];
-        [[TaskUploadManager sharedInstance] start];
-        [MAMapServices sharedServices].apiKey = [self curAutoNaviKey];
-        [self setupCommonHandler];
-    });
+    [self cleanOldData];
+    [Bugtags startWithAppKey:kBugtagsKey invocationEvent:[self isInhouse] ?  BTGInvocationEventBubble : BTGInvocationEventNone];
+    [[SVShareManager sharedInstance] initialize];
+    [[TaskUploadManager sharedInstance] start];
+    [MAMapServices sharedServices].apiKey = [self curAutoNaviKey];
+    [self setupCommonHandler];
     [self registerSound];           //注册声音
 
     [self registerRemoteNotification];

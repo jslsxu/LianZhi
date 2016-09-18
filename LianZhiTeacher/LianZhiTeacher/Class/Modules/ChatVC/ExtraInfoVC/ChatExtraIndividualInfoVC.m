@@ -36,7 +36,7 @@
 
 - (void)setUserInfo:(UserInfo *)userInfo{
     _userInfo = userInfo;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:_userInfo.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_userInfo.avatar]];
     [_nameLabel setText:_userInfo.name];
     [_nameLabel sizeToFit];
     [_nameLabel setFrame:CGRectMake(_avatarView.right + 10, 20, self.width - 35 - (_avatarView.right + 10), _nameLabel.height)];

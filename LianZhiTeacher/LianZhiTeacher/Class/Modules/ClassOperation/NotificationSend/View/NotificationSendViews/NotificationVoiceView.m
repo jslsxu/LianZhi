@@ -146,6 +146,7 @@
 }
 
 - (void)layoutSubviews{
+    [super layoutSubviews];
     [_sepLine setFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
 }
 

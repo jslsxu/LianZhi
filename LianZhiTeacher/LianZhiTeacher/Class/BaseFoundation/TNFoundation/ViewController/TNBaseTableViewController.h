@@ -15,9 +15,9 @@
 @interface TNBaseTableViewController : TNBaseViewController<UITableViewDelegate,UITableViewDataSource,TNBaseTableViewData>
 {
     UITableView*                _tableView;
-    BOOL                        _isLoading;
     TNListModel*                _tableViewModel;
 }
+@property (nonatomic, assign)BOOL isLoading;
 @property (nonatomic, readonly)UITableView* tableView;
 @property (nonatomic, readonly)TNListModel *tableViewModel;
 @property (nonatomic, assign)BOOL supportPullDown;

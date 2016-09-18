@@ -54,7 +54,7 @@
         row = i / maxColumnNum;
         column = i % maxColumnNum;
         AvatarView *avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(spaceXStart + (itemWidth + innerMargin) * column, spaceYStart + (itemWidth + innerMargin) * row, 22, 22)];
-        [avatarView setImageWithUrl:[NSURL URLWithString:userInfo.avatar]];
+        [avatarView sd_setImageWithURL:[NSURL URLWithString:userInfo.avatar]];
         [self addSubview:avatarView];
         [_avatarArray addObject:avatarView];
     }

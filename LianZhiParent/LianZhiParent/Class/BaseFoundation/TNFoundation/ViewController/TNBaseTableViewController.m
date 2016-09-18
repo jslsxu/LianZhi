@@ -17,6 +17,7 @@
 @interface TNBaseTableViewController ()
 @property (nonatomic, copy)NSString *cellName;
 @property (nonatomic, copy)NSString *modelName;
+@property (nonatomic, assign)BOOL isLoading;
 @end
 
 @implementation TNBaseTableViewController
@@ -36,17 +37,14 @@
 {
     [super viewDidLoad];
     
-    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:[self tableViewStyle]];
-    [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    _tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;;
-    [_tableView setBackgroundColor:[UIColor clearColor]];
-    [_tableView setDelegate:self];
-    [_tableView setDataSource:self];
-    [self.view addSubview:_tableView];
-
-    [RACObserve(self.tableView, contentInset) subscribeNext:^(id x) {
-        NSLog(@"bottom is %f",self.tableView.contentInset.bottom);
-    }];
+    UITableView *mTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:[self tableViewStyle]];
+    [mTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    mTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;;
+    [mTableView setBackgroundColor:[UIColor clearColor]];
+    [mTableView setDelegate:self];
+    [mTableView setDataSource:self];
+    [self.view addSubview:mTableView];
+    [self setTableView:mTableView];
 }
 
 - (UITableViewStyle)tableViewStyle
@@ -58,8 +56,8 @@
 {
     self.cellName = cellName;
     self.modelName = modelName;
-    _tableViewModel = [[NSClassFromString(modelName) alloc] init];
-    if(![_tableViewModel isKindOfClass:[TNListModel class]])
+    self.tableViewModel = [[NSClassFromString(modelName) alloc] init];
+    if(![self.tableViewModel isKindOfClass:[TNListModel class]])
         return;
     [self loadCache];
 }
@@ -71,7 +69,7 @@
     {
         NSData *data = [NSData dataWithContentsOfFile:[self cacheFilePath]];
         if(data.length > 0){
-            _tableViewModel = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+            self.tableViewModel = [NSKeyedUnarchiver unarchiveObjectWithData:data];
             [self.tableView reloadData];
             if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
                 [self TNBaseTableViewControllerRequestSuccess];
@@ -82,11 +80,11 @@
 - (void)saveCache{
     if([self supportCache])
     {
-        NSData *modelData = [NSKeyedArchiver archivedDataWithRootObject:_tableViewModel];
+        NSData *modelData = [NSKeyedArchiver archivedDataWithRootObject:self.tableViewModel];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             BOOL success = [modelData writeToFile:[self cacheFilePath] atomically:YES];
             if(success)
-                NSLog(@"save success");
+                DLOG(@"save success");
         });
     }
 
@@ -97,14 +95,13 @@
     _supportPullDown = supportPullDown;
     if(_supportPullDown)
     {
-        @weakify(self)
+        __weak typeof(self) wself = self;
         [self.tableView setMj_header:[MJRefreshNormalHeader headerWithRefreshingBlock:^{
-            @strongify(self)
-            if(!_isLoading){
-                [self requestData:REQUEST_REFRESH];
+            if(!wself.isLoading){
+                [wself requestData:REQUEST_REFRESH];
             }
             else{
-                [self.tableView.mj_header endRefreshing];
+                [wself.tableView.mj_header endRefreshing];
             }
         }]];
     }
@@ -117,8 +114,9 @@
 - (void)setSupportPullUp:(BOOL)supportPullUp{
     _supportPullUp = supportPullUp;
     if(_supportPullUp){
+        __weak typeof(self) wself = self;
         [self.tableView setMj_footer:[MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-            [self requestData:REQUEST_GETMORE];
+            [wself requestData:REQUEST_GETMORE];
         }]];
     }
     else{
@@ -146,29 +144,24 @@
 - (void)reloadData{
 //    __weak typeof(self) wself = self;
     if(self.supportPullUp){
-        if(![_tableViewModel hasMoreData]){
+        if(![self.tableViewModel hasMoreData]){
             [self.tableView.mj_footer endRefreshingWithNoMoreData];
         }
         else{
             [self.tableView.mj_footer endRefreshing];
         }
     }
-    [_tableView reloadData];
+    [self.tableView reloadData];
 }
 
 - (void)requestData:(REQUEST_TYPE)requestType
 {
-    if(self.tableViewModel.modelItemArray.count == 0)
-    {
-        [self loadCache];
-        
-    }
-    if(!_isLoading)
+    if(!self.isLoading)
     {
         HttpRequestTask *task = [self makeRequestTaskWithType:requestType];
         if(task)
         {
-            _isLoading = YES;
+            self.isLoading = YES;
             __weak typeof(self) wself = self;
             AFHTTPRequestOperation *operation = [[HttpRequestEngine sharedInstance] makeRequestFromUrl:task.requestUrl method:task.requestMethod type:requestType withParams:task.params observer:task.observer completion:^(AFHTTPRequestOperation *operation, TNDataWrapper * responseObject) {
                 [wself onRequestSuccess:operation responseData:responseObject];
@@ -184,7 +177,7 @@
         }
         else
         {
-            _isLoading = NO;
+            self.isLoading = NO;
             [self.tableView.mj_header endRefreshing];
             [self.tableView.mj_footer endRefreshing];
         }
@@ -194,12 +187,12 @@
 - (void)onRequestSuccess:(AFHTTPRequestOperation *)operation responseData:(TNDataWrapper *)responseData
 {
     [self.tableView.mj_header endRefreshing];
-    [_tableViewModel parseData:responseData type:operation.requestType];
+    [self.tableViewModel parseData:responseData type:operation.requestType];
     if(self.shouldShowEmptyHint)
-        [self showEmptyLabel:_tableViewModel.modelItemArray.count == 0];
+        [self showEmptyLabel:self.tableViewModel.modelItemArray.count == 0];
     [self saveCache];
     [self reloadData];
-    _isLoading = NO;
+    self.isLoading = NO;
     if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
         [self TNBaseTableViewControllerRequestSuccess];
 }
@@ -210,7 +203,7 @@
         [ProgressHUD showHintText:errMsg];
     [self.tableView.mj_header endRefreshing];
     [self.tableView.mj_footer endRefreshing];
-    _isLoading = NO;
+    self.isLoading = NO;
     if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestFailedWithError:)])
         [self TNBaseTableViewControllerRequestFailedWithError:errMsg];
 }
@@ -235,20 +228,20 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger count = [_tableViewModel numOfSections];
+    NSInteger count = [self.tableViewModel numOfSections];
     return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_tableViewModel numOfRowsInSection:section];
+    return [self.tableViewModel numOfRowsInSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    TNModelItem *item = [_tableViewModel itemForIndexPath:indexPath];
+    TNModelItem *item = [self.tableViewModel itemForIndexPath:indexPath];
     NSNumber* (*action)(id, SEL, id,NSInteger) = (NSNumber* (*)(id, SEL,id, NSInteger)) objc_msgSend;
-    NSNumber* height = action([NSClassFromString(self.cellName) class], NSSelectorFromString(CELL_HEIGHT_SEL), item, (int) _tableView.frame.size.width);
+    NSNumber* height = action([NSClassFromString(self.cellName) class], NSSelectorFromString(CELL_HEIGHT_SEL), item, (int) self.tableView.frame.size.width);
     return [height floatValue];
 }
 
@@ -260,7 +253,7 @@
         
         [cell setWidth:tableView.frame.size.width];
     }
-    TNModelItem *item = [_tableViewModel itemForIndexPath:indexPath];
+    TNModelItem *item = [self.tableViewModel itemForIndexPath:indexPath];
     [cell setData:item];
     return cell;
     
@@ -270,7 +263,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if([self respondsToSelector:@selector(TNBaseTableViewControllerItemSelected:atIndex:)])
-        [self TNBaseTableViewControllerItemSelected:[_tableViewModel itemForIndexPath:indexPath] atIndex:indexPath];
+        [self TNBaseTableViewControllerItemSelected:[self.tableViewModel itemForIndexPath:indexPath] atIndex:indexPath];
 }
 
 - (void)didReceiveMemoryWarning

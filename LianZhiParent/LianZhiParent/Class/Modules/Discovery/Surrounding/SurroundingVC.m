@@ -170,7 +170,7 @@
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     TreehouseItem *item = (TreehouseItem *)self.modelItem;
-    [_avatar setImageWithUrl:[NSURL URLWithString:item.user.avatar]];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:item.user.avatar]];
     [_nameLabel setText:item.user.name];
     [_nameLabel sizeToFit];
     

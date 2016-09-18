@@ -79,7 +79,7 @@
         readNum = teacherGroup.read_num;
     }
     
-    [_logoView setImageWithUrl:[NSURL URLWithString:logo]];
+    [_logoView sd_setImageWithURL:[NSURL URLWithString:logo]];
     NSMutableAttributedString *stateStr = [[NSMutableAttributedString alloc] initWithString:@"发送:"];
     [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(total) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
     [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 已读:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
@@ -131,7 +131,7 @@
 
 - (void)setUserInfo:(UserInfo *)userInfo{
     _userInfo = userInfo;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:_userInfo.avatar] placeHolder:nil];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_userInfo.avatar] placeholderImage:nil];
     [_avatarView setStatus:_userInfo.actived ? @"" : @"未下载"];
     [_titleLabel setText:_userInfo.name];
     [_titleLabel sizeToFit];

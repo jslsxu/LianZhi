@@ -170,4 +170,32 @@
     }
 }
 
++ (BOOL)checkVideo:(ALAsset *)asset{
+    NSInteger duration = [[asset valueForProperty:ALAssetPropertyDuration] integerValue];
+    if(duration > 10){
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:@"目前视频文件暂时不能超过10秒" style:LGAlertViewStyleAlert buttonTitles:@[@"确定"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView showAnimated:YES completionHandler:nil];
+        return NO;
+    }
+    return YES;
+}
+
++ (NSString *)durationText:(NSInteger)duration{
+    NSString *text = nil;
+    NSInteger hour = duration / 3600;
+    NSInteger minute = (duration - hour * 3600) / 60;
+    NSInteger second = duration - hour * 3600 - minute * 60;
+    if(duration < 60){
+        text = [NSString stringWithFormat:@"0:%02zd",second];
+    }
+    else if(duration < 60 * 60){
+        text = [NSString stringWithFormat:@"%zd:%02zd",minute, second];
+    }
+    else{
+        text = [NSString stringWithFormat:@"%zd:%zd:%02zd",hour, minute, second];
+    }
+    return text;
+}
+
 @end

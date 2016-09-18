@@ -235,16 +235,16 @@ static NSString* const dnAssetsViewCellReuseIdentifier = @"DNAssetsViewCell";
         }
     }
     else{
-        if([Utility checkVideoSize:[asset defaultRepresentation].size]){
-            if([self selectedVideoNum] >= self.maxVideoCount){
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"最多只能选1个视频" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-                [alert show];
-                
-                return NO;
-            }
+        if([self selectedVideoNum] >= self.maxVideoCount){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"最多只能选1个视频" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            
+            return NO;
         }
         else{
-            return NO;
+            if(![Utility checkVideo:asset]){
+                return NO;
+            }
         }
     }
     [self addAssetsObject:asset];

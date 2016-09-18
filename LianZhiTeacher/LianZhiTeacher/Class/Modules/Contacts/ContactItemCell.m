@@ -46,7 +46,7 @@
 - (void)setClassInfo:(ClassInfo *)classInfo
 {
     _classInfo = classInfo;
-    [_logoView setImageWithUrl:[NSURL URLWithString:_classInfo.logo]];
+    [_logoView sd_setImageWithURL:[NSURL URLWithString:_classInfo.logo]];
     [_nameLabel setText:_classInfo.name];
 }
 
@@ -104,7 +104,7 @@
     if([_userInfo isKindOfClass:[TeacherGroup class]])
     {
         TeacherGroup *group = (TeacherGroup *)_userInfo;
-        [_avatar setImageWithUrl:[NSURL URLWithString:group.logo] placeHolder:[UIImage imageNamed:@"NoLogoDefault"]];
+        [_avatar sd_setImageWithURL:[NSURL URLWithString:group.logo] placeholderImage:[UIImage imageNamed:@"NoLogoDefault"]];
         [_avatar setStatus:nil];
         [_commentLabel setText:nil];
         TeacherGroup *teacherGroup = (TeacherGroup *)userInfo;
@@ -117,7 +117,7 @@
     else
     {
         [_avatar setStatus:_userInfo.actived ? nil : @"未下载"];
-        [_avatar setImageWithUrl:[NSURL URLWithString:userInfo.avatar] placeHolder:[UIImage imageNamed:(@"NoAvatarDefault.png")]];
+        [_avatar sd_setImageWithURL:[NSURL URLWithString:userInfo.avatar] placeholderImage:[UIImage imageNamed:(@"NoAvatarDefault.png")]];
         [_nameLabel setText:userInfo.name];
         [_nameLabel sizeToFit];
         [_nameLabel setFrame:CGRectMake(_avatar.right + 15, (self.height - _nameLabel.height) / 2, MIN(_nameLabel.width, self.width - _nameLabel.left - 10), _nameLabel.height)];

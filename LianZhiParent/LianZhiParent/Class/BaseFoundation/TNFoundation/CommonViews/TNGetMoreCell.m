@@ -34,6 +34,7 @@
 
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
     CGRect frame = [self bounds];
     [_textLabel sizeToFit];
     

@@ -86,7 +86,7 @@
             imageStr = (@"NoAvatarDefault");
         else
             imageStr = (@"NoLogoDefault");
-        [_logoView setImageWithUrl:[NSURL URLWithString:_messageItem.fromInfo.logoUrl] placeHolder:[UIImage imageNamed:imageStr]];
+        [_logoView sd_setImageWithURL:[NSURL URLWithString:_messageItem.fromInfo.logoUrl] placeholderImage:[UIImage imageNamed:imageStr]];
     }
     
     _timeLabel.text = _messageItem.formatTime;

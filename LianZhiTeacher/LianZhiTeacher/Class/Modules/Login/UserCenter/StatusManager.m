@@ -10,7 +10,7 @@
 NSString *const kNewMsgNumNotification = @"NewMsgNumNotification";
 NSString *const kFoundNotification = @"NewMsgNumNotification";
 NSString *const kStatusChangedNotification = @"StatusChangedNotification";
-NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNotificaiotn";
+NSString *const kUserInfoContactsChangedNotificaiotn = @"UserInfoContactsChangedNotificaiotn";
 NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotification";
 
 @implementation NoticeItem

@@ -15,7 +15,7 @@
     if(self)
     {
         _avatar = [[AvatarView alloc] initWithFrame:CGRectMake(20, 10, 60, 60)];
-        [_avatar setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar]];
+        [_avatar sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar]];
         [self addSubview:_avatar];
         
         CGFloat width = 20;

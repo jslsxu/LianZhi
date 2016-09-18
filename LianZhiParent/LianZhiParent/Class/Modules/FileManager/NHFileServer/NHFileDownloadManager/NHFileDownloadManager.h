@@ -49,7 +49,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(NHFileDownloadManager)
                                         progress:(ProgressBlock)progressHandler
                                          success:(SuccessBlock)successHandler
                                          failure:(FailureBlock)failureHandler;
-
+- (BOOL)isProcessingWithUrlString:(NSString *)string;
 
 - (void)cancelDownloadingWithUrlString:(NSString *)urlString;
 

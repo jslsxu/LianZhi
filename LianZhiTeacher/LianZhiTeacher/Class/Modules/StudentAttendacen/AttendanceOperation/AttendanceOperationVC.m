@@ -33,7 +33,7 @@
     [offView addSubview:attendanceView];
     
     AvatarView *avatar = [[AvatarView alloc] initWithFrame:CGRectMake(0, 0, offView.height, offView.height)];
-    [avatar setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
+    [avatar sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
     [offView addSubview:avatar];
     
     UILabel *startLabel = [[UILabel alloc] initWithFrame:CGRectMake(70, 0, attendanceView.width - 70 - 30, attendanceView.height / 2)];

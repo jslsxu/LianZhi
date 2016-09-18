@@ -7,7 +7,7 @@
 //
 
 #import "NotificationMemberSelectVC.h"
-
+#import "ContactsLoadingView.h"
 #define kNotificationClassArrayKey      @"NotificationClassArray"
 #define kNotificationGroupArrayKey      @"NotificationGroupArray"
 
@@ -109,6 +109,7 @@
 }
 
 - (void)layoutSubviews{
+    [super layoutSubviews];
     [_stateImageView setCenter:CGPointMake(25, self.height / 2)];
     [_logoView setFrame:CGRectMake(50, (self.height - 36) / 2, 36, 36)];
     [_allSelectButton setFrame:CGRectMake(self.width - 40, 0, 40, self.height)];
@@ -163,7 +164,7 @@
 - (void)setUserInfo:(UserInfo *)userInfo{
     _userInfo = userInfo;
     [_stateImageView setImage:[UIImage imageNamed:_userInfo.selected ? @"send_sms_on" : @"send_sms_off"]];
-    [_avatarView setImageWithUrl:[NSURL URLWithString:_userInfo.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_userInfo.avatar]];
     [_avatarView setStatus:userInfo.actived ? nil : @"未下载"];
     [_avatarView setFrame:CGRectMake(50, (60 - 36) / 2, 36, 36)];
     [_nameLabel setText:_userInfo.name];
@@ -227,6 +228,7 @@
             [self.expandDictionary setValue:@(expand) forKey:[(TeacherGroup *)groupInfo groupID]];
         }
     }
+    [_tableView reloadData];
     [self updateSelectToolBar];
 }
 
@@ -460,51 +462,30 @@
 @end
 
 @interface NotificationMemberSelectVC ()
+@property (nonatomic, strong)UISegmentedControl* segmentCtrl;
 @property (nonatomic, strong)NSArray*    classArray;
 @property (nonatomic, strong)NSArray*    groupArray;
 @property (nonatomic, strong)NSArray*    originalSourceArray;
+@property (nonatomic, strong)ContactsLoadingView*   contactsLoadingView;
 @end
 
 @implementation NotificationMemberSelectVC
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (instancetype)initWithOriginalArray:(NSArray *)sourceArray{
     self = [super init];
     if(self){
         self.originalSourceArray = sourceArray;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadData) name:kUserInfoContactsChangedNotificaiotn object:nil];
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSMutableArray *classArray = [NSMutableArray array];
-    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.allClasses) {
-        NSDictionary *classDic = [classInfo modelToJSONObject];
-        ClassInfo *sourceClassInfo = [ClassInfo modelWithJSON:classDic];
-        [classArray addObject:sourceClassInfo];
-    }
-    self.classArray = classArray;
-    
-    NSMutableArray *groupArray = [NSMutableArray array];
-    for (TeacherGroup *group in [UserCenter sharedInstance].curSchool.groups) {
-        NSDictionary *groupDic = [group modelToJSONObject];
-        TeacherGroup *sourceGroup = [TeacherGroup modelWithJSON:groupDic];
-        if(sourceGroup.canNotice){
-            [groupArray addObject:sourceGroup];
-        }
-    }
-    self.groupArray = groupArray;
-    
-    for (ClassInfo *classInfo in self.classArray) {
-        for (StudentInfo *studentInfo in classInfo.students) {
-            studentInfo.selected = [self isSelected:studentInfo.uid];
-        }
-    }
-    for (TeacherGroup *group in self.groupArray) {
-        for (TeacherInfo *teacherInfo in group.teachers) {
-            teacherInfo.selected = [self isSelected:teacherInfo.uid];
-        }
-    }
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(onConfirm)];
     
@@ -515,26 +496,7 @@
     _teacherView = [[NotificationMemberView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
     [_teacherView setUserType:UserTypeTeacher];
     [self.view addSubview:_teacherView];
-    
-    if([self.classArray count] == 0 || [self.groupArray count] == 0){
-        [self setTitle:@"选择联系人"];
-        if([self.groupArray count] == 0){
-            [_teacherView setHidden:YES];
-        }
-        if([self.classArray count] == 0){
-            [_studentView setHidden:YES];
-        }
-    }
-    else{
-        _segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"家长",@"同事"]];
-        [_segmentCtrl setSelectedSegmentIndex:0];
-        [_segmentCtrl setWidth:120];
-        [_segmentCtrl addTarget:self action:@selector(onValueChanged) forControlEvents:UIControlEventValueChanged];
-        [self.navigationItem setTitleView:_segmentCtrl];
-        [_studentView setHidden:NO];
-        [_teacherView setHidden:YES];
-    }
-    
+    [self.view addSubview:[self contactsLoadingView]];
     [self reloadData];
 }
 
@@ -543,6 +505,14 @@
         _emptyView = [[EmptyHintView alloc] initWithImage:@"NoContacts" title:@"暂时没有联系人"];
     }
     return _emptyView;
+}
+
+- (ContactsLoadingView *)contactsLoadingView{
+    if(!_contactsLoadingView){
+        _contactsLoadingView = [[ContactsLoadingView alloc] initWithFrame:CGRectZero];
+        [_contactsLoadingView setCenter:CGPointMake(self.view.width / 2, (kScreenHeight - 64) / 2)];
+    }
+    return _contactsLoadingView;
 }
 
 - (BOOL)isSelected:(NSString *)uid{
@@ -571,11 +541,70 @@
 }
 
 - (void)reloadData{
+    NSMutableArray *classArray = [NSMutableArray array];
+    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.allClasses) {
+        NSDictionary *classDic = [classInfo modelToJSONObject];
+        ClassInfo *sourceClassInfo = [ClassInfo modelWithJSON:classDic];
+        [classArray addObject:sourceClassInfo];
+    }
+    self.classArray = classArray;
+    
+    NSMutableArray *groupArray = [NSMutableArray array];
+    for (TeacherGroup *group in [UserCenter sharedInstance].curSchool.groups) {
+        NSDictionary *groupDic = [group modelToJSONObject];
+        TeacherGroup *sourceGroup = [TeacherGroup modelWithJSON:groupDic];
+        if(sourceGroup.canNotice){
+            [groupArray addObject:sourceGroup];
+        }
+    }
+    self.groupArray = groupArray;
+    
+    for (ClassInfo *classInfo in self.classArray) {
+        for (StudentInfo *studentInfo in classInfo.students) {
+            studentInfo.selected = [self isSelected:studentInfo.uid];
+        }
+    }
+    for (TeacherGroup *group in self.groupArray) {
+        for (TeacherInfo *teacherInfo in group.teachers) {
+            teacherInfo.selected = [self isSelected:teacherInfo.uid];
+        }
+    }
+    [_studentView setHidden:NO];
+    [_teacherView setHidden:NO];
+    if([self.classArray count] == 0 || [self.groupArray count] == 0){
+        [self.navigationItem setTitleView:nil];
+        [self setTitle:@"选择联系人"];
+        if([self.groupArray count] == 0){
+            [_teacherView setHidden:YES];
+        }
+        if([self.classArray count] == 0){
+            [_studentView setHidden:YES];
+        }
+    }
+    else{
+        UISegmentedControl *segmentControl = [[UISegmentedControl alloc] initWithItems:@[@"家长",@"同事"]];
+        [segmentControl setSelectedSegmentIndex:0];
+        [segmentControl setWidth:120];
+        [segmentControl addTarget:self action:@selector(onValueChanged) forControlEvents:UIControlEventValueChanged];
+        [self setTitle:nil];
+        [self.navigationItem setTitleView:segmentControl];
+        [self setSegmentCtrl:segmentControl];
+        
+        [_studentView setHidden:NO];
+        [_teacherView setHidden:YES];
+    }
 
     [_studentView setDataSource:self.classArray];
     [_teacherView setDataSource:self.groupArray];
+    
     BOOL showEmpty = [self.classArray count] == 0 && [self.groupArray count] == 0;
-    [self showEmptyView:showEmpty];
+    if([UserCenter sharedInstance].isLoadingContacts && showEmpty){
+        [self.contactsLoadingView show];
+    }
+    else{
+        [self.contactsLoadingView dismiss];
+    }
+    [self showEmptyView:showEmpty && self.contactsLoadingView.hidden];
 }
 
 - (void)onValueChanged{

@@ -86,4 +86,5 @@
 #import "YYInfiniteScrollView.h"
 #import "NHFileManager.h"
 #import "PhotoBrowser.h"
+#import "PBImageController.h"
 #endif

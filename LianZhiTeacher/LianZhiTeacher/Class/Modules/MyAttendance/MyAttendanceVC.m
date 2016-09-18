@@ -55,7 +55,7 @@
     
     
     AvatarView *avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(30, (todayView.height - 48) / 2, 48, 48)];
-    [avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
+    [avatarView sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
     [todayView addSubview:avatarView];
     
     if(self.todayItem)

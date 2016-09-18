@@ -92,7 +92,7 @@
 
 - (void)setupSubviews{
     UserInfo *curChild = [UserCenter sharedInstance].curChild;
-    [_avatar setImageWithUrl:[NSURL URLWithString:curChild.avatar]];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:curChild.avatar]];
     if([UserCenter sharedInstance].children.count <= 1){
         [_switchButton setHidden:YES];
         [_avatar setOrigin:CGPointMake(0, (self.height - _avatar.height) / 2)];

@@ -40,7 +40,7 @@
 - (void)setStudentInfo:(StudentInfo *)studentInfo
 {
     _studentInfo = studentInfo;
-    [_avatar setImageWithUrl:[NSURL URLWithString:_studentInfo.avatar]];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:_studentInfo.avatar]];
     [_nameLabel setText:_studentInfo.name];
 }
 

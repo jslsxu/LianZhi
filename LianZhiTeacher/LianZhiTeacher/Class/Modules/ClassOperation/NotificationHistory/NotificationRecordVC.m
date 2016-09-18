@@ -366,7 +366,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger count = self.tableViewModel.modelItemArray.count + [NotificationManager sharedInstance].sendingNotificationArray.count;
     BOOL showEmpty = count == 0;
-    [self showEmptyView:showEmpty && !self->_isLoading];
+    [self showEmptyView:showEmpty && !self.isLoading];
     return count;
 }
 

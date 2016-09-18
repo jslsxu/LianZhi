@@ -73,7 +73,7 @@
 {
     _userInfo = userInfo;
     [_nameLabel setText:_userInfo.name];
-    [_avatarView setImageWithUrl:[NSURL URLWithString:_userInfo.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_userInfo.avatar]];
     [_avatarView setStatus:_userInfo.actived ? nil : @"未下载"];
 }
 

@@ -55,7 +55,7 @@
 {
     NewMessageItem *messageItem = (NewMessageItem *)modelItem;
     UserInfo *userInfo = messageItem.userInfo;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:userInfo.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:userInfo.avatar]];
     [_authorLabel setText:userInfo.label];
     [_contentLabel setText:messageItem.comment_content];
     [_timeLabel setText:messageItem.ctime];

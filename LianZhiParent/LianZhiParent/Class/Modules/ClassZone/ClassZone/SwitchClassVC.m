@@ -34,7 +34,7 @@
 - (void)setClassInfo:(ClassInfo *)classInfo
 {
     _classInfo = classInfo;
-    [_logoView setImageWithUrl:[NSURL URLWithString:_classInfo.logo]];
+    [_logoView sd_setImageWithURL:[NSURL URLWithString:_classInfo.logo]];
     [_nameLabel setText:_classInfo.name];
 }
 

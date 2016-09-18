@@ -15,6 +15,7 @@
 #define FOOT_MORE_OFFSET    5
 
 @interface TNBaseCollectionViewController ()
+@property (nonatomic, assign)BOOL isLoading;
 @end
 
 @implementation TNBaseCollectionViewController
@@ -70,7 +71,7 @@
         @weakify(self)
         [self.collectionView setMj_header:[MJRefreshNormalHeader headerWithRefreshingBlock:^{
             @strongify(self)
-            if(!_isLoading){
+            if(!self.isLoading){
                 [self requestData:REQUEST_REFRESH];
             }
             else{
@@ -145,12 +146,12 @@
         }
 
     }
-    if(!_isLoading)
+    if(!self.isLoading)
     {
         HttpRequestTask *task = [self makeRequestTaskWithType:requestType];
         if(task)
         {
-            _isLoading = YES;
+            self.isLoading = YES;
             __weak typeof(self) wself = self;
             AFHTTPRequestOperation *operation = [[HttpRequestEngine sharedInstance] makeRequestFromUrl:task.requestUrl method:task.requestMethod type:requestType withParams:task.params observer:task.observer completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
                 [self endRefresh:requestType];
@@ -168,7 +169,7 @@
         }
         else
         {
-            _isLoading = NO;
+            self.isLoading = NO;
             [self endRefresh:requestType];
         }
     }
@@ -206,7 +207,7 @@
         });
     }
     [self reloadData];
-    _isLoading = NO;
+    self.isLoading = NO;
 }
 
 - (void)onRequestFail:(NSString *)errMsg
@@ -214,7 +215,7 @@
     [self.collectionView.mj_header endRefreshing];
     [self.collectionView.mj_footer endRefreshing];
     [ProgressHUD showHintText:errMsg];
-    _isLoading = NO;
+    self.isLoading = NO;
     if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestFailedWithError:)])
         [self TNBaseTableViewControllerRequestFailedWithError:errMsg];
 }

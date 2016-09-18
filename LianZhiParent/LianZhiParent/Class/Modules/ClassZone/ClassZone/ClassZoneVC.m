@@ -194,7 +194,7 @@
         }
     }
     [_headerView setCommentItem:curAlert];
-    [_tableView setTableHeaderView:_headerView];
+    [self.tableView setTableHeaderView:_headerView];
     
 }
 

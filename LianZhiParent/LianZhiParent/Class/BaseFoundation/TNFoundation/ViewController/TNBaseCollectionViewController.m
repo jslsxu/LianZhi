@@ -131,20 +131,6 @@
 
 - (void)requestData:(REQUEST_TYPE)requestType
 {
-    if(self.collectionViewModel.modelItemArray.count == 0)
-    {
-        if([self supportCache])//支持缓存，先出缓存中读取数据
-        {
-            NSData *data = [NSData dataWithContentsOfFile:[self cacheFilePath]];
-            if(data.length > 0){
-                _collectionViewModel = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-                [self.collectionView reloadData];
-                if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
-                    [self TNBaseTableViewControllerRequestSuccess];
-            }
-        }
-        
-    }
     if(!_isLoading)
     {
         HttpRequestTask *task = [self makeRequestTaskWithType:requestType];
@@ -202,7 +188,7 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             BOOL success = [modelData writeToFile:[self cacheFilePath] atomically:YES];
             if(success)
-                NSLog(@"save success");
+                DLOG(@"save success");
         });
     }
     [self reloadData];

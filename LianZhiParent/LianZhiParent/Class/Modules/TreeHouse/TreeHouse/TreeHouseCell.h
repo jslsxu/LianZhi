@@ -21,6 +21,7 @@ extern NSString *const kTreeHouseItemKey;
 - (void)onShowDetail:(TreehouseItem *)treeItem;
 - (void)onActionClicked:(TreeHouseCell *)cell;
 - (void)onResponseClickedAtTarget:(ResponseItem *)responseItem cell:(TreeHouseCell *)cell;
+- (void)onTreeHouseItemDelete:(TreehouseItem *)item;
 @end
 
 @interface TreeHouseCell : TNTableViewCell<UICollectionViewDataSource, UICollectionViewDelegate, ResponseDelegate>

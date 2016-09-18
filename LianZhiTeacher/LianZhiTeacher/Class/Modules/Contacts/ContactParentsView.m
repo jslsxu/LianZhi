@@ -53,7 +53,7 @@
     [_phoneButton setEnabled:_familyInfo.mobile.length > 0];
     [_chatButton setEnabled:_familyInfo.actived];
     
-    [_avatarView setImageWithUrl:[NSURL URLWithString:_familyInfo.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_familyInfo.avatar]];
     [_avatarView setStatus:_familyInfo.actived ? nil : @"未下载"];
     [_avatarView setOrigin:CGPointMake(12, (60 - _avatarView.height) / 2)];
     [_nameLabel setText:_familyInfo.name];
@@ -146,16 +146,17 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    __weak typeof(self) wself = self;
     ContactParentItemCell *itemCell = (ContactParentItemCell *)cell;
     FamilyInfo *familyInfo = self.studentInfo.family[indexPath.row];
     [itemCell setFamilyInfo:familyInfo];
     [itemCell setChatCallback:^{
         JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-        [chatVC setTo_objid:self.studentInfo.uid];
+        [chatVC setTo_objid:wself.studentInfo.uid];
         [chatVC setTargetID:familyInfo.uid];
         [chatVC setChatType:ChatTypeParents];
         [chatVC setMobile:familyInfo.mobile];
-        [chatVC setName:[NSString stringWithFormat:@"%@的%@",self.studentInfo.name,[(FamilyInfo *)familyInfo relation]]];
+        [chatVC setName:[NSString stringWithFormat:@"%@的%@",wself.studentInfo.name,[(FamilyInfo *)familyInfo relation]]];
         [ApplicationDelegate popAndPush:chatVC];
     }];
     [itemCell setPhoneCallback:^{

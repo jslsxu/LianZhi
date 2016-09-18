@@ -49,7 +49,7 @@
 - (void)setSchoolInfo:(SchoolInfo *)schoolInfo
 {
     _schoolInfo = schoolInfo;
-    [_logoView setImageWithUrl:[NSURL URLWithString:schoolInfo.logoUrl]];
+    [_logoView sd_setImageWithURL:[NSURL URLWithString:schoolInfo.logoUrl]];
     [_nameLabel setText:_schoolInfo.schoolName];
     
 }
@@ -150,7 +150,7 @@
     NSInteger infoHeight = viewParent.height - 20;
     
     AvatarView *avatar = [[AvatarView alloc] initWithFrame:CGRectMake(20, 10, 55, 55)];
-    [avatar setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
+    [avatar sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
     [viewParent addSubview:avatar];
     
     UILabel*    nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];

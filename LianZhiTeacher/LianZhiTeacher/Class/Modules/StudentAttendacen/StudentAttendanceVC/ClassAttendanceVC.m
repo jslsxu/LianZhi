@@ -53,7 +53,7 @@
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     ClassLeftItem *leftItem = (ClassLeftItem *)modelItem;
-    [_logoView setImageWithUrl:[NSURL URLWithString:leftItem.logo]];
+    [_logoView sd_setImageWithURL:[NSURL URLWithString:leftItem.logo]];
     [_nameLabel setText:leftItem.className];
     [_nameLabel sizeToFit];
     [_nameLabel setY:(55 - _nameLabel.height) / 2];

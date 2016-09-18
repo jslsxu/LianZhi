@@ -23,7 +23,7 @@
         
         
         _avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(5, (self.height - 20) / 2, 20, 20)];
-        [_avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
+        [_avatarView sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].userInfo.avatar]];
         [self addSubview:_avatarView];
         
         _indicatorLabel = [[UILabel alloc] initWithFrame:CGRectMake(_avatarView.right + 15, 0, self.width - 10 - (_avatarView.right + 5), self.height)];
@@ -42,7 +42,7 @@
 - (void)setCommentItem:(TimelineCommentItem *)commentItem
 {
     _commentItem = commentItem;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:_commentItem.alertInfo.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_commentItem.alertInfo.avatar]];
     [_indicatorLabel setText:[NSString stringWithFormat:@"%ld条新消息",(long)_commentItem.alertInfo.num]];
 }
 
@@ -77,8 +77,9 @@
         [self addSubview:nameView];
         
         _avatar = [[AvatarView alloc] initWithRadius:36];
-        [_avatar setBorderWidth:3];
-        [_avatar setBorderColor:[UIColor whiteColor]];
+        [_avatar.layer setBorderWidth:3];
+        [_avatar.layer setBorderColor:[UIColor whiteColor].CGColor];
+        [_avatar.layer setMasksToBounds:YES];
         [_avatar setCenter:CGPointMake(50, _bannerImageView.bottom - 30)];
         [self addSubview:_avatar];
         
@@ -130,7 +131,7 @@
 
 - (void)setupHeaderView
 {
-    [_avatar setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar]];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar]];
     NSString *nickName = [UserCenter sharedInstance].curChild.name;
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:nickName attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:18]}];
     [title appendAttributedString:[[NSAttributedString alloc] initWithString:@"的成长秀" attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14]}]];
@@ -155,6 +156,6 @@
 
 - (void)onChildInfoChanged
 {
-    [_avatar setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar]];
+    [_avatar sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar]];
 }
 @end

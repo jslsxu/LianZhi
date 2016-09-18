@@ -45,7 +45,7 @@
 - (void)updateWithMessage:(MessageItem *)messageItem keyword:(NSString *)keyword{
     self.messageItem = messageItem;
     self.keyword = keyword;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:self.messageItem.user.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:self.messageItem.user.avatar]];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MM月dd日"];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:self.messageItem.content.ctime];

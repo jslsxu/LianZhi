@@ -13,6 +13,7 @@
     UILabel*        _nameLabel;
     UILabel*        _statusLabel;
     UILabel*        _contentLabel;
+    UIView*         _bottomLine;
 }
 
 @end
@@ -43,13 +44,19 @@
         [_contentLabel setNumberOfLines:0];
         [_contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [self addSubview:_contentLabel];
+        
+        _bottomLine = [[UIView alloc] initWithFrame:CGRectMake(10, self.height - kLineHeight, self.width - 10 * 2, kLineHeight)];
+        [_bottomLine setBackgroundColor:kSepLineColor];
+        [_bottomLine setHidden:YES];
+        [_bottomLine setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
+        [self addSubview:_bottomLine];
     }
     return self;
 }
 
 - (void)setMessageDetailItem:(MessageDetailItem *)messageDetailItem{
     _messageDetailItem = messageDetailItem;
-    [_avatarView setImageWithUrl:[NSURL URLWithString:_messageDetailItem.from_user.avatar]];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_messageDetailItem.from_user.avatar]];
     [_nameLabel setText:_messageDetailItem.from_user.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 5, _avatarView.centerY - 3 - _nameLabel.height)];
@@ -62,6 +69,8 @@
     [_contentLabel sizeToFit];
     
     [self setHeight:_contentLabel.bottom + 10];
+    BOOL onlyText = ![_messageDetailItem hasAudio] && ![_messageDetailItem hasPhoto] && ![_messageDetailItem hasVideo];
+    [_bottomLine setHidden:!onlyText];
 }
 
 

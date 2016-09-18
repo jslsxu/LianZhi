@@ -38,9 +38,10 @@
 
 }
 - (void)onTap{
-    [self _showPhotoBrowser:_logoView];
+    [[PBImageController sharedInstance] showForView:_logoView placeHolder:_logoView.image url:self.logoUrl];
+    //[self _showPhotoBrowser:_logoView];
 }
-
+/*
 - (void)_showPhotoBrowser:(UIView *)sender {
     PBViewController *pbViewController = [PBViewController new];
     pbViewController.pb_dataSource = self;
@@ -85,7 +86,7 @@
         [alertView showAnimated:YES completionHandler:nil];
     }
 }
-
+*/
 @end
 
 @interface ChatExtraGroupInfoVC ()<UITableViewDelegate, UITableViewDataSource>

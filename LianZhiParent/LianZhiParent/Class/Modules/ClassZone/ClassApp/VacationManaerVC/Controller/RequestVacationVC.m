@@ -28,7 +28,7 @@
     [self.view addSubview:bgView];
     
     AvatarView *avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
-    [avatarView setImageWithUrl:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar]];
+    [avatarView sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar]];
     [bgView addSubview:avatarView];
     
     _startLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarView.right + 10, 10, bgView.width - 50 - (avatarView.right + 20), 30)];

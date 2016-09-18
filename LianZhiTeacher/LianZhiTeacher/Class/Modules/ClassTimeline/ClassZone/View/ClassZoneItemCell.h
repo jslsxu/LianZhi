@@ -10,15 +10,13 @@
 #import "ClassZoneModel.h"
 #import "MessageVoiceButton.h"
 #import "ResponseView.h"
-extern NSString *const kClassZoneItemDeleteNotification;
-extern NSString *const kClassZoneItemDeleteKey;
 
 @class ClassZoneItemCell;
 @protocol ClassZoneItemCellDelegate <NSObject>
 - (void)onActionClicked:(ClassZoneItemCell *)cell;
 - (void)onShowDetail:(ClassZoneItem *)zoneItem;
 - (void)onResponseClickedAtTarget:(ResponseItem *)responseItem cell:(ClassZoneItemCell *)cell;
-
+- (void)onClassZoneItemDelete:(ClassZoneItem *)zoneItem;
 @end
 
 
