@@ -16,7 +16,7 @@
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithReuseIdentifier:reuseIdentifier];
     if(self){
-        [self.contentView setBackgroundColor:[UIColor whiteColor]];
+
         _stateImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gray_expand_indicator"]];
         [self addSubview:_stateImageView];
         

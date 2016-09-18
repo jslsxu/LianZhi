@@ -92,7 +92,7 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return UIStatusBarStyleLightContent;
+    return UIStatusBarStyleDefault;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -427,12 +427,6 @@ NSString *const kAddRelationNotification = @"AddRelationNotification";
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    
 }
 
 #pragma mark - ActionSelectView

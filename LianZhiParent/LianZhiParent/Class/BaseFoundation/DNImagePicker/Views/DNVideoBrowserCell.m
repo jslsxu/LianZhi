@@ -59,7 +59,7 @@
 - (void)setAsset:(ALAsset *)asset{
     if(_asset != asset){
         _asset = asset;
-        UIImage *img = [UIImage imageWithCGImage:[[self.asset defaultRepresentation] fullScreenImage]];
+        UIImage *img = [UIImage imageWithCGImage:[[self.asset defaultRepresentation] fullScreenImage] scale:1.f orientation:UIImageOrientationUp];
         [self.imageView setImage:img];
     }
 }

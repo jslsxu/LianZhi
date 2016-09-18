@@ -152,41 +152,93 @@
 
 - (void)setVoiceArray:(NSArray *)voiceArray{
     _voiceArray = voiceArray;
-    [_voiceViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    [_voiceViewArray removeAllObjects];
+//    [_voiceViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
+//    [_voiceViewArray removeAllObjects];
+//    if(_voiceArray.count == 0){
+//        [self setHeight:0];
+//    }
+//    else{
+//        CGFloat maxWidth = self.width - kVoiceMargin - _titleLabel.right - kVoiceMargin;
+//        CGFloat spaceXStart = _titleLabel.right + kVoiceMargin;
+//        CGFloat spaceYStart = kVoiceMargin;
+//        for (NSInteger i = 0; i < _voiceArray.count; i++) {
+//            AudioItem *item = _voiceArray[i];
+//            AudioContentView *voiceView = [[AudioContentView alloc] initWithMaxWidth:maxWidth];
+//            [voiceView setAudioItem:item];
+//            [voiceView setOrigin:CGPointMake(spaceXStart, spaceYStart)];
+//            @weakify(self)
+//            [voiceView setDeleteCallback:^{
+//                @strongify(self)
+//                [self deleteVoice:item];
+//            }];
+//            [_voiceViewArray addObject:voiceView];
+//            [self addSubview:voiceView];
+//            
+//            spaceYStart += kVoiceMargin + voiceView.height;
+//        }
+//        [self setHeight:spaceYStart];
+//    }
+    
     if(_voiceArray.count == 0){
+        [_voiceViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        [_voiceViewArray removeAllObjects];
         [self setHeight:0];
     }
     else{
         CGFloat maxWidth = self.width - kVoiceMargin - _titleLabel.right - kVoiceMargin;
         CGFloat spaceXStart = _titleLabel.right + kVoiceMargin;
         CGFloat spaceYStart = kVoiceMargin;
-        for (NSInteger i = 0; i < _voiceArray.count; i++) {
-            AudioItem *item = _voiceArray[i];
-            AudioContentView *voiceView = [[AudioContentView alloc] initWithMaxWidth:maxWidth];
-            [voiceView setAudioItem:item];
-            [voiceView setOrigin:CGPointMake(spaceXStart, spaceYStart)];
-            @weakify(self)
-            [voiceView setDeleteCallback:^{
-                @strongify(self)
-                [self deleteVoice:item];
-            }];
-            [_voiceViewArray addObject:voiceView];
-            [self addSubview:voiceView];
-            
-            spaceYStart += kVoiceMargin + voiceView.height;
+        if([_voiceArray count] > [_voiceViewArray count]){
+            AudioContentView *lastVoiceView = [_voiceViewArray lastObject];
+            spaceYStart = lastVoiceView.bottom + kVoiceMargin;
+            for (NSInteger i = [_voiceViewArray count]; i < _voiceArray.count; i++) {
+                AudioItem *item = _voiceArray[i];
+                AudioContentView *voiceView = [[AudioContentView alloc] initWithMaxWidth:maxWidth];
+                [voiceView setAudioItem:item];
+                [voiceView setOrigin:CGPointMake(spaceXStart, spaceYStart)];
+                @weakify(self)
+                [voiceView setDeleteCallback:^{
+                    @strongify(self)
+                    [self deleteVoice:item];
+                }];
+                [_voiceViewArray addObject:voiceView];
+                [self addSubview:voiceView];
+                
+                spaceYStart += kVoiceMargin + voiceView.height;
+            }
+            [self setHeight:spaceYStart];
         }
-        [self setHeight:spaceYStart];
+        else{
+            while ([_voiceViewArray count] > [_voiceArray count]) {
+                AudioContentView *voiceItemView = [_voiceViewArray lastObject];
+                [voiceItemView removeFromSuperview];
+                [_voiceViewArray removeObject:voiceItemView];
+            }
+            for (NSInteger i = 0; i < _voiceArray.count; i++) {
+                AudioItem *item = _voiceArray[i];
+                AudioContentView *voiceItemView = _voiceViewArray[i];
+                [voiceItemView setAudioItem:item];
+                [voiceItemView setOrigin:CGPointMake(spaceXStart, spaceYStart)];
+                @weakify(self)
+                [voiceItemView setDeleteCallback:^{
+                    @strongify(self)
+                    [self deleteVoice:item];
+                }];
+                spaceYStart += kVoiceMargin + voiceItemView.height;
+            }
+            [self setHeight:spaceYStart];
+        }
     }
 }
 
 - (void)deleteVoice:(AudioItem *)audioItem{
+    __weak typeof(self) wself = self;
     LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:@"确定要删除语音吗" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
     [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setDestructiveHandler:^(LGAlertView *alertView) {
-        if(self.deleteDataCallback){
-            self.deleteDataCallback(audioItem);
+        if(wself.deleteDataCallback){
+            wself.deleteDataCallback(audioItem);
         }
     }];
     [alertView showAnimated:YES completionHandler:nil];

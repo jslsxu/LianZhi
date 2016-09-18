@@ -109,7 +109,7 @@
     }
     if(self.canCalltelephone){
         if(![self supportType:FunctionTypeTelephone])
-            [_functionArray addObject:[FunctionItem functionItemWithTitle:@"打电话" image:@"FunctionVideo" type:FunctionTypeTelephone]];
+            [_functionArray addObject:[FunctionItem functionItemWithTitle:@"打电话" image:@"FunctionPhone" type:FunctionTypeTelephone]];
     }
     [_collectionView reloadData];
 }

@@ -14,5 +14,4 @@ pod 'SWTableViewCell', '~> 0.3.7'
 pod "MWPhotoBrowser"
 pod 'pop'
 pod 'XHRealTimeBlur'
-pod 'LGAlertView'
 pod 'MGSwipeTableCell'

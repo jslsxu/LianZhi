@@ -9,4 +9,3 @@ pod "Bugtags"
 pod 'Masonry'
 pod 'SCRecorder'
 pod "ReactiveCocoa", "2.5"
-pod 'LGAlertView'

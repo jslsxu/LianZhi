@@ -38,26 +38,66 @@
 
 - (void)setVoiceArray:(NSArray *)voiceArray{
     _voiceArray = voiceArray;
-    [_voiceViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    [_voiceViewArray removeAllObjects];
+//    [_voiceViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
+//    [_voiceViewArray removeAllObjects];
+//    if(_voiceArray.count == 0){
+//        [self setHeight:0];
+//    }
+//    else{
+//        CGFloat maxWidth = self.width - 10 * 2;
+//        CGFloat spaceXStart = 10;
+//        CGFloat spaceYStart = 10;
+//        for (NSInteger i = 0; i < _voiceArray.count; i++) {
+//            AudioItem *item = _voiceArray[i];
+//            AudioContentView *voiceView = [[AudioContentView alloc] initWithMaxWidth:maxWidth];
+//            [voiceView setAudioItem:item];
+//            [voiceView setOrigin:CGPointMake(spaceXStart, spaceYStart)];
+//            [_voiceViewArray addObject:voiceView];
+//            [self addSubview:voiceView];
+//            
+//            spaceYStart += 10 + voiceView.height;
+//        }
+//        [self setHeight:spaceYStart];
+//    }
     if(_voiceArray.count == 0){
+        [_voiceViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        [_voiceViewArray removeAllObjects];
         [self setHeight:0];
     }
     else{
         CGFloat maxWidth = self.width - 10 * 2;
         CGFloat spaceXStart = 10;
         CGFloat spaceYStart = 10;
-        for (NSInteger i = 0; i < _voiceArray.count; i++) {
-            AudioItem *item = _voiceArray[i];
-            AudioContentView *voiceView = [[AudioContentView alloc] initWithMaxWidth:maxWidth];
-            [voiceView setAudioItem:item];
-            [voiceView setOrigin:CGPointMake(spaceXStart, spaceYStart)];
-            [_voiceViewArray addObject:voiceView];
-            [self addSubview:voiceView];
-            
-            spaceYStart += 10 + voiceView.height;
+        if([_voiceArray count] > [_voiceViewArray count]){
+            AudioContentView *lastVoiceView = [_voiceViewArray lastObject];
+            spaceYStart = lastVoiceView.bottom + 10;
+            for (NSInteger i = [_voiceViewArray count]; i < _voiceArray.count; i++) {
+                AudioItem *item = _voiceArray[i];
+                AudioContentView *voiceView = [[AudioContentView alloc] initWithMaxWidth:maxWidth];
+                [voiceView setAudioItem:item];
+                [voiceView setOrigin:CGPointMake(spaceXStart, spaceYStart)];
+                [_voiceViewArray addObject:voiceView];
+                [self addSubview:voiceView];
+                
+                spaceYStart += 10 + voiceView.height;
+            }
+            [self setHeight:spaceYStart];
         }
-        [self setHeight:spaceYStart];
+        else{
+            while ([_voiceViewArray count] > [_voiceArray count]) {
+                AudioContentView *voiceItemView = [_voiceViewArray lastObject];
+                [voiceItemView removeFromSuperview];
+                [_voiceViewArray removeObject:voiceItemView];
+            }
+            for (NSInteger i = 0; i < _voiceArray.count; i++) {
+                AudioItem *item = _voiceArray[i];
+                AudioContentView *voiceItemView = _voiceViewArray[i];
+                [voiceItemView setAudioItem:item];
+                [voiceItemView setOrigin:CGPointMake(spaceXStart, spaceYStart)];
+                spaceYStart += 10 + voiceItemView.height;
+            }
+            [self setHeight:spaceYStart];
+        }
     }
 
 }

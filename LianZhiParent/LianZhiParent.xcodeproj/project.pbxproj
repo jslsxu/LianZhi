@@ -406,6 +406,15 @@
 		8DB4C05F1D8149D50099A63C /* TreeHousePublishManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB4C05E1D8149D50099A63C /* TreeHousePublishManager.m */; };
 		8DB8FAED1D662A5A006B44B2 /* GiftItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB8FAEC1D662A5A006B44B2 /* GiftItem.m */; };
 		8DC0873D1D8C4930008B57B2 /* PBImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC0873C1D8C4930008B57B2 /* PBImageController.m */; };
+		8DC087721D8E50E7008B57B2 /* LGAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC087621D8E50E7008B57B2 /* LGAlertView.m */; };
+		8DC087731D8E50E7008B57B2 /* LGAlertViewButtonProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC087641D8E50E7008B57B2 /* LGAlertViewButtonProperties.m */; };
+		8DC087741D8E50E7008B57B2 /* LGAlertViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC087661D8E50E7008B57B2 /* LGAlertViewCell.m */; };
+		8DC087751D8E50E7008B57B2 /* LGAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC087681D8E50E7008B57B2 /* LGAlertViewController.m */; };
+		8DC087761D8E50E7008B57B2 /* LGAlertViewTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC0876B1D8E50E7008B57B2 /* LGAlertViewTextField.m */; };
+		8DC087771D8E50E7008B57B2 /* LGAlertViewWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC0876D1D8E50E7008B57B2 /* LGAlertViewWindow.m */; };
+		8DC087781D8E50E7008B57B2 /* UIWindow+LGAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC0876F1D8E50E7008B57B2 /* UIWindow+LGAlertView.m */; };
+		8DC087791D8E50E7008B57B2 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 8DC087701D8E50E7008B57B2 /* LICENSE */; };
+		8DC0877A1D8E50E7008B57B2 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 8DC087711D8E50E7008B57B2 /* README.md */; };
 		8DCFD6621D43CC78001EDC8A /* YYInfiniteScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6611D43CC78001EDC8A /* YYInfiniteScrollView.m */; };
 		8DCFD73A1D53641B001EDC8A /* ContactParentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7391D53641B001EDC8A /* ContactParentsView.m */; };
 		8DCFD7841D5A3B3F001EDC8A /* VideoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7821D5A3B3F001EDC8A /* VideoItem.m */; };
@@ -1181,6 +1190,23 @@
 		8DB8FAEC1D662A5A006B44B2 /* GiftItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiftItem.m; sourceTree = "<group>"; };
 		8DC0873B1D8C4930008B57B2 /* PBImageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBImageController.h; sourceTree = "<group>"; };
 		8DC0873C1D8C4930008B57B2 /* PBImageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBImageController.m; sourceTree = "<group>"; };
+		8DC087611D8E50E7008B57B2 /* LGAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertView.h; sourceTree = "<group>"; };
+		8DC087621D8E50E7008B57B2 /* LGAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertView.m; sourceTree = "<group>"; };
+		8DC087631D8E50E7008B57B2 /* LGAlertViewButtonProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewButtonProperties.h; sourceTree = "<group>"; };
+		8DC087641D8E50E7008B57B2 /* LGAlertViewButtonProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewButtonProperties.m; sourceTree = "<group>"; };
+		8DC087651D8E50E7008B57B2 /* LGAlertViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewCell.h; sourceTree = "<group>"; };
+		8DC087661D8E50E7008B57B2 /* LGAlertViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewCell.m; sourceTree = "<group>"; };
+		8DC087671D8E50E7008B57B2 /* LGAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewController.h; sourceTree = "<group>"; };
+		8DC087681D8E50E7008B57B2 /* LGAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewController.m; sourceTree = "<group>"; };
+		8DC087691D8E50E7008B57B2 /* LGAlertViewShared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewShared.h; sourceTree = "<group>"; };
+		8DC0876A1D8E50E7008B57B2 /* LGAlertViewTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewTextField.h; sourceTree = "<group>"; };
+		8DC0876B1D8E50E7008B57B2 /* LGAlertViewTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewTextField.m; sourceTree = "<group>"; };
+		8DC0876C1D8E50E7008B57B2 /* LGAlertViewWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGAlertViewWindow.h; sourceTree = "<group>"; };
+		8DC0876D1D8E50E7008B57B2 /* LGAlertViewWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewWindow.m; sourceTree = "<group>"; };
+		8DC0876E1D8E50E7008B57B2 /* UIWindow+LGAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+LGAlertView.h"; sourceTree = "<group>"; };
+		8DC0876F1D8E50E7008B57B2 /* UIWindow+LGAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+LGAlertView.m"; sourceTree = "<group>"; };
+		8DC087701D8E50E7008B57B2 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		8DC087711D8E50E7008B57B2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8DCFD6601D43CC78001EDC8A /* YYInfiniteScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInfiniteScrollView.h; sourceTree = "<group>"; };
 		8DCFD6611D43CC78001EDC8A /* YYInfiniteScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfiniteScrollView.m; sourceTree = "<group>"; };
 		8DCFD7381D53641B001EDC8A /* ContactParentsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactParentsView.h; sourceTree = "<group>"; };
@@ -1660,6 +1686,7 @@
 		3793F5601B7CFFD800501F77 /* 3rdPart */ = {
 			isa = PBXGroup;
 			children = (
+				8DC0875F1D8E50E7008B57B2 /* LGAlertView */,
 				3793F5611B7CFFD800501F77 /* AutoNavi */,
 				3793F5651B7CFFD800501F77 /* GifImage */,
 				3793F56A1B7CFFD800501F77 /* MBProgressHUD */,
@@ -3002,6 +3029,38 @@
 			path = "opencore-amrwb";
 			sourceTree = "<group>";
 		};
+		8DC0875F1D8E50E7008B57B2 /* LGAlertView */ = {
+			isa = PBXGroup;
+			children = (
+				8DC087601D8E50E7008B57B2 /* LGAlertView */,
+				8DC087701D8E50E7008B57B2 /* LICENSE */,
+				8DC087711D8E50E7008B57B2 /* README.md */,
+			);
+			path = LGAlertView;
+			sourceTree = "<group>";
+		};
+		8DC087601D8E50E7008B57B2 /* LGAlertView */ = {
+			isa = PBXGroup;
+			children = (
+				8DC087611D8E50E7008B57B2 /* LGAlertView.h */,
+				8DC087621D8E50E7008B57B2 /* LGAlertView.m */,
+				8DC087631D8E50E7008B57B2 /* LGAlertViewButtonProperties.h */,
+				8DC087641D8E50E7008B57B2 /* LGAlertViewButtonProperties.m */,
+				8DC087651D8E50E7008B57B2 /* LGAlertViewCell.h */,
+				8DC087661D8E50E7008B57B2 /* LGAlertViewCell.m */,
+				8DC087671D8E50E7008B57B2 /* LGAlertViewController.h */,
+				8DC087681D8E50E7008B57B2 /* LGAlertViewController.m */,
+				8DC087691D8E50E7008B57B2 /* LGAlertViewShared.h */,
+				8DC0876A1D8E50E7008B57B2 /* LGAlertViewTextField.h */,
+				8DC0876B1D8E50E7008B57B2 /* LGAlertViewTextField.m */,
+				8DC0876C1D8E50E7008B57B2 /* LGAlertViewWindow.h */,
+				8DC0876D1D8E50E7008B57B2 /* LGAlertViewWindow.m */,
+				8DC0876E1D8E50E7008B57B2 /* UIWindow+LGAlertView.h */,
+				8DC0876F1D8E50E7008B57B2 /* UIWindow+LGAlertView.m */,
+			);
+			path = LGAlertView;
+			sourceTree = "<group>";
+		};
 		8DCFD7851D5A3B8B001EDC8A /* MessageCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -3187,6 +3246,7 @@
 				3793F7FC1B7CFFD900501F77 /* SenderVoiceNodePlaying002@2x.png in Resources */,
 				37C6B4021BF2E6D70001D54F /* TreeHouse.png in Resources */,
 				8D7555501D77F57E00A140EE /* ZYBannerView.bundle in Resources */,
+				8DC087791D8E50E7008B57B2 /* LICENSE in Resources */,
 				37C6B3E61BF2DEC60001D54F /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				3728A6791B94205200310457 /* InputViewBG@2x.png in Resources */,
 				37C6B3EE1BF2DEC70001D54F /* ShareSDK.bundle in Resources */,
@@ -3297,6 +3357,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D7554F51D696C4A00A140EE /* ContactView.m in Sources */,
+				8DC087781D8E50E7008B57B2 /* UIWindow+LGAlertView.m in Sources */,
 				3793F8011B7CFFD900501F77 /* SDImageCache.m in Sources */,
 				37C3164B1A568658002E847D /* ClassAppModel.m in Sources */,
 				3793F7BA1B7CFFD900501F77 /* RIButtonItem.m in Sources */,
@@ -3391,6 +3452,7 @@
 				3793F7CD1B7CFFD900501F77 /* TGRImageZoomAnimationController.m in Sources */,
 				8D75551A1D6DAE9700A140EE /* PBPresentAnimatedTransitioningController.m in Sources */,
 				8DCFD7841D5A3B3F001EDC8A /* VideoItem.m in Sources */,
+				8DC0877A1D8E50E7008B57B2 /* README.md in Sources */,
 				3793F7DC1B7CFFD900501F77 /* UIImageView+Animation.m in Sources */,
 				3793F7E61B7CFFD900501F77 /* ProgressHUD.m in Sources */,
 				37CBAF1C1A4724930063F395 /* PublishAudioVC.m in Sources */,
@@ -3404,6 +3466,7 @@
 				379947DF1A66B403008E4B4F /* PhotoFlowCell.m in Sources */,
 				3728A6ED1B9B40C900310457 /* FunctionView.m in Sources */,
 				8D7554B11D67EE7200A140EE /* ChildrenSelectVC.m in Sources */,
+				8DC087741D8E50E7008B57B2 /* LGAlertViewCell.m in Sources */,
 				8DCFD79B1D5A3B8B001EDC8A /* ChatContentAudioView.m in Sources */,
 				3793F7BE1B7CFFD900501F77 /* CollectionImageCell.m in Sources */,
 				37C316481A568617002E847D /* ClassAppCell.m in Sources */,
@@ -3445,6 +3508,7 @@
 				8D7554ED1D6969E300A140EE /* DNSendButton.m in Sources */,
 				37C316551A568F7B002E847D /* GrowthTimelineModel.m in Sources */,
 				8D3D45B71D5DDB09005EA8EA /* NotificationDetailView.m in Sources */,
+				8DC087751D8E50E7008B57B2 /* LGAlertViewController.m in Sources */,
 				8D75551B1D6DAE9800A140EE /* PBViewController.m in Sources */,
 				37C53AA31B14D5FF00C3ED69 /* RequestVacationVC.m in Sources */,
 				3793F7591B7CFFD900501F77 /* YLImageView.m in Sources */,
@@ -3496,6 +3560,7 @@
 				8D3D45801D5B7D48005EA8EA /* MessageFromInfo.m in Sources */,
 				8DCFD79F1D5A3B8B001EDC8A /* ChatContentRevokeView.m in Sources */,
 				3759001B1A635FC9008AFFF1 /* PasswordModifyVC.m in Sources */,
+				8DC087761D8E50E7008B57B2 /* LGAlertViewTextField.m in Sources */,
 				8DCFD73A1D53641B001EDC8A /* ContactParentsView.m in Sources */,
 				3793F7BF1B7CFFD900501F77 /* DAContextMenuCell.m in Sources */,
 				37D5536F1A7EAE6F00D77F89 /* ClassAlbumVC.m in Sources */,
@@ -3519,6 +3584,7 @@
 				370F33D01A78140B00FED3C2 /* AboutVC.m in Sources */,
 				379947E01A66B403008E4B4F /* PhotoFlowModel.m in Sources */,
 				8DB4C05F1D8149D50099A63C /* TreeHousePublishManager.m in Sources */,
+				8DC087721D8E50E7008B57B2 /* LGAlertView.m in Sources */,
 				3793F81B1B7CFFD900501F77 /* TNCollectionViewCell.m in Sources */,
 				37E93F1D1A795FB600AD45A1 /* ChildrenSelectView.m in Sources */,
 				37C316521A568F63002E847D /* GrowthTimelineCell.m in Sources */,
@@ -3568,6 +3634,7 @@
 				8D7554E51D6969E300A140EE /* UIColor+Hex.m in Sources */,
 				3707E66E1C041E6E00944B8D /* MyGiftVC.m in Sources */,
 				3793F7C81B7CFFD900501F77 /* POISelectVC.m in Sources */,
+				8DC087771D8E50E7008B57B2 /* LGAlertViewWindow.m in Sources */,
 				3728A5FF1B93EB8D00310457 /* JSMessagesViewController.m in Sources */,
 				3793F8281B7CFFD900501F77 /* Reachability.m in Sources */,
 				3720C0FF1A419C4E000357A5 /* PhoneLoginVC.m in Sources */,
@@ -3586,6 +3653,7 @@
 				8D867BEF1D261FFE0020A21C /* CircleProgressView.m in Sources */,
 				3731D0911C1D94EF003E17A6 /* ActionPopView.m in Sources */,
 				3728A5E61B9332FE00310457 /* ClassZoneClassSwitchView.m in Sources */,
+				8DC087731D8E50E7008B57B2 /* LGAlertViewButtonProperties.m in Sources */,
 				3793F7A61B7CFFD900501F77 /* UrlHandler.m in Sources */,
 				3793F7BD1B7CFFD900501F77 /* CameraMaskView.m in Sources */,
 				37BC708F1C116EC900F8B79B /* UIColor+expanded.m in Sources */,
@@ -3726,7 +3794,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3752,10 +3820,10 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "13ecdfad-3b6a-418f-a350-b23059f44475";
-				PROVISIONING_PROFILE_SPECIFIER = allDevelopment;
+				PROVISIONING_PROFILE = "079cfdb2-ea73-4931-a35a-4c6ce8a6fb8a";
+				PROVISIONING_PROFILE_SPECIFIER = ParentInhouseNew;
 			};
 			name = Debug;
 		};
@@ -3768,7 +3836,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
@@ -3795,10 +3863,10 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "13ecdfad-3b6a-418f-a350-b23059f44475";
-				PROVISIONING_PROFILE_SPECIFIER = allDevelopment;
+				PROVISIONING_PROFILE = "079cfdb2-ea73-4931-a35a-4c6ce8a6fb8a";
+				PROVISIONING_PROFILE_SPECIFIER = ParentInhouseNew;
 			};
 			name = Release;
 		};

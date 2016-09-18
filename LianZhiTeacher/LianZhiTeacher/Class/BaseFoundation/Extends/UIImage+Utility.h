@@ -20,7 +20,7 @@
 - (UIImage*)aspectFit:(CGSize)size;
 - (UIImage*)aspectFill:(CGSize)size;
 - (UIImage*)aspectFill:(CGSize)size offset:(CGFloat)offset;
-
++ (UIImage *)fixOrientation:(UIImage *)imageSourceTmp;
 - (UIImage*)crop:(CGRect)rect;
 
 - (UIImage*)maskedImage:(UIImage*)maskImage;

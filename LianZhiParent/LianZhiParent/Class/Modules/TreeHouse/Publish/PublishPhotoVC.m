@@ -351,12 +351,6 @@
     }];
 }
 
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    
-}
-
 - (void)cancel
 {
     [self dismissViewControllerAnimated:YES completion:nil];

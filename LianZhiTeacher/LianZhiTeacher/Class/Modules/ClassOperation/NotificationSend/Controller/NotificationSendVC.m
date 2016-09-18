@@ -572,10 +572,10 @@ DNImagePickerControllerDelegate>
             else if(asset.type == XMNAssetTypePhoto){
                 UIImage *image;
                 if(isFullImage){
-                    image = asset.originImage;
+                    image = [UIImage imageWithCGImage:[[asset.asset defaultRepresentation] fullResolutionImage] scale:1.f orientation:UIImageOrientationUp];
                 }
                 else{
-                    image = asset.previewImage;
+                    image = [UIImage imageWithCGImage:[[asset.asset defaultRepresentation] fullScreenImage] scale:1.f orientation:UIImageOrientationUp];
                 }
                 if(image && self.sendEntity.imageArray.count + addImageArray.count < 9){
                     [addImageArray addObject:image];
@@ -748,16 +748,15 @@ DNImagePickerControllerDelegate>
 #pragma mark - DNImagePickerControllerDelegate
 - (void)dnImagePickerController:(DNImagePickerController *)imagePicker sendImages:(NSArray *)imageAssets isFullImage:(BOOL)fullImage{
     if(imageAssets.count > 0){
-        NSMutableArray *imageArray = self.sendEntity.imageArray;
         NSMutableArray *addImageArray = [NSMutableArray array];
         NSMutableArray *addVideoArray = [NSMutableArray array];
         for (ALAsset *asset in imageAssets) {
             if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]){
                 UIImage *image;
                 if(fullImage)
-                    image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage]];
+                    image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage] scale:1.f orientation:UIImageOrientationUp];
                 else
-                    image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+                    image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage] scale:1.f orientation:UIImageOrientationUp];
                 if(image)
                 {
                     [addImageArray addObject:image];
@@ -793,7 +792,7 @@ DNImagePickerControllerDelegate>
                 }
                 VideoItem *videoItem = [[VideoItem alloc] init];
                 [videoItem setVideoUrl:tmpPath];
-                [videoItem setCoverImage:[UIImage imageWithCGImage:[asset.defaultRepresentation fullScreenImage]]];
+                [videoItem setCoverImage:[UIImage imageWithCGImage:[asset.defaultRepresentation fullScreenImage] scale:1.f orientation:UIImageOrientationUp]];
                 [videoItem setVideoTime:duration];
                 [addVideoArray addObject:videoItem];
             }

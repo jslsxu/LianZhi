@@ -513,9 +513,9 @@
             if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]){
                 UIImage *image;
                 if(fullImage)
-                    image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage]];
+                    image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage] scale:1.f orientation:UIImageOrientationUp];
                 else
-                    image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+                    image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage] scale:1.f orientation:UIImageOrientationUp];
                 if(image)
                 {
                     [addImageArray addObject:image];
@@ -523,7 +523,7 @@
             }
             else if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]){
                 NSString *coverUrl = [NHFileManager getTmpImagePath];
-                UIImage *coverImage = [UIImage imageWithCGImage:[asset.defaultRepresentation fullScreenImage]];
+                UIImage *coverImage = [UIImage imageWithCGImage:[asset.defaultRepresentation fullScreenImage] scale:1.f orientation:UIImageOrientationUp];
                 NSData *imageData = UIImageJPEGRepresentation(coverImage, 0.8);
                 [imageData writeToFile:coverUrl atomically:YES];
                 NSString *filePath = [[asset.defaultRepresentation url] absoluteString];
@@ -635,11 +635,6 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 

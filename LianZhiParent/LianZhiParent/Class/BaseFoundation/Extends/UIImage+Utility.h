@@ -11,6 +11,7 @@
 
 + (UIImage*)fastImageWithData:(NSData*)data;
 + (UIImage*)fastImageWithContentsOfFile:(NSString*)path;
++ (UIImage *)fixOrientation:(UIImage *)imageSourceTmp;
 
 - (UIImage*)deepCopy;
 - (UIImage *)formatImage;

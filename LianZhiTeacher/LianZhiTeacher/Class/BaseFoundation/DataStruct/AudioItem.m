@@ -12,14 +12,14 @@
 
 - (void)dealloc
 {
-    if(self.audioUrl)
-    {
-        NSString *filePath = [NSURL fileURLWithPath:[[MLDataCache shareInstance] filePathForKey:self.audioUrl]].absoluteString;
-        if([filePath isEqualToString:[MLAmrPlayer shareInstance].filePath.absoluteString])
-        {
-            [[MLAmrPlayer shareInstance] stopPlaying];
-        }
-    }
+//    if(self.audioUrl)
+//    {
+//        NSString *filePath = [NSURL fileURLWithPath:[[MLDataCache shareInstance] filePathForKey:self.audioUrl]].absoluteString;
+//        if([filePath isEqualToString:[MLAmrPlayer shareInstance].filePath.absoluteString])
+//        {
+//            [[MLAmrPlayer shareInstance] stopPlaying];
+//        }
+//    }
 }
 
 + (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{

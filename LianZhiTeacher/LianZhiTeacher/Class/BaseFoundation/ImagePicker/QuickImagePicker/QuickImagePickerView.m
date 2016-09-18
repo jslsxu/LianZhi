@@ -49,7 +49,7 @@
     __block UIImage *image = nil;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         ALAsset *alAsset = asset.asset;
-        image = [UIImage imageWithCGImage:[alAsset.defaultRepresentation fullScreenImage]];
+        image = [UIImage imageWithCGImage:[alAsset.defaultRepresentation fullScreenImage] scale:1.f orientation:UIImageOrientationUp];
         dispatch_async(dispatch_get_main_queue(), ^{
             [_imageView setImage:image];
         });

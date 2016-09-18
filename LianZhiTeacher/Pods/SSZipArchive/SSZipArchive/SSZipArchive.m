@@ -252,7 +252,15 @@
             }
             
             // Check if it contains directory
-            NSString *strPath = @(filename);
+            //            NSString * strPath = @(filename);
+            NSString * strPath = [NSString stringWithCString:filename encoding:NSUTF8StringEncoding];
+            //if filename contains chinese dir transform Encoding
+            if (!strPath) {
+                NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+                strPath = [NSString  stringWithCString:filename encoding:enc];
+            }
+            //end by skyfox
+            
             BOOL isDirectory = NO;
             if (filename[fileInfo.size_filename-1] == '/' || filename[fileInfo.size_filename-1] == '\\') {
                 isDirectory = YES;
@@ -264,7 +272,16 @@
                 strPath = [strPath stringByReplacingOccurrencesOfString:@"\\" withString:@"/"];
             }
             
-            NSString *fullPath = [destination stringByAppendingPathComponent:strPath];
+            NSString *fullPath;
+            BOOL isDir = NO;
+            if([[NSFileManager defaultManager]
+                fileExistsAtPath:destination isDirectory:&isDir] && isDir){
+                fullPath = [destination stringByAppendingPathComponent:strPath];
+            }
+            else {
+                fullPath = destination;
+            }
+            
             NSError *err = nil;
             NSDictionary *directoryAttr;
             if (preserveAttributes) {
@@ -703,7 +720,7 @@
     zipOpenNewFileInZip3(_zip, afileName, &zipInfo, NULL, 0, NULL, 0, NULL, Z_DEFLATED, Z_DEFAULT_COMPRESSION, 0, -MAX_WBITS, DEF_MEM_LEVEL, Z_DEFAULT_STRATEGY, [password UTF8String], 0);
     unsigned int len = 0;
     
-    while (!feof(input))
+    while(!feof(input) && !ferror(input))
     {
         len = (unsigned int) fread(buffer, 1, CHUNK, input);
         zipWriteInFileInZip(_zip, buffer, len);
