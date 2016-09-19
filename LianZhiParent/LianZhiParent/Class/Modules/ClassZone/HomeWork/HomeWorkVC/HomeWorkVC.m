@@ -51,6 +51,14 @@
     return task;
 }
 
+- (BOOL)supportCache{
+    return YES;
+}
+
+- (NSString *)cacheFileName{
+    return [NSString stringWithFormat:@"%@_%@",[self class],self.classID];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

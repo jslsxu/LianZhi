@@ -371,48 +371,70 @@
                     else
                     {
                         ClassSelectionVC *classSelectionVC = [[ClassSelectionVC alloc] init];
-                        NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
+                        
                         if([host isEqualToString:@"class"])//班博客
                         {
-//                            NSArray *feedClassNewArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
-                            NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
-                            for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
-                            {
-                                NSString *classID = classInfo.classID;
-                                NSString *badge = nil;
-                                NSInteger count = 0;
-                                for (TimelineCommentItem *commentItem in classNewCommentArray)
+                            [classSelectionVC setValidateStatus:^NSDictionary *{
+                                NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
+                                NSArray *feedClassNewArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
+                                NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+                                for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
                                 {
-                                    if([commentItem.objid isEqualToString:classID])
-                                        count += commentItem.alertInfo.num;
-                                }
-                                if(count > 0)
-                                    badge = kStringFromValue(count);
-                                else
-                                {
-//                                    for (ClassFeedNotice *notice in feedClassNewArray)
-//                                    {
-//                                        if([notice.classID isEqualToString:classID] && [notice.childID isEqualToString:[UserCenter sharedInstance].curChild.uid])
-//                                            count += notice.num;
-//                                    }
-                                    count += [[UserCenter sharedInstance].statusManager newCountForClassFeed];
+                                    NSString *classID = classInfo.classID;
+                                    NSString *badge = nil;
+                                    NSInteger count = 0;
+                                    for (TimelineCommentItem *commentItem in classNewCommentArray)
+                                    {
+                                        if([commentItem.objid isEqualToString:classID])
+                                            count += commentItem.alertInfo.num;
+                                    }
                                     if(count > 0)
-                                        badge = @"";
+                                        badge = kStringFromValue(count);
+                                    else
+                                    {
+                                        for (ClassFeedNotice *notice in feedClassNewArray)
+                                        {
+                                            if([notice.classID isEqualToString:classID])
+                                                count += notice.num;
+                                        }
+                                        //                                    count += [[UserCenter sharedInstance].statusManager newCountForClassFeed];
+                                        if(count > 0)
+                                            badge = @"";
+                                    }
+                                    [classDic setValue:badge forKey:classID];
                                 }
-                                [classDic setValue:badge forKey:classID];
-                            }
+                                return classDic;
+                            }];
+                        }
+                        else if ([host isEqualToString:@"record"]){
+                            [classSelectionVC setValidateStatus:^NSDictionary *{
+                                NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
+                                NSArray *classRecordArray = [UserCenter sharedInstance].statusManager.classRecordArray;
+                                for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes){
+                                    NSString *classID = classInfo.classID;
+                                    for (ClassFeedNotice *notice in classRecordArray) {
+                                        if([notice.classID isEqualToString:classID] && [notice.childID isEqualToString:[UserCenter sharedInstance].curChild.uid]){
+                                            if(notice.num > 0){
+                                                [classDic setValue:@"" forKey:classID];
+                                            }
+                                        }
+                                    }
+                                }
+                                return classDic;
+                            }];
                         }
                         else if ([host isEqualToString:@"practice"])
                         {
-                            for (NSString *key in [UserCenter sharedInstance].statusManager.appPractice.allKeys) {
-                                NSInteger num = [[UserCenter sharedInstance].statusManager.appPractice[key] integerValue];
-                                if(num > 0)
-                                    [classDic setValue:@"" forKey:key];
-                            }
-                            [classSelectionVC setIsHomework:YES];
+                            [classSelectionVC setValidateStatus:^NSDictionary *{
+                                NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
+                                for (NSString *key in [UserCenter sharedInstance].statusManager.appPractice.allKeys) {
+                                    NSInteger num = [[UserCenter sharedInstance].statusManager.appPractice[key] integerValue];
+                                    if(num > 0)
+                                        [classDic setValue:@"" forKey:key];
+                                }
+                                return classDic;
+                            }];
                         }
-                        
-                        [classSelectionVC setClassDic:classDic];
                         [classSelectionVC setSelection:^(ClassInfo *classInfo) {
                             if([host isEqualToString:@"class"])
                             {

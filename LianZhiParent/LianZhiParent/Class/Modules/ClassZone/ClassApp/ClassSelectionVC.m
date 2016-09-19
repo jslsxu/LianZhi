@@ -30,53 +30,60 @@
 
 - (void)onStatusChanged
 {
-    if(self.classDic)
-    {
-        if(self.isHomework)
-        {
-            self.classDic = [NSMutableDictionary dictionary];
-            for (NSString *key in [UserCenter sharedInstance].statusManager.appPractice.allKeys) {
-                NSInteger num = [[UserCenter sharedInstance].statusManager.appPractice[key] integerValue];
-                if(num > 0)
-                    [self.classDic setValue:@"" forKey:key];
-            }
-
-            [_tableView reloadData];
-        }
-        else
-        {
-            NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
-//            NSArray *feedClassNewArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
-            NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
-            for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
-            {
-                NSString *classID = classInfo.classID;
-                NSString *badge = nil;
-                NSInteger count = 0;
-                for (TimelineCommentItem *commentItem in classNewCommentArray)
-                {
-                    if([commentItem.objid isEqualToString:classID])
-                        count += commentItem.alertInfo.num;
-                }
-                if(count > 0)
-                    badge = kStringFromValue(count);
-                else
-                {
-                    count += [[UserCenter sharedInstance].statusManager newCountForClassFeed];
-//                    for (ClassFeedNotice *notice in feedClassNewArray)
-//                    {
-//                        if([notice.classID isEqualToString:classID] && [notice.childID isEqualToString:[UserCenter sharedInstance].curChild.uid])
-//                            count += notice.num;
-//                    }
-                    if(count > 0)
-                        badge = @"";
-                }
-                [classDic setValue:badge forKey:classID];
-            }
-            self.classDic = classDic;
-            [_tableView reloadData];
-        }
+//    if(self.classDic)
+//    {
+//        if(self.isHomework)
+//        {
+//            self.classDic = [NSMutableDictionary dictionary];
+//            for (NSString *key in [UserCenter sharedInstance].statusManager.appPractice.allKeys) {
+//                NSInteger num = [[UserCenter sharedInstance].statusManager.appPractice[key] integerValue];
+//                if(num > 0)
+//                    [self.classDic setValue:@"" forKey:key];
+//            }
+//
+//            [_tableView reloadData];
+//        }
+//        else
+//        {
+//            if(self.validateStatus){
+//                self.classDic = self.validateStatus();
+//            }
+////            NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
+//////            NSArray *feedClassNewArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
+////            NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+////            for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
+////            {
+////                NSString *classID = classInfo.classID;
+////                NSString *badge = nil;
+////                NSInteger count = 0;
+////                for (TimelineCommentItem *commentItem in classNewCommentArray)
+////                {
+////                    if([commentItem.objid isEqualToString:classID])
+////                        count += commentItem.alertInfo.num;
+////                }
+////                if(count > 0)
+////                    badge = kStringFromValue(count);
+////                else
+////                {
+////                    count += [[UserCenter sharedInstance].statusManager newCountForClassFeed];
+//////                    for (ClassFeedNotice *notice in feedClassNewArray)
+//////                    {
+//////                        if([notice.classID isEqualToString:classID] && [notice.childID isEqualToString:[UserCenter sharedInstance].curChild.uid])
+//////                            count += notice.num;
+//////                    }
+////                    if(count > 0)
+////                        badge = @"";
+////                }
+////                [classDic setValue:badge forKey:classID];
+////            }
+////            self.classDic = classDic;
+//            [_tableView reloadData];
+//        }
+//    }
+    if(self.validateStatus){
+        self.classDic = self.validateStatus();
     }
+    [_tableView reloadData];
 }
 
 - (void)viewDidLoad {

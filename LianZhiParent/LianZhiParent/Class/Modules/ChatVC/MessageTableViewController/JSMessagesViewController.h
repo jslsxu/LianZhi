@@ -20,4 +20,5 @@
 + (NSString *)curChatID;//当前聊天页面id
 - (ChatMessageModel *)curChatMessageModel;
 - (void)scrollToSearchResult:(MessageItem *)messageItem;
+- (void)endTimer;
 @end

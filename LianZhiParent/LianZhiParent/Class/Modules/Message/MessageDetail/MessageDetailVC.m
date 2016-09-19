@@ -10,6 +10,7 @@
 #import "MessageDetailItemCell.h"
 #import "MessageDetailModel.h"
 #import "MessageNotificationDetailVC.h"
+
 @implementation MessageDetailVC
 
 + (void)handlePushAction:(NSString *)fromID fromType:(NSString *)fromType
@@ -36,6 +37,13 @@
     [self setSupportPullDown:YES];
     [self setSupportPullUp:YES];
     [self requestData:REQUEST_REFRESH];
+}
+
+- (EmptyHintView *)emptyView{
+    if(_emptyView == nil){
+        _emptyView = [[EmptyHintView alloc] initWithImage:@"NoNotificationDetail" title:@"暂时没有通知记录"];
+    }
+    return _emptyView;
 }
 
 - (void)clear{
@@ -91,6 +99,12 @@
 - (NSString *)cacheFileName
 {
     return [NSString stringWithFormat:@"%@_%@_%@",[self class],self.fromInfo.uid,kStringFromValue(self.fromInfo.type)];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    NSInteger count = [super tableView:tableView numberOfRowsInSection:section];
+    [self showEmptyView:count == 0];
+    return count;
 }
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{

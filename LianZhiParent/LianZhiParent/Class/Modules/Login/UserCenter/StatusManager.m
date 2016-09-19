@@ -241,11 +241,24 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
 }
 - (NSInteger)newCountForClassComment{
     NSInteger newCount = 0;
-    for (TimelineCommentItem *commentItem in self.classNewCommentArray) {
-        if([commentItem.objid isEqualToString:[UserCenter sharedInstance].curChild.uid]){
-            newCount += commentItem.alertInfo.num;
+//    for (TimelineCommentItem *commentItem in self.classNewCommentArray) {
+//        if([commentItem.objid isEqualToString:[UserCenter sharedInstance].curChild.uid]){
+//            newCount += commentItem.alertInfo.num;
+//        }
+//    }
+    
+    for (ClassInfo *classInfo in [UserCenter sharedInstance].curChild.classes)
+    {
+        NSString *classID = classInfo.classID;
+        for (TimelineCommentItem *item in self.classNewCommentArray)
+        {
+            if([item.objid isEqualToString:classID])
+            {
+                newCount += item.alertInfo.num;
+            }
         }
     }
+
     return newCount;
 }
 
@@ -301,9 +314,20 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
         }
     }
     
-    for (TimelineCommentItem *commentItem in self.classNewCommentArray) {
-        if([commentItem.objid isEqualToString:childID]){
-            newCount += commentItem.alertInfo.num;
+    for (ChildInfo *childInfo in [UserCenter sharedInstance].children) {
+        if([childInfo.uid isEqualToString:childID]){
+            NSArray *classArray = [childInfo classes];
+            for (ClassInfo *classInfo in classArray)
+            {
+                NSString *classID = classInfo.classID;
+                for (TimelineCommentItem *item in self.classNewCommentArray)
+                {
+                    if([item.objid isEqualToString:classID])
+                    {
+                        newCount += item.alertInfo.num;
+                    }
+                }
+            }
         }
     }
     

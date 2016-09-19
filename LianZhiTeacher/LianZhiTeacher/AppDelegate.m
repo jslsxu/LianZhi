@@ -354,6 +354,12 @@ static SystemSoundID shake_sound_male_id = 0;
     NSArray *vcArray = [self.rootNavigation viewControllers];
     if(vcArray.count > 1)
     {
+        for (UIViewController *vc in vcArray) {
+            if([vc isKindOfClass:[JSMessagesViewController class]]){
+                JSMessagesViewController *chatVC = (JSMessagesViewController *)vc;
+                [chatVC endTimer];
+            }
+        }
         [self.rootNavigation popToRootViewControllerAnimated:NO];
     }
     [self.homeVC selectAtIndex:0];

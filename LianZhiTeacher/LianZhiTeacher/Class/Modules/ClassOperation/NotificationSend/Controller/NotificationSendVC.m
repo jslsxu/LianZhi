@@ -141,6 +141,7 @@ DNImagePickerControllerDelegate>
     [super viewDidLoad];
     if(!self.sendEntity){
         self.sendEntity = [[NotificationSendEntity alloc] init];
+        [self.sendEntity setWords:[NSString stringWithFormat:@"%@教师发来通知",[UserCenter sharedInstance].userInfo.name]];
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.sendEntity];
