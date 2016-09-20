@@ -40,7 +40,12 @@
     [_revokeMessageLabel setText:text];
     [_revokeMessageLabel sizeToFit];
     [_revokeMessageLabel setSize:CGSizeMake(_revokeMessageLabel.width + 10, _revokeMessageLabel.height + 4)];
-    [_revokeMessageLabel setOrigin:CGPointMake((self.width - _revokeMessageLabel.width) / 2, (self.height - _revokeMessageLabel.height) / 2)];
+    if(_messageItem.from == UUMessageFromMe){
+        [_revokeMessageLabel setOrigin:CGPointMake((self.width - _revokeMessageLabel.width - 30) / 2, (self.height - _revokeMessageLabel.height) / 2)];
+    }
+    else{
+        [_revokeMessageLabel setOrigin:CGPointMake((self.width - _revokeMessageLabel.width + 30) / 2, (self.height - _revokeMessageLabel.height) / 2)];
+    }
 }
 
 + (CGFloat)contentHeightForModel:(MessageItem *)messageItem maxWidth:(CGFloat)maxWidth{

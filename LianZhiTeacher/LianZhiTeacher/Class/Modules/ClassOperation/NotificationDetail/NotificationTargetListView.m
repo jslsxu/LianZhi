@@ -89,7 +89,7 @@
     [_stateLabel sizeToFit];
     [_stateLabel setOrigin:CGPointMake(_arrowImageView.left - 10 - _stateLabel.width, (self.height - _stateLabel.height) / 2)];
     
-    [_titleLabel setFrame:CGRectMake(_logoView.right + 10, 0, _stateLabel.left - 10 - (_logoView.right + 10), self.height)];
+    [_titleLabel setFrame:CGRectMake(_logoView.right + 15, 0, _stateLabel.left - 10 - (_logoView.right + 15), self.height)];
     [_titleLabel setText:name];
 }
 
