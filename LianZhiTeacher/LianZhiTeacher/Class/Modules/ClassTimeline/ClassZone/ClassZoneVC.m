@@ -93,9 +93,6 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         [_brashImage setFrame:CGRectMake(15, frame.size.height - 12 - _brashImage.height, _brashImage.width, _brashImage.height)];
         [self addSubview:_brashImage];
         
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onContentTap:)];
-        [_brashImage addGestureRecognizer:tapGesture];
-        
         _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, frame.size.height - 12, self.width, 12)];
         [_bottomView setBackgroundColor:[UIColor colorWithRed:158 / 255.0 green:158 / 255.0 blue:158 / 255.0 alpha:1.f]];
         [self addSubview:_bottomView];
@@ -144,27 +141,10 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [CurrentROOTNavigationVC pushViewController:newmessageVC animated:YES];
 }
 
-- (void)onContentTap:(UITapGestureRecognizer *)tapGesture
-{
-    if([self.delegate respondsToSelector:@selector(classNewspaperClicked)])
-        [self.delegate classNewspaperClicked];
-}
-
-- (void)onAlbumButtonClicked
-{
-    if([self.delegate respondsToSelector:@selector(classZoneAlbumClicked)])
-        [self.delegate classZoneAlbumClicked];
-}
-
-- (void)onAppButtonClicked
-{
-    if([self.delegate respondsToSelector:@selector(classZoneAppClicked)])
-        [self.delegate classZoneAppClicked];
-}
 
 @end
 
-@interface ClassZoneVC ()<PublishSelectDelegate, ActionPopViewDelegate>
+@interface ClassZoneVC ()<ActionPopViewDelegate>
 @property (nonatomic, strong)UIButton *exchangeButton;
 @property (nonatomic, strong)UIView*    redDot;
 @property (nonatomic, strong)ClassZoneItem *targetZoneItem;
@@ -362,7 +342,6 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [self.tableView setHeight:self.view.height];
     
     _headerView = [[ClassZoneHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.width, 160)];
-    [_headerView setDelegate:self];
     [self.tableView setTableHeaderView:_headerView];
     
     [self bindTableCell:@"ClassZoneItemCell" tableModel:@"ClassZoneModel"];

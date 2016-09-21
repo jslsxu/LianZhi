@@ -17,11 +17,10 @@
 
 @end
 
-@interface POISelectVC : TNBaseViewController<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, UISearchControllerDelegate, MAMapViewDelegate, AMapSearchDelegate, UISearchDisplayDelegate>
+@interface POISelectVC : TNBaseViewController<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, MAMapViewDelegate, AMapSearchDelegate>
 {
     MAMapView*                  _mapView;
     UISearchBar*                _searchBar;
-    UISearchDisplayController *_displayController;
     UITableView*                _tableView;
     AMapSearchAPI*              _poiSearcher;
 }

@@ -30,12 +30,6 @@ extern NSString *const kPublishPhotoItemKey;
 @property (nonatomic, strong)TimelineCommentItem *commentItem;
 @property (nonatomic, copy)void (^clickAction)();
 @end
-
-@protocol ClassZoneHeaderDelegate <NSObject>
-- (void)classZoneAppClicked;
-- (void)classZoneAlbumClicked;
-- (void)classNewspaperClicked;
-@end
 @interface ClassZoneHeaderView : UIView
 {
     UIImageView*            _imageView;
@@ -47,11 +41,10 @@ extern NSString *const kPublishPhotoItemKey;
 }
 @property (nonatomic, strong)ClassInfo *classInfo;
 @property (nonatomic, copy)NSString *newsPaper;
-@property (nonatomic, weak)id<ClassZoneHeaderDelegate> delegate;
 @property (nonatomic, strong)TimelineCommentItem *commentItem;
 @end
 
-@interface ClassZoneVC : TNBaseTableViewController<ClassZoneHeaderDelegate, PublishZoneItemDelegate, ReplyBoxDelegate, ClassZoneItemCellDelegate>
+@interface ClassZoneVC : TNBaseTableViewController<PublishZoneItemDelegate, ReplyBoxDelegate, ClassZoneItemCellDelegate>
 {
     ClassZoneHeaderView*            _headerView;
     UIView*                      _publishToolBar;

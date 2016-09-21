@@ -267,7 +267,7 @@
     CGRect keyboardBounds;
     [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
     NSNumber *duration = [notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSNumber *curve = [notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+//    NSNumber *curve = [notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
     
     // Need to translate the bounds to account for rotation.
     keyboardBounds = [self.superview convertRect:keyboardBounds toView:nil];

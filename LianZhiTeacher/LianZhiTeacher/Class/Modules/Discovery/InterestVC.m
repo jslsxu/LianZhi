@@ -249,8 +249,7 @@
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
     InterestItem *item = (InterestItem *)modelItem;
-    InterestDetailVC *webVC = [[InterestDetailVC alloc] init];
-    [webVC setUrl:item.url];
+    InterestDetailVC *webVC = [[InterestDetailVC alloc] initWithUrl:[NSURL URLWithString:item.url]];
     [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
 }
 

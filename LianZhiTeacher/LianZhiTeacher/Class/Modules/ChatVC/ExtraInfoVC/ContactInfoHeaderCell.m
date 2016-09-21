@@ -8,7 +8,7 @@
 
 #import "ContactInfoHeaderCell.h"
 
-@interface ContactInfoHeaderCell ()<PBViewControllerDelegate, PBViewControllerDataSource>
+@interface ContactInfoHeaderCell ()
 
 @end
 @implementation ContactInfoHeaderCell

@@ -194,8 +194,7 @@
     navBar.barStyle = UIBarStyleBlackTranslucent;
     if ([[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
         [navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-        [navBar setBackgroundImage:nil forBarMetrics:UIBarMetricsLandscapePhone];
-    }
+        }
 }
 
 - (void)storePreviousNavBarAppearance {
@@ -209,7 +208,6 @@
     _previousNavBarStyle = self.navigationController.navigationBar.barStyle;
     if ([[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
         _previousNavigationBarBackgroundImageDefault = [self.navigationController.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault];
-        _previousNavigationBarBackgroundImageLandscapePhone = [self.navigationController.navigationBar backgroundImageForBarMetrics:UIBarMetricsLandscapePhone];
     }
 }
 
@@ -225,7 +223,6 @@
         navBar.barStyle = _previousNavBarStyle;
         if ([[UINavigationBar class] respondsToSelector:@selector(appearance)]) {
             [navBar setBackgroundImage:_previousNavigationBarBackgroundImageDefault forBarMetrics:UIBarMetricsDefault];
-            [navBar setBackgroundImage:_previousNavigationBarBackgroundImageLandscapePhone forBarMetrics:UIBarMetricsLandscapePhone];
         }
         // Restore back button if we need to
         if (_previousViewControllerBackButton) {
@@ -320,7 +317,6 @@
         _toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - height, self.view.bounds.size.width, height)];
         if ([[UIToolbar class] respondsToSelector:@selector(appearance)]) {
             [_toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-            [_toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsLandscapePhone];
         }
         _toolbar.barStyle = UIBarStyleBlackTranslucent;
         _toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;

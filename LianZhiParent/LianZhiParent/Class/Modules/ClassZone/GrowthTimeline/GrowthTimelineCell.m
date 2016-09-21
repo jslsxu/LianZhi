@@ -99,20 +99,7 @@
     NSArray *formatterDateArray = @[@"今天",@"昨天",@"前天"];
     for (NSInteger i = 0; i < 3; i++)
     {
-        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        
-        NSDateComponents *comps = nil;
-        
-        comps = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
-        
-        NSDateComponents *adcomps = [[NSDateComponents alloc] init];
-        
-        [adcomps setYear:0];
-        
-        [adcomps setMonth:0];
-        
-        [adcomps setDay:-i];
-        NSDate *newdate = [calendar dateByAddingComponents:adcomps toDate:[NSDate date] options:0];
+        NSDate *newdate = [[NSDate date] dateByAddingDays:-i];
         if([date isEqualToString:[formatter stringFromDate:newdate]])
             result = formatterDateArray[i];
     }

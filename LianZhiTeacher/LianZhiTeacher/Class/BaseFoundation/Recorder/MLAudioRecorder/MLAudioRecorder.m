@@ -273,7 +273,7 @@ void inputBufferHandler(void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRe
         });
     }
     
-    DLOG(@"%@",@"录音发生错误");
+//    DLOG(@"录音发生错误");
     
     NSError *error = [NSError errorWithDomain:kMLAudioRecorderErrorDomain code:code userInfo:@{NSLocalizedDescriptionKey:description}];
     

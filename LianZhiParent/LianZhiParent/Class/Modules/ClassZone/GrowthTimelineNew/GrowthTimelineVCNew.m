@@ -1,27 +1,30 @@
 //
-//  InterestDetailVC.m
+//  GrowthTimelineVCNew.m
 //  LianZhiParent
 //
-//  Created by jslsxu on 16/1/18.
+//  Created by qingxu zhou on 16/9/21.
 //  Copyright © 2016年 jslsxu. All rights reserved.
 //
 
-#import "InterestDetailVC.h"
-
-@interface InterestDetailVC ()
+#import "GrowthTimelineVCNew.h"
+#import "MonthPickerView.h"
+@interface GrowthTimelineVCNew ()
 
 @end
 
-@implementation InterestDetailVC
+@implementation GrowthTimelineVCNew
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(share)];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"eeeef4"]];
+    self.title = @"成长手册";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"日历" style:UIBarButtonItemStylePlain target:self action:@selector(showCalendar)];
 }
 
-- (void)share
-{
-    
+- (void)showCalendar{
+    [MonthPickerView showWithCompletion:^(NSDate *date) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

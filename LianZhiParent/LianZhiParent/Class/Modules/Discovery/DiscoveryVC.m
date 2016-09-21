@@ -142,7 +142,7 @@
 - (void)requestData
 {
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"info/find" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"child_id" : [UserCenter sharedInstance].curChild.uid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        NSDictionary *data = responseObject.data;
+//        NSDictionary *data = responseObject.data;
         [self onSuccessWithResponse:responseObject];
     } fail:^(NSString *errMsg) {
         

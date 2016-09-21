@@ -265,16 +265,9 @@ static SystemSoundID shake_sound_male_id = 0;
 - (void)registerRemoteNotification
 {
     UIApplication *application = [UIApplication sharedApplication];
-    if ([application respondsToSelector:@selector(registerForRemoteNotifications)]) {
-        UIUserNotificationType types = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
-        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
-        [application registerForRemoteNotifications];
-    }
-    else {
-        [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge
-                                                         | UIRemoteNotificationTypeSound
-                                                         | UIRemoteNotificationTypeAlert)];
-    }
+    UIUserNotificationType types = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
+    [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
+    [application registerForRemoteNotifications];
 }
 
 - (void)handleNotification:(NSDictionary *)userInfo

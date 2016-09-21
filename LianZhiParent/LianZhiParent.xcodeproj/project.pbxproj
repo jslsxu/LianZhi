@@ -125,7 +125,6 @@
 		3793F7D21B7CFFD900501F77 /* PublishImageItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F6891B7CFFD900501F77 /* PublishImageItem.m */; };
 		3793F7D31B7CFFD900501F77 /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F68C1B7CFFD900501F77 /* UserInfo.m */; };
 		3793F7D41B7CFFD900501F77 /* NSObject+Associative.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F6911B7CFFD900501F77 /* NSObject+Associative.m */; };
-		3793F7D51B7CFFD900501F77 /* NSObject+Print.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F6931B7CFFD900501F77 /* NSObject+Print.m */; };
 		3793F7D61B7CFFD900501F77 /* NSObject+UnifiedPerformSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F6951B7CFFD900501F77 /* NSObject+UnifiedPerformSelector.m */; };
 		3793F7D71B7CFFD900501F77 /* NSString+JSONObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F6971B7CFFD900501F77 /* NSString+JSONObject.m */; };
 		3793F7D81B7CFFD900501F77 /* NSString+StringSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3793F6991B7CFFD900501F77 /* NSString+StringSize.m */; };
@@ -203,7 +202,6 @@
 		37BC41101A43346D005038F9 /* ConfimInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC410F1A43346D005038F9 /* ConfimInfoVC.m */; };
 		37BC708B1C116EC900F8B79B /* CalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC70801C116EC900F8B79B /* CalendarView.m */; };
 		37BC708C1C116EC900F8B79B /* MonthIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC70821C116EC900F8B79B /* MonthIndicatorView.m */; };
-		37BC708D1C116EC900F8B79B /* NSDate+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC70841C116EC900F8B79B /* NSDate+convenience.m */; };
 		37BC708E1C116EC900F8B79B /* NSMutableArray+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC70861C116EC900F8B79B /* NSMutableArray+convenience.m */; };
 		37BC708F1C116EC900F8B79B /* UIColor+expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC70881C116EC900F8B79B /* UIColor+expanded.m */; };
 		37BC70901C116EC900F8B79B /* UIView+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC708A1C116EC900F8B79B /* UIView+convenience.m */; };
@@ -413,8 +411,6 @@
 		8DC087761D8E50E7008B57B2 /* LGAlertViewTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC0876B1D8E50E7008B57B2 /* LGAlertViewTextField.m */; };
 		8DC087771D8E50E7008B57B2 /* LGAlertViewWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC0876D1D8E50E7008B57B2 /* LGAlertViewWindow.m */; };
 		8DC087781D8E50E7008B57B2 /* UIWindow+LGAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC0876F1D8E50E7008B57B2 /* UIWindow+LGAlertView.m */; };
-		8DC087791D8E50E7008B57B2 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 8DC087701D8E50E7008B57B2 /* LICENSE */; };
-		8DC0877A1D8E50E7008B57B2 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 8DC087711D8E50E7008B57B2 /* README.md */; };
 		8DCFD6621D43CC78001EDC8A /* YYInfiniteScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6611D43CC78001EDC8A /* YYInfiniteScrollView.m */; };
 		8DCFD73A1D53641B001EDC8A /* ContactParentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7391D53641B001EDC8A /* ContactParentsView.m */; };
 		8DCFD7841D5A3B3F001EDC8A /* VideoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7821D5A3B3F001EDC8A /* VideoItem.m */; };
@@ -443,6 +439,10 @@
 		8DCFD7D81D5ADD94001EDC8A /* NJKWebViewProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7D51D5ADD94001EDC8A /* NJKWebViewProgress.m */; };
 		8DCFD7D91D5ADD94001EDC8A /* NJKWebViewProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7D71D5ADD94001EDC8A /* NJKWebViewProgressView.m */; };
 		8DCFD7DC1D5AF7D3001EDC8A /* MessageSegView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7DB1D5AF7D3001EDC8A /* MessageSegView.m */; };
+		8DFDDD6E1D9271150050740B /* NSDate+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD6D1D9271150050740B /* NSDate+convenience.m */; };
+		8DFDDD721D92754C0050740B /* GrowthTimelineVCNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD711D92754C0050740B /* GrowthTimelineVCNew.m */; };
+		8DFDDD751D927A8E0050740B /* MonthPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD741D927A8E0050740B /* MonthPickerView.m */; };
+		8DFDDD7E1D927E150050740B /* GrowthContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD7D1D927E150050740B /* GrowthContentView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -674,8 +674,6 @@
 		3793F68E1B7CFFD900501F77 /* Extends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Extends.h; sourceTree = "<group>"; };
 		3793F6901B7CFFD900501F77 /* NSObject+Associative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Associative.h"; sourceTree = "<group>"; };
 		3793F6911B7CFFD900501F77 /* NSObject+Associative.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Associative.m"; sourceTree = "<group>"; };
-		3793F6921B7CFFD900501F77 /* NSObject+Print.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Print.h"; sourceTree = "<group>"; };
-		3793F6931B7CFFD900501F77 /* NSObject+Print.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Print.m"; sourceTree = "<group>"; };
 		3793F6941B7CFFD900501F77 /* NSObject+UnifiedPerformSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+UnifiedPerformSelector.h"; sourceTree = "<group>"; };
 		3793F6951B7CFFD900501F77 /* NSObject+UnifiedPerformSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+UnifiedPerformSelector.m"; sourceTree = "<group>"; };
 		3793F6961B7CFFD900501F77 /* NSString+JSONObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+JSONObject.h"; sourceTree = "<group>"; };
@@ -821,8 +819,6 @@
 		37BC70801C116EC900F8B79B /* CalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarView.m; sourceTree = "<group>"; };
 		37BC70811C116EC900F8B79B /* MonthIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MonthIndicatorView.h; sourceTree = "<group>"; };
 		37BC70821C116EC900F8B79B /* MonthIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MonthIndicatorView.m; sourceTree = "<group>"; };
-		37BC70831C116EC900F8B79B /* NSDate+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+convenience.h"; sourceTree = "<group>"; };
-		37BC70841C116EC900F8B79B /* NSDate+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+convenience.m"; sourceTree = "<group>"; };
 		37BC70851C116EC900F8B79B /* NSMutableArray+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+convenience.h"; sourceTree = "<group>"; };
 		37BC70861C116EC900F8B79B /* NSMutableArray+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+convenience.m"; sourceTree = "<group>"; };
 		37BC70871C116EC900F8B79B /* UIColor+expanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+expanded.h"; sourceTree = "<group>"; };
@@ -1205,8 +1201,6 @@
 		8DC0876D1D8E50E7008B57B2 /* LGAlertViewWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewWindow.m; sourceTree = "<group>"; };
 		8DC0876E1D8E50E7008B57B2 /* UIWindow+LGAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+LGAlertView.h"; sourceTree = "<group>"; };
 		8DC0876F1D8E50E7008B57B2 /* UIWindow+LGAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+LGAlertView.m"; sourceTree = "<group>"; };
-		8DC087701D8E50E7008B57B2 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		8DC087711D8E50E7008B57B2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8DCFD6601D43CC78001EDC8A /* YYInfiniteScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInfiniteScrollView.h; sourceTree = "<group>"; };
 		8DCFD6611D43CC78001EDC8A /* YYInfiniteScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfiniteScrollView.m; sourceTree = "<group>"; };
 		8DCFD7381D53641B001EDC8A /* ContactParentsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactParentsView.h; sourceTree = "<group>"; };
@@ -1264,6 +1258,14 @@
 		8DCFD7D71D5ADD94001EDC8A /* NJKWebViewProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NJKWebViewProgressView.m; sourceTree = "<group>"; };
 		8DCFD7DA1D5AF7D3001EDC8A /* MessageSegView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageSegView.h; sourceTree = "<group>"; };
 		8DCFD7DB1D5AF7D3001EDC8A /* MessageSegView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageSegView.m; sourceTree = "<group>"; };
+		8DFDDD6C1D9271150050740B /* NSDate+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+convenience.h"; sourceTree = "<group>"; };
+		8DFDDD6D1D9271150050740B /* NSDate+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+convenience.m"; sourceTree = "<group>"; };
+		8DFDDD701D92754C0050740B /* GrowthTimelineVCNew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthTimelineVCNew.h; sourceTree = "<group>"; };
+		8DFDDD711D92754C0050740B /* GrowthTimelineVCNew.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthTimelineVCNew.m; sourceTree = "<group>"; };
+		8DFDDD731D927A8E0050740B /* MonthPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MonthPickerView.h; sourceTree = "<group>"; };
+		8DFDDD741D927A8E0050740B /* MonthPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MonthPickerView.m; sourceTree = "<group>"; };
+		8DFDDD7C1D927E150050740B /* GrowthContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthContentView.h; sourceTree = "<group>"; };
+		8DFDDD7D1D927E150050740B /* GrowthContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthContentView.m; sourceTree = "<group>"; };
 		F48620718382C8CAB78BD7B3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1371,8 +1373,8 @@
 		3720C1011A419E76000357A5 /* ClassZone */ = {
 			isa = PBXGroup;
 			children = (
+				8DFDDD6F1D9274AF0050740B /* GrowthTimelineNew */,
 				37F206F81BDDCADF006466F4 /* HomeWork */,
-				3728A7491B9EB13D00310457 /* ClassZoneDetail */,
 				37C3164C1A568F34002E847D /* GrowthTimeline */,
 				37C316351A5636AC002E847D /* ClassApp */,
 				37C316361A5636AC002E847D /* ClassZone */,
@@ -1608,13 +1610,6 @@
 				3728A6731B94205200310457 /* SendMessageButton@2x.png */,
 			);
 			path = InputView;
-			sourceTree = "<group>";
-		};
-		3728A7491B9EB13D00310457 /* ClassZoneDetail */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ClassZoneDetail;
 			sourceTree = "<group>";
 		};
 		372BFC411BA6B2E8006DBCCC /* ExtraInfoVC */ = {
@@ -1968,8 +1963,6 @@
 			children = (
 				3793F6901B7CFFD900501F77 /* NSObject+Associative.h */,
 				3793F6911B7CFFD900501F77 /* NSObject+Associative.m */,
-				3793F6921B7CFFD900501F77 /* NSObject+Print.h */,
-				3793F6931B7CFFD900501F77 /* NSObject+Print.m */,
 				3793F6941B7CFFD900501F77 /* NSObject+UnifiedPerformSelector.h */,
 				3793F6951B7CFFD900501F77 /* NSObject+UnifiedPerformSelector.m */,
 			);
@@ -2282,10 +2275,10 @@
 			children = (
 				37BC707F1C116EC900F8B79B /* CalendarView.h */,
 				37BC70801C116EC900F8B79B /* CalendarView.m */,
+				8DFDDD6C1D9271150050740B /* NSDate+convenience.h */,
+				8DFDDD6D1D9271150050740B /* NSDate+convenience.m */,
 				37BC70811C116EC900F8B79B /* MonthIndicatorView.h */,
 				37BC70821C116EC900F8B79B /* MonthIndicatorView.m */,
-				37BC70831C116EC900F8B79B /* NSDate+convenience.h */,
-				37BC70841C116EC900F8B79B /* NSDate+convenience.m */,
 				37BC70851C116EC900F8B79B /* NSMutableArray+convenience.h */,
 				37BC70861C116EC900F8B79B /* NSMutableArray+convenience.m */,
 				37BC70871C116EC900F8B79B /* UIColor+expanded.h */,
@@ -3033,8 +3026,6 @@
 			isa = PBXGroup;
 			children = (
 				8DC087601D8E50E7008B57B2 /* LGAlertView */,
-				8DC087701D8E50E7008B57B2 /* LICENSE */,
-				8DC087711D8E50E7008B57B2 /* README.md */,
 			);
 			path = LGAlertView;
 			sourceTree = "<group>";
@@ -3167,6 +3158,19 @@
 			path = NJKWebViewProgress;
 			sourceTree = "<group>";
 		};
+		8DFDDD6F1D9274AF0050740B /* GrowthTimelineNew */ = {
+			isa = PBXGroup;
+			children = (
+				8DFDDD701D92754C0050740B /* GrowthTimelineVCNew.h */,
+				8DFDDD711D92754C0050740B /* GrowthTimelineVCNew.m */,
+				8DFDDD731D927A8E0050740B /* MonthPickerView.h */,
+				8DFDDD741D927A8E0050740B /* MonthPickerView.m */,
+				8DFDDD7C1D927E150050740B /* GrowthContentView.h */,
+				8DFDDD7D1D927E150050740B /* GrowthContentView.m */,
+			);
+			path = GrowthTimelineNew;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3198,7 +3202,7 @@
 		37C355FA1A3FD67300B948E6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = jslsxu;
 				TargetAttributes = {
 					37C356011A3FD67300B948E6 = {
@@ -3246,7 +3250,6 @@
 				3793F7FC1B7CFFD900501F77 /* SenderVoiceNodePlaying002@2x.png in Resources */,
 				37C6B4021BF2E6D70001D54F /* TreeHouse.png in Resources */,
 				8D7555501D77F57E00A140EE /* ZYBannerView.bundle in Resources */,
-				8DC087791D8E50E7008B57B2 /* LICENSE in Resources */,
 				37C6B3E61BF2DEC60001D54F /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				3728A6791B94205200310457 /* InputViewBG@2x.png in Resources */,
 				37C6B3EE1BF2DEC70001D54F /* ShareSDK.bundle in Resources */,
@@ -3367,7 +3370,6 @@
 				3728A6F01B9C2A0100310457 /* UUProgressHUD.m in Sources */,
 				37E93F851A7A919C00AD45A1 /* TreeHouseAlbumVC.m in Sources */,
 				3793F7CC1B7CFFD900501F77 /* TGRImageViewController.m in Sources */,
-				3793F7D51B7CFFD900501F77 /* NSObject+Print.m in Sources */,
 				3793F8021B7CFFD900501F77 /* SDWebImageCompat.m in Sources */,
 				37F207191BE0C871006466F4 /* UITouchScrollView.m in Sources */,
 				3793F8001B7CFFD900501F77 /* NSData+ImageContentType.m in Sources */,
@@ -3452,7 +3454,6 @@
 				3793F7CD1B7CFFD900501F77 /* TGRImageZoomAnimationController.m in Sources */,
 				8D75551A1D6DAE9700A140EE /* PBPresentAnimatedTransitioningController.m in Sources */,
 				8DCFD7841D5A3B3F001EDC8A /* VideoItem.m in Sources */,
-				8DC0877A1D8E50E7008B57B2 /* README.md in Sources */,
 				3793F7DC1B7CFFD900501F77 /* UIImageView+Animation.m in Sources */,
 				3793F7E61B7CFFD900501F77 /* ProgressHUD.m in Sources */,
 				37CBAF1C1A4724930063F395 /* PublishAudioVC.m in Sources */,
@@ -3517,6 +3518,7 @@
 				3793F79E1B7CFFD900501F77 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				3793F8111B7CFFD900501F77 /* LoadingView.m in Sources */,
 				37CBAF201A4724930063F395 /* TreeHouseVC.m in Sources */,
+				8DFDDD751D927A8E0050740B /* MonthPickerView.m in Sources */,
 				3705FF971BA2CCEF00F0C6F6 /* NumIndicator.m in Sources */,
 				8D7554E11D6969E300A140EE /* DNImagePickerController.m in Sources */,
 				37BC708E1C116EC900F8B79B /* NSMutableArray+convenience.m in Sources */,
@@ -3560,6 +3562,7 @@
 				8D3D45801D5B7D48005EA8EA /* MessageFromInfo.m in Sources */,
 				8DCFD79F1D5A3B8B001EDC8A /* ChatContentRevokeView.m in Sources */,
 				3759001B1A635FC9008AFFF1 /* PasswordModifyVC.m in Sources */,
+				8DFDDD7E1D927E150050740B /* GrowthContentView.m in Sources */,
 				8DC087761D8E50E7008B57B2 /* LGAlertViewTextField.m in Sources */,
 				8DCFD73A1D53641B001EDC8A /* ContactParentsView.m in Sources */,
 				3793F7BF1B7CFFD900501F77 /* DAContextMenuCell.m in Sources */,
@@ -3575,6 +3578,7 @@
 				37C53AAB1B14E3D400C3ED69 /* VacationHistoryCell.m in Sources */,
 				37C88FF11A889A05008E44DB /* PersonalSetting.m in Sources */,
 				3793F7A31B7CFFD900501F77 /* AFURLResponseSerialization.m in Sources */,
+				8DFDDD721D92754C0050740B /* GrowthTimelineVCNew.m in Sources */,
 				8D7554EC1D6969E300A140EE /* DNFullImageButton.m in Sources */,
 				37FD6DC71BAE800600C83AB4 /* ChatMessageModel.m in Sources */,
 				37FD70B51BBDAFED00C83AB4 /* FeedItemDetailVC.m in Sources */,
@@ -3636,6 +3640,7 @@
 				3793F7C81B7CFFD900501F77 /* POISelectVC.m in Sources */,
 				8DC087771D8E50E7008B57B2 /* LGAlertViewWindow.m in Sources */,
 				3728A5FF1B93EB8D00310457 /* JSMessagesViewController.m in Sources */,
+				8DFDDD6E1D9271150050740B /* NSDate+convenience.m in Sources */,
 				3793F8281B7CFFD900501F77 /* Reachability.m in Sources */,
 				3720C0FF1A419C4E000357A5 /* PhoneLoginVC.m in Sources */,
 				8DCFD7B21D5A3BDB001EDC8A /* SearchChatMessageVC.m in Sources */,
@@ -3649,7 +3654,6 @@
 				8D75554E1D77F57E00A140EE /* ZYBannerCell.m in Sources */,
 				8D7555281D6FB6E700A140EE /* ChatBottomNewMessageView.m in Sources */,
 				8D41BBF41D8AA6F50062CD0E /* VideoPlayerManager.m in Sources */,
-				37BC708D1C116EC900F8B79B /* NSDate+convenience.m in Sources */,
 				8D867BEF1D261FFE0020A21C /* CircleProgressView.m in Sources */,
 				3731D0911C1D94EF003E17A6 /* ActionPopView.m in Sources */,
 				3728A5E61B9332FE00310457 /* ClassZoneClassSwitchView.m in Sources */,
@@ -3712,6 +3716,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -3721,8 +3726,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -3731,6 +3738,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -3743,7 +3751,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -3754,6 +3762,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -3763,8 +3772,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -3772,13 +3783,14 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -3794,7 +3806,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: wei xin (JRFF54BK3W)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3806,7 +3818,7 @@
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/LianZhiParent/LianZhiParent.pch";
 				INFOPLIST_FILE = LianZhiParent/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3822,8 +3834,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6a73cb8f-b575-40dc-b48e-ec03e6e7353f";
-				PROVISIONING_PROFILE_SPECIFIER = LianZhiParentDistribution;
+				PROVISIONING_PROFILE = "13ecdfad-3b6a-418f-a350-b23059f44475";
+				PROVISIONING_PROFILE_SPECIFIER = allDevelopment;
 			};
 			name = Debug;
 		};
@@ -3836,7 +3848,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: wei xin (JRFF54BK3W)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: qingxu zhou (8WP4C9SDAY)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: wei xin (JRFF54BK3W)";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
@@ -3849,7 +3861,7 @@
 				GCC_INPUT_FILETYPE = automatic;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/LianZhiParent/LianZhiParent.pch";
 				INFOPLIST_FILE = LianZhiParent/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3865,8 +3877,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6a73cb8f-b575-40dc-b48e-ec03e6e7353f";
-				PROVISIONING_PROFILE_SPECIFIER = LianZhiParentDistribution;
+				PROVISIONING_PROFILE = "13ecdfad-3b6a-418f-a350-b23059f44475";
+				PROVISIONING_PROFILE_SPECIFIER = allDevelopment;
 			};
 			name = Release;
 		};

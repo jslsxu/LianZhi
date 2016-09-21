@@ -21,7 +21,7 @@
 
 - (void)share
 {
-    [ShareActionView shareWithTitle:@"" content:@"" image:nil imageUrl:nil url:self.url];
+   
 }
 
 - (void)didReceiveMemoryWarning {

@@ -101,9 +101,9 @@
     NSLog(@"info is %@",info);
     self.alert = NO;
     NSString *amrFileKey = info[NHAudioToolAmrFilePathKey];// 相对路径
-    NSString *wavFileKey = info[NHAudioToolWAVFilePathKey];// 相对路径
+//    NSString *wavFileKey = info[NHAudioToolWAVFilePathKey];// 相对路径
     NSString *amrFile = [NHFileManager audioFileAbsolutePathForRelativePath:amrFileKey];// 绝对路径
-    NSString *wavFile = [NHFileManager audioFileAbsolutePathForRelativePath:wavFileKey];// 绝对路径
+//    NSString *wavFile = [NHFileManager audioFileAbsolutePathForRelativePath:wavFileKey];// 绝对路径
     
     //    NSNumber *duration = info[NHAudioToolFileDurationKey];      /时间
     

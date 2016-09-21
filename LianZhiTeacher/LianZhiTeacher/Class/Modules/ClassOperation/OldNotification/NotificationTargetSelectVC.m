@@ -445,7 +445,6 @@
 {
     if(_segmentControl.selectedSegmentIndex == 0)
     {
-        NSInteger section = indexPath.section;
         NSInteger row = indexPath.row;
 //        NSDictionary *groupDic = self.classArray[section];
 //        NSArray *groupArray = groupDic[@"groupArray"];

@@ -69,20 +69,7 @@
 
 - (void)onPre
 {
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    
-    NSDateComponents *comps = nil;
-    
-    comps = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self.date];
-    
-    NSDateComponents *adcomps = [[NSDateComponents alloc] init];
-    
-    [adcomps setYear:0];
-    
-    [adcomps setMonth:-1];
-    
-    [adcomps setDay:0];
-    NSDate *newdate = [calendar dateByAddingComponents:adcomps toDate:self.date options:0];
+    NSDate *newdate = [self.date dateByAddingMonths:-1];
     [self setDate:newdate];
     if([self.delegate respondsToSelector:@selector(growthDatePickerFinished:)])
         [self.delegate growthDatePickerFinished:self.date];
@@ -90,20 +77,7 @@
 
 - (void)onNext
 {
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    
-    NSDateComponents *comps = nil;
-    
-    comps = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self.date];
-    
-    NSDateComponents *adcomps = [[NSDateComponents alloc] init];
-    
-    [adcomps setYear:0];
-    
-    [adcomps setMonth:1];
-    
-    [adcomps setDay:0];
-    NSDate *newdate = [calendar dateByAddingComponents:adcomps toDate:self.date options:0];
+    NSDate *newdate = [self.date dateByAddingMonths:1];
     if([newdate compare:[NSDate date]] == NSOrderedDescending)
         return;
     

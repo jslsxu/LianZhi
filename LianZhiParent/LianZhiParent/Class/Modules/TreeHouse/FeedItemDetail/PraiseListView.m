@@ -45,7 +45,7 @@
     NSInteger itemWidth = 22;
     NSInteger innerMargin = 4;
     NSInteger maxColumnNum = (self.width - spaceXStart ) / (itemWidth + innerMargin);
-    NSInteger maxRowNum = (count + maxColumnNum - 1) / maxColumnNum;
+//    NSInteger maxRowNum = (count + maxColumnNum - 1) / maxColumnNum;
     NSInteger row = 0;
     NSInteger column = 0;
     for (NSInteger i = 0; i < count; i++)
