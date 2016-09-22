@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseViewController.h"
-
+#import <WebKit/WebKit.h>
 @interface TNBaseWebViewController : TNBaseViewController
 /**
  *  origin url
@@ -17,12 +17,7 @@
 /**
  *  embed webView
  */
-@property (nonatomic, strong)UIWebView* webView;
-
-/**
- *  tint color of progress view
- */
-@property (nonatomic, strong)UIColor* progressViewColor;
+@property (nonatomic, strong)WKWebView* webView;
 
 /**
  *  get instance with url

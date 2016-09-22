@@ -23,6 +23,11 @@
 
 @implementation TNBaseWebViewController
 
+- (void)dealloc{
+    [self.webView removeObserver:self forKeyPath:@"estimatedProgress"];
+    [self.webView removeObserver:self forKeyPath:@"title"];
+}
+
 -(UIStatusBarStyle) preferredStatusBarStyle{
     return UIStatusBarStyleDefault;
 }
@@ -38,7 +43,6 @@
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    self.title = @"";
     self.view.backgroundColor = [UIColor whiteColor];
     
     //config navigation item
@@ -66,8 +70,11 @@
         if([keyPath isEqualToString:@"estimatedProgress"]){
             CGFloat newprogress = [[change objectForKey:NSKeyValueChangeNewKey] doubleValue];
             if (newprogress == 1) {
-                self.progressView.hidden = YES;
-                [self.progressView setProgress:0 animated:NO];
+                [self.progressView setProgress:1 animated:YES];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    self.progressView.hidden = YES;
+                    [self.progressView setProgress:0.f animated:NO];
+                });
             }else {
                 self.progressView.hidden = NO;
                 [self.progressView setProgress:newprogress animated:YES];
@@ -116,12 +123,6 @@
     
 }
 
--(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
-    [self updateNavigationItems];
-    return YES;
-}
-
-
 -(WKWebView*)webView{
     if (!_webView) {
         _webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
@@ -137,7 +138,7 @@
         _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
         //progressView.tintColor = WebViewNav_TintColor;
         _progressView.tintColor = kCommonParentTintColor;
-        _progressView.trackTintColor = [UIColor whiteColor];
+        _progressView.trackTintColor = [UIColor clearColor];
     }
     return _progressView;
 }

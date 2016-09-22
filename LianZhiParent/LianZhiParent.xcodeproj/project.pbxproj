@@ -444,6 +444,7 @@
 		8DFDDD751D927A8E0050740B /* MonthPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD741D927A8E0050740B /* MonthPickerView.m */; };
 		8DFDDD7E1D927E150050740B /* GrowthContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD7D1D927E150050740B /* GrowthContentView.m */; };
 		8DFDDD801D928E850050740B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DFDDD7F1D928E850050740B /* WebKit.framework */; };
+		8DFDDD861D93B4870050740B /* CalanderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD851D93B4870050740B /* CalanderView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1268,6 +1269,8 @@
 		8DFDDD7C1D927E150050740B /* GrowthContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthContentView.h; sourceTree = "<group>"; };
 		8DFDDD7D1D927E150050740B /* GrowthContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthContentView.m; sourceTree = "<group>"; };
 		8DFDDD7F1D928E850050740B /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		8DFDDD841D93B4870050740B /* CalanderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalanderView.h; sourceTree = "<group>"; };
+		8DFDDD851D93B4870050740B /* CalanderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalanderView.m; sourceTree = "<group>"; };
 		F48620718382C8CAB78BD7B3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1789,6 +1792,7 @@
 		3793F6481B7CFFD900501F77 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				8DFDDD831D93B47D0050740B /* NormalCalanderView */,
 				8D7555461D77F57E00A140EE /* ZYBannerView */,
 				3793F6491B7CFFD900501F77 /* ActionSelectView.h */,
 				3793F64A1B7CFFD900501F77 /* ActionSelectView.m */,
@@ -3175,6 +3179,15 @@
 			path = GrowthTimelineNew;
 			sourceTree = "<group>";
 		};
+		8DFDDD831D93B47D0050740B /* NormalCalanderView */ = {
+			isa = PBXGroup;
+			children = (
+				8DFDDD841D93B4870050740B /* CalanderView.h */,
+				8DFDDD851D93B4870050740B /* CalanderView.m */,
+			);
+			path = NormalCalanderView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3689,6 +3702,7 @@
 				8D7554E61D6969E300A140EE /* UIView+DNImagePicker.m in Sources */,
 				370F33C81A780E8900FED3C2 /* ContactServiceVC.m in Sources */,
 				376609A11A6834F700E4B4E2 /* RelatedInfoVC.m in Sources */,
+				8DFDDD861D93B4870050740B /* CalanderView.m in Sources */,
 				8D867C2D1D2A6C9C0020A21C /* NSString+UUID.m in Sources */,
 				3793F7EE1B7CFFD900501F77 /* MLAmrPlayer.m in Sources */,
 				376FC6CA1B03521F00289DC2 /* InterestVC.m in Sources */,

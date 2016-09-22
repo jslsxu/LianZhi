@@ -453,6 +453,7 @@
 		8DCFD76E1D5882AB001EDC8A /* VideoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD76D1D5882AB001EDC8A /* VideoItem.m */; };
 		8DCFD7741D588322001EDC8A /* MessageFromInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7731D588322001EDC8A /* MessageFromInfo.m */; };
 		8DCFD77C1D59C68D001EDC8A /* SSPieProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD77B1D59C68D001EDC8A /* SSPieProgressView.m */; };
+		8DFDDD821D93ADCC0050740B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DFDDD811D93ADCC0050740B /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1302,6 +1303,7 @@
 		8DCFD7731D588322001EDC8A /* MessageFromInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageFromInfo.m; sourceTree = "<group>"; };
 		8DCFD77A1D59C68D001EDC8A /* SSPieProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSPieProgressView.h; sourceTree = "<group>"; };
 		8DCFD77B1D59C68D001EDC8A /* SSPieProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSPieProgressView.m; sourceTree = "<group>"; };
+		8DFDDD811D93ADCC0050740B /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		BFB7BE1F02D8CB37989349C3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1310,6 +1312,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8DFDDD821D93ADCC0050740B /* WebKit.framework in Frameworks */,
 				8DCFD73D1D54773D001EDC8A /* MediaPlayer.framework in Frameworks */,
 				37C6B4501BF2F4C20001D54F /* AddressBook.framework in Frameworks */,
 				37C6B4061BF2EF4B0001D54F /* AdSupport.framework in Frameworks */,
@@ -2772,6 +2775,7 @@
 		4DE57A3C964C8D65901D1DC5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8DFDDD811D93ADCC0050740B /* WebKit.framework */,
 				8DCFD73C1D54773D001EDC8A /* MediaPlayer.framework */,
 				85040462C9FB39754B0681EA /* libPods.a */,
 			);
