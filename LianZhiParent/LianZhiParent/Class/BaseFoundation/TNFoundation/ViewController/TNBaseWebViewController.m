@@ -13,11 +13,11 @@
 
 #define boundsWidth self.view.bounds.size.width
 #define boundsHeight self.view.bounds.size.height
-@interface TNBaseWebViewController ()<UIWebViewDelegate,UINavigationControllerDelegate,UINavigationBarDelegate>
-
+@interface TNBaseWebViewController ()<WKNavigationDelegate>
+@property (assign, nonatomic) NSUInteger loadCount;
+@property (strong, nonatomic) UIProgressView *progressView;
 @property (nonatomic)UIBarButtonItem* customBackBarItem;
 @property (nonatomic)UIBarButtonItem* closeButtonItem;
-@property (nonatomic, strong)UIActivityIndicatorView*   indicator;
 
 @end
 
@@ -45,7 +45,9 @@
     //    self.navigationItem.leftItemsSupplementBackButton = YES;
     
     [self.view addSubview:self.webView];
-    [self.view addSubview:self.indicator];
+    [self.view addSubview:self.progressView];
+    [self.webView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
+    [self.webView addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
     [self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
     
     // Do any additional setup after loading the view.
@@ -56,6 +58,25 @@
 #pragma mark - public funcs
 -(void)reloadWebView{
     [self.webView reload];
+}
+
+// 计算wkWebView进度条
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if (object == self.webView) {
+        if([keyPath isEqualToString:@"estimatedProgress"]){
+            CGFloat newprogress = [[change objectForKey:NSKeyValueChangeNewKey] doubleValue];
+            if (newprogress == 1) {
+                self.progressView.hidden = YES;
+                [self.progressView setProgress:0 animated:NO];
+            }else {
+                self.progressView.hidden = NO;
+                [self.progressView setProgress:newprogress animated:YES];
+            }
+        }
+        else if([keyPath isEqualToString:@"title"]){
+            [self setTitle:self.webView.title];
+        }
+    }
 }
 
 #pragma mark - update nav items
@@ -83,8 +104,16 @@
 }
 
 #pragma mark - webView delegate
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    [self.indicator startAnimating];
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
+    [self updateNavigationItems];
+}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation{
+    [self updateNavigationItems];
+}
+
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error{
+    
 }
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
@@ -92,46 +121,25 @@
     return YES;
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
-    [self.indicator stopAnimating];
-    [self updateNavigationItems];
-    NSString *theTitle=[webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-    if (theTitle.length > 10) {
-        theTitle = [[theTitle substringToIndex:9] stringByAppendingString:@"…"];
-    }
-    self.title = theTitle;
-    //    [self.progressView setProgress:1 animated:NO];
-}
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    [self.indicator stopAnimating];
-}
-
-
-
-#pragma mark - setters and getters
--(void)setUrl:(NSURL *)url{
-    _url = url;
-}
-
-- (UIActivityIndicatorView *)indicator{
-    if(_indicator == nil){
-        _indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        [_indicator setHidesWhenStopped:YES];
-        [_indicator setCenter:CGPointMake(self.view.width / 2, (self.view.height - 64) / 2)];
-    }
-    return _indicator;
-}
-
--(UIWebView*)webView{
+-(WKWebView*)webView{
     if (!_webView) {
-        _webView = [[UIWebView alloc] initWithFrame:self.view.bounds];
-        [_webView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-        _webView.delegate = (id)self;
-        _webView.scalesPageToFit = YES;
+        _webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+        _webView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
         _webView.backgroundColor = [UIColor whiteColor];
+        _webView.navigationDelegate = self;
     }
     return _webView;
+}
+
+- (UIProgressView *)progressView{
+    if(_progressView == nil){
+        _progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
+        //progressView.tintColor = WebViewNav_TintColor;
+        _progressView.tintColor = kCommonParentTintColor;
+        _progressView.trackTintColor = [UIColor whiteColor];
+    }
+    return _progressView;
 }
 
 -(UIBarButtonItem*)customBackBarItem{

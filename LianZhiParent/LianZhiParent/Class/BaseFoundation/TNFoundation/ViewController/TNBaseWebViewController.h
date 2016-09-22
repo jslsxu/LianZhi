@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseViewController.h"
-
+#import <WebKit/WebKit.h>
 @interface TNBaseWebViewController : TNBaseViewController
 /**
  *  origin url
@@ -17,7 +17,7 @@
 /**
  *  embed webView
  */
-@property (nonatomic, strong)UIWebView* webView;
+@property (nonatomic, strong)WKWebView* webView;
 
 /**
  *  get instance with url

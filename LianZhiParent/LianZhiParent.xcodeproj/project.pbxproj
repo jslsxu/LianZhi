@@ -443,6 +443,7 @@
 		8DFDDD721D92754C0050740B /* GrowthTimelineVCNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD711D92754C0050740B /* GrowthTimelineVCNew.m */; };
 		8DFDDD751D927A8E0050740B /* MonthPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD741D927A8E0050740B /* MonthPickerView.m */; };
 		8DFDDD7E1D927E150050740B /* GrowthContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD7D1D927E150050740B /* GrowthContentView.m */; };
+		8DFDDD801D928E850050740B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DFDDD7F1D928E850050740B /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1266,6 +1267,7 @@
 		8DFDDD741D927A8E0050740B /* MonthPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MonthPickerView.m; sourceTree = "<group>"; };
 		8DFDDD7C1D927E150050740B /* GrowthContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthContentView.h; sourceTree = "<group>"; };
 		8DFDDD7D1D927E150050740B /* GrowthContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthContentView.m; sourceTree = "<group>"; };
+		8DFDDD7F1D928E850050740B /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		F48620718382C8CAB78BD7B3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1274,6 +1276,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8DFDDD801D928E850050740B /* WebKit.framework in Frameworks */,
 				8D7554F21D696A5E00A140EE /* AssetsLibrary.framework in Frameworks */,
 				37C6B3FD1BF2E5850001D54F /* AddressBook.framework in Frameworks */,
 				37C6B3FB1BF2E5710001D54F /* AdSupport.framework in Frameworks */,
@@ -2818,6 +2821,7 @@
 		3A73EDFDF9323F9388DEE9FE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8DFDDD7F1D928E850050740B /* WebKit.framework */,
 				8D7554F11D696A5E00A140EE /* AssetsLibrary.framework */,
 				63DC0CC46F403FA2D5BECB48 /* libPods.a */,
 			);
