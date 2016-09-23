@@ -15,8 +15,6 @@
 		3719A7471AA2C47800FBDC2A /* NewEditionPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = 3719A7451AA2C47800FBDC2A /* NewEditionPreview.m */; };
 		371C6EB51A72456C00FA4AEC /* MessageVoiceButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 371C6EB41A72456C00FA4AEC /* MessageVoiceButton.m */; };
 		3720C0DE1A41931C000357A5 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3720C0DC1A41931C000357A5 /* LoginVC.m */; };
-		3720C0FF1A419C4E000357A5 /* PhoneLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3720C0FE1A419C4E000357A5 /* PhoneLoginVC.m */; };
-		3720C1081A419EDC000357A5 /* AuthCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3720C1071A419EDC000357A5 /* AuthCodeVC.m */; };
 		3720C1371A41BB92000357A5 /* DiscoveryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3720C1361A41BB92000357A5 /* DiscoveryVC.m */; };
 		3720C13A1A41BBD5000357A5 /* ContactListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3720C1391A41BBD5000357A5 /* ContactListVC.m */; };
 		3720C1461A41E19D000357A5 /* SettingsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3720C1451A41E19D000357A5 /* SettingsVC.m */; };
@@ -307,7 +305,6 @@
 		37E93FDF1A7E9CF200AD45A1 /* PhotoBrowserNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FD81A7E9CF200AD45A1 /* PhotoBrowserNavigationBar.m */; };
 		37EAC9ED1B82D165007BFBA1 /* CommonInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9EB1B82D165007BFBA1 /* CommonInputVC.m */; };
 		37EAC9F01B82DEE5007BFBA1 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */; };
-		37EAC9F31B8348EE007BFBA1 /* PasswordConfirmVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9F21B8348EE007BFBA1 /* PasswordConfirmVC.m */; };
 		37F206FB1BDDCAF1006466F4 /* CourseListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206FA1BDDCAF1006466F4 /* CourseListVC.m */; };
 		37F207071BDDD596006466F4 /* HomeWorkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207041BDDD596006466F4 /* HomeWorkCell.m */; };
 		37F207081BDDD596006466F4 /* HomeWorkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207061BDDD596006466F4 /* HomeWorkVC.m */; };
@@ -446,6 +443,8 @@
 		8DFDDD801D928E850050740B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DFDDD7F1D928E850050740B /* WebKit.framework */; };
 		8DFDDD861D93B4870050740B /* CalanderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD851D93B4870050740B /* CalanderView.m */; };
 		8DFDDDA61D94D4810050740B /* NSDate+WQCalendarLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDA51D94D4810050740B /* NSDate+WQCalendarLogic.m */; };
+		8DFDDDA91D9507420050740B /* PhoneInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDA81D9507420050740B /* PhoneInputVC.m */; };
+		8DFDDDAC1D950D3E0050740B /* AuthCodeInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDAB1D950D3E0050740B /* AuthCodeInputVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -479,10 +478,6 @@
 		371C6EB41A72456C00FA4AEC /* MessageVoiceButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageVoiceButton.m; sourceTree = "<group>"; };
 		3720C0DB1A41931C000357A5 /* LoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginVC.h; sourceTree = "<group>"; };
 		3720C0DC1A41931C000357A5 /* LoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginVC.m; sourceTree = "<group>"; };
-		3720C0FD1A419C4E000357A5 /* PhoneLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneLoginVC.h; sourceTree = "<group>"; };
-		3720C0FE1A419C4E000357A5 /* PhoneLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneLoginVC.m; sourceTree = "<group>"; };
-		3720C1061A419EDC000357A5 /* AuthCodeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthCodeVC.h; sourceTree = "<group>"; };
-		3720C1071A419EDC000357A5 /* AuthCodeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthCodeVC.m; sourceTree = "<group>"; };
 		3720C1351A41BB92000357A5 /* DiscoveryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscoveryVC.h; sourceTree = "<group>"; };
 		3720C1361A41BB92000357A5 /* DiscoveryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiscoveryVC.m; sourceTree = "<group>"; };
 		3720C1381A41BBD5000357A5 /* ContactListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactListVC.h; sourceTree = "<group>"; };
@@ -1007,8 +1002,6 @@
 		37EAC9EC1B82D165007BFBA1 /* CommonInputVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonInputVC.h; sourceTree = "<group>"; };
 		37EAC9EE1B82DEE5007BFBA1 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
-		37EAC9F11B8348EE007BFBA1 /* PasswordConfirmVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordConfirmVC.h; sourceTree = "<group>"; };
-		37EAC9F21B8348EE007BFBA1 /* PasswordConfirmVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordConfirmVC.m; sourceTree = "<group>"; };
 		37F206F91BDDCAF1006466F4 /* CourseListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseListVC.h; sourceTree = "<group>"; };
 		37F206FA1BDDCAF1006466F4 /* CourseListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseListVC.m; sourceTree = "<group>"; };
 		37F207031BDDD596006466F4 /* HomeWorkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkCell.h; sourceTree = "<group>"; };
@@ -1274,6 +1267,10 @@
 		8DFDDD851D93B4870050740B /* CalanderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalanderView.m; sourceTree = "<group>"; };
 		8DFDDDA41D94D4810050740B /* NSDate+WQCalendarLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+WQCalendarLogic.h"; sourceTree = "<group>"; };
 		8DFDDDA51D94D4810050740B /* NSDate+WQCalendarLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+WQCalendarLogic.m"; sourceTree = "<group>"; };
+		8DFDDDA71D9507420050740B /* PhoneInputVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneInputVC.h; sourceTree = "<group>"; };
+		8DFDDDA81D9507420050740B /* PhoneInputVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneInputVC.m; sourceTree = "<group>"; };
+		8DFDDDAA1D950D3E0050740B /* AuthCodeInputVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthCodeInputVC.h; sourceTree = "<group>"; };
+		8DFDDDAB1D950D3E0050740B /* AuthCodeInputVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthCodeInputVC.m; sourceTree = "<group>"; };
 		F48620718382C8CAB78BD7B3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1363,12 +1360,10 @@
 				372775C51A60369900464461 /* UserCenter */,
 				3720C0DB1A41931C000357A5 /* LoginVC.h */,
 				3720C0DC1A41931C000357A5 /* LoginVC.m */,
-				3720C0FD1A419C4E000357A5 /* PhoneLoginVC.h */,
-				3720C0FE1A419C4E000357A5 /* PhoneLoginVC.m */,
-				3720C1061A419EDC000357A5 /* AuthCodeVC.h */,
-				3720C1071A419EDC000357A5 /* AuthCodeVC.m */,
-				37EAC9F11B8348EE007BFBA1 /* PasswordConfirmVC.h */,
-				37EAC9F21B8348EE007BFBA1 /* PasswordConfirmVC.m */,
+				8DFDDDA71D9507420050740B /* PhoneInputVC.h */,
+				8DFDDDA81D9507420050740B /* PhoneInputVC.m */,
+				8DFDDDAA1D950D3E0050740B /* AuthCodeInputVC.h */,
+				8DFDDDAB1D950D3E0050740B /* AuthCodeInputVC.m */,
 				37BC410E1A43346D005038F9 /* ConfimInfoVC.h */,
 				37BC410F1A43346D005038F9 /* ConfimInfoVC.m */,
 				37B7044D1A4410CD0025D684 /* PasswordModificationVC.h */,
@@ -3488,13 +3483,13 @@
 				37C316481A568617002E847D /* ClassAppCell.m in Sources */,
 				3793F81E1B7CFFD900501F77 /* TNListModel.m in Sources */,
 				3728A5E91B9332FE00310457 /* ClassZoneModel.m in Sources */,
-				3720C1081A419EDC000357A5 /* AuthCodeVC.m in Sources */,
 				3793F7EF1B7CFFD900501F77 /* MLDataCache.m in Sources */,
 				3793F7C61B7CFFD900501F77 /* POIItemCell.m in Sources */,
 				3793F7C41B7CFFD900501F77 /* MSCircleImageView.m in Sources */,
 				8D7554F01D6969E300A140EE /* JKPromptView.m in Sources */,
 				8D75551C1D6DAE9800A140EE /* UIView+PBSnapshot.m in Sources */,
 				37BC41101A43346D005038F9 /* ConfimInfoVC.m in Sources */,
+				8DFDDDAC1D950D3E0050740B /* AuthCodeInputVC.m in Sources */,
 				3793F7D11B7CFFD900501F77 /* PhotoItem.m in Sources */,
 				37F2070B1BDDD8C4006466F4 /* HomeWorkListModel.m in Sources */,
 				3793F7DD1B7CFFD900501F77 /* UIImageView+URLWithAnimation.m in Sources */,
@@ -3509,6 +3504,7 @@
 				37CFA5B51A4AF2920061D7B8 /* MessageDetailItemCell.m in Sources */,
 				37C3164F1A568F4A002E847D /* GrowthTimelineVC.m in Sources */,
 				8DC0873D1D8C4930008B57B2 /* PBImageController.m in Sources */,
+				8DFDDDA91D9507420050740B /* PhoneInputVC.m in Sources */,
 				8D3D45D01D5F9438005EA8EA /* ContactInfoHeaderCell.m in Sources */,
 				8DCFD7D81D5ADD94001EDC8A /* NJKWebViewProgress.m in Sources */,
 				37CBAF1E1A4724930063F395 /* PublishPhotoVC.m in Sources */,
@@ -3537,7 +3533,6 @@
 				3705FF971BA2CCEF00F0C6F6 /* NumIndicator.m in Sources */,
 				8D7554E11D6969E300A140EE /* DNImagePickerController.m in Sources */,
 				37BC708E1C116EC900F8B79B /* NSMutableArray+convenience.m in Sources */,
-				37EAC9F31B8348EE007BFBA1 /* PasswordConfirmVC.m in Sources */,
 				37B5D3E71A57B23A003CA877 /* PersonalInfoVC.m in Sources */,
 				8D3D45B41D5DDB09005EA8EA /* NotificationDetailContentView.m in Sources */,
 				3793F8041B7CFFD900501F77 /* SDWebImageDownloader.m in Sources */,
@@ -3657,7 +3652,6 @@
 				3728A5FF1B93EB8D00310457 /* JSMessagesViewController.m in Sources */,
 				8DFDDD6E1D9271150050740B /* NSDate+convenience.m in Sources */,
 				3793F8281B7CFFD900501F77 /* Reachability.m in Sources */,
-				3720C0FF1A419C4E000357A5 /* PhoneLoginVC.m in Sources */,
 				8DCFD7B21D5A3BDB001EDC8A /* SearchChatMessageVC.m in Sources */,
 				3793F8261B7CFFD900501F77 /* TaskUploadManager.m in Sources */,
 				37CBAF1F1A4724930063F395 /* PublishSelectionView.m in Sources */,

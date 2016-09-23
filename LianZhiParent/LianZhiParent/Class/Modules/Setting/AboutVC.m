@@ -23,8 +23,6 @@
 {
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Icon"]];
     [imageView setFrame:CGRectMake((self.view.width - 120) / 2, (self.view.height - 120) / 2 - 60, 120, 120)];
-    [imageView.layer setCornerRadius:15];
-    [imageView.layer setMasksToBounds:YES];
     [self.view addSubview:imageView];
     
     UILabel *preLabel = [[UILabel alloc] initWithFrame:CGRectZero];

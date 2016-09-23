@@ -7,7 +7,7 @@
 //
 
 #import "TNBaseViewController.h"
-
+extern NSString *const kPaswordModificationNotification;
 typedef void(^ModificationCallBack)();
 @interface PasswordModificationVC : TNBaseViewController<UITextFieldDelegate>
 {

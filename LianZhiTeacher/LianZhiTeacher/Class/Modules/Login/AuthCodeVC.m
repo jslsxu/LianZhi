@@ -7,7 +7,7 @@
 //
 
 #import "AuthCodeVC.h"
-#import "PasswordConfirmVC.h"
+#import "PasswordModificationVC.h"
 #define kRemainedSeconds                60
 
 @interface AuthCodeVC ()
@@ -111,12 +111,13 @@
     [params setValue:mobile forKey:@"mobile"];
     [params setValue:authCode forKey:@"code"];
 //    [params setValue:name forKey:@"name"];
+    __weak typeof(self) wself = self;
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:[UIApplication sharedApplication].keyWindow];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/login_mobile" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:NO];
         [[UserCenter sharedInstance] parseData:responseObject];
-        PasswordConfirmVC *passwordConfirmVC = [[PasswordConfirmVC alloc] init];
-        [self.navigationController pushViewController:passwordConfirmVC animated:YES];
+        PasswordModificationVC *passwordConfirmVC = [[PasswordModificationVC alloc] init];
+        [wself presentViewController:passwordConfirmVC animated:YES completion:nil];
     } fail:^(NSString *errMsg) {
         [hud hide:NO];
         [ProgressHUD showHintText:errMsg];

@@ -162,7 +162,6 @@
 		37B485011A65853C00C412D8 /* AuthCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B484F31A65853C00C412D8 /* AuthCodeVC.m */; };
 		37B485031A65853C00C412D8 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B484F71A65853C00C412D8 /* LoginVC.m */; };
 		37B485041A65853C00C412D8 /* PasswordModificationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B484F91A65853C00C412D8 /* PasswordModificationVC.m */; };
-		37B485051A65853C00C412D8 /* PhoneLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B484FB1A65853C00C412D8 /* PhoneLoginVC.m */; };
 		37B485061A65853C00C412D8 /* SchoolInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B484FE1A65853C00C412D8 /* SchoolInfo.m */; };
 		37B485071A65853C00C412D8 /* UserCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B485001A65853C00C412D8 /* UserCenter.m */; };
 		37C01B111A6C245500C8F454 /* DatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C01B101A6C245500C8F454 /* DatePickerView.m */; };
@@ -246,7 +245,6 @@
 		37E93FC61A7E9CC600AD45A1 /* PhotoBrowserInfoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FBE1A7E9CC600AD45A1 /* PhotoBrowserInfoBar.m */; };
 		37E93FC71A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FC01A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m */; };
 		37EAC9EA1B82446F007BFBA1 /* CommonInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9E91B82446F007BFBA1 /* CommonInputVC.m */; };
-		37EACA031B845B5F007BFBA1 /* PasswordConfirmVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EACA011B845B5F007BFBA1 /* PasswordConfirmVC.m */; };
 		37ED9E0E1C3B8C3A00E9F8CA /* StudentAttendanceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37ED9E0D1C3B8C3A00E9F8CA /* StudentAttendanceModel.m */; };
 		37F206D81BD87A99006466F4 /* City.db in Resources */ = {isa = PBXBuildFile; fileRef = 37F206D71BD87A99006466F4 /* City.db */; };
 		37F206E61BDCB41E006466F4 /* CityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206E51BDCB41E006466F4 /* CityManager.m */; };
@@ -446,6 +444,8 @@
 		8DFDDD9C1D93D5E80050740B /* HomeWorkCollectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD9B1D93D5E80050740B /* HomeWorkCollectionVC.m */; };
 		8DFDDD9F1D93D7940050740B /* PublishHomeWorkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD9E1D93D7940050740B /* PublishHomeWorkVC.m */; };
 		8DFDDDA31D93F2850050740B /* HomeWorkEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDA21D93F2850050740B /* HomeWorkEntity.m */; };
+		8DFDDDB11D9519010050740B /* PhoneInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDAE1D9519010050740B /* PhoneInputVC.m */; };
+		8DFDDDB21D9519010050740B /* AuthCodeInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDB01D9519010050740B /* AuthCodeInputVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -742,8 +742,6 @@
 		37B484F71A65853C00C412D8 /* LoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginVC.m; sourceTree = "<group>"; };
 		37B484F81A65853C00C412D8 /* PasswordModificationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordModificationVC.h; sourceTree = "<group>"; };
 		37B484F91A65853C00C412D8 /* PasswordModificationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordModificationVC.m; sourceTree = "<group>"; };
-		37B484FA1A65853C00C412D8 /* PhoneLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneLoginVC.h; sourceTree = "<group>"; };
-		37B484FB1A65853C00C412D8 /* PhoneLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneLoginVC.m; sourceTree = "<group>"; };
 		37B484FD1A65853C00C412D8 /* SchoolInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SchoolInfo.h; sourceTree = "<group>"; };
 		37B484FE1A65853C00C412D8 /* SchoolInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SchoolInfo.m; sourceTree = "<group>"; };
 		37B484FF1A65853C00C412D8 /* UserCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCenter.h; sourceTree = "<group>"; };
@@ -898,8 +896,6 @@
 		37E93FC01A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoBrowserNavigationBar.m; sourceTree = "<group>"; };
 		37EAC9E81B82446F007BFBA1 /* CommonInputVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonInputVC.h; sourceTree = "<group>"; };
 		37EAC9E91B82446F007BFBA1 /* CommonInputVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonInputVC.m; sourceTree = "<group>"; };
-		37EACA011B845B5F007BFBA1 /* PasswordConfirmVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordConfirmVC.m; sourceTree = "<group>"; };
-		37EACA021B845B5F007BFBA1 /* PasswordConfirmVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordConfirmVC.h; sourceTree = "<group>"; };
 		37ED9E0C1C3B8C3A00E9F8CA /* StudentAttendanceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentAttendanceModel.h; sourceTree = "<group>"; };
 		37ED9E0D1C3B8C3A00E9F8CA /* StudentAttendanceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentAttendanceModel.m; sourceTree = "<group>"; };
 		37F206D71BD87A99006466F4 /* City.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = City.db; sourceTree = "<group>"; };
@@ -1280,6 +1276,10 @@
 		8DFDDD9E1D93D7940050740B /* PublishHomeWorkVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishHomeWorkVC.m; sourceTree = "<group>"; };
 		8DFDDDA11D93F2850050740B /* HomeWorkEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkEntity.h; sourceTree = "<group>"; };
 		8DFDDDA21D93F2850050740B /* HomeWorkEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkEntity.m; sourceTree = "<group>"; };
+		8DFDDDAD1D9519010050740B /* PhoneInputVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhoneInputVC.h; sourceTree = "<group>"; };
+		8DFDDDAE1D9519010050740B /* PhoneInputVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneInputVC.m; sourceTree = "<group>"; };
+		8DFDDDAF1D9519010050740B /* AuthCodeInputVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthCodeInputVC.h; sourceTree = "<group>"; };
+		8DFDDDB01D9519010050740B /* AuthCodeInputVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthCodeInputVC.m; sourceTree = "<group>"; };
 		BFB7BE1F02D8CB37989349C3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2049,14 +2049,14 @@
 				37FD6E371BB6F53800C83AB4 /* RegisterAuthVC.m */,
 				37B484F61A65853C00C412D8 /* LoginVC.h */,
 				37B484F71A65853C00C412D8 /* LoginVC.m */,
+				8DFDDDAD1D9519010050740B /* PhoneInputVC.h */,
+				8DFDDDAE1D9519010050740B /* PhoneInputVC.m */,
+				8DFDDDAF1D9519010050740B /* AuthCodeInputVC.h */,
+				8DFDDDB01D9519010050740B /* AuthCodeInputVC.m */,
 				37FD6E331BB69AFE00C83AB4 /* RegisterVC.h */,
 				37FD6E341BB69AFE00C83AB4 /* RegisterVC.m */,
-				37EACA021B845B5F007BFBA1 /* PasswordConfirmVC.h */,
-				37EACA011B845B5F007BFBA1 /* PasswordConfirmVC.m */,
 				37B484F81A65853C00C412D8 /* PasswordModificationVC.h */,
 				37B484F91A65853C00C412D8 /* PasswordModificationVC.m */,
-				37B484FA1A65853C00C412D8 /* PhoneLoginVC.h */,
-				37B484FB1A65853C00C412D8 /* PhoneLoginVC.m */,
 				373528761AD6557800C0F326 /* BaseInfoModifyVC.h */,
 				373528751AD6557800C0F326 /* BaseInfoModifyVC.m */,
 				37B484FC1A65853C00C412D8 /* UserCenter */,
@@ -3480,7 +3480,6 @@
 				8DCFD7601D584C08001EDC8A /* NHFileServer.m in Sources */,
 				37CCE2561B8B0649007BFA4F /* ActionPopView.m in Sources */,
 				37FEA9651C46554500E7425B /* AccountInfoView.m in Sources */,
-				37EACA031B845B5F007BFBA1 /* PasswordConfirmVC.m in Sources */,
 				37FD6E351BB69AFE00C83AB4 /* RegisterVC.m in Sources */,
 				37FD6DEA1BAEE01C00C83AB4 /* MessageItem.m in Sources */,
 				373528771AD6557800C0F326 /* BaseInfoModifyVC.m in Sources */,
@@ -3526,6 +3525,7 @@
 				37C88F7C1A83BE57008E44DB /* RelatedInfoVC.m in Sources */,
 				379947E91A66B430008E4B4F /* PhotoFlowCell.m in Sources */,
 				8DCFD7291D51E534001EDC8A /* ContactClassStudentView.m in Sources */,
+				8DFDDDB21D9519010050740B /* AuthCodeInputVC.m in Sources */,
 				37FD6E321BB4817900C83AB4 /* NewMessageVC.m in Sources */,
 				3793FA841B7CFFF000501F77 /* AudioRecordView.m in Sources */,
 				8DCFD7011D503DD2001EDC8A /* NJKWebViewProgressView.m in Sources */,
@@ -3747,6 +3747,7 @@
 				8DCFD7461D57857C001EDC8A /* NotificationDraftManager.m in Sources */,
 				37E93FC51A7E9CC600AD45A1 /* MJPhotoView.m in Sources */,
 				37D6EEF41BCBA96D000994A2 /* LeaveHistoryVC.m in Sources */,
+				8DFDDDB11D9519010050740B /* PhoneInputVC.m in Sources */,
 				371C6DAF1A7015AF00FA4AEC /* PublishSelectionView.m in Sources */,
 				379947EB1A66B430008E4B4F /* PhotoFlowVC.m in Sources */,
 				37E93FC61A7E9CC600AD45A1 /* PhotoBrowserInfoBar.m in Sources */,
@@ -3795,7 +3796,6 @@
 				8DC0875B1D8E47C6008B57B2 /* LGAlertViewWindow.m in Sources */,
 				3793FAEE1B7CFFF000501F77 /* TNBaseTableViewController.m in Sources */,
 				8D75555B1D77F8BD00A140EE /* ZYBannerFooter.m in Sources */,
-				37B485051A65853C00C412D8 /* PhoneLoginVC.m in Sources */,
 				37C7339A1C4357E200BAD6CD /* AttendanceDateView.m in Sources */,
 				37C88F7F1A83D43D008E44DB /* ReportProblemVC.m in Sources */,
 			);
