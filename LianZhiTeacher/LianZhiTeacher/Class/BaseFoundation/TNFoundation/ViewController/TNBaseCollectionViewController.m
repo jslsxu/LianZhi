@@ -41,7 +41,7 @@
     
     _layout = [[UICollectionViewFlowLayout alloc] init];
     [self TNBaseCollectionViewControllerModifyLayout:_layout];
-    
+    [self loadCache];
     _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:_layout];
     if([self.cellName length] > 0)
         [_collectionView registerClass:NSClassFromString(self.cellName) forCellWithReuseIdentifier:self.cellName];
@@ -51,6 +51,7 @@
     [_collectionView setDelegate:self];
     [_collectionView setDataSource:self];
     [self.view addSubview:_collectionView];
+
 }
 
 
@@ -114,6 +115,20 @@
     [self.collectionView bringSubviewToFront:_emptyLabel];
     [_emptyLabel setHidden:!show];
     [_emptyLabel setCenter:CGPointMake(self.collectionView.width / 2, self.collectionView.height / 2 + 30)];
+}
+
+- (void)loadCache{
+     if([self supportCache])//支持缓存，先出缓存中读取数据
+        {
+            NSData *data = [NSData dataWithContentsOfFile:[self cacheFilePath]];
+            if(data.length > 0){
+                _collectionViewModel = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+                [self.collectionView reloadData];
+                if([self respondsToSelector:@selector(TNBaseTableViewControllerRequestSuccess)])
+                    [self TNBaseTableViewControllerRequestSuccess];
+            }
+        }
+
 }
 
 - (void)reloadData

@@ -50,11 +50,16 @@ typedef NS_ENUM(NSInteger, UserType){
 - (instancetype)initWithFrame:(CGRect)frame;
 @end
 
+typedef NS_ENUM(NSInteger, MemberSelectStyle){
+    MemberSelectStyleNotification = 0,      //通知
+    MemberSelectStyleHomeWork               //作业
+};
 
 @interface NotificationMemberSelectVC : TNBaseViewController{
     NotificationMemberView* _studentView;
     NotificationMemberView* _teacherView;
 }
+@property (nonatomic, assign)MemberSelectStyle memberSelectStyle;
 @property (nonatomic, copy)void (^selectCompletion)(NSArray *classArray, NSArray* groupArray);
 - (instancetype)initWithOriginalArray:(NSArray *)sourceArray;
 @end

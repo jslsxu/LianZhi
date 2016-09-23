@@ -445,6 +445,7 @@
 		8DFDDD7E1D927E150050740B /* GrowthContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD7D1D927E150050740B /* GrowthContentView.m */; };
 		8DFDDD801D928E850050740B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DFDDD7F1D928E850050740B /* WebKit.framework */; };
 		8DFDDD861D93B4870050740B /* CalanderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD851D93B4870050740B /* CalanderView.m */; };
+		8DFDDDA61D94D4810050740B /* NSDate+WQCalendarLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDA51D94D4810050740B /* NSDate+WQCalendarLogic.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1271,6 +1272,8 @@
 		8DFDDD7F1D928E850050740B /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		8DFDDD841D93B4870050740B /* CalanderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalanderView.h; sourceTree = "<group>"; };
 		8DFDDD851D93B4870050740B /* CalanderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalanderView.m; sourceTree = "<group>"; };
+		8DFDDDA41D94D4810050740B /* NSDate+WQCalendarLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+WQCalendarLogic.h"; sourceTree = "<group>"; };
+		8DFDDDA51D94D4810050740B /* NSDate+WQCalendarLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+WQCalendarLogic.m"; sourceTree = "<group>"; };
 		F48620718382C8CAB78BD7B3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1674,7 +1677,6 @@
 				3793F6831B7CFFD900501F77 /* DataStruct */,
 				3793F68D1B7CFFD900501F77 /* Extends */,
 				3793F6B81B7CFFD900501F77 /* ProgressHUD */,
-				3793F6BB1B7CFFD900501F77 /* QRCodeScanVC */,
 				3793F6BC1B7CFFD900501F77 /* Recorder */,
 				3793F6ED1B7CFFD900501F77 /* SDWebImage */,
 				3793F70F1B7CFFD900501F77 /* TNFoundation */,
@@ -1958,6 +1960,8 @@
 				3793F69D1B7CFFD900501F77 /* UIColor+Addition.m */,
 				3793F69E1B7CFFD900501F77 /* UIImage+Utility.h */,
 				3793F69F1B7CFFD900501F77 /* UIImage+Utility.m */,
+				8DFDDDA41D94D4810050740B /* NSDate+WQCalendarLogic.h */,
+				8DFDDDA51D94D4810050740B /* NSDate+WQCalendarLogic.m */,
 				3793F6A01B7CFFD900501F77 /* UIImageView */,
 				3793F6A51B7CFFD900501F77 /* UIView+Frame.h */,
 				3793F6A61B7CFFD900501F77 /* UIView+Frame.m */,
@@ -1994,13 +1998,6 @@
 				3793F6BA1B7CFFD900501F77 /* ProgressHUD.m */,
 			);
 			path = ProgressHUD;
-			sourceTree = "<group>";
-		};
-		3793F6BB1B7CFFD900501F77 /* QRCodeScanVC */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = QRCodeScanVC;
 			sourceTree = "<group>";
 		};
 		3793F6BC1B7CFFD900501F77 /* Recorder */ = {
@@ -3431,6 +3428,7 @@
 				8D3D45B81D5DDB09005EA8EA /* NotificationDetailVoiceView.m in Sources */,
 				37D6EE261BC9036D000994A2 /* RegionAnnotationView.m in Sources */,
 				3793F7CF1B7CFFD900501F77 /* WelcomeView.m in Sources */,
+				8DFDDDA61D94D4810050740B /* NSDate+WQCalendarLogic.m in Sources */,
 				8D867C271D2A6C530020A21C /* amrFileCodec.mm in Sources */,
 				3793F7F11B7CFFD900501F77 /* MLPlayVoiceButton.m in Sources */,
 				8D3E32AD1D7D50AC00C1BC77 /* ContactsLoadingView.m in Sources */,

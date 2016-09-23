@@ -488,14 +488,17 @@
     [super viewDidLoad];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(onConfirm)];
-    
     _studentView = [[NotificationMemberView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
     [_studentView setUserType:UserTypeStudent];
     [self.view addSubview:_studentView];
-    
-    _teacherView = [[NotificationMemberView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
-    [_teacherView setUserType:UserTypeTeacher];
-    [self.view addSubview:_teacherView];
+    if(self.memberSelectStyle == MemberSelectStyleNotification){
+        _teacherView = [[NotificationMemberView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
+        [_teacherView setUserType:UserTypeTeacher];
+        [self.view addSubview:_teacherView];
+    }
+    else{
+        
+    }
     [self.view addSubview:[self contactsLoadingView]];
     [self reloadData];
 }
@@ -549,24 +552,27 @@
     }
     self.classArray = classArray;
     
-    NSMutableArray *groupArray = [NSMutableArray array];
-    for (TeacherGroup *group in [UserCenter sharedInstance].curSchool.groups) {
-        NSDictionary *groupDic = [group modelToJSONObject];
-        TeacherGroup *sourceGroup = [TeacherGroup modelWithJSON:groupDic];
-        if(sourceGroup.canNotice){
-            [groupArray addObject:sourceGroup];
-        }
-    }
-    self.groupArray = groupArray;
-    
     for (ClassInfo *classInfo in self.classArray) {
         for (StudentInfo *studentInfo in classInfo.students) {
             studentInfo.selected = [self isSelected:studentInfo.uid];
         }
     }
-    for (TeacherGroup *group in self.groupArray) {
-        for (TeacherInfo *teacherInfo in group.teachers) {
-            teacherInfo.selected = [self isSelected:teacherInfo.uid];
+    
+    if(self.memberSelectStyle == MemberSelectStyleNotification){
+        NSMutableArray *groupArray = [NSMutableArray array];
+        for (TeacherGroup *group in [UserCenter sharedInstance].curSchool.groups) {
+            NSDictionary *groupDic = [group modelToJSONObject];
+            TeacherGroup *sourceGroup = [TeacherGroup modelWithJSON:groupDic];
+            if(sourceGroup.canNotice){
+                [groupArray addObject:sourceGroup];
+            }
+        }
+        self.groupArray = groupArray;
+        
+        for (TeacherGroup *group in self.groupArray) {
+            for (TeacherInfo *teacherInfo in group.teachers) {
+                teacherInfo.selected = [self isSelected:teacherInfo.uid];
+            }
         }
     }
     [_studentView setHidden:NO];

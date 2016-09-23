@@ -42,9 +42,6 @@
 		3728A74C1B9EE5C400310457 /* PublishGrowthTimelineVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A74B1B9EE5C400310457 /* PublishGrowthTimelineVC.m */; };
 		3728A74F1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A74E1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m */; };
 		3728A7521B9F524000310457 /* GrowthTimelineClassChangeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A7511B9F524000310457 /* GrowthTimelineClassChangeVC.m */; };
-		372C75311C07FFA400A1D90B /* MyHomeworkList.m in Sources */ = {isa = PBXBuildFile; fileRef = 372C75301C07FFA400A1D90B /* MyHomeworkList.m */; };
-		372C75351C07FFF500A1D90B /* HomeWorkCollectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372C75341C07FFF500A1D90B /* HomeWorkCollectionVC.m */; };
-		372C75381C0802CC00A1D90B /* HomeWorkCollectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 372C75371C0802CC00A1D90B /* HomeWorkCollectionModel.m */; };
 		372C753B1C08661500A1D90B /* ClassAttendanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372C753A1C08661500A1D90B /* ClassAttendanceVC.m */; };
 		373528771AD6557800C0F326 /* BaseInfoModifyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 373528751AD6557800C0F326 /* BaseInfoModifyVC.m */; };
 		3736CEB41C508D31004DB2D2 /* InterestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3736CEB11C508D31004DB2D2 /* InterestVC.m */; };
@@ -55,11 +52,7 @@
 		376FC6B91B01EFC500289DC2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B81B01EFC500289DC2 /* AVFoundation.framework */; };
 		376FC6BB1B01EFCB00289DC2 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6BA1B01EFCB00289DC2 /* CoreMedia.framework */; };
 		376FC6BD1B01EFD100289DC2 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6BC1B01EFD100289DC2 /* CoreVideo.framework */; };
-		378436AB1C1536E2009CBBA0 /* HomeWorkAudioView.m in Sources */ = {isa = PBXBuildFile; fileRef = 378436AA1C1536E2009CBBA0 /* HomeWorkAudioView.m */; };
-		378436AE1C153B31009CBBA0 /* CourseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 378436AD1C153B31009CBBA0 /* CourseView.m */; };
-		378436B11C153BD6009CBBA0 /* HomeWorkPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 378436B01C153BD6009CBBA0 /* HomeWorkPhotoView.m */; };
 		378C78431AA43D6C00E171E2 /* PreviewMessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 378C78421AA43D6C00E171E2 /* PreviewMessageVC.m */; };
-		378DA1471C09957C00301C26 /* HomeWorkDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 378DA1461C09957C00301C26 /* HomeWorkDetailVC.m */; };
 		3793F5041B7B27C100501F77 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3793F5031B7B27C100501F77 /* CoreLocation.framework */; };
 		3793F5061B7B27DC00501F77 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3793F5051B7B27DC00501F77 /* CoreTelephony.framework */; };
 		3793F5081B7B27E400501F77 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3793F5071B7B27E400501F77 /* SystemConfiguration.framework */; };
@@ -211,7 +204,6 @@
 		37D6EE7F1BCAB62E000994A2 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6EE7E1BCAB62E000994A2 /* libsqlite3.dylib */; };
 		37D6EE811BCAB638000994A2 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6EE801BCAB638000994A2 /* libicucore.dylib */; };
 		37D6EE831BCAB640000994A2 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6EE821BCAB640000994A2 /* libstdc++.dylib */; };
-		37D6EEED1BCBA96D000994A2 /* HomeWorkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EED01BCBA96D000994A2 /* HomeWorkVC.m */; };
 		37D6EEEE1BCBA96D000994A2 /* AttendanceDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EED31BCBA96D000994A2 /* AttendanceDatePickerView.m */; };
 		37D6EEEF1BCBA96D000994A2 /* MyAttendanceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EED51BCBA96D000994A2 /* MyAttendanceCell.m */; };
 		37D6EEF01BCBA96D000994A2 /* MyAttendanceItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EED71BCBA96D000994A2 /* MyAttendanceItem.m */; };
@@ -256,17 +248,11 @@
 		37EAC9EA1B82446F007BFBA1 /* CommonInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9E91B82446F007BFBA1 /* CommonInputVC.m */; };
 		37EACA031B845B5F007BFBA1 /* PasswordConfirmVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EACA011B845B5F007BFBA1 /* PasswordConfirmVC.m */; };
 		37ED9E0E1C3B8C3A00E9F8CA /* StudentAttendanceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37ED9E0D1C3B8C3A00E9F8CA /* StudentAttendanceModel.m */; };
-		37ED9E111C3D1A3C00E9F8CA /* HomeworkItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37ED9E101C3D1A3C00E9F8CA /* HomeworkItem.m */; };
 		37F206D81BD87A99006466F4 /* City.db in Resources */ = {isa = PBXBuildFile; fileRef = 37F206D71BD87A99006466F4 /* City.db */; };
 		37F206E61BDCB41E006466F4 /* CityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206E51BDCB41E006466F4 /* CityManager.m */; };
 		37F2070F1BDE015D006466F4 /* SurroundingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F2070E1BDE015D006466F4 /* SurroundingVC.m */; };
 		37F207161BE0BBFF006466F4 /* UITouchScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207151BE0BBFF006466F4 /* UITouchScrollView.m */; };
 		37F28AF21C45F8F200CC459A /* LZAccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F28AF01C45F8F200CC459A /* LZAccountVC.m */; };
-		37FB1C501BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C4F1BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.m */; };
-		37FB1C591BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C581BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m */; };
-		37FB1C631BE4C368004ECE2E /* HomeWorkHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C621BE4C368004ECE2E /* HomeWorkHistoryVC.m */; };
-		37FB1C661BE4C50D004ECE2E /* HomeWorkHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C651BE4C50D004ECE2E /* HomeWorkHistoryModel.m */; };
-		37FB1C691BE4C596004ECE2E /* HomeWorkHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FB1C681BE4C596004ECE2E /* HomeWorkHistoryCell.m */; };
 		37FD6DE71BAEE01C00C83AB4 /* ChatMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */; };
 		37FD6DE81BAEE01C00C83AB4 /* JSMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DDE1BAEE01C00C83AB4 /* JSMessagesViewController.m */; };
 		37FD6DEA1BAEE01C00C83AB4 /* MessageItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DE21BAEE01C00C83AB4 /* MessageItem.m */; };
@@ -454,6 +440,12 @@
 		8DCFD7741D588322001EDC8A /* MessageFromInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7731D588322001EDC8A /* MessageFromInfo.m */; };
 		8DCFD77C1D59C68D001EDC8A /* SSPieProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD77B1D59C68D001EDC8A /* SSPieProgressView.m */; };
 		8DFDDD821D93ADCC0050740B /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DFDDD811D93ADCC0050740B /* WebKit.framework */; };
+		8DFDDD931D93D5210050740B /* HomeWorkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD911D93D5210050740B /* HomeWorkVC.m */; };
+		8DFDDD961D93D5940050740B /* HomeWorkRecordListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD951D93D5940050740B /* HomeWorkRecordListVC.m */; };
+		8DFDDD991D93D5BB0050740B /* HomeWorkDraftVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD981D93D5BB0050740B /* HomeWorkDraftVC.m */; };
+		8DFDDD9C1D93D5E80050740B /* HomeWorkCollectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD9B1D93D5E80050740B /* HomeWorkCollectionVC.m */; };
+		8DFDDD9F1D93D7940050740B /* PublishHomeWorkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD9E1D93D7940050740B /* PublishHomeWorkVC.m */; };
+		8DFDDDA31D93F2850050740B /* HomeWorkEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDA21D93F2850050740B /* HomeWorkEntity.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -525,12 +517,6 @@
 		3728A74E1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthTimelineStudentsSelectVC.m; sourceTree = "<group>"; };
 		3728A7501B9F524000310457 /* GrowthTimelineClassChangeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthTimelineClassChangeVC.h; sourceTree = "<group>"; };
 		3728A7511B9F524000310457 /* GrowthTimelineClassChangeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthTimelineClassChangeVC.m; sourceTree = "<group>"; };
-		372C752F1C07FFA400A1D90B /* MyHomeworkList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyHomeworkList.h; sourceTree = "<group>"; };
-		372C75301C07FFA400A1D90B /* MyHomeworkList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyHomeworkList.m; sourceTree = "<group>"; };
-		372C75331C07FFF500A1D90B /* HomeWorkCollectionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkCollectionVC.h; sourceTree = "<group>"; };
-		372C75341C07FFF500A1D90B /* HomeWorkCollectionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkCollectionVC.m; sourceTree = "<group>"; };
-		372C75361C0802CC00A1D90B /* HomeWorkCollectionModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkCollectionModel.h; sourceTree = "<group>"; };
-		372C75371C0802CC00A1D90B /* HomeWorkCollectionModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkCollectionModel.m; sourceTree = "<group>"; };
 		372C75391C08661500A1D90B /* ClassAttendanceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassAttendanceVC.h; sourceTree = "<group>"; };
 		372C753A1C08661500A1D90B /* ClassAttendanceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassAttendanceVC.m; sourceTree = "<group>"; };
 		373528751AD6557800C0F326 /* BaseInfoModifyVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseInfoModifyVC.m; sourceTree = "<group>"; };
@@ -546,16 +532,8 @@
 		376FC6B81B01EFC500289DC2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		376FC6BA1B01EFCB00289DC2 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		376FC6BC1B01EFD100289DC2 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
-		378436A91C1536E2009CBBA0 /* HomeWorkAudioView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkAudioView.h; sourceTree = "<group>"; };
-		378436AA1C1536E2009CBBA0 /* HomeWorkAudioView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkAudioView.m; sourceTree = "<group>"; };
-		378436AC1C153B31009CBBA0 /* CourseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseView.h; sourceTree = "<group>"; };
-		378436AD1C153B31009CBBA0 /* CourseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseView.m; sourceTree = "<group>"; };
-		378436AF1C153BD6009CBBA0 /* HomeWorkPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkPhotoView.h; sourceTree = "<group>"; };
-		378436B01C153BD6009CBBA0 /* HomeWorkPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkPhotoView.m; sourceTree = "<group>"; };
 		378C78411AA43D6C00E171E2 /* PreviewMessageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewMessageVC.h; sourceTree = "<group>"; };
 		378C78421AA43D6C00E171E2 /* PreviewMessageVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewMessageVC.m; sourceTree = "<group>"; };
-		378DA1451C09957C00301C26 /* HomeWorkDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkDetailVC.h; sourceTree = "<group>"; };
-		378DA1461C09957C00301C26 /* HomeWorkDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkDetailVC.m; sourceTree = "<group>"; };
 		3793F5031B7B27C100501F77 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3793F5051B7B27DC00501F77 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3793F5071B7B27E400501F77 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -837,8 +815,6 @@
 		37D6EE7E1BCAB62E000994A2 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		37D6EE801BCAB638000994A2 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		37D6EE821BCAB640000994A2 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
-		37D6EECF1BCBA96D000994A2 /* HomeWorkVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkVC.h; sourceTree = "<group>"; };
-		37D6EED01BCBA96D000994A2 /* HomeWorkVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkVC.m; sourceTree = "<group>"; };
 		37D6EED21BCBA96D000994A2 /* AttendanceDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceDatePickerView.h; sourceTree = "<group>"; };
 		37D6EED31BCBA96D000994A2 /* AttendanceDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceDatePickerView.m; sourceTree = "<group>"; };
 		37D6EED41BCBA96D000994A2 /* MyAttendanceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAttendanceCell.h; sourceTree = "<group>"; };
@@ -926,8 +902,6 @@
 		37EACA021B845B5F007BFBA1 /* PasswordConfirmVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordConfirmVC.h; sourceTree = "<group>"; };
 		37ED9E0C1C3B8C3A00E9F8CA /* StudentAttendanceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentAttendanceModel.h; sourceTree = "<group>"; };
 		37ED9E0D1C3B8C3A00E9F8CA /* StudentAttendanceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentAttendanceModel.m; sourceTree = "<group>"; };
-		37ED9E0F1C3D1A3C00E9F8CA /* HomeworkItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkItem.h; sourceTree = "<group>"; };
-		37ED9E101C3D1A3C00E9F8CA /* HomeworkItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkItem.m; sourceTree = "<group>"; };
 		37F206D71BD87A99006466F4 /* City.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = City.db; sourceTree = "<group>"; };
 		37F206E41BDCB41E006466F4 /* CityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityManager.h; sourceTree = "<group>"; };
 		37F206E51BDCB41E006466F4 /* CityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityManager.m; sourceTree = "<group>"; };
@@ -937,16 +911,6 @@
 		37F207151BE0BBFF006466F4 /* UITouchScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITouchScrollView.m; sourceTree = "<group>"; };
 		37F28AF01C45F8F200CC459A /* LZAccountVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZAccountVC.m; sourceTree = "<group>"; };
 		37F28AF11C45F8F200CC459A /* LZAccountVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZAccountVC.h; sourceTree = "<group>"; };
-		37FB1C4E1BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishHomeWorkBaseVC.h; sourceTree = "<group>"; };
-		37FB1C4F1BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishHomeWorkBaseVC.m; sourceTree = "<group>"; };
-		37FB1C571BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishHomeWorkAudioVC.h; sourceTree = "<group>"; };
-		37FB1C581BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishHomeWorkAudioVC.m; sourceTree = "<group>"; };
-		37FB1C611BE4C368004ECE2E /* HomeWorkHistoryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkHistoryVC.h; sourceTree = "<group>"; };
-		37FB1C621BE4C368004ECE2E /* HomeWorkHistoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkHistoryVC.m; sourceTree = "<group>"; };
-		37FB1C641BE4C50D004ECE2E /* HomeWorkHistoryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkHistoryModel.h; sourceTree = "<group>"; };
-		37FB1C651BE4C50D004ECE2E /* HomeWorkHistoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkHistoryModel.m; sourceTree = "<group>"; };
-		37FB1C671BE4C596004ECE2E /* HomeWorkHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkHistoryCell.h; sourceTree = "<group>"; };
-		37FB1C681BE4C596004ECE2E /* HomeWorkHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkHistoryCell.m; sourceTree = "<group>"; };
 		37FD6DDB1BAEE01C00C83AB4 /* ChatMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessageModel.h; sourceTree = "<group>"; };
 		37FD6DDC1BAEE01C00C83AB4 /* ChatMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessageModel.m; sourceTree = "<group>"; };
 		37FD6DDD1BAEE01C00C83AB4 /* JSMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSMessagesViewController.h; sourceTree = "<group>"; };
@@ -1304,6 +1268,18 @@
 		8DCFD77A1D59C68D001EDC8A /* SSPieProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSPieProgressView.h; sourceTree = "<group>"; };
 		8DCFD77B1D59C68D001EDC8A /* SSPieProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSPieProgressView.m; sourceTree = "<group>"; };
 		8DFDDD811D93ADCC0050740B /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		8DFDDD901D93D5210050740B /* HomeWorkVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkVC.h; sourceTree = "<group>"; };
+		8DFDDD911D93D5210050740B /* HomeWorkVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkVC.m; sourceTree = "<group>"; };
+		8DFDDD941D93D5940050740B /* HomeWorkRecordListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkRecordListVC.h; sourceTree = "<group>"; };
+		8DFDDD951D93D5940050740B /* HomeWorkRecordListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkRecordListVC.m; sourceTree = "<group>"; };
+		8DFDDD971D93D5BB0050740B /* HomeWorkDraftVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkDraftVC.h; sourceTree = "<group>"; };
+		8DFDDD981D93D5BB0050740B /* HomeWorkDraftVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkDraftVC.m; sourceTree = "<group>"; };
+		8DFDDD9A1D93D5E80050740B /* HomeWorkCollectionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkCollectionVC.h; sourceTree = "<group>"; };
+		8DFDDD9B1D93D5E80050740B /* HomeWorkCollectionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkCollectionVC.m; sourceTree = "<group>"; };
+		8DFDDD9D1D93D7940050740B /* PublishHomeWorkVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishHomeWorkVC.h; sourceTree = "<group>"; };
+		8DFDDD9E1D93D7940050740B /* PublishHomeWorkVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishHomeWorkVC.m; sourceTree = "<group>"; };
+		8DFDDDA11D93F2850050740B /* HomeWorkEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkEntity.h; sourceTree = "<group>"; };
+		8DFDDDA21D93F2850050740B /* HomeWorkEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkEntity.m; sourceTree = "<group>"; };
 		BFB7BE1F02D8CB37989349C3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1494,35 +1470,6 @@
 				8D7555211D6F4C6D00A140EE /* ChatBottomNewMessageView.m */,
 			);
 			path = Input;
-			sourceTree = "<group>";
-		};
-		372C752E1C07FF8500A1D90B /* MyHomeworkList */ = {
-			isa = PBXGroup;
-			children = (
-				372C752F1C07FFA400A1D90B /* MyHomeworkList.h */,
-				372C75301C07FFA400A1D90B /* MyHomeworkList.m */,
-			);
-			path = MyHomeworkList;
-			sourceTree = "<group>";
-		};
-		372C75321C07FFD600A1D90B /* HomeWorkCollection */ = {
-			isa = PBXGroup;
-			children = (
-				372C75331C07FFF500A1D90B /* HomeWorkCollectionVC.h */,
-				372C75341C07FFF500A1D90B /* HomeWorkCollectionVC.m */,
-				372C75361C0802CC00A1D90B /* HomeWorkCollectionModel.h */,
-				372C75371C0802CC00A1D90B /* HomeWorkCollectionModel.m */,
-			);
-			path = HomeWorkCollection;
-			sourceTree = "<group>";
-		};
-		378DA1441C09956C00301C26 /* HomeWorkDetail */ = {
-			isa = PBXGroup;
-			children = (
-				378DA1451C09957C00301C26 /* HomeWorkDetailVC.h */,
-				378DA1461C09957C00301C26 /* HomeWorkDetailVC.m */,
-			);
-			path = HomeWorkDetail;
 			sourceTree = "<group>";
 		};
 		3793F50D1B7B285700501F77 /* MineVC */ = {
@@ -2276,26 +2223,6 @@
 			path = SVShare;
 			sourceTree = "<group>";
 		};
-		37D6EECE1BCBA96D000994A2 /* HomeWork */ = {
-			isa = PBXGroup;
-			children = (
-				37D6EECF1BCBA96D000994A2 /* HomeWorkVC.h */,
-				37D6EED01BCBA96D000994A2 /* HomeWorkVC.m */,
-				378436A91C1536E2009CBBA0 /* HomeWorkAudioView.h */,
-				378436AA1C1536E2009CBBA0 /* HomeWorkAudioView.m */,
-				378436AC1C153B31009CBBA0 /* CourseView.h */,
-				378436AD1C153B31009CBBA0 /* CourseView.m */,
-				378436AF1C153BD6009CBBA0 /* HomeWorkPhotoView.h */,
-				378436B01C153BD6009CBBA0 /* HomeWorkPhotoView.m */,
-				378DA1441C09956C00301C26 /* HomeWorkDetail */,
-				372C75321C07FFD600A1D90B /* HomeWorkCollection */,
-				372C752E1C07FF8500A1D90B /* MyHomeworkList */,
-				37FB1C601BE4C354004ECE2E /* HomeWorkHistory */,
-				37FB1C4D1BE3DE99004ECE2E /* PublishHomeWorkVC */,
-			);
-			path = HomeWork;
-			sourceTree = "<group>";
-		};
 		37D6EED11BCBA96D000994A2 /* MyAttendance */ = {
 			isa = PBXGroup;
 			children = (
@@ -2368,8 +2295,8 @@
 		37DEE4A71A57BDEA009A8771 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				8DFDDD8B1D93D4DD0050740B /* HomeWork */,
 				8DCFD7471D584BCF001EDC8A /* FileManager */,
-				37D6EECE1BCBA96D000994A2 /* HomeWork */,
 				37D6EED11BCBA96D000994A2 /* MyAttendance */,
 				37D6EEDC1BCBA96D000994A2 /* StudentAttendacen */,
 				3728A7111B9D376300310457 /* ChatVC */,
@@ -2641,32 +2568,6 @@
 				37F2070E1BDE015D006466F4 /* SurroundingVC.m */,
 			);
 			path = SurroundingVC;
-			sourceTree = "<group>";
-		};
-		37FB1C4D1BE3DE99004ECE2E /* PublishHomeWorkVC */ = {
-			isa = PBXGroup;
-			children = (
-				37FB1C4E1BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.h */,
-				37FB1C4F1BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.m */,
-				37FB1C571BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.h */,
-				37FB1C581BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m */,
-			);
-			path = PublishHomeWorkVC;
-			sourceTree = "<group>";
-		};
-		37FB1C601BE4C354004ECE2E /* HomeWorkHistory */ = {
-			isa = PBXGroup;
-			children = (
-				37FB1C611BE4C368004ECE2E /* HomeWorkHistoryVC.h */,
-				37FB1C621BE4C368004ECE2E /* HomeWorkHistoryVC.m */,
-				37ED9E0F1C3D1A3C00E9F8CA /* HomeworkItem.h */,
-				37ED9E101C3D1A3C00E9F8CA /* HomeworkItem.m */,
-				37FB1C641BE4C50D004ECE2E /* HomeWorkHistoryModel.h */,
-				37FB1C651BE4C50D004ECE2E /* HomeWorkHistoryModel.m */,
-				37FB1C671BE4C596004ECE2E /* HomeWorkHistoryCell.h */,
-				37FB1C681BE4C596004ECE2E /* HomeWorkHistoryCell.m */,
-			);
-			path = HomeWorkHistory;
 			sourceTree = "<group>";
 		};
 		37FB1C701BE74BD5004ECE2E /* Account */ = {
@@ -3310,6 +3211,49 @@
 			path = NHFileServer;
 			sourceTree = "<group>";
 		};
+		8DFDDD8B1D93D4DD0050740B /* HomeWork */ = {
+			isa = PBXGroup;
+			children = (
+				8DFDDDA01D93F25F0050740B /* HomeWorkModel */,
+				8DFDDD8F1D93D5210050740B /* HomeWorkVC */,
+				8DFDDD921D93D5210050740B /* PublishHomeWorkVC */,
+			);
+			path = HomeWork;
+			sourceTree = "<group>";
+		};
+		8DFDDD8F1D93D5210050740B /* HomeWorkVC */ = {
+			isa = PBXGroup;
+			children = (
+				8DFDDD901D93D5210050740B /* HomeWorkVC.h */,
+				8DFDDD911D93D5210050740B /* HomeWorkVC.m */,
+				8DFDDD941D93D5940050740B /* HomeWorkRecordListVC.h */,
+				8DFDDD951D93D5940050740B /* HomeWorkRecordListVC.m */,
+				8DFDDD971D93D5BB0050740B /* HomeWorkDraftVC.h */,
+				8DFDDD981D93D5BB0050740B /* HomeWorkDraftVC.m */,
+				8DFDDD9A1D93D5E80050740B /* HomeWorkCollectionVC.h */,
+				8DFDDD9B1D93D5E80050740B /* HomeWorkCollectionVC.m */,
+			);
+			path = HomeWorkVC;
+			sourceTree = "<group>";
+		};
+		8DFDDD921D93D5210050740B /* PublishHomeWorkVC */ = {
+			isa = PBXGroup;
+			children = (
+				8DFDDD9D1D93D7940050740B /* PublishHomeWorkVC.h */,
+				8DFDDD9E1D93D7940050740B /* PublishHomeWorkVC.m */,
+			);
+			path = PublishHomeWorkVC;
+			sourceTree = "<group>";
+		};
+		8DFDDDA01D93F25F0050740B /* HomeWorkModel */ = {
+			isa = PBXGroup;
+			children = (
+				8DFDDDA11D93F2850050740B /* HomeWorkEntity.h */,
+				8DFDDDA21D93F2850050740B /* HomeWorkEntity.m */,
+			);
+			path = HomeWorkModel;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3494,14 +3438,11 @@
 				8D3D45C71D5F7EEF005EA8EA /* ContactInfoHeaderCell.m in Sources */,
 				37CA18701AB70A2F00B49B55 /* AlbumGroupView.m in Sources */,
 				37F207161BE0BBFF006466F4 /* UITouchScrollView.m in Sources */,
-				378436AE1C153B31009CBBA0 /* CourseView.m in Sources */,
 				37B485011A65853C00C412D8 /* AuthCodeVC.m in Sources */,
 				37DEE4C11A57C19C009A8771 /* MessageVC.m in Sources */,
 				8DCFD6F41D4F3D97001EDC8A /* ChatContentReceiveGiftView.m in Sources */,
 				3707E6711C041EFB00944B8D /* MyGiftVC.m in Sources */,
 				8D867C8F1D2F97080020A21C /* DNBrowserCell.m in Sources */,
-				37D6EEED1BCBA96D000994A2 /* HomeWorkVC.m in Sources */,
-				37FB1C661BE4C50D004ECE2E /* HomeWorkHistoryModel.m in Sources */,
 				8DCFD6851D4B211F001EDC8A /* NotificationVideoView.m in Sources */,
 				8D867D461D3F7BF80020A21C /* NotificationSendChoiceView.m in Sources */,
 				3793FA6C1B7CFFF000501F77 /* AFSecurityPolicy.m in Sources */,
@@ -3538,7 +3479,6 @@
 				37C890271A8963BD008E44DB /* StatusManager.m in Sources */,
 				8DCFD7601D584C08001EDC8A /* NHFileServer.m in Sources */,
 				37CCE2561B8B0649007BFA4F /* ActionPopView.m in Sources */,
-				378436AB1C1536E2009CBBA0 /* HomeWorkAudioView.m in Sources */,
 				37FEA9651C46554500E7425B /* AccountInfoView.m in Sources */,
 				37EACA031B845B5F007BFBA1 /* PasswordConfirmVC.m in Sources */,
 				37FD6E351BB69AFE00C83AB4 /* RegisterVC.m in Sources */,
@@ -3567,20 +3507,16 @@
 				3728A73C1B9D376300310457 /* ReplyBox.m in Sources */,
 				37FD6E161BB0584400C83AB4 /* ChatVoiceButton.m in Sources */,
 				37D6EEF61BCBA96D000994A2 /* RefuseVC.m in Sources */,
-				372C75311C07FFA400A1D90B /* MyHomeworkList.m in Sources */,
 				8DCFD6731D488EED001EDC8A /* ActionFadeView.m in Sources */,
 				3793FAA61B7CFFF000501F77 /* UIColor+Addition.m in Sources */,
 				8DCFD6E81D4F3CB8001EDC8A /* ChatContentVideoView.m in Sources */,
 				3793FAF31B7CFFF000501F77 /* Reachability+.m in Sources */,
 				37E93FC71A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m in Sources */,
 				3793FA691B7CFFF000501F77 /* AFHTTPSessionManager.m in Sources */,
-				37FB1C591BE3DEF1004ECE2E /* PublishHomeWorkAudioVC.m in Sources */,
 				8DCFD6F11D4F3D35001EDC8A /* ChatContentFaceView.m in Sources */,
-				37ED9E111C3D1A3C00E9F8CA /* HomeworkItem.m in Sources */,
 				370F33D91A78795000FED3C2 /* PersonalSettingVC.m in Sources */,
 				3728A7371B9D376300310457 /* FunctionView.m in Sources */,
 				37DEE4D91A57C1D8009A8771 /* ClassAppCell.m in Sources */,
-				372C75381C0802CC00A1D90B /* HomeWorkCollectionModel.m in Sources */,
 				8DCFD7361D52523C001EDC8A /* ContactParentsView.m in Sources */,
 				37E93FC21A7E9CC600AD45A1 /* MJPhotoBrowser.m in Sources */,
 				8DCFD6821D4B2112001EDC8A /* NotificationPhotoView.m in Sources */,
@@ -3606,7 +3542,6 @@
 				3793FAE91B7CFFF000501F77 /* TNDataWrapper.m in Sources */,
 				8D867C8A1D2F97080020A21C /* UIView+DNImagePicker.m in Sources */,
 				3793FAF01B7CFFF000501F77 /* TNBaseWebViewController.m in Sources */,
-				37FB1C631BE4C368004ECE2E /* HomeWorkHistoryVC.m in Sources */,
 				8DCFD6C11D4C5D9E001EDC8A /* NotificationDetailPhotoView.m in Sources */,
 				37FD6E301BB4817900C83AB4 /* NewMessageCell.m in Sources */,
 				8D7555081D6DA89400A140EE /* PBPresentAnimatedTransitioningController.m in Sources */,
@@ -3617,7 +3552,6 @@
 				8D867BCA1D25042A0020A21C /* NHAudioTool+Helper.m in Sources */,
 				8DC0875C1D8E47C6008B57B2 /* UIWindow+LGAlertView.m in Sources */,
 				3793FA6E1B7CFFF000501F77 /* AFURLRequestSerialization.m in Sources */,
-				372C75351C07FFF500A1D90B /* HomeWorkCollectionVC.m in Sources */,
 				3793FAA31B7CFFF000501F77 /* NSString+JSONObject.m in Sources */,
 				37DEE4E01A57C1D8009A8771 /* GrowthTimelineCell.m in Sources */,
 				8DCFD67F1D4AFD32001EDC8A /* NotificationVoiceView.m in Sources */,
@@ -3731,13 +3665,13 @@
 				8DCFD6761D48A9EE001EDC8A /* MessageSegView.m in Sources */,
 				3793F5101B7B286700501F77 /* MineVC.m in Sources */,
 				3793FADF1B7CFFF000501F77 /* TNGetMoreCell.m in Sources */,
+				8DFDDD991D93D5BB0050740B /* HomeWorkDraftVC.m in Sources */,
 				8D7555091D6DA89400A140EE /* PBViewController.m in Sources */,
 				8D867C931D2F97080020A21C /* DNUnAuthorizedTipsView.m in Sources */,
 				37D6EEF81BCBA96D000994A2 /* StudentAttendanceHeaderView.m in Sources */,
 				8DCFD75E1D584C08001EDC8A /* NHFileDownloadSession.m in Sources */,
 				37D6EEF71BCBA96D000994A2 /* StudentAttendanceCell.m in Sources */,
 				8DC087561D8E47C6008B57B2 /* LGAlertView.m in Sources */,
-				37FB1C691BE4C596004ECE2E /* HomeWorkHistoryCell.m in Sources */,
 				37FD6DEC1BAEE01C00C83AB4 /* UUMessageContentButton.m in Sources */,
 				3793FABD1B7CFFF000501F77 /* MLPlayVoiceButton.m in Sources */,
 				8DB8FAEA1D656E6D006B44B2 /* GiftItem.m in Sources */,
@@ -3746,6 +3680,7 @@
 				8D867C831D2F97080020A21C /* DNAsset.m in Sources */,
 				8D867BCB1D25042A0020A21C /* NHAudioTool.m in Sources */,
 				37DEE4E21A57C1D8009A8771 /* GrowthTimelineVC.m in Sources */,
+				8DFDDD961D93D5940050740B /* HomeWorkRecordListVC.m in Sources */,
 				3793FA711B7CFFF000501F77 /* HttpRequestEngine.m in Sources */,
 				37DEE4DB1A57C1D8009A8771 /* ClassAppVC.m in Sources */,
 				8DCFD6FA1D4F4F2A001EDC8A /* MessageCell.m in Sources */,
@@ -3759,6 +3694,7 @@
 				3793FADC1B7CFFF000501F77 /* EGORefreshTableHeaderView.m in Sources */,
 				8DCFD6CF1D4DE29D001EDC8A /* NotificationDraftVC.m in Sources */,
 				3793FA931B7CFFF000501F77 /* POIListModel.m in Sources */,
+				8DFDDD9C1D93D5E80050740B /* HomeWorkCollectionVC.m in Sources */,
 				8DCFD75C1D584C08001EDC8A /* NHFileCache.m in Sources */,
 				3793FADD1B7CFFF000501F77 /* LoadingView.m in Sources */,
 				3793FAA01B7CFFF000501F77 /* NSObject+Associative.m in Sources */,
@@ -3797,8 +3733,6 @@
 				3793FAA71B7CFFF000501F77 /* UIImage+Utility.m in Sources */,
 				37D6EEEE1BCBA96D000994A2 /* AttendanceDatePickerView.m in Sources */,
 				3793FAA21B7CFFF000501F77 /* NSObject+UnifiedPerformSelector.m in Sources */,
-				378436B11C153BD6009CBBA0 /* HomeWorkPhotoView.m in Sources */,
-				37FB1C501BE3DEBA004ECE2E /* PublishHomeWorkBaseVC.m in Sources */,
 				8DCFD6E21D4F3050001EDC8A /* ChatContentImageView.m in Sources */,
 				8D75552B1D7162FC00A140EE /* NotificationSimpleAudioRecordView.m in Sources */,
 				8DCFD6F71D4F410D001EDC8A /* ChatBubbleContentView.m in Sources */,
@@ -3807,6 +3741,7 @@
 				3793FAEC1B7CFFF000501F77 /* TNBaseCollectionViewController.m in Sources */,
 				8D75555A1D77F8BD00A140EE /* ZYBannerCell.m in Sources */,
 				8D867BD21D2506EF0020A21C /* NSString+UUID.m in Sources */,
+				8DFDDDA31D93F2850050740B /* HomeWorkEntity.m in Sources */,
 				3728A7521B9F524000310457 /* GrowthTimelineClassChangeVC.m in Sources */,
 				8DCFD6E51D4F3092001EDC8A /* ChatContentAudioView.m in Sources */,
 				8DCFD7461D57857C001EDC8A /* NotificationDraftManager.m in Sources */,
@@ -3829,7 +3764,6 @@
 				3793FA9A1B7CFFF000501F77 /* UIImage+AspectFit.m in Sources */,
 				8DCFD6651D43CCA6001EDC8A /* YYInfiniteScrollView.m in Sources */,
 				3736CEB51C508D31004DB2D2 /* InterestDetailVC.m in Sources */,
-				378DA1471C09957C00301C26 /* HomeWorkDetailVC.m in Sources */,
 				8D867C5A1D2F82120020A21C /* UIView+Animations.m in Sources */,
 				37FD6E311BB4817900C83AB4 /* NewMessageModel.m in Sources */,
 				3728A7361B9D376300310457 /* FaceSelectView.m in Sources */,
@@ -3838,7 +3772,9 @@
 				3793FAF61B7CFFF000501F77 /* Utility.m in Sources */,
 				371C6DAD1A7015AF00FA4AEC /* PublishBaseVC.m in Sources */,
 				8D867D481D3F7BF80020A21C /* NotificationTargetContentView.m in Sources */,
+				8DFDDD9F1D93D7940050740B /* PublishHomeWorkVC.m in Sources */,
 				3793FA861B7CFFF000501F77 /* RIButtonItem.m in Sources */,
+				8DFDDD931D93D5210050740B /* HomeWorkVC.m in Sources */,
 				8DCFD72C1D51E54E001EDC8A /* ContactTeacherView.m in Sources */,
 				37D6EE361BC90C62000994A2 /* CheckInstalledMapAPP.m in Sources */,
 				37E93F9A1A7DC48200AD45A1 /* TNAlertView.m in Sources */,
