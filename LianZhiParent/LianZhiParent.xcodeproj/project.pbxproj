@@ -216,8 +216,6 @@
 		37C356131A3FD67300B948E6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37C356121A3FD67300B948E6 /* Images.xcassets */; };
 		37C53AA31B14D5FF00C3ED69 /* RequestVacationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53A9F1B14D5FF00C3ED69 /* RequestVacationVC.m */; };
 		37C53AA41B14D5FF00C3ED69 /* VacationDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53AA21B14D5FF00C3ED69 /* VacationDatePickerView.m */; };
-		37C53AA81B14E3BF00C3ED69 /* VacationHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53AA71B14E3BF00C3ED69 /* VacationHistoryVC.m */; };
-		37C53AAB1B14E3D400C3ED69 /* VacationHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53AAA1B14E3D400C3ED69 /* VacationHistoryCell.m */; };
 		37C53AAE1B14E3EF00C3ED69 /* VacationHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53AAD1B14E3EF00C3ED69 /* VacationHistoryModel.m */; };
 		37C53AB31B1588EB00C3ED69 /* PractiseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53AB21B1588EB00C3ED69 /* PractiseModel.m */; };
 		37C53AB61B15891A00C3ED69 /* PractiseItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53AB51B15891A00C3ED69 /* PractiseItemCell.m */; };
@@ -445,6 +443,7 @@
 		8DFDDDA61D94D4810050740B /* NSDate+WQCalendarLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDA51D94D4810050740B /* NSDate+WQCalendarLogic.m */; };
 		8DFDDDA91D9507420050740B /* PhoneInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDA81D9507420050740B /* PhoneInputVC.m */; };
 		8DFDDDAC1D950D3E0050740B /* AuthCodeInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDAB1D950D3E0050740B /* AuthCodeInputVC.m */; };
+		8DFDDDB51D9540660050740B /* AttendanceDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDB41D9540660050740B /* AttendanceDetailVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -850,10 +849,6 @@
 		37C53A9F1B14D5FF00C3ED69 /* RequestVacationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestVacationVC.m; sourceTree = "<group>"; };
 		37C53AA11B14D5FF00C3ED69 /* VacationDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VacationDatePickerView.h; sourceTree = "<group>"; };
 		37C53AA21B14D5FF00C3ED69 /* VacationDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VacationDatePickerView.m; sourceTree = "<group>"; };
-		37C53AA61B14E3BF00C3ED69 /* VacationHistoryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VacationHistoryVC.h; sourceTree = "<group>"; };
-		37C53AA71B14E3BF00C3ED69 /* VacationHistoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VacationHistoryVC.m; sourceTree = "<group>"; };
-		37C53AA91B14E3D400C3ED69 /* VacationHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VacationHistoryCell.h; sourceTree = "<group>"; };
-		37C53AAA1B14E3D400C3ED69 /* VacationHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VacationHistoryCell.m; sourceTree = "<group>"; };
 		37C53AAC1B14E3EF00C3ED69 /* VacationHistoryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VacationHistoryModel.h; sourceTree = "<group>"; };
 		37C53AAD1B14E3EF00C3ED69 /* VacationHistoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VacationHistoryModel.m; sourceTree = "<group>"; };
 		37C53AB11B1588EB00C3ED69 /* PractiseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PractiseModel.h; sourceTree = "<group>"; };
@@ -1271,6 +1266,8 @@
 		8DFDDDA81D9507420050740B /* PhoneInputVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneInputVC.m; sourceTree = "<group>"; };
 		8DFDDDAA1D950D3E0050740B /* AuthCodeInputVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthCodeInputVC.h; sourceTree = "<group>"; };
 		8DFDDDAB1D950D3E0050740B /* AuthCodeInputVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthCodeInputVC.m; sourceTree = "<group>"; };
+		8DFDDDB31D9540660050740B /* AttendanceDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceDetailVC.h; sourceTree = "<group>"; };
+		8DFDDDB41D9540660050740B /* AttendanceDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceDetailVC.m; sourceTree = "<group>"; };
 		F48620718382C8CAB78BD7B3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2450,12 +2447,10 @@
 			isa = PBXGroup;
 			children = (
 				37BC707E1C116EC900F8B79B /* CalendarView */,
-				37C53AA61B14E3BF00C3ED69 /* VacationHistoryVC.h */,
-				37C53AA71B14E3BF00C3ED69 /* VacationHistoryVC.m */,
-				37C53AA91B14E3D400C3ED69 /* VacationHistoryCell.h */,
-				37C53AAA1B14E3D400C3ED69 /* VacationHistoryCell.m */,
 				37C53AAC1B14E3EF00C3ED69 /* VacationHistoryModel.h */,
 				37C53AAD1B14E3EF00C3ED69 /* VacationHistoryModel.m */,
+				8DFDDDB31D9540660050740B /* AttendanceDetailVC.h */,
+				8DFDDDB41D9540660050740B /* AttendanceDetailVC.m */,
 			);
 			path = VacationHistory;
 			sourceTree = "<group>";
@@ -3418,6 +3413,7 @@
 				3793F80D1B7CFFD900501F77 /* UIImageView+WebCache.m in Sources */,
 				3793F7DE1B7CFFD900501F77 /* UIView+Frame.m in Sources */,
 				8D75554F1D77F57E00A140EE /* ZYBannerFooter.m in Sources */,
+				8DFDDDB51D9540660050740B /* AttendanceDetailVC.m in Sources */,
 				8D3D45B91D5DDB09005EA8EA /* NotificationDetailActionView.m in Sources */,
 				8DCFD7DC1D5AF7D3001EDC8A /* MessageSegView.m in Sources */,
 				8D3D45B81D5DDB09005EA8EA /* NotificationDetailVoiceView.m in Sources */,
@@ -3585,7 +3581,6 @@
 				3793F75C1B7CFFD900501F77 /* MBProgressHUD.m in Sources */,
 				37CFA50E1A4990EC0061D7B8 /* MessageVC.m in Sources */,
 				3793F75D1B7CFFD900501F77 /* OpenUDID.m in Sources */,
-				37C53AAB1B14E3D400C3ED69 /* VacationHistoryCell.m in Sources */,
 				37C88FF11A889A05008E44DB /* PersonalSetting.m in Sources */,
 				3793F7A31B7CFFD900501F77 /* AFURLResponseSerialization.m in Sources */,
 				8DFDDD721D92754C0050740B /* GrowthTimelineVCNew.m in Sources */,
@@ -3624,7 +3619,6 @@
 				37D6EE291BC908B0000994A2 /* CheckInstalledMapAPP.m in Sources */,
 				8D7554E41D6969E300A140EE /* NSURL+DNIMagePickerUrlEqual.m in Sources */,
 				3793F7C31B7CFFD900501F77 /* LZTextField.m in Sources */,
-				37C53AA81B14E3BF00C3ED69 /* VacationHistoryVC.m in Sources */,
 				3793F8291B7CFFD900501F77 /* SFHFKeychainUtils.m in Sources */,
 				37F207081BDDD596006466F4 /* HomeWorkVC.m in Sources */,
 				8D7554DF1D6969E300A140EE /* DNImageFlowViewController.m in Sources */,

@@ -77,6 +77,9 @@
                     [self.progressView setProgress:0.f animated:NO];
                 });
             }else {
+                if ([change[@"new"] floatValue] < [change[@"old"] floatValue]) {
+                    return;
+                }
                 self.progressView.hidden = NO;
                 [self.progressView setProgress:newprogress animated:YES];
             }

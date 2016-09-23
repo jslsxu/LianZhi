@@ -35,7 +35,6 @@
     [super viewDidLoad];
     self.title = @"申请账号";
     
-    NSArray *imageArray = @[@"RegisterName",@"RegisterPhone",@"RegisterSchool",@"RegisterArea"];
     NSArray *placeholderArray = @[@"您的姓名",@"手机号",@"学校名称",@"所在区域"];
     NSInteger itemHeight = 40;
     NSInteger hMargin = 10;
@@ -43,21 +42,18 @@
     for (NSInteger i = 0; i < 4; i++)
     {
         UIView *borderView = [[UIView alloc] initWithFrame:CGRectMake(hMargin, spaceYStart, self.view.width - hMargin * 2, itemHeight)];
-        [borderView setBackgroundColor:[UIColor whiteColor]];
-        [borderView.layer setCornerRadius:5];
-        [borderView.layer setMasksToBounds:YES];
         [self.view addSubview:borderView];
         
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageArray[i]]];
-        [imageView setOrigin:CGPointMake(8, (borderView.height - imageView.height) / 2)];
-        [borderView addSubview:imageView];
-        
-        UITextField* textField = [[UITextField alloc] initWithFrame:CGRectMake(imageView.right + 8, 0, borderView.width - 10 - (imageView.right + 8), borderView.height)];
+        UITextField* textField = [[UITextField alloc] initWithFrame:CGRectMake(10, 0, borderView.width - 10 * 2, borderView.height - kLineHeight)];
         [textField setDelegate:self];
         [textField setReturnKeyType:UIReturnKeyDone];
         [textField setPlaceholder:placeholderArray[i]];
         [textField setFont:[UIFont systemFontOfSize:16]];
         [borderView addSubview:textField];
+        
+        UIView* sepLine = [[UIView alloc] initWithFrame:CGRectMake(10, borderView.height - kLineHeight, borderView.width - 10 * 2, kLineHeight)];
+        [sepLine setBackgroundColor:kSepLineColor];
+        [borderView addSubview:sepLine];
         
         if(i == 3)
         {

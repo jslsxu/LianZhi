@@ -61,15 +61,17 @@
     [endBG addSubview:_endLabel];
 
     UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [sendButton setFrame:CGRectMake(kMargin , self.view.height - 15 - 36 - 64, self.view.width - kMargin * 2 , 36)];
-    [sendButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [sendButton setFrame:CGRectMake(kMargin , self.view.height - 10 - 40, self.view.width - kMargin * 2 , 40)];
+    [sendButton setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
+    [sendButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
     [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [sendButton setTitle:@"给班主任发送" forState:UIControlStateNormal];
     [sendButton addTarget:self action:@selector(onSend) forControlEvents:UIControlEventTouchUpInside];
-    [sendButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"5ed115"] size:sendButton.size cornerRadius:18] forState:UIControlStateNormal];
+    [sendButton setBackgroundImage:[UIImage imageWithColor:kCommonParentTintColor size:sendButton.size cornerRadius:5] forState:UIControlStateNormal];
     [self.view addSubview:sendButton];
     
-    UIView* contentView = [[UIView alloc] initWithFrame:CGRectMake(10, endBG.bottom + 15, self.view.width - 10 * 2, sendButton.y - 20 - (endBG.bottom + 20))];
+    UIView* contentView = [[UIView alloc] initWithFrame:CGRectMake(10, endBG.bottom + 15, self.view.width - 10 * 2, sendButton.y - 20 - (endBG.bottom + 15))];
+    [contentView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
     [contentView setBackgroundColor:[UIColor whiteColor]];
     [contentView.layer setCornerRadius:10];
     [contentView.layer setMasksToBounds:YES];
