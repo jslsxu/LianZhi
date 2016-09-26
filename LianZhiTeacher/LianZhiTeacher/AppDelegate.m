@@ -17,6 +17,7 @@
 #include "BaseInfoModifyVC.h"
 #import "RelatedInfoVC.h"
 #import <Bugtags/Bugtags.h>
+#import <UserNotifications/UserNotifications.h>
 static SystemSoundID shake_sound_male_id = 0;
 @interface AppDelegate ()<WelComeViewDelegate>
 @property (nonatomic, strong)TNBaseNavigationController *loginNav;
@@ -265,12 +266,22 @@ static SystemSoundID shake_sound_male_id = 0;
 - (void)registerRemoteNotification
 {
     UIApplication *application = [UIApplication sharedApplication];
-    if ([application respondsToSelector:@selector(registerForRemoteNotifications)]) {
-        UIUserNotificationType types = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
-        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
+    if(iOS8Later){
+        if(IOS10Later){
+            UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+            [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+                if (!error) {
+                    NSLog(@"request authorization succeeded!");
+                }
+            }];
+        }
+        else{
+            UIUserNotificationType types = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
+            [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
+        }
         [application registerForRemoteNotifications];
     }
-    else {
+    else{
         [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge
                                                          | UIRemoteNotificationTypeSound
                                                          | UIRemoteNotificationTypeAlert)];

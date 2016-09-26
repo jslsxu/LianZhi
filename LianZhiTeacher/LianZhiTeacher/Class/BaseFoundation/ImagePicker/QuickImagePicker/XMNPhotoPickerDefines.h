@@ -15,10 +15,10 @@
 #define kXMNButtonTitleColorNormal ([UIColor colorWithRed:(83/255.0) green:(179/255.0) blue:(17/255.0) alpha:1.0])
 #define kXMNButtonTitleColorDisable  ([UIColor colorWithRed:(83/255.0) green:(179/255.0) blue:(17/255.0) alpha:0.5])
 
-#define iOS7Later ([UIDevice currentDevice].systemVersion.floatValue >= 7.0f)
-#define iOS8Later ([UIDevice currentDevice].systemVersion.floatValue >= 8.0f)
-#define iOS9Later ([UIDevice currentDevice].systemVersion.floatValue >= 9.0f)
-
+#define iOS7Later                       ([UIDevice currentDevice].systemVersion.floatValue >= 7.0f)
+#define iOS8Later                       ([UIDevice currentDevice].systemVersion.floatValue >= 8.0f)
+#define iOS9Later                       ([UIDevice currentDevice].systemVersion.floatValue >= 9.0f)
+#define IOS10Later                      ([UIDevice currentDevice].systemVersion.floatValue >= 10.0f)
 /** collection中图片的间隔 */
 #define kXMNMargin 4
 

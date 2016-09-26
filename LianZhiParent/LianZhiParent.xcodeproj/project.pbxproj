@@ -443,6 +443,7 @@
 		8DCFD7D81D5ADD94001EDC8A /* NJKWebViewProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7D51D5ADD94001EDC8A /* NJKWebViewProgress.m */; };
 		8DCFD7D91D5ADD94001EDC8A /* NJKWebViewProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7D71D5ADD94001EDC8A /* NJKWebViewProgressView.m */; };
 		8DCFD7DC1D5AF7D3001EDC8A /* MessageSegView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7DB1D5AF7D3001EDC8A /* MessageSegView.m */; };
+		8DFDDDBC1D9922030050740B /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DFDDDBB1D9922030050740B /* UserNotifications.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1264,6 +1265,8 @@
 		8DCFD7D71D5ADD94001EDC8A /* NJKWebViewProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NJKWebViewProgressView.m; sourceTree = "<group>"; };
 		8DCFD7DA1D5AF7D3001EDC8A /* MessageSegView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageSegView.h; sourceTree = "<group>"; };
 		8DCFD7DB1D5AF7D3001EDC8A /* MessageSegView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageSegView.m; sourceTree = "<group>"; };
+		8DFDDDB71D991A810050740B /* LianZhiParent.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LianZhiParent.entitlements; sourceTree = "<group>"; };
+		8DFDDDBB1D9922030050740B /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		F48620718382C8CAB78BD7B3 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1272,6 +1275,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8DFDDDBC1D9922030050740B /* UserNotifications.framework in Frameworks */,
 				8D7554F21D696A5E00A140EE /* AssetsLibrary.framework in Frameworks */,
 				37C6B3FD1BF2E5850001D54F /* AddressBook.framework in Frameworks */,
 				37C6B3FB1BF2E5710001D54F /* AdSupport.framework in Frameworks */,
@@ -2385,6 +2389,7 @@
 		37C356041A3FD67300B948E6 /* LianZhiParent */ = {
 			isa = PBXGroup;
 			children = (
+				8DFDDDB71D991A810050740B /* LianZhiParent.entitlements */,
 				37C356821A3FE6D600B948E6 /* Class */,
 				37C356831A3FE6D600B948E6 /* Resource */,
 				37C356091A3FD67300B948E6 /* AppDelegate.h */,
@@ -2825,6 +2830,7 @@
 		3A73EDFDF9323F9388DEE9FE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8DFDDDBB1D9922030050740B /* UserNotifications.framework */,
 				8D7554F11D696A5E00A140EE /* AssetsLibrary.framework */,
 				63DC0CC46F403FA2D5BECB48 /* libPods.a */,
 			);
@@ -3204,6 +3210,11 @@
 					37C356011A3FD67300B948E6 = {
 						CreatedOnToolsVersion = 6.1;
 						DevelopmentTeam = 429ETK6TQL;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -3794,7 +3805,8 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: wei xin (JRFF54BK3W)";
+				CODE_SIGN_ENTITLEMENTS = LianZhiParent/LianZhiParent.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3822,8 +3834,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6a73cb8f-b575-40dc-b48e-ec03e6e7353f";
-				PROVISIONING_PROFILE_SPECIFIER = LianZhiParentDistribution;
+				PROVISIONING_PROFILE = "9dc18589-42a5-4cd0-973c-86f82a024579";
+				PROVISIONING_PROFILE_SPECIFIER = ParentDevelopment;
 			};
 			name = Debug;
 		};
@@ -3836,7 +3848,8 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: wei xin (JRFF54BK3W)";
+				CODE_SIGN_ENTITLEMENTS = LianZhiParent/LianZhiParent.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: wei xin (JRFF54BK3W)";
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
@@ -3865,8 +3878,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6a73cb8f-b575-40dc-b48e-ec03e6e7353f";
-				PROVISIONING_PROFILE_SPECIFIER = LianZhiParentDistribution;
+				PROVISIONING_PROFILE = "9dc18589-42a5-4cd0-973c-86f82a024579";
+				PROVISIONING_PROFILE_SPECIFIER = ParentDevelopment;
 			};
 			name = Release;
 		};
