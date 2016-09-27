@@ -15,6 +15,7 @@
 #import "BaseInfoModifyVC.h"
 #import <Bugtags/Bugtags.h>
 #import <UserNotifications/UserNotifications.h>
+#import "UMMobClick/MobClick.h"
 static SystemSoundID shake_sound_male_id = 0;
 
 #define kBaseInfoModifyKey                  @"BaseInfoModifyKey"
@@ -86,6 +87,7 @@ static SystemSoundID shake_sound_male_id = 0;
     [[SVShareManager sharedInstance] initialize];
     [self setupCommonHandler];
     [self registerThirdParty];
+    [self registerUmeng];
     [self registerRemoteNotification];
     [self registerSound];
     
@@ -415,6 +417,13 @@ static SystemSoundID shake_sound_male_id = 0;
     return NO;
 }
 
+- (void)registerUmeng{
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [MobClick setAppVersion:version];
+    UMConfigInstance.appKey = kUmentAppKey;
+    UMConfigInstance.channelId = @"App Store";
+    [MobClick startWithConfigure:UMConfigInstance];
+}
 
 #pragma mark - Reachability
 - (void)startReachability

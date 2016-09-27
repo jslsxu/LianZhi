@@ -59,4 +59,6 @@
 #define kTreeHouseShareUrl                  @"http://m.5tree.cn/share/parent/index.html"  //正式环境
 
 #define kBugtagsKey                         @"18842ccaef5c44136335788e1c0de1b3"
+
+#define kUmentAppKey                        @"57e9f56c67e58e2d8e001fc3"
 #endif

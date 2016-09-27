@@ -18,6 +18,7 @@
 #import "RelatedInfoVC.h"
 #import <Bugtags/Bugtags.h>
 #import <UserNotifications/UserNotifications.h>
+#import "UMMobClick/MobClick.h"
 static SystemSoundID shake_sound_male_id = 0;
 @interface AppDelegate ()<WelComeViewDelegate>
 @property (nonatomic, strong)TNBaseNavigationController *loginNav;
@@ -62,6 +63,7 @@ static SystemSoundID shake_sound_male_id = 0;
     [Bugtags startWithAppKey:kBugtagsKey invocationEvent:[self isInhouse] ?  BTGInvocationEventBubble : BTGInvocationEventNone];
     [[SVShareManager sharedInstance] initialize];
     [[TaskUploadManager sharedInstance] start];
+    [self registerUmeng];
     [MAMapServices sharedServices].apiKey = [self curAutoNaviKey];
     [self setupCommonHandler];
     [self registerSound];           //注册声音
@@ -403,6 +405,14 @@ static SystemSoundID shake_sound_male_id = 0;
         return YES;
     }
     return NO;
+}
+
+- (void)registerUmeng{
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [MobClick setAppVersion:version];
+    UMConfigInstance.appKey = kUmentAppKey;
+    UMConfigInstance.channelId = @"App Store";
+    [MobClick startWithConfigure:UMConfigInstance];
 }
 
 #pragma mark - Reachability
