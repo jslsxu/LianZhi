@@ -10,8 +10,8 @@
 
 @interface HomeWorkEntity : TNBaseObject
 @property(nonatomic, copy)NSString*             clientID;
-@property(nonatomic, strong)NSMutableArray*     classArray;
-@property(nonatomic, strong)NSMutableArray*     groupArray;
+@property(nonatomic, copy)NSString*             course;
+@property(nonatomic, strong)NSArray*            targets;
 @property(nonatomic, copy)NSString*             words;
 @property(nonatomic, assign)BOOL                openHomeworkCommit;
 @property(nonatomic, assign)NSInteger           createTime;
@@ -23,8 +23,7 @@
 //+ (HomeWorkEntity *)sendEntityWithNotification:(NotificationItem *)notification;
 - (void)updateClientID;
 - (NSInteger)maxCommentWordsNum;
-- (NSMutableArray *)targets;
-- (void)removeTarget:(UserInfo *)userInfo;
+- (void)removeTarget:(ClassInfo *)classInfo;
 - (BOOL)hasVideo;
 - (BOOL)hasImage;
 - (BOOL)hasAudio;

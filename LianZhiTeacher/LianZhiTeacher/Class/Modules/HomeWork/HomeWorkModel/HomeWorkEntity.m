@@ -14,14 +14,13 @@
 @implementation HomeWorkEntity
 
 + (NSArray<NSString *> *)modelPropertyBlacklist{
-    return @[@"operation", @"uploadProgress", @"targets"];
+    return @[@"operation", @"uploadProgress"];
 }
 - (instancetype)init{
     self = [super init];
     if(self){
         self.openHomeworkCommit = YES;
-        self.classArray = [NSMutableArray array];
-        self.groupArray = [NSMutableArray array];
+        self.targets = [NSMutableArray array];
         self.voiceArray = [NSMutableArray array];
         self.imageArray = [NSMutableArray array];
         self.videoArray = [NSMutableArray array];
@@ -45,6 +44,16 @@
     }
 }
 
+- (void)removeTarget:(ClassInfo *)classInfo{
+    NSMutableArray *tmpTargetArray = [NSMutableArray array];
+    for (ClassInfo *classItem in self.targets) {
+        if(![classInfo.classID isEqualToString:classItem.classID]){
+            [tmpTargetArray addObject:classItem];
+        }
+    }
+    [self setTargets:tmpTargetArray];
+}
+
 - (BOOL)hasVideo{
     return self.videoArray.count > 0;
 }
@@ -57,52 +66,6 @@
     return self.voiceArray.count > 0;
 }
 
-- (NSMutableArray *)targets{
-    NSMutableArray *targetArray = [NSMutableArray array];
-    for (ClassInfo *classInfo in self.classArray) {
-        for (StudentInfo *studentInfo in classInfo.students) {
-            if(studentInfo.selected && ![self targets:targetArray contains:studentInfo.uid]){
-                [targetArray addObject:studentInfo];
-            }
-        }
-    }
-    for (TeacherGroup *teacherGroup in self.groupArray) {
-        for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
-            if(teacherInfo.selected && ![self targets:targetArray contains:teacherInfo.uid]){
-                [targetArray addObject:teacherInfo];
-            }
-        }
-    }
-    if(targetArray.count)
-        return targetArray;
-    return nil;
-}
-
-- (BOOL)targets:(NSArray *)targets contains:(NSString *)uid{
-    for (UserInfo *userInfo in targets) {
-        if([userInfo.uid isEqualToString:uid]){
-            return YES;
-        }
-    }
-    return NO;
-}
-
-- (void)removeTarget:(UserInfo *)userInfo{
-    for (ClassInfo *classInfo in self.classArray) {
-        for (StudentInfo *studentInfo in classInfo.students) {
-            if([studentInfo.uid isEqualToString:userInfo.uid]){
-                studentInfo.selected = NO;
-            }
-        }
-    }
-    for (TeacherGroup *teacherGroup in self.groupArray) {
-        for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
-            if([teacherInfo.uid isEqualToString:userInfo.uid]){
-                teacherInfo.selected = NO;
-            }
-        }
-    }
-}
 
 - (void)sendWithProgress:(void (^)(CGFloat))progress success:(void (^)(NotificationItem *))success fail:(void (^)())fail{
     

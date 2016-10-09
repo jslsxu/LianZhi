@@ -20,7 +20,6 @@
         self.maxWordsNum = 150;
         _commentTextView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, self.width - 10 * 2, kMinHeight - kNumLabelHeight)];
         [_commentTextView setFont:[UIFont systemFontOfSize:15]];
-        [_commentTextView setPlaceholder:@"请输入正文内容"];
         [_commentTextView setDelegate:self];
         [_commentTextView setReturnKeyType:UIReturnKeyDone];
         [_commentTextView setMinHeight:kMinHeight - kNumLabelHeight - 10];
@@ -42,6 +41,11 @@
         [self addSubview:sepLine];
     }
     return self;
+}
+
+- (void)setPlaceHolder:(NSString *)placeHolder{
+    _placeHolder = [placeHolder copy];
+    [_commentTextView setPlaceholder:_placeHolder];
 }
 
 - (void)setMaxWordsNum:(NSInteger)maxWordsNum{

@@ -8,7 +8,7 @@
 
 #import "PublishHomeWorkVC.h"
 #import "DNImagePickerController.h"
-#import "NotificationTargetContentView.h"
+#import "HomeworkClassContentView.h"
 #import "NotificationSendChoiceView.h"
 #import "NotificationCommentView.h"
 #import "NotificationInputView.h"
@@ -16,7 +16,9 @@
 #import "NotificationPhotoView.h"
 #import "NotificationVideoView.h"
 #import "NotificationMemberSelectVC.h"
-
+#import "HomeworkCourseView.h"
+#import "CourseSelectVC.h"
+#import "ClassSelectVC.h"
 #define kHomeWorkMaxPhotoNum                9
 #define kHomeWorkMaxVideoNum                1
 @interface PublishHomeWorkVC ()<NotificationInputDelegate,
@@ -27,7 +29,8 @@ UINavigationControllerDelegate,
 DNImagePickerControllerDelegate>
 @property (nonatomic, strong)HomeWorkEntity*                 homeWorkEntity;
 @property (nonatomic, strong)HomeWorkEntity*                compareEntity;
-@property (nonatomic, strong)NotificationTargetContentView*  targetContentView;
+@property (nonatomic, strong)HomeworkCourseView*            courseView;
+@property (nonatomic, strong)HomeworkClassContentView*      targetContentView;
 @property (nonatomic, strong)NotificationSendChoiceView*     smsChoiceView;
 @property (nonatomic, strong)NotificationCommentView*        commentView;
 @property (nonatomic, strong)NotificationVoiceView*          voiceView;
@@ -143,12 +146,14 @@ DNImagePickerControllerDelegate>
 }
 
 - (void)setupScrollView{
+    [_scrollView addSubview:self.courseView];
     [_scrollView addSubview:self.targetContentView];
     [_scrollView addSubview:self.smsChoiceView];
     [_scrollView addSubview:self.commentView];
     [_scrollView addSubview:self.voiceView];
     [_scrollView addSubview:self.photoView];
     [_scrollView addSubview:self.videoView];
+    [self.courseView setCourse:self.homeWorkEntity.course];
     [self.targetContentView setTargets:self.homeWorkEntity.targets];
     [self.commentView setContent:self.homeWorkEntity.words];
     [self.smsChoiceView setIsOn:self.homeWorkEntity.openHomeworkCommit];
@@ -159,6 +164,7 @@ DNImagePickerControllerDelegate>
 }
 
 - (void)adjustPosition{
+    [self.targetContentView setTop:self.courseView.bottom];
     [self.smsChoiceView setTop:self.targetContentView.bottom];
     [self.commentView setTop:self.smsChoiceView.bottom];
     [self.voiceView setTop:self.commentView.bottom];
@@ -167,17 +173,33 @@ DNImagePickerControllerDelegate>
     [_scrollView setContentSize:CGSizeMake(_scrollView.width, self.videoView.bottom)];
 }
 
-- (NotificationTargetContentView *)targetContentView{
+- (HomeworkCourseView *)courseView{
+    if(!_courseView){
+        __weak typeof(self) wself = self;
+        _courseView = [[HomeworkCourseView alloc] initWithFrame:CGRectMake(0, 0, _scrollView.width, 54)];
+        [_courseView setAddCallback:^{
+            CourseSelectVC *courseSelectVC = [[CourseSelectVC alloc] init];
+            [courseSelectVC setCourse:wself.homeWorkEntity.course];
+            [courseSelectVC setCourseSelected:^(NSString *course) {
+                [wself setCourse:course];
+            }];
+            [wself.navigationController pushViewController:courseSelectVC animated:YES];
+        }];
+    }
+    return _courseView;
+}
+
+- (HomeworkClassContentView *)targetContentView{
     if(_targetContentView == nil){
         @weakify(self);
-        _targetContentView = [[NotificationTargetContentView alloc] initWithFrame:CGRectMake(0, 0, _scrollView.width, 0)];
+        _targetContentView = [[HomeworkClassContentView alloc] initWithFrame:CGRectMake(0, 0, _scrollView.width, 0)];
         [_targetContentView setAddBlk:^{
             @strongify(self)
             [self onAddTarget];
         }];
-        [_targetContentView setDeleteDataCallback:^(id userInfo) {
+        [_targetContentView setDeleteDataCallback:^(id classInfo) {
             @strongify(self)
-            [self deleteUserInfo:userInfo];
+            [self deleteClassInfo:classInfo];
         }];
         
     }
@@ -201,6 +223,7 @@ DNImagePickerControllerDelegate>
     if(_commentView == nil){
         @weakify(self)
         _commentView = [[NotificationCommentView alloc] initWithFrame:CGRectMake(0, _smsChoiceView.bottom, _scrollView.width, 135)];
+        [_commentView setPlaceHolder:@"输入你要布置的作业内容:"];
         [_commentView setMaxWordsNum:[self.homeWorkEntity maxCommentWordsNum]];
         [_commentView setContent:self.homeWorkEntity.words];
         [_commentView setTextViewWillChangeHeight:^(CGFloat height) {
@@ -253,54 +276,19 @@ DNImagePickerControllerDelegate>
 
 - (void)onAddTarget{
     [self stopPlayAudio];
-    NotificationMemberSelectVC *targetSelectVC = [[NotificationMemberSelectVC alloc] initWithOriginalArray:self.homeWorkEntity.targets];
-    [targetSelectVC setMemberSelectStyle:MemberSelectStyleHomeWork];
-    [targetSelectVC setSelectCompletion:^(NSArray *classArray, NSArray *groupArray) {
-        NSMutableArray *selectedClassArray = [NSMutableArray array];
-        for (ClassInfo *classInfo in classArray) {
-            BOOL groupSelected = NO;
-            for (StudentInfo *studentInfo in classInfo.students) {
-                if(studentInfo.selected){
-                    groupSelected = YES;
-                }
-            }
-            if(groupSelected){
-                [selectedClassArray addObject:classInfo];
-            }
-        }
-        NSMutableArray *selectedGroupArray = [NSMutableArray array];
-        for (TeacherGroup *teacherGroup in groupArray) {
-            BOOL groupSelected = NO;
-            for (TeacherInfo *teacherInfo in teacherGroup.teachers) {
-                if(teacherInfo.selected){
-                    groupSelected = YES;
-                }
-            }
-            if(groupSelected){
-                [selectedGroupArray addObject:teacherGroup];
-            }
-        }
-        if([selectedClassArray count] > 0){
-            [self.homeWorkEntity setClassArray:selectedClassArray];
-        }
-        else{
-            [self.homeWorkEntity setClassArray:nil];
-        }
-        if([selectedGroupArray count] > 0){
-            [self.homeWorkEntity setGroupArray:selectedGroupArray];
-        }
-        else{
-            [self.homeWorkEntity setGroupArray:nil];
-        }
-        [self.targetContentView setTargets:self.homeWorkEntity.targets];
-        [self adjustPosition];
+    __weak typeof(self) wself = self;
+    ClassSelectVC *classSelectVC = [[ClassSelectVC alloc] init];
+    [classSelectVC setOriginalClassArray:self.homeWorkEntity.targets];
+    [classSelectVC setClassSelectCallBack:^(NSArray *targets) {
+        wself.homeWorkEntity.targets = targets;
+        [wself.targetContentView setTargets:wself.homeWorkEntity.targets];
+        [wself adjustPosition];
     }];
-    [self.navigationController pushViewController:targetSelectVC animated:YES];
-    
+    [self.navigationController pushViewController:classSelectVC animated:YES];
 }
 
-- (void)deleteUserInfo:(UserInfo *)userInfo{
-    [self.homeWorkEntity removeTarget:userInfo];
+- (void)deleteClassInfo:(ClassInfo *)classInfo{
+    [self.homeWorkEntity removeTarget:classInfo];
     [_targetContentView setTargets:self.homeWorkEntity.targets];
     [self adjustPosition];
 }
@@ -323,6 +311,10 @@ DNImagePickerControllerDelegate>
     [self adjustPosition];
 }
 
+- (void)setCourse:(NSString *)course{
+    [self.homeWorkEntity setCourse:course];
+    [self.courseView setCourse:course];
+}
 
 - (void)addImage:(NSArray *)imageArray{
     NSMutableArray *sendImageArray = self.homeWorkEntity.imageArray;

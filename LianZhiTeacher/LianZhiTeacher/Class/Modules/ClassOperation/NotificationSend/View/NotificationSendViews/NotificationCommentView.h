@@ -13,6 +13,7 @@
     HPGrowingTextView*      _commentTextView;
     UILabel*                _numLabel;
 }
+@property (nonatomic, copy)NSString *placeHolder;
 @property (nonatomic, assign)NSInteger maxWordsNum;
 @property (nonatomic, copy)void (^textViewWillChangeHeight)(CGFloat height);
 @property (nonatomic, copy)void (^textViewTextChanged)(NSString *text);

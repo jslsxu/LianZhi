@@ -10,4 +10,5 @@
 
 @interface HomeWorkDraftVC : TNBaseViewController
 
+- (void)clearDraft;
 @end

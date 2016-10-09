@@ -334,6 +334,7 @@ DNImagePickerControllerDelegate>
     if(_commentView == nil){
         @weakify(self)
         _commentView = [[NotificationCommentView alloc] initWithFrame:CGRectMake(0, _timerSendView.bottom, _scrollView.width, 135)];
+        [_commentView setPlaceHolder:@"请输入正文内容"];
         [_commentView setMaxWordsNum:[self.sendEntity maxCommentWordsNum]];
         [_commentView setContent:self.sendEntity.words];
         [_commentView setTextViewWillChangeHeight:^(CGFloat height) {
