@@ -14,6 +14,9 @@
 #import "PasswordModificationVC.h"
 #import "BaseInfoModifyVC.h"
 #import <Bugtags/Bugtags.h>
+#import <UserNotifications/UserNotifications.h>
+#import "UMMobClick/MobClick.h"
+
 static SystemSoundID shake_sound_male_id = 0;
 
 #define kBaseInfoModifyKey                  @"BaseInfoModifyKey"
@@ -85,6 +88,7 @@ static SystemSoundID shake_sound_male_id = 0;
     [[SVShareManager sharedInstance] initialize];
     [self setupCommonHandler];
     [self registerThirdParty];
+    [self registerUmeng];
     [self registerRemoteNotification];
     [self registerSound];
     
@@ -210,11 +214,20 @@ static SystemSoundID shake_sound_male_id = 0;
 - (void)registerRemoteNotification
 {
     UIApplication *application = [UIApplication sharedApplication];
-    if ([application respondsToSelector:@selector(registerForRemoteNotifications)]) {
+    if(IOS10Later){
+        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+        [center requestAuthorizationWithOptions:(UNAuthorizationOptionBadge | UNAuthorizationOptionSound | UNAuthorizationOptionAlert) completionHandler:^(BOOL granted, NSError * _Nullable error) {
+            if (!error) {
+                NSLog(@"request authorization succeeded!");
+            }
+        }];
+    }
+    else{
         UIUserNotificationType types = (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert);
         [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
-        [application registerForRemoteNotifications];
     }
+    [application registerForRemoteNotifications];
+
 }
 
 - (void)handleNotification:(NSDictionary *)userInfo
@@ -393,6 +406,14 @@ static SystemSoundID shake_sound_male_id = 0;
         return YES;
     }
     return NO;
+}
+
+- (void)registerUmeng{
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [MobClick setAppVersion:version];
+    UMConfigInstance.appKey = kUmentAppKey;
+    UMConfigInstance.channelId = @"App Store";
+    [MobClick startWithConfigure:UMConfigInstance];
 }
 
 

@@ -17,6 +17,7 @@
 #define iOS7Later                       ([UIDevice currentDevice].systemVersion.floatValue >= 7.0f)
 #define iOS8Later                       ([UIDevice currentDevice].systemVersion.floatValue >= 8.0f)
 #define iOS9Later                       ([UIDevice currentDevice].systemVersion.floatValue >= 9.0f)
+#define IOS10Later                      ([UIDevice currentDevice].systemVersion.floatValue >= 10.0f)
 
 #define kCommonParentTintColor          [UIColor colorWithRed:26 / 255.0 green:194 / 255.0 blue:130 / 255.0 alpha:1.f]
 #define kCommonBackgroundColor          [UIColor colorWithRed:239 / 255.0 green:239 / 255.0 blue:244 / 255.0 alpha:1.f]
@@ -58,4 +59,5 @@
 #define kTreeHouseShareUrl                  @"http://m.5tree.cn/share/parent/index.html"  //正式环境
 
 #define kBugtagsKey                         @"18842ccaef5c44136335788e1c0de1b3"
+#define kUmentAppKey                        @"57e9f56c67e58e2d8e001fc3"
 #endif
