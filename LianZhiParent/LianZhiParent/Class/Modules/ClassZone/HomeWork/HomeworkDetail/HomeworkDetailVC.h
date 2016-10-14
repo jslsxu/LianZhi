@@ -9,6 +9,8 @@
 #import "TNBaseViewController.h"
 #import "HomeworkDetailView.h"
 #import "HomeworkFinishView.h"
-@interface HomeworkDetailVC : TNBaseViewController
+@interface HomeworkDetailVC : TNBaseViewController{
 
+}
+@property(nonatomic, strong)HomeworkItem*   homeworkItem;
 @end

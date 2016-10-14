@@ -9,7 +9,7 @@
 #import "HomeWorkVC.h"
 #import "HomeWorkListModel.h"
 #import "Calendar.h"
-@interface HomeWorkVC ()
+@interface HomeWorkVC ()<CalendarDelegate>
 @property (nonatomic, strong)Calendar *calendar;
 @end
 
@@ -30,13 +30,16 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"清空" style:UIBarButtonItemStylePlain target:self action:@selector(clear)];
     
     [self.view addSubview:[self calendar]];
-    [self.calendar setY:0];
+    
+    [self.tableView setFrame:CGRectMake(0, self.calendar.bottom, self.view.width, self.view.height - self.calendar.bottom)];
+    [self.tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    [self bindTableCell:@"HomeWorkCell" tableModel:@"HomeworkListModel"];
 }
 
 - (Calendar *)calendar{
     if(_calendar == nil){
         _calendar = [[Calendar alloc] initWithDate:[NSDate date]];
-        
+        [_calendar setDelegate:self];
     }
     return _calendar;
 }
@@ -45,12 +48,17 @@
     
 }
 
-- (BOOL)supportCache{
-    return YES;
-}
+//- (BOOL)supportCache{
+//    return YES;
+//}
+//
+//- (NSString *)cacheFileName{
+//    return [NSString stringWithFormat:@"%@_%@",[self class],self.classID];
+//}
 
-- (NSString *)cacheFileName{
-    return [NSString stringWithFormat:@"%@_%@",[self class],self.classID];
+#pragma mark - CalendarDelegate
+- (void)calendarHeightWillChange:(CGFloat)height{
+    [self.tableView setFrame:CGRectMake(0, height, self.view.width, self.view.height - height)];
 }
 
 - (void)didReceiveMemoryWarning {

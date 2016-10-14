@@ -8,14 +8,37 @@
 
 #import "HomeworkFinishView.h"
 
+@interface HomeworkFinishView ()
+@property (nonatomic, strong)HomeworkReplyView*     replyView;
+@property (nonatomic, strong)HomeworkResultView*    resultView;
+@end
+
 @implementation HomeworkFinishView
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (instancetype)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if(self){
+        [self addSubview:[self resultView]];
+        [self addSubview:[self replyView]];
+        [self.resultView setHidden:YES];
+    }
+    return self;
 }
-*/
+
+- (HomeworkResultView *)resultView{
+    if(_resultView == nil){
+        _resultView = [[HomeworkResultView alloc] initWithFrame:self.bounds];
+        [_resultView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth];
+    }
+    return _resultView;
+}
+
+- (HomeworkReplyView *)replyView{
+    if(_replyView == nil){
+        _replyView = [[HomeworkReplyView alloc] initWithFrame:self.bounds];
+        [_replyView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    }
+    return _replyView;
+}
 
 @end

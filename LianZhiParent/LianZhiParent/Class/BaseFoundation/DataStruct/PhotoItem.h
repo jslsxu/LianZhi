@@ -28,4 +28,6 @@
 @property (nonatomic, copy)NSString *author;
 @property (nonatomic, strong)PublishImageItem *publishImageItem;
 - (id)initWithDataWrapper:(TNDataWrapper *)dataWrapper;
+- (BOOL)isLocal;
+- (BOOL)isSame:(PhotoItem *)object;
 @end

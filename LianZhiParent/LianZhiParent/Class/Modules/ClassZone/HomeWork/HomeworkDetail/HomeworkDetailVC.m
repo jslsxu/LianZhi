@@ -19,6 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationItem setTitleView:[self segCtrl]];
+    self.homeworkItem = [[HomeworkItem alloc] init];
     [self.view addSubview:[self homeworkDetailView]];
     [self.view addSubview:[self homeworkFinishView]];
     [[self segCtrl] setSelectedSegmentIndex:0];
@@ -38,6 +39,7 @@
     if(_homeworkDetailView == nil){
         _homeworkDetailView = [[HomeworkDetailView alloc] initWithFrame:self.view.bounds];
         [_homeworkDetailView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+        [_homeworkDetailView setHomeworkItem:self.homeworkItem];
     }
     return _homeworkDetailView;
 }

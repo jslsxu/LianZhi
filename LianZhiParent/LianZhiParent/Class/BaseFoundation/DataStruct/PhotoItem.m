@@ -40,6 +40,20 @@
     [self modelSetWithJSON:dataWrapper.data];
     
 }
+
+- (BOOL)isLocal{
+    return self.photoID.length == 0;
+}
+
+- (BOOL)isSame:(PhotoItem *)object{
+    if([self.photoID isEqualToString:object.photoID]){
+        return YES;
+    }
+    if([self.big isEqualToString:object.big]){
+        return YES;
+    }
+    return NO;
+}
 //- (NSString *)big{
 //    if([_big hasPrefix:@"/var/mobile"]){
 //        NSInteger index = 0;

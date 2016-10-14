@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "HomeworkReplyView.h"
+#import "HomeworkResultView.h"
 @interface HomeworkFinishView : UIView
 
 @end
