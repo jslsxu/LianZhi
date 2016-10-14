@@ -8,7 +8,7 @@
 
 #import "MessageVC.h"
 #import "MessageDetailVC.h"
-#import "HomeWorkVC.h"
+#import "HomeworkListVC.h"
 #import "DakaViewController.h"
 @interface MessageVC ()
 @property (nonatomic, strong)MessageSegView *segView;
@@ -247,8 +247,7 @@
         }
         else if(groupItem.fromInfo.type == ChatTypePractice)
         {
-            HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
-            [homeWorkVC setClassID:groupItem.fromInfo.classID];
+            HomeworkListVC *homeWorkVC = [[HomeworkListVC alloc] init];
             [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
         }
 //        else if(groupItem.fromInfo.type == ChatTypeDoorEntrance){

@@ -13,7 +13,8 @@
 @property(nonatomic, copy)NSString*             course;
 @property(nonatomic, strong)NSArray*            targets;
 @property(nonatomic, copy)NSString*             words;
-@property(nonatomic, assign)BOOL                openHomeworkCommit;
+@property(nonatomic, assign)BOOL                replyOn;
+@property(nonatomic, assign)NSInteger           count;
 @property(nonatomic, assign)NSInteger           createTime;
 @property(nonatomic, strong)NSMutableArray*     voiceArray;
 @property(nonatomic, strong)NSMutableArray*     imageArray;

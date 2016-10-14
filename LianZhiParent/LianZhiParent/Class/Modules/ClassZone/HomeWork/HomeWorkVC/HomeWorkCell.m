@@ -9,6 +9,72 @@
 #import "HomeWorkCell.h"
 #import "HomeWorkListModel.h"
 #import "CollectionImageCell.h"
+
+@implementation HomeworkExtraInfoView
+
+- (instancetype)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if(self){
+        UIView* topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, kLineHeight)];
+        [topLine setBackgroundColor:kSepLineColor];
+        [self addSubview:topLine];
+        
+        _courseLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_courseLabel setTextColor:kCommonParentTintColor];
+        [_courseLabel setFont:[UIFont systemFontOfSize:14]];
+        [self addSubview:_courseLabel];
+        
+        _imageTypeView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"message_hasPhoto"]];
+        [self addSubview:_imageTypeView];
+        
+        _voiceTypeView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"message_hasAudio"]];
+        [self addSubview:_voiceTypeView];
+        
+        _videoTypeView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"message_hasVideo"]];
+        [self addSubview:_videoTypeView];
+        
+        _redDot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 6, 6)];
+        [_redDot.layer setCornerRadius:3];
+        [_redDot.layer setMasksToBounds:YES];
+        [self addSubview:_redDot];
+        
+        _statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_statusLabel setTextColor:kCommonParentTintColor];
+        [_statusLabel setFont:[UIFont systemFontOfSize:14]];
+        [self addSubview:_statusLabel];
+        
+        _rightArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gray_expand_indicator"]];
+        [_rightArrow setOrigin:CGPointMake(self.width - 10 - _rightArrow.width, (self.height - _rightArrow.height) / 2)];
+        [self addSubview:_rightArrow];
+    }
+    return self;
+}
+
+- (void)setHomeworkItem:(HomeworkItem *)homeworkItem{
+    _homeworkItem = homeworkItem;
+    NSInteger spaceXStart = 10;
+    NSInteger spaceXEnd = _rightArrow.left - 5;
+    [_courseLabel setText:@"语文作业"];
+    [_courseLabel sizeToFit];
+    [_courseLabel setOrigin:CGPointMake(spaceXStart, (self.height - _courseLabel.height) / 2)];
+    spaceXStart = _courseLabel.right + 10;
+    
+    [_imageTypeView setOrigin:CGPointMake(spaceXStart, (self.height - _imageTypeView.height) / 2)];
+    spaceXStart = _imageTypeView.right + 10;
+    [_voiceTypeView setOrigin:CGPointMake(spaceXStart, (self.height - _voiceTypeView.height) / 2)];
+    spaceXStart = _voiceTypeView.right + 10;
+    [_videoTypeView setOrigin:CGPointMake(spaceXStart, (self.height - _videoTypeView.height) / 2)];
+    
+    [_statusLabel setText:@"已发送"];
+    [_statusLabel sizeToFit];
+    [_statusLabel setOrigin:CGPointMake(spaceXEnd - _statusLabel.width, (self.height - _statusLabel.height) / 2)];
+    
+    spaceXEnd = _statusLabel.left - 2;
+    [_redDot setOrigin:CGPointMake(spaceXEnd - _redDot.width, (self.height - _redDot.height) / 2)];
+}
+
+@end
+
 @implementation HomeWorkCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -17,210 +83,99 @@
     {
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
-        _dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 18, 45, 30)];
-        [_dateLabel setTextAlignment:NSTextAlignmentCenter];
-        [_dateLabel setFont:[UIFont systemFontOfSize:13]];
-        [self addSubview:_dateLabel];
         
-        _courseLabel = [[UILabel alloc] initWithFrame:CGRectMake(47, 18, 30, 30)];
-        [_courseLabel setTextAlignment:NSTextAlignmentCenter];
-        [_courseLabel.layer setCornerRadius:15];
-        [_courseLabel.layer setMasksToBounds:YES];
-        [_courseLabel setFont:[UIFont systemFontOfSize:13]];
-        [_courseLabel setTextColor:[UIColor whiteColor]];
-        [self addSubview:_courseLabel];
-        
-        _bgView = [[UIView alloc] initWithFrame:CGRectMake(85, 18, kScreenWidth - 10 - 85, 0)];
+        _bgView = [[UIView alloc] initWithFrame:CGRectMake(15, 15, self.width - 15 * 2, 0)];
         [_bgView setBackgroundColor:[UIColor whiteColor]];
-        [_bgView.layer setCornerRadius:5];
+        [_bgView.layer setCornerRadius:10];
         [_bgView.layer setMasksToBounds:YES];
         [self addSubview:_bgView];
         
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _avatarView = [[AvatarView alloc] initWithRadius:18];
+        [_avatarView setOrigin:CGPointMake(10, 10)];
+        [_bgView addSubview:_avatarView];
+        
+        _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_nameLabel setFont:[UIFont systemFontOfSize:14]];
+        [_nameLabel setTextColor:kCommonParentTintColor];
+        [_bgView addSubview:_nameLabel];
+        
+        _roleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_roleLabel setFont:[UIFont systemFontOfSize:14]];
+        [_roleLabel setTextColor:kCommonParentTintColor];
+        [_bgView addSubview:_roleLabel];
+        
+        _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_timeLabel setFont:[UIFont systemFontOfSize:12]];
+        [_timeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
+        [_bgView addSubview:_timeLabel];
+        
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, _avatarView.bottom + 10, _bgView.width - 10 * 2, 0)];
         [_contentLabel setFont:[UIFont systemFontOfSize:14]];
-        [_contentLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [_contentLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
         [_contentLabel setNumberOfLines:0];
         [_contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [_bgView addSubview:_contentLabel];
         
-        _voiceButton = [[MessageVoiceButton alloc] initWithFrame:CGRectMake(0, 0, _bgView.width - 150, 45)];
-        [_voiceButton addTarget:self action:@selector(onVoiceButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_bgView addSubview:_voiceButton];
-        
-        _timespanLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_timespanLabel setFont:[UIFont systemFontOfSize:12]];
-        [_timespanLabel setTextColor:[UIColor colorWithHexString:@"7a7a7a"]];
-        [_bgView addSubview:_timespanLabel];
-        
-        NSInteger collectionWidth = _bgView.width - 10 * 2;
-        NSInteger innerMargin = 3;
-        NSInteger itemWidth = (collectionWidth - innerMargin * 2) / 3;
-        innerMargin = (collectionWidth - itemWidth * 3) / 2;
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        [layout setItemSize:CGSizeMake(itemWidth, itemWidth)];
-        [layout setMinimumInteritemSpacing:innerMargin];
-        [layout setMinimumLineSpacing:innerMargin];
-        
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 0, _bgView.width - 10 * 2, 0) collectionViewLayout:layout];
-        [_collectionView setBackgroundColor:[UIColor clearColor]];
-        [_collectionView setShowsHorizontalScrollIndicator:NO];
-        [_collectionView setShowsVerticalScrollIndicator:NO];
-        [_collectionView setScrollsToTop:NO];
-        [_collectionView registerClass:[CollectionImageCell class] forCellWithReuseIdentifier:@"CollectionImageCell"];
-        [_collectionView setDelegate:self];
-        [_collectionView setDataSource:self];
-        
-        [_bgView addSubview:_collectionView];
-        
-        
-        _bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height, self.width, kLineHeight)];
-        [_bottomLine setBackgroundColor:kSepLineColor];
-        [_bgView addSubview:_bottomLine];
-        
-        _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_timeLabel setTextAlignment:NSTextAlignmentRight];
-        [_timeLabel setFont:[UIFont systemFontOfSize:12]];
-        [_timeLabel setTextColor:[UIColor colorWithHexString:@"7a7a7a"]];
-        [_bgView addSubview:_timeLabel];
-        
-        _fromLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_fromLabel setFont:[UIFont systemFontOfSize:14]];
-        [_fromLabel setTextColor:[UIColor colorWithHexString:@"7a7a7a"]];
-        [_bgView addSubview:_fromLabel];
+        _endTimeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_endTimeLabel setTextColor:kCommonParentTintColor];
+        [_endTimeLabel setFont:[UIFont systemFontOfSize:12]];
+        [_bgView addSubview:_endTimeLabel];
 
+        _extraInfoView = [[HomeworkExtraInfoView alloc] initWithFrame:CGRectMake(0, _endTimeLabel.bottom, _bgView.width, 45)];
+        [_bgView addSubview:_extraInfoView];
     }
     return self;
 }
 
 - (void)onReloadData:(TNModelItem *)modelItem
 {
-    HomeWorkItem *homeWorkItem = (HomeWorkItem *)modelItem;
-    NSInteger spaceYStart = 15;
+    HomeworkItem *homeworkItem = (HomeworkItem *)modelItem;
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:@"http://img6.bdstatic.com/img/image/smallpic/dongman1014.jpg"] placeholderImage:nil];
+    [_nameLabel setText:@"吴枕着"];
+    [_nameLabel sizeToFit];
+    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.top)];
+    [_roleLabel setText:@"教师"];
+    [_roleLabel sizeToFit];
+    [_roleLabel setOrigin:CGPointMake(_nameLabel.right + 5, _avatarView.top)];
+    [_timeLabel setText:@"发布时间:06-01 14:53"];
+    [_timeLabel sizeToFit];
+    [_timeLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.bottom - _timeLabel.height)];
     
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:homeWorkItem.ctime];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MM-dd"];
-    NSString *dateStr = [formatter stringFromDate:date];
-    
-    [formatter setDateFormat:@"HH:mm"];
-    NSString *timeStr = [formatter stringFromDate:date];
-    BOOL isToday = [date isToday];
-    [_courseLabel setBackgroundColor:isToday ? [UIColor colorWithHexString:@"02ca94"] : [UIColor colorWithHexString:@"7a7a7a"]];
-    [_dateLabel setTextColor:isToday ? [UIColor colorWithHexString:@"02ca94"] : [UIColor colorWithHexString:@"7a7a7a"]];
-    [_dateLabel setText:isToday ? @"今天" : dateStr];
-    
-    [_dateLabel setText:dateStr];
-    
-    [_courseLabel setText:homeWorkItem.courseName];
-    [_contentLabel setHidden:YES];
-    [_voiceButton setHidden:YES];
-    [_timespanLabel setHidden:YES];
-    [_collectionView setHidden:YES];
-    if(homeWorkItem.words.length > 0)
-    {
+    CGFloat spaceYStart = _avatarView.bottom + 10;
+    NSString *words = homeworkItem.words;
+    if(words.length > 0){
         [_contentLabel setHidden:NO];
-        [_contentLabel setFrame:CGRectMake(10, spaceYStart, _bgView.width - 10 * 2, 0)];
-        [_contentLabel setText:homeWorkItem.words];
+        [_contentLabel setWidth:_bgView.width - 10 * 2];
+        [_contentLabel setText:words];
         [_contentLabel sizeToFit];
-        spaceYStart += _contentLabel.height + 15;
+        [_contentLabel setOrigin:CGPointMake(10, spaceYStart)];
+        spaceYStart = _contentLabel.bottom + 10;
     }
-    
-    if(homeWorkItem.audioItem)
-    {
-        [_voiceButton setHidden:NO];
-        [_timespanLabel setHidden:NO];
-        [_voiceButton setFrame:CGRectMake(10, spaceYStart, _bgView.width - 10 * 2 - 60, 45)];
-        [_timespanLabel setFrame:CGRectMake(_voiceButton.right + 10, _voiceButton.y, 50, 45)];
-        [_timespanLabel setText:[Utility formatStringForTime:homeWorkItem.audioItem.timeSpan]];
-        spaceYStart += 15 + 45;
+    else{
+        [_contentLabel setHidden:YES];
     }
-    else if (homeWorkItem.photoArray.count > 0)
-    {
-        [_collectionView setHidden:NO];
-        NSInteger imageCount = homeWorkItem.photoArray.count;
-        _collectionView.width = _bgView.width - 10 * 2;
-        NSInteger contentWidth = _collectionView.width;
-        NSInteger innerMargin = 3;
-        NSInteger row = (homeWorkItem.photoArray.count + 2) / 3;
-        NSInteger itemWidth = (contentWidth - innerMargin * 2) / 3;
-        innerMargin = (contentWidth - itemWidth * 3) / 2;
-        [_collectionView setHidden:NO];
-        NSInteger imageWidth = (row > 1) ? contentWidth : (itemWidth * imageCount + innerMargin * (homeWorkItem.photoArray.count - 1));
-        [_collectionView setFrame:CGRectMake(10, spaceYStart, imageWidth, itemWidth * row + innerMargin * (row - 1))];
-        [_collectionView reloadData];
-        spaceYStart += _collectionView.height + 15;
-    }
-    [_bottomLine setFrame:CGRectMake(0, spaceYStart, _bgView.width, kLineHeight)];
-    
-    [_fromLabel setFrame:CGRectMake(10, spaceYStart, _bgView.width / 2 - 10, 30)];
-    [_fromLabel setText:[NSString stringWithFormat:@"来自%@老师",homeWorkItem.teacherName]];
-    [_timeLabel setFrame:CGRectMake(_bgView.width / 2, spaceYStart, _bgView.width / 2 - 10, 30)];
-    [_timeLabel setText:timeStr];
-    [_bgView setFrame:CGRectMake(85, 18, kScreenWidth - 10 - 85, spaceYStart + 30)];
+    [_endTimeLabel setText:@"截止时间:06-02 10:00"];
+    [_endTimeLabel sizeToFit];
+    [_endTimeLabel setOrigin:CGPointMake(10, spaceYStart)];
+    spaceYStart = _endTimeLabel.bottom + 10;
+    [_extraInfoView setOrigin:CGPointMake(0, spaceYStart)];
+    [_extraInfoView setHomeworkItem:homeworkItem];
+    [_bgView setHeight:_extraInfoView.bottom];
 }
 
-- (void)onVoiceButtonClicked
-{
-    HomeWorkItem *item = (HomeWorkItem *)self.modelItem;
-    [_voiceButton setVoiceWithURL:[NSURL URLWithString:item.audioItem.audioUrl] withAutoPlay:YES];
-}
-
-#pragma mark - 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    HomeWorkItem *item = (HomeWorkItem *)self.modelItem;
-    return item.photoArray.count;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    CollectionImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CollectionImageCell" forIndexPath:indexPath];
-    HomeWorkItem *item = (HomeWorkItem *)self.modelItem;
-    PhotoItem *photoItem = item.photoArray[indexPath.row];
-    [cell setItem:photoItem];
-    return cell;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    HomeWorkItem *item = (HomeWorkItem *)self.modelItem;
-    MJPhotoBrowser *photoBrowser = [[MJPhotoBrowser alloc] init];
-    NSMutableArray *photos = [NSMutableArray arrayWithArray:item.photoArray];
-    for (PhotoItem *photoItem in photos) {
-        //        [photoItem setUserInfo:];
-        [photoItem setWords:item.words];
-        [photoItem setTime_str:item.timeStr];
++ (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width{
+    HomeworkItem *homeworkItem = (HomeworkItem *)modelItem;
+    CGFloat height = 36 + 10 * 2;
+    NSString *words = homeworkItem.words;
+    if(words.length > 0){
+        CGSize contentSize = [words sizeForFont:[UIFont systemFontOfSize:14] size:CGSizeMake(width - 15 * 2 - 10 * 2, CGFLOAT_MAX) mode:NSLineBreakByWordWrapping];
+        height += contentSize.height + 10;
     }
-    [photoBrowser setPhotos:photos];
-    [photoBrowser setCurrentPhotoIndex:indexPath.row];
-    [CurrentROOTNavigationVC pushViewController:photoBrowser animated:YES];
+    NSString *endStr = @"截止时间";
+    CGSize endTimeSize = [endStr sizeForFont:[UIFont systemFontOfSize:12] size:CGSizeMake(width - 15 * 2 - 10 * 2, CGFLOAT_MAX) mode:NSLineBreakByWordWrapping];
+    height += endTimeSize.height + 10;
+    height += 45;
+    return @(height + 15);
 }
 
-+ (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
-{
-    HomeWorkItem *homeWorkItem = (HomeWorkItem *)modelItem;
-    NSInteger bgViewWidth = width - 85 - 10;
-    NSInteger spaceYStart = 15;
-    if(homeWorkItem.words.length > 0)
-    {
-        CGSize contentSize = [homeWorkItem.words boundingRectWithSize:CGSizeMake(bgViewWidth - 10 * 2, CGFLOAT_MAX) andFont:[UIFont systemFontOfSize:14]];
-        spaceYStart += 15 + contentSize.height;
-    }
-    
-    if(homeWorkItem.audioItem)
-        spaceYStart += 15 + 45;
-    else if(homeWorkItem.photoArray.count > 0)
-    {
-        NSInteger imageCount = homeWorkItem.photoArray.count;
-        NSInteger contentWidth = bgViewWidth - 10 * 2;
-        NSInteger innerMargin = 3;
-        NSInteger row = (imageCount + 2) / 3;
-        NSInteger itemWidth = (contentWidth - innerMargin * 2) / 3;
-        innerMargin = (contentWidth - itemWidth * 3) / 2;
-        spaceYStart += itemWidth * row + innerMargin * (row - 1) + 15;
-
-    }
-    spaceYStart += 30;
-    return @(spaceYStart + 18);
-}
 @end

@@ -9,7 +9,6 @@
 #import "ClassAppVC.h"
 #import "GrowthTimelineVC.h"
 #import "ContactListVC.h"
-#import "CourseListVC.h"
 #import "AttendanceDetailVC.h"
 #import "HomeWorkVC.h"
 #import "ClassZoneVC.h"
@@ -330,12 +329,7 @@
                 }
                 else
                 {
-                    NSArray *classArray = [UserCenter sharedInstance].curChild.classes;
-                    if(classArray.count == 0)
-                        [ProgressHUD showHintText:@"孩子不在任何班级"];
-                    else if(classArray.count == 1)
-                    {
-                        ClassInfo *classInfo = classArray[0];
+                    void (^selectClassCallBack)(ClassInfo *classInfo) = ^(ClassInfo *classInfo){
                         if([host isEqualToString:@"class"])
                         {
                             ClassZoneVC *classZoneVC = [[ClassZoneVC alloc] init];
@@ -367,6 +361,14 @@
                             [vacationHistoryVC setClassInfo:classInfo];
                             [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
                         }
+                    };
+                    NSArray *classArray = [UserCenter sharedInstance].curChild.classes;
+                    if(classArray.count == 0)
+                        [ProgressHUD showHintText:@"孩子不在任何班级"];
+                    else if(classArray.count == 1)
+                    {
+                        ClassInfo *classInfo = classArray[0];
+                        selectClassCallBack(classInfo);
                     }
                     else
                     {
@@ -436,37 +438,7 @@
                             }];
                         }
                         [classSelectionVC setSelection:^(ClassInfo *classInfo) {
-                            if([host isEqualToString:@"class"])
-                            {
-                                ClassZoneVC *classZoneVC = [[ClassZoneVC alloc] init];
-                                [classZoneVC setClassInfo:classInfo];
-                                [CurrentROOTNavigationVC pushViewController:classZoneVC animated:YES];
-                            }
-                            else if([host isEqualToString:@"class_album"])
-                            {
-                                ClassAlbumVC *photoBrowser = [[ClassAlbumVC alloc] init];
-                                [photoBrowser setShouldShowEmptyHint:YES];
-                                [photoBrowser setClassID:classInfo.classID];
-                                [CurrentROOTNavigationVC pushViewController:photoBrowser animated:YES];
-                            }
-                            else if([host isEqualToString:@"record"])
-                            {
-                                GrowthTimelineVC *growthTimeLineVC = [[GrowthTimelineVC alloc] init];
-                                [growthTimeLineVC setClassInfo:classInfo];
-                                [CurrentROOTNavigationVC pushViewController:growthTimeLineVC animated:YES];
-                            }
-                            else if([host isEqualToString:@"practice"])
-                            {
-                                HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
-                                [homeWorkVC setClassID:classInfo.classID];
-                                [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
-                            }
-                            else if([host isEqualToString:@"leave"])
-                            {
-                                AttendanceDetailVC *vacationHistoryVC = [[AttendanceDetailVC alloc] init];
-                                [vacationHistoryVC setClassInfo:classInfo];
-                                [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
-                            }
+                            selectClassCallBack(classInfo);
                         }];
                         [CurrentROOTNavigationVC pushViewController:classSelectionVC animated:YES];
                     }

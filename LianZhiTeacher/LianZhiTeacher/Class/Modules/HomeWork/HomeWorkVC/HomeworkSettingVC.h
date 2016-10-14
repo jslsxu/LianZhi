@@ -7,10 +7,7 @@
 //
 
 #import "TNBaseViewController.h"
-
-@interface HomeworkSettingDescriptionView : UIView
-+ (void)showWithDismissCallback:(void (^)(void))dismiss;
-@end
+#import "HomeworkDetailHintView.h"
 
 @interface HomeworkSettingVC : TNBaseViewController
 

@@ -8,47 +8,41 @@
 
 #import "HomeWorkVC.h"
 #import "HomeWorkListModel.h"
+#import "Calendar.h"
 @interface HomeWorkVC ()
-
+@property (nonatomic, strong)Calendar *calendar;
 @end
 
 @implementation HomeWorkVC
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self){
+        self.interactivePopDisabled = YES;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"eeeef4"]];
     self.title = @"作业练习";
-    [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 10, 0)];
-    [self setSupportPullDown:YES];
-    [self setSupportPullUp:YES];
-    [self bindTableCell:@"HomeWorkCell" tableModel:@"HomeWorkListModel"];
-    [self requestData:REQUEST_REFRESH];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"清空" style:UIBarButtonItemStylePlain target:self action:@selector(clear)];
+    
+    [self.view addSubview:[self calendar]];
+    [self.calendar setY:0];
 }
 
-- (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
-{
-    HttpRequestTask *task = [[HttpRequestTask alloc] init];
-    [task setRequestUrl:@"practice/get_list"];
-    [task setRequestMethod:REQUEST_GET];
-    [task setRequestType:requestType];
-    [task setObserver:self];
+- (Calendar *)calendar{
+    if(_calendar == nil){
+        _calendar = [[Calendar alloc] initWithDate:[NSDate date]];
+        
+    }
+    return _calendar;
+}
+
+- (void)clear{
     
-    HomeWorkListModel *listModel = (HomeWorkListModel *)self.tableViewModel;
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:self.classID forKey:@"class_id"];
-    if(requestType == REQUEST_GETMORE)
-    {
-        [params setValue:listModel.maxID forKey:@"max_id"];
-        [params setValue:@"0" forKey:@"new"];
-    }
-    else
-    {
-        [params setValue:listModel.minID forKey:@"max_id"];
-        if(listModel.modelItemArray.count > 0)
-            [params setValue:@"1" forKey:@"new"];
-    }
-    [task setParams:params];
-    return task;
 }
 
 - (BOOL)supportCache{

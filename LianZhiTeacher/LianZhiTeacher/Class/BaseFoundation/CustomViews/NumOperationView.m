@@ -20,26 +20,21 @@
 }
 
 - (instancetype)initWithMin:(NSInteger)min max:(NSInteger)max{
-    self = [super initWithFrame:CGRectMake(0, 0, 80, 24)];
+    self = [super initWithFrame:CGRectMake(0, 0, 66, 24)];
     if(self){
         self.min = min;
         self.max = max;
-        [self.layer setCornerRadius:12];
-        [self.layer setMasksToBounds:YES];
+
         _decreaseButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_decreaseButton setFrame:CGRectMake(0, 0, self.height, self.height)];
+        [_decreaseButton setFrame:CGRectMake(0, 0, 20, self.height)];
         [_decreaseButton addTarget:self action:@selector(onDescrese) forControlEvents:UIControlEventTouchUpInside];
-        [_decreaseButton setTitle:@"-" forState:UIControlStateNormal];
-        [_decreaseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_decreaseButton setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:_decreaseButton.size] forState:UIControlStateNormal];
+        [_decreaseButton setImage:[UIImage imageNamed:@"numMinus"] forState:UIControlStateNormal];
         [self addSubview:_decreaseButton];
         
         _increaseButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_increaseButton setFrame:CGRectMake(self.width - self.height, 0, self.height, self.height)];
+        [_increaseButton setFrame:CGRectMake(self.width - 20, 0, 20, self.height)];
         [_increaseButton addTarget:self action:@selector(onIncrease) forControlEvents:UIControlEventTouchUpInside];
-        [_increaseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_increaseButton setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:_increaseButton.size] forState:UIControlStateNormal];
-        [_increaseButton setTitle:@"+" forState:UIControlStateNormal];
+        [_increaseButton setImage:[UIImage imageNamed:@"numAdd"] forState:UIControlStateNormal];
         [self addSubview:_increaseButton];
         
         _contentField = [[UITextField alloc] initWithFrame:CGRectMake(_decreaseButton.right, 0, _increaseButton.left - _decreaseButton.right, self.height)];

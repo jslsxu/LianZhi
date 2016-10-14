@@ -19,7 +19,8 @@
 - (instancetype)init{
     self = [super init];
     if(self){
-        self.openHomeworkCommit = YES;
+        self.count = 1;
+        self.replyOn = YES;
         self.targets = [NSMutableArray array];
         self.voiceArray = [NSMutableArray array];
         self.imageArray = [NSMutableArray array];
@@ -36,12 +37,7 @@
 }
 
 - (NSInteger)maxCommentWordsNum{
-    if(self.openHomeworkCommit){
-        return 150;
-    }
-    else{
-        return 500;
-    }
+    return 500;
 }
 
 - (void)removeTarget:(ClassInfo *)classInfo{
@@ -80,7 +76,7 @@
     if(self.words.length + object.words.length > 0 && ![self.words isEqualToString:object.words]){
         return NO;
     }
-    if(self.openHomeworkCommit != object.openHomeworkCommit){
+    if(self.replyOn != object.replyOn){
         return NO;
     }
     for (UserInfo *userInfo in self.targets) {

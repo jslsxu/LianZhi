@@ -217,9 +217,6 @@
 		37C53AA31B14D5FF00C3ED69 /* RequestVacationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53A9F1B14D5FF00C3ED69 /* RequestVacationVC.m */; };
 		37C53AA41B14D5FF00C3ED69 /* VacationDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53AA21B14D5FF00C3ED69 /* VacationDatePickerView.m */; };
 		37C53AAE1B14E3EF00C3ED69 /* VacationHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53AAD1B14E3EF00C3ED69 /* VacationHistoryModel.m */; };
-		37C53AB31B1588EB00C3ED69 /* PractiseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53AB21B1588EB00C3ED69 /* PractiseModel.m */; };
-		37C53AB61B15891A00C3ED69 /* PractiseItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53AB51B15891A00C3ED69 /* PractiseItemCell.m */; };
-		37C53AB91B15892E00C3ED69 /* PractiseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53AB81B15892E00C3ED69 /* PractiseVC.m */; };
 		37C6B3E51BF2DEC60001D54F /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C6B3C21BF2DEC60001D54F /* TencentOpenAPI.framework */; };
 		37C6B3E61BF2DEC60001D54F /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 37C6B3C31BF2DEC60001D54F /* TencentOpenApi_IOS_Bundle.bundle */; };
 		37C6B3EB1BF2DEC70001D54F /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C6B3D61BF2DEC60001D54F /* libWeChatSDK.a */; };
@@ -303,10 +300,8 @@
 		37E93FDF1A7E9CF200AD45A1 /* PhotoBrowserNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FD81A7E9CF200AD45A1 /* PhotoBrowserNavigationBar.m */; };
 		37EAC9ED1B82D165007BFBA1 /* CommonInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9EB1B82D165007BFBA1 /* CommonInputVC.m */; };
 		37EAC9F01B82DEE5007BFBA1 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */; };
-		37F206FB1BDDCAF1006466F4 /* CourseListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206FA1BDDCAF1006466F4 /* CourseListVC.m */; };
 		37F207071BDDD596006466F4 /* HomeWorkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207041BDDD596006466F4 /* HomeWorkCell.m */; };
 		37F207081BDDD596006466F4 /* HomeWorkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207061BDDD596006466F4 /* HomeWorkVC.m */; };
-		37F2070B1BDDD8C4006466F4 /* HomeWorkListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F2070A1BDDD8C4006466F4 /* HomeWorkListModel.m */; };
 		37F207131BDE0816006466F4 /* LZAccountVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207121BDE0816006466F4 /* LZAccountVC.m */; };
 		37F207191BE0C871006466F4 /* UITouchScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F207181BE0C871006466F4 /* UITouchScrollView.m */; };
 		37FD6DC41BAE7C7F00C83AB4 /* MessageItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD6DC31BAE7C7F00C83AB4 /* MessageItem.m */; };
@@ -407,6 +402,9 @@
 		8DC087761D8E50E7008B57B2 /* LGAlertViewTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC0876B1D8E50E7008B57B2 /* LGAlertViewTextField.m */; };
 		8DC087771D8E50E7008B57B2 /* LGAlertViewWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC0876D1D8E50E7008B57B2 /* LGAlertViewWindow.m */; };
 		8DC087781D8E50E7008B57B2 /* UIWindow+LGAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC0876F1D8E50E7008B57B2 /* UIWindow+LGAlertView.m */; };
+		8DCF877D1DAFDA2D00712042 /* HomeworkDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCF877C1DAFDA2D00712042 /* HomeworkDetailVC.m */; };
+		8DCF87881DAFDFE600712042 /* HomeworkDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCF87851DAFDFE600712042 /* HomeworkDetailView.m */; };
+		8DCF87891DAFDFE600712042 /* HomeworkFinishView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCF87871DAFDFE600712042 /* HomeworkFinishView.m */; };
 		8DCFD6621D43CC78001EDC8A /* YYInfiniteScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD6611D43CC78001EDC8A /* YYInfiniteScrollView.m */; };
 		8DCFD73A1D53641B001EDC8A /* ContactParentsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7391D53641B001EDC8A /* ContactParentsView.m */; };
 		8DCFD7841D5A3B3F001EDC8A /* VideoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7821D5A3B3F001EDC8A /* VideoItem.m */; };
@@ -435,6 +433,10 @@
 		8DCFD7D81D5ADD94001EDC8A /* NJKWebViewProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7D51D5ADD94001EDC8A /* NJKWebViewProgress.m */; };
 		8DCFD7D91D5ADD94001EDC8A /* NJKWebViewProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7D71D5ADD94001EDC8A /* NJKWebViewProgressView.m */; };
 		8DCFD7DC1D5AF7D3001EDC8A /* MessageSegView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DCFD7DB1D5AF7D3001EDC8A /* MessageSegView.m */; };
+		8DE7185A1DABAC6A0080476D /* HomeworkListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DE718591DABAC6A0080476D /* HomeworkListVC.m */; };
+		8DE718661DABB0370080476D /* HomeworkItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DE718651DABB0370080476D /* HomeworkItem.m */; };
+		8DE718691DABB0700080476D /* HomeworkListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DE718681DABB0700080476D /* HomeworkListModel.m */; };
+		8DE7186D1DABE2120080476D /* Calendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DE7186C1DABE2120080476D /* Calendar.m */; };
 		8DFDDD6E1D9271150050740B /* NSDate+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD6D1D9271150050740B /* NSDate+convenience.m */; };
 		8DFDDD721D92754C0050740B /* GrowthTimelineVCNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD711D92754C0050740B /* GrowthTimelineVCNew.m */; };
 		8DFDDD751D927A8E0050740B /* MonthPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD741D927A8E0050740B /* MonthPickerView.m */; };
@@ -852,12 +854,6 @@
 		37C53AA21B14D5FF00C3ED69 /* VacationDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VacationDatePickerView.m; sourceTree = "<group>"; };
 		37C53AAC1B14E3EF00C3ED69 /* VacationHistoryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VacationHistoryModel.h; sourceTree = "<group>"; };
 		37C53AAD1B14E3EF00C3ED69 /* VacationHistoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VacationHistoryModel.m; sourceTree = "<group>"; };
-		37C53AB11B1588EB00C3ED69 /* PractiseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PractiseModel.h; sourceTree = "<group>"; };
-		37C53AB21B1588EB00C3ED69 /* PractiseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PractiseModel.m; sourceTree = "<group>"; };
-		37C53AB41B15891A00C3ED69 /* PractiseItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PractiseItemCell.h; sourceTree = "<group>"; };
-		37C53AB51B15891A00C3ED69 /* PractiseItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PractiseItemCell.m; sourceTree = "<group>"; };
-		37C53AB71B15892E00C3ED69 /* PractiseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PractiseVC.h; sourceTree = "<group>"; };
-		37C53AB81B15892E00C3ED69 /* PractiseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PractiseVC.m; sourceTree = "<group>"; };
 		37C6B3C21BF2DEC60001D54F /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		37C6B3C31BF2DEC60001D54F /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
 		37C6B3D61BF2DEC60001D54F /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
@@ -998,14 +994,10 @@
 		37EAC9EC1B82D165007BFBA1 /* CommonInputVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonInputVC.h; sourceTree = "<group>"; };
 		37EAC9EE1B82DEE5007BFBA1 /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCarousel.h; sourceTree = "<group>"; };
 		37EAC9EF1B82DEE5007BFBA1 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
-		37F206F91BDDCAF1006466F4 /* CourseListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CourseListVC.h; sourceTree = "<group>"; };
-		37F206FA1BDDCAF1006466F4 /* CourseListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CourseListVC.m; sourceTree = "<group>"; };
 		37F207031BDDD596006466F4 /* HomeWorkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkCell.h; sourceTree = "<group>"; };
 		37F207041BDDD596006466F4 /* HomeWorkCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkCell.m; sourceTree = "<group>"; };
 		37F207051BDDD596006466F4 /* HomeWorkVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkVC.h; sourceTree = "<group>"; };
 		37F207061BDDD596006466F4 /* HomeWorkVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkVC.m; sourceTree = "<group>"; };
-		37F207091BDDD8C4006466F4 /* HomeWorkListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeWorkListModel.h; sourceTree = "<group>"; };
-		37F2070A1BDDD8C4006466F4 /* HomeWorkListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeWorkListModel.m; sourceTree = "<group>"; };
 		37F207111BDE0816006466F4 /* LZAccountVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZAccountVC.h; sourceTree = "<group>"; };
 		37F207121BDE0816006466F4 /* LZAccountVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZAccountVC.m; sourceTree = "<group>"; };
 		37F207171BE0C871006466F4 /* UITouchScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITouchScrollView.h; sourceTree = "<group>"; };
@@ -1195,6 +1187,12 @@
 		8DC0876D1D8E50E7008B57B2 /* LGAlertViewWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGAlertViewWindow.m; sourceTree = "<group>"; };
 		8DC0876E1D8E50E7008B57B2 /* UIWindow+LGAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+LGAlertView.h"; sourceTree = "<group>"; };
 		8DC0876F1D8E50E7008B57B2 /* UIWindow+LGAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+LGAlertView.m"; sourceTree = "<group>"; };
+		8DCF877B1DAFDA2D00712042 /* HomeworkDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkDetailVC.h; sourceTree = "<group>"; };
+		8DCF877C1DAFDA2D00712042 /* HomeworkDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkDetailVC.m; sourceTree = "<group>"; };
+		8DCF87841DAFDFE600712042 /* HomeworkDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkDetailView.h; sourceTree = "<group>"; };
+		8DCF87851DAFDFE600712042 /* HomeworkDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkDetailView.m; sourceTree = "<group>"; };
+		8DCF87861DAFDFE600712042 /* HomeworkFinishView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkFinishView.h; sourceTree = "<group>"; };
+		8DCF87871DAFDFE600712042 /* HomeworkFinishView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkFinishView.m; sourceTree = "<group>"; };
 		8DCFD6601D43CC78001EDC8A /* YYInfiniteScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYInfiniteScrollView.h; sourceTree = "<group>"; };
 		8DCFD6611D43CC78001EDC8A /* YYInfiniteScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYInfiniteScrollView.m; sourceTree = "<group>"; };
 		8DCFD7381D53641B001EDC8A /* ContactParentsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactParentsView.h; sourceTree = "<group>"; };
@@ -1252,6 +1250,14 @@
 		8DCFD7D71D5ADD94001EDC8A /* NJKWebViewProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NJKWebViewProgressView.m; sourceTree = "<group>"; };
 		8DCFD7DA1D5AF7D3001EDC8A /* MessageSegView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageSegView.h; sourceTree = "<group>"; };
 		8DCFD7DB1D5AF7D3001EDC8A /* MessageSegView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageSegView.m; sourceTree = "<group>"; };
+		8DE718581DABAC6A0080476D /* HomeworkListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkListVC.h; sourceTree = "<group>"; };
+		8DE718591DABAC6A0080476D /* HomeworkListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkListVC.m; sourceTree = "<group>"; };
+		8DE718641DABB0370080476D /* HomeworkItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkItem.h; sourceTree = "<group>"; };
+		8DE718651DABB0370080476D /* HomeworkItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkItem.m; sourceTree = "<group>"; };
+		8DE718671DABB0700080476D /* HomeworkListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkListModel.h; sourceTree = "<group>"; };
+		8DE718681DABB0700080476D /* HomeworkListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkListModel.m; sourceTree = "<group>"; };
+		8DE7186B1DABE2120080476D /* Calendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Calendar.h; sourceTree = "<group>"; };
+		8DE7186C1DABE2120080476D /* Calendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Calendar.m; sourceTree = "<group>"; };
 		8DFDDD6C1D9271150050740B /* NSDate+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+convenience.h"; sourceTree = "<group>"; };
 		8DFDDD6D1D9271150050740B /* NSDate+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+convenience.m"; sourceTree = "<group>"; };
 		8DFDDD701D92754C0050740B /* GrowthTimelineVCNew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthTimelineVCNew.h; sourceTree = "<group>"; };
@@ -1421,9 +1427,9 @@
 		3720C1041A419E76000357A5 /* Message */ = {
 			isa = PBXGroup;
 			children = (
+				8DE718571DABAC570080476D /* Homework */,
 				8D7555391D71FFC600A140EE /* DakaDetail */,
 				8D3D45A21D5DDB09005EA8EA /* NotificationDetail */,
-				37C53AAF1B1588B900C3ED69 /* Practise */,
 				37CFA5AF1A4AF2200061D7B8 /* MessageDetail */,
 				37CFA50B1A4990EC0061D7B8 /* MessageGroup */,
 			);
@@ -2460,27 +2466,6 @@
 			path = VacationHistory;
 			sourceTree = "<group>";
 		};
-		37C53AAF1B1588B900C3ED69 /* Practise */ = {
-			isa = PBXGroup;
-			children = (
-				37C53AB01B1588DB00C3ED69 /* PractiseVC */,
-			);
-			path = Practise;
-			sourceTree = "<group>";
-		};
-		37C53AB01B1588DB00C3ED69 /* PractiseVC */ = {
-			isa = PBXGroup;
-			children = (
-				37C53AB11B1588EB00C3ED69 /* PractiseModel.h */,
-				37C53AB21B1588EB00C3ED69 /* PractiseModel.m */,
-				37C53AB41B15891A00C3ED69 /* PractiseItemCell.h */,
-				37C53AB51B15891A00C3ED69 /* PractiseItemCell.m */,
-				37C53AB71B15892E00C3ED69 /* PractiseVC.h */,
-				37C53AB81B15892E00C3ED69 /* PractiseVC.m */,
-			);
-			path = PractiseVC;
-			sourceTree = "<group>";
-		};
 		37C6B3BB1BF2DEC60001D54F /* SVSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -2768,8 +2753,8 @@
 		37F206F81BDDCADF006466F4 /* HomeWork */ = {
 			isa = PBXGroup;
 			children = (
-				37F206F91BDDCAF1006466F4 /* CourseListVC.h */,
-				37F206FA1BDDCAF1006466F4 /* CourseListVC.m */,
+				8DCF877A1DAFDA2000712042 /* HomeworkDetail */,
+				8DE7186A1DABE1EC0080476D /* Calendar */,
 				37F207021BDDD596006466F4 /* HomeWorkVC */,
 			);
 			path = HomeWork;
@@ -2780,10 +2765,12 @@
 			children = (
 				37F207031BDDD596006466F4 /* HomeWorkCell.h */,
 				37F207041BDDD596006466F4 /* HomeWorkCell.m */,
-				37F207091BDDD8C4006466F4 /* HomeWorkListModel.h */,
-				37F2070A1BDDD8C4006466F4 /* HomeWorkListModel.m */,
 				37F207051BDDD596006466F4 /* HomeWorkVC.h */,
 				37F207061BDDD596006466F4 /* HomeWorkVC.m */,
+				8DE718641DABB0370080476D /* HomeworkItem.h */,
+				8DE718651DABB0370080476D /* HomeworkItem.m */,
+				8DE718671DABB0700080476D /* HomeworkListModel.h */,
+				8DE718681DABB0700080476D /* HomeworkListModel.m */,
 			);
 			path = HomeWorkVC;
 			sourceTree = "<group>";
@@ -3053,6 +3040,19 @@
 			path = LGAlertView;
 			sourceTree = "<group>";
 		};
+		8DCF877A1DAFDA2000712042 /* HomeworkDetail */ = {
+			isa = PBXGroup;
+			children = (
+				8DCF877B1DAFDA2D00712042 /* HomeworkDetailVC.h */,
+				8DCF877C1DAFDA2D00712042 /* HomeworkDetailVC.m */,
+				8DCF87841DAFDFE600712042 /* HomeworkDetailView.h */,
+				8DCF87851DAFDFE600712042 /* HomeworkDetailView.m */,
+				8DCF87861DAFDFE600712042 /* HomeworkFinishView.h */,
+				8DCF87871DAFDFE600712042 /* HomeworkFinishView.m */,
+			);
+			path = HomeworkDetail;
+			sourceTree = "<group>";
+		};
 		8DCFD7851D5A3B8B001EDC8A /* MessageCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -3157,6 +3157,24 @@
 				8DCFD7D71D5ADD94001EDC8A /* NJKWebViewProgressView.m */,
 			);
 			path = NJKWebViewProgress;
+			sourceTree = "<group>";
+		};
+		8DE718571DABAC570080476D /* Homework */ = {
+			isa = PBXGroup;
+			children = (
+				8DE718581DABAC6A0080476D /* HomeworkListVC.h */,
+				8DE718591DABAC6A0080476D /* HomeworkListVC.m */,
+			);
+			path = Homework;
+			sourceTree = "<group>";
+		};
+		8DE7186A1DABE1EC0080476D /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				8DE7186B1DABE2120080476D /* Calendar.h */,
+				8DE7186C1DABE2120080476D /* Calendar.m */,
+			);
+			path = Calendar;
 			sourceTree = "<group>";
 		};
 		8DFDDD6F1D9274AF0050740B /* GrowthTimelineNew */ = {
@@ -3435,6 +3453,7 @@
 				3793F7F11B7CFFD900501F77 /* MLPlayVoiceButton.m in Sources */,
 				8D3E32AD1D7D50AC00C1BC77 /* ContactsLoadingView.m in Sources */,
 				37CBAF791A47CCD90063F395 /* LZTabBarButton.m in Sources */,
+				8DCF87881DAFDFE600712042 /* HomeworkDetailView.m in Sources */,
 				3728A61D1B93F36B00310457 /* HPTextViewInternal.m in Sources */,
 				37E93FDB1A7E9CF200AD45A1 /* MJPhotoLoadingView.m in Sources */,
 				3793F7A01B7CFFD900501F77 /* AFSecurityPolicy.m in Sources */,
@@ -3455,12 +3474,10 @@
 				3793F7ED1B7CFFD900501F77 /* MLAudioRecorder.m in Sources */,
 				37FD70B41BBDAFED00C83AB4 /* DetailCommentCell.m in Sources */,
 				372775C81A60369900464461 /* UserCenter.m in Sources */,
-				37C53AB61B15891A00C3ED69 /* PractiseItemCell.m in Sources */,
 				3793F7B71B7CFFD900501F77 /* ActionSelectView.m in Sources */,
 				37FEA9681C46578400E7425B /* AccountInfoView.m in Sources */,
 				3720C1371A41BB92000357A5 /* DiscoveryVC.m in Sources */,
 				37E93FDA1A7E9CF200AD45A1 /* MJPhotoBrowser.m in Sources */,
-				37F206FB1BDDCAF1006466F4 /* CourseListVC.m in Sources */,
 				3793F7A51B7CFFD900501F77 /* HttpRequestEngine.m in Sources */,
 				37F207071BDDD596006466F4 /* HomeWorkCell.m in Sources */,
 				37CA18861AB70BCC00B49B55 /* PhotoPickerModel.m in Sources */,
@@ -3498,7 +3515,6 @@
 				37BC41101A43346D005038F9 /* ConfimInfoVC.m in Sources */,
 				8DFDDDAC1D950D3E0050740B /* AuthCodeInputVC.m in Sources */,
 				3793F7D11B7CFFD900501F77 /* PhotoItem.m in Sources */,
-				37F2070B1BDDD8C4006466F4 /* HomeWorkListModel.m in Sources */,
 				3793F7DD1B7CFFD900501F77 /* UIImageView+URLWithAnimation.m in Sources */,
 				37BC70901C116EC900F8B79B /* UIView+convenience.m in Sources */,
 				37EAC9ED1B82D165007BFBA1 /* CommonInputVC.m in Sources */,
@@ -3524,6 +3540,7 @@
 				37C88FB91A845D95008E44DB /* AddRelationVC.m in Sources */,
 				3793F7581B7CFFD900501F77 /* YLGIFImage.m in Sources */,
 				3793F7B81B7CFFD900501F77 /* AudioRecordView.m in Sources */,
+				8DCF877D1DAFDA2D00712042 /* HomeworkDetailVC.m in Sources */,
 				8D7554ED1D6969E300A140EE /* DNSendButton.m in Sources */,
 				37C316551A568F7B002E847D /* GrowthTimelineModel.m in Sources */,
 				8D3D45B71D5DDB09005EA8EA /* NotificationDetailView.m in Sources */,
@@ -3547,6 +3564,7 @@
 				37C316451A56372D002E847D /* ClassAppVC.m in Sources */,
 				3793F8241B7CFFD900501F77 /* TNBaseWebViewController.m in Sources */,
 				3793F7D61B7CFFD900501F77 /* NSObject+UnifiedPerformSelector.m in Sources */,
+				8DCF87891DAFDFE600712042 /* HomeworkFinishView.m in Sources */,
 				379B7B161C29738F0052F563 /* ClassSelectionVC.m in Sources */,
 				3728A61E1B93F36B00310457 /* MFWFace.m in Sources */,
 				3793F7E71B7CFFD900501F77 /* AmrPlayerReader.m in Sources */,
@@ -3594,6 +3612,7 @@
 				3793F75D1B7CFFD900501F77 /* OpenUDID.m in Sources */,
 				37C88FF11A889A05008E44DB /* PersonalSetting.m in Sources */,
 				3793F7A31B7CFFD900501F77 /* AFURLResponseSerialization.m in Sources */,
+				8DE7185A1DABAC6A0080476D /* HomeworkListVC.m in Sources */,
 				8DFDDD721D92754C0050740B /* GrowthTimelineVCNew.m in Sources */,
 				8D7554EC1D6969E300A140EE /* DNFullImageButton.m in Sources */,
 				37FD6DC71BAE800600C83AB4 /* ChatMessageModel.m in Sources */,
@@ -3608,7 +3627,6 @@
 				3793F81B1B7CFFD900501F77 /* TNCollectionViewCell.m in Sources */,
 				37E93F1D1A795FB600AD45A1 /* ChildrenSelectView.m in Sources */,
 				37C316521A568F63002E847D /* GrowthTimelineCell.m in Sources */,
-				37C53AB91B15892E00C3ED69 /* PractiseVC.m in Sources */,
 				372571311A8099410087F178 /* AvatarPickerVC.m in Sources */,
 				3793F7F01B7CFFD900501F77 /* MLDataResponseSerializer.m in Sources */,
 				37E93FD91A7E9CF200AD45A1 /* CHTCollectionViewWaterfallLayout.m in Sources */,
@@ -3626,6 +3644,7 @@
 				3728A61C1B93F36B00310457 /* HPGrowingTextView.m in Sources */,
 				37CBAF1B1A4724930063F395 /* PublishArticleVC.m in Sources */,
 				3793F8051B7CFFD900501F77 /* SDWebImageDownloaderOperation.m in Sources */,
+				8DE718691DABB0700080476D /* HomeworkListModel.m in Sources */,
 				3793F7EB1B7CFFD900501F77 /* AmrRecordWriter.m in Sources */,
 				37D6EE291BC908B0000994A2 /* CheckInstalledMapAPP.m in Sources */,
 				8D7554E41D6969E300A140EE /* NSURL+DNIMagePickerUrlEqual.m in Sources */,
@@ -3678,6 +3697,7 @@
 				37CCE24C1B8885EA007BFA4F /* NewMessageCell.m in Sources */,
 				3793F7C51B7CFFD900501F77 /* PoiInfoView.m in Sources */,
 				8DCFD7AE1D5A3BDB001EDC8A /* ClassMemberVC.m in Sources */,
+				8DE718661DABB0370080476D /* HomeworkItem.m in Sources */,
 				37CA18871AB70BCC00B49B55 /* PhotoPickerVC.m in Sources */,
 				37B52A1A1A73C24B005F80F2 /* LogConfig.m in Sources */,
 				8D3D45CE1D5F9438005EA8EA /* ChatTeacherInfoVC.m in Sources */,
@@ -3709,10 +3729,10 @@
 				8D3D45A11D5DDAB4005EA8EA /* MessageNotificationDetailVC.m in Sources */,
 				3793F7D01B7CFFD900501F77 /* AudioItem.m in Sources */,
 				8D867C301D2A6CD90020A21C /* TNBaseObject.m in Sources */,
-				37C53AB31B1588EB00C3ED69 /* PractiseModel.m in Sources */,
 				37C316421A5636AC002E847D /* ClassZoneVC.m in Sources */,
 				37CCE2491B888588007BFA4F /* NewMessageVC.m in Sources */,
 				37FD6DF81BB0447700C83AB4 /* ChatVoiceButton.m in Sources */,
+				8DE7186D1DABE2120080476D /* Calendar.m in Sources */,
 				3793F8271B7CFFD900501F77 /* Reachability+.m in Sources */,
 				3719A7471AA2C47800FBDC2A /* NewEditionPreview.m in Sources */,
 				37E591CA1C44FCD400D54A2C /* LeaveDetailView.m in Sources */,

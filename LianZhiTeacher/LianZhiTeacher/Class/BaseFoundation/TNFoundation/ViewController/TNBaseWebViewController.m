@@ -13,7 +13,7 @@
 
 #define boundsWidth self.view.bounds.size.width
 #define boundsHeight self.view.bounds.size.height
-@interface TNBaseWebViewController ()<WKNavigationDelegate>
+@interface TNBaseWebViewController ()<WKNavigationDelegate, WKScriptMessageHandler>
 @property (assign, nonatomic) NSUInteger loadCount;
 @property (strong, nonatomic) UIProgressView *progressView;
 @property (nonatomic)UIBarButtonItem* customBackBarItem;
@@ -127,9 +127,24 @@
     
 }
 
+#pragma mark - WK
+- (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message{
+    // Then pull something from the device using the message body
+    NSString *version = [[UIDevice currentDevice] valueForKey:message.body];
+    
+    // Execute some JavaScript using the result
+    NSString *exec_template = @"set_headline(\"received: %@\");";
+    NSString *exec = [NSString stringWithFormat:exec_template, version];
+    [self.webView evaluateJavaScript:exec completionHandler:nil];
+}
+
 -(WKWebView*)webView{
     if (!_webView) {
-        _webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+        WKUserContentController *userCOntroller = [[WKUserContentController alloc] init];
+        [userCOntroller addScriptMessageHandler:self name:@"appbox"];
+        WKWebViewConfiguration *configuration = [[WKWebViewConfiguration alloc] init];
+        [configuration setUserContentController:userCOntroller];
+        _webView = [[WKWebView alloc] initWithFrame:self.view.bounds configuration:configuration];
         _webView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
         _webView.backgroundColor = [UIColor whiteColor];
         _webView.navigationDelegate = self;

@@ -18,7 +18,7 @@
 #import "LZAccountVC.h"
 #import "NotificationSendVC.h"
 #import "NotificationHistoryVC.h"
-
+#import "TestWebVC.h"
 #define kBannerHeight               (kScreenWidth * 29 / 64)
 
 @implementation ApplicationBoxHeaderView
@@ -340,7 +340,9 @@
     NSString *url = item.url;
     if([url hasPrefix:@"http"])
     {
-        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:url]];
+//        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:url]];
+//        [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
+        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:@"http://125.39.80.78:3000/app/ios/?userId=1421660&userRole=S"]];
         [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
     }
     else if([url hasPrefix:@"lianzhi://"])

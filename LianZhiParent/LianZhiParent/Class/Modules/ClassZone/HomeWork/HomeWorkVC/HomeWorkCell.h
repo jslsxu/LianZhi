@@ -7,18 +7,28 @@
 //
 
 #import "TNTableViewCell.h"
-
-@interface HomeWorkCell : TNTableViewCell<UICollectionViewDataSource, UICollectionViewDelegate>
-{
-    UILabel*        _dateLabel;
+#import "HomeworkItem.h"
+@interface HomeworkExtraInfoView : UIView{
     UILabel*        _courseLabel;
-    UIView*         _bgView;
-    UILabel*        _contentLabel;
-    MessageVoiceButton* _voiceButton;
-    UILabel*        _timespanLabel;
-    UICollectionView*   _collectionView;
-    UILabel*        _timeLabel;
-    UIView*         _bottomLine;
-    UILabel*        _fromLabel;
+    UIImageView*    _imageTypeView;
+    UIImageView*    _voiceTypeView;
+    UIImageView*    _videoTypeView;
+    UIView*         _redDot;
+    UILabel*        _statusLabel;
+    UIImageView*    _rightArrow;
+}
+@property (nonatomic, strong)HomeworkItem *homeworkItem;
+@end
+
+@interface HomeWorkCell : TNTableViewCell
+{
+    UIView*     _bgView;
+    AvatarView* _avatarView;
+    UILabel*    _nameLabel;
+    UILabel*    _roleLabel;
+    UILabel*    _timeLabel;
+    UILabel*    _contentLabel;
+    UILabel*    _endTimeLabel;
+    HomeworkExtraInfoView*  _extraInfoView;
 }
 @end

@@ -16,9 +16,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.tableView setFrame:CGRectMake(0, 0, self.view.width, self.view.height - 50)];
-    [self.tableView.layer setBorderColor:[UIColor redColor].CGColor];
-    [self.tableView.layer setBorderWidth:1];
-    [self.tableView.layer setMasksToBounds:YES];
     UIView* sendView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 50, self.view.width, 50)];
     [sendView setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth];
     [self setupSendView:sendView];

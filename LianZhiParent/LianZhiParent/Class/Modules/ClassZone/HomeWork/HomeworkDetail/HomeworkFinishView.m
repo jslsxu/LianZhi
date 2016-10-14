@@ -1,14 +1,14 @@
 //
-//  PractiseItemCell.m
+//  HomeworkFinishView.m
 //  LianZhiParent
 //
-//  Created by jslsxu on 15/5/27.
-//  Copyright (c) 2015年 jslsxu. All rights reserved.
+//  Created by qingxu zhou on 16/10/13.
+//  Copyright © 2016年 jslsxu. All rights reserved.
 //
 
-#import "PractiseItemCell.h"
+#import "HomeworkFinishView.h"
 
-@implementation PractiseItemCell
+@implementation HomeworkFinishView
 
 /*
 // Only override drawRect: if you perform custom drawing.

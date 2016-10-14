@@ -1,51 +1,36 @@
 //
-//  PublishHomeWorkVC.m
+//  HomeworkAddExplainVC.m
 //  LianZhiTeacher
 //
-//  Created by qingxu zhou on 16/9/22.
+//  Created by qingxu zhou on 16/10/10.
 //  Copyright © 2016年 jslsxu. All rights reserved.
 //
 
-#import "PublishHomeWorkVC.h"
-#import "DNImagePickerController.h"
-#import "HomeworkClassContentView.h"
-#import "HomeworkReplySwitchView.h"
-#import "NotificationCommentView.h"
-#import "NotificationInputView.h"
-#import "NotificationVoiceView.h"
-#import "NotificationPhotoView.h"
-#import "NotificationVideoView.h"
-#import "HomeworkExplainView.h"
-#import "HomeworkSettingView.h"
-#import "NotificationMemberSelectVC.h"
-#import "HomeworkNumView.h"
-#import "HomeworkCourseView.h"
-#import "CourseSelectVC.h"
-#import "ClassSelectVC.h"
-#import "HomeworkSuperSettingVC.h"
 #import "HomeworkAddExplainVC.h"
+#import "NotificationCommentView.h"
+#import "NotificationVoiceView.h"
+#import "NotificationVideoView.h"
+#import "NotificationPhotoView.h"
+#import "NotificationInputView.h"
+#import "DNImagePickerController.h"
 #import "HomeworkDefine.h"
-@interface PublishHomeWorkVC ()<NotificationInputDelegate,
+@interface HomeworkAddExplainVC ()<DNImagePickerControllerDelegate,
 UIGestureRecognizerDelegate,
-UIScrollViewDelegate,
+NotificationInputDelegate,
 UIImagePickerControllerDelegate,
 UINavigationControllerDelegate,
-DNImagePickerControllerDelegate>
-@property (nonatomic, strong)HomeWorkEntity*                 homeWorkEntity;
-@property (nonatomic, strong)HomeWorkEntity*                compareEntity;
-@property (nonatomic, strong)HomeworkCourseView*            courseView;
-@property (nonatomic, strong)HomeworkClassContentView*      targetContentView;
-@property (nonatomic, strong)HomeworkReplySwitchView*       replySwitchView;
-@property (nonatomic, strong)HomeworkNumView*               numView;
-@property (nonatomic, strong)NotificationCommentView*        commentView;
-@property (nonatomic, strong)HomeworkSettingView*           settingView;
-@property (nonatomic, strong)HomeworkExplainView*           explainView;
-@property (nonatomic, strong)NotificationVoiceView*          voiceView;
-@property (nonatomic, strong)NotificationPhotoView*          photoView;
-@property (nonatomic, strong)NotificationVideoView*          videoView;
+UIScrollViewDelegate>{
+    UITouchScrollView*              _scrollView;
+    NotificationInputView*          _inputView;
+}
+@property (nonatomic, strong)NotificationCommentView*   commentView;
+@property (nonatomic, strong)NotificationVoiceView*     voiceView;
+@property (nonatomic, strong)NotificationVideoView*     videoView;
+@property (nonatomic, strong)NotificationPhotoView*     photoView;
 @end
 
-@implementation PublishHomeWorkVC
+@implementation HomeworkAddExplainVC
+
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -57,13 +42,6 @@ DNImagePickerControllerDelegate>
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWindowShow:) name:UIKeyboardWillShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWindowShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardWindowHide:) name:UIKeyboardWillHideNotification object:nil];
-    }
-    return self;
-}
-- (instancetype)initWithHomeWorkEntity:(HomeWorkEntity *)homeWorkEntity{
-    self = [super init];
-    if(self){
-        
     }
     return self;
 }
@@ -96,20 +74,11 @@ DNImagePickerControllerDelegate>
     }];
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if(!self.homeWorkEntity){
-        self.homeWorkEntity = [[HomeWorkEntity alloc] init];
-    }
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.homeWorkEntity];
-        self.compareEntity = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    });
-    self.title = @"发布通知";
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"预览" style:UIBarButtonItemStylePlain target:self action:@selector(onPreview)];
+    self.title = @"添加作业解析";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(finish)];
+    
     _scrollView = [[UITouchScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];
     [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, kActionBarHeight, 0)];
     [_scrollView setShowsVerticalScrollIndicator:NO];
@@ -127,20 +96,50 @@ DNImagePickerControllerDelegate>
     _inputView = [[NotificationInputView alloc] initWithFrame:CGRectMake(0, self.view.height - 64 - kActionBarHeight, self.view.width, kActionBarHeight)];
     [_inputView setPhotoNum:^NSInteger{
         @strongify(self)
-        return self.homeWorkEntity.imageArray.count;
+        return self.explainEntity.imageArray.count;
     }];
     [_inputView setVideoNum:^NSInteger{
         @strongify(self)
-        return self.homeWorkEntity.videoArray.count;
+        return self.explainEntity.videoArray.count;
     }];
     [_inputView setCanRecord:^BOOL{
         @strongify(self)
-        return self.homeWorkEntity.voiceArray.count == 0;
+        return self.explainEntity.voiceArray.count == 0;
     }];
     [_inputView setDelegate:self];
     [self.view addSubview:_inputView];
-    
 }
+
+- (void)setupScrollView{
+    UILabel *hintLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _scrollView.width, 40)];
+    [hintLabel setTextAlignment:NSTextAlignmentCenter];
+    [hintLabel setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    [hintLabel setTextColor:[UIColor colorWithHexString:@"525252"]];
+    [hintLabel setFont:[UIFont systemFontOfSize:13]];
+    [hintLabel setText:@"对于需要回复的作业，家长提交后才能看到作业解析."];
+    [hintLabel sizeToFit];
+    [hintLabel setSize:CGSizeMake(_scrollView.width, hintLabel.height + 10)];
+    [_scrollView addSubview:hintLabel];
+    [_scrollView addSubview:self.commentView];
+    [self.commentView setTop:hintLabel.height];
+    [_scrollView addSubview:self.voiceView];
+    [_scrollView addSubview:self.photoView];
+    [_scrollView addSubview:self.videoView];
+    [self.commentView setContent:self.explainEntity.words];
+    
+    [self.voiceView setVoiceArray:self.explainEntity.voiceArray];
+    [self.photoView setPhotoArray:self.explainEntity.imageArray];
+    [self.videoView setVideoArray:self.explainEntity.videoArray];
+    [self adjustPosition];
+}
+
+- (void)adjustPosition{
+    [self.voiceView setTop:self.commentView.bottom];
+    [self.photoView setTop:self.voiceView.bottom];
+    [self.videoView setTop:self.photoView.bottom];
+    [_scrollView setContentSize:CGSizeMake(_scrollView.width, self.videoView.bottom)];
+}
+
 
 - (void)onSwipe{
     if(_inputView.actionType != ActionTypeNone){
@@ -148,142 +147,72 @@ DNImagePickerControllerDelegate>
     }
 }
 
-- (void)onPreview{
-    
+- (void)finish{
+    [self.navigationController popViewControllerAnimated:YES];
+    if(self.addExplainFinish){
+        self.addExplainFinish();
+    }
 }
 
-- (void)setupScrollView{
-    [_scrollView addSubview:self.courseView];
-    [_scrollView addSubview:self.targetContentView];
-    [_scrollView addSubview:self.replySwitchView];
-    [_scrollView addSubview:self.numView];
-    [_scrollView addSubview:self.commentView];
-    [_scrollView addSubview:self.settingView];
-    [_scrollView addSubview:self.explainView];
-    [_scrollView addSubview:self.voiceView];
-    [_scrollView addSubview:self.photoView];
-    [_scrollView addSubview:self.videoView];
-    [self.courseView setCourse:self.homeWorkEntity.course];
-    [self.targetContentView setTargets:self.homeWorkEntity.targets];
-    [self.commentView setContent:self.homeWorkEntity.words];
-    [self.replySwitchView setReplyOn:self.homeWorkEntity.replyOn];
-    [self.numView setNumOfHomework:self.homeWorkEntity.count];
-    
-    [self.voiceView setVoiceArray:self.homeWorkEntity.voiceArray];
-    [self.photoView setPhotoArray:self.homeWorkEntity.imageArray];
-    [self.videoView setVideoArray:self.homeWorkEntity.videoArray];
+
+- (void)addImage:(NSArray *)imageArray{
+    NSMutableArray *sendImageArray = self.explainEntity.imageArray;
+    NSInteger originalCount = sendImageArray.count;
+    for (NSInteger i = 0; i < MIN(kHomeWorkMaxPhotoNum - originalCount, imageArray.count); i++) {
+        [sendImageArray addObject:imageArray[i]];
+    }
+    [self.photoView setPhotoArray:sendImageArray];
     [self adjustPosition];
 }
 
-- (void)adjustPosition{
-    [self.targetContentView setTop:self.courseView.bottom];
-    [self.replySwitchView setTop:self.targetContentView.bottom];
-    [self.numView setTop:self.replySwitchView.bottom];
-    [self.commentView setTop:self.numView.bottom];
-    [self.settingView setTop:self.commentView.bottom];
-    [self.explainView setTop:self.settingView.bottom];
-    [self.voiceView setTop:self.explainView.bottom];
-    [self.photoView setTop:self.voiceView.bottom];
-    [self.videoView setTop:self.photoView.bottom];
-    [_scrollView setContentSize:CGSizeMake(_scrollView.width, self.videoView.bottom)];
+- (void)addVideo:(NSArray *)videoArray{
+    NSMutableArray *sendVideoArray = self.explainEntity.videoArray;
+    [sendVideoArray addObjectsFromArray:videoArray];
+    [self.videoView setVideoArray:sendVideoArray];
+    [self adjustPosition];
 }
 
-- (HomeworkCourseView *)courseView{
-    if(!_courseView){
-        __weak typeof(self) wself = self;
-        _courseView = [[HomeworkCourseView alloc] initWithFrame:CGRectMake(0, 0, _scrollView.width, 50)];
-        [_courseView setAddCallback:^{
-            CourseSelectVC *courseSelectVC = [[CourseSelectVC alloc] init];
-            [courseSelectVC setCourse:wself.homeWorkEntity.course];
-            [courseSelectVC setCourseSelected:^(NSString *course) {
-                [wself setCourse:course];
-            }];
-            [wself.navigationController pushViewController:courseSelectVC animated:YES];
-        }];
-    }
-    return _courseView;
+- (void)deleteAudioItem:(AudioItem *)audioItem{
+    [self.explainEntity.voiceArray removeObject:audioItem];
+    [_voiceView setVoiceArray:self.explainEntity.voiceArray];
+    [self adjustPosition];
 }
 
-- (HomeworkClassContentView *)targetContentView{
-    if(_targetContentView == nil){
-        @weakify(self);
-        _targetContentView = [[HomeworkClassContentView alloc] initWithFrame:CGRectMake(0, 0, _scrollView.width, 0)];
-        [_targetContentView setAddBlk:^{
-            @strongify(self)
-            [self onAddTarget];
-        }];
-        [_targetContentView setDeleteDataCallback:^(id classInfo) {
-            @strongify(self)
-            [self deleteClassInfo:classInfo];
-        }];
-        
-    }
-    return _targetContentView;
+- (void)deleteImage:(PhotoItem *)photoItem{
+    [self.explainEntity.imageArray removeObject:photoItem];
+    [_photoView setPhotoArray:self.explainEntity.imageArray];
+    [self adjustPosition];
 }
 
-- (HomeworkReplySwitchView *)replySwitchView{
-    if(_replySwitchView == nil){
-        @weakify(self)
-        _replySwitchView = [[HomeworkReplySwitchView alloc] initWithFrame:CGRectMake(0, _targetContentView.bottom, _scrollView.width, 50)];
-        [_replySwitchView setReplySwitchCallback:^(BOOL on) {
-            @strongify(self)
-            self.homeWorkEntity.replyOn = on;
-            [self.commentView setMaxWordsNum:[self.homeWorkEntity maxCommentWordsNum]];
-        }];
-    }
-    return _replySwitchView;
+- (void)deleteVideo:(VideoItem *)videoItem{
+    [self.explainEntity.videoArray removeObject:videoItem];
+    [_videoView setVideoArray:self.explainEntity.videoArray];
+    [self adjustPosition];
 }
 
-- (HomeworkNumView *)numView{
-    if(_numView == nil){
-        _numView = [[HomeworkNumView alloc] initWithFrame:CGRectMake(0, _replySwitchView.bottom, _scrollView.width, 50)];
-        [_numView setNumOfHomework:self.homeWorkEntity.count];
+- (void)stopPlayAudio{
+    if([MLAmrPlayer shareInstance].isPlaying){
+        [[MLAmrPlayer shareInstance] stopPlaying];
     }
-    return _numView;
 }
 
 - (NotificationCommentView *)commentView{
     if(_commentView == nil){
         @weakify(self)
-        _commentView = [[NotificationCommentView alloc] initWithFrame:CGRectMake(0, _numView.bottom, _scrollView.width, 135)];
-        [_commentView setPlaceHolder:@"输入你要布置的作业内容:"];
-        [_commentView setMaxWordsNum:[self.homeWorkEntity maxCommentWordsNum]];
-        [_commentView setContent:self.homeWorkEntity.words];
+        _commentView = [[NotificationCommentView alloc] initWithFrame:CGRectMake(0, 0, _scrollView.width, 135)];
+        [_commentView setPlaceHolder:@"请输入解析内容:"];
+        [_commentView setMaxWordsNum:500];
+        [_commentView setContent:self.explainEntity.words];
         [_commentView setTextViewWillChangeHeight:^(CGFloat height) {
             @strongify(self)
             [self adjustPosition];
         }];
         [_commentView setTextViewTextChanged:^(NSString *text) {
             @strongify(self)
-            self.homeWorkEntity.words = text;
+            self.explainEntity.words = text;
         }];
     }
     return _commentView;
-}
-
-- (HomeworkSettingView *)settingView{
-    if(_settingView == nil){
-        __weak typeof(self) wself = self;
-        _settingView = [[HomeworkSettingView alloc] initWithFrame:CGRectMake(0, _commentView.bottom, _scrollView.width, 50)];
-        [_settingView setSettingClick:^{
-            HomeworkSuperSettingVC *settingVC = [[HomeworkSuperSettingVC alloc] init];
-            [wself.navigationController pushViewController:settingVC animated:YES];
-        }];
-    }
-    return _settingView;
-}
-
-- (HomeworkExplainView *)explainView{
-    if(_explainView == nil){
-        __weak typeof(self) wself = self;
-        _explainView = [[HomeworkExplainView alloc] initWithFrame:CGRectMake(0, _settingView.bottom, _scrollView.width, 50)];
-        [_explainView setExplainClick:^{
-            HomeworkAddExplainVC *addExplainVC = [[HomeworkAddExplainVC alloc] init];
-            [addExplainVC setExplainEntity:[HomeworkExplainEntity new]];
-            [wself.navigationController pushViewController:addExplainVC animated:YES];
-        }];
-    }
-    return _explainView;
 }
 
 - (NotificationVoiceView *)voiceView{
@@ -322,88 +251,6 @@ DNImagePickerControllerDelegate>
     return _videoView;
 }
 
-- (void)onAddTarget{
-    [self stopPlayAudio];
-    __weak typeof(self) wself = self;
-    ClassSelectVC *classSelectVC = [[ClassSelectVC alloc] init];
-    [classSelectVC setOriginalClassArray:self.homeWorkEntity.targets];
-    [classSelectVC setClassSelectCallBack:^(NSArray *targets) {
-        wself.homeWorkEntity.targets = targets;
-        [wself.targetContentView setTargets:wself.homeWorkEntity.targets];
-        [wself adjustPosition];
-    }];
-    [self.navigationController pushViewController:classSelectVC animated:YES];
-}
-
-- (void)deleteClassInfo:(ClassInfo *)classInfo{
-    [self.homeWorkEntity removeTarget:classInfo];
-    [_targetContentView setTargets:self.homeWorkEntity.targets];
-    [self adjustPosition];
-}
-
-- (void)deleteAudioItem:(AudioItem *)audioItem{
-    [self.homeWorkEntity.voiceArray removeObject:audioItem];
-    [_voiceView setVoiceArray:self.homeWorkEntity.voiceArray];
-    [self adjustPosition];
-}
-
-- (void)deleteImage:(PhotoItem *)photoItem{
-    [self.homeWorkEntity.imageArray removeObject:photoItem];
-    [_photoView setPhotoArray:self.homeWorkEntity.imageArray];
-    [self adjustPosition];
-}
-
-- (void)deleteVideo:(VideoItem *)videoItem{
-    [self.homeWorkEntity.videoArray removeObject:videoItem];
-    [_videoView setVideoArray:self.homeWorkEntity.videoArray];
-    [self adjustPosition];
-}
-
-- (void)setCourse:(NSString *)course{
-    [self.homeWorkEntity setCourse:course];
-    [self.courseView setCourse:course];
-}
-
-- (void)addImage:(NSArray *)imageArray{
-    NSMutableArray *sendImageArray = self.homeWorkEntity.imageArray;
-    NSInteger originalCount = sendImageArray.count;
-    for (NSInteger i = 0; i < MIN(kHomeWorkMaxPhotoNum - originalCount, imageArray.count); i++) {
-        [sendImageArray addObject:imageArray[i]];
-    }
-    [self.photoView setPhotoArray:sendImageArray];
-    [self adjustPosition];
-}
-
-- (void)addVideo:(NSArray *)videoArray{
-    NSMutableArray *sendVideoArray = self.homeWorkEntity.videoArray;
-    [sendVideoArray addObjectsFromArray:videoArray];
-    [self.videoView setVideoArray:sendVideoArray];
-    [self adjustPosition];
-}
-
-- (void)stopPlayAudio{
-    if([MLAmrPlayer shareInstance].isPlaying){
-        [[MLAmrPlayer shareInstance] stopPlaying];
-    }
-}
-
-- (BOOL)checkHomework{
-    if(self.homeWorkEntity.targets.count == 0){
-        [ProgressHUD showHintText:@"请选择发送对象"];
-        return NO;
-    }
-    
-    if([self.homeWorkEntity.words length] == 0){
-        [ProgressHUD showHintText:@"请输入通知内容"];
-        return NO;
-    }
-    return YES;
-}
-
-- (void)publishHomework{
-    
-}
-
 #pragma mark - NotificationInputDelegate
 
 - (void)notificationInputDidWillChangeHeight:(CGFloat)height{
@@ -419,8 +266,8 @@ DNImagePickerControllerDelegate>
 - (void)notificationInputPhoto:(NotificationInputView *)inputView{
     DNImagePickerController *imagePicker = [[DNImagePickerController alloc] init];
     [imagePicker setImagePickerDelegate:self];
-    [imagePicker setMaxImageCount:kHomeWorkMaxPhotoNum - self.homeWorkEntity.imageArray.count];
-    [imagePicker setMaxVideoCount:kHomeWorkMaxVideoNum - self.homeWorkEntity.videoArray.count];
+    [imagePicker setMaxImageCount:kHomeWorkMaxPhotoNum - self.explainEntity.imageArray.count];
+    [imagePicker setMaxVideoCount:kHomeWorkMaxVideoNum - self.explainEntity.videoArray.count];
     [self presentViewController:imagePicker animated:YES completion:nil];
 }
 
@@ -431,7 +278,7 @@ DNImagePickerControllerDelegate>
     if(photoArray.count > 0){
         for (XMNAssetModel *asset in photoArray) {
             if(asset.type == XMNAssetTypeVideo){
-                if(self.homeWorkEntity.videoArray.count > 0){
+                if(self.explainEntity.videoArray.count > 0){
                     continue;
                 }
                 NSString *tmpPath = [NHFileManager tmpVideoPathForPath:asset.filepath];
@@ -471,7 +318,7 @@ DNImagePickerControllerDelegate>
                 else{
                     image = [UIImage imageWithCGImage:[[asset.asset defaultRepresentation] fullScreenImage] scale:1.f orientation:UIImageOrientationUp];
                 }
-                if(image && self.homeWorkEntity.imageArray.count + addImageArray.count < 9){
+                if(image && self.explainEntity.imageArray.count + addImageArray.count < 9){
                     [addImageArray addObject:image];
                 }
             }
@@ -525,15 +372,15 @@ DNImagePickerControllerDelegate>
 
 - (void)notificationInputAudio:(NotificationInputView *)inputView audioItem:(AudioItem *)audioItem{
     if(audioItem){
-        [self.homeWorkEntity.voiceArray addObject:audioItem];
-        [_voiceView setVoiceArray:self.homeWorkEntity.voiceArray];
+        [self.explainEntity.voiceArray addObject:audioItem];
+        [_voiceView setVoiceArray:self.explainEntity.voiceArray];
         [self adjustPosition];
         [_inputView setActionType:ActionTypeNone];
     }
 }
 
 - (void)notificationInputSend{
-    [self publishHomework];
+    
 }
 
 #pragma mark - UIGestureRecognizerDelegate
@@ -545,7 +392,6 @@ DNImagePickerControllerDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     if(_inputView.actionType != ActionTypeNone)
         [_inputView setActionType:ActionTypeNone];
-    [self.view endEditing:YES];
 }
 
 #pragma mark - UIImagePicerControllerDelegate
@@ -559,7 +405,7 @@ DNImagePickerControllerDelegate>
             //        MJPhoto *photo = _photos[_currentPhotoIndex];
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
         });
-        if(self.homeWorkEntity.imageArray.count >= 9){
+        if(self.explainEntity.imageArray.count >= 9){
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"最多只能选择9张图片，拍摄内容已保存" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
             [alertView show];
         }
@@ -592,7 +438,7 @@ DNImagePickerControllerDelegate>
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             UISaveVideoAtPathToSavedPhotosAlbum(url.path, nil, nil, nil);
         });
-        if(self.homeWorkEntity.videoArray.count > 0){
+        if(self.explainEntity.videoArray.count > 0){
             [picker dismissViewControllerAnimated:YES completion:^{
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提醒" message:@"一次只能发送1个视频,拍摄内容已保存" delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
                 [alertView show];
@@ -658,7 +504,7 @@ DNImagePickerControllerDelegate>
                 }
             }
             else if([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]){
-                if(self.homeWorkEntity.videoArray.count > 0){
+                if(self.explainEntity.videoArray.count > 0){
                     continue;
                 }
                 NSString *filePath = [[asset.defaultRepresentation url] absoluteString];
@@ -733,7 +579,6 @@ DNImagePickerControllerDelegate>
     second = urlAsset.duration.value/urlAsset.duration.timescale;
     return second;
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
