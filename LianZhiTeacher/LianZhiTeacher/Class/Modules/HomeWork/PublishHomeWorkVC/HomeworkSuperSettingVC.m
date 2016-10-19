@@ -58,18 +58,40 @@
 }
 
 - (void)onSmsSwitchChanged{
-    
+    BOOL isOn = self.smsSwitch.isOn;
+    self.homeworkEntity.sendSms = isOn;
+    if(self.homeworkSettingChanged){
+        self.homeworkSettingChanged();
+    }
 }
 
 - (void)onReplyEndSwitchChanged{
-    
+    BOOL replyEndOn = self.replyEndSwitch.isOn;
+    if(!replyEndOn){
+        [self.endTimeLabel setText:nil];
+        [self.homeworkEntity setReply_close:NO];
+        [self.homeworkEntity setReply_close_ctime:nil];
+    }
+    else{
+        [self.homeworkEntity setReply_close:YES];
+        NSDate *date = [[NSDate date] dateByAddingDays:1];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd 10:00"];
+        NSString *endTime = [dateFormatter stringFromDate:date];
+        [self.homeworkEntity setReply_close_ctime:endTime];
+        [self.endTimeLabel setText:endTime];
+    }
+    if(self.homeworkSettingChanged){
+        self.homeworkSettingChanged();
+    }
+    [self.tableView reloadData];
 }
 
 - (UISwitch *)smsSwitch{
     if(_smsSwitch == nil){
         _smsSwitch = [[UISwitch alloc] init];
         [_smsSwitch setOnTintColor:kCommonTeacherTintColor];
-        [_smsSwitch setOn:YES];
+        [_smsSwitch setOn:self.homeworkEntity.sendSms];
         [_smsSwitch addTarget:self action:@selector(onSmsSwitchChanged) forControlEvents:UIControlEventValueChanged];
         [_smsSwitch setTransform:CGAffineTransformMakeScale(0.8, 0.8)];
     }
@@ -80,7 +102,7 @@
     if(_replyEndSwitch == nil){
         _replyEndSwitch = [[UISwitch alloc] init];
         [_replyEndSwitch setOnTintColor:kCommonTeacherTintColor];
-        [_replyEndSwitch setOn:YES];
+        [_replyEndSwitch setOn:self.homeworkEntity.reply_close];
         [_replyEndSwitch addTarget:self action:@selector(onReplyEndSwitchChanged) forControlEvents:UIControlEventValueChanged];
         [_replyEndSwitch setTransform:CGAffineTransformMakeScale(0.8, 0.8)];
     }
@@ -93,13 +115,17 @@
         [_endTimeLabel setFont:[UIFont systemFontOfSize:15]];
         [_endTimeLabel setTextColor:kCommonTeacherTintColor];
         [_endTimeLabel setTextAlignment:NSTextAlignmentRight];
+        [_endTimeLabel setText:self.homeworkEntity.reply_close_ctime];
     }
     return _endTimeLabel;
 }
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 3;
+    if(self.homeworkEntity.reply_close){
+        return 3;
+    }
+    return 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -124,14 +150,20 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.row == 2){
-        __weak typeof(self) wself = self;
-         [NotificationSelectTimeView showWithCompletion:^(NSInteger timeInterval) {
-             NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
-             NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
-             [formmater setDateFormat:@"yyyy-MM-dd HH:mm"];
-             NSString *dateString = [formmater stringFromDate:date];
-             [wself.endTimeLabel setText:dateString];
-        }];
+        if(self.replyEndSwitch.isOn){
+            __weak typeof(self) wself = self;
+            [NotificationSelectTimeView showWithCompletion:^(NSInteger timeInterval) {
+                NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+                NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
+                [formmater setDateFormat:@"yyyy-MM-dd HH:mm"];
+                NSString *dateString = [formmater stringFromDate:date];
+                [wself.endTimeLabel setText:dateString];
+                [wself.homeworkEntity setReply_close_ctime:dateString];
+                if(wself.homeworkSettingChanged){
+                    wself.homeworkSettingChanged();
+                }
+            }];
+        }
     }
 }
 

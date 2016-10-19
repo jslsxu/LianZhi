@@ -98,6 +98,8 @@
     [actionView addSubview:_stateLabel];
     
     [self.view addSubview:actionView];
+    
+    [self updateBottomBar];
 }
 
 - (void)onSelectButtonClicked{

@@ -7,7 +7,7 @@
 //
 
 #import "HomeWorkEntity.h"
-
+#import "HomeworkSettingManager.h"
 @interface HomeWorkEntity ()
 @property (nonatomic, weak)AFHTTPRequestOperation *operation;
 @end
@@ -19,15 +19,20 @@
 - (instancetype)init{
     self = [super init];
     if(self){
-        self.count = 1;
-        self.replyOn = YES;
+        HomeworkSetting *setting = [[HomeworkSettingManager sharedInstance] getHomeworkSetting];
+        self.count = setting.homeworkNum;
+        self.etype = setting.etype;
         self.targets = [NSMutableArray array];
         self.voiceArray = [NSMutableArray array];
         self.imageArray = [NSMutableArray array];
-        self.videoArray = [NSMutableArray array];
         self.authorUser = [UserCenter sharedInstance].userInfo;
-        self.createTime = [[NSDate date] timeIntervalSince1970];
         [self updateClientID];
+        self.words = @"我发了一条作业";
+        self.createTime = @"12:00";
+        self.sendSms = setting.sendSms;
+        self.reply_close = setting.replyEndOn;
+        self.reply_close_ctime = setting.replyEndTime;
+        self.explainEntity = [[HomeworkExplainEntity alloc] init];
     }
     return self;
 }
@@ -50,10 +55,6 @@
     [self setTargets:tmpTargetArray];
 }
 
-- (BOOL)hasVideo{
-    return self.videoArray.count > 0;
-}
-
 - (BOOL)hasImage{
     return self.imageArray.count > 0;
 }
@@ -63,8 +64,90 @@
 }
 
 
-- (void)sendWithProgress:(void (^)(CGFloat))progress success:(void (^)(NotificationItem *))success fail:(void (^)())fail{
+- (void)sendWithProgress:(void (^)(CGFloat))progress success:(void (^)(HomeworkItem *))success fail:(void (^)())fail{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if(self.targets.count == 0){
+        [ProgressHUD showHintText:@"没有选择发送对象"];
+        return;
+    }
+    NSMutableString *classIDString = [NSMutableString string];
+    for (ClassInfo *classInfo in self.targets) {
+        [classIDString appendString:[NSString stringWithFormat:@"%@,",classInfo.classID]];
+    }
+    [params setValue:classIDString forKey:@"class_ids"];
+    [params setValue:self.words forKey:@"words"];
+    [params setValue:kStringFromValue(self.sendSms) forKey:@"sms"];
+    if(self.imageArray.count > 0)
+    {
+        NSMutableString *picSeq = [[NSMutableString alloc] init];
+        for (NSInteger i = 0; i < self.imageArray.count; i++)
+        {
+            PhotoItem *photoItem = self.imageArray[i];
+            if(photoItem.photoID.length > 0){
+                [picSeq appendString:[NSString stringWithFormat:@"%@,",photoItem.photoID]];
+            }
+            else{
+                [picSeq appendFormat:@"picture_%ld,",(long)i];
+            }
+        }
+        [params setValue:picSeq forKey:@"pic_seqs"];
+    }
     
+    if(self.voiceArray.count > 0){
+        AudioItem *audioItem = self.voiceArray[0];
+        if(audioItem.isLocal){
+            [params setValue:kStringFromValue(audioItem.timeSpan) forKey:@"voice_time"];
+        }
+        else{
+            [params setValue:audioItem.audioID forKey:@"voice_id"];
+        }
+    }
+    
+    self.operation = [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/send" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        for (NSInteger i = 0; i < self.imageArray.count; i++)
+        {
+            PhotoItem *photoItem = self.imageArray[i];
+            NSString *filename = [NSString stringWithFormat:@"picture_%ld",(long)i];
+            if(photoItem.photoID.length > 0){
+                
+            }
+            else{
+                NSData *data = [NSData dataWithContentsOfFile:photoItem.big];
+                if(data.length > 0){
+                    [formData appendPartWithFileData:data name:filename fileName:filename mimeType:@"image/jpeg"];
+                }
+            }
+            
+        }
+        if(self.voiceArray.count > 0){
+            AudioItem *audioItem = self.voiceArray[0];
+            if(audioItem.isLocal){
+                NSData *voiceData = [NSData dataWithContentsOfFile:audioItem.audioUrl];
+                [formData appendPartWithFileData:voiceData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
+            }
+        }
+    
+    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        TNDataWrapper *notificationWraper = [responseObject getDataWrapperForKey:@"info"];
+        HomeworkItem *homeworkItem = [HomeworkItem nh_modelWithJson:notificationWraper.data];
+        if(success){
+            success(homeworkItem);
+        }
+    } fail:^(NSString *errMsg) {
+        //        [ProgressHUD showHintText:errMsg];
+        if(fail){
+            fail();
+        }
+    }];
+    [self.operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        CGFloat uploadProgress = totalBytesWritten * 1.f / totalBytesExpectedToWrite;
+        //        NSLog(@"progress is %f",uploadProgress);
+        //        if(progress){
+        //            progress(uploadProgress);
+        //        }
+        self.uploadProgress = uploadProgress;
+    }];
+
 }
 
 - (void)cancelSend{
@@ -76,27 +159,13 @@
     if(self.words.length + object.words.length > 0 && ![self.words isEqualToString:object.words]){
         return NO;
     }
-    if(self.replyOn != object.replyOn){
+    if(self.etype != object.etype){
         return NO;
     }
     for (UserInfo *userInfo in self.targets) {
         BOOL isIn = NO;
         for (UserInfo *user in object.targets) {
             if([userInfo.uid isEqualToString:user.uid]){
-                isIn = YES;
-            }
-        }
-        if(!isIn){
-            return NO;
-        }
-    }
-    if(self.videoArray.count != object.videoArray.count){
-        return NO;
-    }
-    for (VideoItem *videoItem in self.videoArray) {
-        BOOL isIn = NO;
-        for (VideoItem *video in object.videoArray) {
-            if([videoItem isSame:video]){
                 isIn = YES;
             }
         }

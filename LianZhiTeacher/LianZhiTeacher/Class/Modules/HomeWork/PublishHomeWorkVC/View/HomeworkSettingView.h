@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "HomeWorkEntity.h"
 @interface HomeworkSettingView : UIView
+@property (nonatomic, strong)HomeWorkEntity*    homeworkEntity;
 @property (nonatomic, copy)void (^settingClick)();
 @end

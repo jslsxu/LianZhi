@@ -32,5 +32,5 @@
 
 @property (nonatomic, copy, nonnull) void (^onClickAlbum)(void);
 @property (nonatomic, copy, nonnull)void (^sendCallback)(NSArray *imageArray, BOOL fullImage);
-- (instancetype _Nullable)initWithMaxImageCount:(NSInteger)imageCount videoCount:(NSInteger)videoCount;
+- (instancetype _Nullable)initWithMaxImageCount:(NSInteger)imageCount videoCount:(NSInteger)videoCount videoEnabled:(BOOL)videoEnabled;
 @end

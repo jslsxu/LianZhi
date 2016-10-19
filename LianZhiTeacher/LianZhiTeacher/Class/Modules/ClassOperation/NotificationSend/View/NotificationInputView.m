@@ -54,7 +54,7 @@
     _recordView = nil;
     if(!_photoView){
         @weakify(self);
-        _photoView = [[QuickImagePickerView alloc] initWithMaxImageCount:9 - self.photoNum() videoCount:1 - self.videoNum()];
+        _photoView = [[QuickImagePickerView alloc] initWithMaxImageCount:9 - self.photoNum() videoCount:1 - self.videoNum() videoEnabled:!self.onlyPhoto];
         [_photoView setOrigin:CGPointMake(0, kActionBarHeight)];
         [_photoView setOnClickAlbum:^{
             @strongify(self);

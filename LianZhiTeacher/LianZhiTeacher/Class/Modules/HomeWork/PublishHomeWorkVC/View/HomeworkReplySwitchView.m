@@ -45,6 +45,11 @@
     return self;
 }
 
+- (void)setReplyOn:(BOOL)replyOn{
+    _replyOn = replyOn;
+    [self.replySwitch setOn:_replyOn];
+}
+
 - (void)onReplySwitch{
     if(self.replySwitchCallback){
         self.replySwitchCallback(self.replySwitch.isOn);

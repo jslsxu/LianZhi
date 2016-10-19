@@ -15,7 +15,6 @@
     if(self){
         self.voiceArray = [NSMutableArray array];
         self.imageArray = [NSMutableArray array];
-        self.videoArray = [NSMutableArray array];
     }
     return self;
 }

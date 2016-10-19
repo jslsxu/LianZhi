@@ -44,16 +44,22 @@
         [_contentField setDelegate:self];
         [self addSubview:_contentField];
         
+        [self updateSubviews];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged) name:UITextFieldTextDidChangeNotification object:nil];
     }
     return self;
 }
 
+- (void)updateSubviews{
+    [_decreaseButton setEnabled:self.num > self.min];
+    [_increaseButton setEnabled:self.num < self.max];
+}
+
 - (void)setNum:(NSInteger)num{
     _num = num;
-    [_decreaseButton setEnabled:num > self.min];
-    [_increaseButton setEnabled:num < self.max];
     [_contentField setText:kStringFromValue(_num)];
+    [self updateSubviews];
 }
 
 - (void)onDescrese{
@@ -72,10 +78,10 @@
     NSString *text = _contentField.text;
     NSInteger num = [text integerValue];
     if(num > self.max){
-        [_contentField setText:kStringFromValue(self.max)];
+        [self setNum:self.max];
     }
     else if(num < self.min){
-        [_contentField setText:kStringFromValue(self.min)];
+        [self setNum:self.min];
     }
     else{
         [self setNum:num];

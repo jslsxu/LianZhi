@@ -12,5 +12,5 @@
 @property(nonatomic, copy)NSString*             words;
 @property(nonatomic, strong)NSMutableArray*     voiceArray;
 @property(nonatomic, strong)NSMutableArray*     imageArray;
-@property(nonatomic, strong)NSMutableArray*     videoArray;
+
 @end

@@ -143,6 +143,7 @@
 - (void)onActionViewCancel{
     _replyBox.hidden = YES;
     [_replyBox resignFocus];
+    [_replyBox setText:nil];
 }
 
 - (void)onActionViewCommit:(NSString *)content{
@@ -153,6 +154,7 @@
         [self.tableView reloadData];
         [self onActionViewCancel];
     }
+    [_replyBox setText:nil];
 }
 
 #pragma mark - UITableViewDelegate

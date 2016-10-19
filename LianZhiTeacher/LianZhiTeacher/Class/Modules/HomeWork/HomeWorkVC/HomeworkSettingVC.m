@@ -8,7 +8,7 @@
 
 #import "HomeworkSettingVC.h"
 #import "NumOperationView.h"
-
+#import "HomeworkSettingManager.h"
 @interface HomeworkSettingVC ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong)UIButton*  moreButton;
 @property (nonatomic, strong)UITableView *tableView;
@@ -76,6 +76,7 @@
         _homeworkReplySwitch = [[UISwitch alloc] init];
         [_homeworkReplySwitch addTarget:self action:@selector(onSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
         [_homeworkReplySwitch setOnTintColor:kCommonTeacherTintColor];
+        [_homeworkReplySwitch setOn:[[HomeworkSettingManager sharedInstance].getHomeworkSetting etype]];
     }
     return _homeworkReplySwitch;
 }
@@ -85,6 +86,7 @@
         _timeSwitch = [[UISwitch alloc] init];
         [_timeSwitch setOnTintColor:kCommonTeacherTintColor];
         [_timeSwitch addTarget:self action:@selector(onSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
+        [_timeSwitch setOn:[[HomeworkSettingManager sharedInstance] getHomeworkSetting].replyEndOn];
     }
     return _timeSwitch;
 }
@@ -93,6 +95,7 @@
     if(!_smsSwitch){
         _smsSwitch = [[UISwitch alloc] init];
         [_smsSwitch setOnTintColor:kCommonTeacherTintColor];
+        [_smsSwitch setOn:[[HomeworkSettingManager sharedInstance] getHomeworkSetting].sendSms];
         [_smsSwitch addTarget:self action:@selector(onSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
     }
     return _smsSwitch;
@@ -101,22 +104,24 @@
 - (NumOperationView *)numView{
     if(!_numView){
         _numView = [[NumOperationView alloc] initWithMin:1 max:99];
-        [_numView setNum:1];
+        [_numView setNum:[[HomeworkSettingManager sharedInstance] getHomeworkSetting].homeworkNum];
     }
     return _numView;
 }
 
 - (void)onSwitchValueChanged:(UISwitch *)switchCtrl{
     BOOL isOn = switchCtrl.on;
+    HomeworkSetting *setting = [[HomeworkSettingManager sharedInstance] getHomeworkSetting];
     if(switchCtrl == self.homeworkReplySwitch){
-        
+        setting.etype = isOn;
     }
     else if(switchCtrl == self.timeSwitch){
-        
+        setting.replyEndOn = isOn;
     }
     else if(switchCtrl == self.smsSwitch){
-        
+        setting.sendSms = isOn;
     }
+    [[HomeworkSettingManager sharedInstance] save];
 }
 
 #pragma mark - UITableViewDelegate

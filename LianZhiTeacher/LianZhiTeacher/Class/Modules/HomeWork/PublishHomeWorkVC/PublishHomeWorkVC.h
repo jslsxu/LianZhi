@@ -9,9 +9,17 @@
 #import "TNBaseViewController.h"
 #import "NotificationInputView.h"
 #import "HomeWorkEntity.h"
+typedef NS_ENUM(NSInteger, HomeworkSendType){
+    HomeworkSendNormal = 0,     //正常发送
+    HomeworkSendForward ,       //转发
+    HomeworkSendDraft,          //从草稿进入
+    HomeworkSendEdit            //编辑
+};
+
 @interface PublishHomeWorkVC : TNBaseViewController{
     UITouchScrollView*              _scrollView;
     NotificationInputView*          _inputView;
 }
+@property (nonatomic, assign)HomeworkSendType sendType;
 - (instancetype)initWithHomeWorkEntity:(HomeWorkEntity *)homeWorkEntity;
 @end

@@ -9,5 +9,6 @@
 #import "TNBaseViewController.h"
 
 @interface HomeworkDetailVC : TNBaseViewController
-
+@property (nonatomic, copy)NSString *hid;
+@property (nonatomic, copy)void (^deleteCallback)(NSString *hid);
 @end

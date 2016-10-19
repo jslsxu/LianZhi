@@ -73,6 +73,7 @@
 @end
 
 @interface QuickImagePickerView ()<DNPhotoBrowserDelegate>
+@property (nonatomic, assign)BOOL videoEnabled;
 @property (nonatomic, strong) XMNAlbumModel*    displayAlbum;
 @property (nonatomic, copy) NSArray <XMNAssetModel *>* assets;
 @property (nonatomic, strong) NSMutableArray <XMNAssetModel *> *selectedAssets;
@@ -87,9 +88,10 @@
 
 @implementation QuickImagePickerView
 
-- (instancetype)initWithMaxImageCount:(NSInteger)imageCount videoCount:(NSInteger)videoCount{
+- (instancetype)initWithMaxImageCount:(NSInteger)imageCount videoCount:(NSInteger)videoCount videoEnabled:(BOOL)videoEnabled{
     self = [super initWithFrame:CGRectMake(0, 0, kScreenWidth, kPhotoCollectionViewHeight + kPhotoToolBarHeight)];
     if(self){
+        self.videoEnabled = videoEnabled;
         self.maxPreviewCount = 40;
         self.maxImageCount = MIN(self.maxPreviewCount, imageCount);
         self.maxVideoCount = videoCount;
@@ -170,7 +172,7 @@
             
             if (albums && [albums firstObject]) {
                 wSelf.displayAlbum = [albums firstObject];
-                [[XMNPhotoManager sharedManager] getAssetsFromResult:[[albums firstObject] fetchResult] pickingVideoEnable:YES completionBlock:^(NSArray<XMNAssetModel *> *assets) {
+                [[XMNPhotoManager sharedManager] getAssetsFromResult:[[albums firstObject] fetchResult] pickingVideoEnable:self.videoEnabled completionBlock:^(NSArray<XMNAssetModel *> *assets) {
                     NSMutableArray *tempAssets = [NSMutableArray array];
                     [assets enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(XMNAssetModel * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                         [tempAssets addObject:obj];

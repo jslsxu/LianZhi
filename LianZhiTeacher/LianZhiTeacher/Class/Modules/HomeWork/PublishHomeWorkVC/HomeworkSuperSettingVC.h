@@ -7,11 +7,12 @@
 //
 
 #import "TNBaseViewController.h"
-
+#import "HomeWorkEntity.h"
 @interface HomeworkSuperSettingCell : TNTableViewCell
 @property (nonatomic, strong)UIView* actionView;
 @end
 
 @interface HomeworkSuperSettingVC : TNBaseViewController
-
+@property (nonatomic, strong)HomeWorkEntity* homeworkEntity;
+@property (nonatomic, copy)void (^homeworkSettingChanged)();
 @end
