@@ -20,16 +20,13 @@
 @property(nonatomic, copy)NSString*             words;
 @property(nonatomic, assign)BOOL                etype;              //是否可以恢复
 @property(nonatomic, assign)NSInteger           count;
-@property(nonatomic, assign)NSString*           createTime;
-@property(nonatomic, assign)NSInteger           sent_num;
-@property(nonatomic, assign)NSInteger           reply_num;
-@property(nonatomic, assign)NSInteger           read_num;    //批阅数
+@property(nonatomic, assign)NSInteger           createTime;
 @property(nonatomic, strong)NSMutableArray*     voiceArray;
 @property(nonatomic, strong)NSMutableArray*     imageArray;
 @property(nonatomic, strong)HomeworkExplainEntity*  explainEntity;
 @property(nonatomic, strong)UserInfo*           authorUser;
 @property(nonatomic, assign)CGFloat             uploadProgress;
-//+ (HomeWorkEntity *)sendEntityWithNotification:(NotificationItem *)notification;
++ (HomeWorkEntity *)sendEntityWithHomeworkItem:(HomeworkItem *)homeworkItem;
 - (void)updateClientID;
 - (NSInteger)maxCommentWordsNum;
 - (void)removeTarget:(ClassInfo *)classInfo;

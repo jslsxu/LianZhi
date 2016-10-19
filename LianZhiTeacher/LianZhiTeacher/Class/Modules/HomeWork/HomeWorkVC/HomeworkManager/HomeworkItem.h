@@ -20,4 +20,7 @@
 @property (nonatomic, strong)AudioItem* voice;
 @property (nonatomic, strong)NSArray<PhotoItem *>*  pics;
 @property (nonatomic, copy)NSString*    words;
+
+- (BOOL)hasImage;
+- (BOOL)hasAudio;
 @end

@@ -7,8 +7,18 @@
 //
 
 #import "TNBaseViewController.h"
-
+#import "HomeworkDraftManager.h"
+@interface HomeworkDraftItemCell : TNTableViewCell
+{
+    UILabel*        _titleLabel;
+    UILabel*        _timeLabel;
+    UIImageView*    _audioImageView;
+    UIImageView*    _photoImageView;
+    UIView*         _sepLine;
+}
+@property (nonatomic, strong)HomeWorkEntity* homeworkEntity;
+@end
 @interface HomeWorkDraftVC : TNBaseViewController
 
-- (void)clearDraft;
+- (void)clear;
 @end

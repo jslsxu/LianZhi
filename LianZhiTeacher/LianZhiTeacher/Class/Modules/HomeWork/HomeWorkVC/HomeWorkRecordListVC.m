@@ -8,8 +8,9 @@
 
 #import "HomeWorkRecordListVC.h"
 #import "PublishHomeWorkVC.h"
-#import "HomeworkDetailVC.h"
 #import "HomeworkDraftManager.h"
+#import "HomeworkDetailVC.h"
+
 @implementation HomeworkSendingItemCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -130,8 +131,8 @@
 }
 
 
-- (void)setHomeworkEntity:(HomeWorkEntity *)homeworkEntity{
-    _homeworkEntity = homeworkEntity;
+- (void)setHomeworkItem:(HomeworkItem *)homeworkItem{
+    _homeworkItem = homeworkItem;
     
     CGFloat spaceXEnd = self.width - 10;
     //    if(_notificationItem.is_sent){
@@ -139,17 +140,17 @@
     [_timeLabel setHidden:NO];
     [_stateLabel setHidden:NO];
     [_revokeButton setHidden:YES];
-    [_timeLabel setText:_homeworkEntity.createTime];
+    [_timeLabel setText:_homeworkItem.ctime];
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(spaceXEnd - _timeLabel.width, 15)];
     spaceXEnd = spaceXEnd - _timeLabel.width - 10;
     
     NSMutableAttributedString *stateStr = [[NSMutableAttributedString alloc] initWithString:@"发送:"];
-    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_homeworkEntity.sent_num) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
+    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_homeworkItem.publish_num) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
     [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 回复:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
-    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_homeworkEntity.reply_num) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
+    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_homeworkItem.reply_num) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
     [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 批阅:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
-    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_homeworkEntity.read_num) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
+    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_homeworkItem.read_num) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
     [_stateLabel setAttributedText:stateStr];
     [_stateLabel sizeToFit];
     [_stateLabel setOrigin:CGPointMake(self.width - 10 - _stateLabel.width, self.height - 15 - _stateLabel.height)];
@@ -164,18 +165,18 @@
     //        [_timeLabel setHidden:YES];
     //    }
     [_titleLabel setFrame:CGRectMake(12, 15, spaceXEnd - 12, 20)];
-    [_titleLabel setText:_homeworkEntity.words];
+    [_titleLabel setText:_homeworkItem.words];
     [_sepLine setFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
     
-    [_audioImageView setHidden:!_homeworkEntity.hasAudio];
-    [_photoImageView setHidden:!_homeworkEntity.hasImage];
+    [_audioImageView setHidden:!_homeworkItem.hasAudio];
+    [_photoImageView setHidden:!_homeworkItem.hasImage];
     CGFloat spaceXStart = 20;
     CGFloat centerY = 50;
-    if(_homeworkEntity.hasAudio){
+    if(_homeworkItem.hasAudio){
         [_audioImageView setCenter:CGPointMake(spaceXStart, centerY)];
         spaceXStart += _audioImageView.width + 15;
     }
-    if(_homeworkEntity.hasImage){
+    if(_homeworkItem.hasImage){
         [_photoImageView setCenter:CGPointMake(spaceXStart, centerY)];
         spaceXStart += _photoImageView.width + 15;
     }
@@ -197,15 +198,8 @@
 
 @implementation MySendHomeworkListModel
 
-- (instancetype)init{
-    self = [super init];
-    if(self){
-        for (NSInteger i = 0; i < 10; i++) {
-            HomeWorkEntity *homeworkEntity = [[HomeWorkEntity alloc] init];
-            [self.modelItemArray addObject:homeworkEntity];
-        }
-    }
-    return self;
+- (BOOL)hasMoreData{
+    return self.has;
 }
 
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type{
@@ -213,8 +207,11 @@
     if(type == REQUEST_REFRESH){
         [self.modelItemArray removeAllObjects];
     }
-    TNDataWrapper *listWrapper = [data getDataWrapperForKey:@"list"];
-    [self.modelItemArray addObjectsFromArray:[HomeWorkEntity nh_modelArrayWithJson:listWrapper.data]];
+    TNDataWrapper *moreWrapper = [data getDataWrapperForKey:@"more"];
+    self.max_id = [moreWrapper getStringForKey:@"id"];
+    self.has = [moreWrapper getBoolForKey:@"has"];
+    TNDataWrapper *listWrapper = [data getDataWrapperForKey:@"items"];
+    [self.modelItemArray addObjectsFromArray:[HomeworkItem nh_modelArrayWithJson:listWrapper.data]];
     
     return YES;
 }
@@ -230,9 +227,9 @@
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNotificationChanged) name:kHomeworkManagerChangedNotification object:nil];
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNotificationSendSuccess:) name:kHomeworkSendSuccessNotification object:nil];
-//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNotificationReadNumChanged:) name:kNotificationReadNumChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onHomeworkChanged) name:kHomeworkManagerChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onHomeworkSendSuccess:) name:kHomeworkSendSuccessNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onHomeworkReadNumChanged:) name:kHomeworkReadNumChangedNotification object:nil];
     }
     return self;
 }
@@ -248,7 +245,7 @@
     [self bindTableCell:@"HomeworkRecordItemCell" tableModel:@"MySendHomeworkListModel"];
     [self setSupportPullUp:YES];
     [self setSupportPullDown:YES];
-//    [self requestData:REQUEST_REFRESH];
+    [self requestData:REQUEST_REFRESH];
 }
 
 - (void)setupSendView:(UIView *)viewParent{
@@ -270,8 +267,69 @@
     [CurrentROOTNavigationVC pushViewController:publishHomeWorkVC animated:YES];
 }
 
-- (void)deleteHomeworkItem:(HomeWorkEntity *)homework{
-    
+- (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType{
+    MySendHomeworkListModel *model = (MySendHomeworkListModel *)self.tableViewModel;
+    HttpRequestTask *task = [[HttpRequestTask alloc] init];
+    [task setRequestUrl:@"exercises/lists"];
+    [task setRequestMethod:REQUEST_GET];
+    if(requestType == REQUEST_GETMORE){
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:model.max_id forKey:@"max_id"];
+        [task setParams:params];
+    }
+    return task;
+}
+
+- (void)onHomeworkChanged{
+    NSInteger count = self.tableViewModel.modelItemArray.count + [HomeworkManager sharedInstance].sendingHomeworkArray.count;
+    [self.tableView reloadData];
+    if(count > 0){
+        [self.tableView scrollToRow:0 inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:NO];
+    }
+}
+
+- (void)onHomeworkSendSuccess:(NSNotification *)notification{
+    NotificationItem *item = notification.userInfo[kNewHomeworkToSend];
+    if(item){
+        [self.tableViewModel.modelItemArray insertObject:item atIndex:0];
+        [self saveModel];
+        [self.tableView reloadData];
+        [self.tableView scrollToTop];
+    }
+}
+
+- (void)onHomeworkReadNumChanged:(NSNotification *)notification{
+    NotificationItem *item = notification.userInfo[@"notification"];
+    if(item){
+        for (NotificationItem *notificationItem in self.tableViewModel.modelItemArray) {
+            if([notificationItem.nid isEqualToString:item.nid]){
+                notificationItem.read_num = item.read_num;
+                [self.tableView reloadData];
+                [self saveModel];
+                break;
+            }
+        }
+    }
+}
+
+- (void)saveModel{
+    NSData *modelData = [NSKeyedArchiver archivedDataWithRootObject:self.tableViewModel];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL success = [modelData writeToFile:[self cacheFilePath] atomically:YES];
+        if(success)
+            NSLog(@"save success");
+    });
+}
+
+- (void)deleteHomeworkItem:(HomeworkItem *)homework{
+    NSInteger row = [self.tableViewModel.modelItemArray indexOfObject:homework];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/delete" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : homework.hid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [self.tableViewModel.modelItemArray removeObject:homework];
+        [self saveModel];
+        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (void)TNBaseTableViewControllerRequestStart{
@@ -303,7 +361,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSInteger row = indexPath.row;
     MGSwipeTableCell *tableCell = nil;
-    if([HomeworkManager sharedInstance].sendingHomeworkArray.count > row){//已发送的
+    if([HomeworkManager sharedInstance].sendingHomeworkArray.count > row){//正在发送
         HomeWorkEntity *sendEntity = [HomeworkManager sharedInstance].sendingHomeworkArray[row];
         NSString *reuseID = @"NotificationSendingItemCell";
         HomeworkSendingItemCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
@@ -320,15 +378,15 @@
         }];
         tableCell = cell;
     }
-    else{//正在发送的
+    else{//已发发送的
         
-        HomeWorkEntity *item = self.tableViewModel.modelItemArray[row - [HomeworkManager sharedInstance].sendingHomeworkArray.count];
+        HomeworkItem *item = self.tableViewModel.modelItemArray[row - [HomeworkManager sharedInstance].sendingHomeworkArray.count];
         NSString *reuseID = @"NotificationRecordItemCell";
         HomeworkRecordItemCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
         if(cell == nil){
             cell = [[HomeworkRecordItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
         }
-        [cell setHomeworkEntity:item];
+        [cell setHomeworkItem:item];
         [cell setRevokeCallback:^{
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/cancel_send_notice" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : item.hid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
                 [ProgressHUD showHintText:@"已撤销"];
@@ -353,7 +411,8 @@
         }];
         [buttonArray addObject:deleteButton];
         MGSwipeButton * forwardButton = [MGSwipeButton buttonWithTitle:@"转发" backgroundColor:[UIColor colorWithHexString:@"28c4d8"] callback:^BOOL(MGSwipeTableCell * sender){
-            PublishHomeWorkVC *sendVC = [[PublishHomeWorkVC alloc] initWithHomeWorkEntity:item];
+            HomeWorkEntity *sendEntity = [HomeWorkEntity sendEntityWithHomeworkItem:item];
+            PublishHomeWorkVC *sendVC = [[PublishHomeWorkVC alloc] initWithHomeWorkEntity:sendEntity];
             [sendVC setSendType:HomeworkSendForward];
             [CurrentROOTNavigationVC pushViewController:sendVC animated:YES];
             return YES;
@@ -388,6 +447,13 @@
     }
 }
 
+- (BOOL)supportCache{
+    return YES;
+}
+
+- (NSString *)cacheFileName{
+    return kSendedHomeworkKey;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

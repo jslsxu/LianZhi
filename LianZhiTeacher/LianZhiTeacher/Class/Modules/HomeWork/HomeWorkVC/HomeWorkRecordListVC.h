@@ -9,6 +9,7 @@
 #import "TNBaseTableViewController.h"
 #import "HomeWorkEntity.h"
 #import "HomeworkManager.h"
+#import "HomeworkItem.h"
 @interface HomeworkSendingItemCell : MGSwipeTableCell{
     UILabel*        _titleLabel;
     UIImageView*    _audioImageView;
@@ -32,12 +33,13 @@
     UIButton*       _revokeButton;
     UIView*         _sepLine;
 }
-@property (nonatomic, strong)HomeWorkEntity *homeworkEntity;
+@property (nonatomic, strong)HomeworkItem *homeworkItem;
 @property (nonatomic, copy)void (^revokeCallback)();
 @end
 
 @interface MySendHomeworkListModel : TNListModel
-
+@property (nonatomic, copy)NSString*    max_id;
+@property (nonatomic, assign)BOOL       has;
 @end
 
 @interface HomeWorkRecordListVC : TNBaseTableViewController

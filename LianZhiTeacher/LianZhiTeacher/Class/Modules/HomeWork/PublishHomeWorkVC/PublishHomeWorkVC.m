@@ -25,6 +25,8 @@
 #import "HomeworkSuperSettingVC.h"
 #import "HomeworkAddExplainVC.h"
 #import "HomeworkDefine.h"
+#import "HomeworkDraftManager.h"
+#import "HomeworkManager.h"
 @interface PublishHomeWorkVC ()<NotificationInputDelegate,
 UIGestureRecognizerDelegate,
 UIScrollViewDelegate,
@@ -412,9 +414,35 @@ DNImagePickerControllerDelegate>
 }
 
 - (void)publishHomework{
-    
-}
+    [self stopPlayAudio];
+    if([self checkHomework]){
+        YYReachability *reachability = [YYReachability reachability];
+        YYReachabilityStatus status = reachability.status;
+        if(status == YYReachabilityStatusNone){
+            [ProgressHUD showHintText:@"网络异常，存入到草稿"];
+            if(self.sendType == HomeworkSendDraft){
+                [[HomeworkDraftManager sharedInstance] updateDraft:self.homeWorkEntity];
+            }
+            else{
+                [[HomeworkDraftManager sharedInstance] addDraft:self.homeWorkEntity];//存入草稿
+            }
+        }
+        else{
+            [[HomeworkManager sharedInstance] addHomework:self.homeWorkEntity];
+            if(self.sendType == HomeworkSendDraft){//如果是草稿，则删除草稿
+                [[HomeworkDraftManager sharedInstance] removeDraft:self.homeWorkEntity];
+            }
+        }
+        NSArray *vcArray = [self.navigationController viewControllers];
+        for (UIViewController *vc in vcArray) {
+            if([vc isKindOfClass:NSClassFromString(@"HomeWorkVC")]){
+                [self.navigationController popToViewController:vc animated:YES];
+                return;
+            }
+        }
+    }
 
+}
 #pragma mark - NotificationInputDelegate
 
 - (void)notificationInputDidWillChangeHeight:(CGFloat)height{
@@ -526,7 +554,6 @@ DNImagePickerControllerDelegate>
 #pragma mark - UIImagePicerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
-    @weakify(self)
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     if([mediaType isEqualToString:(NSString *)kUTTypeImage]){
         UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];

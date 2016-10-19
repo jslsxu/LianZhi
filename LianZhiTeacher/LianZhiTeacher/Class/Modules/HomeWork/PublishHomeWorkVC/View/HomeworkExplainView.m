@@ -39,6 +39,11 @@
     return self;
 }
 
+- (void)setHasExplain:(BOOL)hasExplain{
+    _hasExplain = hasExplain;
+    
+}
+
 - (void)setHomeworkExplain{
     if(self.explainClick){
         self.explainClick();

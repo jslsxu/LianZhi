@@ -28,13 +28,19 @@
         self.authorUser = [UserCenter sharedInstance].userInfo;
         [self updateClientID];
         self.words = @"我发了一条作业";
-        self.createTime = @"12:00";
+        self.createTime = [[NSDate date] timeIntervalSince1970];
         self.sendSms = setting.sendSms;
         self.reply_close = setting.replyEndOn;
         self.reply_close_ctime = setting.replyEndTime;
         self.explainEntity = [[HomeworkExplainEntity alloc] init];
     }
     return self;
+}
+
++ (HomeWorkEntity *)sendEntityWithHomeworkItem:(HomeworkItem *)homeworkItem{
+    HomeWorkEntity *homeworkEntity = [[HomeWorkEntity alloc] init];
+   
+    return homeworkEntity;
 }
 
 - (void)updateClientID{
@@ -72,10 +78,18 @@
     }
     NSMutableString *classIDString = [NSMutableString string];
     for (ClassInfo *classInfo in self.targets) {
-        [classIDString appendString:[NSString stringWithFormat:@"%@,",classInfo.classID]];
+        if(classIDString.length > 0){
+            [classIDString appendString:[NSString stringWithFormat:@",%@",classInfo.classID]];
+        }
+        else{
+            [classIDString appendString:classInfo.classID];
+        }
     }
+    
+    [params setValue:kStringFromValue(self.etype) forKey:@"etype"];
     [params setValue:classIDString forKey:@"class_ids"];
     [params setValue:self.words forKey:@"words"];
+    [params setValue:self.course_name forKey:@"course_name"];
     [params setValue:kStringFromValue(self.sendSms) forKey:@"sms"];
     if(self.imageArray.count > 0)
     {
@@ -84,12 +98,23 @@
         {
             PhotoItem *photoItem = self.imageArray[i];
             if(photoItem.photoID.length > 0){
-                [picSeq appendString:[NSString stringWithFormat:@"%@,",photoItem.photoID]];
+                if(picSeq.length == 0){
+                    [picSeq appendString:photoItem.photoID];
+                }
+                else{
+                    [picSeq appendString:[NSString stringWithFormat:@",%@",photoItem.photoID]];
+                }
             }
             else{
-                [picSeq appendFormat:@"picture_%ld,",(long)i];
+                if(picSeq.length == 0){
+                    [picSeq appendFormat:@"picture_%ld",(long)i];
+                }
+                else{
+                    [picSeq appendFormat:@",picture_%ld",(long)i];
+                }
             }
         }
+        
         [params setValue:picSeq forKey:@"pic_seqs"];
     }
     
@@ -103,7 +128,7 @@
         }
     }
     
-    self.operation = [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/send" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    self.operation = [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/publish" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         for (NSInteger i = 0; i < self.imageArray.count; i++)
         {
             PhotoItem *photoItem = self.imageArray[i];
@@ -128,8 +153,8 @@
         }
     
     } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        TNDataWrapper *notificationWraper = [responseObject getDataWrapperForKey:@"info"];
-        HomeworkItem *homeworkItem = [HomeworkItem nh_modelWithJson:notificationWraper.data];
+//        TNDataWrapper *notificationWraper = [responseObject getDataWrapperForKey:@"info"];
+        HomeworkItem *homeworkItem = [HomeworkItem nh_modelWithJson:responseObject.data];
         if(success){
             success(homeworkItem);
         }

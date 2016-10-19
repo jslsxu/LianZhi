@@ -10,6 +10,9 @@
 #import "HomeworkDetailView.h"
 #import "HomeworkTargetListView.h"
 #import "NotificationDetailActionView.h"
+
+NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNotification";
+
 @interface HomeworkDetailVC ()
 @property (nonatomic, strong)UISegmentedControl*        segmentCtrl;
 @property (nonatomic, strong)UIButton*                  moreButton;

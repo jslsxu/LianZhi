@@ -16,4 +16,12 @@
              @"pics" : @"question.pics",
              @"words" : @"question.words"};
 }
+
+- (BOOL)hasImage{
+    return self.pics.count > 0;
+}
+
+- (BOOL)hasAudio{
+    return self.voice != nil;
+}
 @end

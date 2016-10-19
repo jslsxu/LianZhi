@@ -25,6 +25,7 @@
     if(self){
         self.recordVC = [[HomeWorkRecordListVC alloc] init];
         self.draftVC = [[HomeWorkDraftVC alloc] init];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSegment) name:kDraftHomeworkChanged object:nil];
     }
     return self;
 }
@@ -58,12 +59,24 @@
 
 - (UISegmentedControl *)segmentCtrl{
     if(!_segmentCtrl){
-        _segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"作业记录",@"草稿"]];
+        NSString *draftTitle = @"草稿";
+        if([[HomeworkDraftManager sharedInstance].draftArray count] > 0){
+             draftTitle = [NSString stringWithFormat:@"草稿(%zd)",[[HomeworkDraftManager sharedInstance].draftArray count]];
+        }
+        _segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"作业记录",draftTitle]];
         [_segmentCtrl setWidth:kScreenWidth / 2];
         [_segmentCtrl addTarget:self action:@selector(onSegmentValueChanged) forControlEvents:UIControlEventValueChanged];
         [_segmentCtrl setSelectedSegmentIndex:0];
     }
     return _segmentCtrl;
+}
+
+- (void)updateSegment{
+    NSString *draftTitle = @"草稿";
+    if([[HomeworkDraftManager sharedInstance].draftArray count] > 0){
+        draftTitle = [NSString stringWithFormat:@"草稿(%zd)",[[HomeworkDraftManager sharedInstance].draftArray count]];
+    }
+    [self.segmentCtrl setTitle:draftTitle forSegmentAtIndex:1];
 }
 
 - (void)onSegmentValueChanged{
@@ -97,15 +110,7 @@
 }
 
 - (void)clearDraft{
-    __weak typeof(self) wself = self;
-    UIAlertController *alertView = [UIAlertController alertControllerWithTitle:@"是否清空全部未发草稿" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [alertView addAction:[UIAlertAction actionWithTitle:@"清除" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-        [wself.draftVC clearDraft];
-    }]];
-    [alertView addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        
-    }]];
-    [CurrentROOTNavigationVC presentViewController:alertView animated:YES completion:nil];
+    [self.draftVC clear];
 }
 
 - (void)didReceiveMemoryWarning {
