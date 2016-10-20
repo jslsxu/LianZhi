@@ -374,6 +374,7 @@
 		8DA0C50B1DB534480005B9B1 /* HomeworkMarkHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C50A1DB534480005B9B1 /* HomeworkMarkHeaderView.m */; };
 		8DA0C50F1DB684A40005B9B1 /* HomeworkMarkFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C50E1DB684A40005B9B1 /* HomeworkMarkFooterView.m */; };
 		8DA0C5121DB72C750005B9B1 /* HomeworkSettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C5111DB72C750005B9B1 /* HomeworkSettingManager.m */; };
+		8DA0C5181DB7CC860005B9B1 /* HomeworkItemAnswerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C5171DB7CC860005B9B1 /* HomeworkItemAnswerView.m */; };
 		8DA785961CA4E35900A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */; };
 		8DB8FAEA1D656E6D006B44B2 /* GiftItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB8FAE91D656E6D006B44B2 /* GiftItem.m */; };
 		8DC086EB1D8BF9EB008B57B2 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC086D91D8BF9EB008B57B2 /* TencentOpenAPI.framework */; };
@@ -1171,6 +1172,8 @@
 		8DA0C50E1DB684A40005B9B1 /* HomeworkMarkFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkMarkFooterView.m; sourceTree = "<group>"; };
 		8DA0C5101DB72C750005B9B1 /* HomeworkSettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkSettingManager.h; sourceTree = "<group>"; };
 		8DA0C5111DB72C750005B9B1 /* HomeworkSettingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkSettingManager.m; sourceTree = "<group>"; };
+		8DA0C5161DB7CC860005B9B1 /* HomeworkItemAnswerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkItemAnswerView.h; sourceTree = "<group>"; };
+		8DA0C5171DB7CC860005B9B1 /* HomeworkItemAnswerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkItemAnswerView.m; sourceTree = "<group>"; };
 		8DA785941CA4E35900A384F0 /* NSString+UrlParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlParams.h"; sourceTree = "<group>"; };
 		8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
 		8DB8FAE81D656E6D006B44B2 /* GiftItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiftItem.h; sourceTree = "<group>"; };
@@ -3355,6 +3358,8 @@
 				8DE7184F1DABA3980080476D /* HomeworkDetailVC.m */,
 				8DE718511DABA6020080476D /* HomeworkDetailView.h */,
 				8DE718521DABA6020080476D /* HomeworkDetailView.m */,
+				8DA0C5161DB7CC860005B9B1 /* HomeworkItemAnswerView.h */,
+				8DA0C5171DB7CC860005B9B1 /* HomeworkItemAnswerView.m */,
 				8DE718541DABA6130080476D /* HomeworkTargetListView.h */,
 				8DE718551DABA6130080476D /* HomeworkTargetListView.m */,
 			);
@@ -3970,6 +3975,7 @@
 				3793FA861B7CFFF000501F77 /* RIButtonItem.m in Sources */,
 				8DFDDD931D93D5210050740B /* HomeWorkVC.m in Sources */,
 				8DCFD72C1D51E54E001EDC8A /* ContactTeacherView.m in Sources */,
+				8DA0C5181DB7CC860005B9B1 /* HomeworkItemAnswerView.m in Sources */,
 				37D6EE361BC90C62000994A2 /* CheckInstalledMapAPP.m in Sources */,
 				37E93F9A1A7DC48200AD45A1 /* TNAlertView.m in Sources */,
 				3793FA681B7CFFF000501F77 /* AFHTTPRequestOperationManager.m in Sources */,

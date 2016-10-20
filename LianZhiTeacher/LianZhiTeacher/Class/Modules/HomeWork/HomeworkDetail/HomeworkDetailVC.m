@@ -10,14 +10,17 @@
 #import "HomeworkDetailView.h"
 #import "HomeworkTargetListView.h"
 #import "NotificationDetailActionView.h"
+#import "ContactsLoadingView.h"
 
 NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNotification";
 
 @interface HomeworkDetailVC ()
+@property (nonatomic, strong)HomeworkItem*              homeworkItem;
 @property (nonatomic, strong)UISegmentedControl*        segmentCtrl;
 @property (nonatomic, strong)UIButton*                  moreButton;
 @property (nonatomic, strong)HomeworkDetailView*        detailView;
 @property (nonatomic, strong)HomeworkTargetListView*    targetListView;
+@property (nonatomic, strong)ContactsLoadingView *      contactsLoadingView;
 @end
 
 @implementation HomeworkDetailVC
@@ -29,6 +32,13 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
     [self.view addSubview:[self detailView]];
     [self.view addSubview:[self targetListView]];
     [self onSegmentValueChanged];
+    
+    NSData *homeworkData = [NSData dataWithContentsOfFile:[self cacheFilePath]];
+    if(homeworkData){
+        self.homeworkItem = [NSKeyedUnarchiver unarchiveObjectWithData:homeworkData];
+    }
+    
+    [self loadData];
 }
 
 - (void)setRightbarButtonHighlighted:(BOOL)highlighted{
@@ -40,6 +50,42 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
     [_moreButton setImage:[UIImage imageNamed:highlighted ? @"noti_detail_more_highlighted" : @"noti_detail_more"] forState:UIControlStateNormal];
     UIBarButtonItem *moreItem = [[UIBarButtonItem alloc] initWithCustomView:_moreButton];
     self.navigationItem.rightBarButtonItem = moreItem;
+}
+
+- (ContactsLoadingView *)contactsLoadingView{
+    if(!_contactsLoadingView){
+        _contactsLoadingView = [[ContactsLoadingView alloc] initWithFrame:CGRectZero];
+        [_contactsLoadingView setCenter:CGPointMake(self.view.width / 2, (kScreenHeight - 64) / 2)];
+        [self.view addSubview:_contactsLoadingView];
+    }
+    return _contactsLoadingView;
+}
+
+- (void)loadData{
+    if(self.homeworkItem == nil){
+        [self.contactsLoadingView show];
+    }
+    @weakify(self)
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : self.hid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        @strongify(self)
+        [self.contactsLoadingView dismiss];
+        HomeworkItem *homeworkItem = [HomeworkItem nh_modelWithJson:responseObject.data];
+        self.homeworkItem = homeworkItem;
+        [self saveHomework];
+    } fail:^(NSString *errMsg) {
+        @strongify(self)
+        [self.contactsLoadingView dismiss];
+    }];
+}
+
+- (void)setHomeworkItem:(HomeworkItem *)homeworkItem{
+    _homeworkItem = homeworkItem;
+    [self.detailView setHomeworkItem:self.homeworkItem];
+    [_targetListView setHomeworkItem:self.homeworkItem];
+    
+    if(homeworkItem){
+        [[NSNotificationCenter defaultCenter] postNotificationName:kHomeworkReadNumChangedNotification object:nil userInfo:@{@"notification" : homeworkItem}];
+    }
 }
 
 - (void)deleteHomeworkItem{
@@ -102,6 +148,21 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
     if(selectedIndex == 0){
         
     }
+}
+
+- (void)saveHomework{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.homeworkItem];
+        [data writeToFile:[self cacheFilePath] atomically:YES];
+    });
+}
+
+- (BOOL)supportCache{
+    return YES;
+}
+
+- (NSString *)cacheFileName{
+    return [NSString stringWithFormat:@"MySendHomework_%@",self.hid];
 }
 
 - (void)didReceiveMemoryWarning {

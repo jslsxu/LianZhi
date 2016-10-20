@@ -289,7 +289,7 @@
 }
 
 - (void)onHomeworkSendSuccess:(NSNotification *)notification{
-    NotificationItem *item = notification.userInfo[kNewHomeworkToSend];
+    HomeworkItem *item = notification.userInfo[kNewHomeworkToSend];
     if(item){
         [self.tableViewModel.modelItemArray insertObject:item atIndex:0];
         [self saveModel];
@@ -299,11 +299,11 @@
 }
 
 - (void)onHomeworkReadNumChanged:(NSNotification *)notification{
-    NotificationItem *item = notification.userInfo[@"notification"];
+    HomeworkItem *item = notification.userInfo[@"notification"];
     if(item){
-        for (NotificationItem *notificationItem in self.tableViewModel.modelItemArray) {
-            if([notificationItem.nid isEqualToString:item.nid]){
-                notificationItem.read_num = item.read_num;
+        for (HomeworkItem *homeworkItem in self.tableViewModel.modelItemArray) {
+            if([homeworkItem.hid isEqualToString:item.hid]){
+                homeworkItem.read_num = item.read_num;
                 [self.tableView reloadData];
                 [self saveModel];
                 break;

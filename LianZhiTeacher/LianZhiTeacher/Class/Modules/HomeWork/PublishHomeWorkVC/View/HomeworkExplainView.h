@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-
 @interface HomeworkExplainView : UIView
 @property (nonatomic, assign)BOOL   hasExplain;
 @property (nonatomic, copy)void (^explainClick)();
