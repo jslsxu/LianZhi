@@ -12,7 +12,6 @@
     UILabel*        _courseLabel;
     UIImageView*    _imageTypeView;
     UIImageView*    _voiceTypeView;
-    UIImageView*    _videoTypeView;
     UIView*         _redDot;
     UILabel*        _statusLabel;
     UIImageView*    _rightArrow;

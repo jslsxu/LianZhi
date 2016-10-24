@@ -11,7 +11,7 @@
 #import "HomeworkTargetListView.h"
 #import "NotificationDetailActionView.h"
 #import "ContactsLoadingView.h"
-
+#import "HomeworkAddExplainVC.h"
 NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNotification";
 
 @interface HomeworkDetailVC ()
@@ -66,7 +66,7 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
         [self.contactsLoadingView show];
     }
     @weakify(self)
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : self.hid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"eid" : self.hid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         @strongify(self)
         [self.contactsLoadingView dismiss];
         HomeworkItem *homeworkItem = [HomeworkItem nh_modelWithJson:responseObject.data];
@@ -89,7 +89,16 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
 }
 
 - (void)deleteHomeworkItem{
-    
+    @weakify(self)
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/delete" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"eid" : self.hid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        @strongify(self)
+        [self.navigationController popViewControllerAnimated:YES];
+        if(self.deleteCallback){
+            self.deleteCallback(self.hid);
+        }
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (UISegmentedControl *)segmentCtrl{
@@ -124,7 +133,12 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
         
     } destroyItem:NO];
     NotificationActionItem* editItem = [NotificationActionItem actionItemWithTitle:@"编辑作业解析" action:^{
-        
+        HomeworkAddExplainVC *explainVC = [[HomeworkAddExplainVC alloc] init];
+        explainVC.explainEntity = [HomeworkExplainEntity explainEntityFromAnswer:wself.homeworkItem.answer];
+        [explainVC setAddExplainFinish:^(HomeworkExplainEntity *explainEntity) {
+            
+        }];
+        [wself.navigationController pushViewController:explainVC animated:YES];
     } destroyItem:NO];
     NotificationActionItem* deleteItem = [NotificationActionItem actionItemWithTitle:@"删除" action:^{
         LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否删除这条作业?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];

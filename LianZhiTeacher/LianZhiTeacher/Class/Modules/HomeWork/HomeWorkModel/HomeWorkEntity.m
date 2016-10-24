@@ -91,6 +91,7 @@
     [params setValue:self.words forKey:@"words"];
     [params setValue:self.course_name forKey:@"course_name"];
     [params setValue:kStringFromValue(self.sendSms) forKey:@"sms"];
+    [params setValue:self.explainEntity.words forKey:@"answer_words"];
     if(self.imageArray.count > 0)
     {
         NSMutableString *picSeq = [[NSMutableString alloc] init];
@@ -118,6 +119,33 @@
         [params setValue:picSeq forKey:@"pic_seqs"];
     }
     
+    //作业解析
+    if([self.explainEntity.imageArray count] > 0){
+        NSMutableString *picSeq = [[NSMutableString alloc] init];
+        for (NSInteger i = 0; i < self.explainEntity.imageArray.count; i++)
+        {
+            PhotoItem *photoItem = self.explainEntity.imageArray[i];
+            if(photoItem.photoID.length > 0){
+                if(picSeq.length == 0){
+                    [picSeq appendString:photoItem.photoID];
+                }
+                else{
+                    [picSeq appendString:[NSString stringWithFormat:@",%@",photoItem.photoID]];
+                }
+            }
+            else{
+                if(picSeq.length == 0){
+                    [picSeq appendFormat:@"answer_picture_%ld",(long)i];
+                }
+                else{
+                    [picSeq appendFormat:@",answer_picture_%ld",(long)i];
+                }
+            }
+        }
+        
+        [params setValue:picSeq forKey:@"answer_pic_seqs"];
+    }
+    
     if(self.voiceArray.count > 0){
         AudioItem *audioItem = self.voiceArray[0];
         if(audioItem.isLocal){
@@ -127,6 +155,18 @@
             [params setValue:audioItem.audioID forKey:@"voice_id"];
         }
     }
+    
+    //解析
+    if([self.explainEntity.voiceArray count] > 0){
+        AudioItem *audioItem = self.explainEntity.voiceArray[0];
+        if(audioItem.isLocal){
+            [params setValue:kStringFromValue(audioItem.timeSpan) forKey:@"answer_voice_time"];
+        }
+        else{
+            [params setValue:audioItem.audioID forKey:@"answer_voice_id"];
+        }
+    }
+    
     
     self.operation = [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/publish" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         for (NSInteger i = 0; i < self.imageArray.count; i++)
@@ -144,11 +184,32 @@
             }
             
         }
+        
+        for (NSInteger i = 0; i < [self.explainEntity.imageArray count]; i++) {
+            PhotoItem *photoItem = self.explainEntity.imageArray[i];
+            NSString *filename = [NSString stringWithFormat:@"answer_picture_%ld",(long)i];
+            if(photoItem.photoID.length > 0){
+                
+            }
+            else{
+                NSData *data = [NSData dataWithContentsOfFile:photoItem.big];
+                if(data.length > 0){
+                    [formData appendPartWithFileData:data name:filename fileName:filename mimeType:@"image/jpeg"];
+                }
+            }
+        }
         if(self.voiceArray.count > 0){
             AudioItem *audioItem = self.voiceArray[0];
             if(audioItem.isLocal){
                 NSData *voiceData = [NSData dataWithContentsOfFile:audioItem.audioUrl];
                 [formData appendPartWithFileData:voiceData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
+            }
+        }
+        if([self.explainEntity.voiceArray count] > 0){
+            AudioItem *audioItem = self.explainEntity.voiceArray[0];
+            if(audioItem.isLocal){
+                NSData *voiceData = [NSData dataWithContentsOfFile:audioItem.audioUrl];
+                [formData appendPartWithFileData:voiceData name:@"answer_voice" fileName:@"answer_voice" mimeType:@"audio/AMR"];
             }
         }
     

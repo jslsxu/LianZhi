@@ -430,13 +430,13 @@
     }
     else{
         @weakify(self)
-        HomeWorkEntity *item = self.tableViewModel.modelItemArray[indexPath.row - [HomeworkManager sharedInstance].sendingHomeworkArray.count];
+        HomeworkItem *item = self.tableViewModel.modelItemArray[indexPath.row - [HomeworkManager sharedInstance].sendingHomeworkArray.count];
         HomeworkDetailVC*  detailVC = [[HomeworkDetailVC alloc] init];
         [detailVC setHid:item.hid];
         [detailVC setDeleteCallback:^(NSString *hid) {
             @strongify(self)
-            for (NotificationItem *notiItem in self.tableViewModel.modelItemArray) {
-                if([hid isEqualToString:notiItem.nid]){
+            for (HomeworkItem *notiItem in self.tableViewModel.modelItemArray) {
+                if([hid isEqualToString:notiItem.hid]){
                     [self.tableViewModel.modelItemArray removeObject:notiItem];
                     [self.tableView reloadData];
                     break;

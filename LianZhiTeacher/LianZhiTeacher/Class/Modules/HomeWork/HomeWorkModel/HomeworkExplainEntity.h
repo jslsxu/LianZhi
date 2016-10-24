@@ -7,10 +7,10 @@
 //
 
 #import "TNBaseObject.h"
-
+#import "HomeworkItem.h"
 @interface HomeworkExplainEntity : TNBaseObject
 @property(nonatomic, copy)NSString*             words;
 @property(nonatomic, strong)NSMutableArray*     voiceArray;
 @property(nonatomic, strong)NSMutableArray*     imageArray;
-
++ (HomeworkExplainEntity *)explainEntityFromAnswer:(HomeworkItemAnswer *)answer;
 @end

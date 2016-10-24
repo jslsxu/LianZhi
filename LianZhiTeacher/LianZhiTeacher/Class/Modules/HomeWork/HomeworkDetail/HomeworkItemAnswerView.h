@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "HomeworkItem.h"
 @interface HomeworkItemAnswerView : UIView
-
+@property (nonatomic, strong)HomeworkItemAnswer*    answer;
 @end

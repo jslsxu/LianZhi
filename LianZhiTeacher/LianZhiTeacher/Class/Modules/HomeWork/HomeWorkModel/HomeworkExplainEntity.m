@@ -18,4 +18,16 @@
     }
     return self;
 }
+
++ (HomeworkExplainEntity *)explainEntityFromAnswer:(HomeworkItemAnswer *)answer{
+    HomeworkExplainEntity *explainEntity = [[HomeworkExplainEntity alloc] init];
+    explainEntity.words = answer.words;
+    if([answer.pics count] > 0){
+        [explainEntity.imageArray addObjectsFromArray:answer.pics];
+    }
+    if(answer.voice){
+         [explainEntity.voiceArray addObject:answer.voice];
+    }
+    return explainEntity;
+}
 @end

@@ -25,7 +25,7 @@
     [super viewDidLoad];
     self.title = @"偏好设置";
     [self setRightNavigationItemHighlighted:NO];
-    self.titleArray = @[@"开启作业回复",@"作业数量",@"开启作业回复截止时间",@"代发短信"];
+    self.titleArray = @[@"开启作业回复",@"题目数量",@"开启作业回复截止时间",@"代发短信"];
     [self.view addSubview:[self tableView]];
     // Do any additional setup after loading the view.
 }

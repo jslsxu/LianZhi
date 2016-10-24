@@ -10,13 +10,13 @@
 #import "GrowthTimelineVC.h"
 #import "ContactListVC.h"
 #import "AttendanceDetailVC.h"
-#import "HomeWorkVC.h"
 #import "ClassZoneVC.h"
 #import "ClassAlbumVC.h"
 #import "ClassSelectionVC.h"
 #import "LZAccountVC.h"
 #import "TreeHouseVC.h"
 #import "ClassAppCell.h"
+#import "HomeworkClassVC.h"
 #define ClassIdKey                  @"userClassId"
 #define kBannerHeight               (kScreenWidth * 29 / 64)
 
@@ -318,7 +318,11 @@
             }
             else if([scheme isEqualToString:@"lianzhi"])
             {
-                if([host isEqualToString:@"account"])
+                if([host isEqualToString:@"practice"]){
+                    HomeworkClassVC *homeworkClassVC = [[HomeworkClassVC alloc] init];
+                    [CurrentROOTNavigationVC pushViewController:homeworkClassVC animated:YES];
+                }
+                else if([host isEqualToString:@"account"])
                 {
                     LZAccountVC *accountVC = [[LZAccountVC alloc] init];
                     [self.navigationController pushViewController:accountVC animated:YES];
@@ -349,12 +353,12 @@
                             [growthTimeLineVC setClassInfo:classInfo];
                             [CurrentROOTNavigationVC pushViewController:growthTimeLineVC animated:YES];
                         }
-                        else if([host isEqualToString:@"practice"])
-                        {
-                            HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
-                            [homeWorkVC setClassID:classInfo.classID];
-                            [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
-                        }
+//                        else if([host isEqualToString:@"practice"])
+//                        {
+//                            HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
+//                            [homeWorkVC setClassID:classInfo.classID];
+//                            [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
+//                        }
                         else if([host isEqualToString:@"leave"])
                         {
                             AttendanceDetailVC *vacationHistoryVC = [[AttendanceDetailVC alloc] init];

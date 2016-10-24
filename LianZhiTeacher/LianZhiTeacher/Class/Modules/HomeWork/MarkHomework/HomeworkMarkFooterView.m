@@ -7,6 +7,7 @@
 //
 
 #import "HomeworkMarkFooterView.h"
+static MarkType currentMarkType = MarkTypeNone;
 
 @interface HomeworkMarkFooterView ()
 @property (nonatomic, strong)UIButton*  rightButton;
@@ -44,7 +45,7 @@
         [hintLabel setFont:[UIFont systemFontOfSize:14]];
         [hintLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
         [hintLabel sizeToFit];
-        [hintLabel setOrigin:CGPointMake(12, 50)];
+        [hintLabel setFrame:CGRectMake(12, 50, hintLabel.width, 25)];
         [self addSubview:hintLabel];
         
         NSArray *commentImage = @[@"good",@"normal",@"bad"];
@@ -61,35 +62,63 @@
         }
         self.commentButtonArray = commentButtonArray;
         
-        _textField = [[UITextField alloc] initWithFrame:CGRectMake(10, self.height - 10 - 20, self.width - 10 * 2, 20)];
+        _textField = [[UITextField alloc] initWithFrame:CGRectMake(12, hintLabel.bottom + (self.height - hintLabel.bottom - 20) / 2, self.width - 12 * 2, 20)];
         [_textField setFont:[UIFont systemFontOfSize:14]];
         [_textField setTextColor:[UIColor colorWithHexString:@"333333"]];
+        [_textField setPlaceholder:@"暂无评语"];
         [self addSubview:_textField];
     }
     return self;
 }
 
+- (void)setTeacherMark:(HomeworkTeacherMark *)teacherMark{
+    _teacherMark = teacherMark;
+    [_textField setText:_teacherMark.comment];
+}
+
++ (MarkType)currentMarkType{
+    return currentMarkType;
+}
+
+- (void)clearMark{
+    currentMarkType = MarkTypeNone;
+}
+
 - (void)touchRight{
-    
+    currentMarkType = MarkTypeRight;
 }
 
 - (void)touchWrong{
-    
+    currentMarkType = MarkTypeWrong;
 }
 
 - (void)touchHalfRight{
-    
+    currentMarkType = MarkTypeHalfRight;
 }
 
 - (void)onCommentButtonClicked:(UIButton *)button{
     NSInteger index = [self.commentButtonArray indexOfObject:button];
     if(button.selected){
         button.selected = NO;
+        [_textField setText:nil];
     }
     else{
-        for (UIButton *commentButton in self.commentButtonArray) {
+        
+        for (NSInteger i = 0; i < [self.commentButtonArray count]; i++) {
+            UIButton *commentButton = self.commentButtonArray[i];
             if(commentButton == button){
                 commentButton.selected = YES;
+                NSString *comment = nil;
+                if(i == 0){
+                    comment = @"作业完成的很好，老师非常满意。";
+                }
+                else if(i == 1){
+                    comment = @"作业完成的不错，继续努力。";
+                }
+                else{
+                    comment = @"如果再仔细一点，相信成功一定属于你。";
+                }
+                [_textField setText:comment];
             }
             else{
                 commentButton.selected = NO;

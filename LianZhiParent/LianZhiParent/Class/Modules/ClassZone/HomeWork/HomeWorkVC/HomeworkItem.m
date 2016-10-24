@@ -8,8 +8,10 @@
 
 #import "HomeworkItem.h"
 
-@implementation HomeworkExplain
-
+@implementation HomeworkItemAnswer
++ (NSDictionary<NSString *, id>*)modelContainerPropertyGenericClass{
+    return @{@"pics" : [PhotoItem class]};
+}
 
 @end
 
@@ -24,9 +26,10 @@
         self.course = @"语文";
         
         PhotoItem *photoItem = [[PhotoItem alloc] init];
-        [photoItem setBig:@"http://img4.imgtn.bdimg.com/it/u=1215299968,4212700726&fm=21&gp=0.jpg"];
-        [photoItem setWidth:244];
-        [photoItem setHeight:220];
+        [photoItem setPhotoID:@"123"];
+        [photoItem setBig:@"https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/image/h%3D200/sign=04d308e12e9759ee555067cb82fa434e/902397dda144ad3455abeb6bd8a20cf430ad85c1.jpg"];
+        [photoItem setWidth:320];
+        [photoItem setHeight:200];
         self.pictures = @[photoItem];
         
         AudioItem *audioItem = [[AudioItem alloc] init];
@@ -34,8 +37,8 @@
         [audioItem setTimeSpan:23];
         self.voice = audioItem;
         
-        HomeworkExplain *explain = [[HomeworkExplain alloc] init];
-        self.explain = explain;
+        HomeworkItemAnswer *explain = [[HomeworkItemAnswer alloc] init];
+        self.answer = explain;
     }
     return self;
 }
@@ -47,7 +50,4 @@
     return self.pictures.count > 0;
 }
 
-- (BOOL)hasVideo{
-    return self.video.videoUrl.length > 0;
-}
 @end

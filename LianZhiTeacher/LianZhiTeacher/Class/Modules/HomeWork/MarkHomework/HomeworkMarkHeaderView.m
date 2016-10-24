@@ -63,27 +63,38 @@
         [_commentLabel setFont:[UIFont systemFontOfSize:13]];
         [_commentLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
         [self addSubview:_commentLabel];
+        
     }
     return self;
 }
 
-- (void)setHomeworkItem:(HomeworkItem *)homeworkItem{
-    _homeworkItem = homeworkItem;
-    [_nameLabel setText:@"陈琦"];
+- (void)setStudentHomeworkInfo:(HomeworkStudentInfo *)studentHomeworkInfo{
+    _studentHomeworkInfo = studentHomeworkInfo;
+    [_nameLabel setText:_studentHomeworkInfo.student.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.top)];
-    [_classLabel setText:@"13级01班"];
+    [_classLabel setText:_studentHomeworkInfo.className];
     [_classLabel sizeToFit];
     [_classLabel setFrame:CGRectMake(_nameLabel.right + 5, _avatarView.top, _nextButton.left - 10, _classLabel.height)];
     [_rateLabel setText:@"正确率:--"];
     [_rateLabel sizeToFit];
     [_rateLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.centerY - _rateLabel.height / 2)];
     
-    [_timeLabel setText:@"提交时间"];
+    [_timeLabel setText:[NSString stringWithFormat:@"提交时间: %@",_studentHomeworkInfo.answer.ctime]];
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.bottom - _timeLabel.height)];
     
-    [_commentLabel setText:@"评语：作业完成一半"];
+    [_commentLabel setText:[NSString stringWithFormat:@"评语：%@",_studentHomeworkInfo.answer.teacherMark.comment]];
+}
+
+- (void)setCanPre:(BOOL)canPre{
+    _canPre = canPre;
+    [_preButton setEnabled:_canPre];
+}
+
+- (void)setCanNext:(BOOL)canNext{
+    _canNext = canNext;
+    [_nextButton setEnabled:_canNext];
 }
 
 - (void)onPre{

@@ -8,7 +8,7 @@
 
 #import "HomeworkDetailView.h"
 #import "NotificationDetailVoiceView.h"
-#import "HomeworkExplainView.h"
+#import "HomeworkItemAnswerView.h"
 @interface HomeworkDetailView ()
 //@property (nonatomic, strong)AvatarView*    avatarView;
 //@property (nonatomic, strong)UILabel*       nameLabel;
@@ -16,7 +16,7 @@
 //@property (nonatomic, strong)UILabel*       publishTimeLabel;
 //@property (nonatomic, strong)UILabel*       endTimeLabel;
 //@property (nonatomic, strong)UILabel*       contentLabel;
-@property (nonatomic, strong)HomeworkExplainView*   explainView;
+@property (nonatomic, strong)HomeworkItemAnswerView*   explainView;
 @end
 
 @implementation HomeworkDetailView
@@ -110,14 +110,14 @@
                 [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.big] placeholderImage:nil];
                 [_scrollView addSubview:imageView];
                 
-                spaceYStart = imageView.bottom + margin;
+                spaceYStart = imageView.bottom;
             }
         }
         
-        if(self.homeworkItem.explain){
-            self.explainView = [[HomeworkExplainView alloc] initWithFrame:CGRectMake(0, spaceYStart, _scrollView.width, 0)];
+        if(self.homeworkItem.answer){
+            self.explainView = [[HomeworkItemAnswerView alloc] initWithFrame:CGRectMake(0, spaceYStart, _scrollView.width, 0)];
             [_scrollView addSubview:self.explainView];
-            spaceYStart = self.explainView.bottom + margin;
+            spaceYStart = self.explainView.bottom ;
         }
         
         [_scrollView setContentSize:CGSizeMake(self.width, spaceYStart)];

@@ -375,6 +375,11 @@
 		8DA0C50F1DB684A40005B9B1 /* HomeworkMarkFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C50E1DB684A40005B9B1 /* HomeworkMarkFooterView.m */; };
 		8DA0C5121DB72C750005B9B1 /* HomeworkSettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C5111DB72C750005B9B1 /* HomeworkSettingManager.m */; };
 		8DA0C5181DB7CC860005B9B1 /* HomeworkItemAnswerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C5171DB7CC860005B9B1 /* HomeworkItemAnswerView.m */; };
+		8DA0C51B1DB899CC0005B9B1 /* HomeworkPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C51A1DB899CC0005B9B1 /* HomeworkPhotoView.m */; };
+		8DA0C5211DB9E5E80005B9B1 /* HomeworkStudentAnswer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C5201DB9E5E80005B9B1 /* HomeworkStudentAnswer.m */; };
+		8DA0C5241DB9E60A0005B9B1 /* HomeworkTeacherMark.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C5231DB9E60A0005B9B1 /* HomeworkTeacherMark.m */; };
+		8DA0C5271DBA2E6A0005B9B1 /* HomeworkAnylizeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C5261DBA2E6A0005B9B1 /* HomeworkAnylizeVC.m */; };
+		8DA0C52E1DBB1C990005B9B1 /* HomeworkPhotoImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C52D1DBB1C990005B9B1 /* HomeworkPhotoImageView.m */; };
 		8DA785961CA4E35900A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */; };
 		8DB8FAEA1D656E6D006B44B2 /* GiftItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB8FAE91D656E6D006B44B2 /* GiftItem.m */; };
 		8DC086EB1D8BF9EB008B57B2 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC086D91D8BF9EB008B57B2 /* TencentOpenAPI.framework */; };
@@ -1174,6 +1179,16 @@
 		8DA0C5111DB72C750005B9B1 /* HomeworkSettingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkSettingManager.m; sourceTree = "<group>"; };
 		8DA0C5161DB7CC860005B9B1 /* HomeworkItemAnswerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkItemAnswerView.h; sourceTree = "<group>"; };
 		8DA0C5171DB7CC860005B9B1 /* HomeworkItemAnswerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkItemAnswerView.m; sourceTree = "<group>"; };
+		8DA0C5191DB899CC0005B9B1 /* HomeworkPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkPhotoView.h; sourceTree = "<group>"; };
+		8DA0C51A1DB899CC0005B9B1 /* HomeworkPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkPhotoView.m; sourceTree = "<group>"; };
+		8DA0C51F1DB9E5E80005B9B1 /* HomeworkStudentAnswer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkStudentAnswer.h; sourceTree = "<group>"; };
+		8DA0C5201DB9E5E80005B9B1 /* HomeworkStudentAnswer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkStudentAnswer.m; sourceTree = "<group>"; };
+		8DA0C5221DB9E60A0005B9B1 /* HomeworkTeacherMark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkTeacherMark.h; sourceTree = "<group>"; };
+		8DA0C5231DB9E60A0005B9B1 /* HomeworkTeacherMark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkTeacherMark.m; sourceTree = "<group>"; };
+		8DA0C5251DBA2E6A0005B9B1 /* HomeworkAnylizeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkAnylizeVC.h; sourceTree = "<group>"; };
+		8DA0C5261DBA2E6A0005B9B1 /* HomeworkAnylizeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkAnylizeVC.m; sourceTree = "<group>"; };
+		8DA0C52C1DBB1C990005B9B1 /* HomeworkPhotoImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkPhotoImageView.h; sourceTree = "<group>"; };
+		8DA0C52D1DBB1C990005B9B1 /* HomeworkPhotoImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkPhotoImageView.m; sourceTree = "<group>"; };
 		8DA785941CA4E35900A384F0 /* NSString+UrlParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlParams.h"; sourceTree = "<group>"; };
 		8DA785951CA4E35900A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
 		8DB8FAE81D656E6D006B44B2 /* GiftItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiftItem.h; sourceTree = "<group>"; };
@@ -3095,6 +3110,8 @@
 				8DA0C50A1DB534480005B9B1 /* HomeworkMarkHeaderView.m */,
 				8DA0C50D1DB684A40005B9B1 /* HomeworkMarkFooterView.h */,
 				8DA0C50E1DB684A40005B9B1 /* HomeworkMarkFooterView.m */,
+				8DA0C52C1DBB1C990005B9B1 /* HomeworkPhotoImageView.h */,
+				8DA0C52D1DBB1C990005B9B1 /* HomeworkPhotoImageView.m */,
 			);
 			path = MarkHomework;
 			sourceTree = "<group>";
@@ -3187,6 +3204,10 @@
 				8DA0C5111DB72C750005B9B1 /* HomeworkSettingManager.m */,
 				8DA0C5021DB526AC0005B9B1 /* HomeworkItem.h */,
 				8DA0C5031DB526AC0005B9B1 /* HomeworkItem.m */,
+				8DA0C51F1DB9E5E80005B9B1 /* HomeworkStudentAnswer.h */,
+				8DA0C5201DB9E5E80005B9B1 /* HomeworkStudentAnswer.m */,
+				8DA0C5221DB9E60A0005B9B1 /* HomeworkTeacherMark.h */,
+				8DA0C5231DB9E60A0005B9B1 /* HomeworkTeacherMark.m */,
 			);
 			path = HomeworkManager;
 			sourceTree = "<group>";
@@ -3360,6 +3381,8 @@
 				8DE718521DABA6020080476D /* HomeworkDetailView.m */,
 				8DA0C5161DB7CC860005B9B1 /* HomeworkItemAnswerView.h */,
 				8DA0C5171DB7CC860005B9B1 /* HomeworkItemAnswerView.m */,
+				8DA0C5191DB899CC0005B9B1 /* HomeworkPhotoView.h */,
+				8DA0C51A1DB899CC0005B9B1 /* HomeworkPhotoView.m */,
 				8DE718541DABA6130080476D /* HomeworkTargetListView.h */,
 				8DE718551DABA6130080476D /* HomeworkTargetListView.m */,
 			);
@@ -3383,6 +3406,8 @@
 			children = (
 				8DFDDD901D93D5210050740B /* HomeWorkVC.h */,
 				8DFDDD911D93D5210050740B /* HomeWorkVC.m */,
+				8DA0C5251DBA2E6A0005B9B1 /* HomeworkAnylizeVC.h */,
+				8DA0C5261DBA2E6A0005B9B1 /* HomeworkAnylizeVC.m */,
 				8DFDDD941D93D5940050740B /* HomeWorkRecordListVC.h */,
 				8DFDDD951D93D5940050740B /* HomeWorkRecordListVC.m */,
 				8DFDDD971D93D5BB0050740B /* HomeWorkDraftVC.h */,
@@ -3726,6 +3751,7 @@
 				8D867C8A1D2F97080020A21C /* UIView+DNImagePicker.m in Sources */,
 				3793FAF01B7CFFF000501F77 /* TNBaseWebViewController.m in Sources */,
 				8DCFD6C11D4C5D9E001EDC8A /* NotificationDetailPhotoView.m in Sources */,
+				8DA0C51B1DB899CC0005B9B1 /* HomeworkPhotoView.m in Sources */,
 				37FD6E301BB4817900C83AB4 /* NewMessageCell.m in Sources */,
 				8D7555081D6DA89400A140EE /* PBPresentAnimatedTransitioningController.m in Sources */,
 				3728A6A81B98B20700310457 /* ClassZoneModel.m in Sources */,
@@ -3781,6 +3807,7 @@
 				8DC087581D8E47C6008B57B2 /* LGAlertViewCell.m in Sources */,
 				3793FAA41B7CFFF000501F77 /* NSString+StringSize.m in Sources */,
 				3793FAF91B7D081900501F77 /* PhotoPickerView.m in Sources */,
+				8DA0C5211DB9E5E80005B9B1 /* HomeworkStudentAnswer.m in Sources */,
 				8D867D511D3FD21E0020A21C /* NotificationCommentView.m in Sources */,
 				37E93F991A7DC48200AD45A1 /* TNActionSheet.m in Sources */,
 				3793FA671B7CFFF000501F77 /* AFHTTPRequestOperation.m in Sources */,
@@ -3934,6 +3961,7 @@
 				8DCFD6F71D4F410D001EDC8A /* ChatBubbleContentView.m in Sources */,
 				3728A74F1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m in Sources */,
 				8D3E32B01D7D5B5A00C1BC77 /* ContactsLoadingView.m in Sources */,
+				8DA0C5271DBA2E6A0005B9B1 /* HomeworkAnylizeVC.m in Sources */,
 				3793FAEC1B7CFFF000501F77 /* TNBaseCollectionViewController.m in Sources */,
 				8D75555A1D77F8BD00A140EE /* ZYBannerCell.m in Sources */,
 				8D867BD21D2506EF0020A21C /* NSString+UUID.m in Sources */,
@@ -3942,6 +3970,7 @@
 				8DCFD6E51D4F3092001EDC8A /* ChatContentAudioView.m in Sources */,
 				8DCFD7461D57857C001EDC8A /* NotificationDraftManager.m in Sources */,
 				37E93FC51A7E9CC600AD45A1 /* MJPhotoView.m in Sources */,
+				8DA0C5241DB9E60A0005B9B1 /* HomeworkTeacherMark.m in Sources */,
 				37D6EEF41BCBA96D000994A2 /* LeaveHistoryVC.m in Sources */,
 				8DFDDDB11D9519010050740B /* PhoneInputVC.m in Sources */,
 				371C6DAF1A7015AF00FA4AEC /* PublishSelectionView.m in Sources */,
@@ -3978,6 +4007,7 @@
 				8DA0C5181DB7CC860005B9B1 /* HomeworkItemAnswerView.m in Sources */,
 				37D6EE361BC90C62000994A2 /* CheckInstalledMapAPP.m in Sources */,
 				37E93F9A1A7DC48200AD45A1 /* TNAlertView.m in Sources */,
+				8DA0C52E1DBB1C990005B9B1 /* HomeworkPhotoImageView.m in Sources */,
 				3793FA681B7CFFF000501F77 /* AFHTTPRequestOperationManager.m in Sources */,
 				3793FA6A1B7CFFF000501F77 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				37D6EE391BC90C62000994A2 /* RegionAnnotationView.m in Sources */,

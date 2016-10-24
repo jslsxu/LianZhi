@@ -30,9 +30,6 @@
         _voiceTypeView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"message_hasAudio"]];
         [self addSubview:_voiceTypeView];
         
-        _videoTypeView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"message_hasVideo"]];
-        [self addSubview:_videoTypeView];
-        
         _redDot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 6, 6)];
         [_redDot.layer setCornerRadius:3];
         [_redDot.layer setMasksToBounds:YES];
@@ -62,8 +59,6 @@
     [_imageTypeView setOrigin:CGPointMake(spaceXStart, (self.height - _imageTypeView.height) / 2)];
     spaceXStart = _imageTypeView.right + 10;
     [_voiceTypeView setOrigin:CGPointMake(spaceXStart, (self.height - _voiceTypeView.height) / 2)];
-    spaceXStart = _voiceTypeView.right + 10;
-    [_videoTypeView setOrigin:CGPointMake(spaceXStart, (self.height - _videoTypeView.height) / 2)];
     
     [_statusLabel setText:@"已发送"];
     [_statusLabel sizeToFit];

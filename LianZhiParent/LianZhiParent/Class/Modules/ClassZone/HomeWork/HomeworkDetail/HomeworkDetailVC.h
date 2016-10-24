@@ -12,5 +12,5 @@
 @interface HomeworkDetailVC : TNBaseViewController{
 
 }
-@property(nonatomic, strong)HomeworkItem*   homeworkItem;
+@property(nonatomic, copy)NSString* homeworkId;
 @end

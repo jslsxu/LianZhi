@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "HomeworkTeacherMark.h"
 @interface HomeworkMarkFooterView : UIView
-
+@property (nonatomic, strong)HomeworkTeacherMark*   teacherMark;
++ (MarkType)currentMarkType;
+- (void)clearMark;
 @end

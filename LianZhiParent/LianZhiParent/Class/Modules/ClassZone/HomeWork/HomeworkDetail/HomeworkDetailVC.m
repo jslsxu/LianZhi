@@ -7,11 +7,15 @@
 //
 
 #import "HomeworkDetailVC.h"
-
+#import "HomeworkStudentAnswer.h"
+#import "HomeworkTeacherMark.h"
 @interface HomeworkDetailVC ()
+@property (nonatomic, strong)HomeworkItem*  homeworkItem;
 @property (nonatomic, strong)UISegmentedControl*    segCtrl;
 @property (nonatomic, strong)HomeworkDetailView*    homeworkDetailView;
 @property (nonatomic, strong)HomeworkFinishView*    homeworkFinishView;
+@property (nonatomic, strong)HomeworkStudentAnswer* reply;          //作业回复
+@property (nonatomic, strong)HomeworkTeacherMark*   teacherMark;    //作业批阅
 @end
 
 @implementation HomeworkDetailVC
@@ -56,6 +60,24 @@
     NSInteger selectedIndex = self.segCtrl.selectedSegmentIndex;
     [self.homeworkDetailView setHidden:selectedIndex != 0];
     [self.homeworkFinishView setHidden:selectedIndex != 1];
+}
+
+- (void)setHomeworkItem:(HomeworkItem *)homeworkItem{
+    _homeworkItem = homeworkItem;
+    [self.homeworkDetailView setHomeworkItem:_homeworkItem];
+    
+}
+
+
+- (void)requestHomeworkDetail{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.homeworkId forKey:@"eid"];
+    
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

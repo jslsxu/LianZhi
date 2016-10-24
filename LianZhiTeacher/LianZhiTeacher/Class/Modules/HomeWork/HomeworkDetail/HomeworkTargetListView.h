@@ -13,19 +13,24 @@
     UILabel*        _titleLabel;
     UILabel*        _stateLabel;
     UIImageView*    _arrowImageView;
+    UIButton*       _alertButton;
 }
-@property (nonatomic, strong)id group;
+@property (nonatomic, assign)BOOL etype;
+@property (nonatomic, strong)HomeworkClassStatus* classInfo;
 @property (nonatomic, assign)BOOL expand;
 @property (nonatomic, copy)void (^expandCallback)();
+@property (nonatomic, copy)void (^alertCallback)();
 @end
 
 @interface HomeworkSendTargetCell : TNTableViewCell{
     AvatarView*     _avatarView;
     UILabel*        _titleLabel;
     UILabel*        _stateLabel;
-    UIImageView*    _stateImageView;
+    UIImageView*    _mobileImageView;
+    UIImageView*    _rightArrow;
 }
-@property (nonatomic, strong)UserInfo*  userInfo;
+@property (nonatomic, assign)BOOL etype;
+@property (nonatomic, strong)HomeworkStudentInfo*  userInfo;
 @end
 @interface HomeworkTargetListView : UIView
 @property (nonatomic, strong)HomeworkItem *homeworkItem;

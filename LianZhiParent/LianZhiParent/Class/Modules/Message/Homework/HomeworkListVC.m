@@ -45,7 +45,9 @@
 
 #pragma mark - 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
+    HomeworkItem *homeworkItem = (HomeworkItem *)modelItem;
     HomeworkDetailVC *homeworkDetailVC = [[HomeworkDetailVC alloc] init];
+    [homeworkDetailVC setHomeworkId:homeworkItem.homeworkId];
     [self.navigationController pushViewController:homeworkDetailVC animated:YES];
 }
 

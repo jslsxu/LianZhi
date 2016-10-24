@@ -20,7 +20,7 @@
         UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [titleLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
         [titleLabel setFont:[UIFont systemFontOfSize:15]];
-        [titleLabel setText:@"作业数量"];
+        [titleLabel setText:@"题目数量"];
         [titleLabel sizeToFit];
         [titleLabel setOrigin:CGPointMake(12, (self.height - titleLabel.height) / 2)];
         [self addSubview:titleLabel];
@@ -48,6 +48,6 @@
 }
 
 - (void)showDetailHint{
-    [HomeworkDetailHintView showWithTitle:@"作业数量" description:@"对于开启回复的作业，是方便您在批阅后，可以得到学生作业的正确率." completion:nil];
+    [HomeworkDetailHintView showWithTitle:@"题目数量" description:@"对于开启回复的作业，是方便您在批阅后，可以得到学生作业的正确率." completion:nil];
 }
 @end

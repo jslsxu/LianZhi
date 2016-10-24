@@ -11,6 +11,7 @@
 #import "HomeWorkDraftVC.h"
 #import "NotificationDetailActionView.h"
 #import "HomeworkSettingVC.h"
+#import "HomeworkAnylizeVC.h"
 @interface HomeWorkVC ()
 @property (nonatomic, strong)UISegmentedControl*    segmentCtrl;
 @property (nonatomic, strong)UIButton*              moreButton;
@@ -99,7 +100,8 @@
         [wself.navigationController pushViewController:settingVC animated:YES];
     } destroyItem:NO];
     NotificationActionItem *anylizeItem = [NotificationActionItem actionItemWithTitle:@"学情分析" action:^{
-        
+        HomeworkAnylizeVC *anylizeVC = [[HomeworkAnylizeVC alloc] init];
+        [wself.navigationController pushViewController:anylizeVC animated:YES];
     } destroyItem:NO];
     NotificationActionItem *clearItem = [NotificationActionItem actionItemWithTitle:@"清空记录" action:^{
         

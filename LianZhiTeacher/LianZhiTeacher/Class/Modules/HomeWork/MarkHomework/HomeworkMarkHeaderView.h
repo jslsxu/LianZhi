@@ -16,6 +16,8 @@
 @end
 
 @interface HomeworkMarkHeaderView : UIView
-@property (nonatomic, strong)HomeworkItem*  homeworkItem;
+@property (nonatomic, strong)HomeworkStudentInfo*  studentHomeworkInfo;
 @property (nonatomic, weak)id<HomeworkMarkHeaderDelegate> delegate;
+@property (nonatomic, assign)BOOL canPre;
+@property (nonatomic, assign)BOOL canNext;
 @end

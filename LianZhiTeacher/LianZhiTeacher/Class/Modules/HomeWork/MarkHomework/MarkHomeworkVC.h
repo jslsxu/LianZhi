@@ -7,7 +7,11 @@
 //
 
 #import "TNBaseViewController.h"
-
+#import "HomeworkTeacherMark.h"
+#import "HomeworkPhotoImageView.h"
+#import "HomeworkItem.h"
 @interface MarkHomeworkVC : TNBaseViewController
-
+@property (nonatomic, strong)HomeworkItem*  homeworkItem;
+@property (nonatomic, strong)NSArray*   homeworkArray;
+@property (nonatomic, assign)NSInteger  curIndex;
 @end

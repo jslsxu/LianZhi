@@ -9,6 +9,7 @@
 #import "HomeworkDetailView.h"
 #import "HomeworkItemAnswerView.h"
 #import "NotificationVoiceView.h"
+#import "HomeworkPhotoView.h"
 @interface HomeworkDetailView ()
 @property (nonatomic, strong)HomeworkItemAnswerView*    answerView;
 @end
@@ -90,28 +91,17 @@
         }
         
         if([self.homeworkItem hasImage]){
-            for (NSInteger i = 0; i < [self.homeworkItem.pics count]; i++) {
-                NSInteger itemWidth = _scrollView.width - margin * 2;
-                PhotoItem *photoItem = [self.homeworkItem.pics objectAtIndex:i];
-                NSInteger itemHeight = itemWidth;
-                if(photoItem.width != 0 && photoItem.height != 0){
-                    itemHeight = itemWidth * photoItem.height / photoItem.width;
-                }
-                UIImageView*    imageView = [[UIImageView alloc] initWithFrame:CGRectMake(margin, spaceYStart, itemWidth, itemHeight)];
-                [imageView setBackgroundColor:[UIColor colorWithHexString:@"eeeeee"]];
-                [imageView setContentMode:UIViewContentModeScaleAspectFill];
-                [imageView setClipsToBounds:YES];
-                [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.big] placeholderImage:nil];
-                [_scrollView addSubview:imageView];
-                
-                spaceYStart = imageView.bottom + margin;
-            }
+            HomeworkPhotoView *photoView = [[HomeworkPhotoView alloc] initWithFrame:CGRectMake(0, spaceYStart, _scrollView.width, 0)];
+            [photoView setPhotoArray:self.homeworkItem.pics];
+            [_scrollView addSubview:photoView];
+            spaceYStart = photoView.bottom;
         }
         
         if(self.homeworkItem.answer){
             self.answerView = [[HomeworkItemAnswerView alloc] initWithFrame:CGRectMake(0, spaceYStart, _scrollView.width, 0)];
+            [self.answerView setAnswer:self.homeworkItem.answer];
             [_scrollView addSubview:self.answerView];
-            spaceYStart = self.answerView.bottom + margin;
+            spaceYStart = self.answerView.bottom;
         }
         
         [_scrollView setContentSize:CGSizeMake(self.width, spaceYStart)];

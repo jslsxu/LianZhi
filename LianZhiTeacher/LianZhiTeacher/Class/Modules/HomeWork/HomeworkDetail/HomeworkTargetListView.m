@@ -8,6 +8,7 @@
 
 #import "HomeworkTargetListView.h"
 #import "MarkHomeworkVC.h"
+
 @implementation HomeworkTargetHeaderView
 
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier{
@@ -15,8 +16,13 @@
     if(self){
         self.width = kScreenWidth;
         self.height = 56;
+        
+        _arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]];
+        [_arrowImageView setOrigin:CGPointMake(8, (self.contentView.height - _arrowImageView.height) / 2)];
+        [self.contentView addSubview:_arrowImageView];
+        
         _logoView = [[LogoView alloc] initWithRadius:18];
-        [_logoView setOrigin:CGPointMake(12, (56 - _logoView.height) / 2)];
+        [_logoView setOrigin:CGPointMake(8 + _arrowImageView.right, (56 - _logoView.height) / 2)];
         [self.contentView addSubview:_logoView];
         
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -29,9 +35,12 @@
         [_stateLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
         [self.contentView addSubview:_stateLabel];
         
-        _arrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"expand_indicator"]];
-        [_arrowImageView setCenter:CGPointMake(self.width - 10 - _arrowImageView.width / 2, self.contentView.height / 2)];
-        [self.contentView addSubview:_arrowImageView];
+        _alertButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_alertButton setImage:[UIImage imageNamed:@"homeworkAlert"] forState:UIControlStateNormal];
+        [_alertButton setSize:CGSizeMake(40, 20)];
+        [_alertButton setHidden:YES];
+        [_alertButton addTarget:self action:@selector(alert) forControlEvents:UIControlEventTouchUpInside];
+        [self.contentView addSubview:_alertButton];
         
         UIView* sepLine = [[UIView alloc] initWithFrame:CGRectMake(12, self.height - kLineHeight, self.width - 12, kLineHeight)];
         [sepLine setBackgroundColor:kSepLineColor];
@@ -50,6 +59,12 @@
     }
 }
 
+- (void)alert{
+    if(self.alertCallback){
+        self.alertCallback();
+    }
+}
+
 - (void)setExpand:(BOOL)expand{
     _expand = expand;
     CGAffineTransform transform = _expand ? CGAffineTransformMakeRotation(M_PI_2) : CGAffineTransformIdentity;
@@ -58,39 +73,37 @@
     }];
 }
 
-- (void)setGroup:(id)group{
-    _group = group;
-    NSString *logo = nil;
-    NSString *name;
-    NSInteger total = 0;
-    NSInteger readNum = 0;
-    if([_group isKindOfClass:[ClassInfo class]]){
-        ClassInfo *classInfo = (ClassInfo *)_group;
-        logo = classInfo.logo;
-        name = classInfo.name;
-        total = classInfo.sent_num;
-        readNum = classInfo.read_num;
+- (void)setClassInfo:(HomeworkClassStatus *)classInfo{
+    _classInfo = classInfo;
+
+    [_logoView sd_setImageWithURL:[NSURL URLWithString:_classInfo.logo]];
+    if([_classInfo canNotification]){
+        [_alertButton setHidden:NO];
+        [_alertButton setOrigin:CGPointMake(self.width - 10 - _alertButton.width, (self.height - _alertButton.height) / 2)];
     }
-    else if([_group isKindOfClass:[TeacherGroup class]]){
-        TeacherGroup *teacherGroup = (TeacherGroup *)_group;
-        logo = teacherGroup.logo;
-        name = teacherGroup.groupName;
-        total = teacherGroup.sent_num;
-        readNum = teacherGroup.read_num;
+    else{
+        [_alertButton setHidden:YES];
     }
+    [_titleLabel setFrame:CGRectMake(_logoView.right + 15, 0, _stateLabel.left - 10 - (_logoView.right + 15), self.height)];
+    [_titleLabel setText:_classInfo.name];
+    [_titleLabel sizeToFit];
+    [_titleLabel setOrigin:CGPointMake(_logoView.right + 8, _logoView.top)];
     
-    [_logoView sd_setImageWithURL:[NSURL URLWithString:logo]];
+    
     NSMutableAttributedString *stateStr = [[NSMutableAttributedString alloc] initWithString:@"发送:"];
-    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(total) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
-    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 已读:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
-    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(readNum) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
-    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_classInfo.send) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
+    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 回复:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_classInfo.reply) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
+    if(self.etype){
+        [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 批阅:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+        [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_classInfo.mark) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
+    }
+    else{
+        [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+    }
     [_stateLabel setAttributedText:stateStr];
     [_stateLabel sizeToFit];
-    [_stateLabel setOrigin:CGPointMake(_arrowImageView.left - 10 - _stateLabel.width, (self.height - _stateLabel.height) / 2)];
-    
-    [_titleLabel setFrame:CGRectMake(_logoView.right + 15, 0, _stateLabel.left - 10 - (_logoView.right + 15), self.height)];
-    [_titleLabel setText:name];
+    [_stateLabel setOrigin:CGPointMake(_logoView.right + 8, _logoView.bottom - _stateLabel.height)];
 }
 
 
@@ -101,7 +114,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self){
         _avatarView = [[AvatarView alloc] initWithRadius:18];
-        [_avatarView setOrigin:CGPointMake(12, (56 - _avatarView.height) / 2)];
+        [_avatarView setOrigin:CGPointMake(24, (56 - _avatarView.height) / 2)];
         [self addSubview:_avatarView];
         
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -110,16 +123,19 @@
         [self addSubview:_titleLabel];
         
         _stateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [_stateLabel setFont:[UIFont systemFontOfSize:12]];
-        [_stateLabel setTextColor:kCommonTeacherTintColor];
-        [_stateLabel setText:@"未读"];
-        [_stateLabel sizeToFit];
+        [_stateLabel setFont:[UIFont systemFontOfSize:13]];
         //        [_stateLabel setHidden:YES];
         [self addSubview:_stateLabel];
         
-        _stateImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"call_telephone"]];
-        //        [_stateImageView setHidden:YES];
-        [self addSubview:_stateImageView];
+        _mobileImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"call_telephone"]];
+        [_mobileImageView setOrigin:CGPointMake(self.width - 10 - _mobileImageView.width, (56 - _mobileImageView.height) / 2)];
+        [_mobileImageView setHidden:YES];
+        [self addSubview:_mobileImageView];
+        
+        _rightArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]];
+        [_rightArrow setOrigin:CGPointMake(self.width - 10 - _rightArrow.width, (56 - _rightArrow.height) / 2)];
+        [_rightArrow setHidden:YES];
+        [self addSubview:_rightArrow];
         
         UIView *sepLine = [[UIView alloc] initWithFrame:CGRectMake(12, self.height - kLineHeight, self.width - 12, kLineHeight)];
         [sepLine setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
@@ -129,24 +145,61 @@
     return self;
 }
 
-- (void)setUserInfo:(UserInfo *)userInfo{
+- (void)setUserInfo:(HomeworkStudentInfo *)userInfo{
     _userInfo = userInfo;
-    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_userInfo.avatar] placeholderImage:nil];
-    [_avatarView setStatus:_userInfo.actived ? @"" : @"未下载"];
-    [_titleLabel setText:_userInfo.name];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_userInfo.student.avatar] placeholderImage:nil];
+    [_titleLabel setText:_userInfo.student.name];
     [_titleLabel sizeToFit];
-    [_titleLabel setOrigin:CGPointMake(_avatarView.right + 15, (56 - _titleLabel.height) / 2)];
-    
-    if(_userInfo.has_read){
-        [_stateImageView setHidden:YES];
-        [_stateLabel setHidden:YES];
+    [_titleLabel setOrigin:CGPointMake(_avatarView.right + 8, (56 - _titleLabel.height) / 2)];
+    [_mobileImageView setHidden:YES];
+    [_rightArrow setHidden:YES];
+    [_stateLabel setHidden:NO];
+    CGFloat spaceXEnd = self.width;
+    if(self.etype){
+        switch (_userInfo.status) {
+            case HomeworkStudentStatusUnread:
+                [_stateLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
+                [_stateLabel setText:@"未读"];
+                [_mobileImageView setHidden:NO];
+                spaceXEnd = _mobileImageView.left - 5;
+                break;
+            case HomeworkStudentStatusRead:
+                [_stateLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
+                [_stateLabel setText:@"已读"];
+                [_mobileImageView setHidden:NO];
+                spaceXEnd = _mobileImageView.left - 5;
+                break;
+            case HomeworkStudentStatusHasMark:
+                [_stateLabel setTextColor:kCommonTeacherTintColor];
+                [_stateLabel setText:@"已批阅"];
+                [_rightArrow setHidden:NO];
+                spaceXEnd = _rightArrow.left - 5;
+                break;
+            case HomeworkStudentStatusWaitMark:
+                [_stateLabel setTextColor:[UIColor colorWithHexString:@"5ba110"]];
+                [_stateLabel setText:@"等待老师批阅"];
+                [_rightArrow setHidden:NO];
+                spaceXEnd = _rightArrow.left - 5;
+                break;
+            default:
+                break;
+        }
     }
     else{
-        [_stateImageView setHidden:NO];
-        [_stateLabel setHidden:NO];
+        switch (_userInfo.status) {
+            case HomeworkStudentStatusUnread:
+                [_mobileImageView setHidden:NO];
+                [_stateLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
+                [_stateLabel setText:@"未读"];
+                spaceXEnd = _mobileImageView.left - 5;
+                break;
+            default:
+                [_stateLabel setHidden:YES];
+                break;
+        }
     }
-    [_stateImageView setOrigin:CGPointMake(self.width - 10 - _stateImageView.width, (56 - _stateImageView.height) / 2)];
-    [_stateLabel setOrigin:CGPointMake(_stateImageView.left - 10 - _stateLabel.width, (56 - _stateLabel.height) / 2)];
+    [_stateLabel sizeToFit];
+    [_stateLabel setOrigin:CGPointMake(spaceXEnd - _stateLabel.width, (56 - _stateLabel.height) / 2)];
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width{
@@ -222,9 +275,20 @@
     [viewParent addSubview:markButton];
 }
 
+- (void)loadTargets{
+    __weak typeof(self) wself = self;
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/classes" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"eid" : self.homeworkItem.hid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        TNDataWrapper *dataWrapper = [responseObject getDataWrapperForKey:@"classes"];
+        wself.targetArray = [HomeworkClassStatus nh_modelArrayWithJson:dataWrapper.data];
+    } fail:^(NSString *errMsg) {
+        
+    }];
+}
+
 - (void)setHomeworkItem:(HomeworkItem *)homeworkItem{
     _homeworkItem = homeworkItem;
-    [self setTargetArray:_homeworkItem.classes];
+//    [self setTargetArray:_homeworkItem.classes];
+    [self loadTargets];
 }
 
 - (void)setTargetArray:(NSArray *)targetArray{
@@ -234,7 +298,8 @@
         expand = YES;
     }
     for (NSInteger i = 0; i < _targetArray.count; i++) {
-        NSString *groupID = [self groupIDForSection:i];
+        HomeworkClassStatus* group = _targetArray[i];
+        NSString *groupID = group.classID;
         if(groupID.length > 0){
             [self.expandDic setValue:@(expand) forKey:groupID];
         }
@@ -249,33 +314,6 @@
     return _expandDic;
 }
 
-- (NSString *)groupIDForSection:(NSInteger)section{
-    NSString *groupID = nil;
-    id group = _targetArray[section];
-    if([group isKindOfClass:[ClassInfo class]]){
-        ClassInfo *classInfo = (ClassInfo *)group;
-        groupID = classInfo.classID;
-    }
-    else if([group isKindOfClass:[TeacherGroup class]]){
-        TeacherGroup *teacherGroup = (TeacherGroup *)group;
-        groupID = teacherGroup.groupID;
-    }
-    return groupID;
-}
-
-- (NSArray *)userArrayForSection:(NSInteger)section{
-    NSArray *userArray = nil;
-    id group = self.targetArray[section];
-    if([group isKindOfClass:[ClassInfo class]]){
-        ClassInfo *classInfo = (ClassInfo *)group;
-        userArray = classInfo.students;
-    }
-    else if([group isKindOfClass:[TeacherGroup class]]){
-        TeacherGroup *teacherGroup = (TeacherGroup *)group;
-        userArray = teacherGroup.teachers;
-    }
-    return userArray;
-}
 
 - (void)markHomework{
     MarkHomeworkVC *markHomeworkVC = [[MarkHomeworkVC alloc] init];
@@ -283,7 +321,41 @@
 }
 
 - (void)alertAll{
-    
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"根据您所选的班级，通过APP通知和短信的形式，提醒未回复作业的学生家长尽快回复。1小时之内可以提醒一次。" style:LGAlertViewStyleAlert buttonTitles:@[@"提醒"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+    [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setButtonsTitleColor:kCommonTeacherTintColor];
+    [alertView setCancelButtonTitleColor:kCommonTeacherTintColor];
+    [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+        
+    }];
+    [alertView showAnimated:YES completionHandler:nil];
+}
+
+- (void)notificationClass:(HomeworkClassStatus *)classInfo{
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"在短时间之内，不能重复提醒。" style:LGAlertViewStyleAlert buttonTitles:@[@"确定"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+    [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setButtonsTitleColor:kCommonTeacherTintColor];
+    [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+        
+    }];
+    [alertView showAnimated:YES completionHandler:nil];
+}
+
+- (NSArray *)studentHomeworkArray{
+    NSMutableArray *homeworkArray = [NSMutableArray array];
+    for (HomeworkClassStatus *classStatus in self.targetArray) {
+        for (HomeworkStudentInfo *studentInfo in classStatus.students) {
+            if(studentInfo.status == HomeworkStudentStatusWaitMark || studentInfo.status == HomeworkStudentStatusHasMark){
+                [homeworkArray addObject:studentInfo];
+            }
+        }
+    }
+    if([homeworkArray count] > 0){
+        return homeworkArray;
+    }
+    return nil;
 }
 
 #pragma mark - UITableViewDelegate
@@ -292,10 +364,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSString *groupID = [self groupIDForSection:section];
+    HomeworkClassStatus *classInfo = self.targetArray[section];
+    NSString *groupID = classInfo.classID;
     BOOL expand = [[self.expandDic objectForKey:groupID] boolValue];
     if(expand)
-        return [self userArrayForSection:section].count;
+        return [classInfo.students count];
     return 0;
 }
 
@@ -313,15 +386,20 @@
     if(headerView == nil){
         headerView = [[HomeworkTargetHeaderView alloc] initWithReuseIdentifier:reuseID];
     }
-    [headerView setGroup:self.targetArray[section]];
-    NSString *groupID = [self groupIDForSection:section];
-    BOOL expand = [[self.expandDic objectForKey:groupID] boolValue];
+    HomeworkClassStatus *classInfo = self.targetArray[section];
+    [headerView setEtype:self.homeworkItem.etype];
+    [headerView setClassInfo:classInfo];
+    BOOL expand = [[self.expandDic objectForKey:classInfo.classID] boolValue];
     [headerView setExpand:expand];
     @weakify(self)
     [headerView setExpandCallback:^{
         @strongify(self)
-        [self.expandDic setValue:@(!expand) forKey:groupID];
+        [self.expandDic setValue:@(!expand) forKey:classInfo.classID];
         [self.tableView reloadData];
+    }];
+    [headerView setAlertCallback:^{
+        @strongify(self)
+        [self notificationClass:classInfo];
     }];
     return headerView;
 }
@@ -332,32 +410,25 @@
     if(cell == nil){
         cell = [[HomeworkSendTargetCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
+    [cell setEtype:self.homeworkItem.etype];
+    HomeworkClassStatus *classInfo = self.targetArray[indexPath.section];
+    HomeworkStudentInfo *studentInfo = classInfo.students[indexPath.row];
+    [cell setUserInfo:studentInfo];
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    HomeworkSendTargetCell *curCell = (HomeworkSendTargetCell *)cell;
-    UserInfo *userInfo = [[self userArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
-    [curCell setUserInfo:userInfo];
-    if(userInfo.has_read){
-        [curCell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    }
-    else{
-        [curCell setSelectionStyle:UITableViewCellSelectionStyleDefault];
-    }
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    UserInfo *userInfo = [[self userArrayForSection:indexPath.section] objectAtIndex:indexPath.row];
-    if(!userInfo.has_read){
-        if([userInfo isKindOfClass:[StudentInfo class]]){
-            StudentInfo *studentInfo = (StudentInfo *)userInfo;
-            NSMutableArray *familyArray = [NSMutableArray arrayWithCapacity:0];
-            for (NSInteger i = 0; i < studentInfo.family.count; i++) {
-                FamilyInfo *familyInfo = studentInfo.family[i];
-                [familyArray addObject:[NSString stringWithFormat:@"%@: %@",familyInfo.relation, familyInfo.mobile]];
-            }
+    HomeworkClassStatus *classInfo = self.targetArray[indexPath.section];
+    HomeworkStudentInfo *studentInfo = classInfo.students[indexPath.row];
+    if((studentInfo.status == HomeworkStudentStatusRead && self.homeworkItem.etype) || studentInfo.status == HomeworkStudentStatusUnread){
+        NSMutableArray *familyArray = [NSMutableArray arrayWithCapacity:0];
+        for (NSInteger i = 0; i < studentInfo.student.family.count; i++) {
+            FamilyInfo *familyInfo = studentInfo.student.family[i];
+            [familyArray addObject:[NSString stringWithFormat:@"%@: %@",familyInfo.relation, familyInfo.mobile]];
+        }
+        if([familyArray count] > 0){
             LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:familyArray cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
             [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
             [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
@@ -365,26 +436,23 @@
             [alertView setButtonsTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
             [alertView setCancelButtonTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
             [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-                FamilyInfo *familyInfo = studentInfo.family[index];
+                FamilyInfo *familyInfo = studentInfo.student.family[index];
                 NSMutableString * str = [[NSMutableString alloc] initWithFormat:@"tel://%@",familyInfo.mobile];
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
             }];
             [alertView showAnimated:YES completionHandler:nil];
         }
-        else{
-            TeacherInfo *teacherInfo = (TeacherInfo *)userInfo;
-            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:@[[NSString stringWithFormat:@"%@: %@",teacherInfo.name, teacherInfo.mobile]] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
-            [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
-            [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-            [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-            [alertView setButtonsTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
-            [alertView setCancelButtonTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
-            [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-                NSMutableString * str = [[NSMutableString alloc] initWithFormat:@"tel://%@",teacherInfo.mobile];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-            }];
-            [alertView showAnimated:YES completionHandler:nil];
+    }
+    else if(studentInfo.status == HomeworkStudentStatusHasMark || studentInfo.status == HomeworkStudentStatusWaitMark){
+        NSArray *homeworkArray = [self studentHomeworkArray];
+        NSInteger index = [homeworkArray indexOfObject:studentInfo];
+        MarkHomeworkVC *markVC = [[MarkHomeworkVC alloc] init];
+        [markVC setHomeworkId:self.homeworkItem.hid];
+        [markVC setHomeworkArray:homeworkArray];
+        if(index >= 0 && index < [homeworkArray count]){
+            [markVC setCurIndex:index];
         }
+        [CurrentROOTNavigationVC pushViewController:markVC animated:YES];
     }
 }
 
