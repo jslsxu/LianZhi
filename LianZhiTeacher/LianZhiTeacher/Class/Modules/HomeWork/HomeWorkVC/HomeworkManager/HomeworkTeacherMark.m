@@ -14,16 +14,11 @@
 @end
 
 @implementation HomeworkMarkItem
-- (instancetype)init{
+- (instancetype)initWithPhoto:(PhotoItem *)photoItem{
     self = [super init];
     if(self){
-        PhotoItem *photoItem = [[PhotoItem alloc] init];
-        photoItem.photoID = @"123";
-        photoItem.width = 700;
-        photoItem.height = 1050;
-        photoItem.big = @"http://cdn.duitang.com/uploads/item/201410/19/20141019132733_yfaT4.thumb.700_0.jpeg";
         self.picture = photoItem;
-        
+        self.marks = [NSMutableArray array];
     }
     return self;
 }
@@ -36,12 +31,30 @@
     }
 }
 
+- (BOOL)isEmpty{
+    if([self.marks count] > 0){
+        return NO;
+    }
+    return YES;
+}
+
 + (NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
     return @{@"marks" : [HomeworkPhotoMark class]};
 }
 @end
 
 @implementation HomeworkTeacherMark
+
+- (instancetype)initWithPhotoArray:(NSArray *)photoArray{
+    self = [super init];
+    if(self){
+        self.marks = [NSMutableArray array];
+        for (NSInteger i = 0; i < photoArray.count; i++) {
+            [self.marks addObject:[[HomeworkMarkItem alloc] initWithPhoto:photoArray[i]]];
+        }
+    }
+    return self;
+}
 + (NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
     return @{@"marks" : [HomeworkMarkItem class]};
 }
@@ -50,5 +63,19 @@
     HomeworkTeacherMark *teacherMark = [[HomeworkTeacherMark alloc] init];
     [teacherMark modelSetWithJSON:markDetail];
     return teacherMark;
+}
+
+- (BOOL)isEmpty{
+    if([self.comment length] > 0){
+        return NO;
+    }
+    if([self.marks count] > 0){
+        for (HomeworkMarkItem* markItem in self.marks) {
+            if(![markItem isEmpty]){
+                return NO;
+            }
+        }
+    }
+    return YES;
 }
 @end

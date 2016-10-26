@@ -9,6 +9,7 @@
 #import "HomeWorkVC.h"
 #import "HomeWorkListModel.h"
 #import "Calendar.h"
+#import "HomeworkDetailVC.h"
 @interface HomeWorkVC ()<CalendarDelegate>
 @property (nonatomic, strong)Calendar *calendar;
 @end
@@ -34,6 +35,8 @@
     [self.tableView setFrame:CGRectMake(0, self.calendar.bottom, self.view.width, self.view.height - self.calendar.bottom)];
     [self.tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [self bindTableCell:@"HomeWorkCell" tableModel:@"HomeworkListModel"];
+    [self setSupportPullUp:YES];
+    [self requestData:REQUEST_REFRESH];
 }
 
 - (Calendar *)calendar{
@@ -48,6 +51,19 @@
     
 }
 
+- (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType{
+    HttpRequestTask *task = [[HttpRequestTask alloc] init];
+    [task setRequestUrl:@"exercises/lists"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.classID forKey:@"class_id"];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    [params setValue:[dateFormatter stringFromDate:self.calendar.currentSelectedDate] forKey:@"sdate"];
+    [task setParams:params];
+    return task;
+}
+
 //- (BOOL)supportCache{
 //    return YES;
 //}
@@ -56,9 +72,20 @@
 //    return [NSString stringWithFormat:@"%@_%@",[self class],self.classID];
 //}
 
+- (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
+    HomeworkItem *homeworkItem = (HomeworkItem *)modelItem;
+    HomeworkDetailVC *detailVC = [[HomeworkDetailVC alloc] init];
+    [detailVC setHomeworkId:homeworkItem.eid];
+    [CurrentROOTNavigationVC pushViewController:detailVC animated:YES];
+}
+
 #pragma mark - CalendarDelegate
 - (void)calendarHeightWillChange:(CGFloat)height{
     [self.tableView setFrame:CGRectMake(0, height, self.view.width, self.view.height - height)];
+}
+
+- (void)calendarDateDidChange:(NSDate *)selectedDate{
+    [self requestData:REQUEST_REFRESH];
 }
 
 - (void)didReceiveMemoryWarning {

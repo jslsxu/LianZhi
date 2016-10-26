@@ -9,7 +9,7 @@
 #import "HomeworkMarkFooterView.h"
 static MarkType currentMarkType = MarkTypeNone;
 
-@interface HomeworkMarkFooterView ()
+@interface HomeworkMarkFooterView ()<UITextFieldDelegate>
 @property (nonatomic, strong)UIButton*  rightButton;
 @property (nonatomic, strong)UIButton*  wrongButton;
 @property (nonatomic, strong)UIButton*  halfRightButton;
@@ -53,9 +53,9 @@ static MarkType currentMarkType = MarkTypeNone;
         NSInteger spaceXstart = self.width - (45 + 10) * 3;
         for (NSInteger i = 0; i < 3; i++) {
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-            [button setFrame:CGRectMake(spaceXstart + (45 + 10) * i, hintLabel.centerY - 9, 45, 18)];
-            [button setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Normal",commentImage[i]]] forState:UIControlStateNormal];
-            [button setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Selected",commentImage[i]]] forState:UIControlStateSelected];
+            [button setFrame:CGRectMake(spaceXstart + (45 + 10) * i, hintLabel.centerY - 15, 45, 30)];
+            [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Normal",commentImage[i]]] forState:UIControlStateNormal];
+            [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Selected",commentImage[i]]] forState:UIControlStateSelected];
             [button addTarget:self action:@selector(onCommentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:button];
             [commentButtonArray addObject:button];
@@ -66,7 +66,13 @@ static MarkType currentMarkType = MarkTypeNone;
         [_textField setFont:[UIFont systemFontOfSize:14]];
         [_textField setTextColor:[UIColor colorWithHexString:@"333333"]];
         [_textField setPlaceholder:@"暂无评语"];
+        [_textField setDelegate:self];
         [self addSubview:_textField];
+        
+        __weak typeof(self) wself = self;
+        [RACObserve(_textField, text) subscribeNext:^(id x) {
+            [wself.teacherMark setComment:wself.textField.text];
+        }];
     }
     return self;
 }
@@ -94,6 +100,10 @@ static MarkType currentMarkType = MarkTypeNone;
 
 - (void)touchHalfRight{
     currentMarkType = MarkTypeHalfRight;
+}
+
+- (NSString *)comment{
+    return [_textField text];
 }
 
 - (void)onCommentButtonClicked:(UIButton *)button{
@@ -125,6 +135,15 @@ static MarkType currentMarkType = MarkTypeNone;
             }
         }
     }
+}
+
+#pragma mark - UITextFieldDelegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    if([string isEqualToString:@"\n"]){
+        [textField resignFirstResponder];
+        return NO;
+    }
+    return true;
 }
 
 @end

@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "HomeworkStudentAnswer.h"
+#import "HomeworkItem.h"
 @interface HomeworkResultView : UIView{
     UIScrollView*   _scrollView;
 }
-
+@property (nonatomic, strong)HomeworkItem*  homeworkItem;
 @end

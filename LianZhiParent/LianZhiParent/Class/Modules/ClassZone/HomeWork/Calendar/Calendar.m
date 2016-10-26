@@ -133,6 +133,10 @@
     }
 }
 
+- (NSDate *)currentSelectedDate{
+    return self.selectedDate;
+}
+
 - (void)updateSubviews{
     NSInteger numOfRows = [self numOfWeek];
     NSMutableArray *dateArrayTmp = [[NSMutableArray alloc] initWithCapacity:0];
@@ -256,13 +260,18 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     NSDate *selectDate = self.dateArray[indexPath.row];
-    if(selectDate.month == self.date.month){
-        self.selectedDate = selectDate;
-        [self.collectionView reloadData];
-    }
-    else{
-        self.selectedDate = selectDate;
-        [self setDate:selectDate];
+    if(!(selectDate.month == self.selectedDate.month && selectDate.year == self.selectedDate.year && selectDate.day == self.selectedDate.day)){
+        if(selectDate.month == self.date.month){
+            self.selectedDate = selectDate;
+            [self.collectionView reloadData];
+        }
+        else{
+            self.selectedDate = selectDate;
+            [self setDate:selectDate];
+        }
+        if([self.delegate respondsToSelector:@selector(calendarDateDidChange:)]){
+            [self.delegate calendarDateDidChange:self.selectedDate];
+        }
     }
 }
 

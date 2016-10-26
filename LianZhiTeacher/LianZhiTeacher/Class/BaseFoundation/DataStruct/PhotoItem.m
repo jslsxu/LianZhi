@@ -33,7 +33,8 @@
     return @{@"user" : [UserInfo class]};
 }
 + (nullable NSArray<NSString *> *)modelPropertyBlacklist{
-    return @[@"publishImageItem",@"image"];
+    return @[@"publishImageItem",@"image",
+             @"", @""];
 }
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {

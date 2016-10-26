@@ -7,6 +7,10 @@
 //
 
 #import "TNBaseObject.h"
+#import "HomeworkNotificationItem.h"
+#import "HomeworkStudentAnswer.h"
+
+extern NSString* const kHomeworkItemChangedNotification;
 
 @interface HomeworkItemAnswer : TNBaseObject
 @property (nonatomic, copy)NSString*    aid;
@@ -17,14 +21,19 @@
 
 @interface HomeworkItem : TNBaseObject
 @property (nonatomic, copy)NSString*    homeworkId;
-@property (nonatomic, strong)UserInfo*  user;
+@property (nonatomic, copy)NSString*    eid;
+@property (nonatomic, strong)UserInfo*  teacher;
 @property (nonatomic, copy)NSString*    words;
 @property (nonatomic, strong)AudioItem* voice;
-@property (nonatomic, strong)NSArray* pictures;
-@property (nonatomic, copy)NSString*    create_time;
-@property (nonatomic, copy)NSString*    end_time;
-@property (nonatomic, copy)NSString*    course;
-@property (nonatomic, strong)HomeworkItemAnswer*   answer;
+@property (nonatomic, strong)NSArray<PhotoItem *>* pics;
+@property (nonatomic, copy)NSString*    ctime;
+@property (nonatomic, assign)BOOL       reply_close;
+@property (nonatomic, copy)NSString*    reply_close_time;
+@property (nonatomic, copy)NSString*    course_name;
+@property (nonatomic, strong)HomeworkStudentAnswer* s_answer;
+@property (nonatomic, copy)NSString*    s_answer_time;
+@property (nonatomic, strong)HomeworkItemAnswer*   answer;      //老师的解析
+@property (nonatomic, assign)HomeworkStatus status;
 - (BOOL)hasPhoto;
 - (BOOL)hasAudio;
 @end

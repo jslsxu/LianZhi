@@ -8,6 +8,8 @@
 
 #import "HomeworkItem.h"
 
+NSString* const kHomeworkItemChangedNotification = @"HomeworkItemChangedNotification";
+
 @implementation HomeworkItemAnswer
 + (NSDictionary<NSString *, id>*)modelContainerPropertyGenericClass{
     return @{@"pics" : [PhotoItem class]};
@@ -16,38 +18,24 @@
 @end
 
 @implementation HomeworkItem
-- (instancetype)init{
-    self = [super init];
-    if(self){
-        self.user = [UserCenter sharedInstance].userInfo;
-        self.words = @"此处“...”，因为目前三个点里面的内容只有删除，所以这篇作业达到删除条件，才有三个点，里面的菜单只有删除。并且删除需要提醒用户“是否删除该作业”，选项为删除（红字）和取消。注意：删除后，对应的作业练习和作业通知也要删除。";
-        self.create_time = @"10-14 12:23";
-        self.end_time = @"10-15 12:00";
-        self.course = @"语文";
-        
-        PhotoItem *photoItem = [[PhotoItem alloc] init];
-        [photoItem setPhotoID:@"123"];
-        [photoItem setBig:@"https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/image/h%3D200/sign=04d308e12e9759ee555067cb82fa434e/902397dda144ad3455abeb6bd8a20cf430ad85c1.jpg"];
-        [photoItem setWidth:320];
-        [photoItem setHeight:200];
-        self.pictures = @[photoItem];
-        
-        AudioItem *audioItem = [[AudioItem alloc] init];
-        [audioItem setAudioUrl:@"http://img4.imgtn.bdimg.com/it/u=1215299968,4212700726&fm=21&gp=0.jpg"];
-        [audioItem setTimeSpan:23];
-        self.voice = audioItem;
-        
-        HomeworkItemAnswer *explain = [[HomeworkItemAnswer alloc] init];
-        self.answer = explain;
-    }
-    return self;
+
++ (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
+    return @{@"homeworkId" : @"id",@"words" : @"question.words",
+             @"pics" : @"question.pics",
+             @"voice" : @"question.voice",
+             };
 }
+
++ (NSDictionary<NSString * ,id> *)modelContainerPropertyGenericClass{
+    return @{@"pics" : [PhotoItem class]};
+}
+
 - (BOOL)hasAudio{
     return self.voice.audioUrl.length > 0;
 }
 
 - (BOOL)hasPhoto{
-    return self.pictures.count > 0;
+    return [self.pics count] > 0;
 }
 
 @end

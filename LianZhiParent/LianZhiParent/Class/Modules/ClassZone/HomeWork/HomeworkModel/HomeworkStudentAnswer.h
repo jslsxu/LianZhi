@@ -12,7 +12,7 @@
 @interface HomeworkStudentAnswer : TNBaseObject
 @property (nonatomic, copy)NSString*    answerId;
 @property (nonatomic, copy)NSString*    ctime;
-@property (nonatomic, strong)NSArray<PhotoItem *>* pictures;
+@property (nonatomic, strong)NSArray<PhotoItem *>* pics;
 @property (nonatomic, strong)HomeworkTeacherMark*   teacherMark;    //老师对作业的批阅
 - (BOOL)marked;
 @end

@@ -16,7 +16,7 @@ typedef NS_ENUM(NSInteger, CalendarType){
 @protocol CalendarDelegate <NSObject>
 @optional
 - (void)calendarHeightWillChange:(CGFloat)height;
-
+- (void)calendarDateDidChange:(NSDate *)selectedDate;
 @end
 
 @interface CalendarDayView : UICollectionViewCell{
@@ -32,5 +32,6 @@ typedef NS_ENUM(NSInteger, CalendarType){
 @property (nonatomic, assign)CalendarType calendarType;
 @property (nonatomic, weak)id<CalendarDelegate> delegate;
 @property (nonatomic, strong)NSDate*    date;
+- (NSDate *)currentSelectedDate;
 - (instancetype)initWithDate:(NSDate *)date;
 @end

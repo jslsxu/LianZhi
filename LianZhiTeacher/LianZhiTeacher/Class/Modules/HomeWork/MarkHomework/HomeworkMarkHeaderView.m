@@ -80,11 +80,19 @@
     [_rateLabel sizeToFit];
     [_rateLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.centerY - _rateLabel.height / 2)];
     
-    [_timeLabel setText:[NSString stringWithFormat:@"提交时间: %@",_studentHomeworkInfo.answer.ctime]];
+    NSString *timeStr = @"提交时间:";
+    if([_studentHomeworkInfo.s_answer_time length] > 0){
+        timeStr = [NSString stringWithFormat:@"提交时间: %@",_studentHomeworkInfo.s_answer_time];
+    }
+    [_timeLabel setText:timeStr];
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.bottom - _timeLabel.height)];
     
-    [_commentLabel setText:[NSString stringWithFormat:@"评语：%@",_studentHomeworkInfo.answer.teacherMark.comment]];
+    NSString *commentStr = @"评语:";
+    if([_studentHomeworkInfo.s_answer.teacherMark.comment length] > 0){
+        commentStr = [NSString stringWithFormat:@"评语：%@",_studentHomeworkInfo.s_answer.teacherMark.comment];
+    }
+    [_commentLabel setText:commentStr];
 }
 
 - (void)setCanPre:(BOOL)canPre{

@@ -10,15 +10,12 @@
 
 @implementation HomeworkListModel
 
-- (instancetype)init{
-    self = [super init];
-    if(self){
-        for (NSInteger i = 0; i < 10; i++) {
-            HomeworkItem *item = [[HomeworkItem alloc] init];
-            item.words = @"请仔细观察图，发挥想象写几句话，然后发给老师，记得注意文字要通顺，病句要少";
-            [self.modelItemArray addObject:item];
-        }
+- (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type{
+    if(type == REQUEST_REFRESH){
+        [self.modelItemArray removeAllObjects];
     }
-    return self;
+    TNDataWrapper *itemsWrapper = [data getDataWrapperForKey:@"items"];
+    [self.modelItemArray addObjectsFromArray:[HomeworkItem nh_modelArrayWithJson:itemsWrapper.data]];
+    return YES;
 }
 @end

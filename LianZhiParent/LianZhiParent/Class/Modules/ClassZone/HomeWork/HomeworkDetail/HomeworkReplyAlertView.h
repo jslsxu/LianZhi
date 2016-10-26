@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface HomeworkReplyAlertView : UIView
-+ (void)showAlertView;
++ (void)showAlertViewWithCompletion:(void (^)())completion;
 @end

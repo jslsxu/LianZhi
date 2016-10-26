@@ -46,13 +46,13 @@
         NSInteger spaceYStart = 0;
         AvatarView* avatarView = [[AvatarView alloc] initWithRadius:20];
         [avatarView setOrigin:CGPointMake(margin, margin)];
-        [avatarView sd_setImageWithURL:[NSURL URLWithString:self.homeworkItem.user.avatar] placeholderImage:nil];
+        [avatarView sd_setImageWithURL:[NSURL URLWithString:self.homeworkItem.teacher.avatar] placeholderImage:nil];
         [_scrollView addSubview:avatarView];
         
         UILabel*    nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [nameLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
         [nameLabel setFont:[UIFont systemFontOfSize:14]];
-        [nameLabel setText:self.homeworkItem.user.name];
+        [nameLabel setText:self.homeworkItem.teacher.name];
         [nameLabel sizeToFit];
         [nameLabel setOrigin:CGPointMake(avatarView.right + margin, avatarView.top)];
         [_scrollView addSubview:nameLabel];
@@ -60,7 +60,7 @@
         UILabel*    courseLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [courseLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
         [courseLabel setFont:[UIFont systemFontOfSize:13]];
-        [courseLabel setText:self.homeworkItem.course];
+        [courseLabel setText:self.homeworkItem.course_name];
         [courseLabel sizeToFit];
         [courseLabel setOrigin:CGPointMake(avatarView.right + margin, avatarView.bottom - courseLabel.height)];
         [_scrollView addSubview:courseLabel];
@@ -68,17 +68,17 @@
         UILabel*    publishTimelabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [publishTimelabel setTextColor:[UIColor colorWithHexString:@"999999"]];
         [publishTimelabel setFont:[UIFont systemFontOfSize:13]];
-        [publishTimelabel setText:[NSString stringWithFormat:@"发布时间:%@",self.homeworkItem.create_time]];
+        [publishTimelabel setText:[NSString stringWithFormat:@"发布时间:%@",self.homeworkItem.ctime]];
         [publishTimelabel sizeToFit];
         [publishTimelabel setOrigin:CGPointMake(_scrollView.width - margin - publishTimelabel.width, avatarView.top + 2)];
         [_scrollView addSubview:publishTimelabel];
         
         
-        if(self.homeworkItem.end_time.length > 0){
+        if(self.homeworkItem.reply_close_time.length > 0){
             UILabel*    endTimeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
             [endTimeLabel setTextColor:kCommonParentTintColor];
             [endTimeLabel setFont:[UIFont systemFontOfSize:13]];
-            [endTimeLabel setText:[NSString stringWithFormat:@"截止时间:%@",self.homeworkItem.end_time]];
+            [endTimeLabel setText:[NSString stringWithFormat:@"截止时间:%@",self.homeworkItem.reply_close_time]];
             [endTimeLabel sizeToFit];
             [endTimeLabel setOrigin:CGPointMake(_scrollView.width - margin - endTimeLabel.width, avatarView.bottom - endTimeLabel.height - 2)];
             [_scrollView addSubview:endTimeLabel];
@@ -96,9 +96,9 @@
         }
         
         if([self.homeworkItem hasPhoto]){
-            for (NSInteger i = 0; i < [self.homeworkItem.pictures count]; i++) {
+            for (NSInteger i = 0; i < [self.homeworkItem.pics count]; i++) {
                 NSInteger itemWidth = _scrollView.width - margin * 2;
-                PhotoItem *photoItem = [self.homeworkItem.pictures objectAtIndex:i];
+                PhotoItem *photoItem = [self.homeworkItem.pics objectAtIndex:i];
                 NSInteger itemHeight = itemWidth;
                 if(photoItem.width != 0 && photoItem.height != 0){
                     itemHeight = itemWidth * photoItem.height / photoItem.width;
@@ -110,14 +110,20 @@
                 [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.big] placeholderImage:nil];
                 [_scrollView addSubview:imageView];
                 
-                spaceYStart = imageView.bottom;
+                spaceYStart = imageView.bottom + margin;
             }
         }
         
         if(self.homeworkItem.answer){
-            self.explainView = [[HomeworkItemAnswerView alloc] initWithFrame:CGRectMake(0, spaceYStart, _scrollView.width, 0)];
-            [_scrollView addSubview:self.explainView];
-            spaceYStart = self.explainView.bottom ;
+            if(self.homeworkItem.s_answer){
+                self.explainView = [[HomeworkItemAnswerView alloc] initWithFrame:CGRectMake(0, spaceYStart, _scrollView.width, 0)];
+                [self.explainView setAnswer:self.homeworkItem.answer];
+                [_scrollView addSubview:self.explainView];
+                spaceYStart = self.explainView.bottom ;
+            }
+            else{
+                
+            }
         }
         
         [_scrollView setContentSize:CGSizeMake(self.width, spaceYStart)];

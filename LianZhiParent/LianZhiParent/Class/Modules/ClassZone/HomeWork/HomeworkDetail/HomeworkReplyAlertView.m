@@ -11,12 +11,14 @@
 @interface HomeworkReplyAlertView ()
 @property (nonatomic, strong)UIButton*  bgButton;
 @property (nonatomic, strong)UIView*    contentView;
+@property (nonatomic, copy)void (^completion)();
 @end
 
 @implementation HomeworkReplyAlertView
 
-+ (void)showAlertView{
++ (void)showAlertViewWithCompletion:(void (^)())completion{
     HomeworkReplyAlertView *alertView = [[HomeworkReplyAlertView alloc] init];
+    [alertView setCompletion:completion];
     [alertView show];
 }
 
@@ -95,6 +97,9 @@
 }
 
 - (void)confirm{
+    if(self.completion){
+        self.completion();
+    }
     [self dismiss];
 }
 

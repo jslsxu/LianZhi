@@ -17,6 +17,7 @@
 @property (nonatomic, strong)ZYBannerView*              circleView;
 @property (nonatomic, strong)HomeworkMarkFooterView*    footerView;
 @property (nonatomic, strong)HomeworkMarkItem*          markItem;
+@property (nonatomic, strong)NSMutableDictionary*       markMap;
 @end
 
 @implementation MarkHomeworkVC
@@ -31,21 +32,39 @@
     [self.view addSubview:[self circleView]];
     
     [self showHomeworkWithIndex:self.curIndex];
+    
+    for (HomeworkStudentInfo *studentInfo in self.homeworkArray) {
+        HomeworkTeacherMark* teacherMark = [[HomeworkTeacherMark alloc] initWithPhotoArray:studentInfo.s_answer.pics];
+        [self.markMap setValue:teacherMark forKey:studentInfo.student.uid];
+    }
+}
+
+- (NSMutableDictionary *)markMap{
+    if(_markMap == nil){
+        _markMap = [NSMutableDictionary dictionary];
+    }
+    return _markMap;
 }
 
 - (void)mark{
+    __weak typeof(self) wself = self;
     HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
-    if(![studentInfo.reply marked]){
-        HomeworkTeacherMark *mark = [studentInfo.reply teacherMark];
-        NSString *markDetail = [mark modelToJSONString];
-        NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        [params setValue:markDetail forKey:@"mark_detail"];
-        [params setValue:self.homeworkItem.hid forKey:@"eid"];
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/marking" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-            [studentInfo setMark_detail:markDetail];
-        } fail:^(NSString *errMsg) {
-            
-        }];
+    if(![studentInfo.s_answer marked]){
+        HomeworkTeacherMark *mark = self.markMap[studentInfo.student.uid];
+        if(![mark isEmpty]){
+            NSString *markDetail = [mark modelToJSONString];
+            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+            [params setValue:markDetail forKey:@"mark_detail"];
+            [params setValue:self.homeworkItem.hid forKey:@"eid"];
+            [params setValue:studentInfo.student.uid forKey:@"child_id"];
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/marking" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                [studentInfo setMark_detail:markDetail];
+                [wself.navigationItem.rightBarButtonItem setEnabled:NO];
+            } fail:^(NSString *errMsg) {
+                
+            }];
+        }
+       
     }
 }
 
@@ -76,8 +95,10 @@
 
 - (void)showHomeworkWithIndex:(NSInteger)index{
     self.curIndex = index;
+    [self.headerView setCanPre:self.curIndex > 0];
+    [self.headerView setCanNext:self.curIndex < [self.homeworkArray count] - 1];
     HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
-    [self.navigationItem.rightBarButtonItem setEnabled:![studentInfo.reply marked]];
+    [self.navigationItem.rightBarButtonItem setEnabled:[studentInfo.mark_detail length] == 0];
     
     [self.headerView setStudentHomeworkInfo:studentInfo];
     [self.circleView reloadData];
@@ -98,12 +119,16 @@
 
 #pragma mark - ZYbannerDelegate
 - (NSInteger)numberOfItemsInBanner:(ZYBannerView *)banner{
-    return 1;
+    HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
+    HomeworkTeacherMark* teacherMark = self.markMap[studentInfo.student.uid];
+    return [teacherMark.marks count];
 }
 
 - (UIView *)banner:(ZYBannerView *)banner viewForItemAtIndex:(NSInteger)index{
     HomeworkPhotoImageView *imageView = [[HomeworkPhotoImageView alloc] initWithFrame:banner.bounds];
-    [imageView setMarkItem:self.markItem];
+    HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
+    HomeworkTeacherMark* teacherMark = self.markMap[studentInfo.student.uid];
+    [imageView setMarkItem:teacherMark.marks[index]];
     return imageView;
 }
 

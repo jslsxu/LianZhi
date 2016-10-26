@@ -245,7 +245,7 @@
         {
             
         }
-        else if(groupItem.fromInfo.type == ChatTypePractice)
+        else if(groupItem.fromInfo.type == ChatTypeHomeworkNotification)
         {
             HomeworkListVC *homeWorkVC = [[HomeworkListVC alloc] init];
             [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];

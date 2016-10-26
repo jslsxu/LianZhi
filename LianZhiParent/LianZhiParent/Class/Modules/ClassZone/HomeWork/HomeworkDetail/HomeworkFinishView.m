@@ -41,4 +41,19 @@
     return _replyView;
 }
 
+- (void)setHomeworkItem:(HomeworkItem *)homeworkItem{
+    _homeworkItem = homeworkItem;
+    [self.resultView setHomeworkItem:_homeworkItem];
+    [self.replyView setHomeworkItem:_homeworkItem];
+    if(_homeworkItem.s_answer){//以及恢复了显示result
+        [self.resultView setHidden:NO];
+        [self.replyView setHidden:YES];
+    }
+    else{
+        [self.resultView setHidden:YES];
+        [self.replyView setHidden:NO];
+    }
+}
+
+
 @end

@@ -22,12 +22,16 @@ typedef NS_ENUM(NSInteger, MarkType){
 
 @interface HomeworkMarkItem : TNBaseObject
 @property (nonatomic, strong)PhotoItem* picture;
-@property (nonatomic, strong)NSArray<HomeworkPhotoMark *>* marks;
+@property (nonatomic, strong)NSMutableArray<HomeworkPhotoMark *>* marks;
+- (instancetype)initWithPhoto:(PhotoItem *)photoItem;
 - (void)addMark:(HomeworkPhotoMark *)photoMark;
+- (BOOL)isEmpty;
 @end
 
 @interface HomeworkTeacherMark : TNBaseObject
 @property (nonatomic, copy)NSString*    comment;        //评语
-@property (nonatomic, strong)NSArray<HomeworkMarkItem *>* marks;
+@property (nonatomic, strong)NSMutableArray<HomeworkMarkItem *>* marks;
 + (HomeworkTeacherMark *)markWithString:(NSString *)markDetail;
+- (instancetype)initWithPhotoArray:(NSArray *)photoArray;
+- (BOOL)isEmpty;
 @end

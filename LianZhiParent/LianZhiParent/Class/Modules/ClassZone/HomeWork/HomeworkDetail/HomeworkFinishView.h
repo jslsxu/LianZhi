@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "HomeworkReplyView.h"
 #import "HomeworkResultView.h"
+#import "HomeworkStudentAnswer.h"
 @interface HomeworkFinishView : UIView
-
+@property (nonatomic, strong)HomeworkItem*  homeworkItem;
 @end

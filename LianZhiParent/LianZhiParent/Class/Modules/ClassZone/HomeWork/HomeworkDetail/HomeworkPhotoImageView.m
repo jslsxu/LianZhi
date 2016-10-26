@@ -7,7 +7,6 @@
 //
 
 #import "HomeworkPhotoImageView.h"
-#import "HomeworkMarkFooterView.h"
 
 @interface HomeworkMarkItemView ()
 @property (nonatomic, assign)CGSize parentSize;
@@ -35,22 +34,10 @@
         
         [self setSize:imageView.size];
         [self setCenter:CGPointMake(parentSize.width * photoMark.x, parentSize.height * photoMark.y)];
-        
-        UIButton* deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [deleteButton setFrame:CGRectMake(self.width - 10, 0, 10, 10)];
-        [deleteButton setBackgroundColor:[UIColor redColor]];
-        [deleteButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-        [deleteButton addTarget:self action:@selector(onDelete) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:deleteButton];
     }
     return self;
 }
 
-- (void)onDelete{
-    if(self.deleteCallback){
-        self.deleteCallback();
-    }
-}
 
 @end
 
@@ -73,9 +60,6 @@
         _photoImageView.backgroundColor = [UIColor clearColor];
         [self addSubview:_photoImageView];
         
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTap:)];
-        [_photoImageView addGestureRecognizer:tapGesture];
-        
         // Setup
         self.backgroundColor = [UIColor clearColor];
         self.delegate = self;
@@ -88,14 +72,11 @@
     return self;
 }
 
-
 - (void)setMarkItem:(HomeworkMarkItem *)markItem{
     _markItem = markItem;
     [_photoImageView setImage:nil];
     [self displayImage];
-    [self setupMarks];
 }
-
 
 - (void)prepareForReuse {
     self.markItem = nil;
@@ -137,7 +118,6 @@
         self.contentSize = photoImageViewFrame.size;
         
         [_photoImageView sd_setImageWithURL:[NSURL URLWithString:self.markItem.picture.big]];
-//        [_photoImageView sd_setImageWithURL:[NSURL URLWithString:@"http://img6.bdstatic.com/img/image/smallpic/bizhi1020.jpg"]];
         // Set zoom to minimum zoom
         [self setMaxMinZoomScalesForCurrentBounds];
         
@@ -169,28 +149,6 @@
     }
 }
 
-- (void)addMark:(HomeworkPhotoMark *)mark{
-    __weak typeof(self) wself = self;
-    HomeworkMarkItemView *markItemView = [[HomeworkMarkItemView alloc] initWithMark:mark parentSize:_photoImageView.size];
-    [markItemView setDeleteCallback:^{
-        [wself removeMark:mark];
-    }];
-//    [markItemView setCenter:CGPointMake(_photoImageView.width * mark.x, _photoImageView.height * mark.y)];
-    [self.markViewArray addObject:markItemView];
-    [_photoImageView addSubview:markItemView];
-    [self.markItem.marks addObject:mark];
-}
-
-- (void)removeMark:(HomeworkPhotoMark *)mark{
-    for (HomeworkMarkItemView *itemView in self.markViewArray) {
-        if(itemView.photoMark == mark){
-            [itemView removeFromSuperview];
-            [self.markViewArray removeObject:itemView];
-            [self.markItem.marks removeObject:mark];
-            break;
-        }
-    }
-}
 
 #pragma mark - Setup
 
@@ -320,17 +278,6 @@
     
 }
 
-
-- (void)onImageViewTap:(UITapGestureRecognizer *)tapGesture{
-    CGPoint location = [tapGesture locationInView:_photoImageView];
-    if([HomeworkMarkFooterView currentMarkType] != MarkTypeNone){
-        HomeworkPhotoMark *mark = [[HomeworkPhotoMark alloc] init];
-        [mark setX:location.x / _photoImageView.width];
-        [mark setY:location.y / _photoImageView.height];
-        [mark setMarkType:[HomeworkMarkFooterView currentMarkType]];
-        [self addMark:mark];
-    }
-}
 
 @end
 

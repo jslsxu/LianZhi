@@ -236,20 +236,7 @@
         @weakify(self)
         [_tableView setMj_header:[MJRefreshNormalHeader headerWithRefreshingBlock:^{
             @strongify(self)
-            NSString *nid = self.homeworkItem.hid;
-            if(nid){
-                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/my_send_detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : self.homeworkItem.hid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                    [self.tableView.mj_header endRefreshing];
-                    HomeworkItem *homeworkItem = [HomeworkItem nh_modelWithJson:responseObject.data];
-                    self.homeworkItem = homeworkItem;
-                    if(self.homeworkRefreshCallback){
-                        self.homeworkRefreshCallback(self.homeworkItem);
-                    }
-                } fail:^(NSString *errMsg) {
-                    [self.tableView.mj_header endRefreshing];
-                }];
-            }
-            
+            [self loadTargets];
         }]];
     }
     return self;
@@ -316,8 +303,16 @@
 
 
 - (void)markHomework{
-    MarkHomeworkVC *markHomeworkVC = [[MarkHomeworkVC alloc] init];
-    [CurrentROOTNavigationVC pushViewController:markHomeworkVC animated:YES];
+    NSArray *homeworkArray = [self studentHomeworkArray];
+    if([homeworkArray count] > 0){
+        MarkHomeworkVC *markVC = [[MarkHomeworkVC alloc] init];
+        [markVC setHomeworkItem:self.homeworkItem];
+        [markVC setHomeworkArray:homeworkArray];
+        [CurrentROOTNavigationVC pushViewController:markVC animated:YES];
+    }
+    else{
+        [ProgressHUD showHintText:@"没有可批阅的作业"];
+    }
 }
 
 - (void)alertAll{
@@ -347,7 +342,7 @@
     NSMutableArray *homeworkArray = [NSMutableArray array];
     for (HomeworkClassStatus *classStatus in self.targetArray) {
         for (HomeworkStudentInfo *studentInfo in classStatus.students) {
-            if(studentInfo.status == HomeworkStudentStatusWaitMark || studentInfo.status == HomeworkStudentStatusHasMark){
+            if(studentInfo.status == HomeworkStudentStatusWaitMark){
                 [homeworkArray addObject:studentInfo];
             }
         }
@@ -443,11 +438,11 @@
             [alertView showAnimated:YES completionHandler:nil];
         }
     }
-    else if(studentInfo.status == HomeworkStudentStatusHasMark || studentInfo.status == HomeworkStudentStatusWaitMark){
+    else if( studentInfo.status == HomeworkStudentStatusWaitMark){
         NSArray *homeworkArray = [self studentHomeworkArray];
         NSInteger index = [homeworkArray indexOfObject:studentInfo];
         MarkHomeworkVC *markVC = [[MarkHomeworkVC alloc] init];
-        [markVC setHomeworkId:self.homeworkItem.hid];
+        [markVC setHomeworkItem:self.homeworkItem];
         [markVC setHomeworkArray:homeworkArray];
         if(index >= 0 && index < [homeworkArray count]){
             [markVC setCurIndex:index];

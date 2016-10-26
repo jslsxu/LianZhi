@@ -11,7 +11,7 @@
 @implementation HomeworkStudentAnswer
 
 + (NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
-    return @{@"pictures" : [PhotoItem class]};
+    return @{@"pics" : [PhotoItem class]};
 }
 
 - (BOOL)marked{

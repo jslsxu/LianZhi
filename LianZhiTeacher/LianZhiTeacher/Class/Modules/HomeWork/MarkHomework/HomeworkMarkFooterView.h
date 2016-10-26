@@ -12,4 +12,5 @@
 @property (nonatomic, strong)HomeworkTeacherMark*   teacherMark;
 + (MarkType)currentMarkType;
 - (void)clearMark;
+- (NSString *)comment;
 @end

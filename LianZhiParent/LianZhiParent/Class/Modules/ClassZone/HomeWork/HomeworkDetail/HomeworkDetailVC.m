@@ -20,6 +20,18 @@
 
 @implementation HomeworkDetailVC
 
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (instancetype)init{
+    self = [super init];
+    if(self){
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(homeworkItemChanged) name:kHomeworkItemChangedNotification object:nil];
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationItem setTitleView:[self segCtrl]];
@@ -28,6 +40,7 @@
     [self.view addSubview:[self homeworkFinishView]];
     [[self segCtrl] setSelectedSegmentIndex:0];
     [self onSegValueChanged];
+    [self requestHomeworkDetail];
 }
 
 - (UISegmentedControl *)segCtrl{
@@ -43,7 +56,6 @@
     if(_homeworkDetailView == nil){
         _homeworkDetailView = [[HomeworkDetailView alloc] initWithFrame:self.view.bounds];
         [_homeworkDetailView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-        [_homeworkDetailView setHomeworkItem:self.homeworkItem];
     }
     return _homeworkDetailView;
 }
@@ -56,6 +68,11 @@
     return _homeworkFinishView;
 }
 
+- (void)homeworkItemChanged{
+    [self.homeworkDetailView setHomeworkItem:_homeworkItem];
+    [self.homeworkFinishView setHomeworkItem:_homeworkItem];
+}
+
 - (void)onSegValueChanged{
     NSInteger selectedIndex = self.segCtrl.selectedSegmentIndex;
     [self.homeworkDetailView setHidden:selectedIndex != 0];
@@ -65,16 +82,18 @@
 - (void)setHomeworkItem:(HomeworkItem *)homeworkItem{
     _homeworkItem = homeworkItem;
     [self.homeworkDetailView setHomeworkItem:_homeworkItem];
-    
+    [self.homeworkFinishView setHomeworkItem:_homeworkItem];
 }
 
 
 - (void)requestHomeworkDetail{
+    __weak typeof(self) wself = self;
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.homeworkId forKey:@"eid"];
     
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        
+        HomeworkItem *homeworkItem = [HomeworkItem nh_modelWithJson:responseObject.data];
+        [wself setHomeworkItem:homeworkItem];
     } fail:^(NSString *errMsg) {
         
     }];

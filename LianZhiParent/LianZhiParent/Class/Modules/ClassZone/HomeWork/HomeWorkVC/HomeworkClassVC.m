@@ -92,6 +92,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"我所有的班";
     [self bindTableCell:@"HomeworkClassCell" tableModel:@"HomeworkClassModel"];
     [self requestData:REQUEST_REFRESH];
 }

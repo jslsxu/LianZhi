@@ -17,6 +17,7 @@
 + (NSDictionary<NSString *, id>*)modelCustomPropertyMapper{
     return @{@"classID" : @"class_info.id",
              @"name" : @"class_info.name",
+             @"logo" : @"class_info.logo",
              @"students" : @"child_ids"};
 }
 

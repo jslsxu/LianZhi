@@ -19,7 +19,6 @@
 @property (nonatomic, assign)CGFloat height;
 @property (nonatomic, copy)NSString *uid;
 @property (nonatomic, strong)UserInfo *user;
-@property (nonatomic, assign)BOOL isMine;
 @property (nonatomic, assign)BOOL can_edit;
 @property (nonatomic, copy)NSString *words;
 @property (nonatomic, copy)NSString *time;
