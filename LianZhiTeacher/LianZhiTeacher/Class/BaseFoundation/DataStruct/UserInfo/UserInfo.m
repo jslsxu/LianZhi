@@ -14,7 +14,7 @@
     [self modelSetWithJSON:dataWrapper.data];
 }
 + (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
-    return @{@"uid" : @[@"id", @"uid"],
+    return @{@"uid" : @"id",
              @"avatar":@"head"};
 }
 

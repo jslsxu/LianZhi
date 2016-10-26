@@ -33,15 +33,15 @@
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:markStr]];
         [self addSubview:imageView];
         
-        [self setSize:imageView.size];
-        [self setCenter:CGPointMake(parentSize.width * photoMark.x, parentSize.height * photoMark.y)];
-        
         UIButton* deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [deleteButton setFrame:CGRectMake(self.width - 10, 0, 10, 10)];
-        [deleteButton setBackgroundColor:[UIColor redColor]];
-        [deleteButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        [deleteButton setFrame:CGRectMake(imageView.right, 0, 10, 10)];
+        [deleteButton setImage:[UIImage imageNamed:@"markDelete"] forState:UIControlStateNormal];
         [deleteButton addTarget:self action:@selector(onDelete) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:deleteButton];
+        
+        [self setSize:CGSizeMake(imageView.width + 10, imageView.height)];
+        
+        [self setCenter:CGPointMake(parentSize.width * photoMark.x, parentSize.height * photoMark.y)];
     }
     return self;
 }
@@ -55,6 +55,7 @@
 @end
 
 @interface HomeworkPhotoImageView ()<UIScrollViewDelegate>
+@property (nonatomic, assign)CGSize originalSize;
 @property (nonatomic, strong) UIImageView *photoImageView;
 @property (nonatomic, strong)NSMutableArray* markViewArray;
 @property (nonatomic) CGFloat maximumDoubleTapZoomScale;
@@ -135,6 +136,7 @@
         
         _photoImageView.frame = photoImageViewFrame;
         self.contentSize = photoImageViewFrame.size;
+        self.originalSize = photoImageViewFrame.size;
         
         [_photoImageView sd_setImageWithURL:[NSURL URLWithString:self.markItem.picture.big]];
 //        [_photoImageView sd_setImageWithURL:[NSURL URLWithString:@"http://img6.bdstatic.com/img/image/smallpic/bizhi1020.jpg"]];
@@ -149,29 +151,22 @@
 }
 
 - (void)setupMarks{
+    __weak typeof(self) wself = self;
     [self.markViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.markViewArray removeAllObjects];
     for (HomeworkPhotoMark *mark in self.markItem.marks) {
-        NSString *markStr = nil;
-        if(mark.markType == MarkTypeRight){
-            markStr = @"rightMark";
-        }
-        else if(mark.markType == MarkTypeHalfRight){
-            markStr = @"halfMark";
-        }
-        else if(mark.markType == MarkTypeWrong){
-            markStr = @"wrongMark";
-        }
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:markStr]];
-        [imageView setCenter:CGPointMake(mark.x * _photoImageView.width, mark.y * _photoImageView.height)];
-        [self.markViewArray addObject:imageView];
-        [_photoImageView addSubview:imageView];
+        HomeworkMarkItemView* itemView = [[HomeworkMarkItemView alloc] initWithMark:mark parentSize:self.originalSize];
+        [itemView setDeleteCallback:^{
+            [wself removeMark:mark];
+        }];
+        [self.markViewArray addObject:itemView];
+        [_photoImageView addSubview:itemView];
     }
 }
 
 - (void)addMark:(HomeworkPhotoMark *)mark{
     __weak typeof(self) wself = self;
-    HomeworkMarkItemView *markItemView = [[HomeworkMarkItemView alloc] initWithMark:mark parentSize:_photoImageView.size];
+    HomeworkMarkItemView *markItemView = [[HomeworkMarkItemView alloc] initWithMark:mark parentSize:self.originalSize];
     [markItemView setDeleteCallback:^{
         [wself removeMark:mark];
     }];
@@ -325,8 +320,8 @@
     CGPoint location = [tapGesture locationInView:_photoImageView];
     if([HomeworkMarkFooterView currentMarkType] != MarkTypeNone){
         HomeworkPhotoMark *mark = [[HomeworkPhotoMark alloc] init];
-        [mark setX:location.x / _photoImageView.width];
-        [mark setY:location.y / _photoImageView.height];
+        [mark setX:location.x / self.originalSize.width];
+        [mark setY:location.y / self.originalSize.height];
         [mark setMarkType:[HomeworkMarkFooterView currentMarkType]];
         [self addMark:mark];
     }

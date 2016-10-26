@@ -267,8 +267,9 @@
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/classes" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"eid" : self.homeworkItem.hid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         TNDataWrapper *dataWrapper = [responseObject getDataWrapperForKey:@"classes"];
         wself.targetArray = [HomeworkClassStatus nh_modelArrayWithJson:dataWrapper.data];
+        [[wself.tableView mj_header] endRefreshing];
     } fail:^(NSString *errMsg) {
-        
+         [[wself.tableView mj_header] endRefreshing];
     }];
 }
 
@@ -303,12 +304,17 @@
 
 
 - (void)markHomework{
-    NSArray *homeworkArray = [self studentHomeworkArray];
-    if([homeworkArray count] > 0){
-        MarkHomeworkVC *markVC = [[MarkHomeworkVC alloc] init];
-        [markVC setHomeworkItem:self.homeworkItem];
-        [markVC setHomeworkArray:homeworkArray];
-        [CurrentROOTNavigationVC pushViewController:markVC animated:YES];
+    if([self.homeworkItem etype]){
+        NSArray *homeworkArray = [self studentHomeworkArray];
+        if([homeworkArray count] > 0){
+            MarkHomeworkVC *markVC = [[MarkHomeworkVC alloc] init];
+            [markVC setHomeworkItem:self.homeworkItem];
+            [markVC setHomeworkArray:homeworkArray];
+            [CurrentROOTNavigationVC pushViewController:markVC animated:YES];
+        }
+        else{
+            [ProgressHUD showHintText:@"没有可批阅的作业"];
+        }
     }
     else{
         [ProgressHUD showHintText:@"没有可批阅的作业"];
@@ -439,15 +445,17 @@
         }
     }
     else if( studentInfo.status == HomeworkStudentStatusWaitMark){
-        NSArray *homeworkArray = [self studentHomeworkArray];
-        NSInteger index = [homeworkArray indexOfObject:studentInfo];
-        MarkHomeworkVC *markVC = [[MarkHomeworkVC alloc] init];
-        [markVC setHomeworkItem:self.homeworkItem];
-        [markVC setHomeworkArray:homeworkArray];
-        if(index >= 0 && index < [homeworkArray count]){
-            [markVC setCurIndex:index];
+        if([self.homeworkItem etype]){
+            NSArray *homeworkArray = [self studentHomeworkArray];
+            NSInteger index = [homeworkArray indexOfObject:studentInfo];
+            MarkHomeworkVC *markVC = [[MarkHomeworkVC alloc] init];
+            [markVC setHomeworkItem:self.homeworkItem];
+            [markVC setHomeworkArray:homeworkArray];
+            if(index >= 0 && index < [homeworkArray count]){
+                [markVC setCurIndex:index];
+            }
+            [CurrentROOTNavigationVC pushViewController:markVC animated:YES];
         }
-        [CurrentROOTNavigationVC pushViewController:markVC animated:YES];
     }
 }
 

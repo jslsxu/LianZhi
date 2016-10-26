@@ -103,7 +103,7 @@
 }
 
 + (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
-    return @{@"hid" : @"id",
+    return @{@"hid" : @"eid",
              @"voice" : @"question.voice",
              @"pics" : @"question.pics",
              @"words" : @"question.words"};

@@ -14,27 +14,6 @@
 @end
 
 @implementation HomeworkMarkItem
-- (instancetype)init{
-    self = [super init];
-    if(self){
-        PhotoItem *photoItem = [[PhotoItem alloc] init];
-        photoItem.photoID = @"123";
-        photoItem.width = 700;
-        photoItem.height = 1050;
-        photoItem.big = @"http://cdn.duitang.com/uploads/item/201410/19/20141019132733_yfaT4.thumb.700_0.jpeg";
-        self.picture = photoItem;
-        
-    }
-    return self;
-}
-
-- (void)addMark:(HomeworkPhotoMark *)photoMark{
-    if(photoMark){
-        NSMutableArray *markArray = [NSMutableArray arrayWithArray:self.marks];
-        [markArray addObject:photoMark];
-        self.marks = markArray;
-    }
-}
 
 + (NSDictionary<NSString *, id> *)modelContainerPropertyGenericClass{
     return @{@"marks" : [HomeworkPhotoMark class]};

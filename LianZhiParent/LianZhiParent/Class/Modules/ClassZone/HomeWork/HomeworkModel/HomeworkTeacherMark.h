@@ -23,7 +23,6 @@ typedef NS_ENUM(NSInteger, MarkType){
 @interface HomeworkMarkItem : TNBaseObject
 @property (nonatomic, strong)PhotoItem* picture;
 @property (nonatomic, strong)NSArray<HomeworkPhotoMark *>* marks;
-- (void)addMark:(HomeworkPhotoMark *)photoMark;
 @end
 
 @interface HomeworkTeacherMark : TNBaseObject

@@ -76,6 +76,7 @@
     _markItem = markItem;
     [_photoImageView setImage:nil];
     [self displayImage];
+    [self setupMarks];
 }
 
 - (void)prepareForReuse {
@@ -132,20 +133,8 @@
     [self.markViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.markViewArray removeAllObjects];
     for (HomeworkPhotoMark *mark in self.markItem.marks) {
-        NSString *markStr = nil;
-        if(mark.markType == MarkTypeRight){
-            markStr = @"rightMark";
-        }
-        else if(mark.markType == MarkTypeHalfRight){
-            markStr = @"halfMark";
-        }
-        else if(mark.markType == MarkTypeWrong){
-            markStr = @"wrongMark";
-        }
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:markStr]];
-        [imageView setCenter:CGPointMake(mark.x * _photoImageView.width, mark.y * _photoImageView.height)];
-        [self.markViewArray addObject:imageView];
-        [_photoImageView addSubview:imageView];
+        HomeworkMarkItemView* markItemView = [[HomeworkMarkItemView alloc] initWithMark:mark parentSize:_photoImageView.size];
+        [_photoImageView addSubview:markItemView];
     }
 }
 

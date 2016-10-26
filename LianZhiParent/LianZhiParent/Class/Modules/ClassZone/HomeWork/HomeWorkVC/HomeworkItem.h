@@ -31,6 +31,7 @@ extern NSString* const kHomeworkItemChangedNotification;
 @property (nonatomic, copy)NSString*    reply_close_time;
 @property (nonatomic, copy)NSString*    course_name;
 @property (nonatomic, strong)HomeworkStudentAnswer* s_answer;
+@property (nonatomic, copy)NSString*    mark_detail;
 @property (nonatomic, copy)NSString*    s_answer_time;
 @property (nonatomic, strong)HomeworkItemAnswer*   answer;      //老师的解析
 @property (nonatomic, assign)HomeworkStatus status;

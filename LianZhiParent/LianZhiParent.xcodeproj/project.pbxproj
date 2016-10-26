@@ -3922,8 +3922,8 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = LianZhiParent/LianZhiParent.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				DEVELOPMENT_TEAM = JRFF54BK3W;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3949,10 +3949,10 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppParent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "079cfdb2-ea73-4931-a35a-4c6ce8a6fb8a";
-				PROVISIONING_PROFILE_SPECIFIER = ParentInhouseNew;
+				PROVISIONING_PROFILE = "9dc18589-42a5-4cd0-973c-86f82a024579";
+				PROVISIONING_PROFILE_SPECIFIER = ParentDevelopment;
 			};
 			name = Debug;
 		};
@@ -3966,9 +3966,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = LianZhiParent/LianZhiParent.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: wei xin (VLCERZ64DD)";
+				DEVELOPMENT_TEAM = JRFF54BK3W;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3994,10 +3994,10 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppParent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "079cfdb2-ea73-4931-a35a-4c6ce8a6fb8a";
-				PROVISIONING_PROFILE_SPECIFIER = ParentInhouseNew;
+				PROVISIONING_PROFILE = "9dc18589-42a5-4cd0-973c-86f82a024579";
+				PROVISIONING_PROFILE_SPECIFIER = ParentDevelopment;
 			};
 			name = Release;
 		};
