@@ -65,7 +65,7 @@ DNImagePickerControllerDelegate>
 - (instancetype)initWithHomeWorkEntity:(HomeWorkEntity *)homeWorkEntity{
     self = [super init];
     if(self){
-        
+        self.homeWorkEntity = homeWorkEntity;
     }
     return self;
 }
@@ -345,7 +345,14 @@ DNImagePickerControllerDelegate>
     ClassSelectVC *classSelectVC = [[ClassSelectVC alloc] init];
     [classSelectVC setOriginalClassArray:self.homeWorkEntity.targets];
     [classSelectVC setClassSelectCallBack:^(NSArray *targets) {
-        wself.homeWorkEntity.targets = targets;
+        NSMutableArray *targetArray = [NSMutableArray array];
+        for (ClassInfo *classInfo in targets) {
+            ClassInfo *simpleInfo = [[ClassInfo alloc] init];
+            [simpleInfo setClassID:classInfo.classID];
+            [simpleInfo setName:classInfo.name];
+            [targetArray addObject:classInfo];
+        }
+        wself.homeWorkEntity.targets = targetArray;
         [wself.targetContentView setTargets:wself.homeWorkEntity.targets];
         [wself adjustPosition];
     }];

@@ -58,9 +58,11 @@
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     [params setValue:self.fromInfo.uid forKey:@"from_id"];
     [params setValue:[NSString stringWithFormat:@"%ld",(long)self.fromInfo.type] forKey:@"from_type"];
-    HomeworkNotificationListModel *model = (HomeworkNotificationListModel *)self.tableViewModel;
-    [params setValue:@"old" forKey:@"mode"];
-    [params setValue:model.minID forKey:@"min_id"];
+    if(requestType == REQUEST_GETMORE){
+        HomeworkNotificationListModel *model = (HomeworkNotificationListModel *)self.tableViewModel;
+        [params setValue:@"old" forKey:@"mode"];
+        [params setValue:model.minID forKey:@"min_id"];
+    }
     [task setParams:params];
     return task;
 }

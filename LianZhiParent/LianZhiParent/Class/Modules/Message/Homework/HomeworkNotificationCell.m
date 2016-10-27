@@ -29,6 +29,7 @@
         [self addSubview:_voiceTypeView];
         
         _redDot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 6, 6)];
+        [_redDot setBackgroundColor:[UIColor colorWithHexString:@"e00909"]];
         [_redDot.layer setCornerRadius:3];
         [_redDot.layer setMasksToBounds:YES];
         [self addSubview:_redDot];
@@ -79,6 +80,7 @@
     
     spaceXEnd = _statusLabel.left - 2;
     [_redDot setOrigin:CGPointMake(spaceXEnd - _redDot.width, (self.height - _redDot.height) / 2)];
+    [_redDot setHidden:!_homeworkItem.is_new];
 }
 
 @end

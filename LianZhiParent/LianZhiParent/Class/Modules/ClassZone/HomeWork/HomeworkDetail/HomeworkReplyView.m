@@ -114,43 +114,50 @@
     }
     __weak typeof(self) wself = self;
     [HomeworkReplyAlertView showAlertViewWithCompletion:^{
-        NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        [params setValue:self.homeworkItem.eid forKey:@"eid"];
-        NSMutableString *picStr = [NSMutableString string];
-        for (NSInteger i = 0; i < [self.photoArray count]; i++) {
-            if([picStr length] == 0){
-                [picStr appendString:[NSString stringWithFormat:@"picture_%zd",i]];
-            }
-            else{
-                [picStr appendString:[NSString stringWithFormat:@",picture_%zd",i]];
-            }
-        }
-        [params setValue:picStr forKey:@"pic_seqs"];
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/reply" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-            for (NSInteger i = 0; i < [wself.photoArray count]; i++) {
-                PhotoItem *photoItem = wself.photoArray[i];
-                NSString *filename = [NSString stringWithFormat:@"picture_%zd",i];
-                if(photoItem.photoID.length > 0){
-                    
-                }
-                else{
-                    NSData *data = [NSData dataWithContentsOfFile:photoItem.big];
-                    if(data.length > 0){
-                        [formData appendPartWithFileData:data name:filename fileName:filename mimeType:@"image/jpeg"];
-                    }
-                }
-
-            }
-        } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-            TNDataWrapper *dataWrapper = [responseObject getDataWrapperForKey:@"s_answer"];
-            HomeworkStudentAnswer* sAnswer = [HomeworkStudentAnswer nh_modelWithJson:dataWrapper.data];
-            [wself.homeworkItem setS_answer:sAnswer];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kHomeworkItemChangedNotification object:nil];
-        } fail:^(NSString *errMsg) {
-            
-        }];
+        [wself replyHomework];
     }];
     
+}
+
+- (void)replyHomework{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    __weak typeof(self) wself = self;
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.homeworkItem.eid forKey:@"eid"];
+    NSMutableString *picStr = [NSMutableString string];
+    for (NSInteger i = 0; i < [self.photoArray count]; i++) {
+        if([picStr length] == 0){
+            [picStr appendString:[NSString stringWithFormat:@"picture_%zd",i]];
+        }
+        else{
+            [picStr appendString:[NSString stringWithFormat:@",picture_%zd",i]];
+        }
+    }
+    [params setValue:picStr forKey:@"pic_seqs"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/reply" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        for (NSInteger i = 0; i < [wself.photoArray count]; i++) {
+            PhotoItem *photoItem = wself.photoArray[i];
+            NSString *filename = [NSString stringWithFormat:@"picture_%zd",i];
+            if(photoItem.photoID.length > 0){
+                
+            }
+            else{
+                NSData *data = [NSData dataWithContentsOfFile:photoItem.big];
+                if(data.length > 0){
+                    [formData appendPartWithFileData:data name:filename fileName:filename mimeType:@"image/jpeg"];
+                }
+            }
+            
+        }
+    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        TNDataWrapper *dataWrapper = [responseObject getDataWrapperForKey:@"s_answer"];
+        HomeworkStudentAnswer* sAnswer = [HomeworkStudentAnswer nh_modelWithJson:dataWrapper.data];
+        [wself.homeworkItem setS_answer:sAnswer];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kHomeworkItemChangedNotification object:nil];
+        [hud hide:NO];
+    } fail:^(NSString *errMsg) {
+        [hud hide:NO];
+    }];
 }
 
 - (UIView *)contentView{

@@ -7,7 +7,7 @@
 //
 
 #import "HomeworkReplyAlertView.h"
-
+#import "LZKVStorage.h"
 @interface HomeworkReplyAlertView ()
 @property (nonatomic, strong)UIButton*  bgButton;
 @property (nonatomic, strong)UIView*    contentView;
@@ -17,9 +17,17 @@
 @implementation HomeworkReplyAlertView
 
 + (void)showAlertViewWithCompletion:(void (^)())completion{
-    HomeworkReplyAlertView *alertView = [[HomeworkReplyAlertView alloc] init];
-    [alertView setCompletion:completion];
-    [alertView show];
+    BOOL hiddenAlert = [[NSUserDefaults standardUserDefaults] boolForKey:@"HomeworkReplyAlert"];
+    if(!hiddenAlert){
+        HomeworkReplyAlertView *alertView = [[HomeworkReplyAlertView alloc] init];
+        [alertView setCompletion:completion];
+        [alertView show];
+    }
+    else{
+        if(completion){
+            completion();
+        }
+    }
 }
 
 - (instancetype)initWithFrame:(CGRect)frame{
@@ -105,6 +113,8 @@
 
 - (void)showAlertToggle:(UIButton *)button{
     button.selected = !button.selected;
+    [[NSUserDefaults standardUserDefaults] setBool:button.selected forKey:@"HomeworkReplyAlert"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)show{

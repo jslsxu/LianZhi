@@ -139,7 +139,19 @@
                 spaceYStart = self.explainView.bottom ;
             }
             else{
+                UIView *explainView = [[UIView alloc] initWithFrame:CGRectMake(0, spaceYStart, _scrollView.width, 30)];
+                [explainView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
                 
+                UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, explainView.width - 10 * 2, explainView.height)];
+                [label setFont:[UIFont systemFontOfSize:13]];
+                NSMutableAttributedString* attrStr = [[NSMutableAttributedString alloc] init];
+                [attrStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"查看解析:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"333333"]}]];
+                [attrStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"提交回复后可查看解析" attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
+                [explainView addSubview:label];
+                
+                [_scrollView addSubview:explainView];
+                
+                spaceYStart = explainView.bottom;
             }
         }
         

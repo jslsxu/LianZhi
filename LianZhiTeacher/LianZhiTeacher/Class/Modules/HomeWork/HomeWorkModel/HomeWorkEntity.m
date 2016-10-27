@@ -8,6 +8,8 @@
 
 #import "HomeWorkEntity.h"
 #import "HomeworkSettingManager.h"
+#import "HomeworkDraftManager.h"
+#import "HomeworkManager.h"
 @interface HomeWorkEntity ()
 @property (nonatomic, weak)AFHTTPRequestOperation *operation;
 @end
@@ -223,6 +225,9 @@
         }
     } fail:^(NSString *errMsg) {
         //        [ProgressHUD showHintText:errMsg];
+        [[HomeworkDraftManager sharedInstance] addDraft:self];
+        [[HomeworkManager sharedInstance] removeHomework:self];
+        [ProgressHUD showHintText:@"上传失败，存入到草稿"];
         if(fail){
             fail();
         }
