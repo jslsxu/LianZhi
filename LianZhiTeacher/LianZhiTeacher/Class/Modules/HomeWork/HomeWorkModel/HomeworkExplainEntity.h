@@ -13,4 +13,5 @@
 @property(nonatomic, strong)NSMutableArray*     voiceArray;
 @property(nonatomic, strong)NSMutableArray*     imageArray;
 + (HomeworkExplainEntity *)explainEntityFromAnswer:(HomeworkItemAnswer *)answer;
+- (BOOL)isEmpty;
 @end

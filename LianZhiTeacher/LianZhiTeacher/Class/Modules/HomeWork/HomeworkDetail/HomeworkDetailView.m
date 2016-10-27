@@ -68,18 +68,30 @@
         [publishTimelabel setOrigin:CGPointMake(_scrollView.width - margin - publishTimelabel.width, avatarView.top + 2)];
         [_scrollView addSubview:publishTimelabel];
         
-        
-        if(self.homeworkItem.reply_close_time.length > 0){
+        if(self.homeworkItem.reply_close_ctime.length > 0 && self.homeworkItem.reply_close){
             UILabel*    endTimeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
             [endTimeLabel setTextColor:kCommonTeacherTintColor];
             [endTimeLabel setFont:[UIFont systemFontOfSize:13]];
-            [endTimeLabel setText:[NSString stringWithFormat:@"截止时间:%@",self.homeworkItem.reply_close_time]];
+            [endTimeLabel setText:[NSString stringWithFormat:@"截止时间:%@",self.homeworkItem.reply_close_ctime]];
             [endTimeLabel sizeToFit];
             [endTimeLabel setOrigin:CGPointMake(_scrollView.width - margin - endTimeLabel.width, avatarView.bottom - endTimeLabel.height - 2)];
             [_scrollView addSubview:endTimeLabel];
         }
         
         spaceYStart = avatarView.bottom + margin;
+        if([self.homeworkItem.words length] > 0){
+            UILabel *wordsLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+            [wordsLabel setTextColor:[UIColor colorWithHexString:@""]];
+            [wordsLabel setFont:[UIFont systemFontOfSize:14]];
+            [wordsLabel setNumberOfLines:0];
+            [wordsLabel setLineBreakMode:NSLineBreakByWordWrapping];
+            [wordsLabel setText:self.homeworkItem.words];
+            [wordsLabel sizeToFit];
+            [wordsLabel setOrigin:CGPointMake(margin, spaceYStart)];
+            [_scrollView addSubview:wordsLabel];
+            
+            spaceYStart = wordsLabel.bottom + margin;
+        }
         
         if([self.homeworkItem hasAudio]){
             AudioContentView*   audioContentView = [[AudioContentView alloc] initWithMaxWidth:_scrollView.width - margin * 2];

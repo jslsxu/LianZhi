@@ -76,6 +76,9 @@ UIScrollViewDelegate>{
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"添加作业解析";
+    if(!self.explainEntity){
+        self.explainEntity = [[HomeworkExplainEntity alloc] init];
+    }
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(finish)];
     
     _scrollView = [[UITouchScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];

@@ -17,7 +17,7 @@
 - (NSString *)minID
 {
     HomeworkNotificationItem *lastItem = [self.modelItemArray lastObject];
-    return lastItem.msgID;
+    return lastItem.msgId;
 }
 
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type

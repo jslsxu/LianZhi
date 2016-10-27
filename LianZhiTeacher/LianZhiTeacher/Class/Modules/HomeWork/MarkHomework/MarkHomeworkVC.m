@@ -26,17 +26,16 @@
     [super viewDidLoad];
     self.markItem = [[HomeworkMarkItem alloc] init];
     self.title = @"批阅作业";
+    for (HomeworkStudentInfo *studentInfo in self.homeworkArray) {
+        HomeworkTeacherMark* teacherMark = [[HomeworkTeacherMark alloc] initWithPhotoArray:studentInfo.s_answer.pics];
+        [self.markMap setValue:teacherMark forKey:studentInfo.student.uid];
+    }
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"批阅" style:UIBarButtonItemStylePlain target:self action:@selector(mark)];
     [self.view addSubview:[self headerView]];
     [self.view addSubview:[self footerView]];
     [self.view addSubview:[self circleView]];
     
     [self showHomeworkWithIndex:self.curIndex];
-    
-    for (HomeworkStudentInfo *studentInfo in self.homeworkArray) {
-        HomeworkTeacherMark* teacherMark = [[HomeworkTeacherMark alloc] initWithPhotoArray:studentInfo.s_answer.pics];
-        [self.markMap setValue:teacherMark forKey:studentInfo.student.uid];
-    }
 }
 
 - (NSMutableDictionary *)markMap{
@@ -101,6 +100,8 @@
     [self.navigationItem.rightBarButtonItem setEnabled:[studentInfo.mark_detail length] == 0];
     
     [self.headerView setStudentHomeworkInfo:studentInfo];
+    HomeworkTeacherMark *mark = self.markMap[studentInfo.student.uid];
+    [self.footerView setTeacherMark:mark];
     [self.circleView reloadData];
 }
 

@@ -27,7 +27,25 @@
 }
 
 - (void)clear{
-    
+    __weak typeof(self) wself = self;
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"确定清空吗?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"清空"];
+    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+        //删除消息
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setValue:wself.fromInfo.uid forKey:@"from_id"];
+        [params setValue:kStringFromValue(wself.fromInfo.type) forKey:@"from_type"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_thread" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [wself.tableViewModel.modelItemArray removeAllObjects];
+            [wself saveCache];
+            [wself.tableView reloadData];
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    }];
+    [alertView showAnimated:YES completionHandler:nil];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType{
@@ -38,16 +56,30 @@
     [task setObserver:self];
     
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [task setParams:params];
+    [params setValue:self.fromInfo.uid forKey:@"from_id"];
+    [params setValue:[NSString stringWithFormat:@"%ld",(long)self.fromInfo.type] forKey:@"from_type"];
+    HomeworkNotificationListModel *model = (HomeworkNotificationListModel *)self.tableViewModel;
+    [params setValue:@"old" forKey:@"mode"];
+    [params setValue:model.minID forKey:@"min_id"];
     [task setParams:params];
     return task;
 }
 
+- (BOOL)supportCache
+{
+    return YES;
+}
+
+- (NSString *)cacheFileName
+{
+    return [NSString stringWithFormat:@"%@_%@_%@",[self class],self.fromInfo.uid,kStringFromValue(self.fromInfo.type)];
+}
+
 #pragma mark - 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
-    HomeworkItem *homeworkItem = (HomeworkItem *)modelItem;
+    HomeworkNotificationItem *homeworkItem = (HomeworkNotificationItem *)modelItem;
     HomeworkDetailVC *homeworkDetailVC = [[HomeworkDetailVC alloc] init];
-    [homeworkDetailVC setHomeworkId:homeworkItem.homeworkId];
+    [homeworkDetailVC setEid:homeworkItem.eid];
     [self.navigationController pushViewController:homeworkDetailVC animated:YES];
 }
 

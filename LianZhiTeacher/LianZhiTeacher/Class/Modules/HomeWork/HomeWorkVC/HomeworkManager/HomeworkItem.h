@@ -50,7 +50,7 @@ typedef NS_ENUM(NSInteger, HomeworkStudentStatus){
 @property (nonatomic, copy)NSString*    course_name;
 @property (nonatomic, assign)BOOL       etype;
 @property (nonatomic, assign)BOOL       reply_close;
-@property (nonatomic, copy)NSString*    reply_close_time;
+@property (nonatomic, copy)NSString*    reply_close_ctime;
 @property (nonatomic, assign)NSInteger  publish_num;
 @property (nonatomic, assign)NSInteger  reply_num;
 @property (nonatomic, assign)NSInteger  marking_num;

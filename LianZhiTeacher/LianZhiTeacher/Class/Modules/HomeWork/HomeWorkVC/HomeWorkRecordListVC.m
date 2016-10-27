@@ -110,18 +110,25 @@
         _photoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"draft_photo"]];
         [self.contentView addSubview:_photoImageView];
         
-        _delayImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"notification_delay"]];
-        [self.contentView addSubview:_delayImageView];
+//        _delayImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"notification_delay"]];
+//        [self.contentView addSubview:_delayImageView];
         
-        _revokeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_revokeButton setImage:[UIImage imageNamed:@"notification_revoke"] forState:UIControlStateNormal];
-        [_revokeButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
-        [_revokeButton setTitleColor:[UIColor colorWithHexString:@"28c4d8"] forState:UIControlStateNormal];
-        [_revokeButton setTitle:@"撤销" forState:UIControlStateNormal];
-        [_revokeButton sizeToFit];
-        [_revokeButton setSize:CGSizeMake(_revokeButton.width + 10, _revokeButton.height + 4)];
-        [_revokeButton addTarget:self action:@selector(onRevoke) forControlEvents:UIControlEventTouchUpInside];
-        [self.contentView addSubview:_revokeButton];
+        
+        
+//        _revokeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_revokeButton setImage:[UIImage imageNamed:@"notification_revoke"] forState:UIControlStateNormal];
+//        [_revokeButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
+//        [_revokeButton setTitleColor:[UIColor colorWithHexString:@"28c4d8"] forState:UIControlStateNormal];
+//        [_revokeButton setTitle:@"撤销" forState:UIControlStateNormal];
+//        [_revokeButton sizeToFit];
+//        [_revokeButton setSize:CGSizeMake(_revokeButton.width + 10, _revokeButton.height + 4)];
+//        [_revokeButton addTarget:self action:@selector(onRevoke) forControlEvents:UIControlEventTouchUpInside];
+//        [self.contentView addSubview:_revokeButton];
+        
+        _replyImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"canReply"]];
+        [_replyImageView setHidden:YES];
+        [self.contentView addSubview:_replyImageView];
+        
         
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
         [_sepLine setBackgroundColor:kSepLineColor];
@@ -140,6 +147,7 @@
     [_timeLabel setHidden:NO];
     [_stateLabel setHidden:NO];
     [_revokeButton setHidden:YES];
+    [_replyImageView setHidden:YES];
     [_timeLabel setText:_homeworkItem.ctime];
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(spaceXEnd - _timeLabel.width, 15)];
@@ -170,17 +178,21 @@
     
     [_audioImageView setHidden:!_homeworkItem.hasAudio];
     [_photoImageView setHidden:!_homeworkItem.hasImage];
-    CGFloat spaceXStart = 20;
+    CGFloat spaceXStart = 12;
     CGFloat centerY = 50;
     if(_homeworkItem.hasAudio){
-        [_audioImageView setCenter:CGPointMake(spaceXStart, centerY)];
-        spaceXStart += _audioImageView.width + 15;
+        [_audioImageView setCenter:CGPointMake(spaceXStart + _audioImageView.width / 2, centerY)];
+        spaceXStart = _audioImageView.right + 15;
     }
     if(_homeworkItem.hasImage){
-        [_photoImageView setCenter:CGPointMake(spaceXStart, centerY)];
-        spaceXStart += _photoImageView.width + 15;
+        [_photoImageView setCenter:CGPointMake(spaceXStart + _photoImageView.width / 2, centerY)];
+        spaceXStart = _photoImageView.right + 15;
     }
     
+    if(_homeworkItem.etype){
+        [_replyImageView setHidden:NO];
+        [_replyImageView setCenter:CGPointMake(spaceXStart + _replyImageView.width / 2, centerY)];
+    }
 }
 
 - (void)onRevoke{
@@ -323,7 +335,7 @@
 
 - (void)deleteHomeworkItem:(HomeworkItem *)homework{
     NSInteger row = [self.tableViewModel.modelItemArray indexOfObject:homework];
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/delete" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"id" : homework.hid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/delete" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"eid" : homework.hid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [self.tableViewModel.modelItemArray removeObject:homework];
         [self saveModel];
         [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];

@@ -9,5 +9,7 @@
 #import "HomeworkNotificationItem.h"
 
 @implementation HomeworkNotificationItem
-
++ (NSDictionary<NSString*, id> *)modelCustomPropertyMapper{
+    return @{@"msgId" : @"id"};
+}
 @end

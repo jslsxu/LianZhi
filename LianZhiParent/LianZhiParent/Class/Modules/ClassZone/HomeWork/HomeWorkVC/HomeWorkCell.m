@@ -73,15 +73,20 @@
         [_voiceTypeView setHidden:YES];
     }
     NSString *status = nil;
+    UIColor* statusColor = kCommonParentTintColor;
     if(_homeworkItem.status == HomeworkStatusWaitReply){
         status = @"待提交";
+        statusColor = [UIColor colorWithHexString:@"e00909"];
     }
     else if(_homeworkItem.status == HomeworkStatusWaitMark){
         status = @"待批阅";
+        statusColor = [UIColor colorWithHexString:@"666666"];
     }
     else if(_homeworkItem.status == HomeworkStatusMarked){
         status = @"已批阅";
+        statusColor = kCommonParentTintColor;
     }
+    [_statusLabel setTextColor:statusColor];
     [_statusLabel setText:status];
     [_statusLabel sizeToFit];
     [_statusLabel setOrigin:CGPointMake(spaceXEnd - _statusLabel.width, (self.height - _statusLabel.height) / 2)];
@@ -172,9 +177,9 @@
         [_contentLabel setHidden:YES];
     }
     
-    if(homeworkItem.reply_close && [homeworkItem.reply_close_time length] > 0){
+    if(homeworkItem.reply_close && [homeworkItem.reply_close_ctime length] > 0){
         [_endTimeLabel setHidden:NO];
-        [_endTimeLabel setText:[NSString stringWithFormat:@"截止时间:%@",homeworkItem.reply_close_time]];
+        [_endTimeLabel setText:[NSString stringWithFormat:@"截止时间:%@",homeworkItem.reply_close_ctime]];
         [_endTimeLabel sizeToFit];
         [_endTimeLabel setOrigin:CGPointMake(10, spaceYStart)];
         spaceYStart = _endTimeLabel.bottom + 10;
@@ -196,7 +201,7 @@
         CGSize contentSize = [words sizeForFont:[UIFont systemFontOfSize:14] size:CGSizeMake(width - 15 * 2 - 10 * 2, CGFLOAT_MAX) mode:NSLineBreakByWordWrapping];
         height += contentSize.height + 10;
     }
-    if(homeworkItem.reply_close && [homeworkItem.reply_close_time length] > 0){
+    if(homeworkItem.reply_close && [homeworkItem.reply_close_ctime length] > 0){
         NSString *endStr = @"截止时间";
         CGSize endTimeSize = [endStr sizeForFont:[UIFont systemFontOfSize:12] size:CGSizeMake(width - 15 * 2 - 10 * 2, CGFLOAT_MAX) mode:NSLineBreakByWordWrapping];
         height += endTimeSize.height + 10;

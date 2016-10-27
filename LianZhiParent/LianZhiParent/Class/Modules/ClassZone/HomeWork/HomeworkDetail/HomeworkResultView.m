@@ -31,6 +31,10 @@
 
 - (void)setHomeworkItem:(HomeworkItem *)homeworkItem{
     _homeworkItem = homeworkItem;
+    if([self.homeworkItem.mark_detail length] > 0 && !self.homeworkItem.s_answer.teacherMark){
+        HomeworkTeacherMark *teacherMark = [HomeworkTeacherMark markWithString:self.homeworkItem.mark_detail];
+        [self.homeworkItem.s_answer setTeacherMark:teacherMark];
+    }
     [self setupSubviews];
 }
 
@@ -72,7 +76,7 @@
     
     NSString* commentStr = @"评语:";
     if([self.homeworkItem.s_answer.teacherMark.comment length] > 0){
-        commitTimeStr = [NSString stringWithFormat:@"评语:%@",self.homeworkItem.s_answer.teacherMark.comment];
+        commentStr = [NSString stringWithFormat:@"评语:%@",self.homeworkItem.s_answer.teacherMark.comment];
     }
     UILabel* commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(margin, avatarView.bottom + margin, _scrollView.width - margin * 2, 0)];
     [commentLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
@@ -85,10 +89,6 @@
     
      NSInteger spaceYStart = commentLabel.bottom + margin;
     if([self.homeworkItem.s_answer.pics count] > 0){
-        if([self.homeworkItem.mark_detail length] > 0 && !self.homeworkItem.s_answer.teacherMark){
-            HomeworkTeacherMark *teacherMark = [HomeworkTeacherMark markWithString:self.homeworkItem.mark_detail];
-            [self.homeworkItem.s_answer setTeacherMark:teacherMark];
-        }
         NSArray* marks = self.homeworkItem.s_answer.teacherMark.marks;
         for (NSInteger i = 0; i < [self.homeworkItem.s_answer.pics count]; i++) {
             PhotoItem *photoItem = self.homeworkItem.s_answer.pics[i];

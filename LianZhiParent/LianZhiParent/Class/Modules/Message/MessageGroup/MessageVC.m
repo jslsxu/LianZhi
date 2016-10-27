@@ -248,6 +248,7 @@
         else if(groupItem.fromInfo.type == ChatTypeHomeworkNotification)
         {
             HomeworkListVC *homeWorkVC = [[HomeworkListVC alloc] init];
+            [homeWorkVC setFromInfo:groupItem.fromInfo];
             [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
         }
 //        else if(groupItem.fromInfo.type == ChatTypeDoorEntrance){

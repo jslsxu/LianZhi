@@ -21,6 +21,7 @@
         [self addSubview:[self resultView]];
         [self addSubview:[self replyView]];
         [self.resultView setHidden:YES];
+        [self.replyView setHidden:YES];
     }
     return self;
 }

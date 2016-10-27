@@ -9,5 +9,5 @@
 #import "TNBaseTableViewController.h"
 
 @interface HomeworkListVC : TNBaseTableViewController
-
+@property (nonatomic, strong)MessageFromInfo *fromInfo;
 @end

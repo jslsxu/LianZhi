@@ -49,7 +49,7 @@
     _homeworkItem = homeworkItem;
     NSInteger spaceXStart = 10;
     NSInteger spaceXEnd = _rightArrow.left - 5;
-    [_courseLabel setText:@"语文作业"];
+    [_courseLabel setText:[NSString stringWithFormat:@"%@作业",_homeworkItem.course_name]];
     [_courseLabel sizeToFit];
     [_courseLabel setOrigin:CGPointMake(spaceXStart, (self.height - _courseLabel.height) / 2)];
     spaceXStart = _courseLabel.right + 10;
@@ -58,7 +58,22 @@
     spaceXStart = _imageTypeView.right + 10;
     [_voiceTypeView setOrigin:CGPointMake(spaceXStart, (self.height - _voiceTypeView.height) / 2)];
     
-    [_statusLabel setText:@"已发送"];
+    NSString* statusStr = nil;
+    UIColor* statusColor = kCommonParentTintColor;
+    if(_homeworkItem.status == HomeworkStatusWaitReply){
+        statusStr = @"待提交";
+        statusColor = [UIColor colorWithHexString:@"e00909"];
+    }
+    else if(_homeworkItem.status == HomeworkStatusWaitMark){
+        statusStr = @"已提交";
+        statusColor = [UIColor colorWithHexString:@"666666"];
+    }
+    else if(_homeworkItem.status == HomeworkStatusMarked){
+        statusStr = @"已批阅";
+        statusColor = kCommonParentTintColor;
+    }
+    [_statusLabel setTextColor:statusColor];
+    [_statusLabel setText:statusStr];
     [_statusLabel sizeToFit];
     [_statusLabel setOrigin:CGPointMake(spaceXEnd - _statusLabel.width, (self.height - _statusLabel.height) / 2)];
     
@@ -123,14 +138,15 @@
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     HomeworkNotificationItem *homeworkItem = (HomeworkNotificationItem *)modelItem;
-    [_avatarView sd_setImageWithURL:[NSURL URLWithString:@"http://img6.bdstatic.com/img/image/smallpic/dongman1014.jpg"] placeholderImage:nil];
-    [_nameLabel setText:@"吴枕着"];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:homeworkItem.teacher.avatar] placeholderImage:nil];
+    [_nameLabel setText:homeworkItem.teacher.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.top)];
     [_roleLabel setText:@"教师"];
     [_roleLabel sizeToFit];
     [_roleLabel setOrigin:CGPointMake(_nameLabel.right + 5, _avatarView.top)];
-    [_timeLabel setText:@"发布时间:06-01 14:53"];
+    
+    [_timeLabel setText:[NSString stringWithFormat:@"发布时间:%@",homeworkItem.ctime]];
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.bottom - _timeLabel.height)];
     
@@ -147,10 +163,17 @@
     else{
         [_contentLabel setHidden:YES];
     }
-    [_endTimeLabel setText:@"截止时间:06-02 10:00"];
-    [_endTimeLabel sizeToFit];
-    [_endTimeLabel setOrigin:CGPointMake(10, spaceYStart)];
-    spaceYStart = _endTimeLabel.bottom + 10;
+    NSString* reply_close_time = homeworkItem.reply_close_ctime;
+    if([reply_close_time length] > 0){
+        [_endTimeLabel setHidden:NO];
+        [_endTimeLabel setText:[NSString stringWithFormat:@"截止时间:%@",reply_close_time]];
+        [_endTimeLabel sizeToFit];
+        [_endTimeLabel setOrigin:CGPointMake(10, spaceYStart)];
+        spaceYStart = _endTimeLabel.bottom + 10;
+    }
+    else{
+        [_endTimeLabel setHidden:YES];
+    }
     [_extraInfoView setOrigin:CGPointMake(0, spaceYStart)];
     [_extraInfoView setHomeworkItem:homeworkItem];
     [_bgView setHeight:_extraInfoView.bottom];
@@ -164,9 +187,11 @@
         CGSize contentSize = [words sizeForFont:[UIFont systemFontOfSize:14] size:CGSizeMake(width - 15 * 2 - 10 * 2, CGFLOAT_MAX) mode:NSLineBreakByWordWrapping];
         height += contentSize.height + 10;
     }
-    NSString *endStr = @"截止时间";
-    CGSize endTimeSize = [endStr sizeForFont:[UIFont systemFontOfSize:12] size:CGSizeMake(width - 15 * 2 - 10 * 2, CGFLOAT_MAX) mode:NSLineBreakByWordWrapping];
-    height += endTimeSize.height + 10;
+    if([homeworkItem.reply_close_ctime length] > 0){
+        NSString *endStr = [NSString stringWithFormat:@"截止时间:%@",homeworkItem.reply_close_ctime];
+        CGSize endTimeSize = [endStr sizeForFont:[UIFont systemFontOfSize:12] size:CGSizeMake(width - 15 * 2 - 10 * 2, CGFLOAT_MAX) mode:NSLineBreakByWordWrapping];
+        height += endTimeSize.height + 10;
+    }
     height += 45;
     return @(height + 15);
 }

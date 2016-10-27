@@ -285,13 +285,17 @@ DNImagePickerControllerDelegate>
     if(_explainView == nil){
         __weak typeof(self) wself = self;
         _explainView = [[HomeworkExplainView alloc] initWithFrame:CGRectMake(0, _settingView.bottom, _scrollView.width, 50)];
+        [_explainView setHasExplain:self.homeWorkEntity.explainEntity];
         [_explainView setExplainClick:^{
             HomeworkAddExplainVC *addExplainVC = [[HomeworkAddExplainVC alloc] init];
-            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:wself.homeWorkEntity.explainEntity];
-            HomeworkExplainEntity *explainEntity = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-            [addExplainVC setExplainEntity:explainEntity];
+            if(wself.homeWorkEntity.explainEntity){
+                NSData *data = [NSKeyedArchiver archivedDataWithRootObject:wself.homeWorkEntity.explainEntity];
+                HomeworkExplainEntity *explainEntity = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+                [addExplainVC setExplainEntity:explainEntity];
+            }
             [addExplainVC setAddExplainFinish:^(HomeworkExplainEntity *explainEntity){
                 [wself.homeWorkEntity setExplainEntity:explainEntity];
+                [wself.explainView setHasExplain:![explainEntity isEmpty]];
             }];
             [wself.navigationController pushViewController:addExplainVC animated:YES];
         }];

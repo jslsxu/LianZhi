@@ -35,7 +35,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationItem setTitleView:[self segCtrl]];
-    self.homeworkItem = [[HomeworkItem alloc] init];
     [self.view addSubview:[self homeworkDetailView]];
     [self.view addSubview:[self homeworkFinishView]];
     [[self segCtrl] setSelectedSegmentIndex:0];
@@ -89,7 +88,7 @@
 - (void)requestHomeworkDetail{
     __weak typeof(self) wself = self;
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:self.homeworkId forKey:@"eid"];
+    [params setValue:self.eid forKey:@"eid"];
     
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         HomeworkItem *homeworkItem = [HomeworkItem nh_modelWithJson:responseObject.data];

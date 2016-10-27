@@ -75,7 +75,7 @@
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
     HomeworkItem *homeworkItem = (HomeworkItem *)modelItem;
     HomeworkDetailVC *detailVC = [[HomeworkDetailVC alloc] init];
-    [detailVC setHomeworkId:homeworkItem.eid];
+    [detailVC setEid:homeworkItem.eid];
     [CurrentROOTNavigationVC pushViewController:detailVC animated:YES];
 }
 

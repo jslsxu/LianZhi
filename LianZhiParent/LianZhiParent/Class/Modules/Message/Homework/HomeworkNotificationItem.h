@@ -15,11 +15,14 @@ typedef NS_ENUM(NSInteger, HomeworkStatus){
 };
 
 @interface HomeworkNotificationItem : TNBaseObject
-@property (nonatomic, copy)NSString *msgID;
-@property (nonatomic, strong)UserInfo *from_user;
+@property (nonatomic, copy)NSString* msgId;
+@property (nonatomic, copy)NSString*    eid;
+@property (nonatomic, strong)UserInfo*  teacher;
 @property (nonatomic, copy)NSString *words;
+@property (nonatomic, copy)NSString*    course_name;
 @property (nonatomic, assign)HomeworkStatus status;
-@property (nonatomic, copy)NSString* endTime;
+@property (nonatomic, copy)NSString*    ctime;
+@property (nonatomic, copy)NSString* reply_close_ctime;
 @property (nonatomic, assign)BOOL hasPhoto;
 @property (nonatomic, assign)BOOL hasVoice;
 @property (nonatomic, assign)BOOL is_new;

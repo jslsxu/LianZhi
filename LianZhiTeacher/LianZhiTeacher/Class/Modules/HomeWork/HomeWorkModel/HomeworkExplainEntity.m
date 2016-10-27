@@ -19,6 +19,16 @@
     return self;
 }
 
+- (BOOL)isEmpty{
+    if([self.words length] > 0){
+        return NO;
+    }
+    if([self.imageArray count] > 0 || [self.voiceArray count] > 0){
+        return NO;
+    }
+    return YES;
+}
+
 + (HomeworkExplainEntity *)explainEntityFromAnswer:(HomeworkItemAnswer *)answer{
     HomeworkExplainEntity *explainEntity = [[HomeworkExplainEntity alloc] init];
     explainEntity.words = answer.words;

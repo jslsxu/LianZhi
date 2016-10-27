@@ -30,6 +30,7 @@
     UIImageView*    _audioImageView;
     UIImageView*    _photoImageView;
     UIImageView*    _delayImageView;
+    UIImageView*    _replyImageView;
     UIButton*       _revokeButton;
     UIView*         _sepLine;
 }

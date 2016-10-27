@@ -127,6 +127,77 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
     return _targetListView;
 }
 
+- (void)updateHomeworkExplain:(HomeworkExplainEntity *)explainEntity{
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:[UIApplication sharedApplication].keyWindow];
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.homeworkItem.hid forKey:@"eid"];
+    [params setValue:explainEntity.words forKey:@"answer_words"];
+    if([explainEntity.voiceArray count] > 0){
+        AudioItem *voice = explainEntity.voiceArray[0];
+        [params setValue:kStringFromValue(voice.timeSpan) forKey:@"answer_voice_time"];
+    }
+    
+    if([explainEntity.imageArray count] > 0)
+    {
+        NSMutableString *picSeq = [[NSMutableString alloc] init];
+        for (NSInteger i = 0; i < explainEntity.imageArray.count; i++)
+        {
+            PhotoItem *photoItem = explainEntity.imageArray[i];
+            if(photoItem.photoID.length > 0){
+                if(picSeq.length == 0){
+                    [picSeq appendString:photoItem.photoID];
+                }
+                else{
+                    [picSeq appendString:[NSString stringWithFormat:@",%@",photoItem.photoID]];
+                }
+            }
+            else{
+                if(picSeq.length == 0){
+                    [picSeq appendFormat:@"picture_%ld",(long)i];
+                }
+                else{
+                    [picSeq appendFormat:@",picture_%ld",(long)i];
+                }
+            }
+        }
+        
+        [params setValue:picSeq forKey:@"pic_seqs"];
+    }
+
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/answer" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        for (NSInteger i = 0; i < explainEntity.imageArray.count; i++)
+        {
+            PhotoItem *photoItem = explainEntity.imageArray[i];
+            NSString *filename = [NSString stringWithFormat:@"picture_%ld",(long)i];
+            if(photoItem.photoID.length > 0){
+                
+            }
+            else{
+                NSData *data = [NSData dataWithContentsOfFile:photoItem.big];
+                if(data.length > 0){
+                    [formData appendPartWithFileData:data name:filename fileName:filename mimeType:@"image/jpeg"];
+                }
+            }
+            
+        }
+        
+        if([explainEntity.voiceArray count] > 0){
+            AudioItem *audioItem = explainEntity.voiceArray[0];
+            if(audioItem.isLocal){
+                NSData *voiceData = [NSData dataWithContentsOfFile:audioItem.audioUrl];
+                [formData appendPartWithFileData:voiceData name:@"answer_voice" fileName:@"answer_voice" mimeType:@"audio/AMR"];
+            }
+        }
+
+    } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [hud hide:NO];
+        [ProgressHUD showSuccess:@"解析更新成功"];
+    } fail:^(NSString *errMsg) {
+        [hud hide:NO];
+        [ProgressHUD showError:errMsg];
+    }];
+}
+
 - (void)onMoreClicked{
     __weak typeof(self) wself = self;
     NotificationActionItem* forwardItem = [NotificationActionItem actionItemWithTitle:@"转发" action:^{
@@ -136,7 +207,7 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
         HomeworkAddExplainVC *explainVC = [[HomeworkAddExplainVC alloc] init];
         explainVC.explainEntity = [HomeworkExplainEntity explainEntityFromAnswer:wself.homeworkItem.answer];
         [explainVC setAddExplainFinish:^(HomeworkExplainEntity *explainEntity) {
-            
+            [wself updateHomeworkExplain:explainEntity];
         }];
         [wself.navigationController pushViewController:explainVC animated:YES];
     } destroyItem:NO];

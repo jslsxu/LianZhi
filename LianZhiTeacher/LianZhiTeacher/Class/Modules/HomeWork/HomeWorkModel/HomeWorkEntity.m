@@ -32,7 +32,6 @@
         self.sendSms = setting.sendSms;
         self.reply_close = setting.replyEndOn;
         self.reply_close_ctime = setting.replyEndTime;
-        self.explainEntity = [[HomeworkExplainEntity alloc] init];
     }
     return self;
 }
@@ -92,7 +91,7 @@
     [params setValue:self.course_name forKey:@"course_name"];
     [params setValue:kStringFromValue(self.sendSms) forKey:@"sms"];
     [params setValue:self.explainEntity.words forKey:@"answer_words"];
-    [params setValue:kStringFromValue(self.count) forKey:@"enum"];
+    [params setValue:kStringFromValue(self.count) forKey:@"enums"];
     [params setValue:kStringFromValue(self.reply_close) forKey:@"reply_close"];
     [params setValue:self.reply_close_ctime forKey:@"reply_close_ctime"];
     if(self.imageArray.count > 0)

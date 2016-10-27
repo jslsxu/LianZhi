@@ -28,7 +28,7 @@ extern NSString* const kHomeworkItemChangedNotification;
 @property (nonatomic, strong)NSArray<PhotoItem *>* pics;
 @property (nonatomic, copy)NSString*    ctime;
 @property (nonatomic, assign)BOOL       reply_close;
-@property (nonatomic, copy)NSString*    reply_close_time;
+@property (nonatomic, copy)NSString*    reply_close_ctime;
 @property (nonatomic, copy)NSString*    course_name;
 @property (nonatomic, strong)HomeworkStudentAnswer* s_answer;
 @property (nonatomic, copy)NSString*    mark_detail;
