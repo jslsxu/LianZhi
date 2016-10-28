@@ -57,4 +57,8 @@
     return YES;
 }
 
+- (void)clear{
+    [self.modelItemArray removeAllObjects];
+}
+
 @end

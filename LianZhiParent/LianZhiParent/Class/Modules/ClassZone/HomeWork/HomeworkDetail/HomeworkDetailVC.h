@@ -13,4 +13,5 @@
 
 }
 @property(nonatomic, copy)NSString* eid;
+@property (nonatomic, copy)void (^deleteCallback)(NSString *eid);
 @end

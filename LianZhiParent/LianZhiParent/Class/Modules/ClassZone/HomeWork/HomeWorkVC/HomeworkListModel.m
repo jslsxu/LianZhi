@@ -15,7 +15,17 @@
         [self.modelItemArray removeAllObjects];
     }
     TNDataWrapper *itemsWrapper = [data getDataWrapperForKey:@"items"];
-    [self.modelItemArray addObjectsFromArray:[HomeworkItem nh_modelArrayWithJson:itemsWrapper.data]];
+    NSArray *items = [HomeworkItem nh_modelArrayWithJson:itemsWrapper.data];
+    if([items count] > 0){
+        HomeworkItem *homeworkItem = items[0];
+        NSString* ctime = homeworkItem.ctime;
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSDate *date = [formatter dateFromString:ctime];
+        if(date.year == self.date.year && date.month == self.date.month && date.day == self.date.day){
+            [self.modelItemArray addObjectsFromArray:items];
+        }
+    }
     return YES;
 }
 @end

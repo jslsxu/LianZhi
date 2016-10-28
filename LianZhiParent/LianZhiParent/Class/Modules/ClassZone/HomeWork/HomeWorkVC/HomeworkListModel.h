@@ -9,5 +9,5 @@
 #import "TNListModel.h"
 #import "HomeworkItem.h"
 @interface HomeworkListModel : TNListModel
-
+@property (nonatomic, strong)NSDate* date;
 @end

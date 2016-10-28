@@ -22,6 +22,7 @@ extern NSString* const kHomeworkItemChangedNotification;
 @interface HomeworkItem : TNBaseObject
 @property (nonatomic, copy)NSString*    homeworkId;
 @property (nonatomic, copy)NSString*    eid;
+@property (nonatomic, assign)BOOL       etype;
 @property (nonatomic, strong)UserInfo*  teacher;
 @property (nonatomic, copy)NSString*    words;
 @property (nonatomic, strong)AudioItem* voice;

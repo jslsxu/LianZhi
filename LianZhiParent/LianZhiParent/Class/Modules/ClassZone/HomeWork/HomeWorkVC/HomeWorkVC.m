@@ -33,9 +33,11 @@
     [self.view addSubview:[self calendar]];
     
     [self.tableView setFrame:CGRectMake(0, self.calendar.bottom, self.view.width, self.view.height - self.calendar.bottom)];
+    [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 10, 0)];
     [self.tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [self bindTableCell:@"HomeWorkCell" tableModel:@"HomeworkListModel"];
     [self setSupportPullUp:YES];
+    [self setSupportPullDown:YES];
     [self requestData:REQUEST_REFRESH];
 }
 
@@ -49,6 +51,16 @@
 
 - (void)clear{
     
+}
+
+- (void)requestData:(REQUEST_TYPE)requestType{
+    [super requestData:requestType];
+    HomeworkListModel *model = (HomeworkListModel *)self.tableViewModel;
+    [model setDate:[self.calendar currentSelectedDate]];
+    if(requestType == REQUEST_REFRESH){
+        [model clear];
+        [self.tableView reloadData];
+    }
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType{
@@ -72,10 +84,24 @@
 //    return [NSString stringWithFormat:@"%@_%@",[self class],self.classID];
 //}
 
+- (void)deleteHomework:(NSString *)eid{
+    for (HomeworkItem *item in self.tableViewModel.modelItemArray) {
+        if([item.eid isEqualToString:eid]){
+            [self.tableViewModel.modelItemArray removeObject:item];
+            [self.tableView reloadData];
+            return;
+        }
+    }
+}
+
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
+    __weak typeof(self) wself = self;
     HomeworkItem *homeworkItem = (HomeworkItem *)modelItem;
     HomeworkDetailVC *detailVC = [[HomeworkDetailVC alloc] init];
     [detailVC setEid:homeworkItem.eid];
+    [detailVC setDeleteCallback:^(NSString *eid) {
+        [wself deleteHomework:eid];
+    }];
     [CurrentROOTNavigationVC pushViewController:detailVC animated:YES];
 }
 

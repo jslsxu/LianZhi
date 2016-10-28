@@ -68,42 +68,8 @@
 
 @implementation HomeworkItem
 
-- (instancetype)init{
-    self = [super init];
-    if(self){
-//        self.etype = arc4random() % 2;
-//        self.words = @"我发了作业，明天前要交";
-//        self.ctime = @"06-06 12:00";
-//        self.course_name = @"数学";
-//        self.reply_close_time = @"06-03 10:00";
-//        AudioItem *audioItem = [[AudioItem alloc] init];
-//        audioItem.audioUrl = @"";
-//        audioItem.timeSpan = 23;
-//        self.voice = audioItem;
-//        NSMutableArray *photoArray = [NSMutableArray array];
-//        for (NSInteger i = 0; i < 4; i++) {
-//            PhotoItem *photoItem = [[PhotoItem alloc] init];
-//            photoItem.photoID = @"123";
-//            photoItem.big = @"https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/image/h%3D200/sign=04d308e12e9759ee555067cb82fa434e/902397dda144ad3455abeb6bd8a20cf430ad85c1.jpg";
-//            photoItem.width = 320;
-//            photoItem.height = 200;
-//            [photoArray addObject:photoItem];
-//        }
-//        self.pics = photoArray;
-//        self.answer = [[HomeworkItemAnswer alloc] init];
-//        
-//        NSMutableArray *classArray = [NSMutableArray array];
-//        for (NSInteger i = 0; i < 3; i++) {
-//            HomeworkClassStatus *classInfo = [[HomeworkClassStatus alloc] init];
-//            [classArray addObject:classInfo];
-//        }
-//        self.classes = classArray;
-    }
-    return self;
-}
-
 + (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
-    return @{@"hid" : @"eid",
+    return @{
              @"voice" : @"question.voice",
              @"pics" : @"question.pics",
              @"words" : @"question.words"};

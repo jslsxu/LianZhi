@@ -21,7 +21,8 @@ typedef NS_ENUM(NSInteger, HomeworkStatus){
 @property (nonatomic, copy)NSString *words;
 @property (nonatomic, copy)NSString*    course_name;
 @property (nonatomic, assign)HomeworkStatus status;
-@property (nonatomic, copy)NSString*    ctime;
+@property (nonatomic, copy)NSString*    time;
+@property (nonatomic, assign)BOOL reply_close;
 @property (nonatomic, copy)NSString* reply_close_ctime;
 @property (nonatomic, assign)BOOL hasPhoto;
 @property (nonatomic, assign)BOOL hasVoice;

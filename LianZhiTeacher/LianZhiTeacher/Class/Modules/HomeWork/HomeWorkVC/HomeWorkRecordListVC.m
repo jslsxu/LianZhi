@@ -314,7 +314,7 @@
     HomeworkItem *item = notification.userInfo[@"notification"];
     if(item){
         for (HomeworkItem *homeworkItem in self.tableViewModel.modelItemArray) {
-            if([homeworkItem.hid isEqualToString:item.hid]){
+            if([homeworkItem.eid isEqualToString:item.eid]){
                 homeworkItem.read_num = item.read_num;
                 [self.tableView reloadData];
                 [self saveModel];
@@ -335,7 +335,7 @@
 
 - (void)deleteHomeworkItem:(HomeworkItem *)homework{
     NSInteger row = [self.tableViewModel.modelItemArray indexOfObject:homework];
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/delete" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"eid" : homework.hid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/delete" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"eid" : homework.eid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [self.tableViewModel.modelItemArray removeObject:homework];
         [self saveModel];
         [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
@@ -400,7 +400,7 @@
         }
         [cell setHomeworkItem:item];
         [cell setRevokeCallback:^{
-            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/cancel_send_notice" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : item.hid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/cancel_send_notice" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : item.eid} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
                 [ProgressHUD showHintText:@"已撤销"];
             } fail:^(NSString *errMsg) {
                 [ProgressHUD showHintText:errMsg];
@@ -444,11 +444,11 @@
         @weakify(self)
         HomeworkItem *item = self.tableViewModel.modelItemArray[indexPath.row - [HomeworkManager sharedInstance].sendingHomeworkArray.count];
         HomeworkDetailVC*  detailVC = [[HomeworkDetailVC alloc] init];
-        [detailVC setHid:item.hid];
+        [detailVC setHid:item.eid];
         [detailVC setDeleteCallback:^(NSString *hid) {
             @strongify(self)
             for (HomeworkItem *notiItem in self.tableViewModel.modelItemArray) {
-                if([hid isEqualToString:notiItem.hid]){
+                if([hid isEqualToString:notiItem.eid]){
                     [self.tableViewModel.modelItemArray removeObject:notiItem];
                     [self.tableView reloadData];
                     break;

@@ -147,6 +147,7 @@
                 NSMutableAttributedString* attrStr = [[NSMutableAttributedString alloc] init];
                 [attrStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"查看解析:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"333333"]}]];
                 [attrStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"提交回复后可查看解析" attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
+                [label setAttributedText:attrStr];
                 [explainView addSubview:label];
                 
                 [_scrollView addSubview:explainView];

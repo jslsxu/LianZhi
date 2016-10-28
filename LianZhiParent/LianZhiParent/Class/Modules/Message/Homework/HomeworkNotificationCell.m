@@ -148,7 +148,7 @@
     [_roleLabel sizeToFit];
     [_roleLabel setOrigin:CGPointMake(_nameLabel.right + 5, _avatarView.top)];
     
-    [_timeLabel setText:[NSString stringWithFormat:@"发布时间:%@",homeworkItem.ctime]];
+    [_timeLabel setText:[NSString stringWithFormat:@"发布时间:%@",homeworkItem.time]];
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.bottom - _timeLabel.height)];
     

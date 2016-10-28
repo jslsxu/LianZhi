@@ -401,6 +401,7 @@
 		8DA0C5451DBE619C0005B9B1 /* HomeworkNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C5441DBE619C0005B9B1 /* HomeworkNotificationCell.m */; };
 		8DA0C5481DBE61E30005B9B1 /* HomeworkNotificationListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA0C5471DBE61E30005B9B1 /* HomeworkNotificationListModel.m */; };
 		8DA785991CA4E70B00A384F0 /* NSString+UrlParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DA785981CA4E70B00A384F0 /* NSString+UrlParams.m */; };
+		8DADA2FB1DC3064F007F84CF /* CalendarMonthIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DADA2FA1DC3064F007F84CF /* CalendarMonthIndicator.m */; };
 		8DB4C05F1D8149D50099A63C /* TreeHousePublishManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB4C05E1D8149D50099A63C /* TreeHousePublishManager.m */; };
 		8DB8FAED1D662A5A006B44B2 /* GiftItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DB8FAEC1D662A5A006B44B2 /* GiftItem.m */; };
 		8DC0873D1D8C4930008B57B2 /* PBImageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC0873C1D8C4930008B57B2 /* PBImageController.m */; };
@@ -1196,6 +1197,8 @@
 		8DA0C5471DBE61E30005B9B1 /* HomeworkNotificationListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkNotificationListModel.m; sourceTree = "<group>"; };
 		8DA785971CA4E70B00A384F0 /* NSString+UrlParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UrlParams.h"; sourceTree = "<group>"; };
 		8DA785981CA4E70B00A384F0 /* NSString+UrlParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UrlParams.m"; sourceTree = "<group>"; };
+		8DADA2F91DC3064F007F84CF /* CalendarMonthIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarMonthIndicator.h; sourceTree = "<group>"; };
+		8DADA2FA1DC3064F007F84CF /* CalendarMonthIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarMonthIndicator.m; sourceTree = "<group>"; };
 		8DB4C05D1D8149D50099A63C /* TreeHousePublishManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreeHousePublishManager.h; sourceTree = "<group>"; };
 		8DB4C05E1D8149D50099A63C /* TreeHousePublishManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeHousePublishManager.m; sourceTree = "<group>"; };
 		8DB8FAEB1D662A5A006B44B2 /* GiftItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiftItem.h; sourceTree = "<group>"; };
@@ -3241,6 +3244,8 @@
 			children = (
 				8DE7186B1DABE2120080476D /* Calendar.h */,
 				8DE7186C1DABE2120080476D /* Calendar.m */,
+				8DADA2F91DC3064F007F84CF /* CalendarMonthIndicator.h */,
+				8DADA2FA1DC3064F007F84CF /* CalendarMonthIndicator.m */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -3656,6 +3661,7 @@
 				8DCFD7A31D5A3B8B001EDC8A /* MessageCell.m in Sources */,
 				37E93FDE1A7E9CF200AD45A1 /* PhotoBrowserInfoBar.m in Sources */,
 				3793F79C1B7CFFD900501F77 /* AFHTTPRequestOperationManager.m in Sources */,
+				8DADA2FB1DC3064F007F84CF /* CalendarMonthIndicator.m in Sources */,
 				8D7554EA1D6969E300A140EE /* DNBadgeLabel.m in Sources */,
 				3728A6FB1B9C6E0A00310457 /* UUMessageContentButton.m in Sources */,
 				3793F75A1B7CFFD900501F77 /* MBProgressHUD+Add.m in Sources */,

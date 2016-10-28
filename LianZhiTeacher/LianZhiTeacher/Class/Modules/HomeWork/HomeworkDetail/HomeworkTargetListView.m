@@ -264,7 +264,7 @@
 
 - (void)loadTargets{
     __weak typeof(self) wself = self;
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/classes" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"eid" : self.homeworkItem.hid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/classes" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"eid" : self.homeworkItem.eid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         TNDataWrapper *dataWrapper = [responseObject getDataWrapperForKey:@"classes"];
         wself.targetArray = [HomeworkClassStatus nh_modelArrayWithJson:dataWrapper.data];
         [[wself.tableView mj_header] endRefreshing];

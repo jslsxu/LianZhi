@@ -9,6 +9,7 @@
 #import "HomeworkDetailVC.h"
 #import "HomeworkStudentAnswer.h"
 #import "HomeworkTeacherMark.h"
+#import "NotificationDetailActionView.h"
 @interface HomeworkDetailVC ()
 @property (nonatomic, strong)HomeworkItem*  homeworkItem;
 @property (nonatomic, strong)UISegmentedControl*    segCtrl;
@@ -16,6 +17,7 @@
 @property (nonatomic, strong)HomeworkFinishView*    homeworkFinishView;
 @property (nonatomic, strong)HomeworkStudentAnswer* reply;          //作业回复
 @property (nonatomic, strong)HomeworkTeacherMark*   teacherMark;    //作业批阅
+@property (nonatomic, strong)UIButton*              moreButton;
 @end
 
 @implementation HomeworkDetailVC
@@ -34,11 +36,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.navigationItem setTitleView:[self segCtrl]];
-    [self.view addSubview:[self homeworkDetailView]];
-    [self.view addSubview:[self homeworkFinishView]];
-    [[self segCtrl] setSelectedSegmentIndex:0];
-    [self onSegValueChanged];
     [self requestHomeworkDetail];
 }
 
@@ -68,6 +65,9 @@
 }
 
 - (void)homeworkItemChanged{
+    if((_homeworkItem.etype && _homeworkItem.s_answer) || !_homeworkItem.etype){//显示删除
+        [self setRightbarButtonHighlighted:NO];
+    }
     [self.homeworkDetailView setHomeworkItem:_homeworkItem];
     [self.homeworkFinishView setHomeworkItem:_homeworkItem];
 }
@@ -80,8 +80,18 @@
 
 - (void)setHomeworkItem:(HomeworkItem *)homeworkItem{
     _homeworkItem = homeworkItem;
-    [self.homeworkDetailView setHomeworkItem:_homeworkItem];
-    [self.homeworkFinishView setHomeworkItem:_homeworkItem];
+    if(_homeworkItem.etype){
+        [self.navigationItem setTitleView:[self segCtrl]];
+        [self.view addSubview:[self homeworkDetailView]];
+        [self.view addSubview:[self homeworkFinishView]];
+        [[self segCtrl] setSelectedSegmentIndex:0];
+        [self onSegValueChanged];
+    }
+    else{
+        [self.navigationItem setTitle:@"作业详情"];
+        [self.view addSubview:[self homeworkDetailView]];
+    }
+    [self homeworkItemChanged];
 }
 
 
@@ -96,6 +106,59 @@
     } fail:^(NSString *errMsg) {
         
     }];
+}
+
+- (void)setRightbarButtonHighlighted:(BOOL)highlighted{
+    if(_moreButton == nil){
+        _moreButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_moreButton setSize:CGSizeMake(30, 40)];
+        [_moreButton addTarget:self action:@selector(onMoreClicked) forControlEvents:UIControlEventTouchUpInside];
+    }
+    [_moreButton setImage:[UIImage imageNamed:highlighted ? @"noti_detail_more_highlighted" : @"noti_detail_more"] forState:UIControlStateNormal];
+    UIBarButtonItem *moreItem = [[UIBarButtonItem alloc] initWithCustomView:_moreButton];
+    self.navigationItem.rightBarButtonItem = moreItem;
+}
+
+- (void)onMoreClicked{
+    [self setRightbarButtonHighlighted:YES];
+    if([[MLAmrPlayer shareInstance] isPlaying]){
+        [[MLAmrPlayer shareInstance] stopPlaying];
+    }
+    @weakify(self)
+    //    NotificationActionItem *shareItem = [NotificationActionItem actionItemWithTitle:@"分享" action:^{
+    //        [ShareActionView shareWithTitle:@"分享" content:@"" image:[UIImage imageNamed:@"ClassZone"] imageUrl:@"" url:@""];
+    //    } destroyItem:NO];
+    NotificationActionItem *deleteItem = [NotificationActionItem actionItemWithTitle:@"删除" action:^{
+        @strongify(self)
+        [self deleteHomework];
+    } destroyItem:YES];
+    [NotificationDetailActionView showWithActions:@[ deleteItem] completion:^{
+        @strongify(self);
+        [self setRightbarButtonHighlighted:NO];
+    }];
+    
+}
+
+- (void)deleteHomework{
+    __weak typeof(self) wself = self;
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否删除该作业?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
+    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setValue:wself.homeworkItem.eid forKey:@"eid"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/delete" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            if(wself.deleteCallback){
+                wself.deleteCallback(wself.homeworkItem.eid);
+            }
+            [wself.navigationController popViewControllerAnimated:YES];
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    }];
+    [alertView showAnimated:YES completionHandler:nil];
+
 }
 
 - (void)didReceiveMemoryWarning {

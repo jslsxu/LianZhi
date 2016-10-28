@@ -54,7 +54,7 @@
             NSString *markDetail = [mark modelToJSONString];
             NSMutableDictionary *params = [NSMutableDictionary dictionary];
             [params setValue:markDetail forKey:@"mark_detail"];
-            [params setValue:self.homeworkItem.hid forKey:@"eid"];
+            [params setValue:self.homeworkItem.eid forKey:@"eid"];
             [params setValue:studentInfo.student.uid forKey:@"child_id"];
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/marking" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
                 [studentInfo setMark_detail:markDetail];

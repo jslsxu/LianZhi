@@ -9,7 +9,7 @@
 #import "TNBaseObject.h"
 
 typedef NS_ENUM(NSInteger, MarkType){
-    MarkTypeNone,
+    MarkTypeNone = 0,
     MarkTypeRight,
     MarkTypeHalfRight,
     MarkTypeWrong,

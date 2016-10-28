@@ -33,10 +33,10 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
     [self.view addSubview:[self targetListView]];
     [self onSegmentValueChanged];
     
-    NSData *homeworkData = [NSData dataWithContentsOfFile:[self cacheFilePath]];
-    if(homeworkData){
-        self.homeworkItem = [NSKeyedUnarchiver unarchiveObjectWithData:homeworkData];
-    }
+//    NSData *homeworkData = [NSData dataWithContentsOfFile:[self cacheFilePath]];
+//    if(homeworkData){
+//        self.homeworkItem = [NSKeyedUnarchiver unarchiveObjectWithData:homeworkData];
+//    }
     
     [self loadData];
 }
@@ -130,7 +130,7 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
 - (void)updateHomeworkExplain:(HomeworkExplainEntity *)explainEntity{
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:[UIApplication sharedApplication].keyWindow];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:self.homeworkItem.hid forKey:@"eid"];
+    [params setValue:self.homeworkItem.eid forKey:@"eid"];
     [params setValue:explainEntity.words forKey:@"answer_words"];
     if([explainEntity.voiceArray count] > 0){
         AudioItem *voice = explainEntity.voiceArray[0];

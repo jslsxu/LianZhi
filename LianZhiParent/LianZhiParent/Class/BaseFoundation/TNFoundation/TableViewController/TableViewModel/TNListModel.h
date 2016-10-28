@@ -21,4 +21,6 @@
 
 - (BOOL)hasMoreData;
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type;
+
+- (void)clear;
 @end

@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger, HomeworkStudentStatus){
 @end
 
 @interface HomeworkItem : TNBaseObject
-@property (nonatomic, copy)NSString *hid;
+@property (nonatomic, copy)NSString *   eid;
 @property (nonatomic, copy)NSString*    ctime;
 @property (nonatomic, copy)NSString*    course_name;
 @property (nonatomic, assign)BOOL       etype;
