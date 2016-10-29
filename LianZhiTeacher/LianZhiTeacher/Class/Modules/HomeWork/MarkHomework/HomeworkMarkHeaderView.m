@@ -76,7 +76,31 @@
     [_classLabel setText:_studentHomeworkInfo.className];
     [_classLabel sizeToFit];
     [_classLabel setFrame:CGRectMake(_nameLabel.right + 5, _avatarView.top, _nextButton.left - 10, _classLabel.height)];
-    [_rateLabel setText:@"正确率:--"];
+    
+    NSMutableAttributedString *rateStr = [[NSMutableAttributedString alloc] initWithString:@"正确率: " attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"666666"]}];
+    if([_studentHomeworkInfo.mark_detail length] > 0){
+        CGFloat rightRate = 0;
+        NSInteger totalCount = 0;
+        for (HomeworkMarkItem *markItem in _studentHomeworkInfo.s_answer.teacherMark.marks) {
+            for (HomeworkPhotoMark *photoMark in markItem.marks) {
+                totalCount ++;
+                if(photoMark.markType == MarkTypeRight){
+                    rightRate += 1;
+                }
+                else if(photoMark.markType == MarkTypeHalfRight){
+                    rightRate += 0.5;
+                }
+            }
+        }
+        NSInteger percent = rightRate * 100 / totalCount;
+        [rateStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%zd%%", percent] attributes:@{NSForegroundColorAttributeName : kCommonTeacherTintColor}]];
+    }
+    else{
+        [rateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"--" attributes:@{NSForegroundColorAttributeName : kCommonTeacherTintColor}]];
+    }
+
+    
+    [_rateLabel setAttributedText:rateStr];
     [_rateLabel sizeToFit];
     [_rateLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.centerY - _rateLabel.height / 2)];
     

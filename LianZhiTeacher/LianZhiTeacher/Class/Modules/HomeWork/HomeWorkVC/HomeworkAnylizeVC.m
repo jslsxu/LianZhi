@@ -8,8 +8,12 @@
 
 #import "HomeworkAnylizeVC.h"
 
-@interface HomeworkAnylizeVC ()
+@implementation HomeworkSituation
 
+@end
+
+@interface HomeworkAnylizeVC ()
+@property (nonatomic, strong)HomeworkSituation *situation;
 @end
 
 @implementation HomeworkAnylizeVC
@@ -17,11 +21,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"学情分析";
-    
+    [self loadAnylization];
+}
+
+- (void)setSituation:(HomeworkSituation *)situation{
+    _situation = situation;
     UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     [titleLabel setFont:[UIFont systemFontOfSize:15]];
     [titleLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
-    [titleLabel setText:@"累计作业数:31道"];
+    [titleLabel setText:[NSString stringWithFormat:@"累计作业数:%zd道", self.situation.total]];
     [titleLabel sizeToFit];
     [titleLabel setOrigin:CGPointMake(10, 20)];
     [self.view addSubview:titleLabel];
@@ -39,15 +47,27 @@
         [nameLabel setOrigin:CGPointMake(0, (itemView.height - nameLabel.height) / 2)];
         [itemView addSubview:nameLabel];
         
-        NSInteger progress = (arc4random() % 11) * 10.0;
-        UILabel*  rateLabel = [[UILabel alloc] initWithFrame:CGRectMake(itemView.width - 40, 0, 40, itemView.height)];
+        NSInteger progress = 0;
+        if(i == 0){
+            progress = self.situation.finished;
+        }
+        else if(i == 1){
+            progress = self.situation.marking;
+        }
+        else if(i == 2){
+            progress = self.situation.correct;
+        }
+        else{
+            progress = self.situation.answer;
+        }
+        UILabel*  rateLabel = [[UILabel alloc] initWithFrame:CGRectMake(itemView.width - 50, 0, 50, itemView.height)];
         [rateLabel setFont:[UIFont systemFontOfSize:15]];
         [rateLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
         [rateLabel setTextAlignment:NSTextAlignmentRight];
         [rateLabel setText:[NSString stringWithFormat:@"%zd%%", progress]];
         [itemView addSubview:rateLabel];
         
-        UIView* bgView = [[UIView alloc] initWithFrame:CGRectMake(nameLabel.right + 10, (itemView.height - 6) / 2, rateLabel.left - 10 - (nameLabel.right + 10), 6)];
+        UIView* bgView = [[UIView alloc] initWithFrame:CGRectMake(nameLabel.right + 10, (itemView.height - 6) / 2, rateLabel.left - 5 - (nameLabel.right + 10), 6)];
         [bgView setBackgroundColor:[UIColor colorWithHexString:@"dde352"]];
         [itemView addSubview:bgView];
         
@@ -58,6 +78,16 @@
         [self.view addSubview:itemView];
         spaceYStart = itemView.bottom;
     }
+}
+
+- (void)loadAnylization{
+    __weak typeof(self) wself = self;
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/situation" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        wself.situation = [HomeworkSituation nh_modelWithJson:responseObject.data];
+        
+    } fail:^(NSString *errMsg) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

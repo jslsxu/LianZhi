@@ -61,24 +61,31 @@
     
     NSString* statusStr = nil;
     UIColor* statusColor = kCommonParentTintColor;
-    if(_homeworkItem.status == HomeworkStatusWaitReply){
-        statusStr = @"待提交";
-        statusColor = [UIColor colorWithHexString:@"e00909"];
+    if(_homeworkItem.etype){
+        [_statusLabel setHidden:NO];
+        if((_homeworkItem.status == HomeworkStatusUnread || _homeworkItem.status == HomeworkStatusRead) && _homeworkItem){
+            statusStr = @"待提交";
+            statusColor = [UIColor colorWithHexString:@"e00909"];
+        }
+        else if(_homeworkItem.status == HomeworkStatusWaitMark){
+            statusStr = @"已提交";
+            statusColor = [UIColor colorWithHexString:@"666666"];
+        }
+        else if(_homeworkItem.status == HomeworkStatusMarked){
+            statusStr = @"已批阅";
+            statusColor = kCommonParentTintColor;
+        }
+        [_statusLabel setTextColor:statusColor];
+        [_statusLabel setText:statusStr];
+        [_statusLabel sizeToFit];
+        [_statusLabel setOrigin:CGPointMake(spaceXEnd - _statusLabel.width, (self.height - _statusLabel.height) / 2)];
+        
+        spaceXEnd = _statusLabel.left - 2;
+
     }
-    else if(_homeworkItem.status == HomeworkStatusWaitMark){
-        statusStr = @"已提交";
-        statusColor = [UIColor colorWithHexString:@"666666"];
+    else{
+        [_statusLabel setHidden:YES];
     }
-    else if(_homeworkItem.status == HomeworkStatusMarked){
-        statusStr = @"已批阅";
-        statusColor = kCommonParentTintColor;
-    }
-    [_statusLabel setTextColor:statusColor];
-    [_statusLabel setText:statusStr];
-    [_statusLabel sizeToFit];
-    [_statusLabel setOrigin:CGPointMake(spaceXEnd - _statusLabel.width, (self.height - _statusLabel.height) / 2)];
-    
-    spaceXEnd = _statusLabel.left - 2;
     [_redDot setOrigin:CGPointMake(spaceXEnd - _redDot.width, (self.height - _redDot.height) / 2)];
     [_redDot setHidden:!_homeworkItem.is_new];
 }

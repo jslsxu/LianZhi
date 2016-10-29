@@ -21,15 +21,6 @@
              @"students" : @"child_ids"};
 }
 
-- (BOOL)canNotification{
-    for (HomeworkStudentInfo *studentInfo in self.students) {
-        if(studentInfo.status == HomeworkStudentStatusUnread){
-            return YES;
-        }
-    }
-    return NO;
-}
-
 + (NSDictionary<NSString *,id>*)modelContainerPropertyGenericClass{
     return @{@"students" : [HomeworkStudentInfo class]};
 }

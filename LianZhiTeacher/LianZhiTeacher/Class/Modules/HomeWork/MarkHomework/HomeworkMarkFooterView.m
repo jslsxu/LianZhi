@@ -55,7 +55,7 @@ static MarkType currentMarkType = MarkTypeNone;
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             [button setFrame:CGRectMake(spaceXstart + (45 + 10) * i, hintLabel.centerY - 15, 45, 30)];
             [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Normal",commentImage[i]]] forState:UIControlStateNormal];
-            [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Selected",commentImage[i]]] forState:UIControlStateSelected];
+            [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Selected",commentImage[i]]] forState:UIControlStateHighlighted];
             [button addTarget:self action:@selector(onCommentButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self addSubview:button];
             [commentButtonArray addObject:button];
@@ -66,6 +66,7 @@ static MarkType currentMarkType = MarkTypeNone;
         [_textField setFont:[UIFont systemFontOfSize:14]];
         [_textField setTextColor:[UIColor colorWithHexString:@"333333"]];
         [_textField setPlaceholder:@"暂无评语"];
+        [_textField setReturnKeyType:UIReturnKeyDone];
         [_textField setDelegate:self];
         [self addSubview:_textField];
         
@@ -108,33 +109,17 @@ static MarkType currentMarkType = MarkTypeNone;
 
 - (void)onCommentButtonClicked:(UIButton *)button{
     NSInteger index = [self.commentButtonArray indexOfObject:button];
-    if(button.selected){
-        button.selected = NO;
-        [_textField setText:nil];
+    NSString *comment = nil;
+    if(index == 0){
+        comment = @"作业完成的很好，老师非常满意。";
+    }
+    else if(index == 1){
+        comment = @"作业完成的不错，继续努力。";
     }
     else{
-        
-        for (NSInteger i = 0; i < [self.commentButtonArray count]; i++) {
-            UIButton *commentButton = self.commentButtonArray[i];
-            if(commentButton == button){
-                commentButton.selected = YES;
-                NSString *comment = nil;
-                if(i == 0){
-                    comment = @"作业完成的很好，老师非常满意。";
-                }
-                else if(i == 1){
-                    comment = @"作业完成的不错，继续努力。";
-                }
-                else{
-                    comment = @"如果再仔细一点，相信成功一定属于你。";
-                }
-                [_textField setText:comment];
-            }
-            else{
-                commentButton.selected = NO;
-            }
-        }
+        comment = @"如果再仔细一点，相信成功一定属于你。";
     }
+    [_textField setText:comment];
 }
 
 #pragma mark - UITextFieldDelegate

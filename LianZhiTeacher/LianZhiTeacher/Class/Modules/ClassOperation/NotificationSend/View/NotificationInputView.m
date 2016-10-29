@@ -28,6 +28,11 @@
     return self;
 }
 
+- (void)setSendHidden:(BOOL)sendHidden{
+    _sendHidden = sendHidden;
+    [_sendButton setHidden:_sendHidden];
+}
+
 - (void)showAudioRecordView{
     [_photoView removeFromSuperview];
     _photoView = nil;

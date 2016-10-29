@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, HomeworkStudentStatus){
 @property (nonatomic, assign)NSInteger  send;
 @property (nonatomic, assign)NSInteger  reply;
 @property (nonatomic, assign)NSInteger  mark;
-- (BOOL)canNotification;
+@property (nonatomic, assign)BOOL       send_notice;        //为1时可以提醒
 @end
 
 @interface HomeworkItemAnswer : TNBaseObject

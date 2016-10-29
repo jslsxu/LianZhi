@@ -54,10 +54,31 @@
     [nameLabel setOrigin:CGPointMake(avatarView.right + margin, avatarView.top)];
     [_scrollView addSubview:nameLabel];
     
+    NSMutableAttributedString *rateStr = [[NSMutableAttributedString alloc] initWithString:@"正确率: " attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"666666"]}];
+    if(self.homeworkItem.s_answer.teacherMark){
+        CGFloat rightRate = 0;
+        NSInteger totalCount = 0;
+        for (HomeworkMarkItem *markItem in self.homeworkItem.s_answer.teacherMark.marks) {
+            for (HomeworkPhotoMark *photoMark in markItem.marks) {
+                totalCount ++;
+                if(photoMark.markType == MarkTypeRight){
+                    rightRate += 1;
+                }
+                else if(photoMark.markType == MarkTypeHalfRight){
+                    rightRate += 0.5;
+                }
+            }
+        }
+        NSInteger percent = rightRate * 100 / totalCount;
+        [rateStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%zd%%", percent] attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
+    }
+    else{
+        [rateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"--" attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
+    }
     UILabel* rateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     [rateLabel setFont:[UIFont systemFontOfSize:12]];
     [rateLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
-    [rateLabel setText:@"正确率:"];
+    [rateLabel setAttributedText:rateStr];
     [rateLabel sizeToFit];
     [rateLabel setOrigin:CGPointMake(avatarView.right + margin, (avatarView.height - rateLabel.height) / 2 + margin)];
     [_scrollView addSubview:rateLabel];

@@ -9,7 +9,8 @@
 #import "TNBaseObject.h"
 
 typedef NS_ENUM(NSInteger, HomeworkStatus){
-    HomeworkStatusWaitReply = 0,        //等待提交
+    HomeworkStatusUnread = 0,        //未读
+    HomeworkStatusRead,                     //已读
     HomeworkStatusWaitMark,             //等待批阅
     HomeworkStatusMarked,               //已批阅
 };
@@ -24,6 +25,7 @@ typedef NS_ENUM(NSInteger, HomeworkStatus){
 @property (nonatomic, copy)NSString*    time;
 @property (nonatomic, assign)BOOL reply_close;
 @property (nonatomic, copy)NSString* reply_close_ctime;
+@property (nonatomic, assign)BOOL   etype;
 @property (nonatomic, assign)BOOL hasPhoto;
 @property (nonatomic, assign)BOOL hasVoice;
 @property (nonatomic, assign)BOOL is_new;

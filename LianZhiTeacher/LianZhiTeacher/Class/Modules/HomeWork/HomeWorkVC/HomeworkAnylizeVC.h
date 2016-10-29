@@ -8,6 +8,14 @@
 
 #import "TNBaseViewController.h"
 
+@interface HomeworkSituation : TNBaseObject
+@property (nonatomic, assign)NSInteger total;
+@property (nonatomic, assign)NSInteger finished;
+@property (nonatomic, assign)NSInteger marking;
+@property (nonatomic, assign)NSInteger correct;
+@property (nonatomic, assign)NSInteger answer;
+@end
+
 @interface HomeworkAnylizeVC : TNBaseViewController
 
 @end

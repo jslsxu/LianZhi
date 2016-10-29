@@ -13,6 +13,7 @@
 
 
 @interface MarkHomeworkVC ()<ZYBannerViewDelegate, ZYBannerViewDataSource, HomeworkMarkHeaderDelegate>
+@property (nonatomic, strong)UIView*                    contentView;
 @property (nonatomic, strong)HomeworkMarkHeaderView*    headerView;
 @property (nonatomic, strong)ZYBannerView*              circleView;
 @property (nonatomic, strong)HomeworkMarkFooterView*    footerView;
@@ -21,6 +22,18 @@
 @end
 
 @implementation MarkHomeworkVC
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self){
+        [self addKeyboardNotifications];
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -31,11 +44,30 @@
         [self.markMap setValue:teacherMark forKey:studentInfo.student.uid];
     }
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"批阅" style:UIBarButtonItemStylePlain target:self action:@selector(mark)];
-    [self.view addSubview:[self headerView]];
-    [self.view addSubview:[self footerView]];
-    [self.view addSubview:[self circleView]];
+    [self.view addSubview:[self contentView]];
+    [self.contentView addSubview:[self headerView]];
+    [self.contentView addSubview:[self footerView]];
+    [self.contentView addSubview:[self circleView]];
     
     [self showHomeworkWithIndex:self.curIndex];
+}
+
+- (void)onKeyboardWillShow:(NSNotification *)note{
+    CGRect keyboardBounds;
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    [UIView animateWithDuration:[duration floatValue] delay:0 options:curve.integerValue animations:^{
+        [self.contentView setY:-keyboardBounds.size.height];
+    } completion:nil];
+}
+
+- (void)onKeyboardWillHide:(NSNotification *)note{
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    [UIView animateWithDuration:[duration floatValue] delay:0 options:curve.integerValue animations:^{
+        [self.contentView setY:0];
+    } completion:nil];
 }
 
 - (NSMutableDictionary *)markMap{
@@ -58,7 +90,7 @@
             [params setValue:studentInfo.student.uid forKey:@"child_id"];
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/marking" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
                 [studentInfo setMark_detail:markDetail];
-                [wself.navigationItem.rightBarButtonItem setEnabled:NO];
+                [wself showHomeworkWithIndex:wself.curIndex];
             } fail:^(NSString *errMsg) {
                 
             }];
@@ -67,9 +99,18 @@
     }
 }
 
+- (UIView *)contentView{
+    if(_contentView == nil){
+        _contentView = [[UIView alloc] initWithFrame:self.view.bounds];
+        [_contentView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+    }
+    return _contentView;
+}
+
 - (HomeworkMarkHeaderView *)headerView{
     if(_headerView == nil){
         _headerView = [[HomeworkMarkHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 110)];
+        [_headerView setDelegate:self];
     }
     return _headerView;
 }
@@ -102,6 +143,7 @@
     [self.headerView setStudentHomeworkInfo:studentInfo];
     HomeworkTeacherMark *mark = self.markMap[studentInfo.student.uid];
     [self.footerView setTeacherMark:mark];
+    [self.footerView setUserInteractionEnabled:[studentInfo.mark_detail length] == 0];
     [self.circleView reloadData];
 }
 
@@ -129,6 +171,7 @@
     HomeworkPhotoImageView *imageView = [[HomeworkPhotoImageView alloc] initWithFrame:banner.bounds];
     HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
     HomeworkTeacherMark* teacherMark = self.markMap[studentInfo.student.uid];
+    [imageView setCanEdit:studentInfo.mark_detail.length == 0];
     [imageView setMarkItem:teacherMark.marks[index]];
     return imageView;
 }

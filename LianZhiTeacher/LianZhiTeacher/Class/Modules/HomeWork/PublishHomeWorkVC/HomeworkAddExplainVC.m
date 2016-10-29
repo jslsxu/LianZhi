@@ -96,6 +96,7 @@ UIScrollViewDelegate>{
     
     @weakify(self)
     _inputView = [[NotificationInputView alloc] initWithFrame:CGRectMake(0, self.view.height - 64 - kActionBarHeight, self.view.width, kActionBarHeight)];
+    [_inputView setSendHidden:YES];
     [_inputView setPhotoNum:^NSInteger{
         @strongify(self)
         return [self.explainEntity.imageArray count];

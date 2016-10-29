@@ -31,6 +31,7 @@
         [self addSubview:_voiceTypeView];
         
         _redDot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 6, 6)];
+        [_redDot setBackgroundColor:[UIColor colorWithHexString:@"e00909"]];
         [_redDot.layer setCornerRadius:3];
         [_redDot.layer setMasksToBounds:YES];
         [self addSubview:_redDot];
@@ -74,24 +75,31 @@
     }
     NSString *status = nil;
     UIColor* statusColor = kCommonParentTintColor;
-    if(_homeworkItem.status == HomeworkStatusWaitReply){
-        status = @"待提交";
-        statusColor = [UIColor colorWithHexString:@"e00909"];
+    if(_homeworkItem.etype){//可以回复
+        if(_homeworkItem.status == HomeworkStatusUnread || _homeworkItem.status == HomeworkStatusRead){
+            status = @"待提交";
+            statusColor = [UIColor colorWithHexString:@"e00909"];
+        }
+        else if(_homeworkItem.status == HomeworkStatusWaitMark){
+            status = @"待批阅";
+            statusColor = [UIColor colorWithHexString:@"666666"];
+        }
+        else if(_homeworkItem.status == HomeworkStatusMarked){
+            status = @"已批阅";
+            statusColor = kCommonParentTintColor;
+        }
+        [_statusLabel setHidden:NO];
+        [_statusLabel setTextColor:statusColor];
+        [_statusLabel setText:status];
+        [_statusLabel sizeToFit];
+        [_statusLabel setOrigin:CGPointMake(spaceXEnd - _statusLabel.width, (self.height - _statusLabel.height) / 2)];
+        
+        spaceXEnd = _statusLabel.left - 2;
     }
-    else if(_homeworkItem.status == HomeworkStatusWaitMark){
-        status = @"待批阅";
-        statusColor = [UIColor colorWithHexString:@"666666"];
+    else{
+        [_statusLabel setHidden:YES];
     }
-    else if(_homeworkItem.status == HomeworkStatusMarked){
-        status = @"已批阅";
-        statusColor = kCommonParentTintColor;
-    }
-    [_statusLabel setTextColor:statusColor];
-    [_statusLabel setText:status];
-    [_statusLabel sizeToFit];
-    [_statusLabel setOrigin:CGPointMake(spaceXEnd - _statusLabel.width, (self.height - _statusLabel.height) / 2)];
-    
-    spaceXEnd = _statusLabel.left - 2;
+   
     [_redDot setOrigin:CGPointMake(spaceXEnd - _redDot.width, (self.height - _redDot.height) / 2)];
 }
 

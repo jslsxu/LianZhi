@@ -12,12 +12,13 @@
 @interface HomeworkMarkItemView : UIView
 @property (nonatomic, strong)HomeworkPhotoMark *photoMark;
 @property (nonatomic, copy)void (^deleteCallback)();
-- (instancetype)initWithMark:(HomeworkPhotoMark *)photoMark parentSize:(CGSize)parentSize;
+- (instancetype)initWithMark:(HomeworkPhotoMark *)photoMark parentSize:(CGSize)parentSize canEdit:(BOOL)canEdit;
 
 @end
 
 @interface HomeworkPhotoImageView : UIScrollView
 @property (nonatomic, strong)HomeworkMarkItem* markItem;
+@property (nonatomic, assign)BOOL canEdit;
 @property (nonatomic, strong)void (^photoViewSingleTap)(CGPoint location);
 - (void)setupMarks;
 @end

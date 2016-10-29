@@ -15,7 +15,7 @@
 
 @implementation HomeworkMarkItemView
 
-- (instancetype)initWithMark:(HomeworkPhotoMark *)photoMark parentSize:(CGSize)parentSize{
+- (instancetype)initWithMark:(HomeworkPhotoMark *)photoMark parentSize:(CGSize)parentSize canEdit:(BOOL)canEdit{
     self = [super initWithFrame:CGRectZero];
     if(self){
         self.photoMark = photoMark;
@@ -33,13 +33,18 @@
         UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:markStr]];
         [self addSubview:imageView];
         
-        UIButton* deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [deleteButton setFrame:CGRectMake(imageView.right, 0, 10, 10)];
-        [deleteButton setImage:[UIImage imageNamed:@"markDelete"] forState:UIControlStateNormal];
-        [deleteButton addTarget:self action:@selector(onDelete) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:deleteButton];
-        
-        [self setSize:CGSizeMake(imageView.width + 10, imageView.height)];
+        if(canEdit){
+            UIButton* deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [deleteButton setFrame:CGRectMake(imageView.right, 0, 10, 10)];
+            [deleteButton setImage:[UIImage imageNamed:@"markDelete"] forState:UIControlStateNormal];
+            [deleteButton addTarget:self action:@selector(onDelete) forControlEvents:UIControlEventTouchUpInside];
+            [self addSubview:deleteButton];
+            [self setSize:CGSizeMake(imageView.width + 10, imageView.height)];
+        }
+        else{
+            [self setSize:imageView.size];
+        }
+    
         
         [self setCenter:CGPointMake(parentSize.width * photoMark.x, parentSize.height * photoMark.y)];
     }
@@ -155,7 +160,7 @@
     [self.markViewArray makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.markViewArray removeAllObjects];
     for (HomeworkPhotoMark *mark in self.markItem.marks) {
-        HomeworkMarkItemView* itemView = [[HomeworkMarkItemView alloc] initWithMark:mark parentSize:self.originalSize];
+        HomeworkMarkItemView* itemView = [[HomeworkMarkItemView alloc] initWithMark:mark parentSize:self.originalSize canEdit:self.canEdit];
         [itemView setDeleteCallback:^{
             [wself removeMark:mark];
         }];
@@ -166,7 +171,7 @@
 
 - (void)addMark:(HomeworkPhotoMark *)mark{
     __weak typeof(self) wself = self;
-    HomeworkMarkItemView *markItemView = [[HomeworkMarkItemView alloc] initWithMark:mark parentSize:self.originalSize];
+    HomeworkMarkItemView *markItemView = [[HomeworkMarkItemView alloc] initWithMark:mark parentSize:self.originalSize canEdit:self.canEdit];
     [markItemView setDeleteCallback:^{
         [wself removeMark:mark];
     }];

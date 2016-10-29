@@ -132,7 +132,7 @@
         }
         
         if(self.homeworkItem.answer){
-            if(self.homeworkItem.s_answer){
+            if(self.homeworkItem.s_answer || !self.homeworkItem.etype){
                 self.explainView = [[HomeworkItemAnswerView alloc] initWithFrame:CGRectMake(0, spaceYStart, _scrollView.width, 0)];
                 [self.explainView setAnswer:self.homeworkItem.answer];
                 [_scrollView addSubview:self.explainView];

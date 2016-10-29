@@ -38,7 +38,6 @@
         _alertButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_alertButton setImage:[UIImage imageNamed:@"homeworkAlert"] forState:UIControlStateNormal];
         [_alertButton setSize:CGSizeMake(40, 20)];
-        [_alertButton setHidden:YES];
         [_alertButton addTarget:self action:@selector(alert) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:_alertButton];
         
@@ -77,13 +76,8 @@
     _classInfo = classInfo;
 
     [_logoView sd_setImageWithURL:[NSURL URLWithString:_classInfo.logo]];
-    if([_classInfo canNotification]){
-        [_alertButton setHidden:NO];
-        [_alertButton setOrigin:CGPointMake(self.width - 10 - _alertButton.width, (self.height - _alertButton.height) / 2)];
-    }
-    else{
-        [_alertButton setHidden:YES];
-    }
+    [_alertButton setEnabled:_classInfo.send_notice];
+    [_alertButton setOrigin:CGPointMake(self.width - 10 - _alertButton.width, (self.height - _alertButton.height) / 2)];
     [_titleLabel setFrame:CGRectMake(_logoView.right + 15, 0, _stateLabel.left - 10 - (_logoView.right + 15), self.height)];
     [_titleLabel setText:_classInfo.name];
     [_titleLabel sizeToFit];
@@ -210,6 +204,7 @@
 
 
 @interface HomeworkTargetListView ()<UITableViewDelegate, UITableViewDataSource>
+@property (nonatomic, strong)UIView*    bottomView;
 @property (nonatomic, strong)NSArray *targetArray;
 @property (nonatomic, strong)UITableView* tableView;
 @property (nonatomic, strong)NSMutableDictionary* expandDic;
@@ -221,12 +216,13 @@
     self = [super initWithFrame:frame];
     if(self){
         
-        UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - 60, self.width, 60)];
-        [self setupBottomView:bottomView];
-        [bottomView setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
-        [self addSubview:bottomView];
+        _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - 60, self.width, 60)];
+        [self setupBottomView:_bottomView];
+        [_bottomView setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
+        [_bottomView setHidden:YES];
+        [self addSubview:_bottomView];
         
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.width, bottomView.top) style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.width, _bottomView.top) style:UITableViewStylePlain];
         [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
         [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
         [_tableView setDelegate:self];
@@ -293,6 +289,7 @@
         }
     }
     [_tableView reloadData];
+    [self.bottomView setHidden:NO];
 }
 
 - (NSMutableDictionary *)expandDic{
@@ -322,6 +319,7 @@
 }
 
 - (void)alertAll{
+    __weak typeof(self) wself = self;
     LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"根据您所选的班级，通过APP通知和短信的形式，提醒未回复作业的学生家长尽快回复。1小时之内可以提醒一次。" style:LGAlertViewStyleAlert buttonTitles:@[@"提醒"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
     [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
     [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
@@ -329,19 +327,41 @@
     [alertView setButtonsTitleColor:kCommonTeacherTintColor];
     [alertView setCancelButtonTitleColor:kCommonTeacherTintColor];
     [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-        
+        NSMutableString *class_ids = [[NSMutableString alloc] init];
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:wself.homeworkItem.eid forKey:@"eid"];
+        for (HomeworkClassStatus *classInfo in wself.targetArray) {
+            if([class_ids length] > 0){
+                [class_ids appendFormat:@",%@", classInfo.classID];
+            }
+            else{
+                [class_ids appendString:classInfo.classID];
+            }
+        }
+        [params setValue:class_ids forKey:@"class_ids"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/send_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:wself completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            for (HomeworkClassStatus *classInfo in wself.targetArray) {
+                classInfo.send_notice = NO;
+            }
+            [wself.tableView reloadData];
+        } fail:^(NSString *errMsg) {
+            [ProgressHUD showHintText:errMsg];
+        }];
     }];
     [alertView showAnimated:YES completionHandler:nil];
 }
 
 - (void)notificationClass:(HomeworkClassStatus *)classInfo{
-    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"在短时间之内，不能重复提醒。" style:LGAlertViewStyleAlert buttonTitles:@[@"确定"] cancelButtonTitle:nil destructiveButtonTitle:nil];
-    [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-    [alertView setButtonsTitleColor:kCommonTeacherTintColor];
-    [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-        
+    __weak typeof(self) wself = self;
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.homeworkItem.eid forKey:@"eid"];
+    [params setValue:classInfo.classID forKey:@"class_ids"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/send_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        classInfo.send_notice = NO;
+        [wself.tableView reloadData];
+    } fail:^(NSString *errMsg) {
+        [ProgressHUD showHintText:errMsg];
     }];
-    [alertView showAnimated:YES completionHandler:nil];
 }
 
 - (NSArray *)studentHomeworkArray{

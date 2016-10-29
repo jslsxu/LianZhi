@@ -43,5 +43,6 @@ typedef NS_ENUM(NSInteger, ActionType){
 @property (nonatomic, copy)BOOL (^canRecord)();
 @property (nonatomic, assign)BOOL onlyPhoto;
 @property (nonatomic, assign)ActionType actionType;
+@property (nonatomic, assign)BOOL sendHidden;
 @property (nonatomic, weak)id<NotificationInputDelegate> delegate;
 @end
