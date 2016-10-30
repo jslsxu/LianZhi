@@ -104,7 +104,7 @@
         [wself.navigationController pushViewController:anylizeVC animated:YES];
     } destroyItem:NO];
     NotificationActionItem *clearItem = [NotificationActionItem actionItemWithTitle:@"清空记录" action:^{
-        
+        [wself.recordVC clear];
     } destroyItem:YES];
     [NotificationDetailActionView showWithActions:@[settingItem, anylizeItem, clearItem] completion:^{
         [wself setRightbarButtonHighlighted:NO];

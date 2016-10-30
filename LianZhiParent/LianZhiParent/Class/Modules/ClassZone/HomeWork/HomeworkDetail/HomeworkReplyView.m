@@ -110,6 +110,7 @@
 
 - (void)onSend{
     if([self.photoArray count] == 0){
+        [ProgressHUD showHintText:@"请选择照片"];
         return;
     }
     __weak typeof(self) wself = self;

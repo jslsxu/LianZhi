@@ -89,16 +89,24 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
 }
 
 - (void)deleteHomeworkItem{
-    @weakify(self)
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/delete" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"eid" : self.hid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        @strongify(self)
-        [self.navigationController popViewControllerAnimated:YES];
-        if(self.deleteCallback){
-            self.deleteCallback(self.hid);
-        }
-    } fail:^(NSString *errMsg) {
-        
+    __weak typeof(self) wself = self;
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否删除该条记录?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
+    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/delete" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"eid" : wself.hid} observer:wself completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [wself.navigationController popViewControllerAnimated:YES];
+            if(wself.deleteCallback){
+                wself.deleteCallback(wself.hid);
+            }
+        } fail:^(NSString *errMsg) {
+            
+        }];
     }];
+    [alertView showAnimated:YES completionHandler:nil];
+
+
 }
 
 - (UISegmentedControl *)segmentCtrl{

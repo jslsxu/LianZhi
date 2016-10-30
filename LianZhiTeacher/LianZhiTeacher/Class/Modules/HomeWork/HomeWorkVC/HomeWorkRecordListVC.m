@@ -274,6 +274,25 @@
     [viewParent addSubview:sendButton];
 }
 
+- (void)clear{
+    @weakify(self)
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否清空已发记录?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"清空"];
+    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+        @strongify(self)
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/tclear" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [hud hide:NO];
+            [self requestData:REQUEST_REFRESH];
+        } fail:^(NSString *errMsg) {
+            [hud hide:NO];
+        }];
+    }];
+    [alertView showAnimated:YES completionHandler:nil];
+}
+
 - (void)publishHomework{
     PublishHomeWorkVC *publishHomeWorkVC = [[PublishHomeWorkVC alloc] init];
     [CurrentROOTNavigationVC pushViewController:publishHomeWorkVC animated:YES];

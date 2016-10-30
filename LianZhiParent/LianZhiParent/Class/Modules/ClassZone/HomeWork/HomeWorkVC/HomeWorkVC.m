@@ -57,10 +57,6 @@
     [super requestData:requestType];
     HomeworkListModel *model = (HomeworkListModel *)self.tableViewModel;
     [model setDate:[self.calendar currentSelectedDate]];
-    if(requestType == REQUEST_REFRESH){
-        [model clear];
-        [self.tableView reloadData];
-    }
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType{
@@ -111,6 +107,9 @@
 }
 
 - (void)calendarDateDidChange:(NSDate *)selectedDate{
+    HomeworkListModel *model = (HomeworkListModel *)self.tableViewModel;
+    [model clear];
+    [self.tableView reloadData];
     [self requestData:REQUEST_REFRESH];
 }
 

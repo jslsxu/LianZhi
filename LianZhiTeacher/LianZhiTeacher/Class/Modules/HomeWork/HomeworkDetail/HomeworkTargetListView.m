@@ -239,6 +239,11 @@
 }
 
 - (void)setupBottomView:(UIView *)viewParent{
+    
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewParent.width, kLineHeight)];
+    [topLine setBackgroundColor:kSepLineColor];
+    [viewParent addSubview:topLine];
+    
     UIButton *alertAllButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [alertAllButton addTarget:self action:@selector(alertAll) forControlEvents:UIControlEventTouchUpInside];
     [alertAllButton setFrame:CGRectMake(10, 10, (viewParent.width - 10 * 3) / 2, viewParent.height - 10 * 2)];

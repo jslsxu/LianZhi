@@ -44,5 +44,5 @@
 @end
 
 @interface HomeWorkRecordListVC : TNBaseTableViewController
-
+- (void)clear;
 @end
