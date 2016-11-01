@@ -12,6 +12,7 @@
 #import "NotificationDetailActionView.h"
 #import "ContactsLoadingView.h"
 #import "HomeworkAddExplainVC.h"
+#import "PublishHomeWorkVC.h"
 NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNotification";
 
 @interface HomeworkDetailVC ()
@@ -136,6 +137,7 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
 }
 
 - (void)updateHomeworkExplain:(HomeworkExplainEntity *)explainEntity{
+    __weak typeof(self) wself = self;
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:[UIApplication sharedApplication].keyWindow];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.homeworkItem.eid forKey:@"eid"];
@@ -169,7 +171,7 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
             }
         }
         
-        [params setValue:picSeq forKey:@"pic_seqs"];
+        [params setValue:picSeq forKey:@"answer_pic_seqs"];
     }
 
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/answer" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
@@ -198,6 +200,10 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
         }
 
     } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        TNDataWrapper *answerWrapper = [responseObject getDataWrapperForKey:@"answer"];
+        HomeworkItemAnswer *answer = [HomeworkItemAnswer nh_modelWithJson:answerWrapper.data];
+        [wself.homeworkItem setAnswer:answer];
+        [wself.detailView setHomeworkItem:wself.homeworkItem];
         [hud hide:NO];
         [ProgressHUD showSuccess:@"解析更新成功"];
     } fail:^(NSString *errMsg) {
@@ -209,7 +215,10 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
 - (void)onMoreClicked{
     __weak typeof(self) wself = self;
     NotificationActionItem* forwardItem = [NotificationActionItem actionItemWithTitle:@"转发" action:^{
-        
+        HomeWorkEntity *entity = [HomeWorkEntity sendEntityWithHomeworkItem:wself.homeworkItem];
+        PublishHomeWorkVC* publishHomeworkVC = [[PublishHomeWorkVC alloc] initWithHomeWorkEntity:entity];
+        [publishHomeworkVC setSendType:HomeworkSendForward];
+        [CurrentROOTNavigationVC pushViewController:publishHomeworkVC animated:YES];
     } destroyItem:NO];
     NotificationActionItem* editItem = [NotificationActionItem actionItemWithTitle:@"编辑作业解析" action:^{
         HomeworkAddExplainVC *explainVC = [[HomeworkAddExplainVC alloc] init];

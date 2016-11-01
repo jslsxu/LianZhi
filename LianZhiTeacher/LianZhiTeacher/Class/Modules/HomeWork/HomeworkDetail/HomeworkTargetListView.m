@@ -86,13 +86,15 @@
     
     NSMutableAttributedString *stateStr = [[NSMutableAttributedString alloc] initWithString:@"发送:"];
     [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_classInfo.send) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
-    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 回复:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
-    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_classInfo.reply) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
     if(self.etype){
+        [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 回复:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+        [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_classInfo.reply) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
         [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 批阅:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
         [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_classInfo.mark) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
     }
     else{
+        [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 已读:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+        [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_classInfo.read) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
         [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
     }
     [_stateLabel setAttributedText:stateStr];
@@ -278,6 +280,14 @@
     _homeworkItem = homeworkItem;
 //    [self setTargetArray:_homeworkItem.classes];
     [self loadTargets];
+    if(_homeworkItem.etype){
+        [_bottomView setHidden:NO];
+        [_tableView setFrame:CGRectMake(0, 0, self.width, _bottomView.top)];
+    }
+    else{
+        [_bottomView setHidden:YES];
+        [_tableView setFrame:self.bounds];
+    }
 }
 
 - (void)setTargetArray:(NSArray *)targetArray{

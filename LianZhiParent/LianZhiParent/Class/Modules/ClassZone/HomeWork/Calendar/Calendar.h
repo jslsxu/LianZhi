@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, CalendarType){
 
 @interface CalendarDayView : UICollectionViewCell{
     UILabel*    _dayLabel;
+    UIView*     _redDot;
     UIView*     _curDateIndicator;
 }
 @property (nonatomic, strong)NSDate *date;

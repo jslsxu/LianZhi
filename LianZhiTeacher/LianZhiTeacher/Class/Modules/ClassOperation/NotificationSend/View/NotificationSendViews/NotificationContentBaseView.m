@@ -17,4 +17,9 @@
     }
     return self;
 }
+
+- (void)setEditDisabled:(BOOL)editDisabled{
+    _editDisabled = editDisabled;
+    [self setUserInteractionEnabled:!_editDisabled];
+}
 @end

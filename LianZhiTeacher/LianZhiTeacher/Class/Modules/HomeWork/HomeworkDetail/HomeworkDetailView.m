@@ -60,13 +60,15 @@
         [courseLabel setOrigin:CGPointMake(avatarView.right + margin, avatarView.bottom - courseLabel.height)];
         [_scrollView addSubview:courseLabel];
         
-        UILabel*    publishTimelabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [publishTimelabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-        [publishTimelabel setFont:[UIFont systemFontOfSize:13]];
-        [publishTimelabel setText:[NSString stringWithFormat:@"发布时间:%@",self.homeworkItem.ctime]];
-        [publishTimelabel sizeToFit];
-        [publishTimelabel setOrigin:CGPointMake(_scrollView.width - margin - publishTimelabel.width, avatarView.top + 2)];
-        [_scrollView addSubview:publishTimelabel];
+        if([self.homeworkItem.ctime length] > 0){
+            UILabel*    publishTimelabel = [[UILabel alloc] initWithFrame:CGRectZero];
+            [publishTimelabel setTextColor:[UIColor colorWithHexString:@"999999"]];
+            [publishTimelabel setFont:[UIFont systemFontOfSize:13]];
+            [publishTimelabel setText:[NSString stringWithFormat:@"发布时间:%@",self.homeworkItem.ctime]];
+            [publishTimelabel sizeToFit];
+            [publishTimelabel setOrigin:CGPointMake(_scrollView.width - margin - publishTimelabel.width, avatarView.top + 2)];
+            [_scrollView addSubview:publishTimelabel];
+        }
         
         if(self.homeworkItem.reply_close_ctime.length > 0 && self.homeworkItem.reply_close){
             UILabel*    endTimeLabel = [[UILabel alloc] initWithFrame:CGRectZero];

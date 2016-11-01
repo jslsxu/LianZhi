@@ -43,7 +43,7 @@
 - (void)setClassInfo:(ClassInfo *)classInfo{
     _classInfo = classInfo;
     [_logoView sd_setImageWithURL:[NSURL URLWithString:_classInfo.logo]];
-    [_classNameLabel setText:_classInfo.className];
+    [_classNameLabel setText:_classInfo.name];
     [_classNameLabel sizeToFit];
     [_classNameLabel setOrigin:CGPointMake(_logoView.right + 10, (self.height - _classNameLabel.height) / 2)];
     [_numLabel setText:[NSString stringWithFormat:@"%zd名学生", [_classInfo.students count]]];

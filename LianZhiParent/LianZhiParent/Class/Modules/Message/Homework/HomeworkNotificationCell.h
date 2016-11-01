@@ -22,7 +22,7 @@
 @interface HomeworkNotificationCell : TNTableViewCell
 {
     UIView*     _bgView;
-    AvatarView* _avatarView;
+    UILabel*    _courseLabel;
     UILabel*    _nameLabel;
     UILabel*    _roleLabel;
     UILabel*    _timeLabel;

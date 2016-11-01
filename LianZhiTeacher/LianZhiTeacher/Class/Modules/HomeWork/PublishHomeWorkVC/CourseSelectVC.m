@@ -67,6 +67,8 @@
 
 @end
 
+#define kCourseCacheKey         @"courseCacheKey"
+
 @interface CourseSelectVC ()<UITableViewDelegate, UITableViewDataSource, ReplyBoxDelegate>
 @property (nonatomic, strong)UITableView*   tableView;
 @property (nonatomic, strong)ReplyBox*      replyBox;
@@ -74,6 +76,15 @@
 @end
 
 @implementation CourseSelectVC
+
++ (NSString *)defaultCourse{
+    NSArray *courseArray = [[LZKVStorage userKVStorage] storageValueForKey:kCourseCacheKey];
+    if([courseArray count] > 0){
+        return courseArray[0];
+    }
+    return nil;
+}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -93,10 +104,6 @@
     // Do any additional setup after loading the view.
 }
 
-- (NSString *)courseCacheKey{
-    return @"courseCacheKey";
-}
-
 - (void)addCurCourse{
     if(self.course.length > 0){
         for (NSString *course in self.courseArray) {
@@ -109,12 +116,15 @@
 }
 
 - (void)loadCourse{
-    NSArray *courseArray = [[LZKVStorage userKVStorage] storageValueForKey:[self courseCacheKey]];
+    NSArray *courseArray = [[LZKVStorage userKVStorage] storageValueForKey:kCourseCacheKey];
+    if(!courseArray){
+        courseArray = @[@"语文", @"数学", @"英语", @"物理", @"化学", @"生物", @"政治", @"历史", @"地理"];
+    }
     self.courseArray = [NSMutableArray arrayWithArray:courseArray];
 }
 
 - (void)saveCourse{
-    [[LZKVStorage userKVStorage] saveStorageValue:self.courseArray forKey:[self courseCacheKey]];
+    [[LZKVStorage userKVStorage] saveStorageValue:self.courseArray forKey:kCourseCacheKey];
 }
 
 - (void)addCourse{
@@ -125,6 +135,12 @@
 - (void)confirm{
     if(self.courseSelected){
         self.courseSelected(self.course);
+    }
+    //把选的科目放到第一个
+    if([self.course length] > 0){
+        [self.courseArray removeObject:self.course];
+        [self.courseArray insertObject:self.course atIndex:0];
+        [self saveCourse];
     }
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -186,7 +202,15 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
-    return indexPath.row < [self.courseArray count];
+    if(indexPath.row < [self.courseArray count]){
+        BOOL isCurCourse = NO;
+        if([self.courseArray count] > 0){
+            NSString *course = self.courseArray[indexPath.row];
+            isCurCourse = [course isEqualToString:self.course];
+        }
+        return !isCurCourse;
+    }
+    return NO;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{

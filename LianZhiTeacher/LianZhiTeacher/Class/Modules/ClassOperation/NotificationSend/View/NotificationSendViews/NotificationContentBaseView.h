@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface NotificationContentBaseView : UIView
+@property (nonatomic, assign)BOOL editDisabled;
 @property (nonatomic, copy)void (^deleteDataCallback)(id item);
 @end

@@ -25,4 +25,5 @@
 @interface CourseSelectVC : TNBaseViewController
 @property (nonatomic, copy)NSString *course;
 @property (nonatomic, copy)void (^courseSelected)(NSString *course);
++ (NSString *)defaultCourse;
 @end

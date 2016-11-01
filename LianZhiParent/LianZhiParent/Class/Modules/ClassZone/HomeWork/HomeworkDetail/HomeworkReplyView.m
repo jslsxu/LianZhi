@@ -182,10 +182,15 @@
     [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"eeeeee"]];
     [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger position) {
         if(position == 0){
-            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-            [imagePicker setDelegate:wself];
-            [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-            [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
+            if([wself.photoArray count] >= 9){
+                [ProgressHUD showHintText:@"不能超过9张图"];
+            }
+            else{
+                UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+                [imagePicker setDelegate:wself];
+                [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+                [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
+            }
         }
         else{
             DNImagePickerController *imagePicker = [[DNImagePickerController alloc] init];
@@ -249,7 +254,7 @@
     if(image){
         MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在压缩" toView:[UIApplication sharedApplication].keyWindow];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            UIImage *resultImage = [image resize:[UIScreen mainScreen].bounds.size];
+            UIImage *resultImage = [image aspectFit:CGSizeMake(kScreenWidth * 2, kScreenHeight * 2)];
             NSString *tmpImagePath = [NHFileManager getTmpImagePath];
             NSData *imageData = UIImageJPEGRepresentation(resultImage, 0.8);
             [imageData writeToFile:tmpImagePath atomically:YES];

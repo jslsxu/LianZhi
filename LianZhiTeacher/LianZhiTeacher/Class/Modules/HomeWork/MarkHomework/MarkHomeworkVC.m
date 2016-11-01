@@ -88,11 +88,17 @@
             [params setValue:markDetail forKey:@"mark_detail"];
             [params setValue:self.homeworkItem.eid forKey:@"eid"];
             [params setValue:studentInfo.student.uid forKey:@"child_id"];
+            
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/marking" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                [hud hide:NO];
+                [ProgressHUD showHintText:@"批阅成功"];
                 [studentInfo setMark_detail:markDetail];
+                [studentInfo.s_answer setTeacherMark:[HomeworkTeacherMark markWithString:markDetail]];
                 [wself showHomeworkWithIndex:wself.curIndex];
             } fail:^(NSString *errMsg) {
-                
+                [hud hide:NO];
+                [ProgressHUD showError:errMsg];
             }];
         }
        
@@ -142,8 +148,12 @@
     
     [self.headerView setStudentHomeworkInfo:studentInfo];
     HomeworkTeacherMark *mark = self.markMap[studentInfo.student.uid];
+    BOOL haveMarked = [studentInfo.mark_detail length] > 0;
     [self.footerView setTeacherMark:mark];
-    [self.footerView setUserInteractionEnabled:[studentInfo.mark_detail length] == 0];
+    [self.footerView setUserInteractionEnabled:!haveMarked];
+    if(haveMarked){
+        [self.footerView clearMark];
+    }
     [self.circleView reloadData];
 }
 

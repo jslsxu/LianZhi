@@ -54,10 +54,18 @@
     [_courseLabel sizeToFit];
     [_courseLabel setOrigin:CGPointMake(spaceXStart, (self.height - _courseLabel.height) / 2)];
     spaceXStart = _courseLabel.right + 10;
+    [_imageTypeView setHidden:YES];
+    [_voiceTypeView setHidden:YES];
+    if(_homeworkItem.hasPhoto){
+        [_imageTypeView setHidden:NO];
+        [_imageTypeView setOrigin:CGPointMake(spaceXStart, (self.height - _imageTypeView.height) / 2)];
+        spaceXStart = _imageTypeView.right + 10;
+    }
     
-    [_imageTypeView setOrigin:CGPointMake(spaceXStart, (self.height - _imageTypeView.height) / 2)];
-    spaceXStart = _imageTypeView.right + 10;
-    [_voiceTypeView setOrigin:CGPointMake(spaceXStart, (self.height - _voiceTypeView.height) / 2)];
+    if(_homeworkItem.hasVoice){
+        [_voiceTypeView setHidden:NO];
+        [_voiceTypeView setOrigin:CGPointMake(spaceXStart, (self.height - _voiceTypeView.height) / 2)];
+    }
     
     NSString* statusStr = nil;
     UIColor* statusColor = kCommonParentTintColor;
@@ -107,9 +115,14 @@
         [_bgView.layer setMasksToBounds:YES];
         [self addSubview:_bgView];
         
-        _avatarView = [[AvatarView alloc] initWithRadius:18];
-        [_avatarView setOrigin:CGPointMake(10, 10)];
-        [_bgView addSubview:_avatarView];
+        _courseLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 36, 36)];
+        [_courseLabel setBackgroundColor:kCommonParentTintColor];
+        [_courseLabel setTextAlignment:NSTextAlignmentCenter];
+        [_courseLabel setTextColor:[UIColor colorWithHexString:@"75dab8"]];
+        [_courseLabel setFont:[UIFont boldSystemFontOfSize:25]];
+        [_courseLabel.layer setCornerRadius:18];
+        [_courseLabel.layer setMasksToBounds:YES];
+        [_bgView addSubview:_courseLabel];
         
         _nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_nameLabel setFont:[UIFont systemFontOfSize:14]];
@@ -126,7 +139,7 @@
         [_timeLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
         [_bgView addSubview:_timeLabel];
         
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, _avatarView.bottom + 10, _bgView.width - 10 * 2, 0)];
+        _contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, _courseLabel.bottom + 10, _bgView.width - 10 * 2, 0)];
         [_contentLabel setFont:[UIFont systemFontOfSize:14]];
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
         [_contentLabel setNumberOfLines:0];
@@ -147,19 +160,20 @@
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     HomeworkNotificationItem *homeworkItem = (HomeworkNotificationItem *)modelItem;
-    [_avatarView sd_setImageWithURL:[NSURL URLWithString:homeworkItem.teacher.avatar] placeholderImage:nil];
+//    [_avatarView sd_setImageWithURL:[NSURL URLWithString:homeworkItem.teacher.avatar] placeholderImage:nil];
+    [_courseLabel setText:[homeworkItem.course_name substringToIndex:1]];
     [_nameLabel setText:homeworkItem.teacher.name];
     [_nameLabel sizeToFit];
-    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.top)];
+    [_nameLabel setOrigin:CGPointMake(_courseLabel.right + 10, _courseLabel.top)];
     [_roleLabel setText:@"教师"];
     [_roleLabel sizeToFit];
-    [_roleLabel setOrigin:CGPointMake(_nameLabel.right + 5, _avatarView.top)];
+    [_roleLabel setOrigin:CGPointMake(_nameLabel.right + 5, _courseLabel.top)];
     
     [_timeLabel setText:[NSString stringWithFormat:@"发布时间:%@",homeworkItem.time]];
     [_timeLabel sizeToFit];
-    [_timeLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.bottom - _timeLabel.height)];
+    [_timeLabel setOrigin:CGPointMake(_courseLabel.right + 10, _courseLabel.bottom - _timeLabel.height)];
     
-    CGFloat spaceYStart = _avatarView.bottom + 10;
+    CGFloat spaceYStart = _courseLabel.bottom + 10;
     NSString *words = homeworkItem.words;
     if(words.length > 0){
         [_contentLabel setHidden:NO];

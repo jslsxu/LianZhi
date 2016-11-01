@@ -282,6 +282,7 @@
 		37FEA9651C46554500E7425B /* AccountInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FEA9641C46554500E7425B /* AccountInfoView.m */; };
 		37FEA96B1C4657E900E7425B /* GiftDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FEA96A1C4657E900E7425B /* GiftDetailView.m */; };
 		610E28126325A1D5E90E063F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85040462C9FB39754B0681EA /* libPods.a */; };
+		8D11AC8B1DC85B630096DCEE /* HomeworkPreviewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D11AC8A1DC85B630096DCEE /* HomeworkPreviewVC.m */; };
 		8D3D457A1D5B2118005EA8EA /* NotificationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45791D5B2118005EA8EA /* NotificationItem.m */; };
 		8D3D457D1D5B24A6005EA8EA /* NotificationPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D457C1D5B24A6005EA8EA /* NotificationPreviewView.m */; };
 		8D3D45831D5C1E94005EA8EA /* LZVideoCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45821D5C1E94005EA8EA /* LZVideoCacheManager.m */; };
@@ -991,6 +992,8 @@
 		37FEA96A1C4657E900E7425B /* GiftDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiftDetailView.m; sourceTree = "<group>"; };
 		5632BDC4D6EF5C4FF3ACF6CF /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		85040462C9FB39754B0681EA /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D11AC891DC85B630096DCEE /* HomeworkPreviewVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkPreviewVC.h; sourceTree = "<group>"; };
+		8D11AC8A1DC85B630096DCEE /* HomeworkPreviewVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkPreviewVC.m; sourceTree = "<group>"; };
 		8D3D45781D5B2118005EA8EA /* NotificationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationItem.h; sourceTree = "<group>"; };
 		8D3D45791D5B2118005EA8EA /* NotificationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationItem.m; sourceTree = "<group>"; };
 		8D3D457B1D5B24A6005EA8EA /* NotificationPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationPreviewView.h; sourceTree = "<group>"; };
@@ -3424,6 +3427,8 @@
 			children = (
 				8DFDDD9D1D93D7940050740B /* PublishHomeWorkVC.h */,
 				8DFDDD9E1D93D7940050740B /* PublishHomeWorkVC.m */,
+				8D11AC891DC85B630096DCEE /* HomeworkPreviewVC.h */,
+				8D11AC8A1DC85B630096DCEE /* HomeworkPreviewVC.m */,
 				8D93F8B41DA00719000C15FC /* CourseSelectVC.h */,
 				8D93F8B51DA00719000C15FC /* CourseSelectVC.m */,
 				8D93F8B71DA0B667000C15FC /* ClassSelectVC.h */,
@@ -3935,6 +3940,7 @@
 				3793FAB41B7CFFF000501F77 /* MLAudioPlayer.m in Sources */,
 				8D867C911D2F97080020A21C /* DNSendButton.m in Sources */,
 				37DEE4E11A57C1D8009A8771 /* GrowthTimelineModel.m in Sources */,
+				8D11AC8B1DC85B630096DCEE /* HomeworkPreviewVC.m in Sources */,
 				3793FAEF1B7CFFF000501F77 /* TNBaseViewController.m in Sources */,
 				8D93F8C21DA0F98F000C15FC /* NumOperationView.m in Sources */,
 				8DC087401D8C4E7C008B57B2 /* PBImageController.m in Sources */,

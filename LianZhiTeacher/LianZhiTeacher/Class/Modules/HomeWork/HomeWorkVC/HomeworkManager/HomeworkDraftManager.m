@@ -40,8 +40,17 @@ NSString* kDraftHomeworkChanged = @"DraftHomeworkChanged";
     }
     return self;
 }
+
+- (BOOL)draftIn:(HomeWorkEntity *)homeworkEntity{
+    for (HomeWorkEntity *entity in self.draftHomeworkArray) {
+        if([entity.clientID isEqualToString:homeworkEntity.clientID]){
+            return YES;
+        }
+    }
+    return NO;
+}
 - (void)addDraft:(HomeWorkEntity *)sendEntity{
-    if(sendEntity){
+    if(sendEntity && ![self draftIn:sendEntity]){
         [self.draftHomeworkArray insertObject:sendEntity atIndex:0];
         [[LZKVStorage userKVStorage] saveStorageValue:self.draftArray forKey:kHomeworkDraft];
         [[NSNotificationCenter defaultCenter] postNotificationName:kDraftHomeworkChanged object:nil];

@@ -24,6 +24,13 @@
         [_dayLabel setTextAlignment:NSTextAlignmentCenter];
         [self addSubview:_dayLabel];
         
+        _redDot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 4)];
+        [_redDot.layer setCornerRadius:2];
+        [_redDot.layer setMasksToBounds:YES];
+        [_redDot setBackgroundColor:[UIColor colorWithHexString:@"E00909"]];
+        [_redDot setHidden:YES];
+        [self addSubview:_redDot];
+        
         CGFloat itemWidth = MIN(self.width, self.height);
         _curDateIndicator = [[UIView alloc] initWithFrame:CGRectMake((self.width - itemWidth) / 2, (self.height - itemWidth) / 2, itemWidth, itemWidth)];
         [_curDateIndicator.layer setCornerRadius:_curDateIndicator.width / 2];
@@ -39,6 +46,10 @@
 - (void)setDate:(NSDate *)date{
     _date = date;
     [_dayLabel setText:kStringFromValue(date.day)];
+    [_dayLabel sizeToFit];
+    [_dayLabel setCenter:CGPointMake(self.width / 2, self.height / 2)];
+    [_redDot setHidden:![date isToday]];
+    [_redDot setOrigin:CGPointMake(_dayLabel.right, _dayLabel.top)];
 }
 
 - (void)setIsChosen:(BOOL)isChosen{
@@ -66,6 +77,7 @@
 - (instancetype)initWithDate:(NSDate *)date{
     self = [super initWithFrame:CGRectMake(0, 0, kScreenWidth, 0)];
     if(self){
+        self.calendarType = CalendarTypeWeek;
         _date = date;
         _selectedDate = date;
         [self setBackgroundColor:[UIColor whiteColor]];
@@ -79,7 +91,7 @@
         [sepLine setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
         [self addSubview:sepLine];
         
-        [self updateSubviews];
+        [self updateSubviews:NO];
         
         [self addGestures];
     }
@@ -113,7 +125,7 @@
     return self.selectedDate;
 }
 
-- (void)updateSubviews{
+- (void)updateSubviews:(BOOL)animated{
     [self.monthIndicator setDate:self.date];
     NSInteger numOfRows = [self numOfWeek];
     NSMutableArray *dateArrayTmp = [[NSMutableArray alloc] initWithCapacity:0];
@@ -143,23 +155,31 @@
     NSInteger itemHeight = kCalendarItemHeight;
     NSInteger collectionHeight = [self numOfWeek] * itemHeight;
     NSInteger height = self.weekdayHeader.bottom + collectionHeight + 5;
-    [UIView animateWithDuration:0.3 animations:^{
+    void (^heightChange)() = ^{
         [_collectionView setHeight:collectionHeight];
         [self setHeight:height];
         if([self.delegate respondsToSelector:@selector(calendarHeightWillChange:)]){
             [self.delegate calendarHeightWillChange:height];
         }
-    }];
+    };
+    if(animated){
+        [UIView animateWithDuration:0.3 animations:^{
+            heightChange();
+        }];
+    }
+    else{
+        heightChange();
+    }
 }
 
 - (void)setDate:(NSDate *)date{
     _date = date;
-    [self updateSubviews];
+    [self updateSubviews:YES];
 }
 
 - (void)setCalendarType:(CalendarType)calendarType{
     _calendarType = calendarType;
-    [self updateSubviews];
+    [self updateSubviews:YES];
 }
 
 - (NSInteger)numOfWeek{

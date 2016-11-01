@@ -17,6 +17,7 @@
 #import "TreeHouseVC.h"
 #import "ClassAppCell.h"
 #import "HomeworkClassVC.h"
+#import "HomeWorkVC.h"
 #define ClassIdKey                  @"userClassId"
 #define kBannerHeight               (kScreenWidth * 29 / 64)
 
@@ -319,8 +320,20 @@
             else if([scheme isEqualToString:@"lianzhi"])
             {
                 if([host isEqualToString:@"practice"]){
-                    HomeworkClassVC *homeworkClassVC = [[HomeworkClassVC alloc] init];
-                    [CurrentROOTNavigationVC pushViewController:homeworkClassVC animated:YES];
+                    NSArray *classArray = [UserCenter sharedInstance].curChild.classes;
+                    if(classArray.count == 0)
+                        [ProgressHUD showHintText:@"孩子不在任何班级"];
+                    else if(classArray.count == 1)
+                    {
+                        ClassInfo *classInfo = classArray[0];
+                        HomeWorkVC* homeworkVC = [[HomeWorkVC alloc] init];
+                        [homeworkVC setClassID:classInfo.classID];
+                        [CurrentROOTNavigationVC pushViewController:homeworkVC animated:YES];
+                    }
+                    else{
+                        HomeworkClassVC *homeworkClassVC = [[HomeworkClassVC alloc] init];
+                        [CurrentROOTNavigationVC pushViewController:homeworkClassVC animated:YES];
+                    }
                 }
                 else if([host isEqualToString:@"account"])
                 {

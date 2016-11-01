@@ -34,6 +34,7 @@ typedef NS_ENUM(NSInteger, HomeworkStudentStatus){
 @property (nonatomic, assign)NSInteger  send;
 @property (nonatomic, assign)NSInteger  reply;
 @property (nonatomic, assign)NSInteger  mark;
+@property (nonatomic, assign)NSInteger  read;
 @property (nonatomic, assign)BOOL       send_notice;        //为1时可以提醒
 @end
 
@@ -48,6 +49,7 @@ typedef NS_ENUM(NSInteger, HomeworkStudentStatus){
 @property (nonatomic, copy)NSString *   eid;
 @property (nonatomic, copy)NSString*    ctime;
 @property (nonatomic, copy)NSString*    course_name;
+@property (nonatomic, assign)NSInteger  enums;
 @property (nonatomic, assign)BOOL       etype;
 @property (nonatomic, assign)BOOL       reply_close;
 @property (nonatomic, copy)NSString*    reply_close_ctime;

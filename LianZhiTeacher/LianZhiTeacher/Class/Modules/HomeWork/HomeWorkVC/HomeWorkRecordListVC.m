@@ -10,7 +10,7 @@
 #import "PublishHomeWorkVC.h"
 #import "HomeworkDraftManager.h"
 #import "HomeworkDetailVC.h"
-
+#import "ContactsLoadingView.h"
 @implementation HomeworkSendingItemCell
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -155,10 +155,16 @@
     
     NSMutableAttributedString *stateStr = [[NSMutableAttributedString alloc] initWithString:@"发送:"];
     [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_homeworkItem.publish_num) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
-    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 回复:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
-    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_homeworkItem.reply_num) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
-    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 批阅:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
-    [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_homeworkItem.read_num) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
+    if(_homeworkItem.etype){
+        [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 回复:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+        [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_homeworkItem.reply_num) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
+        [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 批阅:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+        [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_homeworkItem.marking_num) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
+    }
+    else{
+        [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 已读:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+        [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_homeworkItem.read_num) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
+    }
     [_stateLabel setAttributedText:stateStr];
     [_stateLabel sizeToFit];
     [_stateLabel setOrigin:CGPointMake(self.width - 10 - _stateLabel.width, self.height - 15 - _stateLabel.height)];
@@ -230,6 +236,10 @@
 
 @end
 
+@interface HomeWorkRecordListVC ()
+@property (nonatomic, strong)ContactsLoadingView *notificationLoadingView;
+@end
+
 @implementation HomeWorkRecordListVC
 
 - (void)dealloc{
@@ -270,8 +280,23 @@
     [sendButton addTarget:self action:@selector(publishHomework) forControlEvents:UIControlEventTouchUpInside];
     [sendButton setFrame:CGRectMake(10, 10, viewParent.width - 10 * 2, viewParent.height - 10 * 2)];
     [sendButton setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:sendButton.size cornerRadius:3] forState:UIControlStateNormal];
-    [sendButton setImage:[UIImage imageNamed:@"send_notification"] forState:UIControlStateNormal];
+    [sendButton setImage:[UIImage imageNamed:@"publishHomework"] forState:UIControlStateNormal];
     [viewParent addSubview:sendButton];
+}
+
+- (ContactsLoadingView *)notificationLoadingView{
+    if(_notificationLoadingView == nil){
+        _notificationLoadingView = [[ContactsLoadingView alloc] init];
+        [_notificationLoadingView setCenter:CGPointMake(self.view.width / 2, (kScreenHeight - 64) / 2)];
+    }
+    return _notificationLoadingView;
+}
+
+- (EmptyHintView *)emptyView{
+    if(!_emptyView){
+        _emptyView = [[EmptyHintView alloc] initWithImage:@"NoSendNotification" title:@"暂时没有作业记录"];
+    }
+    return _emptyView;
 }
 
 - (void)clear{
@@ -364,15 +389,18 @@
 }
 
 - (void)TNBaseTableViewControllerRequestStart{
- 
+    if(self.tableViewModel.modelItemArray.count == 0){
+        [self.notificationLoadingView show];
+        [self showEmptyView:NO];
+    }
 }
 
 - (void)TNBaseTableViewControllerRequestSuccess{
-   
+    [self.notificationLoadingView dismiss];
 }
 
 - (void)TNBaseTableViewControllerRequestFailedWithError:(NSString *)errMsg{
-    
+    [self.notificationLoadingView dismiss];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{

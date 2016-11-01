@@ -10,6 +10,7 @@
 #import "HomeworkSettingManager.h"
 #import "HomeworkDraftManager.h"
 #import "HomeworkManager.h"
+#import "CourseSelectVC.h"
 @interface HomeWorkEntity ()
 @property (nonatomic, weak)AFHTTPRequestOperation *operation;
 @end
@@ -24,23 +25,64 @@
         HomeworkSetting *setting = [[HomeworkSettingManager sharedInstance] getHomeworkSetting];
         self.count = setting.homeworkNum;
         self.etype = setting.etype;
+        self.course_name = [CourseSelectVC defaultCourse];
         self.targets = [NSMutableArray array];
         self.voiceArray = [NSMutableArray array];
         self.imageArray = [NSMutableArray array];
         self.authorUser = [UserCenter sharedInstance].userInfo;
         [self updateClientID];
-        self.words = @"我发了一条作业";
         self.createTime = [[NSDate date] timeIntervalSince1970];
         self.sendSms = setting.sendSms;
         self.reply_close = setting.replyEndOn;
         self.reply_close_ctime = setting.replyEndTime;
+        if([self.reply_close_ctime length] == 0){
+            NSDate *date = [[NSDate date] dateByAddingDays:1];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd 10:00"];
+            NSString *endTime = [dateFormatter stringFromDate:date];
+            self.reply_close_ctime = endTime;
+        }
     }
     return self;
 }
 
 + (HomeWorkEntity *)sendEntityWithHomeworkItem:(HomeworkItem *)homeworkItem{
     HomeWorkEntity *homeworkEntity = [[HomeWorkEntity alloc] init];
-   
+    [homeworkEntity setCount:homeworkItem.enums];
+    [homeworkEntity setEtype:homeworkItem.etype];
+    [homeworkEntity setCourse_name:homeworkItem.course_name];
+    [homeworkEntity setAuthorUser:nil];
+    if(homeworkItem.voice){
+        [homeworkEntity setVoiceArray:[NSMutableArray arrayWithObject:homeworkItem.voice]];
+    }
+    [homeworkEntity setImageArray:[NSMutableArray arrayWithArray:homeworkItem.pics]];
+    [homeworkEntity setWords:homeworkItem.words];
+//    [homeworkEntity setCreateTime:homeworkItem.ctime];
+    [homeworkEntity setReply_close:homeworkItem.reply_close];
+    if(homeworkEntity.reply_close){
+        NSDate *date = [[NSDate date] dateByAddingDays:1];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd 10:00"];
+        NSString *endTime = [dateFormatter stringFromDate:date];
+        [homeworkEntity setReply_close_ctime:endTime];
+    }
+    else{
+        [homeworkEntity setReply_close_ctime:nil];
+    }
+    
+    if(homeworkItem.answer){
+        HomeworkItemAnswer *answer = homeworkItem.answer;
+        HomeworkExplainEntity *answerEntity = [[HomeworkExplainEntity alloc] init];
+        [answerEntity setWords:answer.words];
+        if(answer.voice){
+            [answerEntity setVoiceArray:[NSMutableArray arrayWithObject:answer.voice]];
+        }
+        if([answer.pics count] > 0){
+            [answerEntity setImageArray:[NSMutableArray arrayWithArray:answer.pics]];
+        }
+        [homeworkEntity setExplainEntity:answerEntity];
+    }
+    
     return homeworkEntity;
 }
 
@@ -89,13 +131,20 @@
     
     [params setValue:kStringFromValue(self.etype) forKey:@"etype"];
     [params setValue:classIDString forKey:@"class_ids"];
-    [params setValue:self.words forKey:@"words"];
+    if([self.words length] == 0){
+        [params setValue:@"作业练习" forKey:@"words"];
+    }
+    else{
+        [params setValue:self.words forKey:@"words"];
+    }
     [params setValue:self.course_name forKey:@"course_name"];
     [params setValue:kStringFromValue(self.sendSms) forKey:@"sms"];
     [params setValue:self.explainEntity.words forKey:@"answer_words"];
     [params setValue:kStringFromValue(self.count) forKey:@"enums"];
-    [params setValue:kStringFromValue(self.reply_close) forKey:@"reply_close"];
-    [params setValue:self.reply_close_ctime forKey:@"reply_close_ctime"];
+    if(self.etype){
+        [params setValue:kStringFromValue(self.reply_close) forKey:@"reply_close"];
+        [params setValue:self.reply_close_ctime forKey:@"reply_close_ctime"];
+    }
     if(self.imageArray.count > 0)
     {
         NSMutableString *picSeq = [[NSMutableString alloc] init];
@@ -255,10 +304,10 @@
     if(self.etype != object.etype){
         return NO;
     }
-    for (UserInfo *userInfo in self.targets) {
+    for (ClassInfo *classInfo in self.targets) {
         BOOL isIn = NO;
-        for (UserInfo *user in object.targets) {
-            if([userInfo.uid isEqualToString:user.uid]){
+        for (ClassInfo *user in object.targets) {
+            if([classInfo.classID isEqualToString:user.classID]){
                 isIn = YES;
             }
         }

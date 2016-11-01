@@ -14,7 +14,7 @@
              @"course_name" : @"exercises.course_name",
              @"reply_close_ctime" : @"exercises.reply_close_ctime",
              @"hasVoice" : @"exercises.voice",
-             @"hasVoice" : @"exercises.pics",
+             @"hasPhoto" : @"exercises.pics",
              @"teacher" : @"exercises.teacher",
              @"status" : @"exercises.status",
              @"eid" : @"exercises.eid"

@@ -74,7 +74,7 @@
     [checkButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
     [checkButton setTitle:@"不再显示该消息" forState:UIControlStateNormal];
     [checkButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
-    [checkButton setFrame:CGRectMake((viewParent.width - 120) / 2, contentLabel.bottom, 120, viewParent.height - 38 - contentLabel.bottom - 2)];
+    [checkButton setFrame:CGRectMake((viewParent.width - 140) / 2, contentLabel.bottom, 140, viewParent.height - 38 - contentLabel.bottom - 2)];
     [viewParent addSubview:checkButton];
     
     UIView* hLine = [[UIView alloc] initWithFrame:CGRectMake(0, viewParent.height - 38, viewParent.width, kLineHeight)];
