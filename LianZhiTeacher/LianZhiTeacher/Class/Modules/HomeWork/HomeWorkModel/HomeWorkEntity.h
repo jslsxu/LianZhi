@@ -10,8 +10,9 @@
 #import "HomeworkItem.h"
 #import "HomeworkExplainEntity.h"
 @interface HomeWorkEntity : TNBaseObject
+@property(nonatomic, assign)BOOL                forward;
 @property(nonatomic, copy)NSString*             clientID;
-@property(nonatomic, copy)NSString*             hid;
+@property(nonatomic, copy)NSString*             eid;
 @property(nonatomic, copy)NSString*             course_name;
 @property(nonatomic, strong)NSArray*            targets;
 @property(nonatomic, assign)BOOL                sendSms;

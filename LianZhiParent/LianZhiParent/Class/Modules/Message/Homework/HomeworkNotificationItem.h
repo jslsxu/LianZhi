@@ -9,10 +9,10 @@
 #import "TNBaseObject.h"
 
 typedef NS_ENUM(NSInteger, HomeworkStatus){
-    HomeworkStatusUnread = 0,        //未读
-    HomeworkStatusRead,                     //已读
-    HomeworkStatusWaitMark,             //等待批阅
-    HomeworkStatusMarked,               //已批阅
+    HomeworkStatusUnread = 7,        //未读
+    HomeworkStatusRead = 4,                     //已读
+    HomeworkStatusWaitMark = 10,             //等待批阅
+    HomeworkStatusMarked = 1,               //已批阅
 };
 
 @interface HomeworkNotificationItem : TNBaseObject

@@ -101,6 +101,7 @@
     }
    
     [_redDot setOrigin:CGPointMake(spaceXEnd - _redDot.width, (self.height - _redDot.height) / 2)];
+    [_redDot setHidden:!_homeworkItem.is_new];
 }
 
 @end

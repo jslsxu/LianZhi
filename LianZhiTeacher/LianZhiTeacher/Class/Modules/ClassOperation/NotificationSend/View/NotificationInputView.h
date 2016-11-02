@@ -44,5 +44,6 @@ typedef NS_ENUM(NSInteger, ActionType){
 @property (nonatomic, assign)BOOL onlyPhoto;
 @property (nonatomic, assign)ActionType actionType;
 @property (nonatomic, assign)BOOL sendHidden;
+@property (nonatomic, assign)BOOL forward;
 @property (nonatomic, weak)id<NotificationInputDelegate> delegate;
 @end

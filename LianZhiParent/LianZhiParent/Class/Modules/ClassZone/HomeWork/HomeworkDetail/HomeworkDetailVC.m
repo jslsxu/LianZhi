@@ -103,6 +103,9 @@
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         HomeworkItem *homeworkItem = [HomeworkItem nh_modelWithJson:responseObject.data];
         [wself setHomeworkItem:homeworkItem];
+        if(wself.homeworkReadCallback){
+            wself.homeworkReadCallback(wself.homeworkItem.eid);
+        }
     } fail:^(NSString *errMsg) {
         
     }];

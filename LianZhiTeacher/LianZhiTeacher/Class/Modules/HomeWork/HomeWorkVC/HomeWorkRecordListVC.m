@@ -471,8 +471,8 @@
         [buttonArray addObject:deleteButton];
         MGSwipeButton * forwardButton = [MGSwipeButton buttonWithTitle:@"转发" backgroundColor:[UIColor colorWithHexString:@"28c4d8"] callback:^BOOL(MGSwipeTableCell * sender){
             HomeWorkEntity *sendEntity = [HomeWorkEntity sendEntityWithHomeworkItem:item];
+            [sendEntity setForward:YES];
             PublishHomeWorkVC *sendVC = [[PublishHomeWorkVC alloc] initWithHomeWorkEntity:sendEntity];
-            [sendVC setSendType:HomeworkSendForward];
             [CurrentROOTNavigationVC pushViewController:sendVC animated:YES];
             return YES;
         }];

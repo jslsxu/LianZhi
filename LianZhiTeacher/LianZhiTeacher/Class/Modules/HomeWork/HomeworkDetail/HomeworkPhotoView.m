@@ -34,7 +34,13 @@
         [imageView setUserInteractionEnabled:YES];
         [imageView setContentMode:UIViewContentModeScaleAspectFill];
         [imageView setClipsToBounds:YES];
-        [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.big] placeholderImage:nil];
+        if(photoItem.isLocal){
+            NSData *data = [NSData dataWithContentsOfFile:photoItem.big];
+            [imageView setImage:[UIImage imageWithData:data]];
+        }
+        else{
+            [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.big] placeholderImage:nil];
+        }
 //        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showPhotoBrowser:)];
 //        [imageView addGestureRecognizer:tapGesture];
         [self.imageViewArray addObject:imageView];

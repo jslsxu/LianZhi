@@ -79,9 +79,14 @@
 
 #pragma mark - 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
+    __weak typeof(self) wself = self;
     HomeworkNotificationItem *homeworkItem = (HomeworkNotificationItem *)modelItem;
     HomeworkDetailVC *homeworkDetailVC = [[HomeworkDetailVC alloc] init];
     [homeworkDetailVC setEid:homeworkItem.eid];
+    [homeworkDetailVC setHomeworkReadCallback:^(NSString *eid) {
+        [homeworkItem setIs_new:NO];
+        [wself.tableView reloadData];
+    }];
     [self.navigationController pushViewController:homeworkDetailVC animated:YES];
 }
 

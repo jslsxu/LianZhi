@@ -39,6 +39,7 @@
 }
 
 - (void)onMoreClicked{
+    if(self)
     [self setRightbarButtonHighlighted:YES];
     if([[MLAmrPlayer shareInstance] isPlaying]){
         [[MLAmrPlayer shareInstance] stopPlaying];

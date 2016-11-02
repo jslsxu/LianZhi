@@ -11,7 +11,6 @@
 #import "HomeWorkEntity.h"
 typedef NS_ENUM(NSInteger, HomeworkSendType){
     HomeworkSendNormal = 0,     //正常发送
-    HomeworkSendForward ,       //转发
     HomeworkSendDraft,          //从草稿进入
     HomeworkSendEdit            //编辑
 };

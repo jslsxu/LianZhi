@@ -33,6 +33,13 @@
     [_sendButton setHidden:_sendHidden];
 }
 
+- (void)setForward:(BOOL)forward{
+    _forward = forward;
+    for (UIButton *button in _actionButtonArray) {
+        [button setUserInteractionEnabled:!forward];
+    }
+}
+
 - (void)showAudioRecordView{
     [_photoView removeFromSuperview];
     _photoView = nil;

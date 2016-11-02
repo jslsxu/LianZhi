@@ -151,48 +151,33 @@
     [_rightArrow setHidden:YES];
     [_stateLabel setHidden:NO];
     CGFloat spaceXEnd = self.width;
-    if(self.etype){
-        switch (_userInfo.status) {
-            case HomeworkStudentStatusUnread:
-                [_stateLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
-                [_stateLabel setText:@"未读"];
-                [_mobileImageView setHidden:NO];
-                spaceXEnd = _mobileImageView.left - 5;
-                break;
-            case HomeworkStudentStatusRead:
-                [_stateLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
-                [_stateLabel setText:@"已读"];
-                [_mobileImageView setHidden:NO];
-                spaceXEnd = _mobileImageView.left - 5;
-                break;
-            case HomeworkStudentStatusHasMark:
-                [_stateLabel setTextColor:kCommonTeacherTintColor];
-                [_stateLabel setText:@"已批阅"];
-                [_rightArrow setHidden:NO];
-                spaceXEnd = _rightArrow.left - 5;
-                break;
-            case HomeworkStudentStatusWaitMark:
-                [_stateLabel setTextColor:[UIColor colorWithHexString:@"5ba110"]];
-                [_stateLabel setText:@"等待老师批阅"];
-                [_rightArrow setHidden:NO];
-                spaceXEnd = _rightArrow.left - 5;
-                break;
-            default:
-                break;
-        }
-    }
-    else{
-        switch (_userInfo.status) {
-            case HomeworkStudentStatusUnread:
-                [_mobileImageView setHidden:NO];
-                [_stateLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
-                [_stateLabel setText:@"未读"];
-                spaceXEnd = _mobileImageView.left - 5;
-                break;
-            default:
-                [_stateLabel setHidden:YES];
-                break;
-        }
+    switch (_userInfo.status) {
+        case HomeworkStudentStatusUnread:
+            [_stateLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
+            [_stateLabel setText:@"未读"];
+            [_mobileImageView setHidden:NO];
+            spaceXEnd = _mobileImageView.left - 5;
+            break;
+        case HomeworkStudentStatusRead:
+            [_stateLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
+            [_stateLabel setText:@"已读"];
+            [_mobileImageView setHidden:!self.etype];
+            spaceXEnd = _mobileImageView.left - 5;
+            break;
+        case HomeworkStudentStatusHasMark:
+            [_stateLabel setTextColor:kCommonTeacherTintColor];
+            [_stateLabel setText:@"已批阅"];
+            [_rightArrow setHidden:NO];
+            spaceXEnd = _rightArrow.left - 5;
+            break;
+        case HomeworkStudentStatusWaitMark:
+            [_stateLabel setTextColor:[UIColor colorWithHexString:@"5ba110"]];
+            [_stateLabel setText:@"等待老师批阅"];
+            [_rightArrow setHidden:NO];
+            spaceXEnd = _rightArrow.left - 5;
+            break;
+        default:
+            break;
     }
     [_stateLabel sizeToFit];
     [_stateLabel setOrigin:CGPointMake(spaceXEnd - _stateLabel.width, (56 - _stateLabel.height) / 2)];
@@ -271,6 +256,7 @@
         TNDataWrapper *dataWrapper = [responseObject getDataWrapperForKey:@"classes"];
         wself.targetArray = [HomeworkClassStatus nh_modelArrayWithJson:dataWrapper.data];
         [[wself.tableView mj_header] endRefreshing];
+        [wself.bottomView setHidden:NO];
     } fail:^(NSString *errMsg) {
          [[wself.tableView mj_header] endRefreshing];
     }];
@@ -278,16 +264,14 @@
 
 - (void)setHomeworkItem:(HomeworkItem *)homeworkItem{
     _homeworkItem = homeworkItem;
-//    [self setTargetArray:_homeworkItem.classes];
-    [self loadTargets];
     if(_homeworkItem.etype){
-        [_bottomView setHidden:NO];
         [_tableView setFrame:CGRectMake(0, 0, self.width, _bottomView.top)];
     }
     else{
         [_bottomView setHidden:YES];
         [_tableView setFrame:self.bounds];
     }
+    [self loadTargets];
 }
 
 - (void)setTargetArray:(NSArray *)targetArray{
@@ -334,49 +318,71 @@
 }
 
 - (void)alertAll{
-    __weak typeof(self) wself = self;
-    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"根据您所选的班级，通过APP通知和短信的形式，提醒未回复作业的学生家长尽快回复。1小时之内可以提醒一次。" style:LGAlertViewStyleAlert buttonTitles:@[@"提醒"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
-    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
-    [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-    [alertView setButtonsTitleColor:kCommonTeacherTintColor];
-    [alertView setCancelButtonTitleColor:kCommonTeacherTintColor];
-    [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-        NSMutableString *class_ids = [[NSMutableString alloc] init];
-        NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        [params setValue:wself.homeworkItem.eid forKey:@"eid"];
-        for (HomeworkClassStatus *classInfo in wself.targetArray) {
-            if([class_ids length] > 0){
-                [class_ids appendFormat:@",%@", classInfo.classID];
-            }
-            else{
-                [class_ids appendString:classInfo.classID];
-            }
+    BOOL canNoticie = NO;
+    for (HomeworkClassStatus *classInfo in self.targetArray) {
+        if(classInfo.send_notice){
+            canNoticie = YES;
         }
-        [params setValue:class_ids forKey:@"class_ids"];
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/send_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:wself completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+    }
+    if(canNoticie){
+        __weak typeof(self) wself = self;
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"根据您所选的班级，通过APP通知和短信的形式，提醒未回复作业的学生家长尽快回复。1小时之内可以提醒一次。" style:LGAlertViewStyleAlert buttonTitles:@[@"提醒"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+        [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setButtonsTitleColor:kCommonTeacherTintColor];
+        [alertView setCancelButtonTitleColor:kCommonTeacherTintColor];
+        [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+            NSMutableString *class_ids = [[NSMutableString alloc] init];
+            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+            [params setValue:wself.homeworkItem.eid forKey:@"eid"];
             for (HomeworkClassStatus *classInfo in wself.targetArray) {
-                classInfo.send_notice = NO;
+                if([class_ids length] > 0){
+                    [class_ids appendFormat:@",%@", classInfo.classID];
+                }
+                else{
+                    [class_ids appendString:classInfo.classID];
+                }
             }
+            [params setValue:class_ids forKey:@"class_ids"];
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/send_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:wself completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                for (HomeworkClassStatus *classInfo in wself.targetArray) {
+                    classInfo.send_notice = NO;
+                }
+                [wself.tableView reloadData];
+            } fail:^(NSString *errMsg) {
+                [ProgressHUD showHintText:errMsg];
+            }];
+        }];
+        [alertView showAnimated:YES completionHandler:nil];
+    }
+    else{
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"在短时间内不可以重复提醒" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+        [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+        [alertView setCancelButtonTitleColor:kCommonTeacherTintColor];
+        [alertView showAnimated:YES completionHandler:nil];
+    }
+}
+
+- (void)notificationClass:(HomeworkClassStatus *)classInfo{
+    if(classInfo.send_notice){
+        __weak typeof(self) wself = self;
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:self.homeworkItem.eid forKey:@"eid"];
+        [params setValue:classInfo.classID forKey:@"class_ids"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/send_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            classInfo.send_notice = NO;
             [wself.tableView reloadData];
         } fail:^(NSString *errMsg) {
             [ProgressHUD showHintText:errMsg];
         }];
-    }];
-    [alertView showAnimated:YES completionHandler:nil];
-}
-
-- (void)notificationClass:(HomeworkClassStatus *)classInfo{
-    __weak typeof(self) wself = self;
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:self.homeworkItem.eid forKey:@"eid"];
-    [params setValue:classInfo.classID forKey:@"class_ids"];
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/send_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        classInfo.send_notice = NO;
-        [wself.tableView reloadData];
-    } fail:^(NSString *errMsg) {
-        [ProgressHUD showHintText:errMsg];
-    }];
+    }
+    else{
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"在短时间内不可以重复提醒" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+        [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+        [alertView setCancelButtonTitleColor:kCommonTeacherTintColor];
+        [alertView showAnimated:YES completionHandler:nil];
+    }
 }
 
 - (NSArray *)studentHomeworkArray{

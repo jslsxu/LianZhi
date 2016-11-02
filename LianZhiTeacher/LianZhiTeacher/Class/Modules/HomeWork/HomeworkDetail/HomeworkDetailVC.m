@@ -144,6 +144,9 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
     [params setValue:explainEntity.words forKey:@"answer_words"];
     if([explainEntity.voiceArray count] > 0){
         AudioItem *voice = explainEntity.voiceArray[0];
+        if(!voice.isLocal){
+            [params setValue:voice.audioID forKey:@"answer_voice_id"];
+        }
         [params setValue:kStringFromValue(voice.timeSpan) forKey:@"answer_voice_time"];
     }
     
@@ -163,10 +166,10 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
             }
             else{
                 if(picSeq.length == 0){
-                    [picSeq appendFormat:@"picture_%ld",(long)i];
+                    [picSeq appendFormat:@"answer_picture_%ld",(long)i];
                 }
                 else{
-                    [picSeq appendFormat:@",picture_%ld",(long)i];
+                    [picSeq appendFormat:@",answer_picture_%ld",(long)i];
                 }
             }
         }
@@ -178,7 +181,7 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
         for (NSInteger i = 0; i < explainEntity.imageArray.count; i++)
         {
             PhotoItem *photoItem = explainEntity.imageArray[i];
-            NSString *filename = [NSString stringWithFormat:@"picture_%ld",(long)i];
+            NSString *filename = [NSString stringWithFormat:@"answer_picture_%ld",(long)i];
             if(photoItem.photoID.length > 0){
                 
             }
@@ -213,11 +216,18 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
 }
 
 - (void)onMoreClicked{
+    if(!self.homeworkItem){
+        return;
+    }
+    if([[MLAmrPlayer shareInstance] isPlaying]){
+        [[MLAmrPlayer shareInstance] stopPlaying];
+    }
     __weak typeof(self) wself = self;
     NotificationActionItem* forwardItem = [NotificationActionItem actionItemWithTitle:@"转发" action:^{
         HomeWorkEntity *entity = [HomeWorkEntity sendEntityWithHomeworkItem:wself.homeworkItem];
+        [entity setForward:YES];
         PublishHomeWorkVC* publishHomeworkVC = [[PublishHomeWorkVC alloc] initWithHomeWorkEntity:entity];
-        [publishHomeworkVC setSendType:HomeworkSendForward];
+
         [CurrentROOTNavigationVC pushViewController:publishHomeworkVC animated:YES];
     } destroyItem:NO];
     NotificationActionItem* editItem = [NotificationActionItem actionItemWithTitle:@"编辑作业解析" action:^{

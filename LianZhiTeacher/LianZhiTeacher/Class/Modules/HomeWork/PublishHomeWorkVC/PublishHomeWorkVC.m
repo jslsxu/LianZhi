@@ -176,7 +176,7 @@ DNImagePickerControllerDelegate>
     
     @weakify(self)
     _inputView = [[NotificationInputView alloc] initWithFrame:CGRectMake(0, self.view.height - 64 - kActionBarHeight, self.view.width, kActionBarHeight)];
-    [_inputView setUserInteractionEnabled:self.sendType != HomeworkSendForward];
+    [_inputView setForward:self.homeWorkEntity.forward];
     [_inputView setPhotoNum:^NSInteger{
         @strongify(self)
         return self.homeWorkEntity.imageArray.count;
@@ -268,7 +268,7 @@ DNImagePickerControllerDelegate>
     if(!_courseView){
         __weak typeof(self) wself = self;
         _courseView = [[HomeworkCourseView alloc] initWithFrame:CGRectMake(0, 0, _scrollView.width, 50)];
-        [_courseView setUserInteractionEnabled:self.sendType != HomeworkSendForward];
+        [_courseView setUserInteractionEnabled:!self.homeWorkEntity.forward];
         [_courseView setAddCallback:^{
             CourseSelectVC *courseSelectVC = [[CourseSelectVC alloc] init];
             [courseSelectVC setCourse:wself.homeWorkEntity.course_name];
@@ -316,7 +316,7 @@ DNImagePickerControllerDelegate>
     if(_numView == nil){
         _numView = [[HomeworkNumView alloc] initWithFrame:CGRectMake(0, _replySwitchView.bottom, _scrollView.width, 50)];
         [_numView setNumOfHomework:self.homeWorkEntity.count];
-        [_numView setUserInteractionEnabled:self.sendType != HomeworkSendForward];
+        [_numView setUserInteractionEnabled:!self.homeWorkEntity.forward];
     }
     return _numView;
 }
@@ -328,7 +328,7 @@ DNImagePickerControllerDelegate>
         [_commentView setPlaceHolder:@"输入你要布置的作业内容:"];
         [_commentView setMaxWordsNum:[self.homeWorkEntity maxCommentWordsNum]];
         [_commentView setContent:self.homeWorkEntity.words];
-        [_commentView setUserInteractionEnabled:self.sendType != HomeworkSendForward];
+        [_commentView setUserInteractionEnabled:!self.homeWorkEntity.forward];
         [_commentView setTextViewWillChangeHeight:^(CGFloat height) {
             @strongify(self)
             [self adjustPosition];
@@ -383,7 +383,7 @@ DNImagePickerControllerDelegate>
 - (NotificationVoiceView *)voiceView{
     if(_voiceView == nil){
         _voiceView = [[NotificationVoiceView alloc] initWithFrame:CGRectMake(0, _commentView.bottom, _scrollView.width, 0)];
-        [_voiceView setUserInteractionEnabled:self.sendType != HomeworkSendForward];
+        [_voiceView setUserInteractionEnabled:!self.homeWorkEntity.forward];
         @weakify(self)
         [_voiceView setDeleteDataCallback:^(id voiceItem) {
             @strongify(self)
@@ -397,7 +397,7 @@ DNImagePickerControllerDelegate>
     if(_photoView == nil){
         @weakify(self)
         _photoView = [[NotificationPhotoView alloc] initWithFrame:CGRectMake(0, _voiceView.bottom, _scrollView.width, 0)];
-        [_photoView setUserInteractionEnabled:self.sendType != HomeworkSendForward];
+        [_photoView setUserInteractionEnabled:!self.homeWorkEntity.forward];
         [_photoView setDeleteDataCallback:^(id image) {
             @strongify(self)
             [self deleteImage:image];

@@ -36,6 +36,7 @@ extern NSString* const kHomeworkItemChangedNotification;
 @property (nonatomic, copy)NSString*    s_answer_time;
 @property (nonatomic, strong)HomeworkItemAnswer*   answer;      //老师的解析
 @property (nonatomic, assign)HomeworkStatus status;
+@property (nonatomic, assign)BOOL       is_new;
 - (BOOL)hasPhoto;
 - (BOOL)hasAudio;
 @end
