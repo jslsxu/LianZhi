@@ -196,11 +196,13 @@
                 AudioContentView *voiceView = [[AudioContentView alloc] initWithMaxWidth:maxWidth];
                 [voiceView setAudioItem:item];
                 [voiceView setOrigin:CGPointMake(spaceXStart, spaceYStart)];
-                @weakify(self)
-                [voiceView setDeleteCallback:^{
-                    @strongify(self)
-                    [self deleteVoice:item];
-                }];
+                if(!self.editDisable){
+                    @weakify(self)
+                    [voiceView setDeleteCallback:^{
+                        @strongify(self)
+                        [self deleteVoice:item];
+                    }];
+                }
                 [_voiceViewArray addObject:voiceView];
                 [self addSubview:voiceView];
                 
@@ -219,11 +221,13 @@
                 AudioContentView *voiceItemView = _voiceViewArray[i];
                 [voiceItemView setAudioItem:item];
                 [voiceItemView setOrigin:CGPointMake(spaceXStart, spaceYStart)];
-                @weakify(self)
-                [voiceItemView setDeleteCallback:^{
-                    @strongify(self)
-                    [self deleteVoice:item];
-                }];
+                if(!self.editDisable){
+                    @weakify(self)
+                    [voiceItemView setDeleteCallback:^{
+                        @strongify(self)
+                        [self deleteVoice:item];
+                    }];
+                }
                 spaceYStart += kVoiceMargin + voiceItemView.height;
             }
             [self setHeight:spaceYStart];

@@ -71,15 +71,8 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    TNDataWrapper *practiceWrapper = [dataWrapper getDataWrapperForKey:@"app_practice"];
-    NSDictionary *practiceDic = practiceWrapper.data;
-    self.appPractice = practiceDic[[UserCenter sharedInstance].curChild.uid];
-    NSInteger practiceNum = 0;
-    for (NSString *key in self.appPractice.allKeys)
-    {
-        practiceNum += [self.appPractice[key] integerValue];
-    }
-    self.practiceNum = practiceNum;
+    TNDataWrapper *practiceWrapper = [dataWrapper getDataWrapperForKey:@"app_exercises"];
+    self.appExercise = practiceWrapper.data;
     self.missionMsg = [dataWrapper getStringForKey:@"mission_msg"];
     self.appLeave = [dataWrapper getIntegerForKey:@"app_leave"];
     self.changed = [dataWrapper getIntegerForKey:@"changed"];
@@ -282,6 +275,11 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
     return newCount;
 }
 
+- (NSInteger)hasNewExerciseForChildID:(NSString *)childID{
+    NSNumber *num = self.appExercise[childID];
+    return [num integerValue];
+}
+
 - (BOOL)hasNewForChildID:(NSString *)childID{
     NSInteger newCount = 0;
     for (NoticeItem *noticeItem in self.notice) {
@@ -336,6 +334,8 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
             newCount += commentItem.alertInfo.num;
         }
     }
+    
+    newCount += [self hasNewExerciseForChildID:[[UserCenter sharedInstance] curChild]];
     return newCount;
 }
 

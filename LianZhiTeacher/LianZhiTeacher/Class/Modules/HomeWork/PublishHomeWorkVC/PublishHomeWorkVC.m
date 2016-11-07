@@ -101,49 +101,54 @@ DNImagePickerControllerDelegate>
 
 - (void)back{
     [self stopPlayAudio];
-    if([self.homeWorkEntity isSame:self.compareEntity]){
+    if(self.homeWorkEntity.forward){
         [self.navigationController popViewControllerAnimated:YES];
     }
     else{
-        if(self.sendType == HomeworkSendDraft){
-            //草稿，覆盖
-            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"草稿已存在，是否覆盖?" style:LGAlertViewStyleAlert buttonTitles:@[ @"放弃修改",@"覆盖"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
-            [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
-            [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-            [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-            [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-                if(index == 0){
-                    
-                }
-                else if (index == 1){
-                    [[HomeworkDraftManager sharedInstance] updateDraft:self.homeWorkEntity];
-                    //                    [self.sendEntity updateClientID];
-                    //                    [[NotificationDraftManager sharedInstance] addDraft:self.sendEntity];
-                }
-                [self.navigationController popViewControllerAnimated:YES];
-            }];
-            [alertView setCancelHandler:^(LGAlertView *alertView) {
-            }];
-            [alertView showAnimated:YES completionHandler:nil];
+        if([self.homeWorkEntity isSame:self.compareEntity]){
+            [self.navigationController popViewControllerAnimated:YES];
         }
         else{
-            //是否保存到草稿
-            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否存入草稿箱?" style:LGAlertViewStyleAlert buttonTitles:@[@"不保存", @"保存"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
-            [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
-            [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-            [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-            [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-                if(index == 0){
-                    
-                }
-                else if (index == 1){
-                    [[HomeworkDraftManager sharedInstance] addDraft:self.homeWorkEntity];
-                }
-                [self.navigationController popViewControllerAnimated:YES];
-            }];
-            [alertView setCancelHandler:^(LGAlertView *alertView) {
-            }];
-            [alertView showAnimated:YES completionHandler:nil];
+            if(self.sendType == HomeworkSendDraft){
+                //草稿，覆盖
+                LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"草稿已存在，是否覆盖?" style:LGAlertViewStyleAlert buttonTitles:@[ @"放弃修改",@"覆盖"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+                [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+                [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+                [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+                [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                    if(index == 0){
+                        
+                    }
+                    else if (index == 1){
+                        [[HomeworkDraftManager sharedInstance] updateDraft:self.homeWorkEntity];
+                        //                    [self.sendEntity updateClientID];
+                        //                    [[NotificationDraftManager sharedInstance] addDraft:self.sendEntity];
+                    }
+                    [self.navigationController popViewControllerAnimated:YES];
+                }];
+                [alertView setCancelHandler:^(LGAlertView *alertView) {
+                }];
+                [alertView showAnimated:YES completionHandler:nil];
+            }
+            else{
+                //是否保存到草稿
+                LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否存入草稿箱?" style:LGAlertViewStyleAlert buttonTitles:@[@"不保存", @"保存"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+                [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+                [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+                [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+                [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                    if(index == 0){
+                        
+                    }
+                    else if (index == 1){
+                        [[HomeworkDraftManager sharedInstance] addDraft:self.homeWorkEntity];
+                    }
+                    [self.navigationController popViewControllerAnimated:YES];
+                }];
+                [alertView setCancelHandler:^(LGAlertView *alertView) {
+                }];
+                [alertView showAnimated:YES completionHandler:nil];
+            }
         }
     }
 }
@@ -202,8 +207,12 @@ DNImagePickerControllerDelegate>
 
 - (void)onPreview{
     if([self checkHomework]){
+        __weak typeof(self) wself = self;
         HomeworkPreviewVC *previewVC = [[HomeworkPreviewVC alloc] init];
         [previewVC setHomeworkEntity:self.homeWorkEntity];
+        [previewVC setSendCallback:^{
+            [wself publishHomework];
+        }];
         [CurrentROOTNavigationVC pushViewController:previewVC animated:YES];
     }
 }
@@ -221,7 +230,7 @@ DNImagePickerControllerDelegate>
     }
     
     if([self.homeWorkEntity.words length] == 0 && [self.homeWorkEntity.voiceArray count] == 0 && [self.homeWorkEntity.imageArray count] == 0){
-        [ProgressHUD showHintText:@"请输入通知内容"];
+        [ProgressHUD showHintText:@"文字、语音或者图片，必须选择一种"];
         return NO;
     }
     return YES;
@@ -314,8 +323,12 @@ DNImagePickerControllerDelegate>
 
 - (HomeworkNumView *)numView{
     if(_numView == nil){
+        __weak typeof(self) wself = self;
         _numView = [[HomeworkNumView alloc] initWithFrame:CGRectMake(0, _replySwitchView.bottom, _scrollView.width, 50)];
         [_numView setNumOfHomework:self.homeWorkEntity.count];
+        [_numView setNumChangedCallback:^(NSInteger num) {
+            [wself.homeWorkEntity setCount:num];
+        }];
         [_numView setUserInteractionEnabled:!self.homeWorkEntity.forward];
     }
     return _numView;
@@ -383,7 +396,7 @@ DNImagePickerControllerDelegate>
 - (NotificationVoiceView *)voiceView{
     if(_voiceView == nil){
         _voiceView = [[NotificationVoiceView alloc] initWithFrame:CGRectMake(0, _commentView.bottom, _scrollView.width, 0)];
-        [_voiceView setUserInteractionEnabled:!self.homeWorkEntity.forward];
+        [_voiceView setEditDisable:self.homeWorkEntity.forward];
         @weakify(self)
         [_voiceView setDeleteDataCallback:^(id voiceItem) {
             @strongify(self)
@@ -397,7 +410,7 @@ DNImagePickerControllerDelegate>
     if(_photoView == nil){
         @weakify(self)
         _photoView = [[NotificationPhotoView alloc] initWithFrame:CGRectMake(0, _voiceView.bottom, _scrollView.width, 0)];
-        [_photoView setUserInteractionEnabled:!self.homeWorkEntity.forward];
+        [_photoView setEditDisable:self.homeWorkEntity.forward];
         [_photoView setDeleteDataCallback:^(id image) {
             @strongify(self)
             [self deleteImage:image];

@@ -60,7 +60,7 @@
         UILabel*    courseLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [courseLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
         [courseLabel setFont:[UIFont systemFontOfSize:13]];
-        [courseLabel setText:self.homeworkItem.course_name];
+        [courseLabel setText:[NSString stringWithFormat:@"%@作业",self.homeworkItem.course_name]];
         [courseLabel sizeToFit];
         [courseLabel setOrigin:CGPointMake(avatarView.right + margin, avatarView.bottom - courseLabel.height)];
         [_scrollView addSubview:courseLabel];
@@ -91,7 +91,8 @@
         spaceYStart = avatarView.bottom + margin;
         if([self.homeworkItem.words length] > 0){
             UILabel *wordsLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-            [wordsLabel setTextColor:[UIColor colorWithHexString:@""]];
+            [wordsLabel setWidth:self.width - margin * 2];
+            [wordsLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
             [wordsLabel setFont:[UIFont systemFontOfSize:14]];
             [wordsLabel setNumberOfLines:0];
             [wordsLabel setLineBreakMode:NSLineBreakByWordWrapping];

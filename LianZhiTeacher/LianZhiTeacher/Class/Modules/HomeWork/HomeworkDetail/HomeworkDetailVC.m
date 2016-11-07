@@ -34,10 +34,10 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
     [self.view addSubview:[self targetListView]];
     [self onSegmentValueChanged];
     
-//    NSData *homeworkData = [NSData dataWithContentsOfFile:[self cacheFilePath]];
-//    if(homeworkData){
-//        self.homeworkItem = [NSKeyedUnarchiver unarchiveObjectWithData:homeworkData];
-//    }
+    NSData *homeworkData = [NSData dataWithContentsOfFile:[self cacheFilePath]];
+    if(homeworkData){
+        self.homeworkItem = [NSKeyedUnarchiver unarchiveObjectWithData:homeworkData];
+    }
     
     [self loadData];
 }

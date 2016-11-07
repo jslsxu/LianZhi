@@ -60,6 +60,9 @@
     _num = num;
     [_contentField setText:kStringFromValue(_num)];
     [self updateSubviews];
+    if(self.numChangedCallback){
+        self.numChangedCallback(self.num);
+    }
 }
 
 - (void)onDescrese{

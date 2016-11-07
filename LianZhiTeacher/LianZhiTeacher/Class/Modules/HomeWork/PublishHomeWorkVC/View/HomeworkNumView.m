@@ -31,8 +31,14 @@
         [detailButton addTarget:self action:@selector(showDetailHint) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:detailButton];
         
+        __weak typeof(self) wself = self;
         _numView = [[NumOperationView alloc] initWithMin:1 max:99];
         [_numView setOrigin:CGPointMake(self.width - 10 - _numView.width, (self.height - _numView.height) / 2)];
+        [_numView setNumChangedCallback:^(NSInteger num) {
+            if(wself.numChangedCallback){
+                wself.numChangedCallback(num);
+            }
+        }];
         [self addSubview:_numView];
         
         UIView* bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
@@ -41,7 +47,6 @@
     }
     return self;
 }
-
 - (void)setNumOfHomework:(NSInteger)numOfHomework{
     _numOfHomework = numOfHomework;
     [_numView setNum:_numOfHomework];

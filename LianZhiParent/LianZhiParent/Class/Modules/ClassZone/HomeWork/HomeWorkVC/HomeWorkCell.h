@@ -28,6 +28,8 @@
     UILabel*    _timeLabel;
     UILabel*    _contentLabel;
     UILabel*    _endTimeLabel;
+    UIButton*   _deleteButton;
     HomeworkExtraInfoView*  _extraInfoView;
 }
+@property (nonatomic, copy)void (^deleteCallback)();
 @end

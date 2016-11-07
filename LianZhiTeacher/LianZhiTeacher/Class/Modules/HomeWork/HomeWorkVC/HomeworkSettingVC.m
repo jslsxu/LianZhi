@@ -37,7 +37,7 @@
         [_moreButton addTarget:self action:@selector(showDescription) forControlEvents:UIControlEventTouchUpInside];
     }
     if(highlighted){
-        [_moreButton setImage:[UIImage imageNamed:@"noti_detail_more_highlighted"] forState:UIControlStateNormal];
+        [_moreButton setImage:[UIImage imageNamed:@"explainIcon"] forState:UIControlStateNormal];
     }
     else{
         [_moreButton setImage:[UIImage imageNamed:@"noti_detail_more"] forState:UIControlStateNormal];

@@ -70,6 +70,7 @@
 
 - (void)setStudentHomeworkInfo:(HomeworkStudentInfo *)studentHomeworkInfo{
     _studentHomeworkInfo = studentHomeworkInfo;
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_studentHomeworkInfo.student.avatar] placeholderImage:nil];
     [_nameLabel setText:_studentHomeworkInfo.student.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.top)];
@@ -78,21 +79,8 @@
     [_classLabel setFrame:CGRectMake(_nameLabel.right + 5, _avatarView.top, _nextButton.left - 10, _classLabel.height)];
     
     NSMutableAttributedString *rateStr = [[NSMutableAttributedString alloc] initWithString:@"正确率: " attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"666666"]}];
-    if([_studentHomeworkInfo.mark_detail length] > 0){
-        CGFloat rightRate = 0;
-        NSInteger totalCount = 0;
-        for (HomeworkMarkItem *markItem in _studentHomeworkInfo.s_answer.teacherMark.marks) {
-            for (HomeworkPhotoMark *photoMark in markItem.marks) {
-                totalCount ++;
-                if(photoMark.markType == MarkTypeRight){
-                    rightRate += 1;
-                }
-                else if(photoMark.markType == MarkTypeHalfRight){
-                    rightRate += 0.5;
-                }
-            }
-        }
-        NSInteger percent = rightRate * 100 / totalCount;
+    if([_studentHomeworkInfo.s_answer.mark_detail length] > 0){
+        NSInteger percent = _studentHomeworkInfo.s_answer.teacherMark.rightPercent * 100;
         [rateStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%zd%%", percent] attributes:@{NSForegroundColorAttributeName : kCommonTeacherTintColor}]];
     }
     else{

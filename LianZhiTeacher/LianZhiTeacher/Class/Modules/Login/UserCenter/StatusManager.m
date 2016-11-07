@@ -65,7 +65,11 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
 
 - (void)parseData:(TNDataWrapper *)dataWrapper
 {
-    self.appPractice = [dataWrapper getIntegerForKey:@"app_practice"];
+    TNDataWrapper* exerciseWrapper = [dataWrapper getDataWrapperForKey:@"app_exercises"];
+    if([exerciseWrapper.data isKindOfClass:[NSDictionary class]]){
+        self.appExercise = exerciseWrapper.data;
+    }
+
     TNDataWrapper *appLeave = [dataWrapper getDataWrapperForKey:@"app_leave"];
     NSDictionary *originalDic = appLeave.data;
     NSMutableDictionary *appLeaveDic = [NSMutableDictionary dictionary];
@@ -202,6 +206,11 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
     return count;
 }
 
+- (NSInteger)newHomeworkNumForSchool:(NSString *)schoolID{
+    NSNumber *num = self.appExercise[schoolID];
+    return [num integerValue];
+}
+
 - (NSInteger)hasNewForSchool:(NSString *)schoolID{
     NSInteger newCount = 0;
     for (NoticeItem *noticeItem in self.notice) {
@@ -234,6 +243,7 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
             newCount += commentItem.alertInfo.num;
         }
     }
+    newCount += [self newHomeworkNumForSchool:[UserCenter sharedInstance].curSchool.schoolID];
     
     return newCount;
 }

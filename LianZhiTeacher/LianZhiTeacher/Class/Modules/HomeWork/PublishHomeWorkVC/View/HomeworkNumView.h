@@ -10,4 +10,5 @@
 
 @interface HomeworkNumView : UIView
 @property (nonatomic, assign)NSInteger numOfHomework;
+@property (nonatomic, copy)void (^numChangedCallback)(NSInteger num);
 @end

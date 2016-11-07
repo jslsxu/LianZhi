@@ -11,6 +11,7 @@
 @interface HomeworkTargetHeaderView : UITableViewHeaderFooterView{
     LogoView*       _logoView;
     UILabel*        _titleLabel;
+    UIView*         _redDot;
     UILabel*        _stateLabel;
     UIImageView*    _arrowImageView;
     UIButton*       _alertButton;
@@ -26,6 +27,7 @@
     AvatarView*     _avatarView;
     UILabel*        _titleLabel;
     UILabel*        _stateLabel;
+    UIView*         _redDot;
     UIImageView*    _mobileImageView;
     UIImageView*    _rightArrow;
 }

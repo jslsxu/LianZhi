@@ -16,4 +16,5 @@
 
 @interface NotificationPhotoView : NotificationContentBaseView
 @property (nonatomic, strong)NSMutableArray*   photoArray;
+@property (nonatomic, assign)BOOL               editDisable;
 @end

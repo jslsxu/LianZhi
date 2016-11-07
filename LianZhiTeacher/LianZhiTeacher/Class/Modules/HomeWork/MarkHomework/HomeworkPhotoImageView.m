@@ -175,7 +175,6 @@
     [markItemView setDeleteCallback:^{
         [wself removeMark:mark];
     }];
-//    [markItemView setCenter:CGPointMake(_photoImageView.width * mark.x, _photoImageView.height * mark.y)];
     [self.markViewArray addObject:markItemView];
     [_photoImageView addSubview:markItemView];
     [self.markItem.marks addObject:mark];
@@ -305,10 +304,16 @@
     CGPoint location = [tapGesture locationInView:_photoImageView];
     if([HomeworkMarkFooterView currentMarkType] != MarkTypeNone){
         HomeworkPhotoMark *mark = [[HomeworkPhotoMark alloc] init];
-        [mark setX:location.x / self.originalSize.width];
-        [mark setY:location.y / self.originalSize.height];
+        CGFloat margin = 15;
+        CGFloat spaceX = MIN(self.originalSize.width - margin, location.x);
+        CGFloat spaceY = MIN(self.originalSize.height - margin, location.y);
+        [mark setX:spaceX / self.originalSize.width];
+        [mark setY:spaceY / self.originalSize.height];
         [mark setMarkType:[HomeworkMarkFooterView currentMarkType]];
         [self addMark:mark];
+        if(self.addMarkCallback){
+            self.addMarkCallback();
+        }
     }
 }
 

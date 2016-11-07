@@ -38,4 +38,24 @@ NSString* const kHomeworkItemChangedNotification = @"HomeworkItemChangedNotifica
     return [self.pics count] > 0;
 }
 
+- (BOOL)canDelete{
+    if(!self.etype){
+        return YES;
+    }
+    if(self.status == HomeworkStatusMarked){
+        return YES;
+    }
+    if(self.reply_close && [self.reply_close_ctime length] > 0){
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSDate *expireDate = [dateFormatter dateFromString:self.reply_close_ctime];
+        NSInteger expireTimeinterval = [expireDate timeIntervalSince1970];
+        NSInteger curTimeInterval = [[NSDate date] timeIntervalSince1970];
+        if(curTimeInterval > expireTimeinterval){
+            return YES;
+        }
+    }
+    return NO;
+}
+
 @end

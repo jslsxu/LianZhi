@@ -25,7 +25,7 @@
         [_nameLabel setTextColor:[UIColor whiteColor]];
         [_nameLabel setFont:[UIFont systemFontOfSize:12]];
         [_nameLabel setTextAlignment:NSTextAlignmentCenter];
-        [_nameLabel setText:self.classInfo.className];
+        [_nameLabel setText:self.classInfo.name];
         [_nameLabel sizeToFit];
         [_nameLabel setFrame:CGRectMake(6, 0, _nameLabel.width + 18, kItemHeight)];
         [self setSize:CGSizeMake(_nameLabel.width + 6, _nameLabel.height)];

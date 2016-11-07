@@ -112,7 +112,7 @@ static NSArray *tabDatas = nil;
         classZoneNum += [[UserCenter sharedInstance].statusManager newCountForClassRecord];
         
         //练习
-        classZoneNum += [UserCenter sharedInstance].statusManager.practiceNum;
+        classZoneNum += [[UserCenter sharedInstance].statusManager hasNewExerciseForChildID:[UserCenter sharedInstance] .curChild.uid];
         
         //树屋回复
 //        NSArray *treeNewCommentArray = [UserCenter sharedInstance].statusManager.treeNewCommentArray;

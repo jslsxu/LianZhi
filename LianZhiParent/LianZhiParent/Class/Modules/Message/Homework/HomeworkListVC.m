@@ -10,6 +10,7 @@
 #import "HomeworkListModel.h"
 #import "HomeworkDetailVC.h"
 #import "HomeworkNotificationListModel.h"
+#import "HomeworkNotificationCell.h"
 @interface HomeworkListVC ()
 @end
 
@@ -67,6 +68,21 @@
     return task;
 }
 
+- (void)deleteNotificationItem:(HomeworkNotificationItem *)item{
+    __weak typeof(self) wself = self;
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"notice_id":(item.msgId)} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        NSInteger index = [wself.tableViewModel.modelItemArray indexOfObject:item];
+        if(index >= 0 && index < wself.tableViewModel.modelItemArray.count)
+        {
+            [wself.tableViewModel.modelItemArray removeObject:item];
+            [wself.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        }
+    } fail:^(NSString *errMsg) {
+        [ProgressHUD showHintText:errMsg];
+    }];
+
+}
+
 - (BOOL)supportCache
 {
     return YES;
@@ -78,6 +94,16 @@
 }
 
 #pragma mark - 
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    __weak typeof(self) wself = self;
+    HomeworkNotificationItem *notificationItem = [self.tableViewModel.modelItemArray objectAtIndex:indexPath.row];
+    HomeworkNotificationCell* notificationCell = (HomeworkNotificationCell *)cell;
+    [notificationCell setDeleteCallback:^{
+        [wself deleteNotificationItem:notificationItem];
+    }];
+}
+
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
     __weak typeof(self) wself = self;
     HomeworkNotificationItem *homeworkItem = (HomeworkNotificationItem *)modelItem;

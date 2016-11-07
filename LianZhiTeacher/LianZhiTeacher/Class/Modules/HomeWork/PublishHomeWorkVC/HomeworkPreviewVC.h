@@ -10,4 +10,5 @@
 #import "HomeWorkEntity.h"
 @interface HomeworkPreviewVC : TNBaseViewController
 @property (nonatomic, strong)HomeWorkEntity *homeworkEntity;
+@property (nonatomic, copy)void (^sendCallback)();
 @end

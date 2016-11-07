@@ -24,6 +24,7 @@ NSString *const kPaswordModificationNotification = @"PaswordModificationNotifica
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCancel) name:kPaswordModificationNotification object:nil];
+        self.hideNavigationBar = YES;
     }
     return self;
 }
@@ -74,14 +75,14 @@ NSString *const kPaswordModificationNotification = @"PaswordModificationNotifica
     [viewParent addSubview:passwordSep];
     
     [viewParent addSubview:[self confirmField]];
-    [self.confirmField setFrame:CGRectMake(10, passwordSep.bottom, viewParent.width - 10 * 2, kLineHeight)];
+    [self.confirmField setFrame:CGRectMake(10, passwordSep.bottom, viewParent.width - 10 * 2, 44)];
     
     UIView *confirmSep = [[UIView alloc] initWithFrame:CGRectMake(10, self.confirmField.bottom, viewParent.width - 10 * 2, kLineHeight)];
     [confirmSep setBackgroundColor:kSepLineColor];
     [viewParent addSubview:confirmSep];
     
     [viewParent addSubview:[self confirmButton]];
-    [self.confirmButton setFrame:CGRectMake(10, confirmSep.bottom + 20, viewParent.width - 10, 45)];
+    [self.confirmButton setFrame:CGRectMake(10, confirmSep.bottom + 20, viewParent.width - 10 * 2, 45)];
     [self.confirmButton setEnabled:YES];
 }
 
@@ -112,9 +113,10 @@ NSString *const kPaswordModificationNotification = @"PaswordModificationNotifica
 - (UIButton *)confirmButton{
     if(!_confirmButton){
         _confirmButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_confirmButton setBackgroundImage:[UIImage imageWithColor:kCommonParentTintColor size:CGSizeMake(40, 40) cornerRadius:5] forState:UIControlStateNormal];
+        [_confirmButton setBackgroundImage:[[UIImage imageWithColor:kCommonParentTintColor size:CGSizeMake(40, 40) cornerRadius:5] resizableImageWithCapInsets:UIEdgeInsetsMake(10, 10, 10, 10)] forState:UIControlStateNormal];
         [_confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_confirmButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
+        [_confirmButton setTitle:@"完成" forState:UIControlStateNormal];
         [_confirmButton addTarget:self action:@selector(onConfirmClicked) forControlEvents:UIControlEventTouchUpInside];
     }
     return _confirmButton;

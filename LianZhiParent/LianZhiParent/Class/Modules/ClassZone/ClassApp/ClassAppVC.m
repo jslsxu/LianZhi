@@ -193,7 +193,7 @@
         }
         if([url.host isEqualToString:@"practice"])
         {
-            appItem.badge = [UserCenter sharedInstance].statusManager.practiceNum > 0 ? @"" : nil;
+            appItem.badge = [[UserCenter sharedInstance].statusManager hasNewExerciseForChildID:[[UserCenter sharedInstance] curChild].uid] ? @"" : nil;
         }
     }
     [self.collectionView reloadData];
@@ -249,7 +249,7 @@
         
         if([url.host isEqualToString:@"practice"])
         {
-            appItem.badge = [UserCenter sharedInstance].statusManager.practiceNum > 0 ? @"" : nil;
+            appItem.badge = [[UserCenter sharedInstance].statusManager hasNewExerciseForChildID:[[UserCenter sharedInstance] curChild].uid] > 0 ? @"" : nil;
         }
     }
 
@@ -442,18 +442,7 @@
                                 return classDic;
                             }];
                         }
-                        else if ([host isEqualToString:@"practice"])
-                        {
-                            [classSelectionVC setValidateStatus:^NSDictionary *{
-                                NSMutableDictionary *classDic = [NSMutableDictionary dictionary];
-                                for (NSString *key in [UserCenter sharedInstance].statusManager.appPractice.allKeys) {
-                                    NSInteger num = [[UserCenter sharedInstance].statusManager.appPractice[key] integerValue];
-                                    if(num > 0)
-                                        [classDic setValue:@"" forKey:key];
-                                }
-                                return classDic;
-                            }];
-                        }
+                        
                         [classSelectionVC setSelection:^(ClassInfo *classInfo) {
                             selectClassCallBack(classInfo);
                         }];

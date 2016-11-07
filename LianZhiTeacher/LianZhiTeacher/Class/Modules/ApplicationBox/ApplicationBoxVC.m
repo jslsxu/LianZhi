@@ -331,6 +331,14 @@
             NSString *badge = [UserCenter sharedInstance].statusManager.leaveNum > 0 ? @"" : nil;
             [appItem setBadge:badge];
         }
+        if([url.host isEqualToString:@"practice"]){
+            if([[UserCenter sharedInstance].statusManager newHomeworkNumForSchool:[UserCenter sharedInstance].curSchool.schoolID] > 0){
+                [appItem setBadge:@""];
+            }
+            else{
+                [appItem setBadge:nil];
+            }
+        }
     }
 }
 

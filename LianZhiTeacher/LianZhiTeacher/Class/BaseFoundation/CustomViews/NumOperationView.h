@@ -14,5 +14,6 @@
     UIButton*   _increaseButton;
 }
 @property (nonatomic, assign)NSInteger num;
+@property (nonatomic, copy)void (^numChangedCallback)(NSInteger num);
 - (instancetype)initWithMin:(NSInteger)min max:(NSInteger)max;
 @end

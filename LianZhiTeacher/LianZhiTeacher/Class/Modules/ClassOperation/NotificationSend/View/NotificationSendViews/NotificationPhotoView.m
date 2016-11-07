@@ -26,6 +26,7 @@
         [self.removeButton setFrame:CGRectMake(self.width - 30, 0, 30, 30)];
         [self.removeButton setImage:[UIImage imageNamed:@"media_delete"] forState:UIControlStateNormal];
         [self.removeButton addTarget:self action:@selector(onRemoveButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [self.removeButton setHidden:YES];
         [self addSubview:self.removeButton];
     }
     return self;
@@ -33,6 +34,12 @@
 
 - (UIImageView *)curImageView{
     return self.imageView;
+}
+
+- (void)setDeleteCallback:(void (^)())deleteCallback
+{
+    _deleteCallback = [deleteCallback copy];
+    [self.removeButton setHidden:!_deleteCallback];
 }
 
 - (void)setPhotoItem:(PhotoItem *)photoItem
@@ -112,11 +119,13 @@
         
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapedImageView:)];
         [itemView addGestureRecognizer:tapGesture];
-        @weakify(self);
-        [itemView setDeleteCallback:^{
-            @strongify(self);
-            [self deleteImage:photoItem];
-        }];
+        if(!self.editDisable){
+            @weakify(self);
+            [itemView setDeleteCallback:^{
+                @strongify(self);
+                [self deleteImage:photoItem];
+            }];
+        }
         [_photoViewArray addObject:itemView];
         [self addSubview:itemView];
     }

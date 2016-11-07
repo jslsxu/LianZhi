@@ -81,7 +81,7 @@
             statusColor = [UIColor colorWithHexString:@"e00909"];
         }
         else if(_homeworkItem.status == HomeworkStatusWaitMark){
-            status = @"待批阅";
+            status = @"已提交";
             statusColor = [UIColor colorWithHexString:@"666666"];
         }
         else if(_homeworkItem.status == HomeworkStatusMarked){
@@ -101,7 +101,7 @@
     }
    
     [_redDot setOrigin:CGPointMake(spaceXEnd - _redDot.width, (self.height - _redDot.height) / 2)];
-    [_redDot setHidden:!_homeworkItem.is_new];
+    [_redDot setHidden:!_homeworkItem.unread_s];
 }
 
 @end
@@ -135,6 +135,13 @@
         [_nameLabel setTextColor:kCommonParentTintColor];
         [_bgView addSubview:_nameLabel];
         
+        _deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_deleteButton setFrame:CGRectMake(0, 0, 30, 30)];
+        [_deleteButton setImage:[UIImage imageNamed:@"MessageDetailTrash"] forState:UIControlStateNormal];
+        [_deleteButton addTarget:self action:@selector(deleteHomework) forControlEvents:UIControlEventTouchUpInside];
+//        [_deleteButton setHidden:YES];
+        [_bgView addSubview:_deleteButton];
+        
         _roleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_roleLabel setFont:[UIFont systemFontOfSize:14]];
         [_roleLabel setTextColor:kCommonParentTintColor];
@@ -149,7 +156,7 @@
         [_contentLabel setFont:[UIFont systemFontOfSize:14]];
         [_contentLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
         [_contentLabel setNumberOfLines:0];
-        [_contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
+        [_contentLabel setLineBreakMode:NSLineBreakByTruncatingTail];
         [_bgView addSubview:_contentLabel];
         
         _endTimeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -163,6 +170,12 @@
     return self;
 }
 
+- (void)deleteHomework{
+    if(self.deleteCallback){
+        self.deleteCallback();
+    }
+}
+
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     HomeworkItem *homeworkItem = (HomeworkItem *)modelItem;
@@ -170,6 +183,8 @@
     [_nameLabel setText:homeworkItem.teacher.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_courseLabel.right + 10, _courseLabel.top)];
+    [_deleteButton setHidden:![homeworkItem canDelete]];
+    [_deleteButton setOrigin:CGPointMake(_bgView.width - 10 - _deleteButton.width, _nameLabel.top)];
     [_roleLabel setText:@"教师"];
     [_roleLabel sizeToFit];
     [_roleLabel setOrigin:CGPointMake(_nameLabel.right + 5, _courseLabel.top)];
@@ -183,7 +198,7 @@
         [_contentLabel setHidden:NO];
         [_contentLabel setWidth:_bgView.width - 10 * 2];
         [_contentLabel setText:words];
-        [_contentLabel sizeToFit];
+        [HomeWorkCell dynamicCalculationLabelHight:_contentLabel];
         [_contentLabel setOrigin:CGPointMake(10, spaceYStart)];
         spaceYStart = _contentLabel.bottom + 10;
     }
@@ -212,8 +227,14 @@
     CGFloat height = 36 + 10 * 2;
     NSString *words = homeworkItem.words;
     if(words.length > 0){
-        CGSize contentSize = [words sizeForFont:[UIFont systemFontOfSize:14] size:CGSizeMake(width - 15 * 2 - 10 * 2, CGFLOAT_MAX) mode:NSLineBreakByWordWrapping];
-        height += contentSize.height + 10;
+        UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, width - 15 * 2 - 10 * 2, 0)];
+        [contentLabel setFont:[UIFont systemFontOfSize:14]];
+        [contentLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
+        [contentLabel setNumberOfLines:0];
+        [contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
+        [contentLabel setText:words];
+        [HomeWorkCell dynamicCalculationLabelHight:contentLabel];
+        height += contentLabel.height + 10;
     }
     if(homeworkItem.reply_close && [homeworkItem.reply_close_ctime length] > 0){
         NSString *endStr = @"截止时间";
@@ -223,5 +244,30 @@
     height += 45;
     return @(height + 15);
 }
+
++ (void)dynamicCalculationLabelHight:(UILabel*) label{
+    NSInteger n = 2;
+    CGSize labelSize = {0, 0};
+    labelSize = [self ZFYtextHeightFromTextString:label.text width:label.frame.size.width fontSize:label.font.pointSize];
+    // NSLog(@"%f",label.font.pointSize);//获取 label的字体大小 //NSLog(@"%f",label.font.lineHeight);//获取label的在不同字体下的时候所需要的行高 //NSLog(@"%f",labelSize.height);//label计算行高
+    CGFloat rate = label.font.lineHeight; //每一行需要的高度
+    CGRect frame= label.frame;
+    if (labelSize.height>rate*n)
+    {
+        frame.size.height = rate*n;
+    }
+    else
+    {
+        frame.size.height = labelSize.height;
+    }
+    label.frame = frame;
+}
++ (CGSize)ZFYtextHeightFromTextString:(NSString *)text width:(CGFloat)textWidth fontSize:(CGFloat)size{
+    NSDictionary *dict = @{NSFontAttributeName:[UIFont systemFontOfSize:size]};
+    CGRect rect = [text boundingRectWithSize:CGSizeMake(textWidth, MAXFLOAT) options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin attributes:dict context:nil];
+    CGSize size1 = [text sizeWithAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:size]}];
+    return CGSizeMake(size1.width, rect.size.height);
+}
+
 
 @end

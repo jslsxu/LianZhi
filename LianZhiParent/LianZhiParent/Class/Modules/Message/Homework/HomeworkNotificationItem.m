@@ -11,6 +11,7 @@
 @implementation HomeworkNotificationItem
 + (NSDictionary<NSString*, id> *)modelCustomPropertyMapper{
     return @{@"msgId" : @"id",
+             @"etype" : @"exercises.etype",
              @"course_name" : @"exercises.course_name",
              @"reply_close_ctime" : @"exercises.reply_close_ctime",
              @"hasVoice" : @"exercises.voice",

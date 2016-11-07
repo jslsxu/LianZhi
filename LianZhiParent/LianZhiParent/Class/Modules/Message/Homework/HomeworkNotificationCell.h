@@ -24,10 +24,12 @@
     UIView*     _bgView;
     UILabel*    _courseLabel;
     UILabel*    _nameLabel;
+    UIButton*   _deleteButton;
     UILabel*    _roleLabel;
     UILabel*    _timeLabel;
     UILabel*    _contentLabel;
     UILabel*    _endTimeLabel;
     HomeworkNotificationExtraInfoView*  _extraInfoView;
 }
+@property (nonatomic, copy)void (^deleteCallback)();
 @end

@@ -30,6 +30,7 @@ typedef NS_ENUM(NSInteger, MarkType){
 
 @interface HomeworkTeacherMark : TNBaseObject
 @property (nonatomic, copy)NSString*    comment;        //评语
+@property (nonatomic, assign)CGFloat    rightPercent;
 @property (nonatomic, strong)NSMutableArray<HomeworkMarkItem *>* marks;
 + (HomeworkTeacherMark *)markWithString:(NSString *)markDetail;
 - (instancetype)initWithPhotoArray:(NSArray *)photoArray;

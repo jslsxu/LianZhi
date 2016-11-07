@@ -15,7 +15,7 @@
 }
 + (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
     return @{@"uid" : @"id",
-             @"avatar":@"head"};
+             @"avatar":@[@"head", @"avatar"]};
 }
 
 + (nullable NSArray<NSString *> *)modelPropertyBlacklist{

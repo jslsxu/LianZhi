@@ -27,7 +27,7 @@
         _redDot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 4)];
         [_redDot.layer setCornerRadius:2];
         [_redDot.layer setMasksToBounds:YES];
-        [_redDot setBackgroundColor:[UIColor colorWithHexString:@"E00909"]];
+        [_redDot setBackgroundColor:kCommonParentTintColor];
         [_redDot setHidden:YES];
         [self addSubview:_redDot];
         
@@ -49,7 +49,7 @@
     [_dayLabel sizeToFit];
     [_dayLabel setCenter:CGPointMake(self.width / 2, self.height / 2)];
     [_redDot setHidden:![date isToday]];
-    [_redDot setOrigin:CGPointMake(_dayLabel.right, _dayLabel.top)];
+    [_redDot setCenter:CGPointMake(_dayLabel.centerX, _dayLabel.bottom + 2)];
 }
 
 - (void)setIsChosen:(BOOL)isChosen{

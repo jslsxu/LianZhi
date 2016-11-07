@@ -16,6 +16,7 @@
 @property (nonatomic, strong)UIView*                    contentView;
 @property (nonatomic, strong)HomeworkMarkHeaderView*    headerView;
 @property (nonatomic, strong)ZYBannerView*              circleView;
+@property (nonatomic, strong)UILabel*                   pageIndicator;
 @property (nonatomic, strong)HomeworkMarkFooterView*    footerView;
 @property (nonatomic, strong)HomeworkMarkItem*          markItem;
 @property (nonatomic, strong)NSMutableDictionary*       markMap;
@@ -40,7 +41,15 @@
     self.markItem = [[HomeworkMarkItem alloc] init];
     self.title = @"批阅作业";
     for (HomeworkStudentInfo *studentInfo in self.homeworkArray) {
-        HomeworkTeacherMark* teacherMark = [[HomeworkTeacherMark alloc] initWithPhotoArray:studentInfo.s_answer.pics];
+        HomeworkTeacherMark* teacherMark = nil;
+        if([studentInfo.s_answer.mark_detail length] > 0){
+            teacherMark = [HomeworkTeacherMark markWithString:studentInfo.s_answer.mark_detail];
+            [teacherMark setRightPercent:[self rightRateWithMark:teacherMark]];
+            [studentInfo.s_answer setTeacherMark:teacherMark];
+        }
+        else{
+            teacherMark = [[HomeworkTeacherMark alloc] initWithPhotoArray:studentInfo.s_answer.pics];
+        }
         [self.markMap setValue:teacherMark forKey:studentInfo.student.uid];
     }
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"批阅" style:UIBarButtonItemStylePlain target:self action:@selector(mark)];
@@ -48,7 +57,13 @@
     [self.contentView addSubview:[self headerView]];
     [self.contentView addSubview:[self footerView]];
     [self.contentView addSubview:[self circleView]];
-    
+    __weak typeof(self) wself = self;
+    [RACObserve(self.circleView.pageControl, numberOfPages) subscribeNext:^(id x) {
+        [wself updatePageIndicator];
+    }];
+    [RACObserve(self.circleView.pageControl, currentPage) subscribeNext:^(id x) {
+        [wself updatePageIndicator];
+    }];
     [self showHomeworkWithIndex:self.curIndex];
 }
 
@@ -70,6 +85,14 @@
     } completion:nil];
 }
 
+- (void)updatePageIndicator{
+    NSInteger total = self.circleView.pageControl.numberOfPages;
+    NSInteger curPage = self.circleView.pageControl.currentPage;
+    [self.pageIndicator setText:[NSString stringWithFormat:@"%zd/%zd",curPage + 1, total]];
+    [self.pageIndicator sizeToFit];
+    [self.pageIndicator setFrame:CGRectMake((self.circleView.width - self.pageIndicator.width - 20) / 2, 5, self.pageIndicator.width + 40, 24)];
+}
+
 - (NSMutableDictionary *)markMap{
     if(_markMap == nil){
         _markMap = [NSMutableDictionary dictionary];
@@ -77,11 +100,30 @@
     return _markMap;
 }
 
+- (CGFloat)rightRateWithMark:(HomeworkTeacherMark *)mark{
+    CGFloat wrongNum = 0;
+    NSInteger totalCount = 0;
+    for (HomeworkMarkItem *markItem in mark.marks) {
+        for (HomeworkPhotoMark *photoMark in markItem.marks) {
+            totalCount ++;
+            if(photoMark.markType == MarkTypeWrong){
+                wrongNum += 1;
+            }
+            else if(photoMark.markType == MarkTypeHalfRight){
+                wrongNum += 0.5;
+            }
+        }
+    }
+    CGFloat rightRate = 1 - wrongNum / self.homeworkItem.enums;
+    return rightRate;
+}
+
 - (void)mark{
     __weak typeof(self) wself = self;
     HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
     if(![studentInfo.s_answer marked]){
         HomeworkTeacherMark *mark = self.markMap[studentInfo.student.uid];
+        [mark setComment:self.footerView.comment];
         if(![mark isEmpty]){
             NSString *markDetail = [mark modelToJSONString];
             NSMutableDictionary *params = [NSMutableDictionary dictionary];
@@ -93,13 +135,19 @@
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/marking" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
                 [hud hide:NO];
                 [ProgressHUD showHintText:@"批阅成功"];
-                [studentInfo setMark_detail:markDetail];
-                [studentInfo.s_answer setTeacherMark:[HomeworkTeacherMark markWithString:markDetail]];
+                [studentInfo.s_answer setMark_detail:markDetail];
+                HomeworkTeacherMark *teacherMark = [HomeworkTeacherMark markWithString:markDetail];
+            
+                [teacherMark setRightPercent:[self rightRateWithMark:teacherMark]];
+                [studentInfo.s_answer setTeacherMark:teacherMark];
                 [wself showHomeworkWithIndex:wself.curIndex];
             } fail:^(NSString *errMsg) {
                 [hud hide:NO];
                 [ProgressHUD showError:errMsg];
             }];
+        }
+        else{
+            [ProgressHUD showHintText:@"没有评语和标注"];
         }
        
     }
@@ -127,9 +175,25 @@
         [_circleView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
         [_circleView setDelegate:self];
         [_circleView setDataSource:self];
-
+        [_circleView.pageControl setHidden:YES];
+        
+        [_circleView addSubview:[self pageIndicator]];
     }
     return _circleView;
+}
+
+- (UILabel* )pageIndicator{
+    if(_pageIndicator == nil){
+        _pageIndicator = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_pageIndicator setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.5]];
+        [_pageIndicator setTextColor:[UIColor whiteColor]];
+        [_pageIndicator setTextAlignment:NSTextAlignmentCenter];
+        [_pageIndicator setFont:[UIFont systemFontOfSize:15]];
+        [_pageIndicator.layer setCornerRadius:12];
+        [_pageIndicator.layer setMasksToBounds:YES];
+
+    }
+    return _pageIndicator;
 }
 
 - (HomeworkMarkFooterView *)footerView{
@@ -144,11 +208,11 @@
     [self.headerView setCanPre:self.curIndex > 0];
     [self.headerView setCanNext:self.curIndex < [self.homeworkArray count] - 1];
     HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
-    [self.navigationItem.rightBarButtonItem setEnabled:[studentInfo.mark_detail length] == 0];
+    [self.navigationItem.rightBarButtonItem setEnabled:[studentInfo.s_answer.mark_detail length] == 0];
     
     [self.headerView setStudentHomeworkInfo:studentInfo];
     HomeworkTeacherMark *mark = self.markMap[studentInfo.student.uid];
-    BOOL haveMarked = [studentInfo.mark_detail length] > 0;
+    BOOL haveMarked = [studentInfo.s_answer.mark_detail length] > 0;
     [self.footerView setTeacherMark:mark];
     [self.footerView setUserInteractionEnabled:!haveMarked];
     if(haveMarked){
@@ -161,12 +225,30 @@
 - (void)requestPreHomework{
     if(self.curIndex > 0){
         [self showHomeworkWithIndex:self.curIndex - 1];
+        if(self.curIndex == 0){
+            HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
+            if(studentInfo.s_answer.marked){
+                 [ProgressHUD showHintText:@"当前是第一份作业"];
+            }
+            else{
+                 [ProgressHUD showHintText:@"当前是第一份待批阅的作业"];
+            }
+        }
     }
 }
 
 - (void)requestNextHomework{
     if(self.curIndex < [self.homeworkArray count] - 1){
         [self showHomeworkWithIndex:self.curIndex + 1];
+        if(self.curIndex == [self.homeworkArray count] - 1){
+            HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
+            if(studentInfo.s_answer.marked){
+                [ProgressHUD showHintText:@"当前是最后一份作业"];
+            }
+            else{
+                [ProgressHUD showHintText:@"当前是最后一份待批阅的作业"];
+            }
+        }
     }
 }
 
@@ -178,11 +260,15 @@
 }
 
 - (UIView *)banner:(ZYBannerView *)banner viewForItemAtIndex:(NSInteger)index{
+    __weak typeof(self) wself = self;
     HomeworkPhotoImageView *imageView = [[HomeworkPhotoImageView alloc] initWithFrame:banner.bounds];
     HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
     HomeworkTeacherMark* teacherMark = self.markMap[studentInfo.student.uid];
-    [imageView setCanEdit:studentInfo.mark_detail.length == 0];
+    [imageView setCanEdit:studentInfo.s_answer.mark_detail.length == 0];
     [imageView setMarkItem:teacherMark.marks[index]];
+    [imageView setAddMarkCallback:^{
+        [wself.footerView clearMark];
+    }];
     return imageView;
 }
 

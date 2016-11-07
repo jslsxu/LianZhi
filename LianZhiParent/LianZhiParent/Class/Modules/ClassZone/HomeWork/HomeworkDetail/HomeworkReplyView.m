@@ -170,7 +170,10 @@
 }
 
 - (void)addPhoto{
-    
+    if([self.photoArray count] >= 9){
+        [ProgressHUD showHintText:@"不能超过9张图"];
+        return;
+    }
     __weak typeof(self) wself = self;
     LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:@[@"拍照", @"从手机相册选择"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
     [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
@@ -182,15 +185,10 @@
     [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"eeeeee"]];
     [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger position) {
         if(position == 0){
-            if([wself.photoArray count] >= 9){
-                [ProgressHUD showHintText:@"不能超过9张图"];
-            }
-            else{
-                UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-                [imagePicker setDelegate:wself];
-                [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-                [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
-            }
+            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+            [imagePicker setDelegate:wself];
+            [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+            [CurrentROOTNavigationVC presentViewController:imagePicker animated:YES completion:nil];
         }
         else{
             DNImagePickerController *imagePicker = [[DNImagePickerController alloc] init];

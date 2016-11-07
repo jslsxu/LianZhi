@@ -24,6 +24,7 @@
 @end
 
 @interface HomeworkRecordItemCell : MGSwipeTableCell{
+    UIView*         _redDot;
     UILabel*        _titleLabel;
     UILabel*        _timeLabel;
     UILabel*        _stateLabel;

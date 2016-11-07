@@ -57,6 +57,7 @@
     _datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, toolView.bottom, viewParent.width, 0)];
     [_datePicker setMinimumDate:[NSDate date]];
     [_datePicker setDatePickerMode:UIDatePickerModeDateAndTime];
+    [_datePicker setBackgroundColor:[UIColor colorWithHexString:@"eeeeee"]];
     [viewParent addSubview:_datePicker];
     [viewParent setHeight:36 + _datePicker.height];
 }

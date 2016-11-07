@@ -18,6 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"作业预览";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(send)];
     [self.view addSubview:[self detailView]];
 }
 
@@ -53,6 +54,12 @@
     }
     [_detailView setHomeworkItem:self.homeworkItem];
     return _detailView;
+}
+
+- (void)send{
+    if(self.sendCallback){
+        self.sendCallback();
+    }
 }
 
 - (void)didReceiveMemoryWarning {

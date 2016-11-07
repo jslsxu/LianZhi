@@ -31,4 +31,5 @@
 
 @interface NotificationVoiceView : NotificationContentBaseView
 @property (nonatomic, strong)NSArray *voiceArray;
+@property (nonatomic, assign)BOOL    editDisable;
 @end

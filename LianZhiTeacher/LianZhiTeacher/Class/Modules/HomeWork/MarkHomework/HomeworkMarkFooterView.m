@@ -7,6 +7,7 @@
 //
 
 #import "HomeworkMarkFooterView.h"
+
 static MarkType currentMarkType = MarkTypeNone;
 
 @interface HomeworkMarkFooterView ()<UITextFieldDelegate>
@@ -25,20 +26,33 @@ static MarkType currentMarkType = MarkTypeNone;
         _rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_rightButton setFrame:CGRectMake(10, 0, 50, 50)];
         [_rightButton setImage:[UIImage imageNamed:@"homeworkRightButton"] forState:UIControlStateNormal];
+        [_rightButton setImage:[UIImage imageNamed:@"homeworkRightButtonSelected"] forState:UIControlStateSelected];
         [_rightButton addTarget:self action:@selector(touchRight) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_rightButton];
         
         _wrongButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_wrongButton setFrame:CGRectMake(_rightButton.right, 0, 50, 50)];
         [_wrongButton setImage:[UIImage imageNamed:@"homeworkWrongButton"] forState:UIControlStateNormal];
+        [_wrongButton setImage:[UIImage imageNamed:@"homeworkWrongButtonSelected"] forState:UIControlStateSelected];
         [_wrongButton addTarget:self action:@selector(touchWrong) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_wrongButton];
         
         _halfRightButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_halfRightButton setFrame:CGRectMake(_wrongButton.right, 0, 50, 50)];
         [_halfRightButton setImage:[UIImage imageNamed:@"homeworkHalfButton"] forState:UIControlStateNormal];
+        [_halfRightButton setImage:[UIImage imageNamed:@"homeworkHalfButtonSelected"] forState:UIControlStateSelected];
         [_halfRightButton addTarget:self action:@selector(touchHalfRight) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_halfRightButton];
+        
+        UILabel*  operationLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [operationLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
+        [operationLabel setFont:[UIFont systemFontOfSize:12]];
+        [operationLabel setNumberOfLines:0];
+        [operationLabel setWidth:self.width - 10 - _halfRightButton.right - 10];
+        [operationLabel setText:@"选中左侧图标后，可在图上直接点击"];
+        [operationLabel sizeToFit];
+        [operationLabel setOrigin:CGPointMake(self.width - 10 - operationLabel.width, _halfRightButton.centerY - operationLabel.height / 2)];
+        [self addSubview:operationLabel];
         
         UILabel* hintLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [hintLabel setText:@"作业评语(20字):"];
@@ -69,17 +83,15 @@ static MarkType currentMarkType = MarkTypeNone;
         [_textField setReturnKeyType:UIReturnKeyDone];
         [_textField setDelegate:self];
         [self addSubview:_textField];
-        
-        __weak typeof(self) wself = self;
-        [RACObserve(_textField, text) subscribeNext:^(id x) {
-            [wself.teacherMark setComment:wself.textField.text];
-        }];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChanged:) name:UITextFieldTextDidChangeNotification object:_textField];
     }
     return self;
 }
 
 - (void)setTeacherMark:(HomeworkTeacherMark *)teacherMark{
     _teacherMark = teacherMark;
+    [self clearMark];
     [_textField setText:_teacherMark.comment];
 }
 
@@ -89,18 +101,27 @@ static MarkType currentMarkType = MarkTypeNone;
 
 - (void)clearMark{
     currentMarkType = MarkTypeNone;
+    _rightButton.selected = NO;
+    _wrongButton.selected = NO;
+    _halfRightButton.selected = NO;
 }
 
 - (void)touchRight{
+    [self clearMark];
     currentMarkType = MarkTypeRight;
+    _rightButton.selected = YES;
 }
 
 - (void)touchWrong{
+    [self clearMark];
     currentMarkType = MarkTypeWrong;
+    _wrongButton.selected = YES;
 }
 
 - (void)touchHalfRight{
+    [self clearMark];
     currentMarkType = MarkTypeHalfRight;
+    _halfRightButton.selected = YES;
 }
 
 - (NSString *)comment{
@@ -122,6 +143,15 @@ static MarkType currentMarkType = MarkTypeNone;
     [_textField setText:comment];
 }
 
+- (void)textFieldDidChanged:(NSNotification *)notification{
+    if(notification.object == self.textField){
+        NSString *text = [_textField text];
+        if([text length] > 20){
+            [_textField setText:[text substringToIndex:20]];
+        }
+    }
+}
+
 #pragma mark - UITextFieldDelegate
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     if([string isEqualToString:@"\n"]){
@@ -131,4 +161,7 @@ static MarkType currentMarkType = MarkTypeNone;
     return true;
 }
 
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    
+}
 @end

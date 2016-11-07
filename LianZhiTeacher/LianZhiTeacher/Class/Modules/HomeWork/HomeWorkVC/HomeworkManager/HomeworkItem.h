@@ -23,7 +23,6 @@ typedef NS_ENUM(NSInteger, HomeworkStudentStatus){
 @property (nonatomic, assign)BOOL unread_t;
 @property (nonatomic, strong)HomeworkStudentAnswer* s_answer;
 @property (nonatomic, copy)NSString*        s_answer_time;
-@property (nonatomic, copy)NSString*        mark_detail;
 @end
 
 @interface HomeworkClassStatus : TNBaseObject
@@ -62,6 +61,7 @@ typedef NS_ENUM(NSInteger, HomeworkStudentStatus){
 @property (nonatomic, strong)NSArray<PhotoItem *>*  pics;
 @property (nonatomic, copy)NSString*    words;
 @property (nonatomic, strong)HomeworkItemAnswer*   answer;
+@property (nonatomic, assign)BOOL   unread;
 - (BOOL)hasImage;
 - (BOOL)hasAudio;
 @end

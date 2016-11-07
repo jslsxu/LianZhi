@@ -54,7 +54,12 @@
 - (void)setSendEntity:(HomeWorkEntity *)sendEntity{
     _sendEntity = sendEntity;
     [_titleLabel setFrame:CGRectMake(12, 15, _progressView.left - 5 - 12, 20)];
-    [_titleLabel setText:_sendEntity.words];
+    if([_sendEntity.words length] > 0){
+        [_titleLabel setText:_sendEntity.words];
+    }
+    else{
+        [_titleLabel setText:@"作业练习"];
+    }
     [_sepLine setFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
     [_progressView setFProgress:_sendEntity.uploadProgress];
     [RACObserve(_sendEntity, uploadProgress) subscribeNext:^(id x) {
@@ -89,6 +94,15 @@
     if(self){
         [self setSize:CGSizeMake(kScreenWidth, 70)];
         [self setBackgroundColor:[UIColor whiteColor]];
+        
+        _redDot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 4)];
+        [_redDot setOrigin:CGPointMake(4, 25 - 2)];
+        [_redDot setBackgroundColor:[UIColor colorWithHexString:@"E00909"]];
+        [_redDot.layer setCornerRadius:2];
+        [_redDot.layer setMasksToBounds:YES];
+        [_redDot setHidden:YES];
+        [self.contentView addSubview:_redDot];
+        
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_titleLabel setFont:[UIFont systemFontOfSize:14]];
         [_titleLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
@@ -140,7 +154,7 @@
 
 - (void)setHomeworkItem:(HomeworkItem *)homeworkItem{
     _homeworkItem = homeworkItem;
-    
+    [_redDot setHidden:!_homeworkItem.unread];
     CGFloat spaceXEnd = self.width - 10;
     //    if(_notificationItem.is_sent){
     [_delayImageView setHidden:YES];

@@ -30,6 +30,13 @@
         [_titleLabel setFont:[UIFont systemFontOfSize:14]];
         [self.contentView addSubview:_titleLabel];
         
+        _redDot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 4)];
+        [_redDot setBackgroundColor:[UIColor colorWithHexString:@"e00909"]];
+        [_redDot.layer setCornerRadius:2];
+        [_redDot.layer setMasksToBounds:YES];
+        [_redDot setHidden:YES];
+        [self.contentView addSubview:_redDot];
+        
         _stateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [_stateLabel setFont:[UIFont systemFontOfSize:12]];
         [_stateLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
@@ -83,6 +90,14 @@
     [_titleLabel sizeToFit];
     [_titleLabel setOrigin:CGPointMake(_logoView.right + 8, _logoView.top)];
     
+    BOOL unread_t = NO;
+    for (HomeworkStudentInfo *studentInfo in classInfo.students) {
+        if(studentInfo.unread_t){
+            unread_t = YES;
+        }
+    }
+    [_redDot setHidden:!unread_t];
+    [_redDot setCenter:CGPointMake(_titleLabel.right + 10, _titleLabel.centerY)];
     
     NSMutableAttributedString *stateStr = [[NSMutableAttributedString alloc] initWithString:@"发送:"];
     [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_classInfo.send) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
@@ -123,6 +138,13 @@
         //        [_stateLabel setHidden:YES];
         [self addSubview:_stateLabel];
         
+        _redDot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 4)];
+        [_redDot setBackgroundColor:[UIColor colorWithHexString:@"e00909"]];
+        [_redDot.layer setCornerRadius:2];
+        [_redDot.layer setMasksToBounds:YES];
+        [_redDot setHidden:YES];
+        [self addSubview:_redDot];
+        
         _mobileImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"call_telephone"]];
         [_mobileImageView setOrigin:CGPointMake(self.width - 10 - _mobileImageView.width, (56 - _mobileImageView.height) / 2)];
         [_mobileImageView setHidden:YES];
@@ -147,6 +169,8 @@
     [_titleLabel setText:_userInfo.student.name];
     [_titleLabel sizeToFit];
     [_titleLabel setOrigin:CGPointMake(_avatarView.right + 8, (56 - _titleLabel.height) / 2)];
+    [_redDot setHidden:!_userInfo.unread_t];
+    [_redDot setCenter:CGPointMake(_titleLabel.right + 10, 56 / 2)];
     [_mobileImageView setHidden:YES];
     [_rightArrow setHidden:YES];
     [_stateLabel setHidden:NO];
@@ -301,7 +325,7 @@
 
 - (void)markHomework{
     if([self.homeworkItem etype]){
-        NSArray *homeworkArray = [self studentHomeworkArray];
+        NSArray *homeworkArray = [self studentWairMarkHomeworkArray];
         if([homeworkArray count] > 0){
             MarkHomeworkVC *markVC = [[MarkHomeworkVC alloc] init];
             [markVC setHomeworkItem:self.homeworkItem];
@@ -367,15 +391,25 @@
 - (void)notificationClass:(HomeworkClassStatus *)classInfo{
     if(classInfo.send_notice){
         __weak typeof(self) wself = self;
-        NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        [params setValue:self.homeworkItem.eid forKey:@"eid"];
-        [params setValue:classInfo.classID forKey:@"class_ids"];
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/send_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-            classInfo.send_notice = NO;
-            [wself.tableView reloadData];
-        } fail:^(NSString *errMsg) {
-            [ProgressHUD showHintText:errMsg];
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"根据您所选的班级，通过APP通知和短信的形式，提醒未回复作业的学生家长尽快回复。1小时之内可以提醒一次。" style:LGAlertViewStyleAlert buttonTitles:@[@"提醒"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+        [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setButtonsTitleColor:kCommonTeacherTintColor];
+        [alertView setCancelButtonTitleColor:kCommonTeacherTintColor];
+        [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+            [params setValue:wself.homeworkItem.eid forKey:@"eid"];
+            [params setValue:classInfo.classID forKey:@"class_ids"];
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/send_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:wself completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                classInfo.send_notice = NO;
+                [wself.tableView reloadData];
+            } fail:^(NSString *errMsg) {
+                [ProgressHUD showHintText:errMsg];
+            }];
         }];
+        [alertView showAnimated:YES completionHandler:nil];
+        
     }
     else{
         LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"在短时间内不可以重复提醒" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
@@ -389,6 +423,21 @@
     NSMutableArray *homeworkArray = [NSMutableArray array];
     for (HomeworkClassStatus *classStatus in self.targetArray) {
         for (HomeworkStudentInfo *studentInfo in classStatus.students) {
+            if(studentInfo.status == HomeworkStudentStatusWaitMark || studentInfo.status == HomeworkStudentStatusHasMark){
+                [homeworkArray addObject:studentInfo];
+            }
+        }
+    }
+    if([homeworkArray count] > 0){
+        return homeworkArray;
+    }
+    return nil;
+}
+
+- (NSArray *)studentWairMarkHomeworkArray{
+    NSMutableArray *homeworkArray = [NSMutableArray array];
+    for (HomeworkClassStatus *classStatus in self.targetArray) {
+        for (HomeworkStudentInfo *studentInfo in classStatus.students) {
             if(studentInfo.status == HomeworkStudentStatusWaitMark){
                 [homeworkArray addObject:studentInfo];
             }
@@ -399,6 +448,7 @@
     }
     return nil;
 }
+
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -485,7 +535,7 @@
             [alertView showAnimated:YES completionHandler:nil];
         }
     }
-    else if( studentInfo.status == HomeworkStudentStatusWaitMark){
+    else if( studentInfo.status == HomeworkStudentStatusWaitMark || studentInfo.status == HomeworkStudentStatusHasMark){
         if([self.homeworkItem etype]){
             NSArray *homeworkArray = [self studentHomeworkArray];
             NSInteger index = [homeworkArray indexOfObject:studentInfo];
