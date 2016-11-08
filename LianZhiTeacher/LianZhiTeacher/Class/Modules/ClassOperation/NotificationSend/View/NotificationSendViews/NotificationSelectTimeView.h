@@ -14,5 +14,5 @@
     UIDatePicker*   _datePicker;
 }
 @property(nonatomic, copy)void (^completion)(NSInteger timeInterval);
-+ (void)showWithCompletion:(void (^)(NSInteger timeInterval))completion;
++ (void)showWithCompletion:(void (^)(NSInteger timeInterval))completion defaultDate:(NSDate *)date;
 @end

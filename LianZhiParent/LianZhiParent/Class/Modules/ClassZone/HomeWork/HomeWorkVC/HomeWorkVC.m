@@ -13,6 +13,7 @@
 #import "HomeWorkCell.h"
 @interface HomeWorkVC ()<CalendarDelegate>
 @property (nonatomic, strong)Calendar *calendar;
+@property (nonatomic, strong)MBProgressHUD* hud;
 @end
 
 @implementation HomeWorkVC
@@ -39,6 +40,7 @@
     [self bindTableCell:@"HomeWorkCell" tableModel:@"HomeworkListModel"];
     [self setSupportPullUp:YES];
     [self setSupportPullDown:YES];
+    [self loadCache];
     [self requestData:REQUEST_REFRESH];
 }
 
@@ -64,13 +66,14 @@
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         [params setValue:wself.classID forKey:@"class_id"];
         [params setValue:sdate forKey:@"sdate"];
-        NSString *cachePath = [self cacheFilePath];
+        NSString *cachePath = [wself cacheFilePath];
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:NO];
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/pclear" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:wself completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             [hud hide:NO];
             [wself.tableViewModel clear];
             [[NSFileManager defaultManager] removeItemAtPath:cachePath error:nil];
             [wself.tableView reloadData];
+            [wself requestData:REQUEST_REFRESH];
         } fail:^(NSString *errMsg) {
             [hud hide:NO];
         }];
@@ -78,11 +81,44 @@
     [alertView showAnimated:YES completionHandler:nil];
 }
 
+- (void)requestUnread{
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    [params setValue:self.classID forKey:@"class_id"];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    [params setValue:[dateFormatter stringFromDate:self.calendar.currentSelectedDate] forKey:@"sdate"];
+    NSDateFormatter *dateFormmater = [[NSDateFormatter alloc] init];
+    [dateFormmater setDateFormat:@"yyyy-MM-dd"];
+    NSDate *endDate = [NSDate date];
+    NSDate *startDate = [endDate dateByAddingDays:-90];
+    NSString *fromDateStr = [dateFormatter stringFromDate:startDate];
+    NSString *endDateStr = [dateFormatter stringFromDate:endDate];
+    [params setValue:fromDateStr forKey:@"from_date"];
+    [params setValue:endDateStr forKey:@"end_date"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/month_unread" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        
+    } fail:^(NSString *errMsg) {
+        
+    }];
+}
+
 - (void)requestData:(REQUEST_TYPE)requestType{
     [super requestData:requestType];
     HomeworkListModel *model = (HomeworkListModel *)self.tableViewModel;
     [model setDate:[self.calendar currentSelectedDate]];
     NSLog(@"date is %@",model.date);
+//    [self requestUnread];
+}
+
+- (void)loadCache{
+    if([self supportCache])//支持缓存，先出缓存中读取数据
+    {
+        NSData *data = [NSData dataWithContentsOfFile:[self cacheFilePath]];
+        if(data.length > 0){
+            self.tableViewModel = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+            [self.tableView reloadData];
+        }
+    }
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType{
@@ -94,6 +130,14 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     [params setValue:[dateFormatter stringFromDate:self.calendar.currentSelectedDate] forKey:@"sdate"];
+    NSDateFormatter *dateFormmater = [[NSDateFormatter alloc] init];
+    [dateFormmater setDateFormat:@"yyyy-MM-dd"];
+    NSDate *endDate = [NSDate date];
+    NSDate *startDate = [endDate dateByAddingDays:-90];
+    NSString *fromDateStr = [dateFormatter stringFromDate:startDate];
+    NSString *endDateStr = [dateFormatter stringFromDate:endDate];
+    [params setValue:fromDateStr forKey:@"from_date"];
+    [params setValue:endDateStr forKey:@"end_date"];
     [task setParams:params];
     return task;
 }
@@ -129,6 +173,21 @@
         }];
         [alertView showAnimated:YES completionHandler:nil];
     }];
+}
+
+- (void)TNBaseTableViewControllerRequestStart{
+    self.hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    
+}
+
+- (void)TNBaseTableViewControllerRequestSuccess{
+    [self.hud hide:NO];
+    HomeworkListModel *listModel = (HomeworkListModel *)self.tableViewModel;
+    [self.calendar setUnreadDays:listModel.unread_days];
+}
+
+- (void)TNBaseTableViewControllerRequestFailedWithError:(NSString *)errMsg{
+    [self.hud hide:NO];
 }
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{

@@ -27,9 +27,16 @@
         _redDot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 4)];
         [_redDot.layer setCornerRadius:2];
         [_redDot.layer setMasksToBounds:YES];
-        [_redDot setBackgroundColor:kCommonParentTintColor];
+        [_redDot setBackgroundColor:[UIColor colorWithHexString:@"e00909"]];
         [_redDot setHidden:YES];
         [self addSubview:_redDot];
+        
+        _greenDot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 4)];
+        [_greenDot.layer setCornerRadius:2];
+        [_greenDot.layer setMasksToBounds:YES];
+        [_greenDot setBackgroundColor:kCommonParentTintColor];
+        [_greenDot setHidden:YES];
+        [self addSubview:_greenDot];
         
         CGFloat itemWidth = MIN(self.width, self.height);
         _curDateIndicator = [[UIView alloc] initWithFrame:CGRectMake((self.width - itemWidth) / 2, (self.height - itemWidth) / 2, itemWidth, itemWidth)];
@@ -48,8 +55,8 @@
     [_dayLabel setText:kStringFromValue(date.day)];
     [_dayLabel sizeToFit];
     [_dayLabel setCenter:CGPointMake(self.width / 2, self.height / 2)];
-    [_redDot setHidden:![date isToday]];
-    [_redDot setCenter:CGPointMake(_dayLabel.centerX, _dayLabel.bottom + 2)];
+    [_greenDot setHidden:![date isToday]];
+    [_greenDot setCenter:CGPointMake(_dayLabel.centerX, _dayLabel.bottom + 2)];
 }
 
 - (void)setIsChosen:(BOOL)isChosen{
@@ -60,6 +67,12 @@
 - (void)setIsCurMonth:(BOOL)isCurMonth{
     _isCurMonth = isCurMonth;
     [_dayLabel setTextColor:_isCurMonth ? [UIColor colorWithHexString:@"222222"] : [UIColor colorWithHexString:@"cccccc"]];
+}
+
+- (void)setHasNew:(BOOL)hasNew{
+    _hasNew = hasNew;
+    [_redDot setHidden:!_hasNew];
+    [_redDot setOrigin:CGPointMake(_dayLabel.right + 2, _dayLabel.top)];
 }
 
 @end
@@ -172,6 +185,7 @@
     }
 }
 
+
 - (void)setDate:(NSDate *)date{
     _date = date;
     [self updateSubviews:YES];
@@ -180,6 +194,11 @@
 - (void)setCalendarType:(CalendarType)calendarType{
     _calendarType = calendarType;
     [self updateSubviews:YES];
+}
+
+- (void)setUnreadDays:(NSArray *)unreadDays{
+    _unreadDays = unreadDays;
+    [self.collectionView reloadData];
 }
 
 - (NSInteger)numOfWeek{
@@ -267,6 +286,20 @@
     }
 }
 
+- (BOOL)hasNewForDate:(NSDate *)date{
+    if([self.unreadDays count] > 0){
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *dateStr = [dateFormatter stringFromDate:date];
+        for (NSString *dayStr in self.unreadDays) {
+            if([dateStr isEqualToString:dayStr]){
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
+
 #pragma mark - UICollectionViewDelegate
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     if(self.calendarType == CalendarTypeWeek){
@@ -284,6 +317,7 @@
     [cell setDate:date];
     [cell setIsChosen:date.month == self.selectedDate.month && date.day == self.selectedDate.day && date.year == self.selectedDate.year];
     [cell setIsCurMonth:date.month == self.date.month];
+    [cell setHasNew:[self hasNewForDate:date]];
     return cell;
 }
 

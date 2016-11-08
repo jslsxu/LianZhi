@@ -109,12 +109,12 @@
 
 - (void)setCanPre:(BOOL)canPre{
     _canPre = canPre;
-    [_preButton setEnabled:_canPre];
+    [_preButton setHidden:!_canPre];
 }
 
 - (void)setCanNext:(BOOL)canNext{
     _canNext = canNext;
-    [_nextButton setEnabled:_canNext];
+    [_nextButton setHidden:!_canNext];
 }
 
 - (void)onPre{

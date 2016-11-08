@@ -233,6 +233,15 @@ DNImagePickerControllerDelegate>
         [ProgressHUD showHintText:@"文字、语音或者图片，必须选择一种"];
         return NO;
     }
+    if(self.homeWorkEntity.reply_close && [self.homeWorkEntity.reply_close_ctime length] > 0){
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSDate *endDate = [dateFormatter dateFromString:self.homeWorkEntity.reply_close_ctime];
+        if([[NSDate date] timeIntervalSinceDate:endDate] >= 0){
+            [ProgressHUD showHintText:@"截止时间不能早于当前时间"];
+            return NO;
+        }
+    }
     return YES;
 }
 
@@ -316,6 +325,7 @@ DNImagePickerControllerDelegate>
             @strongify(self)
             self.homeWorkEntity.etype = on;
             [self.commentView setMaxWordsNum:[self.homeWorkEntity maxCommentWordsNum]];
+            [self.settingView setHomeworkEntity:self.homeWorkEntity];
         }];
     }
     return _replySwitchView;
@@ -450,6 +460,7 @@ DNImagePickerControllerDelegate>
     }];
     [self.navigationController pushViewController:classSelectVC animated:YES];
 }
+
 
 - (void)deleteClassInfo:(ClassInfo *)classInfo{
     [self.homeWorkEntity removeTarget:classInfo];

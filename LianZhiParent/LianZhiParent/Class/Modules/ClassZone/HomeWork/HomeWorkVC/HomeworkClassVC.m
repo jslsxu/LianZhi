@@ -66,7 +66,7 @@
 
 - (void)setData:(TNModelItem *)modelItem{
     HomeworkClassItem *classItem = (HomeworkClassItem *)modelItem;
-    [_logoView sd_setImageWithURL:[NSURL URLWithString:classItem.class_logo] placeholderImage:nil];
+    [_logoView sd_setImageWithURL:[NSURL URLWithString:classItem.class_logo]];
     [_classNameLabel setText:classItem.class_name];
     [_classNameLabel sizeToFit];
     [_classNameLabel setOrigin:CGPointMake(_logoView.right + 10, (60 - _classNameLabel.height) / 2)];

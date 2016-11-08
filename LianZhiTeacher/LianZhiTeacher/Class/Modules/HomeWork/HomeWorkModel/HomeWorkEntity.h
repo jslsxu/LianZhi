@@ -25,7 +25,6 @@
 @property(nonatomic, strong)NSMutableArray*     voiceArray;
 @property(nonatomic, strong)NSMutableArray*     imageArray;
 @property(nonatomic, strong)HomeworkExplainEntity*  explainEntity;
-@property(nonatomic, strong)UserInfo*           authorUser;
 @property(nonatomic, assign)CGFloat             uploadProgress;
 + (HomeWorkEntity *)sendEntityWithHomeworkItem:(HomeworkItem *)homeworkItem;
 - (void)updateClientID;

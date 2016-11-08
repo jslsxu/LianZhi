@@ -15,8 +15,8 @@
 @property (nonatomic, strong)UISegmentedControl*    segCtrl;
 @property (nonatomic, strong)HomeworkDetailView*    homeworkDetailView;
 @property (nonatomic, strong)HomeworkFinishView*    homeworkFinishView;
-@property (nonatomic, strong)HomeworkStudentAnswer* reply;          //作业回复
-@property (nonatomic, strong)HomeworkTeacherMark*   teacherMark;    //作业批阅
+//@property (nonatomic, strong)HomeworkStudentAnswer* reply;          //作业回复
+//@property (nonatomic, strong)HomeworkTeacherMark*   teacherMark;    //作业批阅
 @property (nonatomic, strong)UIButton*              moreButton;
 @end
 
@@ -36,6 +36,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self loadCache];
     [self requestHomeworkDetail];
 }
 
@@ -73,6 +74,7 @@
 }
 
 - (void)onSegValueChanged{
+    [self saveHomeworkDetail];
     NSInteger selectedIndex = self.segCtrl.selectedSegmentIndex;
     [self.homeworkDetailView setHidden:selectedIndex != 0];
     [self.homeworkFinishView setHidden:selectedIndex != 1];
@@ -103,6 +105,7 @@
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         HomeworkItem *homeworkItem = [HomeworkItem nh_modelWithJson:responseObject.data];
         [wself setHomeworkItem:homeworkItem];
+        [wself saveHomeworkDetail];
         if(wself.homeworkReadCallback){
             wself.homeworkReadCallback(wself.homeworkItem.eid);
         }
@@ -155,6 +158,7 @@
             if(wself.deleteCallback){
                 wself.deleteCallback(wself.homeworkItem.eid);
             }
+            [wself cacheFilePath];
             [wself.navigationController popViewControllerAnimated:YES];
         } fail:^(NSString *errMsg) {
             
@@ -162,6 +166,38 @@
     }];
     [alertView showAnimated:YES completionHandler:nil];
 
+}
+
+- (void)saveHomeworkDetail{
+    if(self.homeworkItem){
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.homeworkItem];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            BOOL success = [data writeToFile:[self cacheFilePath] atomically:YES];
+            if(success)
+                DLOG(@"save success");
+        });
+    }
+}
+
+- (void)loadCache{
+    NSData *data = [NSData dataWithContentsOfFile:[self cacheFilePath]];
+    if(data.length > 0){
+        self.homeworkItem = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    }
+}
+
+- (void)removeCache{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[NSFileManager defaultManager] removeItemAtPath:[self cacheFilePath] error:nil];
+    });
+}
+
+- (BOOL)supportCache{
+    return YES;
+}
+
+- (NSString *)cacheFileName{
+    return [NSString stringWithFormat:@"%@_%@",[self class],self.eid];
 }
 
 - (void)didReceiveMemoryWarning {

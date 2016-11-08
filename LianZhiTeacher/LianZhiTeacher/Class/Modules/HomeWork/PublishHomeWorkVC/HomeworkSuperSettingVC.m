@@ -76,7 +76,7 @@
         [self.homeworkEntity setReply_close:YES];
         NSDate *date = [[NSDate date] dateByAddingDays:1];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd 10:00"];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd 10:00:00"];
         NSString *endTime = [dateFormatter stringFromDate:date];
         [self.homeworkEntity setReply_close_ctime:endTime];
         [self.endTimeLabel setText:endTime];
@@ -104,6 +104,7 @@
         [_replyEndSwitch setOnTintColor:kCommonTeacherTintColor];
         [_replyEndSwitch setOn:self.homeworkEntity.reply_close];
         [_replyEndSwitch addTarget:self action:@selector(onReplyEndSwitchChanged) forControlEvents:UIControlEventValueChanged];
+        [_replyEndSwitch setEnabled:self.homeworkEntity.etype];
         [_replyEndSwitch setTransform:CGAffineTransformMakeScale(0.8, 0.8)];
     }
     return _replyEndSwitch;
@@ -151,18 +152,23 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.row == 2){
         if(self.replyEndSwitch.isOn){
+            
+            NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
+            [formmater setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            NSDate *originalDate = nil;
+            if([self.homeworkEntity.reply_close_ctime length] > 0){
+                originalDate = [formmater dateFromString:self.homeworkEntity.reply_close_ctime];
+            }
             __weak typeof(self) wself = self;
             [NotificationSelectTimeView showWithCompletion:^(NSInteger timeInterval) {
                 NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeInterval];
-                NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
-                [formmater setDateFormat:@"yyyy-MM-dd HH:mm"];
                 NSString *dateString = [formmater stringFromDate:date];
                 [wself.endTimeLabel setText:dateString];
                 [wself.homeworkEntity setReply_close_ctime:dateString];
                 if(wself.homeworkSettingChanged){
                     wself.homeworkSettingChanged();
                 }
-            }];
+            } defaultDate:originalDate];
         }
     }
 }

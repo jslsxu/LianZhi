@@ -10,9 +10,10 @@
 
 @implementation NotificationSelectTimeView
 
-+ (void)showWithCompletion:(void (^)(NSInteger timeInterval))completion{
++ (void)showWithCompletion:(void (^)(NSInteger timeInterval))completion defaultDate:(NSDate *)date{
     NotificationSelectTimeView *selectTimeView = [[NotificationSelectTimeView alloc] init];
     [selectTimeView setCompletion:completion];
+    [selectTimeView setDate:date];
     [selectTimeView show];
 }
 
@@ -54,12 +55,20 @@
     
     [viewParent addSubview:toolView];
     
-    _datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, toolView.bottom, viewParent.width, 0)];
+    _datePicker = [[UIDatePicker alloc] init];
+    [_datePicker setWidth:viewParent.width];
+    [_datePicker setY:toolView.bottom];
     [_datePicker setMinimumDate:[NSDate date]];
     [_datePicker setDatePickerMode:UIDatePickerModeDateAndTime];
     [_datePicker setBackgroundColor:[UIColor colorWithHexString:@"eeeeee"]];
     [viewParent addSubview:_datePicker];
     [viewParent setHeight:36 + _datePicker.height];
+}
+
+- (void)setDate:(NSDate *)date{
+    if([date timeIntervalSinceDate:_datePicker.minimumDate] >= 0){
+        [_datePicker setDate:date];
+    }
 }
 
 - (void)confirm{

@@ -55,6 +55,7 @@
             [_datePicker setDatePickerMode:UIDatePickerModeDate];
         else
             [_datePicker setDatePickerMode:UIDatePickerModeTime];
+        [_datePicker setWidth:_contentView.width];
         [_datePicker setY:36];
         [_contentView addSubview:_datePicker];
         [_contentView setHeight:36 + _datePicker.height];

@@ -29,7 +29,6 @@
         self.targets = [NSMutableArray array];
         self.voiceArray = [NSMutableArray array];
         self.imageArray = [NSMutableArray array];
-        self.authorUser = [UserCenter sharedInstance].userInfo;
         [self updateClientID];
         self.createTime = [[NSDate date] timeIntervalSince1970];
         self.sendSms = setting.sendSms;
@@ -38,7 +37,7 @@
         if([self.reply_close_ctime length] == 0){
             NSDate *date = [[NSDate date] dateByAddingDays:1];
             NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd 10:00"];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd 10:00:00"];
             NSString *endTime = [dateFormatter stringFromDate:date];
             self.reply_close_ctime = endTime;
         }
@@ -52,7 +51,6 @@
     [homeworkEntity setCount:homeworkItem.enums];
     [homeworkEntity setEtype:homeworkItem.etype];
     [homeworkEntity setCourse_name:homeworkItem.course_name];
-    [homeworkEntity setAuthorUser:nil];
     if(homeworkItem.voice){
         [homeworkEntity setVoiceArray:[NSMutableArray arrayWithObject:homeworkItem.voice]];
     }
@@ -63,7 +61,7 @@
     if(homeworkEntity.reply_close){
         NSDate *date = [[NSDate date] dateByAddingDays:1];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd 10:00"];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd 10:00:00"];
         NSString *endTime = [dateFormatter stringFromDate:date];
         [homeworkEntity setReply_close_ctime:endTime];
     }
@@ -89,6 +87,14 @@
 
 - (void)updateClientID{
     self.clientID = [NSString stringWithFormat:@"%zd_%zd",[[NSDate date] timeIntervalSince1970], arc4random() % 1000];
+}
+
+- (void)setEtype:(BOOL)etype{
+    _etype = etype;
+    if(!_etype){//不能回复
+        self.reply_close = NO;
+        self.reply_close_ctime = nil;
+    }
 }
 
 - (NSInteger)maxCommentWordsNum{
@@ -313,10 +319,34 @@
 }
 
 - (BOOL)isSame:(HomeWorkEntity *)object{
+    if(self.course_name.length + object.course_name.length > 0 && ![self.course_name isEqualToString:object.course_name]){
+        return NO;
+    }
+    if(self.count != object.count){
+        return NO;
+    }
+    if(self.reply_close != object.reply_close){
+        return NO;
+    }
+    else if(self.reply_close_ctime.length + object.reply_close_ctime.length > 0 && ![self.reply_close_ctime isEqualToString:object.reply_close_ctime]){
+        return NO;
+    }
+    
+    if(self.sendSms != object.sendSms){
+        return NO;
+    }
+    
+    if(self.explainEntity && object.explainEntity && ![self.explainEntity isSame:object.explainEntity]){
+        return NO;
+    }
+    
     if(self.words.length + object.words.length > 0 && ![self.words isEqualToString:object.words]){
         return NO;
     }
     if(self.etype != object.etype){
+        return NO;
+    }
+    if([self.targets count] != [object.targets count]){
         return NO;
     }
     for (ClassInfo *classInfo in self.targets) {
@@ -330,7 +360,7 @@
             return NO;
         }
     }
-    if(self.voiceArray.count != object.voiceArray.count){
+    if([self.voiceArray count] != [object.voiceArray count]){
         return NO;
     }
     for (AudioItem *audioItem in self.voiceArray) {
@@ -345,7 +375,7 @@
         }
     }
     
-    if(self.imageArray.count != object.imageArray.count){
+    if([self.imageArray count] != [object.imageArray count]){
         return NO;
     }
     

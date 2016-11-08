@@ -14,4 +14,5 @@
 @property(nonatomic, strong)NSMutableArray*     imageArray;
 + (HomeworkExplainEntity *)explainEntityFromAnswer:(HomeworkItemAnswer *)answer;
 - (BOOL)isEmpty;
+- (BOOL)isSame:(HomeworkExplainEntity *)anotherEntity;
 @end

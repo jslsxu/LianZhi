@@ -14,4 +14,5 @@
 @property (nonatomic, strong)HomeworkItem*  homeworkItem;
 @property (nonatomic, strong)NSArray*   homeworkArray;
 @property (nonatomic, assign)NSInteger  curIndex;
+@property (nonatomic, copy)void (^markFinishedCallback)();
 @end

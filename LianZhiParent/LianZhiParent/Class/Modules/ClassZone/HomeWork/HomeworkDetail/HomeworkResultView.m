@@ -55,21 +55,23 @@
     [_scrollView addSubview:nameLabel];
     
     NSMutableAttributedString *rateStr = [[NSMutableAttributedString alloc] initWithString:@"正确率: " attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"666666"]}];
-    if(self.homeworkItem.s_answer.teacherMark){
-        CGFloat rightRate = 0;
+    HomeworkTeacherMark *teacherMark = self.homeworkItem.s_answer.teacherMark;
+    if(teacherMark){
+        CGFloat wrongNum = 0;
         NSInteger totalCount = 0;
-        for (HomeworkMarkItem *markItem in self.homeworkItem.s_answer.teacherMark.marks) {
+        for (HomeworkMarkItem *markItem in teacherMark.marks) {
             for (HomeworkPhotoMark *photoMark in markItem.marks) {
                 totalCount ++;
-                if(photoMark.markType == MarkTypeRight){
-                    rightRate += 1;
+                if(photoMark.markType == MarkTypeWrong){
+                    wrongNum += 1;
                 }
                 else if(photoMark.markType == MarkTypeHalfRight){
-                    rightRate += 0.5;
+                    wrongNum += 0.5;
                 }
             }
         }
-        NSInteger percent = rightRate * 100 / totalCount;
+        CGFloat rightRate = 1 - wrongNum / self.homeworkItem.enums;
+        NSInteger percent = rightRate * 100;
         [rateStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%zd%%", percent] attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
     }
     else{

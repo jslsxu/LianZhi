@@ -37,10 +37,10 @@
         [_moreButton addTarget:self action:@selector(showDescription) forControlEvents:UIControlEventTouchUpInside];
     }
     if(highlighted){
-        [_moreButton setImage:[UIImage imageNamed:@"explainIcon"] forState:UIControlStateNormal];
+        [_moreButton setImage:[UIImage imageNamed:@"settingIconHighlighted"] forState:UIControlStateNormal];
     }
     else{
-        [_moreButton setImage:[UIImage imageNamed:@"noti_detail_more"] forState:UIControlStateNormal];
+        [_moreButton setImage:[UIImage imageNamed:@"settingIconNormal"] forState:UIControlStateNormal];
     }
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.moreButton];
 }
@@ -105,6 +105,10 @@
     if(!_numView){
         _numView = [[NumOperationView alloc] initWithMin:1 max:99];
         [_numView setNum:[[HomeworkSettingManager sharedInstance] getHomeworkSetting].homeworkNum];
+        [_numView setNumChangedCallback:^(NSInteger num) {
+            [[[HomeworkSettingManager sharedInstance] getHomeworkSetting] setHomeworkNum:num];
+            [[HomeworkSettingManager sharedInstance] save];
+        }];
     }
     return _numView;
 }
@@ -114,9 +118,17 @@
     HomeworkSetting *setting = [[HomeworkSettingManager sharedInstance] getHomeworkSetting];
     if(switchCtrl == self.homeworkReplySwitch){
         setting.etype = isOn;
+        if(!setting.etype){
+            [self.timeSwitch setOn:NO];
+            setting.replyEndOn = NO;
+        }
     }
     else if(switchCtrl == self.timeSwitch){
         setting.replyEndOn = isOn;
+        if(setting.replyEndOn){
+            [self.homeworkReplySwitch setOn:YES];
+            setting.etype = YES;
+        }
     }
     else if(switchCtrl == self.smsSwitch){
         setting.sendSms = isOn;

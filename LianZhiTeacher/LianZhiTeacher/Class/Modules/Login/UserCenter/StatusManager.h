@@ -60,7 +60,7 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 @property (nonatomic, strong)NSArray *classNewCommentArray;
 
 @property (nonatomic, assign)NSInteger msgNum;
-@property (nonatomic, assign)NSDictionary*  appExercise;
+@property (nonatomic, strong)NSDictionary*  appExercise;
 @property (nonatomic, strong)NSDictionary *appLeave;
 @property (nonatomic, assign)NSInteger leaveNum;
 - (NSInteger)hasNewForClassFeed;

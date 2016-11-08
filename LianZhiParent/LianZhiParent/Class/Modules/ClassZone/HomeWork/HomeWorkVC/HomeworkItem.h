@@ -28,6 +28,7 @@ extern NSString* const kHomeworkItemChangedNotification;
 @property (nonatomic, strong)AudioItem* voice;
 @property (nonatomic, strong)NSArray<PhotoItem *>* pics;
 @property (nonatomic, copy)NSString*    ctime;
+@property (nonatomic, assign)NSInteger  enums;
 @property (nonatomic, assign)BOOL       reply_close;
 @property (nonatomic, copy)NSString*    reply_close_ctime;
 @property (nonatomic, copy)NSString*    course_name;
@@ -40,4 +41,5 @@ extern NSString* const kHomeworkItemChangedNotification;
 - (BOOL)hasPhoto;
 - (BOOL)hasAudio;
 - (BOOL)canDelete;
+- (BOOL)expired;
 @end

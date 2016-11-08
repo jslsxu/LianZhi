@@ -335,7 +335,7 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
         }
     }
     
-    newCount += [self hasNewExerciseForChildID:[[UserCenter sharedInstance] curChild]];
+    newCount += [self hasNewExerciseForChildID:childID];
     return newCount;
 }
 

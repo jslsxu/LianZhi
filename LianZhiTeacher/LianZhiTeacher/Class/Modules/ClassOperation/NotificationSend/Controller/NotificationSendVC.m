@@ -311,7 +311,7 @@ DNImagePickerControllerDelegate>
             [NotificationSelectTimeView showWithCompletion:^(NSInteger timeInterval) {
                 @strongify(self);
                 [self updateDate:timeInterval];
-            }];
+            } defaultDate:nil];
         }];
         [_timerSendView setSwitchCallback:^(BOOL isOn) {
             @strongify(self);
@@ -320,7 +320,7 @@ DNImagePickerControllerDelegate>
                 [NotificationSelectTimeView showWithCompletion:^(NSInteger timeInterval) {
                     @strongify(self);
                     [self updateDate:timeInterval];
-                }];
+                } defaultDate:nil];
             }
             else{
                 [self updateDate:0];

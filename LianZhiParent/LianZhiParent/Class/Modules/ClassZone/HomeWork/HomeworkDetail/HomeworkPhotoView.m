@@ -35,8 +35,8 @@
         [imageView setContentMode:UIViewContentModeScaleAspectFill];
         [imageView setClipsToBounds:YES];
         [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.big] placeholderImage:nil];
-//        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showPhotoBrowser:)];
-//        [imageView addGestureRecognizer:tapGesture];
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showPhotoBrowser:)];
+        [imageView addGestureRecognizer:tapGesture];
         [self.imageViewArray addObject:imageView];
         [self addSubview:imageView];
         spaceYStart = imageView.bottom + margin;
@@ -45,11 +45,11 @@
     [self setHeight:spaceYStart];
 }
 
-- (void)showPhotoBrowser:(UIView *)sender {
+- (void)showPhotoBrowser:(UITapGestureRecognizer *)sender {
     PBViewController *pbViewController = [PBViewController new];
     pbViewController.pb_dataSource = self;
     pbViewController.pb_delegate = self;
-    pbViewController.pb_startPage = [self.imageViewArray indexOfObject:sender];
+    pbViewController.pb_startPage = [self.imageViewArray indexOfObject:sender.view];
     [CurrentROOTNavigationVC presentViewController:pbViewController animated:YES completion:nil];
 }
 

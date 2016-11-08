@@ -22,17 +22,20 @@ typedef NS_ENUM(NSInteger, CalendarType){
 @interface CalendarDayView : UICollectionViewCell{
     UILabel*    _dayLabel;
     UIView*     _redDot;
+    UIView*     _greenDot;
     UIView*     _curDateIndicator;
 }
 @property (nonatomic, strong)NSDate *date;
 @property (nonatomic, assign)BOOL   isChosen;
 @property (nonatomic, assign)BOOL   isCurMonth;
+@property (nonatomic, assign)BOOL   hasNew;
 @end
 
 @interface Calendar : UIView
 @property (nonatomic, assign)CalendarType calendarType;
 @property (nonatomic, weak)id<CalendarDelegate> delegate;
 @property (nonatomic, strong)NSDate*    date;
+@property (nonatomic, strong)NSArray*   unreadDays;
 - (NSDate *)currentSelectedDate;
 - (instancetype)initWithDate:(NSDate *)date;
 @end

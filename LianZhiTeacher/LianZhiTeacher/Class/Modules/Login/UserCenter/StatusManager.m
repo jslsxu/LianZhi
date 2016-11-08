@@ -69,6 +69,9 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
     if([exerciseWrapper.data isKindOfClass:[NSDictionary class]]){
         self.appExercise = exerciseWrapper.data;
     }
+    else{
+        self.appExercise = nil;
+    }
 
     TNDataWrapper *appLeave = [dataWrapper getDataWrapperForKey:@"app_leave"];
     NSDictionary *originalDic = appLeave.data;
@@ -243,7 +246,7 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
             newCount += commentItem.alertInfo.num;
         }
     }
-    newCount += [self newHomeworkNumForSchool:[UserCenter sharedInstance].curSchool.schoolID];
+    newCount += [self newHomeworkNumForSchool:schoolID];
     
     return newCount;
 }

@@ -9,6 +9,7 @@
 #import "HomeworkDetailView.h"
 #import "NotificationDetailVoiceView.h"
 #import "HomeworkItemAnswerView.h"
+#import "HomeworkPhotoView.h"
 @interface HomeworkDetailView ()
 //@property (nonatomic, strong)AvatarView*    avatarView;
 //@property (nonatomic, strong)UILabel*       nameLabel;
@@ -114,26 +115,14 @@
         }
         
         if([self.homeworkItem hasPhoto]){
-            for (NSInteger i = 0; i < [self.homeworkItem.pics count]; i++) {
-                NSInteger itemWidth = _scrollView.width - margin * 2;
-                PhotoItem *photoItem = [self.homeworkItem.pics objectAtIndex:i];
-                NSInteger itemHeight = itemWidth;
-                if(photoItem.width != 0 && photoItem.height != 0){
-                    itemHeight = itemWidth * photoItem.height / photoItem.width;
-                }
-                UIImageView*    imageView = [[UIImageView alloc] initWithFrame:CGRectMake(margin, spaceYStart, itemWidth, itemHeight)];
-                [imageView setBackgroundColor:[UIColor colorWithHexString:@"eeeeee"]];
-                [imageView setContentMode:UIViewContentModeScaleAspectFill];
-                [imageView setClipsToBounds:YES];
-                [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.big] placeholderImage:nil];
-                [_scrollView addSubview:imageView];
-                
-                spaceYStart = imageView.bottom + margin;
-            }
+            HomeworkPhotoView *photoView = [[HomeworkPhotoView alloc] initWithFrame:CGRectMake(0, spaceYStart, _scrollView.width, 0)];
+            [photoView setPhotoArray:self.homeworkItem.pics];
+            [_scrollView addSubview:photoView];
+            spaceYStart = photoView.bottom + margin;
         }
         
         if(self.homeworkItem.answer){
-            if(self.homeworkItem.s_answer || !self.homeworkItem.etype){
+            if(self.homeworkItem.s_answer || !self.homeworkItem.etype || [self.homeworkItem expired]){
                 self.explainView = [[HomeworkItemAnswerView alloc] initWithFrame:CGRectMake(0, spaceYStart, _scrollView.width, 0)];
                 [self.explainView setAnswer:self.homeworkItem.answer];
                 [_scrollView addSubview:self.explainView];

@@ -63,15 +63,18 @@
 @property (nonatomic, strong)UIButton*      selectButton;
 @property (nonatomic, strong)UILabel*       stateLabel;
 @property (nonatomic, strong)NSMutableArray*    selectedClassArray;
+@property (nonatomic, strong)NSArray*       classArray;
 @end
 
 @implementation ClassSelectVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.classArray = [[UserCenter sharedInstance].curSchool allClasses];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(confirm)];
     self.selectedClassArray = [NSMutableArray arrayWithArray:self.originalClassArray];
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+    [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 44, 0)];
     [self.tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     [self.tableView setDelegate:self];
@@ -104,13 +107,13 @@
 
 - (void)onSelectButtonClicked{
     BOOL selectAll = YES;
-    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes) {
+    for (ClassInfo *classInfo in self.classArray) {
         if(![self containsClass:classInfo]){
             selectAll = NO;
         }
     }
     if(!selectAll){
-        for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes) {
+        for (ClassInfo *classInfo in self.classArray) {
             if(![self containsClass:classInfo]){
                 [self.selectedClassArray addObject:classInfo];
             }
@@ -131,13 +134,14 @@
 }
 
 - (void)updateBottomBar{
+    
     NSInteger selectNum = 0;
-    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes) {
+    for (ClassInfo *classInfo in self.classArray) {
         if([self containsClass:classInfo]){
             selectNum ++;
         }
     }
-    BOOL selectAll = selectNum == [[UserCenter sharedInstance].curSchool.classes count];
+    BOOL selectAll = selectNum == [self.classArray count];
     [self.selectButton setTitle:selectAll ? @"反选" : @"全选" forState:UIControlStateNormal];
     [self.stateLabel setText:[NSString stringWithFormat:@"已选择(%zd)",selectNum]];
 }
@@ -170,7 +174,7 @@
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [[UserCenter sharedInstance].curSchool.classes count];
+    return [self.classArray count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -183,14 +187,14 @@
     if(cell == nil){
         cell = [[ClassSelectCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
     }
-    ClassInfo *classInfo = [[UserCenter sharedInstance].curSchool.classes objectAtIndex:indexPath.row];
+    ClassInfo *classInfo = [self.classArray objectAtIndex:indexPath.row];
     [cell setClassInfo:classInfo];
     [cell setClassSelected:[self containsClass:classInfo]];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    ClassInfo *classInfo = [[UserCenter sharedInstance].curSchool.classes objectAtIndex:indexPath.row];
+    ClassInfo *classInfo = [self.classArray objectAtIndex:indexPath.row];
     if([self containsClass:classInfo]){
         [self removeClassInfo:classInfo];
     }

@@ -53,7 +53,7 @@
         [_moreButton setSize:CGSizeMake(30, 40)];
         [_moreButton addTarget:self action:@selector(onMoreClicked) forControlEvents:UIControlEventTouchUpInside];
     }
-    [_moreButton setImage:[UIImage imageNamed:highlighted ? @"settingIconHighlighted" : @"settingIconNormal"] forState:UIControlStateNormal];
+    [_moreButton setImage:[UIImage imageNamed:highlighted ? @"noti_detail_more_highlighted" : @"noti_detail_more"] forState:UIControlStateNormal];
     UIBarButtonItem *moreItem = [[UIBarButtonItem alloc] initWithCustomView:_moreButton];
     self.navigationItem.rightBarButtonItem = moreItem;
 }

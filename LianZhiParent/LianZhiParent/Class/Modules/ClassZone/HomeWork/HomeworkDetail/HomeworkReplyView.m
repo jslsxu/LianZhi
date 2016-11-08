@@ -109,6 +109,14 @@
 }
 
 - (void)onSend{
+    if([self.homeworkItem expired]){
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:@"超过截止时间，您不能向老师回复作业" style:LGAlertViewStyleAlert buttonTitles:@[@"确定"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+        //            [alertView setButtonsTitleColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView showAnimated:YES completionHandler:nil];
+        return;
+    }
+    
     if([self.photoArray count] == 0){
         [ProgressHUD showHintText:@"请选择照片"];
         return;

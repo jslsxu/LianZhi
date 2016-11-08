@@ -27,6 +27,18 @@
         }
         NSLog(@"date is %@, result is %@",self.date, ctime);
     }
+    TNDataWrapper *unreadWrapper = [data getDataWrapperForKey:@"unread_days"];
+    if(unreadWrapper.count > 0){
+        NSMutableArray *dayArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < unreadWrapper.count; i ++) {
+            NSString *dayStr = [unreadWrapper getStringForIndex:i];
+            [dayArray addObject:dayStr];
+        }
+        self.unread_days = dayArray;
+    }
+    else{
+        self.unread_days = nil;
+    }
     return YES;
 }
 @end

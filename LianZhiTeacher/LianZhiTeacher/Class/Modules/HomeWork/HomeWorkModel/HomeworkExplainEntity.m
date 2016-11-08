@@ -40,4 +40,43 @@
     }
     return explainEntity;
 }
+
+- (BOOL)isSame:(HomeworkExplainEntity *)anotherEntity{
+    if(self.words.length + anotherEntity.words.length > 0 && ![self.words isEqualToString:anotherEntity.words]){
+        return NO;
+    }
+    
+    if(self.voiceArray.count != anotherEntity.voiceArray.count){
+        return NO;
+    }
+    for (AudioItem *audioItem in self.voiceArray) {
+        BOOL isIn = NO;
+        for (AudioItem *audio in anotherEntity.voiceArray) {
+            if([audioItem isSame:audio]){
+                isIn = YES;
+            }
+        }
+        if(!isIn){
+            return NO;
+        }
+    }
+    
+    if(self.imageArray.count != anotherEntity.imageArray.count){
+        return NO;
+    }
+    
+    for (PhotoItem *photoItem in self.imageArray) {
+        BOOL isIn = NO;
+        for (PhotoItem *photo in anotherEntity.imageArray) {
+            if([photoItem isSame:photo]){
+                isIn = YES;
+            }
+        }
+        if(!isIn){
+            return NO;
+        }
+    }
+
+    return YES;
+}
 @end

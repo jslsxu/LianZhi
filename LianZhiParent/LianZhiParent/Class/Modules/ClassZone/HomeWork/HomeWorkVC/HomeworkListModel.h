@@ -10,4 +10,5 @@
 #import "HomeworkItem.h"
 @interface HomeworkListModel : TNListModel
 @property (nonatomic, strong)NSDate* date;
+@property (nonatomic, strong)NSArray*   unread_days;
 @end

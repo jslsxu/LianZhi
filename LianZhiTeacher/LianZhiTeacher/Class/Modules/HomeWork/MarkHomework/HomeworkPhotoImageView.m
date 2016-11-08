@@ -271,10 +271,10 @@
 }
 
 
-- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
-    [self setNeedsLayout];
-    [self layoutIfNeeded];
-}
+//- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+//    [self setNeedsLayout];
+//    [self layoutIfNeeded];
+//}
 
 #pragma mark - Tap Detection
 

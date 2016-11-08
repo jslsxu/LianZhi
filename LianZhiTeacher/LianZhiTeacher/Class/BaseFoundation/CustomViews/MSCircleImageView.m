@@ -61,10 +61,7 @@
 }
 
 - (void)sd_setImageWithURL:(NSURL *)url{
-    [self sd_setImageWithURL:url placeholderImage:nil];
-}
-- (void)sd_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder{
-    [super sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:(@"NoAvatarDefault")]];
+    [self sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:(@"NoAvatarDefault")]];
 }
 @end
 
@@ -81,10 +78,7 @@
 }
 
 - (void)sd_setImageWithURL:(NSURL *)url{
-    [self sd_setImageWithURL:url placeholderImage:nil];
+    [self sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:(@"NoLogoDefault.png")]];
 }
 
-- (void)sd_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder{
-    [super sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:(@"NoLogoDefault.png")]];
-}
 @end

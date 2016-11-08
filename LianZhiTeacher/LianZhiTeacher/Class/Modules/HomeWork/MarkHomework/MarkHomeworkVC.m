@@ -115,7 +115,7 @@
         }
     }
     CGFloat rightRate = 1 - wrongNum / self.homeworkItem.enums;
-    return rightRate;
+    return MAX(rightRate, 0);
 }
 
 - (void)mark{
@@ -138,9 +138,12 @@
                 [studentInfo.s_answer setMark_detail:markDetail];
                 HomeworkTeacherMark *teacherMark = [HomeworkTeacherMark markWithString:markDetail];
             
-                [teacherMark setRightPercent:[self rightRateWithMark:teacherMark]];
+                [teacherMark setRightPercent:[wself rightRateWithMark:teacherMark]];
                 [studentInfo.s_answer setTeacherMark:teacherMark];
                 [wself showHomeworkWithIndex:wself.curIndex];
+                if(wself.markFinishedCallback){
+                    wself.markFinishedCallback();
+                }
             } fail:^(NSString *errMsg) {
                 [hud hide:NO];
                 [ProgressHUD showError:errMsg];
@@ -215,9 +218,7 @@
     BOOL haveMarked = [studentInfo.s_answer.mark_detail length] > 0;
     [self.footerView setTeacherMark:mark];
     [self.footerView setUserInteractionEnabled:!haveMarked];
-    if(haveMarked){
-        [self.footerView clearMark];
-    }
+    [self.footerView clearMark];
     [self.circleView reloadData];
 }
 
@@ -225,30 +226,30 @@
 - (void)requestPreHomework{
     if(self.curIndex > 0){
         [self showHomeworkWithIndex:self.curIndex - 1];
-        if(self.curIndex == 0){
-            HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
-            if(studentInfo.s_answer.marked){
-                 [ProgressHUD showHintText:@"当前是第一份作业"];
-            }
-            else{
-                 [ProgressHUD showHintText:@"当前是第一份待批阅的作业"];
-            }
-        }
+//        if(self.curIndex == 0){
+//            HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
+//            if(studentInfo.s_answer.marked){
+//                 [ProgressHUD showHintText:@"当前是第一份作业"];
+//            }
+//            else{
+//                 [ProgressHUD showHintText:@"当前是第一份待批阅的作业"];
+//            }
+//        }
     }
 }
 
 - (void)requestNextHomework{
     if(self.curIndex < [self.homeworkArray count] - 1){
         [self showHomeworkWithIndex:self.curIndex + 1];
-        if(self.curIndex == [self.homeworkArray count] - 1){
-            HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
-            if(studentInfo.s_answer.marked){
-                [ProgressHUD showHintText:@"当前是最后一份作业"];
-            }
-            else{
-                [ProgressHUD showHintText:@"当前是最后一份待批阅的作业"];
-            }
-        }
+//        if(self.curIndex == [self.homeworkArray count] - 1){
+//            HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
+//            if(studentInfo.s_answer.marked){
+//                [ProgressHUD showHintText:@"当前是最后一份作业"];
+//            }
+//            else{
+//                [ProgressHUD showHintText:@"当前是最后一份待批阅的作业"];
+//            }
+//        }
     }
 }
 
@@ -266,9 +267,9 @@
     HomeworkTeacherMark* teacherMark = self.markMap[studentInfo.student.uid];
     [imageView setCanEdit:studentInfo.s_answer.mark_detail.length == 0];
     [imageView setMarkItem:teacherMark.marks[index]];
-    [imageView setAddMarkCallback:^{
-        [wself.footerView clearMark];
-    }];
+//    [imageView setAddMarkCallback:^{
+//        [wself.footerView clearMark];
+//    }];
     return imageView;
 }
 

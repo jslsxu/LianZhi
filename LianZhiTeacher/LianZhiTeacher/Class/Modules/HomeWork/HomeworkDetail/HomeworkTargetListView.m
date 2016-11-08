@@ -79,6 +79,11 @@
     }];
 }
 
+- (void)setEtype:(BOOL)etype{
+    _etype = etype;
+    [_alertButton setHidden:!_etype];
+}
+
 - (void)setClassInfo:(HomeworkClassStatus *)classInfo{
     _classInfo = classInfo;
 
@@ -537,6 +542,7 @@
     }
     else if( studentInfo.status == HomeworkStudentStatusWaitMark || studentInfo.status == HomeworkStudentStatusHasMark){
         if([self.homeworkItem etype]){
+            __weak typeof(self) wself = self;
             NSArray *homeworkArray = [self studentHomeworkArray];
             NSInteger index = [homeworkArray indexOfObject:studentInfo];
             MarkHomeworkVC *markVC = [[MarkHomeworkVC alloc] init];
@@ -545,6 +551,9 @@
             if(index >= 0 && index < [homeworkArray count]){
                 [markVC setCurIndex:index];
             }
+            [markVC setMarkFinishedCallback:^{
+                [wself loadTargets];
+            }];
             [CurrentROOTNavigationVC pushViewController:markVC animated:YES];
         }
     }
