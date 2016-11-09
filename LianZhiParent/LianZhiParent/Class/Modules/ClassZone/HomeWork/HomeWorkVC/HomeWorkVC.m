@@ -142,36 +142,43 @@
     return task;
 }
 
-- (void)deleteHomework:(NSString *)eid{
+- (void)deleteLocalHomework:(NSString *)eid{
     for (HomeworkItem *item in self.tableViewModel.modelItemArray) {
         if([item.eid isEqualToString:eid]){
             [self.tableViewModel.modelItemArray removeObject:item];
             [self.tableView reloadData];
+            [self saveCache];
             return;
         }
     }
 }
 
+- (void)deleteHomework:(HomeworkItem *)homeworkItem{
+    __weak typeof(self) wself = self;
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否删除该作业?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
+    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setValue:homeworkItem.eid forKey:@"eid"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/delete" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [wself.tableViewModel.modelItemArray removeObject:homeworkItem];
+            [wself.tableView reloadData];
+            [wself saveCache];
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    }];
+    [alertView showAnimated:YES completionHandler:nil];
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    __weak typeof(self) wself = self;
     HomeworkItem *homeworkItem = [self.tableViewModel.modelItemArray objectAtIndex:indexPath.row];
     HomeWorkCell *homeworkCell = (HomeWorkCell *)cell;
     [homeworkCell setDeleteCallback:^(NSString *eid){
-        __weak typeof(self) wself = self;
-        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否删除该作业?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
-        [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
-        [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-        [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
-        [alertView setDestructiveHandler:^(LGAlertView *alertView) {
-            NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-            [params setValue:homeworkItem.eid forKey:@"eid"];
-            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/delete" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                [wself.tableViewModel.modelItemArray removeObject:homeworkItem];
-                [wself.tableView deleteRowAtIndexPath:indexPath withRowAnimation:UITableViewRowAnimationNone];
-            } fail:^(NSString *errMsg) {
-                
-            }];
-        }];
-        [alertView showAnimated:YES completionHandler:nil];
+        [wself deleteHomework:homeworkItem];
     }];
 }
 
@@ -196,10 +203,11 @@
     HomeworkDetailVC *detailVC = [[HomeworkDetailVC alloc] init];
     [detailVC setEid:homeworkItem.eid];
     [detailVC setDeleteCallback:^(NSString *eid) {
-        [wself deleteHomework:eid];
+        [wself deleteLocalHomework:eid];
     }];
-    [detailVC setHomeworkReadCallback:^(NSString *eid) {
+    [detailVC setHomeworkStatusCallback:^(HomeworkStatus status) {
         [homeworkItem setUnread_s:NO];
+        [homeworkItem setStatus:status];
         [wself.tableView reloadData];
     }];
     [CurrentROOTNavigationVC pushViewController:detailVC animated:YES];

@@ -14,5 +14,5 @@
 }
 @property(nonatomic, copy)NSString* eid;
 @property (nonatomic, copy)void (^deleteCallback)(NSString *eid);
-@property (nonatomic, copy)void (^homeworkReadCallback)(NSString *eid);
+@property (nonatomic, copy)void (^homeworkStatusCallback)(HomeworkStatus status);
 @end

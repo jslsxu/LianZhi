@@ -10,5 +10,6 @@
 extern NSString *const kHomeworkReadNumChangedNotification;
 @interface HomeworkDetailVC : TNBaseViewController
 @property (nonatomic, copy)NSString *hid;
+@property (nonatomic, assign)BOOL hasNew;
 @property (nonatomic, copy)void (^deleteCallback)(NSString *hid);
 @end

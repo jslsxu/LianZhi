@@ -109,8 +109,9 @@
     HomeworkNotificationItem *homeworkItem = (HomeworkNotificationItem *)modelItem;
     HomeworkDetailVC *homeworkDetailVC = [[HomeworkDetailVC alloc] init];
     [homeworkDetailVC setEid:homeworkItem.eid];
-    [homeworkDetailVC setHomeworkReadCallback:^(NSString *eid) {
+    [homeworkDetailVC setHomeworkStatusCallback:^(HomeworkStatus status) {
         [homeworkItem setIs_new:NO];
+        [homeworkItem setStatus:status];
         [wself.tableView reloadData];
     }];
     [self.navigationController pushViewController:homeworkDetailVC animated:YES];

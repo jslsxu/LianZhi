@@ -506,6 +506,7 @@
         HomeworkItem *item = self.tableViewModel.modelItemArray[indexPath.row - [HomeworkManager sharedInstance].sendingHomeworkArray.count];
         HomeworkDetailVC*  detailVC = [[HomeworkDetailVC alloc] init];
         [detailVC setHid:item.eid];
+        [detailVC setHasNew:item.unread];
         [detailVC setDeleteCallback:^(NSString *hid) {
             @strongify(self)
             for (HomeworkItem *notiItem in self.tableViewModel.modelItemArray) {

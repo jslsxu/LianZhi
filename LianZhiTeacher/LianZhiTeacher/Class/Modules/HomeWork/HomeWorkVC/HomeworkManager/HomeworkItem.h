@@ -35,6 +35,7 @@ typedef NS_ENUM(NSInteger, HomeworkStudentStatus){
 @property (nonatomic, assign)NSInteger  mark;
 @property (nonatomic, assign)NSInteger  read;
 @property (nonatomic, assign)BOOL       send_notice;        //为1时可以提醒
+- (BOOL)hasUnread;
 @end
 
 @interface HomeworkItemAnswer : TNBaseObject

@@ -162,6 +162,8 @@
         TNDataWrapper *dataWrapper = [responseObject getDataWrapperForKey:@"s_answer"];
         HomeworkStudentAnswer* sAnswer = [HomeworkStudentAnswer nh_modelWithJson:dataWrapper.data];
         [wself.homeworkItem setS_answer:sAnswer];
+        [wself.homeworkItem setS_answer_time:[responseObject getStringForKey:@"s_answer_time"]];
+        [wself.homeworkItem setStatus:HomeworkStatusWaitMark];
         [[NSNotificationCenter defaultCenter] postNotificationName:kHomeworkItemChangedNotification object:nil];
         [hud hide:NO];
     } fail:^(NSString *errMsg) {

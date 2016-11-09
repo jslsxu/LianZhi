@@ -36,5 +36,6 @@
 @end
 @interface HomeworkTargetListView : UIView
 @property (nonatomic, strong)HomeworkItem *homeworkItem;
+@property (nonatomic, assign)BOOL hasNew;
 @property (nonatomic, copy)void (^homeworkRefreshCallback)(HomeworkItem *homework);
 @end

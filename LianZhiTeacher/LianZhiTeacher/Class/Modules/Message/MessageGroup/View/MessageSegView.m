@@ -34,12 +34,12 @@
 @implementation MessageSegView
 
 - (instancetype)initWithItems:(NSArray *)items valueChanged:(void (^)(NSInteger))callback{
-    self = [super initWithFrame:CGRectMake(0, 0, kSegItemWidth * 2, 30)];
+    self = [super initWithFrame:CGRectMake(0, 0, kSegItemWidth * 2, 28)];
     if(self){
         self.items = items;
         self.callback = callback;
         _buttonArray = [NSMutableArray array];
-        _segmentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kSegItemWidth * 2, 30)];
+        _segmentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kSegItemWidth * 2, 28)];
         [self setupSegmentView:_segmentView];
         [self addSubview:_segmentView];
         
@@ -66,7 +66,7 @@
         NSString *actionItem = self.items[i];
         MessageSegButton *button = [MessageSegButton buttonWithType:UIButtonTypeCustom];
         [button addTarget:self action:@selector(onButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [button.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [button.titleLabel setFont:[UIFont systemFontOfSize:13]];
         [button setTitle:actionItem forState:UIControlStateNormal];
         [button setFrame:CGRectMake(itemWidth * i, 0, itemWidth, viewParent.height)];
         [viewParent addSubview:button];

@@ -25,6 +25,16 @@
     return @{@"students" : [HomeworkStudentInfo class]};
 }
 
+- (BOOL)hasUnread{
+    BOOL unread_t = NO;
+    for (HomeworkStudentInfo *studentInfo in self.students) {
+        if(studentInfo.unread_t){
+            unread_t = YES;
+        }
+    }
+    return unread_t;
+}
+
 @end
 
 @implementation HomeworkItemAnswer

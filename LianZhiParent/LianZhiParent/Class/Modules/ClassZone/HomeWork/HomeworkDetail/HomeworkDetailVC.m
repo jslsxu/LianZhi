@@ -71,6 +71,9 @@
     }
     [self.homeworkDetailView setHomeworkItem:_homeworkItem];
     [self.homeworkFinishView setHomeworkItem:_homeworkItem];
+    if(self.homeworkStatusCallback){
+        self.homeworkStatusCallback(_homeworkItem.status);
+    }
 }
 
 - (void)onSegValueChanged{
@@ -86,7 +89,12 @@
         [self.navigationItem setTitleView:[self segCtrl]];
         [self.view addSubview:[self homeworkDetailView]];
         [self.view addSubview:[self homeworkFinishView]];
-        [[self segCtrl] setSelectedSegmentIndex:0];
+        if(_homeworkItem.status == HomeworkStatusMarked){
+            [[self segCtrl] setSelectedSegmentIndex:1];
+        }
+        else{
+            [[self segCtrl] setSelectedSegmentIndex:0];
+        }
         [self onSegValueChanged];
     }
     else{
@@ -106,8 +114,8 @@
         HomeworkItem *homeworkItem = [HomeworkItem nh_modelWithJson:responseObject.data];
         [wself setHomeworkItem:homeworkItem];
         [wself saveHomeworkDetail];
-        if(wself.homeworkReadCallback){
-            wself.homeworkReadCallback(wself.homeworkItem.eid);
+        if(wself.homeworkStatusCallback){
+            wself.homeworkStatusCallback(_homeworkItem.status);
         }
     } fail:^(NSString *errMsg) {
         

@@ -13,11 +13,12 @@
 #import "ContactsLoadingView.h"
 #import "HomeworkAddExplainVC.h"
 #import "PublishHomeWorkVC.h"
+#import "MessageSegView.h"
 NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNotification";
 
 @interface HomeworkDetailVC ()
 @property (nonatomic, strong)HomeworkItem*              homeworkItem;
-@property (nonatomic, strong)UISegmentedControl*        segmentCtrl;
+@property (nonatomic, strong)MessageSegView*            segmentCtrl;
 @property (nonatomic, strong)UIButton*                  moreButton;
 @property (nonatomic, strong)HomeworkDetailView*        detailView;
 @property (nonatomic, strong)HomeworkTargetListView*    targetListView;
@@ -32,7 +33,7 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
     [self setRightbarButtonHighlighted:NO];
     [self.view addSubview:[self detailView]];
     [self.view addSubview:[self targetListView]];
-    [self onSegmentValueChanged];
+    [self.segmentCtrl setSelectedIndex:self.hasNew ? 1 : 0];
     
     NSData *homeworkData = [NSData dataWithContentsOfFile:[self cacheFilePath]];
     if(homeworkData){
@@ -40,6 +41,10 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
     }
     
     [self loadData];
+    __weak typeof(self) wself = self;
+    [RACObserve(self.targetListView, hasNew) subscribeNext:^(id x) {
+        [wself.segmentCtrl setShowBadge:[wself.targetListView hasNew] ? @"" : nil atIndex:1];
+    }];
 }
 
 - (void)setRightbarButtonHighlighted:(BOOL)highlighted{
@@ -110,12 +115,13 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
 
 }
 
-- (UISegmentedControl *)segmentCtrl{
+- (MessageSegView *)segmentCtrl{
     if(_segmentCtrl == nil){
-        _segmentCtrl = [[UISegmentedControl alloc] initWithItems:@[@"作业详情", @"阅读人数"]];
-        [_segmentCtrl setSelectedSegmentIndex:0];
-        [_segmentCtrl addTarget:self action:@selector(onSegmentValueChanged) forControlEvents:UIControlEventValueChanged];
-        [_segmentCtrl setWidth:140];
+        __weak typeof(self) wself = self;
+        _segmentCtrl = [[MessageSegView alloc] initWithItems:@[@"作业详情", @"阅读人数"] valueChanged:^(NSInteger selectedIndex) {
+            [wself onSegmentValueChanged:selectedIndex];
+        }];
+        [_segmentCtrl setWidth:160];
     }
     return _segmentCtrl;
 }
@@ -253,13 +259,9 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
     }];
 }
 
-- (void)onSegmentValueChanged{
-    NSInteger selectedIndex = self.segmentCtrl.selectedSegmentIndex;
+- (void)onSegmentValueChanged:(NSInteger)selectedIndex{
     [_detailView setHidden:selectedIndex != 0];
     [_targetListView setHidden:selectedIndex != 1];
-    if(selectedIndex == 0){
-        
-    }
 }
 
 - (void)saveHomework{

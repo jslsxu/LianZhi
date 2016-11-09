@@ -55,7 +55,12 @@ NSString *const kPaswordModificationNotification = @"PaswordModificationNotifica
 }
 
 - (void)onCancel{
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if(self.callback){
+        self.callback();
+    }
+    else{
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)setupScrollView:(UIView *)viewParent{

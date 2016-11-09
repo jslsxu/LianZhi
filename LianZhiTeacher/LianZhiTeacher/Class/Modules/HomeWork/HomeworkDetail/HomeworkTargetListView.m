@@ -95,13 +95,7 @@
     [_titleLabel sizeToFit];
     [_titleLabel setOrigin:CGPointMake(_logoView.right + 8, _logoView.top)];
     
-    BOOL unread_t = NO;
-    for (HomeworkStudentInfo *studentInfo in classInfo.students) {
-        if(studentInfo.unread_t){
-            unread_t = YES;
-        }
-    }
-    [_redDot setHidden:!unread_t];
+    [_redDot setHidden:![_classInfo hasUnread]];
     [_redDot setCenter:CGPointMake(_titleLabel.right + 10, _titleLabel.centerY)];
     
     NSMutableAttributedString *stateStr = [[NSMutableAttributedString alloc] initWithString:@"发送:"];
@@ -224,6 +218,7 @@
 @property (nonatomic, strong)NSArray *targetArray;
 @property (nonatomic, strong)UITableView* tableView;
 @property (nonatomic, strong)NSMutableDictionary* expandDic;
+@property (nonatomic, strong)UIButton* alertAllButton;
 @end
 
 @implementation HomeworkTargetListView
@@ -268,6 +263,7 @@
     [alertAllButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
     [alertAllButton setTitle:@"提醒全部" forState:UIControlStateNormal];
     [viewParent addSubview:alertAllButton];
+    self.alertAllButton = alertAllButton;
     
     UIButton *markButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [markButton addTarget:self action:@selector(markHomework) forControlEvents:UIControlEventTouchUpInside];
@@ -277,6 +273,7 @@
     [markButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
     [markButton setTitle:@"批阅作业" forState:UIControlStateNormal];
     [viewParent addSubview:markButton];
+
 }
 
 - (void)loadTargets{
@@ -286,9 +283,19 @@
         wself.targetArray = [HomeworkClassStatus nh_modelArrayWithJson:dataWrapper.data];
         [[wself.tableView mj_header] endRefreshing];
         [wself.bottomView setHidden:NO];
+        [wself.alertAllButton setEnabled:[wself canAlertAll]];
     } fail:^(NSString *errMsg) {
          [[wself.tableView mj_header] endRefreshing];
     }];
+}
+
+- (BOOL)canAlertAll{
+    for (HomeworkClassStatus *classStatus in self.targetArray) {
+        if(classStatus.send_notice){
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (void)setHomeworkItem:(HomeworkItem *)homeworkItem{
@@ -309,13 +316,18 @@
     if(_targetArray.count == 1){
         expand = YES;
     }
+    BOOL hasNew = NO;
     for (NSInteger i = 0; i < _targetArray.count; i++) {
         HomeworkClassStatus* group = _targetArray[i];
         NSString *groupID = group.classID;
         if(groupID.length > 0){
             [self.expandDic setValue:@(expand) forKey:groupID];
         }
+        if([group hasUnread]){
+            hasNew = YES;
+        }
     }
+    [self setHasNew:hasNew];
     [_tableView reloadData];
     [self.bottomView setHidden:NO];
 }
@@ -379,6 +391,7 @@
                     classInfo.send_notice = NO;
                 }
                 [wself.tableView reloadData];
+                [wself.alertAllButton setEnabled:[wself canAlertAll]];
             } fail:^(NSString *errMsg) {
                 [ProgressHUD showHintText:errMsg];
             }];
