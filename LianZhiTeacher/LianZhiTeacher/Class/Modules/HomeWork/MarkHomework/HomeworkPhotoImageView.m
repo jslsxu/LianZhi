@@ -271,11 +271,6 @@
 }
 
 
-//- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
-//    [self setNeedsLayout];
-//    [self layoutIfNeeded];
-//}
-
 #pragma mark - Tap Detection
 
 - (void)handleDoubleTap:(CGPoint)touchPoint {

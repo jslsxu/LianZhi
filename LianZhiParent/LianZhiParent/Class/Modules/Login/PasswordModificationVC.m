@@ -44,14 +44,16 @@ NSString *const kPaswordModificationNotification = @"PaswordModificationNotifica
     [navView setBackgroundColor:[UIColor colorWithWhite:1 alpha:0.8]];
     [self.view addSubview:navView];
     
-    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [cancelButton addTarget:self action:@selector(onCancel) forControlEvents:UIControlEventTouchUpInside];
-    [cancelButton setTitleColor:kCommonParentTintColor forState:UIControlStateNormal];
-    [cancelButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
-    [cancelButton setTitle:@"返回" forState:UIControlStateNormal];
-    [cancelButton sizeToFit];
-    [cancelButton setOrigin:CGPointMake(10, 20 + (44 - cancelButton.height) / 2)];
-    [navView addSubview:cancelButton];
+    if([self.navigationController.viewControllers count] > 1){
+        UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [cancelButton addTarget:self action:@selector(onCancel) forControlEvents:UIControlEventTouchUpInside];
+        [cancelButton setTitleColor:kCommonParentTintColor forState:UIControlStateNormal];
+        [cancelButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
+        [cancelButton setTitle:@"返回" forState:UIControlStateNormal];
+        [cancelButton sizeToFit];
+        [cancelButton setOrigin:CGPointMake(10, 20 + (44 - cancelButton.height) / 2)];
+        [navView addSubview:cancelButton];
+    }
 }
 
 - (void)onCancel{

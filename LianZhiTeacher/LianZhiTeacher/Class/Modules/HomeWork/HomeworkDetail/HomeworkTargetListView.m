@@ -315,14 +315,15 @@
     BOOL expand = NO;
     if(_targetArray.count == 1){
         expand = YES;
+        HomeworkClassStatus* group = _targetArray[0];
+        NSString *groupID = group.classID;
+        if(groupID.length > 0 && !self.expandDic[groupID]){
+            [self.expandDic setValue:@(expand) forKey:groupID];
+        }
     }
     BOOL hasNew = NO;
     for (NSInteger i = 0; i < _targetArray.count; i++) {
         HomeworkClassStatus* group = _targetArray[i];
-        NSString *groupID = group.classID;
-        if(groupID.length > 0){
-            [self.expandDic setValue:@(expand) forKey:groupID];
-        }
         if([group hasUnread]){
             hasNew = YES;
         }

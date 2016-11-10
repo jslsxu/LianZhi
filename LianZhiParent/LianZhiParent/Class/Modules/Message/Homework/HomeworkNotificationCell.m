@@ -175,7 +175,12 @@
 {
     HomeworkNotificationItem *homeworkItem = (HomeworkNotificationItem *)modelItem;
 //    [_avatarView sd_setImageWithURL:[NSURL URLWithString:homeworkItem.teacher.avatar] placeholderImage:nil];
-    [_courseLabel setText:[homeworkItem.course_name substringToIndex:1]];
+    if([homeworkItem.course_name length] > 0){
+        [_courseLabel setText:[homeworkItem.course_name substringToIndex:1]];
+    }
+    else{
+        [_courseLabel setText:nil];
+    }
     [_nameLabel setText:homeworkItem.teacher.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_courseLabel.right + 10, _courseLabel.top)];

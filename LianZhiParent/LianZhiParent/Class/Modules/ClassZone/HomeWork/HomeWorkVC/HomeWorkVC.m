@@ -26,6 +26,11 @@
     return self;
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self requestData:REQUEST_REFRESH];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"eeeef4"]];
@@ -41,7 +46,6 @@
     [self setSupportPullUp:YES];
     [self setSupportPullDown:YES];
     [self loadCache];
-    [self requestData:REQUEST_REFRESH];
 }
 
 - (Calendar *)calendar{

@@ -33,13 +33,15 @@
         self.createTime = [[NSDate date] timeIntervalSince1970];
         self.sendSms = setting.sendSms;
         self.reply_close = setting.replyEndOn;
-        self.reply_close_ctime = setting.replyEndTime;
-        if([self.reply_close_ctime length] == 0){
-            NSDate *date = [[NSDate date] dateByAddingDays:1];
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd 10:00:00"];
-            NSString *endTime = [dateFormatter stringFromDate:date];
-            self.reply_close_ctime = endTime;
+        if(self.reply_close){
+            self.reply_close_ctime = setting.replyEndTime;
+            if([self.reply_close_ctime length] == 0){
+                NSDate *date = [[NSDate date] dateByAddingDays:1];
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateFormat:@"yyyy-MM-dd 10:00:00"];
+                NSString *endTime = [dateFormatter stringFromDate:date];
+                self.reply_close_ctime = endTime;
+            }
         }
     }
     return self;
@@ -50,6 +52,7 @@
     [homeworkEntity setEid:homeworkItem.eid];
     [homeworkEntity setCount:homeworkItem.enums];
     [homeworkEntity setEtype:homeworkItem.etype];
+    [homeworkEntity setSendSms:homeworkItem.sms];
     [homeworkEntity setCourse_name:homeworkItem.course_name];
     if(homeworkItem.voice){
         [homeworkEntity setVoiceArray:[NSMutableArray arrayWithObject:homeworkItem.voice]];
@@ -336,7 +339,7 @@
         return NO;
     }
     
-    if(self.explainEntity && object.explainEntity && ![self.explainEntity isSame:object.explainEntity]){
+    if((self.explainEntity && !object) || (!self.explainEntity && object) || ![self.explainEntity isSame:object.explainEntity]){
         return NO;
     }
     

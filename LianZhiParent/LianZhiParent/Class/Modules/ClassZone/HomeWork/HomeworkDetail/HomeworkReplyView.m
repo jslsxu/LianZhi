@@ -21,7 +21,11 @@
         self.imageView = [[UIImageView alloc] initWithFrame:self.bounds];
         [self.imageView setContentMode:UIViewContentModeScaleAspectFill];
         [self.imageView setClipsToBounds:YES];
+        [self.imageView setUserInteractionEnabled:YES];
         [self addSubview:self.imageView];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onImageViewTap)];
+        [self.imageView addGestureRecognizer:tapGesture];
         
         self.removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.removeButton setFrame:CGRectMake(self.width - 26, 0, 26, 26)];
@@ -31,6 +35,10 @@
 
     }
     return self;
+}
+
+- (UIImageView *)photoView{
+    return self.imageView;
 }
 
 - (void)setPhotoItem:(PhotoItem *)photoItem
@@ -51,10 +59,17 @@
     }
 }
 
+- (void)onImageViewTap{
+    if(self.imageClick){
+        self.imageClick(self.photoItem);
+    }
+}
+
 @end
 
-@interface HomeworkReplyView ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, DNImagePickerControllerDelegate>
+@interface HomeworkReplyView ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, DNImagePickerControllerDelegate, PBViewControllerDelegate, PBViewControllerDataSource>
 @property (nonatomic, strong)UIScrollView*  scrollView;
+@property (nonatomic, strong)NSMutableArray*    imageViewArray;
 @property (nonatomic, strong)NSMutableArray *photoArray;
 @property (nonatomic, strong)UIView*        contentView;
 @end
@@ -65,7 +80,7 @@
     self = [super initWithFrame:frame];
     if(self){
         self.photoArray = [NSMutableArray array];
-        
+        self.imageViewArray = [NSMutableArray array];
         UIView* sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - 10 - 36 - 10, self.width, kLineHeight)];
         [sepLine setBackgroundColor:kSepLineColor];
         [self addSubview:sepLine];
@@ -97,7 +112,7 @@
         
         UILabel* descriptionlabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [descriptionlabel setFont:[UIFont systemFontOfSize:12]];
-        [descriptionlabel setText:@"请保持图片清晰，方便老师解答难题"];
+        [descriptionlabel setText:@"请保持图片清晰，文字方向正确，方便教师批阅"];
         [descriptionlabel sizeToFit];
         [descriptionlabel setOrigin:CGPointMake(10, titleLabel.bottom + 10)];
         [self addSubview:descriptionlabel];
@@ -223,6 +238,7 @@
 
 - (void)setupContentView{
     [_contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.imageViewArray removeAllObjects];
     NSInteger margin = 10;
     NSInteger itemWidth = (_contentView.width - margin * 5) / 4;
     for (NSInteger i = 0; i < [self.photoArray count] + 1; i++) {
@@ -238,6 +254,11 @@
                 @strongify(self)
                 [self deletePhoto:photoItem];
             }];
+            [itemView setImageClick:^(PhotoItem *photoItem) {
+                @strongify(self)
+                [self showPhotoBrowser:photoItem];
+            }];
+            [self.imageViewArray addObject:itemView];
             [_contentView addSubview:itemView];
         }
         else{
@@ -323,6 +344,66 @@
 
 - (void)dnImagePickerControllerDidCancel:(DNImagePickerController *)imagePicker{
     [imagePicker dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (void)showPhotoBrowser:(PhotoItem *)photoItem {
+    PBViewController *pbViewController = [PBViewController new];
+    pbViewController.pb_dataSource = self;
+    pbViewController.pb_delegate = self;
+    NSInteger row = [self.photoArray indexOfObject:photoItem];
+    if(row >= 0 && row < [self.photoArray count]){
+        pbViewController.pb_startPage = row;
+    }
+    [CurrentROOTNavigationVC presentViewController:pbViewController animated:YES completion:nil];
+}
+
+- (NSInteger)numberOfPagesInViewController:(PBViewController *)viewController {
+    return self.imageViewArray.count;
+}
+
+- (void)viewController:(PBViewController *)viewController presentImageView:(UIImageView *)imageView forPageAtIndex:(NSInteger)index progressHandler:(void (^)(NSInteger, NSInteger))progressHandler {
+    PhotoItem *item = self.photoArray[index];
+    if(item.isLocal){
+        NSData *imageData = [NSData dataWithContentsOfFile:item.big];
+        [imageView setImage:[UIImage imageWithData:imageData]];
+    }
+    else{
+        HomeworkPhotoItemView *itemView = self.imageViewArray[index];
+        UIImageView *curImageView = [itemView photoView];
+        [imageView sd_setImageWithURL:[NSURL URLWithString:item.big]
+                     placeholderImage:curImageView.image
+                              options:0
+                             progress:progressHandler
+                            completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                            }];
+
+    }
+
+}
+
+- (UIView *)thumbViewForPageAtIndex:(NSInteger)index {
+    HomeworkPhotoItemView *itemView = self.imageViewArray[index];
+    return [itemView photoView];
+}
+
+#pragma mark - PBViewControllerDelegate
+
+- (void)viewController:(PBViewController *)viewController didSingleTapedPageAtIndex:(NSInteger)index presentedImage:(UIImage *)presentedImage {
+    [viewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)viewController:(PBViewController *)viewController didLongPressedPageAtIndex:(NSInteger)index presentedImage:(UIImage *)presentedImage {
+    if(presentedImage){
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:nil message:nil style:LGAlertViewStyleActionSheet buttonTitles:@[@"保存到相册"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+        [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+            [Utility saveImageToAlbum:presentedImage];
+        }];
+        [alertView showAnimated:YES completionHandler:nil];
+    }
 }
 
 @end

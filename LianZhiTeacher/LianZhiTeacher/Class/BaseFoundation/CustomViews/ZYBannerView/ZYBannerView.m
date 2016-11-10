@@ -16,7 +16,6 @@
 
 @interface ZYBannerView () <UICollectionViewDataSource, UICollectionViewDelegate>
 
-@property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) UICollectionViewFlowLayout *flowLayout;
 
 @property (nonatomic, strong) ZYBannerFooter *footer;
@@ -97,16 +96,15 @@ static NSString *banner_footer = @"banner_footer";
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:(ZY_TOTAL_ITEMS / 2) inSection:0]
                                         atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
-            self.pageControl.currentPage = 0;
         });
     } else {
         // 第0个item
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]
                                         atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
-            self.pageControl.currentPage = 0;
         });
     }
+    self.pageControl.currentPage = 0;
 }
 
 #pragma mark - Reload

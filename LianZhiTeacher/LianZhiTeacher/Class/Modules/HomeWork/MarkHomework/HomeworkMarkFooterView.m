@@ -107,21 +107,36 @@ static MarkType currentMarkType = MarkTypeNone;
 }
 
 - (void)touchRight{
-    [self clearMark];
-    currentMarkType = MarkTypeRight;
-    _rightButton.selected = YES;
+    if(currentMarkType == MarkTypeRight){
+        [self clearMark];
+    }
+    else{
+        [self clearMark];
+        currentMarkType = MarkTypeRight;
+        _rightButton.selected = YES;
+    }
 }
 
 - (void)touchWrong{
-    [self clearMark];
-    currentMarkType = MarkTypeWrong;
-    _wrongButton.selected = YES;
+    if(currentMarkType == MarkTypeWrong){
+        [self clearMark];
+    }
+    else{
+        [self clearMark];
+        currentMarkType = MarkTypeWrong;
+        _wrongButton.selected = YES;
+    }
 }
 
 - (void)touchHalfRight{
-    [self clearMark];
-    currentMarkType = MarkTypeHalfRight;
-    _halfRightButton.selected = YES;
+    if(currentMarkType == MarkTypeHalfRight){
+        [self clearMark];
+    }
+    else{
+        [self clearMark];
+        currentMarkType = MarkTypeHalfRight;
+        _halfRightButton.selected = YES;
+    }
 }
 
 - (NSString *)comment{
@@ -145,9 +160,29 @@ static MarkType currentMarkType = MarkTypeNone;
 
 - (void)textFieldDidChanged:(NSNotification *)notification{
     if(notification.object == self.textField){
-        NSString *text = [_textField text];
-        if([text length] > 20){
-            [_textField setText:[text substringToIndex:20]];
+        NSInteger maxTextNum = 20;
+        NSString *toBeString = self.textField.text;
+        
+        //获取高亮部分
+        UITextRange *selectedRange = [self.textField markedTextRange];
+        UITextPosition *position = [self.textField positionFromPosition:selectedRange.start offset:0];
+        
+        // 没有高亮选择的字，则对已输入的文字进行字数统计和限制
+        if (!position)
+        {
+            if (toBeString.length > maxTextNum)
+            {
+                NSRange rangeIndex = [toBeString rangeOfComposedCharacterSequenceAtIndex:maxTextNum];
+                if (rangeIndex.length == 1)
+                {
+                    self.textField.text = [toBeString substringToIndex:maxTextNum];
+                }
+                else
+                {
+                    NSRange rangeRange = [toBeString rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, maxTextNum)];
+                    self.textField.text = [toBeString substringWithRange:rangeRange];
+                }
+            }
         }
     }
 }

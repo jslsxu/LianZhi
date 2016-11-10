@@ -672,7 +672,7 @@ DNImagePickerControllerDelegate>
             if(image){
                 MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在压缩" toView:[UIApplication sharedApplication].keyWindow];
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    UIImage *resultImage = [image resize:[UIScreen mainScreen].bounds.size];
+                    UIImage *resultImage = [image aspectFit:CGSizeMake(kScreenWidth * 2, kScreenHeight * 2)];
                     NSString *tmpImagePath = [NHFileManager getTmpImagePath];
                     NSData *imageData = UIImageJPEGRepresentation(resultImage, 0.8);
                     [imageData writeToFile:tmpImagePath atomically:YES];

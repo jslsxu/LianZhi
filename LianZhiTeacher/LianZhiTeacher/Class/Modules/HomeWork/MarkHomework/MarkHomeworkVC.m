@@ -219,7 +219,25 @@
     [self.footerView setTeacherMark:mark];
     [self.footerView setUserInteractionEnabled:!haveMarked];
     [self.footerView clearMark];
-    [self.circleView reloadData];
+    [self.circleView setDataSource:self];
+    [self setHomeworkRead:studentInfo];
+}
+
+- (void)setHomeworkRead:(HomeworkStudentInfo *)studentInfo{
+    __weak typeof(self) wself = self;
+    if(studentInfo.unread_t){
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:self.homeworkItem.eid forKey:@"eid"];
+        [params setValue:studentInfo.student.uid forKey:@"child_id"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/homework" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            studentInfo.unread_t = NO;
+            if(wself.markFinishedCallback){
+                wself.markFinishedCallback();
+            }
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    }
 }
 
 #pragma mark - HomeworkMarkHeaderDelegate
@@ -261,7 +279,6 @@
 }
 
 - (UIView *)banner:(ZYBannerView *)banner viewForItemAtIndex:(NSInteger)index{
-    __weak typeof(self) wself = self;
     HomeworkPhotoImageView *imageView = [[HomeworkPhotoImageView alloc] initWithFrame:banner.bounds];
     HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
     HomeworkTeacherMark* teacherMark = self.markMap[studentInfo.student.uid];

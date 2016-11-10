@@ -10,8 +10,12 @@
 #import "HomeworkStudentAnswer.h"
 #import "HomeworkItem.h"
 @interface HomeworkPhotoItemView : UIView
+
 @property (nonatomic, strong)PhotoItem *photoItem;
 @property (nonatomic, copy)void (^deleteCallback)();
+@property (nonatomic, copy)void (^imageClick)(PhotoItem *photoItem);
+
+- (UIImageView *)photoView;
 @end
 
 @interface HomeworkReplyView : UIView

@@ -270,6 +270,7 @@
     return self;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.tableView setFrame:CGRectMake(0, 0, self.view.width, self.view.height - 50)];

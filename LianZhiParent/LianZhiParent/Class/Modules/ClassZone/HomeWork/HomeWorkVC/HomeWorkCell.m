@@ -139,7 +139,6 @@
         [_deleteButton setFrame:CGRectMake(0, 0, 30, 30)];
         [_deleteButton setImage:[UIImage imageNamed:@"MessageDetailTrash"] forState:UIControlStateNormal];
         [_deleteButton addTarget:self action:@selector(deleteHomework) forControlEvents:UIControlEventTouchUpInside];
-//        [_deleteButton setHidden:YES];
         [_bgView addSubview:_deleteButton];
         
         _roleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -179,11 +178,15 @@
 - (void)onReloadData:(TNModelItem *)modelItem
 {
     HomeworkItem *homeworkItem = (HomeworkItem *)modelItem;
-    [_courseLabel setText:[homeworkItem.course_name substringToIndex:1]];
+    if([homeworkItem.course_name length] > 0){
+         [_courseLabel setText:[homeworkItem.course_name substringToIndex:1]];
+    }
+    else{
+        [_courseLabel setText:nil];
+    }
     [_nameLabel setText:homeworkItem.teacher.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_courseLabel.right + 10, _courseLabel.top)];
-    [_deleteButton setHidden:![homeworkItem canDelete]];
     [_deleteButton setOrigin:CGPointMake(_bgView.width - 10 - _deleteButton.width, _nameLabel.top)];
     [_roleLabel setText:@"教师"];
     [_roleLabel sizeToFit];
