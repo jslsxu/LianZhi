@@ -10,6 +10,12 @@
 #import "HomeworkTeacherMark.h"
 #import "HomeworkPhotoImageView.h"
 #import "HomeworkItem.h"
+
+@interface HomeworkMarkPhotoCell : UICollectionViewCell
+@property (nonatomic, strong)HomeworkStudentInfo*   studentInfo;
+@property (nonatomic, strong)HomeworkMarkItem*      markItem;
+@end
+
 @interface MarkHomeworkVC : TNBaseViewController
 @property (nonatomic, strong)HomeworkItem*  homeworkItem;
 @property (nonatomic, strong)NSArray*   homeworkArray;

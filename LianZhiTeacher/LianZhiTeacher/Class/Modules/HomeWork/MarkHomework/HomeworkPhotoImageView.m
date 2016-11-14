@@ -104,7 +104,7 @@
 
 
 - (void)prepareForReuse {
-    self.markItem = nil;
+    [self displayImage];
 }
 
 - (NSMutableArray *)markViewArray{

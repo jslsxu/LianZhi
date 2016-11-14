@@ -21,5 +21,6 @@
 @property (nonatomic, assign)BOOL canEdit;
 @property (nonatomic, strong)void (^photoViewSingleTap)(CGPoint location);
 @property (nonatomic, copy)void (^addMarkCallback)();
+- (void)prepareForReuse;
 - (void)setupMarks;
 @end

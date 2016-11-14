@@ -11,11 +11,38 @@
 #import "HomeworkMarkFooterView.h"
 #import "ZYBannerView.h"
 
+@interface  HomeworkMarkPhotoCell()
+@property (nonatomic, strong)HomeworkPhotoImageView* imageView;
+@end
 
-@interface MarkHomeworkVC ()<ZYBannerViewDelegate, ZYBannerViewDataSource, HomeworkMarkHeaderDelegate>
+@implementation HomeworkMarkPhotoCell
+
+- (instancetype)initWithFrame:(CGRect)frame{
+    self = [super initWithFrame:frame];
+    if(self){
+        self.imageView = [[HomeworkPhotoImageView alloc] initWithFrame:self.bounds];
+        [self addSubview:self.imageView];
+    }
+    return self;
+}
+
+- (void)setStudentInfo:(HomeworkStudentInfo *)studentInfo{
+    _studentInfo = studentInfo;
+    [self.imageView setCanEdit:studentInfo.s_answer.mark_detail.length == 0];
+}
+
+- (void)setMarkItem:(HomeworkMarkItem *)markItem{
+    _markItem = markItem;
+    [self.imageView setMarkItem:markItem];
+}
+
+@end
+
+@interface MarkHomeworkVC ()<UICollectionViewDelegate, UICollectionViewDataSource, HomeworkMarkHeaderDelegate>
 @property (nonatomic, strong)UIView*                    contentView;
 @property (nonatomic, strong)HomeworkMarkHeaderView*    headerView;
-@property (nonatomic, strong)ZYBannerView*              circleView;
+//@property (nonatomic, strong)ZYBannerView*              circleView;
+@property (nonatomic, strong)UICollectionView*          collectionView;
 @property (nonatomic, strong)UILabel*                   pageIndicator;
 @property (nonatomic, strong)HomeworkMarkFooterView*    footerView;
 @property (nonatomic, strong)HomeworkMarkItem*          markItem;
@@ -56,14 +83,9 @@
     [self.view addSubview:[self contentView]];
     [self.contentView addSubview:[self headerView]];
     [self.contentView addSubview:[self footerView]];
-    [self.contentView addSubview:[self circleView]];
-    __weak typeof(self) wself = self;
-    [RACObserve(self.circleView.pageControl, numberOfPages) subscribeNext:^(id x) {
-        [wself updatePageIndicator];
-    }];
-    [RACObserve(self.circleView.pageControl, currentPage) subscribeNext:^(id x) {
-        [wself updatePageIndicator];
-    }];
+    [self.contentView addSubview:[self collectionView]];
+    [self.contentView addSubview:[self pageIndicator]];
+    [self.pageIndicator setY:self.headerView.bottom + 5];
     [self showHomeworkWithIndex:self.curIndex];
 }
 
@@ -86,11 +108,11 @@
 }
 
 - (void)updatePageIndicator{
-    NSInteger total = self.circleView.pageControl.numberOfPages;
-    NSInteger curPage = self.circleView.pageControl.currentPage;
+    HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
+    HomeworkTeacherMark* teacherMark = self.markMap[studentInfo.student.uid];
+    NSInteger total = [teacherMark.marks count];
+    NSInteger curPage = [self.collectionView contentOffset].x / (self.collectionView.width);
     [self.pageIndicator setText:[NSString stringWithFormat:@"%zd/%zd",curPage + 1, total]];
-    [self.pageIndicator sizeToFit];
-    [self.pageIndicator setFrame:CGRectMake((self.circleView.width - self.pageIndicator.width - 20) / 2, 5, self.pageIndicator.width + 40, 24)];
 }
 
 - (NSMutableDictionary *)markMap{
@@ -217,17 +239,25 @@
     return _headerView;
 }
 
-- (ZYBannerView *)circleView{
-    if(_circleView == nil){
-        _circleView = [[ZYBannerView alloc] initWithFrame:CGRectMake(0, [self.headerView bottom], self.view.width, self.view.height - 120 - 64 - (self.headerView.bottom))];
-        [_circleView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
-        [_circleView setDelegate:self];
-        [_circleView setDataSource:self];
-        [_circleView.pageControl setHidden:YES];
+- (UICollectionView *)collectionView{
+    if(_collectionView == nil){
         
-        [_circleView addSubview:[self pageIndicator]];
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        [layout setItemSize:CGSizeMake(self.view.width, self.view.height - 120 - 64 - (self.headerView.bottom))];
+        [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+        [layout setMinimumInteritemSpacing:0];
+        [layout setMinimumLineSpacing:0];
+        
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, [self.headerView bottom], self.view.width, self.view.height - 120 - 64 - (self.headerView.bottom)) collectionViewLayout:layout];
+        [_collectionView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+        [_collectionView setPagingEnabled:YES];
+        [_collectionView registerClass:[HomeworkMarkPhotoCell class] forCellWithReuseIdentifier:@"HomeworkMarkPhotoCell"];
+        [_collectionView setDelegate:self];
+        [_collectionView setDataSource:self];
+        [_collectionView setShowsHorizontalScrollIndicator:NO];
+    
     }
-    return _circleView;
+    return _collectionView;
 }
 
 - (UILabel* )pageIndicator{
@@ -237,9 +267,10 @@
         [_pageIndicator setTextColor:[UIColor whiteColor]];
         [_pageIndicator setTextAlignment:NSTextAlignmentCenter];
         [_pageIndicator setFont:[UIFont systemFontOfSize:15]];
-        [_pageIndicator.layer setCornerRadius:12];
+        [_pageIndicator.layer setCornerRadius:14];
         [_pageIndicator.layer setMasksToBounds:YES];
-
+        [_pageIndicator setSize:CGSizeMake(80, 28)];
+        [_pageIndicator setOrigin:CGPointMake((self.contentView.width - _pageIndicator.width) / 2, self.headerView.bottom + 5)];
     }
     return _pageIndicator;
 }
@@ -264,7 +295,9 @@
     [self.footerView setTeacherMark:mark];
     [self.footerView setUserInteractionEnabled:!haveMarked];
     [self.footerView clearMark];
-    [self.circleView setDataSource:self];
+    [self.collectionView reloadData];
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+    [self updatePageIndicator];
     [self setHomeworkRead:studentInfo];
 }
 
@@ -316,24 +349,49 @@
     }
 }
 
-#pragma mark - ZYbannerDelegate
-- (NSInteger)numberOfItemsInBanner:(ZYBannerView *)banner{
+#pragma mark - UICollectionViewDelegate
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
     HomeworkTeacherMark* teacherMark = self.markMap[studentInfo.student.uid];
     return [teacherMark.marks count];
 }
 
-- (UIView *)banner:(ZYBannerView *)banner viewForItemAtIndex:(NSInteger)index{
-    HomeworkPhotoImageView *imageView = [[HomeworkPhotoImageView alloc] initWithFrame:banner.bounds];
+- (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    HomeworkMarkPhotoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"HomeworkMarkPhotoCell" forIndexPath:indexPath];
     HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
     HomeworkTeacherMark* teacherMark = self.markMap[studentInfo.student.uid];
-    [imageView setCanEdit:studentInfo.s_answer.mark_detail.length == 0];
-    [imageView setMarkItem:teacherMark.marks[index]];
-//    [imageView setAddMarkCallback:^{
-//        [wself.footerView clearMark];
-//    }];
-    return imageView;
+    [cell setStudentInfo:studentInfo];
+    [cell setMarkItem:teacherMark.marks[indexPath.row]];
+    return cell;
 }
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
+    HomeworkMarkPhotoCell *photoCell = (HomeworkMarkPhotoCell *)cell;
+    [photoCell.imageView prepareForReuse];
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    [self updatePageIndicator];
+}
+
+//#pragma mark - ZYbannerDelegate
+//- (NSInteger)numberOfItemsInBanner:(ZYBannerView *)banner{
+//    HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
+//    HomeworkTeacherMark* teacherMark = self.markMap[studentInfo.student.uid];
+//    return [teacherMark.marks count];
+//}
+//
+//- (UIView *)banner:(ZYBannerView *)banner viewForItemAtIndex:(NSInteger)index{
+//    HomeworkPhotoImageView *imageView = [[HomeworkPhotoImageView alloc] initWithFrame:banner.bounds];
+//    HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
+//    HomeworkTeacherMark* teacherMark = self.markMap[studentInfo.student.uid];
+//    [imageView setCanEdit:studentInfo.s_answer.mark_detail.length == 0];
+//    [imageView setMarkItem:teacherMark.marks[index]];
+////    [imageView setAddMarkCallback:^{
+////        [wself.footerView clearMark];
+////    }];
+//    return imageView;
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
