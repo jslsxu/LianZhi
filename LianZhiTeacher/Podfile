@@ -1,4 +1,5 @@
-pod "KRVideoPlayer"
+platform:ios,'8.0'
+target "LianZhiTeacher" do
 pod "FCFileManager"
 pod "FMDB"
 pod "YYKit"
@@ -16,3 +17,4 @@ pod 'pop'
 pod 'XHRealTimeBlur'
 pod 'MGSwipeTableCell'
 pod 'UMengAnalytics'
+end

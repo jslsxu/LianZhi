@@ -7,7 +7,6 @@
 //
 
 #import "NotificationDetailVideoView.h"
-#import "KRVideoPlayerController.h"
 @interface NotificationDetailVideoView (){
     
 }

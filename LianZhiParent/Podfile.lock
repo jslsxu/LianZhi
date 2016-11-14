@@ -5,7 +5,6 @@ PODS:
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
-  - KRVideoPlayer (1.0.1)
   - Masonry (1.0.2)
   - MJRefresh (3.1.12)
   - ReactiveCocoa (2.5):
@@ -27,10 +26,9 @@ DEPENDENCIES:
   - FCFileManager
   - FDFullscreenPopGesture
   - FMDB
-  - KRVideoPlayer
   - Masonry
   - MJRefresh
-  - ReactiveCocoa (= 2.5)
+  - ReactiveCocoa
   - SCRecorder
   - SSZipArchive
   - UMengAnalytics
@@ -41,7 +39,6 @@ SPEC CHECKSUMS:
   FCFileManager: 3d13576da1f709d37460bd7669cdf07b9d6d8bc3
   FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
-  KRVideoPlayer: 08918da1b99cae35fd4c15b2ec2b49358d4c985f
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
@@ -50,4 +47,6 @@ SPEC CHECKSUMS:
   UMengAnalytics: 19b28253793d77dff10fb7d502faad1fb6b8ce4a
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 4247486246bc6f84c4ee888b909b7757cd1e4ea2
+
+COCOAPODS: 1.1.1

@@ -7,8 +7,7 @@
 //
 
 #import "NotificationDetailVideoView.h"
-#import "KRVideoPlayerController.h"
-
+#import <MediaPlayer/MediaPlayer.h>
 @interface VideoItemView ()
 @property (nonatomic, strong)UIImageView *coverImageView;
 @property (nonatomic, strong)UIView   *darkCoverView;

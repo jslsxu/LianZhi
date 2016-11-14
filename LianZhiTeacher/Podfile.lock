@@ -7,7 +7,6 @@ PODS:
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
-  - KRVideoPlayer (1.0.1)
   - Masonry (1.0.2)
   - MBProgressHUD (0.9.2)
   - MGSwipeTableCell (1.5.5)
@@ -42,7 +41,6 @@ DEPENDENCIES:
   - FCFileManager
   - FDFullscreenPopGesture
   - FMDB
-  - KRVideoPlayer
   - Masonry
   - MGSwipeTableCell
   - MJRefresh
@@ -63,7 +61,6 @@ SPEC CHECKSUMS:
   FCFileManager: 3d13576da1f709d37460bd7669cdf07b9d6d8bc3
   FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
-  KRVideoPlayer: 08918da1b99cae35fd4c15b2ec2b49358d4c985f
   Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
   MGSwipeTableCell: bafeb5f351124544c9364ecbdf24c7b06a37d340
@@ -79,4 +76,6 @@ SPEC CHECKSUMS:
   XHRealTimeBlur: 661fadd5691ba2d349758e8fd5fbdb499ac55f8c
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 8f3cd8617b7e582356adac71ce1fa361d8d658fc
+
+COCOAPODS: 1.1.1
