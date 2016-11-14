@@ -339,7 +339,13 @@
         return NO;
     }
     
-    if((self.explainEntity && !object) || (!self.explainEntity && object) || ![self.explainEntity isSame:object.explainEntity]){
+    if(self.explainEntity && !object.explainEntity){
+        return NO;
+    }
+    else if(!self.explainEntity && object.explainEntity){
+        return NO;
+    }
+    else if(self.explainEntity && object.explainEntity && ![self.explainEntity isSame:object.explainEntity]){
         return NO;
     }
     

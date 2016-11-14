@@ -342,12 +342,16 @@
 
 
 - (void)markHomework{
+    __weak typeof(self) wself = self;
     if([self.homeworkItem etype]){
         NSArray *homeworkArray = [self studentWairMarkHomeworkArray];
         if([homeworkArray count] > 0){
             MarkHomeworkVC *markVC = [[MarkHomeworkVC alloc] init];
             [markVC setHomeworkItem:self.homeworkItem];
             [markVC setHomeworkArray:homeworkArray];
+            [markVC setMarkFinishedCallback:^{
+                [wself loadTargets];
+            }];
             [CurrentROOTNavigationVC pushViewController:markVC animated:YES];
         }
         else{
@@ -444,6 +448,7 @@
         for (HomeworkStudentInfo *studentInfo in classStatus.students) {
             if(studentInfo.status == HomeworkStudentStatusWaitMark || studentInfo.status == HomeworkStudentStatusHasMark){
                 [homeworkArray addObject:studentInfo];
+                [studentInfo setClassName:classStatus.name];
             }
         }
     }
@@ -459,6 +464,7 @@
         for (HomeworkStudentInfo *studentInfo in classStatus.students) {
             if(studentInfo.status == HomeworkStudentStatusWaitMark){
                 [homeworkArray addObject:studentInfo];
+                [studentInfo setClassName:classStatus.name];
             }
         }
     }

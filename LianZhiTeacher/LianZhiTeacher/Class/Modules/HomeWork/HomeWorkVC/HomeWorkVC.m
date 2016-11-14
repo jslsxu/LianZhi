@@ -30,6 +30,7 @@
     }
     return self;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"作业练习";
@@ -43,7 +44,7 @@
     [self.draftVC.view setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [self.view addSubview:self.draftVC.view];
     [self.draftVC.view setHidden:YES];
-    
+    [self.recordVC requestData:REQUEST_REFRESH];
 }
 
 - (void)setRightbarButtonHighlighted:(BOOL)highlighted{

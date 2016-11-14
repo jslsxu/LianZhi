@@ -203,12 +203,13 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
     if(indexPath.row < [self.courseArray count]){
-        BOOL isCurCourse = NO;
-        if([self.courseArray count] > 0){
-            NSString *course = self.courseArray[indexPath.row];
-            isCurCourse = [course isEqualToString:self.course];
+        NSString *course = self.courseArray[indexPath.row];
+        if([course isEqualToString:self.course]){
+            return NO;
         }
-        return !isCurCourse;
+        else{
+            return YES;
+        }
     }
     return NO;
 }

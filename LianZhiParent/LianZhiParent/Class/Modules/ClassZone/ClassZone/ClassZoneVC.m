@@ -129,7 +129,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor whiteColor]];
-//    self.title = @"班空间";
+    self.title = self.classInfo.name;
     self.shouldShowEmptyHint = YES;
 //    _switchView = [[ClassZoneClassSwitchView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 30)];
 //    [_switchView setCurChild:[UserCenter sharedInstance].curChild];

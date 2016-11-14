@@ -116,6 +116,7 @@ static NSArray *tabDatas = nil;
     {
         NSInteger num = [[UserCenter sharedInstance].statusManager hasNewForClassFeed];
         num += [UserCenter sharedInstance].statusManager.leaveNum;
+        num += [[UserCenter sharedInstance].statusManager newHomeworkNumForSchool:[UserCenter sharedInstance].curSchool.schoolID];
         if(num > 0)
             [appTabButton setBadgeValue:@""];
         else

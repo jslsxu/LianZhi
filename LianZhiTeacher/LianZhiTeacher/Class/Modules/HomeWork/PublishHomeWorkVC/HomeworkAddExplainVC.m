@@ -23,6 +23,7 @@ UIScrollViewDelegate>{
     UITouchScrollView*              _scrollView;
     NotificationInputView*          _inputView;
 }
+@property (nonatomic, strong)HomeworkExplainEntity*     compareEntity;
 @property (nonatomic, strong)NotificationCommentView*   commentView;
 @property (nonatomic, strong)NotificationVoiceView*     voiceView;
 @property (nonatomic, strong)NotificationPhotoView*     photoView;
@@ -73,12 +74,37 @@ UIScrollViewDelegate>{
     }];
 }
 
+- (void)back{
+    [self stopPlayAudio];
+    if([self.explainEntity isSame:self.compareEntity]){
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else{
+        //是否保存到草稿
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否放弃添加作业解析?" style:LGAlertViewStyleAlert buttonTitles:@[@"放弃"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+        [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
+        [alertView setCancelHandler:^(LGAlertView *alertView) {
+        }];
+        [alertView showAnimated:YES completionHandler:nil];
+
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"添加作业解析";
     if(!self.explainEntity){
         self.explainEntity = [[HomeworkExplainEntity alloc] init];
     }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.explainEntity];
+        self.compareEntity = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    });
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(finish)];
     
     _scrollView = [[UITouchScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 64)];

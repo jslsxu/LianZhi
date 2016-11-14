@@ -47,6 +47,13 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
     }];
 }
 
+- (void)back{
+    [super back];
+    if(self.readCallback){
+        self.readCallback();
+    }
+}
+
 - (void)setRightbarButtonHighlighted:(BOOL)highlighted{
     if(_moreButton == nil){
         _moreButton = [UIButton buttonWithType:UIButtonTypeCustom];

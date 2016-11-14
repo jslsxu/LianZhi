@@ -12,4 +12,5 @@ extern NSString *const kHomeworkReadNumChangedNotification;
 @property (nonatomic, copy)NSString *hid;
 @property (nonatomic, assign)BOOL hasNew;
 @property (nonatomic, copy)void (^deleteCallback)(NSString *hid);
+@property (nonatomic, copy)void (^readCallback)();
 @end

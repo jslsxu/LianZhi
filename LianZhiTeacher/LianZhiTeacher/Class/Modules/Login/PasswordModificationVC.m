@@ -99,7 +99,6 @@ NSString *const kPaswordModificationNotification = @"PaswordModificationNotifica
         [_passwordField setFont:[UIFont systemFontOfSize:16]];
         [_passwordField setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_passwordField setPlaceholder:@"新密码"];
-        [_passwordField setKeyboardType:UIKeyboardTypeNumberPad];
         [_passwordField setSecureTextEntry:YES];
     }
     return _passwordField;
@@ -111,7 +110,6 @@ NSString *const kPaswordModificationNotification = @"PaswordModificationNotifica
         [_confirmField setFont:[UIFont systemFontOfSize:16]];
         [_confirmField setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [_confirmField setPlaceholder:@"确认密码"];
-        [_confirmField setKeyboardType:UIKeyboardTypeNumberPad];
         [_confirmField setSecureTextEntry:YES];
     }
     return _confirmField;

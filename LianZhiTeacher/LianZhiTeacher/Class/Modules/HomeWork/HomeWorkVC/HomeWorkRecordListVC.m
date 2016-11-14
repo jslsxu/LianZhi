@@ -270,7 +270,6 @@
     return self;
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.tableView setFrame:CGRectMake(0, 0, self.view.width, self.view.height - 50)];
@@ -282,7 +281,6 @@
     [self bindTableCell:@"HomeworkRecordItemCell" tableModel:@"MySendHomeworkListModel"];
     [self setSupportPullUp:YES];
     [self setSupportPullDown:YES];
-    [self requestData:REQUEST_REFRESH];
 }
 
 - (void)setupSendView:(UIView *)viewParent{
@@ -503,20 +501,22 @@
         
     }
     else{
-        @weakify(self)
+        __weak typeof(self) wself = self;
         HomeworkItem *item = self.tableViewModel.modelItemArray[indexPath.row - [HomeworkManager sharedInstance].sendingHomeworkArray.count];
         HomeworkDetailVC*  detailVC = [[HomeworkDetailVC alloc] init];
         [detailVC setHid:item.eid];
         [detailVC setHasNew:item.unread];
         [detailVC setDeleteCallback:^(NSString *hid) {
-            @strongify(self)
-            for (HomeworkItem *notiItem in self.tableViewModel.modelItemArray) {
+            for (HomeworkItem *notiItem in wself.tableViewModel.modelItemArray) {
                 if([hid isEqualToString:notiItem.eid]){
-                    [self.tableViewModel.modelItemArray removeObject:notiItem];
-                    [self.tableView reloadData];
+                    [wself.tableViewModel.modelItemArray removeObject:notiItem];
+                    [wself.tableView reloadData];
                     break;
                 }
             }
+        }];
+        [detailVC setReadCallback:^{
+            [wself requestData:REQUEST_REFRESH];
         }];
         [CurrentROOTNavigationVC pushViewController:detailVC animated:YES];
     }

@@ -120,39 +120,84 @@
 
 - (void)mark{
     __weak typeof(self) wself = self;
-    HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
-    if(![studentInfo.s_answer marked]){
-        HomeworkTeacherMark *mark = self.markMap[studentInfo.student.uid];
-        [mark setComment:self.footerView.comment];
-        if(![mark isEmpty]){
-            NSString *markDetail = [mark modelToJSONString];
-            NSMutableDictionary *params = [NSMutableDictionary dictionary];
-            [params setValue:markDetail forKey:@"mark_detail"];
-            [params setValue:self.homeworkItem.eid forKey:@"eid"];
-            [params setValue:studentInfo.student.uid forKey:@"child_id"];
-            
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
-            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/marking" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                [hud hide:NO];
-                [ProgressHUD showHintText:@"批阅成功"];
+//    HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
+//    if(![studentInfo.s_answer marked]){
+//        HomeworkTeacherMark *mark = self.markMap[studentInfo.student.uid];
+//        if(![mark isEmpty]){
+//            NSString *markDetail = [mark modelToJSONString];
+//            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+//            [params setValue:markDetail forKey:@"mark_detail"];
+//            [params setValue:self.homeworkItem.eid forKey:@"eid"];
+//            [params setValue:studentInfo.student.uid forKey:@"child_id"];
+//            
+//            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+//            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/marking" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+//                [hud hide:NO];
+//                [ProgressHUD showHintText:@"批阅成功"];
+//                [studentInfo.s_answer setMark_detail:markDetail];
+//                HomeworkTeacherMark *teacherMark = [HomeworkTeacherMark markWithString:markDetail];
+//            
+//                [teacherMark setRightPercent:[wself rightRateWithMark:teacherMark]];
+//                [studentInfo.s_answer setTeacherMark:teacherMark];
+//                [wself showHomeworkWithIndex:wself.curIndex];
+//                if(wself.markFinishedCallback){
+//                    wself.markFinishedCallback();
+//                }
+//            } fail:^(NSString *errMsg) {
+//                [hud hide:NO];
+//                [ProgressHUD showError:errMsg];
+//            }];
+//        }
+//        else{
+//            [ProgressHUD showHintText:@"没有评语和标注"];
+//        }
+//       
+//    }
+    NSMutableArray *answerArray = [NSMutableArray array];
+    NSMutableArray *markedArray = [NSMutableArray array];
+    for (NSInteger i = 0; i < [self.homeworkArray count]; i++) {
+        HomeworkStudentInfo *studentInfo = self.homeworkArray[i];
+        if(![studentInfo.s_answer marked]){
+            HomeworkTeacherMark *mark = self.markMap[studentInfo.student.uid];
+            if(![mark isEmpty]){
+                [answerArray addObject:studentInfo];
+                
+                NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+                [dic setValue:studentInfo.student.uid forKey:@"child_id"];
+                [dic setValue:mark forKey:@"mark_detail"];
+                [markedArray addObject:dic];
+            }
+        }
+    }
+    if([markedArray count] > 0){
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:self.homeworkItem.eid forKey:@"eid"];
+        [params setValue:[markedArray modelToJSONString] forKey:@"markings"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/bulk_marking" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [hud hide:NO];
+            [ProgressHUD showHintText:@"批阅成功"];
+            for (NSInteger i = 0; i < [markedArray count]; i++) {
+                NSDictionary *dic = markedArray[i];
+                HomeworkStudentInfo *studentInfo = answerArray[i];
+                NSString* markDetail = [dic[@"mark_detail"] modelToJSONString];
                 [studentInfo.s_answer setMark_detail:markDetail];
                 HomeworkTeacherMark *teacherMark = [HomeworkTeacherMark markWithString:markDetail];
-            
                 [teacherMark setRightPercent:[wself rightRateWithMark:teacherMark]];
                 [studentInfo.s_answer setTeacherMark:teacherMark];
-                [wself showHomeworkWithIndex:wself.curIndex];
-                if(wself.markFinishedCallback){
-                    wself.markFinishedCallback();
-                }
-            } fail:^(NSString *errMsg) {
-                [hud hide:NO];
-                [ProgressHUD showError:errMsg];
-            }];
-        }
-        else{
-            [ProgressHUD showHintText:@"没有评语和标注"];
-        }
-       
+            }
+            [wself showHomeworkWithIndex:wself.curIndex];
+            if(wself.markFinishedCallback){
+                wself.markFinishedCallback();
+            }
+
+        } fail:^(NSString *errMsg) {
+            [hud hide:NO];
+            [ProgressHUD showHintText:errMsg];
+        }];
+    }
+    else{
+        [ProgressHUD showHintText:@"没有批阅的内容"];
     }
 }
 
