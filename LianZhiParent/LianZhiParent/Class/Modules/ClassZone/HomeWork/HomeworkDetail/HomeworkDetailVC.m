@@ -36,6 +36,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setRightbarButtonHighlighted:NO];
     [self loadCache];
     [self requestHomeworkDetail];
 }
@@ -66,9 +67,6 @@
 }
 
 - (void)homeworkItemChanged{
-    if((_homeworkItem.etype && _homeworkItem.s_answer) || !_homeworkItem.etype){//显示删除
-        [self setRightbarButtonHighlighted:NO];
-    }
     [self.homeworkDetailView setHomeworkItem:_homeworkItem];
     [self.homeworkFinishView setHomeworkItem:_homeworkItem];
     if(self.homeworkStatusCallback){

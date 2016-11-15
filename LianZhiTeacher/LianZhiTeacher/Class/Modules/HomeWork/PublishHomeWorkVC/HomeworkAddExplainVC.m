@@ -81,7 +81,7 @@ UIScrollViewDelegate>{
     }
     else{
         //是否保存到草稿
-        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否放弃添加作业解析?" style:LGAlertViewStyleAlert buttonTitles:@[@"放弃"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否放弃修改作业解析?" style:LGAlertViewStyleAlert buttonTitles:@[@"放弃"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
         [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
         [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
         [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];

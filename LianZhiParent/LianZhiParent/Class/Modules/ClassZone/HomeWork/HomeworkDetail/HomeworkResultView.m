@@ -72,6 +72,7 @@
             }
         }
         CGFloat rightRate = 1 - wrongNum / self.homeworkItem.enums;
+        rightRate = MAX(rightRate, 0);
         NSInteger percent = rightRate * 100;
         [rateStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%zd%%", percent] attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
     }

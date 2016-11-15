@@ -67,6 +67,7 @@
     [super viewDidLoad];
     self.markItem = [[HomeworkMarkItem alloc] init];
     self.title = @"批阅作业";
+    BOOL canMark = NO;
     for (HomeworkStudentInfo *studentInfo in self.homeworkArray) {
         HomeworkTeacherMark* teacherMark = nil;
         if([studentInfo.s_answer.mark_detail length] > 0){
@@ -76,10 +77,12 @@
         }
         else{
             teacherMark = [[HomeworkTeacherMark alloc] initWithPhotoArray:studentInfo.s_answer.pics];
+            canMark = YES;
         }
         [self.markMap setValue:teacherMark forKey:studentInfo.student.uid];
     }
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"批阅" style:UIBarButtonItemStylePlain target:self action:@selector(mark)];
+    [self.navigationItem.rightBarButtonItem setEnabled:canMark];
     [self.view addSubview:[self contentView]];
     [self.contentView addSubview:[self headerView]];
     [self.contentView addSubview:[self footerView]];
@@ -175,6 +178,8 @@
 //        }
 //       
 //    }
+
+    
     NSMutableArray *answerArray = [NSMutableArray array];
     NSMutableArray *markedArray = [NSMutableArray array];
     for (NSInteger i = 0; i < [self.homeworkArray count]; i++) {
@@ -192,34 +197,42 @@
         }
     }
     if([markedArray count] > 0){
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
-        NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        [params setValue:self.homeworkItem.eid forKey:@"eid"];
-        [params setValue:[markedArray modelToJSONString] forKey:@"markings"];
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/bulk_marking" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-            [hud hide:NO];
-            [ProgressHUD showHintText:@"批阅成功"];
-            for (NSInteger i = 0; i < [markedArray count]; i++) {
-                NSDictionary *dic = markedArray[i];
-                HomeworkStudentInfo *studentInfo = answerArray[i];
-                NSString* markDetail = [dic[@"mark_detail"] modelToJSONString];
-                [studentInfo.s_answer setMark_detail:markDetail];
-                HomeworkTeacherMark *teacherMark = [HomeworkTeacherMark markWithString:markDetail];
-                [teacherMark setRightPercent:[wself rightRateWithMark:teacherMark]];
-                [studentInfo.s_answer setTeacherMark:teacherMark];
-            }
-            [wself showHomeworkWithIndex:wself.curIndex];
-            if(wself.markFinishedCallback){
-                wself.markFinishedCallback();
-            }
-
-        } fail:^(NSString *errMsg) {
-            [hud hide:NO];
-            [ProgressHUD showHintText:errMsg];
+        NSString *message = [NSString stringWithFormat:@"您本次已批阅了%zd份作业(共%zd份),是否将这些已阅作业下发家长?",[markedArray count], [self.homeworkArray count]];
+        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:message style:LGAlertViewStyleAlert buttonTitles:@[@"批阅"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+        [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+        [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+        [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+            [params setValue:wself.homeworkItem.eid forKey:@"eid"];
+            [params setValue:[markedArray modelToJSONString] forKey:@"markings"];
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/bulk_marking" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:wself completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                [hud hide:NO];
+                [ProgressHUD showHintText:@"批阅成功"];
+                for (NSInteger i = 0; i < [markedArray count]; i++) {
+                    NSDictionary *dic = markedArray[i];
+                    HomeworkStudentInfo *studentInfo = answerArray[i];
+                    NSString* markDetail = [dic[@"mark_detail"] modelToJSONString];
+                    [studentInfo.s_answer setMark_detail:markDetail];
+                    HomeworkTeacherMark *teacherMark = [HomeworkTeacherMark markWithString:markDetail];
+                    [teacherMark setRightPercent:[wself rightRateWithMark:teacherMark]];
+                    [studentInfo.s_answer setTeacherMark:teacherMark];
+                }
+                [wself showHomeworkWithIndex:wself.curIndex];
+                if(wself.markFinishedCallback){
+                    wself.markFinishedCallback();
+                }
+                
+            } fail:^(NSString *errMsg) {
+                [hud hide:NO];
+                [ProgressHUD showHintText:errMsg];
+            }];
         }];
+        [alertView showAnimated:YES completionHandler:nil];
     }
     else{
-        [ProgressHUD showHintText:@"没有批阅的内容"];
+        [ProgressHUD showHintText:@"请在待批阅作业上添加图标或评语"];
     }
 }
 
@@ -287,7 +300,6 @@
     [self.headerView setCanPre:self.curIndex > 0];
     [self.headerView setCanNext:self.curIndex < [self.homeworkArray count] - 1];
     HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
-    [self.navigationItem.rightBarButtonItem setEnabled:[studentInfo.s_answer.mark_detail length] == 0];
     
     [self.headerView setStudentHomeworkInfo:studentInfo];
     HomeworkTeacherMark *mark = self.markMap[studentInfo.student.uid];
