@@ -9,7 +9,7 @@
 #import "ClassAppVC.h"
 #import "GrowthTimelineVC.h"
 #import "ContactListVC.h"
-#import "AttendanceDetailVC.h"
+#import "VacationHistoryVC.h"
 #import "ClassZoneVC.h"
 #import "ClassAlbumVC.h"
 #import "ClassSelectionVC.h"
@@ -374,7 +374,7 @@
 //                        }
                         else if([host isEqualToString:@"leave"])
                         {
-                            AttendanceDetailVC *vacationHistoryVC = [[AttendanceDetailVC alloc] init];
+                            VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];
                             [vacationHistoryVC setClassInfo:classInfo];
                             [CurrentROOTNavigationVC pushViewController:vacationHistoryVC animated:YES];
                         }

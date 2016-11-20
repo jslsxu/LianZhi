@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NSDate+convenience.h"
 @protocol MonthIndicatorDelegate <NSObject>
 - (void)monthIndicatorDidChangeMonth:(NSDate *)date;
 

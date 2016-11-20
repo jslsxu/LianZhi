@@ -67,14 +67,14 @@
 
 - (void)onPreButtonClicked
 {
-    [self setDate:[self.date dateByAddingMonths:-1]];
+    [self setDate:[self.date offsetMonth:-1]];
     if([self.delegate respondsToSelector:@selector(monthIndicatorDidChangeMonth:)])
         [self.delegate monthIndicatorDidChangeMonth:self.date];
 }
 
 - (void)onNextButtonClicked
 {
-    [self setDate:[self.date dateByAddingMonths:1]];
+    [self setDate:[self.date offsetMonth:1]];
     if([self.delegate respondsToSelector:@selector(monthIndicatorDidChangeMonth:)])
         [self.delegate monthIndicatorDidChangeMonth:self.date];
 }

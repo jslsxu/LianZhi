@@ -40,15 +40,15 @@
     CGFloat margin = 5;
     UIButton *confirmButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [confirmButton addTarget:self action:@selector(onConfirmClicked) forControlEvents:UIControlEventTouchUpInside];
-    [confirmButton setTitleColor:kCommonParentTintColor forState:UIControlStateNormal];
-    [confirmButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
+    [confirmButton setTitleColor:[UIColor colorWithHexString:@"2790D4"] forState:UIControlStateNormal];
+    [confirmButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     [confirmButton setTitle:@"确定" forState:UIControlStateNormal];
     [viewParent addSubview:confirmButton];
     
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelButton addTarget:self action:@selector(onCancelClicked) forControlEvents:UIControlEventTouchUpInside];
-    [cancelButton setTitleColor:kCommonParentTintColor forState:UIControlStateNormal];
-    [cancelButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
+    [cancelButton setTitleColor:[UIColor colorWithHexString:@"2790D4"] forState:UIControlStateNormal];
+    [cancelButton.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
     [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
     [viewParent addSubview:cancelButton];
     
@@ -57,9 +57,10 @@
     [viewParent addSubview:sepLine];
     
     _datePicker = [[UIDatePicker alloc] init];
-    [_datePicker setBackgroundColor:[UIColor colorWithHexString:@"e0e0e0"]];
+    [_datePicker setWidth:viewParent.width];
     [_datePicker setDate:_date];
-    [_datePicker setDatePickerMode:UIDatePickerModeDate];
+    [_datePicker setDatePickerMode:UIDatePickerModeDateAndTime];
+    [_datePicker setMinuteInterval:30];
     [viewParent addSubview:_datePicker];
     
     [viewParent setHeight:_datePicker.height + 40];

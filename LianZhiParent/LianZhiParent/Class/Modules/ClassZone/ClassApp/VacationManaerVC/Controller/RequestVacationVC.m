@@ -19,73 +19,60 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"在线请假";
-    [self.view setBackgroundColor:[UIColor colorWithHexString:@"eeeef4"]];
-    UIView *startBG = [[UIView alloc] initWithFrame:CGRectMake(10, 15, self.view.width - 10 * 2, 45)];
-    [startBG setBackgroundColor:[UIColor whiteColor]];
-    [startBG.layer setCornerRadius:10];
-    [startBG.layer setMasksToBounds:YES];
-    [self.view addSubview:startBG];
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"f2f2f2"]];
+    self.title = [UserCenter sharedInstance].curChild.name;
     
-    UITapGestureRecognizer *startTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onStartButtonClicked)];
-    [startBG addGestureRecognizer:startTapGesture];
+    UIView* bgView = [[UIView alloc] initWithFrame:CGRectMake(10, 10, self.view.width - 10 * 2, 80)];
+    [bgView setBackgroundColor:[UIColor whiteColor]];
+    [bgView.layer setCornerRadius:40];
+    [bgView.layer setMasksToBounds:YES];
+    [self.view addSubview:bgView];
     
-    UIImageView* rightArrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ParentRelationArrow"]];
-    [rightArrow setOrigin:CGPointMake(startBG.width - 10 - rightArrow.width, (startBG.height - rightArrow.height) / 2)];
-    [startBG addSubview:rightArrow];
+    AvatarView *avatarView = [[AvatarView alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
+    [avatarView sd_setImageWithURL:[NSURL URLWithString:[UserCenter sharedInstance].curChild.avatar]];
+    [bgView addSubview:avatarView];
     
-    _startLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, rightArrow.left - 10 - 10, startBG.height)];
+    _startLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarView.right + 10, 10, bgView.width - 50 - (avatarView.right + 20), 30)];
     [_startLabel setTextColor:[UIColor colorWithHexString:@"9e9e9e"]];
-    [_startLabel setText:@"起始:"];
+    [_startLabel setText:@"自"];
+//    [_startLabel setTextAlignment:NSTextAlignmentCenter];
     [_startLabel setFont:[UIFont systemFontOfSize:15]];
-    [startBG addSubview:_startLabel];
+    [bgView addSubview:_startLabel];
     
-    UIView *endBG = [[UIView alloc] initWithFrame:CGRectMake(10, startBG.bottom + 10, self.view.width - 10 * 2, 45)];
-    [endBG setBackgroundColor:[UIColor whiteColor]];
-    [endBG.layer setCornerRadius:10];
-    [endBG.layer setMasksToBounds:YES];
-    [self.view addSubview:endBG];
+    UIButton *startButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [startButton addTarget:self action:@selector(onStartButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [startButton setFrame:_startLabel.frame];
+    [self.view addSubview:startButton];
     
-    UITapGestureRecognizer *endTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onEndButtonClicked)];
-    [endBG addGestureRecognizer:endTapGesture];
-    
-    UIImageView* rightArrowEnd = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ParentRelationArrow"]];
-    [rightArrowEnd setOrigin:CGPointMake(endBG.width - 10 - rightArrowEnd.width, (endBG.height - rightArrowEnd.height) / 2)];
-    [endBG addSubview:rightArrowEnd];
-    
-    _endLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, rightArrowEnd.left - 10 - 10, endBG.height)];
+    _endLabel = [[UILabel alloc] initWithFrame:CGRectMake(avatarView.right + 10, _startLabel.bottom, bgView.width - 50 - (avatarView.right + 20), 30)];
     [_endLabel setTextColor:[UIColor colorWithHexString:@"9e9e9e"]];
-    [_endLabel setText:@"终于:"];
-    //    [_endLabel setTextAlignment:NSTextAlignmentCenter];
+    [_endLabel setText:@"至"];
+//    [_endLabel setTextAlignment:NSTextAlignmentCenter];
     [_endLabel setFont:[UIFont systemFontOfSize:15]];
-    [endBG addSubview:_endLabel];
-
+    [bgView addSubview:_endLabel];
+    
+    UIButton *endButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [endButton addTarget:self action:@selector(onEndButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [endButton setFrame:_endLabel.frame];
+    [self.view addSubview:endButton];
+    
+    
     UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [sendButton setFrame:CGRectMake(kMargin , self.view.height - 10 - 40, self.view.width - kMargin * 2 , 40)];
-    [sendButton setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
-    [sendButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
+    [sendButton setFrame:CGRectMake(kMargin , self.view.height - 15 - 36 - 64, self.view.width - kMargin * 2 , 36)];
+    [sendButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
     [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [sendButton setTitle:@"给班主任发送" forState:UIControlStateNormal];
+    [sendButton setTitle:@"发送假条" forState:UIControlStateNormal];
     [sendButton addTarget:self action:@selector(onSend) forControlEvents:UIControlEventTouchUpInside];
-    [sendButton setBackgroundImage:[UIImage imageWithColor:kCommonParentTintColor size:sendButton.size cornerRadius:5] forState:UIControlStateNormal];
+    [sendButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"5ed115"] size:sendButton.size cornerRadius:18] forState:UIControlStateNormal];
     [self.view addSubview:sendButton];
     
-    UIView* contentView = [[UIView alloc] initWithFrame:CGRectMake(10, endBG.bottom + 15, self.view.width - 10 * 2, sendButton.y - 20 - (endBG.bottom + 15))];
-    [contentView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
+    UIView* contentView = [[UIView alloc] initWithFrame:CGRectMake(10, bgView.bottom + 20, self.view.width - 10 * 2, sendButton.y - 20 - (bgView.bottom + 20))];
     [contentView setBackgroundColor:[UIColor whiteColor]];
     [contentView.layer setCornerRadius:10];
     [contentView.layer setMasksToBounds:YES];
     [self.view addSubview:contentView];
     
-    UILabel* hintLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [hintLabel setText:@"原因说明:"];
-    [hintLabel setFont:[UIFont systemFontOfSize:15]];
-    [hintLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-    [hintLabel sizeToFit];
-    [hintLabel setOrigin:CGPointMake(15, 15)];
-    [contentView addSubview:hintLabel];
-    
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(10, hintLabel.bottom + 5, contentView.width - 10 * 2, contentView.height - 10 - (hintLabel.bottom + 5))];
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectInset(contentView.bounds, 10, 10)];
     [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setPlaceholder:@"请输入请假原因"];
     [_textView setFont:[UIFont systemFontOfSize:15]];
@@ -94,16 +81,21 @@
     [contentView addSubview:_textView];
     
     [self setStartDate:[NSDate date]];
-    [self setEndDate:[self.startDate dateByAddingDays:1]];
+    NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
+    [formmater setDateFormat:@"yyyy-MM-dd"];
+    NSString *str = [formmater stringFromDate:[NSDate date]];
+    str = [NSString stringWithFormat:@"%@ 23:59:59",str];
+    [formmater setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [self setEndDate:[formmater dateFromString:str]];
 }
 - (void)setStartDate:(NSDate *)startDate
 {
     _startDate = startDate;
     NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
-    [formmater setDateFormat:@"yyyy年MM月dd日"];
+    [formmater setDateFormat:@"yy-MM-dd HH:mm"];
     NSString *dateStr = [formmater stringFromDate:_startDate];
-    NSMutableAttributedString *startStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"起始:  %@",dateStr] attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"2c2c2c"]}];
-    [startStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[NSDate getWeekStringFromInteger:[_startDate weekday]]] attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
+    NSMutableAttributedString *startStr = [[NSMutableAttributedString alloc] initWithString:@"自 " attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"9e9e9e"]}];
+    [startStr appendAttributedString:[[NSAttributedString alloc] initWithString:dateStr attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"2c2c2c"]}]];
     [_startLabel setAttributedText:startStr];
 }
 
@@ -111,10 +103,10 @@
 {
     _endDate = endDate;
     NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
-    [formmater setDateFormat:@"yyyy年MM月dd日"];
+    [formmater setDateFormat:@"yy-MM-dd HH:mm"];
     NSString *dateStr = [formmater stringFromDate:_endDate];
-    NSMutableAttributedString *endStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"终于:  %@",dateStr ] attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"2c2c2c"]}];
-     [endStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" %@",[NSDate getWeekStringFromInteger:[_endDate weekday]]] attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
+    NSMutableAttributedString *endStr = [[NSMutableAttributedString alloc] initWithString:@"至 " attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"9e9e9e"]}];
+    [endStr appendAttributedString:[[NSAttributedString alloc] initWithString:dateStr attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"2c2c2c"]}]];
     [_endLabel setAttributedText:endStr];
 }
 

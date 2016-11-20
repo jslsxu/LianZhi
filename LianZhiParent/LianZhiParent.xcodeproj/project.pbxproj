@@ -12,6 +12,18 @@
 		3707E66E1C041E6E00944B8D /* MyGiftVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3707E66D1C041E6E00944B8D /* MyGiftVC.m */; };
 		370F33C81A780E8900FED3C2 /* ContactServiceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33C71A780E8900FED3C2 /* ContactServiceVC.m */; };
 		370F33D01A78140B00FED3C2 /* AboutVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33CF1A78140B00FED3C2 /* AboutVC.m */; };
+		3712ACDF1DE1D0C9000E5AF8 /* CalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3712ACC51DE1D0C9000E5AF8 /* CalendarView.m */; };
+		3712ACE01DE1D0C9000E5AF8 /* LeaveDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3712ACC71DE1D0C9000E5AF8 /* LeaveDetailView.m */; };
+		3712ACE11DE1D0C9000E5AF8 /* MonthIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3712ACC91DE1D0C9000E5AF8 /* MonthIndicatorView.m */; };
+		3712ACE21DE1D0C9000E5AF8 /* NSDate+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 3712ACCB1DE1D0C9000E5AF8 /* NSDate+convenience.m */; };
+		3712ACE31DE1D0C9000E5AF8 /* NSMutableArray+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 3712ACCD1DE1D0C9000E5AF8 /* NSMutableArray+convenience.m */; };
+		3712ACE41DE1D0C9000E5AF8 /* UIColor+expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = 3712ACCF1DE1D0C9000E5AF8 /* UIColor+expanded.m */; };
+		3712ACE51DE1D0C9000E5AF8 /* UIView+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 3712ACD11DE1D0C9000E5AF8 /* UIView+convenience.m */; };
+		3712ACE61DE1D0C9000E5AF8 /* VacationHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3712ACD31DE1D0C9000E5AF8 /* VacationHistoryCell.m */; };
+		3712ACE71DE1D0C9000E5AF8 /* VacationHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3712ACD51DE1D0C9000E5AF8 /* VacationHistoryModel.m */; };
+		3712ACE81DE1D0C9000E5AF8 /* VacationHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3712ACD71DE1D0C9000E5AF8 /* VacationHistoryVC.m */; };
+		3712ACE91DE1D0C9000E5AF8 /* RequestVacationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3712ACDB1DE1D0C9000E5AF8 /* RequestVacationVC.m */; };
+		3712ACEA1DE1D0C9000E5AF8 /* VacationDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3712ACDE1DE1D0C9000E5AF8 /* VacationDatePickerView.m */; };
 		3719A7471AA2C47800FBDC2A /* NewEditionPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = 3719A7451AA2C47800FBDC2A /* NewEditionPreview.m */; };
 		371C6EB51A72456C00FA4AEC /* MessageVoiceButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 371C6EB41A72456C00FA4AEC /* MessageVoiceButton.m */; };
 		3720C0DE1A41931C000357A5 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3720C0DC1A41931C000357A5 /* LoginVC.m */; };
@@ -198,11 +210,6 @@
 		37B5D3E71A57B23A003CA877 /* PersonalInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B5D3E61A57B23A003CA877 /* PersonalInfoVC.m */; };
 		37B7044F1A4410CD0025D684 /* PasswordModificationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B7044E1A4410CD0025D684 /* PasswordModificationVC.m */; };
 		37BC41101A43346D005038F9 /* ConfimInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC410F1A43346D005038F9 /* ConfimInfoVC.m */; };
-		37BC708B1C116EC900F8B79B /* CalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC70801C116EC900F8B79B /* CalendarView.m */; };
-		37BC708C1C116EC900F8B79B /* MonthIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC70821C116EC900F8B79B /* MonthIndicatorView.m */; };
-		37BC708E1C116EC900F8B79B /* NSMutableArray+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC70861C116EC900F8B79B /* NSMutableArray+convenience.m */; };
-		37BC708F1C116EC900F8B79B /* UIColor+expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC70881C116EC900F8B79B /* UIColor+expanded.m */; };
-		37BC70901C116EC900F8B79B /* UIView+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC708A1C116EC900F8B79B /* UIView+convenience.m */; };
 		37C316421A5636AC002E847D /* ClassZoneVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C3163E1A5636AC002E847D /* ClassZoneVC.m */; };
 		37C316451A56372D002E847D /* ClassAppVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C316441A56372D002E847D /* ClassAppVC.m */; };
 		37C316481A568617002E847D /* ClassAppCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C316471A568617002E847D /* ClassAppCell.m */; };
@@ -214,9 +221,6 @@
 		37C3560B1A3FD67300B948E6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C3560A1A3FD67300B948E6 /* AppDelegate.m */; };
 		37C3560E1A3FD67300B948E6 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C3560D1A3FD67300B948E6 /* HomeViewController.m */; };
 		37C356131A3FD67300B948E6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37C356121A3FD67300B948E6 /* Images.xcassets */; };
-		37C53AA31B14D5FF00C3ED69 /* RequestVacationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53A9F1B14D5FF00C3ED69 /* RequestVacationVC.m */; };
-		37C53AA41B14D5FF00C3ED69 /* VacationDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53AA21B14D5FF00C3ED69 /* VacationDatePickerView.m */; };
-		37C53AAE1B14E3EF00C3ED69 /* VacationHistoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C53AAD1B14E3EF00C3ED69 /* VacationHistoryModel.m */; };
 		37C6B3E51BF2DEC60001D54F /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C6B3C21BF2DEC60001D54F /* TencentOpenAPI.framework */; };
 		37C6B3E61BF2DEC60001D54F /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 37C6B3C31BF2DEC60001D54F /* TencentOpenApi_IOS_Bundle.bundle */; };
 		37C6B3EB1BF2DEC70001D54F /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C6B3D61BF2DEC60001D54F /* libWeChatSDK.a */; };
@@ -278,7 +282,6 @@
 		37D6EEC81BCABF11000994A2 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6EEC71BCABF11000994A2 /* libicucore.dylib */; };
 		37D6EECA1BCABF17000994A2 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6EEC91BCABF17000994A2 /* libstdc++.dylib */; };
 		37D6EECD1BCABF40000994A2 /* ShareActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EECB1BCABF40000994A2 /* ShareActionView.m */; };
-		37E591CA1C44FCD400D54A2C /* LeaveDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E591C91C44FCD400D54A2C /* LeaveDetailView.m */; };
 		37E7C9151B1613EC005D653F /* SurroundingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E7C9141B1613EC005D653F /* SurroundingVC.m */; };
 		37E7C92D1B162AF2005D653F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E7C92C1B162AF2005D653F /* CoreLocation.framework */; };
 		37E7C93F1B162C1A005D653F /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37E7C93E1B162C19005D653F /* OpenGLES.framework */; };
@@ -449,7 +452,6 @@
 		8DE718661DABB0370080476D /* HomeworkItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DE718651DABB0370080476D /* HomeworkItem.m */; };
 		8DE718691DABB0700080476D /* HomeworkListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DE718681DABB0700080476D /* HomeworkListModel.m */; };
 		8DE7186D1DABE2120080476D /* Calendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DE7186C1DABE2120080476D /* Calendar.m */; };
-		8DFDDD6E1D9271150050740B /* NSDate+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD6D1D9271150050740B /* NSDate+convenience.m */; };
 		8DFDDD721D92754C0050740B /* GrowthTimelineVCNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD711D92754C0050740B /* GrowthTimelineVCNew.m */; };
 		8DFDDD751D927A8E0050740B /* MonthPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD741D927A8E0050740B /* MonthPickerView.m */; };
 		8DFDDD7E1D927E150050740B /* GrowthContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDD7D1D927E150050740B /* GrowthContentView.m */; };
@@ -458,7 +460,6 @@
 		8DFDDDA61D94D4810050740B /* NSDate+WQCalendarLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDA51D94D4810050740B /* NSDate+WQCalendarLogic.m */; };
 		8DFDDDA91D9507420050740B /* PhoneInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDA81D9507420050740B /* PhoneInputVC.m */; };
 		8DFDDDAC1D950D3E0050740B /* AuthCodeInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDAB1D950D3E0050740B /* AuthCodeInputVC.m */; };
-		8DFDDDB51D9540660050740B /* AttendanceDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DFDDDB41D9540660050740B /* AttendanceDetailVC.m */; };
 		C7440A7948E611640FAA9B69 /* libPods-LianZhiParent.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D05366BEB45C198E3A2DFCD5 /* libPods-LianZhiParent.a */; };
 /* End PBXBuildFile section */
 
@@ -486,6 +487,30 @@
 		370F33C71A780E8900FED3C2 /* ContactServiceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactServiceVC.m; sourceTree = "<group>"; };
 		370F33CE1A78140B00FED3C2 /* AboutVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutVC.h; sourceTree = "<group>"; };
 		370F33CF1A78140B00FED3C2 /* AboutVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutVC.m; sourceTree = "<group>"; };
+		3712ACC41DE1D0C9000E5AF8 /* CalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarView.h; sourceTree = "<group>"; };
+		3712ACC51DE1D0C9000E5AF8 /* CalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarView.m; sourceTree = "<group>"; };
+		3712ACC61DE1D0C9000E5AF8 /* LeaveDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaveDetailView.h; sourceTree = "<group>"; };
+		3712ACC71DE1D0C9000E5AF8 /* LeaveDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeaveDetailView.m; sourceTree = "<group>"; };
+		3712ACC81DE1D0C9000E5AF8 /* MonthIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MonthIndicatorView.h; sourceTree = "<group>"; };
+		3712ACC91DE1D0C9000E5AF8 /* MonthIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MonthIndicatorView.m; sourceTree = "<group>"; };
+		3712ACCA1DE1D0C9000E5AF8 /* NSDate+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+convenience.h"; sourceTree = "<group>"; };
+		3712ACCB1DE1D0C9000E5AF8 /* NSDate+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+convenience.m"; sourceTree = "<group>"; };
+		3712ACCC1DE1D0C9000E5AF8 /* NSMutableArray+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+convenience.h"; sourceTree = "<group>"; };
+		3712ACCD1DE1D0C9000E5AF8 /* NSMutableArray+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+convenience.m"; sourceTree = "<group>"; };
+		3712ACCE1DE1D0C9000E5AF8 /* UIColor+expanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+expanded.h"; sourceTree = "<group>"; };
+		3712ACCF1DE1D0C9000E5AF8 /* UIColor+expanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+expanded.m"; sourceTree = "<group>"; };
+		3712ACD01DE1D0C9000E5AF8 /* UIView+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+convenience.h"; sourceTree = "<group>"; };
+		3712ACD11DE1D0C9000E5AF8 /* UIView+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+convenience.m"; sourceTree = "<group>"; };
+		3712ACD21DE1D0C9000E5AF8 /* VacationHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VacationHistoryCell.h; sourceTree = "<group>"; };
+		3712ACD31DE1D0C9000E5AF8 /* VacationHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VacationHistoryCell.m; sourceTree = "<group>"; };
+		3712ACD41DE1D0C9000E5AF8 /* VacationHistoryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VacationHistoryModel.h; sourceTree = "<group>"; };
+		3712ACD51DE1D0C9000E5AF8 /* VacationHistoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VacationHistoryModel.m; sourceTree = "<group>"; };
+		3712ACD61DE1D0C9000E5AF8 /* VacationHistoryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VacationHistoryVC.h; sourceTree = "<group>"; };
+		3712ACD71DE1D0C9000E5AF8 /* VacationHistoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VacationHistoryVC.m; sourceTree = "<group>"; };
+		3712ACDA1DE1D0C9000E5AF8 /* RequestVacationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestVacationVC.h; sourceTree = "<group>"; };
+		3712ACDB1DE1D0C9000E5AF8 /* RequestVacationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestVacationVC.m; sourceTree = "<group>"; };
+		3712ACDD1DE1D0C9000E5AF8 /* VacationDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VacationDatePickerView.h; sourceTree = "<group>"; };
+		3712ACDE1DE1D0C9000E5AF8 /* VacationDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VacationDatePickerView.m; sourceTree = "<group>"; };
 		3719A7451AA2C47800FBDC2A /* NewEditionPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewEditionPreview.m; sourceTree = "<group>"; };
 		3719A7461AA2C47800FBDC2A /* NewEditionPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewEditionPreview.h; sourceTree = "<group>"; };
 		371C6EB31A72456C00FA4AEC /* MessageVoiceButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageVoiceButton.h; sourceTree = "<group>"; };
@@ -827,16 +852,6 @@
 		37B7044E1A4410CD0025D684 /* PasswordModificationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordModificationVC.m; sourceTree = "<group>"; };
 		37BC410E1A43346D005038F9 /* ConfimInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfimInfoVC.h; sourceTree = "<group>"; };
 		37BC410F1A43346D005038F9 /* ConfimInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfimInfoVC.m; sourceTree = "<group>"; };
-		37BC707F1C116EC900F8B79B /* CalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarView.h; sourceTree = "<group>"; };
-		37BC70801C116EC900F8B79B /* CalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarView.m; sourceTree = "<group>"; };
-		37BC70811C116EC900F8B79B /* MonthIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MonthIndicatorView.h; sourceTree = "<group>"; };
-		37BC70821C116EC900F8B79B /* MonthIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MonthIndicatorView.m; sourceTree = "<group>"; };
-		37BC70851C116EC900F8B79B /* NSMutableArray+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+convenience.h"; sourceTree = "<group>"; };
-		37BC70861C116EC900F8B79B /* NSMutableArray+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+convenience.m"; sourceTree = "<group>"; };
-		37BC70871C116EC900F8B79B /* UIColor+expanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+expanded.h"; sourceTree = "<group>"; };
-		37BC70881C116EC900F8B79B /* UIColor+expanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+expanded.m"; sourceTree = "<group>"; };
-		37BC70891C116EC900F8B79B /* UIView+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+convenience.h"; sourceTree = "<group>"; };
-		37BC708A1C116EC900F8B79B /* UIView+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+convenience.m"; sourceTree = "<group>"; };
 		37C3163D1A5636AC002E847D /* ClassZoneVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassZoneVC.h; sourceTree = "<group>"; };
 		37C3163E1A5636AC002E847D /* ClassZoneVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassZoneVC.m; sourceTree = "<group>"; };
 		37C316431A56372D002E847D /* ClassAppVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassAppVC.h; sourceTree = "<group>"; };
@@ -860,12 +875,6 @@
 		37C3560D1A3FD67300B948E6 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		37C356121A3FD67300B948E6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		37C3562C1A3FD74300B948E6 /* LianZhiParent.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LianZhiParent.pch; sourceTree = "<group>"; };
-		37C53A9E1B14D5FF00C3ED69 /* RequestVacationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestVacationVC.h; sourceTree = "<group>"; };
-		37C53A9F1B14D5FF00C3ED69 /* RequestVacationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestVacationVC.m; sourceTree = "<group>"; };
-		37C53AA11B14D5FF00C3ED69 /* VacationDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VacationDatePickerView.h; sourceTree = "<group>"; };
-		37C53AA21B14D5FF00C3ED69 /* VacationDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VacationDatePickerView.m; sourceTree = "<group>"; };
-		37C53AAC1B14E3EF00C3ED69 /* VacationHistoryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VacationHistoryModel.h; sourceTree = "<group>"; };
-		37C53AAD1B14E3EF00C3ED69 /* VacationHistoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VacationHistoryModel.m; sourceTree = "<group>"; };
 		37C6B3C21BF2DEC60001D54F /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		37C6B3C31BF2DEC60001D54F /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
 		37C6B3D61BF2DEC60001D54F /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
@@ -969,8 +978,6 @@
 		37D6EEC91BCABF17000994A2 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		37D6EECB1BCABF40000994A2 /* ShareActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareActionView.m; sourceTree = "<group>"; };
 		37D6EECC1BCABF40000994A2 /* ShareActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareActionView.h; sourceTree = "<group>"; };
-		37E591C81C44FCD400D54A2C /* LeaveDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaveDetailView.h; sourceTree = "<group>"; };
-		37E591C91C44FCD400D54A2C /* LeaveDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeaveDetailView.m; sourceTree = "<group>"; };
 		37E7C9131B1613EC005D653F /* SurroundingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurroundingVC.h; sourceTree = "<group>"; };
 		37E7C9141B1613EC005D653F /* SurroundingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SurroundingVC.m; sourceTree = "<group>"; };
 		37E7C92C1B162AF2005D653F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -1297,8 +1304,6 @@
 		8DE718681DABB0700080476D /* HomeworkListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkListModel.m; sourceTree = "<group>"; };
 		8DE7186B1DABE2120080476D /* Calendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Calendar.h; sourceTree = "<group>"; };
 		8DE7186C1DABE2120080476D /* Calendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Calendar.m; sourceTree = "<group>"; };
-		8DFDDD6C1D9271150050740B /* NSDate+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+convenience.h"; sourceTree = "<group>"; };
-		8DFDDD6D1D9271150050740B /* NSDate+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+convenience.m"; sourceTree = "<group>"; };
 		8DFDDD701D92754C0050740B /* GrowthTimelineVCNew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthTimelineVCNew.h; sourceTree = "<group>"; };
 		8DFDDD711D92754C0050740B /* GrowthTimelineVCNew.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthTimelineVCNew.m; sourceTree = "<group>"; };
 		8DFDDD731D927A8E0050740B /* MonthPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MonthPickerView.h; sourceTree = "<group>"; };
@@ -1314,8 +1319,6 @@
 		8DFDDDA81D9507420050740B /* PhoneInputVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhoneInputVC.m; sourceTree = "<group>"; };
 		8DFDDDAA1D950D3E0050740B /* AuthCodeInputVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthCodeInputVC.h; sourceTree = "<group>"; };
 		8DFDDDAB1D950D3E0050740B /* AuthCodeInputVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthCodeInputVC.m; sourceTree = "<group>"; };
-		8DFDDDB31D9540660050740B /* AttendanceDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceDetailVC.h; sourceTree = "<group>"; };
-		8DFDDDB41D9540660050740B /* AttendanceDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceDetailVC.m; sourceTree = "<group>"; };
 		D05366BEB45C198E3A2DFCD5 /* libPods-LianZhiParent.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LianZhiParent.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -1369,6 +1372,68 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3712ACC21DE1D0C9000E5AF8 /* VacationHistory */ = {
+			isa = PBXGroup;
+			children = (
+				3712ACC31DE1D0C9000E5AF8 /* CalendarView */,
+				3712ACD21DE1D0C9000E5AF8 /* VacationHistoryCell.h */,
+				3712ACD31DE1D0C9000E5AF8 /* VacationHistoryCell.m */,
+				3712ACD41DE1D0C9000E5AF8 /* VacationHistoryModel.h */,
+				3712ACD51DE1D0C9000E5AF8 /* VacationHistoryModel.m */,
+				3712ACD61DE1D0C9000E5AF8 /* VacationHistoryVC.h */,
+				3712ACD71DE1D0C9000E5AF8 /* VacationHistoryVC.m */,
+			);
+			path = VacationHistory;
+			sourceTree = "<group>";
+		};
+		3712ACC31DE1D0C9000E5AF8 /* CalendarView */ = {
+			isa = PBXGroup;
+			children = (
+				3712ACC41DE1D0C9000E5AF8 /* CalendarView.h */,
+				3712ACC51DE1D0C9000E5AF8 /* CalendarView.m */,
+				3712ACC61DE1D0C9000E5AF8 /* LeaveDetailView.h */,
+				3712ACC71DE1D0C9000E5AF8 /* LeaveDetailView.m */,
+				3712ACC81DE1D0C9000E5AF8 /* MonthIndicatorView.h */,
+				3712ACC91DE1D0C9000E5AF8 /* MonthIndicatorView.m */,
+				3712ACCA1DE1D0C9000E5AF8 /* NSDate+convenience.h */,
+				3712ACCB1DE1D0C9000E5AF8 /* NSDate+convenience.m */,
+				3712ACCC1DE1D0C9000E5AF8 /* NSMutableArray+convenience.h */,
+				3712ACCD1DE1D0C9000E5AF8 /* NSMutableArray+convenience.m */,
+				3712ACCE1DE1D0C9000E5AF8 /* UIColor+expanded.h */,
+				3712ACCF1DE1D0C9000E5AF8 /* UIColor+expanded.m */,
+				3712ACD01DE1D0C9000E5AF8 /* UIView+convenience.h */,
+				3712ACD11DE1D0C9000E5AF8 /* UIView+convenience.m */,
+			);
+			path = CalendarView;
+			sourceTree = "<group>";
+		};
+		3712ACD81DE1D0C9000E5AF8 /* VacationManaerVC */ = {
+			isa = PBXGroup;
+			children = (
+				3712ACD91DE1D0C9000E5AF8 /* Controller */,
+				3712ACDC1DE1D0C9000E5AF8 /* View */,
+			);
+			path = VacationManaerVC;
+			sourceTree = "<group>";
+		};
+		3712ACD91DE1D0C9000E5AF8 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				3712ACDA1DE1D0C9000E5AF8 /* RequestVacationVC.h */,
+				3712ACDB1DE1D0C9000E5AF8 /* RequestVacationVC.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		3712ACDC1DE1D0C9000E5AF8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3712ACDD1DE1D0C9000E5AF8 /* VacationDatePickerView.h */,
+				3712ACDE1DE1D0C9000E5AF8 /* VacationDatePickerView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		3720C0D91A4192DC000357A5 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
@@ -2306,32 +2371,11 @@
 			path = Album;
 			sourceTree = "<group>";
 		};
-		37BC707E1C116EC900F8B79B /* CalendarView */ = {
-			isa = PBXGroup;
-			children = (
-				37BC707F1C116EC900F8B79B /* CalendarView.h */,
-				37BC70801C116EC900F8B79B /* CalendarView.m */,
-				8DFDDD6C1D9271150050740B /* NSDate+convenience.h */,
-				8DFDDD6D1D9271150050740B /* NSDate+convenience.m */,
-				37BC70811C116EC900F8B79B /* MonthIndicatorView.h */,
-				37BC70821C116EC900F8B79B /* MonthIndicatorView.m */,
-				37BC70851C116EC900F8B79B /* NSMutableArray+convenience.h */,
-				37BC70861C116EC900F8B79B /* NSMutableArray+convenience.m */,
-				37BC70871C116EC900F8B79B /* UIColor+expanded.h */,
-				37BC70881C116EC900F8B79B /* UIColor+expanded.m */,
-				37BC70891C116EC900F8B79B /* UIView+convenience.h */,
-				37BC708A1C116EC900F8B79B /* UIView+convenience.m */,
-				37E591C81C44FCD400D54A2C /* LeaveDetailView.h */,
-				37E591C91C44FCD400D54A2C /* LeaveDetailView.m */,
-			);
-			path = CalendarView;
-			sourceTree = "<group>";
-		};
 		37C316351A5636AC002E847D /* ClassApp */ = {
 			isa = PBXGroup;
 			children = (
-				37C53AA51B14E39800C3ED69 /* VacationHistory */,
-				37C53A8D1B14774600C3ED69 /* VacationManaerVC */,
+				3712ACC21DE1D0C9000E5AF8 /* VacationHistory */,
+				3712ACD81DE1D0C9000E5AF8 /* VacationManaerVC */,
 				37C316431A56372D002E847D /* ClassAppVC.h */,
 				37C316441A56372D002E847D /* ClassAppVC.m */,
 				37C316461A568617002E847D /* ClassAppCell.h */,
@@ -2455,45 +2499,6 @@
 				372571511A80B3AE0087F178 /* Sound */,
 			);
 			path = Resource;
-			sourceTree = "<group>";
-		};
-		37C53A8D1B14774600C3ED69 /* VacationManaerVC */ = {
-			isa = PBXGroup;
-			children = (
-				37C53A9D1B14D5FF00C3ED69 /* Controller */,
-				37C53AA01B14D5FF00C3ED69 /* View */,
-			);
-			path = VacationManaerVC;
-			sourceTree = "<group>";
-		};
-		37C53A9D1B14D5FF00C3ED69 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				37C53A9E1B14D5FF00C3ED69 /* RequestVacationVC.h */,
-				37C53A9F1B14D5FF00C3ED69 /* RequestVacationVC.m */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		37C53AA01B14D5FF00C3ED69 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				37C53AA11B14D5FF00C3ED69 /* VacationDatePickerView.h */,
-				37C53AA21B14D5FF00C3ED69 /* VacationDatePickerView.m */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		37C53AA51B14E39800C3ED69 /* VacationHistory */ = {
-			isa = PBXGroup;
-			children = (
-				37BC707E1C116EC900F8B79B /* CalendarView */,
-				37C53AAC1B14E3EF00C3ED69 /* VacationHistoryModel.h */,
-				37C53AAD1B14E3EF00C3ED69 /* VacationHistoryModel.m */,
-				8DFDDDB31D9540660050740B /* AttendanceDetailVC.h */,
-				8DFDDDB41D9540660050740B /* AttendanceDetailVC.m */,
-			);
-			path = VacationHistory;
 			sourceTree = "<group>";
 		};
 		37C6B3BB1BF2DEC60001D54F /* SVSDK */ = {
@@ -3488,7 +3493,9 @@
 				37CE01551A7FE47A005CD535 /* SettingDatePickerView.m in Sources */,
 				37CFA5381A49C64D0061D7B8 /* SettingItemCell.m in Sources */,
 				3793F80A1B7CFFD900501F77 /* UIImage+MultiFormat.m in Sources */,
+				3712ACE21DE1D0C9000E5AF8 /* NSDate+convenience.m in Sources */,
 				8DA785991CA4E70B00A384F0 /* NSString+UrlParams.m in Sources */,
+				3712ACE71DE1D0C9000E5AF8 /* VacationHistoryModel.m in Sources */,
 				8D7554DD1D6969E300A140EE /* DNAlbumTableViewController.m in Sources */,
 				8D41BBEE1D86DA270062CD0E /* EmptyHintView.m in Sources */,
 				8D2496E31CBBA88D000B979D /* GiftDetailView.m in Sources */,
@@ -3518,7 +3525,6 @@
 				3793F80D1B7CFFD900501F77 /* UIImageView+WebCache.m in Sources */,
 				3793F7DE1B7CFFD900501F77 /* UIView+Frame.m in Sources */,
 				8D75554F1D77F57E00A140EE /* ZYBannerFooter.m in Sources */,
-				8DFDDDB51D9540660050740B /* AttendanceDetailVC.m in Sources */,
 				8D3D45B91D5DDB09005EA8EA /* NotificationDetailActionView.m in Sources */,
 				8DCFD7DC1D5AF7D3001EDC8A /* MessageSegView.m in Sources */,
 				8D3D45B81D5DDB09005EA8EA /* NotificationDetailVoiceView.m in Sources */,
@@ -3572,7 +3578,6 @@
 				3720C13A1A41BBD5000357A5 /* ContactListVC.m in Sources */,
 				3736CEAC1C4C984A004DB2D2 /* InterestDetailVC.m in Sources */,
 				8DCFD7CF1D5A3DEC001EDC8A /* SSPieProgressView.m in Sources */,
-				37C53AA41B14D5FF00C3ED69 /* VacationDatePickerView.m in Sources */,
 				3705FF9A1BA2D65600F0C6F6 /* SwitchClassVC.m in Sources */,
 				3793F79D1B7CFFD900501F77 /* AFHTTPSessionManager.m in Sources */,
 				379947DF1A66B403008E4B4F /* PhotoFlowCell.m in Sources */,
@@ -3593,12 +3598,13 @@
 				8DFDDDAC1D950D3E0050740B /* AuthCodeInputVC.m in Sources */,
 				3793F7D11B7CFFD900501F77 /* PhotoItem.m in Sources */,
 				3793F7DD1B7CFFD900501F77 /* UIImageView+URLWithAnimation.m in Sources */,
-				37BC70901C116EC900F8B79B /* UIView+convenience.m in Sources */,
 				37EAC9ED1B82D165007BFBA1 /* CommonInputVC.m in Sources */,
 				376605A61B75F2B000204DFD /* MineVC.m in Sources */,
 				3793F80E1B7CFFD900501F77 /* UIView+WebCacheOperation.m in Sources */,
+				3712ACE11DE1D0C9000E5AF8 /* MonthIndicatorView.m in Sources */,
 				3728A5EC1B93333D00310457 /* ResponseItem.m in Sources */,
 				3793F7C21B7CFFD900501F77 /* LimitedTextField.m in Sources */,
+				3712ACE61DE1D0C9000E5AF8 /* VacationHistoryCell.m in Sources */,
 				8DCFD7B01D5A3BDB001EDC8A /* ChatExtraIndividualInfoVC.m in Sources */,
 				8DCFD7D21D5AC94D001EDC8A /* VideoRecordView.m in Sources */,
 				37CFA5B51A4AF2920061D7B8 /* MessageDetailItemCell.m in Sources */,
@@ -3624,7 +3630,6 @@
 				8D3D45B71D5DDB09005EA8EA /* NotificationDetailView.m in Sources */,
 				8DC087751D8E50E7008B57B2 /* LGAlertViewController.m in Sources */,
 				8D75551B1D6DAE9800A140EE /* PBViewController.m in Sources */,
-				37C53AA31B14D5FF00C3ED69 /* RequestVacationVC.m in Sources */,
 				3793F7591B7CFFD900501F77 /* YLImageView.m in Sources */,
 				3793F7D71B7CFFD900501F77 /* NSString+JSONObject.m in Sources */,
 				8D867C251D2A6C530020A21C /* NHAudioTool+Helper.m in Sources */,
@@ -3634,7 +3639,6 @@
 				8DFDDD751D927A8E0050740B /* MonthPickerView.m in Sources */,
 				3705FF971BA2CCEF00F0C6F6 /* NumIndicator.m in Sources */,
 				8D7554E11D6969E300A140EE /* DNImagePickerController.m in Sources */,
-				37BC708E1C116EC900F8B79B /* NSMutableArray+convenience.m in Sources */,
 				37B5D3E71A57B23A003CA877 /* PersonalInfoVC.m in Sources */,
 				8D3D45B41D5DDB09005EA8EA /* NotificationDetailContentView.m in Sources */,
 				3793F8041B7CFFD900501F77 /* SDWebImageDownloader.m in Sources */,
@@ -3651,7 +3655,6 @@
 				8D7555511D77F57E00A140EE /* ZYBannerView.m in Sources */,
 				3793F79F1B7CFFD900501F77 /* AFNetworkReachabilityManager.m in Sources */,
 				3793F79B1B7CFFD900501F77 /* AFHTTPRequestOperation.m in Sources */,
-				37C53AAE1B14E3EF00C3ED69 /* VacationHistoryModel.m in Sources */,
 				37CBAF1D1A4724930063F395 /* PublishBaseVC.m in Sources */,
 				8D7554EB1D6969E300A140EE /* DNBrowserCell.m in Sources */,
 				3793F8211B7CFFD900501F77 /* TNBaseNavigationController.m in Sources */,
@@ -3661,6 +3664,7 @@
 				8DCFD7A31D5A3B8B001EDC8A /* MessageCell.m in Sources */,
 				37E93FDE1A7E9CF200AD45A1 /* PhotoBrowserInfoBar.m in Sources */,
 				3793F79C1B7CFFD900501F77 /* AFHTTPRequestOperationManager.m in Sources */,
+				3712ACDF1DE1D0C9000E5AF8 /* CalendarView.m in Sources */,
 				8DADA2FB1DC3064F007F84CF /* CalendarMonthIndicator.m in Sources */,
 				8D7554EA1D6969E300A140EE /* DNBadgeLabel.m in Sources */,
 				3728A6FB1B9C6E0A00310457 /* UUMessageContentButton.m in Sources */,
@@ -3719,13 +3723,13 @@
 				3728A5E81B9332FE00310457 /* ResponseView.m in Sources */,
 				3793F82A1B7CFFD900501F77 /* Utility.m in Sources */,
 				8DCFD7C61D5A3D85001EDC8A /* NHFileCache.m in Sources */,
-				37BC708C1C116EC900F8B79B /* MonthIndicatorView.m in Sources */,
 				37E7C9151B1613EC005D653F /* SurroundingVC.m in Sources */,
 				37FD70B81BBDB29B00C83AB4 /* PraiseListView.m in Sources */,
 				8DA0C5451DBE619C0005B9B1 /* HomeworkNotificationCell.m in Sources */,
 				3728A61C1B93F36B00310457 /* HPGrowingTextView.m in Sources */,
 				37CBAF1B1A4724930063F395 /* PublishArticleVC.m in Sources */,
 				8DA0C53C1DBDEB6B0005B9B1 /* HomeworkTeacherMark.m in Sources */,
+				3712ACE31DE1D0C9000E5AF8 /* NSMutableArray+convenience.m in Sources */,
 				3793F8051B7CFFD900501F77 /* SDWebImageDownloaderOperation.m in Sources */,
 				8DE718691DABB0700080476D /* HomeworkListModel.m in Sources */,
 				3793F7EB1B7CFFD900501F77 /* AmrRecordWriter.m in Sources */,
@@ -3756,9 +3760,9 @@
 				8D7554E51D6969E300A140EE /* UIColor+Hex.m in Sources */,
 				3707E66E1C041E6E00944B8D /* MyGiftVC.m in Sources */,
 				3793F7C81B7CFFD900501F77 /* POISelectVC.m in Sources */,
+				3712ACE81DE1D0C9000E5AF8 /* VacationHistoryVC.m in Sources */,
 				8DC087771D8E50E7008B57B2 /* LGAlertViewWindow.m in Sources */,
 				3728A5FF1B93EB8D00310457 /* JSMessagesViewController.m in Sources */,
-				8DFDDD6E1D9271150050740B /* NSDate+convenience.m in Sources */,
 				3793F8281B7CFFD900501F77 /* Reachability.m in Sources */,
 				8DCFD7B21D5A3BDB001EDC8A /* SearchChatMessageVC.m in Sources */,
 				3793F8261B7CFFD900501F77 /* TaskUploadManager.m in Sources */,
@@ -3778,7 +3782,6 @@
 				8DC087731D8E50E7008B57B2 /* LGAlertViewButtonProperties.m in Sources */,
 				3793F7A61B7CFFD900501F77 /* UrlHandler.m in Sources */,
 				3793F7BD1B7CFFD900501F77 /* CameraMaskView.m in Sources */,
-				37BC708F1C116EC900F8B79B /* UIColor+expanded.m in Sources */,
 				37CCE24C1B8885EA007BFA4F /* NewMessageCell.m in Sources */,
 				8DA0C5421DBE60F60005B9B1 /* HomeworkNotificationItem.m in Sources */,
 				3793F7C51B7CFFD900501F77 /* PoiInfoView.m in Sources */,
@@ -3788,8 +3791,8 @@
 				37B52A1A1A73C24B005F80F2 /* LogConfig.m in Sources */,
 				8D3D45CE1D5F9438005EA8EA /* ChatTeacherInfoVC.m in Sources */,
 				37B7044F1A4410CD0025D684 /* PasswordModificationVC.m in Sources */,
+				3712ACE91DE1D0C9000E5AF8 /* RequestVacationVC.m in Sources */,
 				8D867D231D3D232C0020A21C /* LZKVStorage.m in Sources */,
-				37BC708B1C116EC900F8B79B /* CalendarView.m in Sources */,
 				3793F7C11B7CFFD900501F77 /* DAOverlayView.m in Sources */,
 				3720C1461A41E19D000357A5 /* SettingsVC.m in Sources */,
 				37CFA5B21A4AF27C0061D7B8 /* MessageDetailVC.m in Sources */,
@@ -3803,16 +3806,20 @@
 				37FD70BB1BBDB42A00C83AB4 /* TreeHouseItemDetailVC.m in Sources */,
 				372775CB1A6036AC00464461 /* ChildInfo.m in Sources */,
 				8D7554E61D6969E300A140EE /* UIView+DNImagePicker.m in Sources */,
+				3712ACE41DE1D0C9000E5AF8 /* UIColor+expanded.m in Sources */,
 				370F33C81A780E8900FED3C2 /* ContactServiceVC.m in Sources */,
 				376609A11A6834F700E4B4E2 /* RelatedInfoVC.m in Sources */,
 				8DFDDD861D93B4870050740B /* CalanderView.m in Sources */,
 				8D867C2D1D2A6C9C0020A21C /* NSString+UUID.m in Sources */,
 				3793F7EE1B7CFFD900501F77 /* MLAmrPlayer.m in Sources */,
+				3712ACE51DE1D0C9000E5AF8 /* UIView+convenience.m in Sources */,
 				376FC6CA1B03521F00289DC2 /* InterestVC.m in Sources */,
 				8D7555631D7AB89000A140EE /* DNVideoBrowserCell.m in Sources */,
 				8DCFD7A11D5A3B8B001EDC8A /* ChatContentTextView.m in Sources */,
 				37CCE24F1B888600007BFA4F /* NewMessageModel.m in Sources */,
 				8D3D45A11D5DDAB4005EA8EA /* MessageNotificationDetailVC.m in Sources */,
+				3712ACE01DE1D0C9000E5AF8 /* LeaveDetailView.m in Sources */,
+				3712ACEA1DE1D0C9000E5AF8 /* VacationDatePickerView.m in Sources */,
 				3793F7D01B7CFFD900501F77 /* AudioItem.m in Sources */,
 				8D867C301D2A6CD90020A21C /* TNBaseObject.m in Sources */,
 				37C316421A5636AC002E847D /* ClassZoneVC.m in Sources */,
@@ -3821,7 +3828,6 @@
 				8DE7186D1DABE2120080476D /* Calendar.m in Sources */,
 				3793F8271B7CFFD900501F77 /* Reachability+.m in Sources */,
 				3719A7471AA2C47800FBDC2A /* NewEditionPreview.m in Sources */,
-				37E591CA1C44FCD400D54A2C /* LeaveDetailView.m in Sources */,
 				3793F79A1B7CFFD900501F77 /* AFHTTPRequestOperation+Associative.m in Sources */,
 				37CBAF231A4724F20063F395 /* TreeHouseCell.m in Sources */,
 				8DCFD7C51D5A3D85001EDC8A /* NHFileManager.m in Sources */,
