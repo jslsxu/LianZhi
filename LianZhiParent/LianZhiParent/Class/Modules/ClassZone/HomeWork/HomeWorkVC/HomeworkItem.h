@@ -38,6 +38,7 @@ extern NSString* const kHomeworkItemChangedNotification;
 @property (nonatomic, strong)HomeworkItemAnswer*   answer;      //老师的解析
 @property (nonatomic, assign)HomeworkStatus status;
 @property (nonatomic, assign)BOOL       unread_s;
+@property (nonatomic, assign)BOOL       answer_changed;         //是否解析修改
 - (BOOL)hasPhoto;
 - (BOOL)hasAudio;
 - (BOOL)canDelete;

@@ -167,6 +167,9 @@
         [hud hide:NO];
         [[UserCenter sharedInstance] parseData:responseObject];
         PasswordModificationVC *passwordConfirmVC = [[PasswordModificationVC alloc] init];
+        [passwordConfirmVC setCallback:^{
+            [[UIApplication sharedApplication].keyWindow.rootViewController dismissViewControllerAnimated:YES completion:nil];
+        }];
         [wself presentViewController:passwordConfirmVC animated:YES completion:nil];
     } fail:^(NSString *errMsg) {
         [hud hide:NO];

@@ -114,6 +114,10 @@
         [homeworkItem setStatus:status];
         [wself.tableView reloadData];
     }];
+    [homeworkDetailVC setDeleteCallback:^(NSString *eid) {
+        [wself.tableViewModel.modelItemArray removeObject:homeworkItem];
+        [wself.tableView reloadData];
+    }];
     [self.navigationController pushViewController:homeworkDetailVC animated:YES];
 }
 

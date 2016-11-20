@@ -12,6 +12,6 @@ typedef void(^ModificationCallBack)();
 @interface PasswordModificationVC : TNBaseViewController<UITextFieldDelegate>
 {
 }
-
+@property (nonatomic, assign)BOOL hideCancel;
 @property (nonatomic, copy)ModificationCallBack callback;
 @end

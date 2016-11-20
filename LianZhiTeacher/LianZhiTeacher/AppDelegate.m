@@ -235,6 +235,7 @@ static SystemSoundID shake_sound_male_id = 0;
     if([UserCenter sharedInstance].userData.firstLogin)
     {
         PasswordModificationVC *passWordModificationVC = [[PasswordModificationVC alloc] init];
+        [passWordModificationVC setHiddenCancel:YES];
         [passWordModificationVC setCallback:callback];
         self.loginNav = [[TNBaseNavigationController alloc] initWithRootViewController:passWordModificationVC];
         [self.window setRootViewController:self.loginNav];

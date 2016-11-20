@@ -110,6 +110,17 @@
     } completion:nil];
 }
 
+- (void)updateMarkButton{
+    NSInteger markedCount = 0;
+    for (NSInteger i = 0; i < [self.homeworkArray count]; i++) {
+        HomeworkStudentInfo *studentInfo = self.homeworkArray[i];
+        if([studentInfo.s_answer marked]){
+            markedCount++;
+        }
+    }
+    [self.navigationItem.rightBarButtonItem setEnabled:markedCount < [self.homeworkArray count]];
+}
+
 - (void)updatePageIndicator{
     HomeworkStudentInfo *studentInfo = self.homeworkArray[self.curIndex];
     HomeworkTeacherMark* teacherMark = self.markMap[studentInfo.student.uid];
@@ -182,6 +193,7 @@
     
     NSMutableArray *answerArray = [NSMutableArray array];
     NSMutableArray *markedArray = [NSMutableArray array];
+    NSInteger markedCount = 0;
     for (NSInteger i = 0; i < [self.homeworkArray count]; i++) {
         HomeworkStudentInfo *studentInfo = self.homeworkArray[i];
         if(![studentInfo.s_answer marked]){
@@ -195,9 +207,12 @@
                 [markedArray addObject:dic];
             }
         }
+        else{
+            markedCount++;
+        }
     }
     if([markedArray count] > 0){
-        NSString *message = [NSString stringWithFormat:@"您本次已批阅了%zd份作业(共%zd份),是否将这些已阅作业下发家长?",[markedArray count], [self.homeworkArray count]];
+        NSString *message = [NSString stringWithFormat:@"您本次已批阅了%zd份作业(共%zd份),是否将这些已阅作业下发家长?",[markedArray count], [self.homeworkArray count] - markedCount];
         LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:message style:LGAlertViewStyleAlert buttonTitles:@[@"批阅"] cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
         [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
         [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
@@ -223,6 +238,7 @@
                 if(wself.markFinishedCallback){
                     wself.markFinishedCallback();
                 }
+                [wself updateMarkButton];
                 
             } fail:^(NSString *errMsg) {
                 [hud hide:NO];

@@ -7,7 +7,6 @@
 //
 
 #import "LoginVC.h"
-#import "AuthCodeVC.h"
 #import "RegisterVC.h"
 #import "StatusManager.h"
 #import "PhoneInputVC.h"

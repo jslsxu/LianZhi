@@ -15,6 +15,6 @@ typedef void(^ModificationCallBack)();
     LZTextField*    _secondField;
     UIButton*       _confirmButton;
 }
-
+@property (nonatomic, assign)BOOL hiddenCancel;
 @property (nonatomic, copy)ModificationCallBack callback;
 @end

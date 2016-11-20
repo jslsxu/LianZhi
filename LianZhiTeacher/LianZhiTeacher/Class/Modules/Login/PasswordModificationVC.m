@@ -44,7 +44,7 @@ NSString *const kPaswordModificationNotification = @"PaswordModificationNotifica
     [navView setBackgroundColor:[UIColor colorWithWhite:1 alpha:0.8]];
     [self.view addSubview:navView];
     
-    if([self.navigationController.viewControllers count] > 1){
+    if(!self.hiddenCancel){
         UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [cancelButton addTarget:self action:@selector(onCancel) forControlEvents:UIControlEventTouchUpInside];
         [cancelButton setTitleColor:kCommonTeacherTintColor forState:UIControlStateNormal];

@@ -115,6 +115,11 @@
         if(wself.homeworkStatusCallback){
             wself.homeworkStatusCallback(_homeworkItem.status);
         }
+        if(homeworkItem.answer_changed){
+            LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"教师编辑了作业解析，请查看" style:LGAlertViewStyleAlert buttonTitles:@[@"确定"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+            [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView showAnimated:YES completionHandler:nil];
+        }
     } fail:^(NSString *errMsg) {
         
     }];

@@ -252,14 +252,7 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
         [wself.navigationController pushViewController:explainVC animated:YES];
     } destroyItem:NO];
     NotificationActionItem* deleteItem = [NotificationActionItem actionItemWithTitle:@"删除" action:^{
-        LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"是否删除这条作业?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"删除"];
-        [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
-        [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"eeeeee"]];
-        [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"eeeeee"]];
-        [alertView setDestructiveHandler:^(LGAlertView *alertView) {
-            [wself deleteHomeworkItem];
-        }];
-        [alertView showAnimated:YES completionHandler:nil];
+        [wself deleteHomeworkItem];
     } destroyItem:YES];
     [NotificationDetailActionView showWithActions:@[forwardItem, editItem, deleteItem] completion:^{
     

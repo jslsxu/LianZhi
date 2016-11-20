@@ -160,7 +160,6 @@
 		379947E91A66B430008E4B4F /* PhotoFlowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 379947E41A66B430008E4B4F /* PhotoFlowCell.m */; };
 		379947EA1A66B430008E4B4F /* PhotoFlowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 379947E61A66B430008E4B4F /* PhotoFlowModel.m */; };
 		379947EB1A66B430008E4B4F /* PhotoFlowVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 379947E81A66B430008E4B4F /* PhotoFlowVC.m */; };
-		37B485011A65853C00C412D8 /* AuthCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B484F31A65853C00C412D8 /* AuthCodeVC.m */; };
 		37B485031A65853C00C412D8 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B484F71A65853C00C412D8 /* LoginVC.m */; };
 		37B485041A65853C00C412D8 /* PasswordModificationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B484F91A65853C00C412D8 /* PasswordModificationVC.m */; };
 		37B485061A65853C00C412D8 /* SchoolInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B484FE1A65853C00C412D8 /* SchoolInfo.m */; };
@@ -771,8 +770,6 @@
 		379947E61A66B430008E4B4F /* PhotoFlowModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFlowModel.m; sourceTree = "<group>"; };
 		379947E71A66B430008E4B4F /* PhotoFlowVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoFlowVC.h; sourceTree = "<group>"; };
 		379947E81A66B430008E4B4F /* PhotoFlowVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFlowVC.m; sourceTree = "<group>"; };
-		37B484F21A65853C00C412D8 /* AuthCodeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthCodeVC.h; sourceTree = "<group>"; };
-		37B484F31A65853C00C412D8 /* AuthCodeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthCodeVC.m; sourceTree = "<group>"; };
 		37B484F61A65853C00C412D8 /* LoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginVC.h; sourceTree = "<group>"; };
 		37B484F71A65853C00C412D8 /* LoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginVC.m; sourceTree = "<group>"; };
 		37B484F81A65853C00C412D8 /* PasswordModificationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordModificationVC.h; sourceTree = "<group>"; };
@@ -2139,8 +2136,6 @@
 		37B484F11A65853C00C412D8 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				37B484F21A65853C00C412D8 /* AuthCodeVC.h */,
-				37B484F31A65853C00C412D8 /* AuthCodeVC.m */,
 				37FD6E361BB6F53800C83AB4 /* RegisterAuthVC.h */,
 				37FD6E371BB6F53800C83AB4 /* RegisterAuthVC.m */,
 				37B484F61A65853C00C412D8 /* LoginVC.h */,
@@ -3644,7 +3639,6 @@
 				8DE718701DAC94FF0080476D /* TestWebVC.m in Sources */,
 				37CA18701AB70A2F00B49B55 /* AlbumGroupView.m in Sources */,
 				37F207161BE0BBFF006466F4 /* UITouchScrollView.m in Sources */,
-				37B485011A65853C00C412D8 /* AuthCodeVC.m in Sources */,
 				37DEE4C11A57C19C009A8771 /* MessageVC.m in Sources */,
 				8DCFD6F41D4F3D97001EDC8A /* ChatContentReceiveGiftView.m in Sources */,
 				3707E6711C041EFB00944B8D /* MyGiftVC.m in Sources */,
@@ -4162,7 +4156,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4158a5eb-41a4-427c-a696-80aa05946d4f";
+				PROVISIONING_PROFILE = "9661c199-b60f-4abb-bbae-234736af11e6";
 				PROVISIONING_PROFILE_SPECIFIER = TeacherDevelopment;
 			};
 			name = Debug;
@@ -4200,7 +4194,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4158a5eb-41a4-427c-a696-80aa05946d4f";
+				PROVISIONING_PROFILE = "9661c199-b60f-4abb-bbae-234736af11e6";
 				PROVISIONING_PROFILE_SPECIFIER = TeacherDevelopment;
 			};
 			name = Release;

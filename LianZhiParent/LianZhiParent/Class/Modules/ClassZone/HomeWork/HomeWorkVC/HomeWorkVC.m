@@ -14,6 +14,7 @@
 @interface HomeWorkVC ()<CalendarDelegate>
 @property (nonatomic, strong)Calendar *calendar;
 @property (nonatomic, strong)MBProgressHUD* hud;
+@property (nonatomic, strong)EmptyHintView* noHomeworkView;
 @end
 
 @implementation HomeWorkVC
@@ -54,6 +55,15 @@
         [_calendar setDelegate:self];
     }
     return _calendar;
+}
+
+- (EmptyHintView *)noHomeworkView{
+    if(nil == _noHomeworkView){
+        _noHomeworkView = [[EmptyHintView alloc] initWithImage:@"noHomework" title:@"暂时没有作业练习"];
+        [_noHomeworkView setHidden:YES];
+        [self.view addSubview:_noHomeworkView];
+    }
+    return _noHomeworkView;
 }
 
 - (void)clear{
@@ -170,6 +180,7 @@
             [wself.tableViewModel.modelItemArray removeObject:homeworkItem];
             [wself.tableView reloadData];
             [wself saveCache];
+            [wself requestData:REQUEST_REFRESH];
         } fail:^(NSString *errMsg) {
             
         }];
@@ -195,6 +206,13 @@
     [self.hud hide:NO];
     HomeworkListModel *listModel = (HomeworkListModel *)self.tableViewModel;
     [self.calendar setUnreadDays:listModel.unread_days];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    NSInteger count = [super tableView:tableView numberOfRowsInSection:section];
+    [self.noHomeworkView setHidden:count != 0];
+    [self.noHomeworkView setCenter:CGPointMake(self.view.width / 2, (self.view.height + self.calendar.bottom) / 2)];
+    return count;
 }
 
 - (void)TNBaseTableViewControllerRequestFailedWithError:(NSString *)errMsg{
@@ -231,6 +249,7 @@
 #pragma mark - CalendarDelegate
 - (void)calendarHeightWillChange:(CGFloat)height{
     [self.tableView setFrame:CGRectMake(0, height, self.view.width, self.view.height - height)];
+    [self.noHomeworkView setCenter:CGPointMake(self.view.width / 2, (self.view.height + self.calendar.bottom) / 2)];
 }
 
 - (void)calendarDateDidChange:(NSDate *)selectedDate{
