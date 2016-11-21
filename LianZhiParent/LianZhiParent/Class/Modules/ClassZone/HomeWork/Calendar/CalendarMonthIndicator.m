@@ -22,11 +22,11 @@
         _preButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_preButton setImage:[UIImage imageNamed:@"DatePickerPreNormal"] forState:UIControlStateNormal];
         [_preButton setImage:[UIImage imageNamed:@"DatePickerPreDisabled"] forState:UIControlStateDisabled];
-        [_preButton setFrame:CGRectMake(0, 0, 30, 30)];
+        [_preButton setFrame:CGRectMake(0, 6, 30, 30)];
         [_preButton addTarget:self action:@selector(onPre) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_preButton];
         
-        _monthLabel = [[UILabel alloc] initWithFrame:CGRectMake(_preButton.right, 0, 160, 30)];
+        _monthLabel = [[UILabel alloc] initWithFrame:CGRectMake(_preButton.right, 6, 160, 30)];
         [_monthLabel setFont:[UIFont systemFontOfSize:14]];
         [_monthLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
         [_monthLabel setTextAlignment:NSTextAlignmentCenter];
@@ -35,11 +35,11 @@
         _nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_nextButton setImage:[UIImage imageNamed:@"DatePickerNextNormal"] forState:UIControlStateNormal];
         [_nextButton setImage:[UIImage imageNamed:@"DatePickerNextDisabled"] forState:UIControlStateDisabled];
-        [_nextButton setFrame:CGRectMake(_monthLabel.right, 0, 30, 30)];
+        [_nextButton setFrame:CGRectMake(_monthLabel.right, 6, 30, 30)];
         [_nextButton addTarget:self action:@selector(onNext) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_nextButton];
         
-        [self setSize:CGSizeMake(_nextButton.right, 30)];
+        [self setSize:CGSizeMake(_nextButton.right, 40)];
     }
     return self;
 }

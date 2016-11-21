@@ -48,6 +48,7 @@
 		3736CEB41C508D31004DB2D2 /* InterestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3736CEB11C508D31004DB2D2 /* InterestVC.m */; };
 		3736CEB51C508D31004DB2D2 /* InterestDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3736CEB31C508D31004DB2D2 /* InterestDetailVC.m */; };
 		3739713E1C40F72000425250 /* StudentAttendanceDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3739713D1C40F72000425250 /* StudentAttendanceDetailView.m */; };
+		375284121DE350560012BB33 /* teacher_login_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 375284111DE350560012BB33 /* teacher_login_bg.jpg */; };
 		376FC6B51B01EFB500289DC2 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B41B01EFB500289DC2 /* libiconv.dylib */; };
 		376FC6B71B01EFBF00289DC2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B61B01EFBF00289DC2 /* CoreGraphics.framework */; };
 		376FC6B91B01EFC500289DC2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B81B01EFC500289DC2 /* AVFoundation.framework */; };
@@ -561,6 +562,7 @@
 		3736CEB31C508D31004DB2D2 /* InterestDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterestDetailVC.m; sourceTree = "<group>"; };
 		3739713C1C40F72000425250 /* StudentAttendanceDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentAttendanceDetailView.h; sourceTree = "<group>"; };
 		3739713D1C40F72000425250 /* StudentAttendanceDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentAttendanceDetailView.m; sourceTree = "<group>"; };
+		375284111DE350560012BB33 /* teacher_login_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = teacher_login_bg.jpg; sourceTree = "<group>"; };
 		376FC6B41B01EFB500289DC2 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		376FC6B61B01EFBF00289DC2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		376FC6B81B01EFC500289DC2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -2710,6 +2712,7 @@
 				37FD6E4F1BBBDD7300C83AB4 /* small_guide3.png */,
 				37FD6E501BBBDD7300C83AB4 /* small_guide4.png */,
 				37FD6E511BBBDD7300C83AB4 /* small_guide5.png */,
+				375284111DE350560012BB33 /* teacher_login_bg.jpg */,
 			);
 			path = WelcomeView;
 			sourceTree = "<group>";
@@ -3520,6 +3523,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				375284121DE350560012BB33 /* teacher_login_bg.jpg in Resources */,
 				37FD6E5B1BBBDD7300C83AB4 /* small_guide5.png in Resources */,
 				37FD6E561BBBDD7300C83AB4 /* guide1.png in Resources */,
 				3793FAC41B7CFFF000501F77 /* ReceiverVoiceNodePlaying003@2x.png in Resources */,

@@ -8,7 +8,7 @@
 
 #import "NotificationCommentView.h"
 
-#define kNumLabelHeight         25
+#define kNumLabelHeight         30
 #define kMaxTextNum             150
 #define kMinHeight              135
 

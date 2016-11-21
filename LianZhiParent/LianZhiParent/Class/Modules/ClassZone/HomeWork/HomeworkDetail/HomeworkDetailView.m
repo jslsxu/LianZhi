@@ -118,7 +118,7 @@
             HomeworkPhotoView *photoView = [[HomeworkPhotoView alloc] initWithFrame:CGRectMake(0, spaceYStart, _scrollView.width, 0)];
             [photoView setPhotoArray:self.homeworkItem.pics];
             [_scrollView addSubview:photoView];
-            spaceYStart = photoView.bottom + margin;
+            spaceYStart = photoView.bottom;
         }
         
         if(self.homeworkItem.answer){

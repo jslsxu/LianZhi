@@ -145,7 +145,7 @@ UIScrollViewDelegate>{
     [hintLabel setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     [hintLabel setTextColor:[UIColor colorWithHexString:@"525252"]];
     [hintLabel setFont:[UIFont systemFontOfSize:13]];
-    [hintLabel setText:@"对于需要回复的作业，家长提交后才能看到作业解析."];
+    [hintLabel setText:@"对于需要回复的作业，家长提交后才能看到作业解析。"];
     [hintLabel sizeToFit];
     [hintLabel setSize:CGSizeMake(_scrollView.width, hintLabel.height + 10)];
     [_scrollView addSubview:hintLabel];

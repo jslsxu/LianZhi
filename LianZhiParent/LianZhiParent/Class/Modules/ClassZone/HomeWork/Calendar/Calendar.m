@@ -167,7 +167,7 @@
     [_collectionView reloadData];
     NSInteger itemHeight = kCalendarItemHeight;
     NSInteger collectionHeight = [self numOfWeek] * itemHeight;
-    NSInteger height = self.weekdayHeader.bottom + collectionHeight + 5;
+    NSInteger height = self.weekdayHeader.bottom + collectionHeight + 10;
     void (^heightChange)() = ^{
         [_collectionView setHeight:collectionHeight];
         [self setHeight:height];
@@ -222,7 +222,7 @@
 - (UIView *)weekdayHeader{
     if(_weekdayHeader == nil){
         static NSString *weekdayArray[] = {@"日", @"一", @"二", @"三", @"四", @"五", @"六"};
-        _weekdayHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, 28)];
+        _weekdayHeader = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, 24)];
         NSInteger hMargin = 10;
         CGFloat itemWidth = (self.width - 10 * 2) / 7;
         for (NSInteger i = 0; i < 7; i++) {

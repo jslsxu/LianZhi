@@ -18,6 +18,8 @@
 #import "ClassAppCell.h"
 #import "HomeworkClassVC.h"
 #import "HomeWorkVC.h"
+#import "LZMicrolessonVCViewController.h"
+#import "ResourceMainVC.h"
 #define ClassIdKey                  @"userClassId"
 #define kBannerHeight               (kScreenWidth * 29 / 64)
 
@@ -289,9 +291,16 @@
                 }
                 
                 void (^openWebVC)(NSString *) = ^(NSString *url){
-                    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:url]];
-                    [webVC setTitle:appItem.appName];
-                    [self.navigationController pushViewController:webVC animated:YES];
+                    TNBaseWebViewController *webVC = nil;
+                    if([host isEqualToString:@"lzmicrolesson.edugate.cn"]){
+                        //                        url = @"http://125.39.80.78:3000/app/ios/?userId=1252481&userRole=S";
+                        webVC = [[LZMicrolessonVCViewController alloc] initWithUrl:[NSURL URLWithString:url]];
+                    }
+                    else
+                    {
+                        webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:url]];
+                    }
+                    [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
                 };
                 
                 if(needSelectClass) {
@@ -353,6 +362,14 @@
                             [classZoneVC setClassInfo:classInfo];
                             [CurrentROOTNavigationVC pushViewController:classZoneVC animated:YES];
                         }
+                        else if([host isEqualToString:@"estimate"]) //连枝资源
+                        {
+                            ResourceMainVC *resourceMainVC = [[ResourceMainVC alloc] init];
+                            [resourceMainVC setClassInfo:classInfo];
+                            
+                            [CurrentROOTNavigationVC pushViewController:resourceMainVC animated:YES];
+                            
+                        }
                         else if([host isEqualToString:@"class_album"])
                         {
                             ClassAlbumVC *photoBrowser = [[ClassAlbumVC alloc] init];
@@ -366,12 +383,6 @@
                             [growthTimeLineVC setClassInfo:classInfo];
                             [CurrentROOTNavigationVC pushViewController:growthTimeLineVC animated:YES];
                         }
-//                        else if([host isEqualToString:@"practice"])
-//                        {
-//                            HomeWorkVC *homeWorkVC = [[HomeWorkVC alloc] init];
-//                            [homeWorkVC setClassID:classInfo.classID];
-//                            [CurrentROOTNavigationVC pushViewController:homeWorkVC animated:YES];
-//                        }
                         else if([host isEqualToString:@"leave"])
                         {
                             VacationHistoryVC *vacationHistoryVC = [[VacationHistoryVC alloc] init];

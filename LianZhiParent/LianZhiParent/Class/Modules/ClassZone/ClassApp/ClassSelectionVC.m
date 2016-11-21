@@ -7,6 +7,7 @@
 //
 
 #import "ClassSelectionVC.h"
+#import "LZMicrolessonVCViewController.h"
 #define kRedDotTag                      1000
 @interface ClassSelectionVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong)NSArray *classArray;

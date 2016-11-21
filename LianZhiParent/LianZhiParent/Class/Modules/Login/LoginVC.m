@@ -38,6 +38,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"parent_login_bg.jpg"]];
+    [bgImageView setFrame:self.view.bounds];
+    [bgImageView setContentMode:UIViewContentModeScaleAspectFill];
+    [self.view addSubview:bgImageView];
     
     UITouchScrollView*  scrollView = [[UITouchScrollView alloc] initWithFrame:self.view.bounds];
     [scrollView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
