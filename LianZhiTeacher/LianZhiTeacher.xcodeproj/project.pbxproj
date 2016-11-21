@@ -4131,8 +4131,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = LianZhiTeacher/LianZhiTeacher.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
-				DEVELOPMENT_TEAM = JRFF54BK3W;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4154,10 +4153,10 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9661c199-b60f-4abb-bbae-234736af11e6";
-				PROVISIONING_PROFILE_SPECIFIER = TeacherDevelopment;
+				PROVISIONING_PROFILE = "1e73bb12-5426-4577-8996-779f060f2fde";
+				PROVISIONING_PROFILE_SPECIFIER = TeacherInhouseNew;
 			};
 			name = Debug;
 		};
@@ -4169,8 +4168,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = LianZhiTeacher/LianZhiTeacher.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
-				DEVELOPMENT_TEAM = JRFF54BK3W;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4192,10 +4190,10 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9661c199-b60f-4abb-bbae-234736af11e6";
-				PROVISIONING_PROFILE_SPECIFIER = TeacherDevelopment;
+				PROVISIONING_PROFILE = "1e73bb12-5426-4577-8996-779f060f2fde";
+				PROVISIONING_PROFILE_SPECIFIER = TeacherInhouseNew;
 			};
 			name = Release;
 		};

@@ -69,6 +69,9 @@
 - (void)homeworkItemChanged{
     [self.homeworkDetailView setHomeworkItem:_homeworkItem];
     [self.homeworkFinishView setHomeworkItem:_homeworkItem];
+    if(self.homeworkItem.etype){
+        [self.segCtrl setTitle:_homeworkItem.s_answer ? @"查看作业" : @"提交作业" forSegmentAtIndex:1];
+    }
     if(self.homeworkStatusCallback){
         self.homeworkStatusCallback(_homeworkItem.status);
     }
@@ -85,6 +88,7 @@
     _homeworkItem = homeworkItem;
     if(_homeworkItem.etype){
         [self.navigationItem setTitleView:[self segCtrl]];
+        [self.segCtrl setTitle:_homeworkItem.s_answer ? @"查看作业" : @"提交作业" forSegmentAtIndex:1];
         [self.view addSubview:[self homeworkDetailView]];
         [self.view addSubview:[self homeworkFinishView]];
         if(_homeworkItem.status == HomeworkStatusMarked){

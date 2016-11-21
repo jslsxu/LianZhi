@@ -29,11 +29,9 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.navigationItem setTitleView:[self segmentCtrl]];
     [self setRightbarButtonHighlighted:NO];
     [self.view addSubview:[self detailView]];
     [self.view addSubview:[self targetListView]];
-    [self.segmentCtrl setSelectedIndex:self.hasNew ? 1 : 0];
     
     NSData *homeworkData = [NSData dataWithContentsOfFile:[self cacheFilePath]];
     if(homeworkData){
@@ -78,21 +76,29 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
     if(self.homeworkItem == nil){
         [self.contactsLoadingView show];
     }
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
     @weakify(self)
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:@{@"eid" : self.hid} observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [hud hide:NO];
         @strongify(self)
         [self.contactsLoadingView dismiss];
         HomeworkItem *homeworkItem = [HomeworkItem nh_modelWithJson:responseObject.data];
         self.homeworkItem = homeworkItem;
         [self saveHomework];
     } fail:^(NSString *errMsg) {
+        [hud hide:NO];
         @strongify(self)
         [self.contactsLoadingView dismiss];
     }];
 }
 
 - (void)setHomeworkItem:(HomeworkItem *)homeworkItem{
+    HomeworkItem *originalitem = _homeworkItem;
     _homeworkItem = homeworkItem;
+    [self.navigationItem setTitleView:[self segmentCtrl]];
+    if(!originalitem){
+         [self.segmentCtrl setSelectedIndex:self.hasNew ? 1 : 0];
+    }
     [self.detailView setHomeworkItem:self.homeworkItem];
     [_targetListView setHomeworkItem:self.homeworkItem];
     
@@ -125,7 +131,8 @@ NSString *const kHomeworkReadNumChangedNotification = @"HomeworkReadNumChangedNo
 - (MessageSegView *)segmentCtrl{
     if(_segmentCtrl == nil){
         __weak typeof(self) wself = self;
-        _segmentCtrl = [[MessageSegView alloc] initWithItems:@[@"作业详情", @"阅读人数"] valueChanged:^(NSInteger selectedIndex) {
+        NSString* rightTitle = self.homeworkItem.etype ? @"批阅作业" : @"阅读人数";
+        _segmentCtrl = [[MessageSegView alloc] initWithItems:@[@"作业详情", rightTitle] valueChanged:^(NSInteger selectedIndex) {
             [wself onSegmentValueChanged:selectedIndex];
         }];
         [_segmentCtrl setWidth:160];
