@@ -71,7 +71,7 @@
                 }
             }
         }
-        CGFloat rightRate = 1 - wrongNum / self.homeworkItem.enums;
+        CGFloat rightRate = (self.homeworkItem.enums - wrongNum) / self.homeworkItem.enums;
         rightRate = MAX(rightRate, 0);
         NSInteger percent = rightRate * 100;
         [rateStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%zd%%", percent] attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
@@ -122,6 +122,8 @@
             CGRect frame = CGRectMake(margin, spaceYStart, width, height);
             if([marks count] == 0){
                 UIImageView *imageView = [[UIImageView alloc] initWithFrame:frame];
+                [imageView.layer setBorderColor:[UIColor colorWithHexString:@"f4f4f4"].CGColor];
+                [imageView.layer setBorderWidth:kLineHeight];
                 [imageView setBackgroundColor:[UIColor colorWithHexString:@"eeeeee"]];
                 [imageView sd_setImageWithURL:[NSURL URLWithString:photoItem.big]];
                 [imageView setContentMode:UIViewContentModeScaleAspectFill];

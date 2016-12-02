@@ -194,9 +194,10 @@ static NSString *kLocalVideoCachePath = @"video";
 }
 + (void)totalCacheSizeWithCompletion:(void (^)(NSInteger totalSize))completion{
     NSInteger mediaSize = [Utility sizeAtPath:[self localMediaDataCachePath] diskMode:YES];
+    NSInteger requestSize = [Utility sizeAtPath:[NHFileManager localCurrentUserRequestCachePath] diskMode:YES];
     [[SDImageCache sharedImageCache] calculateSizeWithCompletionBlock:^(NSUInteger fileCount, NSUInteger totalSize) {
         if(completion){
-            completion(mediaSize + totalSize);
+            completion(requestSize + mediaSize + totalSize);
         }
     }];
     
@@ -205,6 +206,7 @@ static NSString *kLocalVideoCachePath = @"video";
 + (void)cleanCacheWithCompletion:(void (^)())completion{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[NSFileManager defaultManager] removeItemAtPath:[self localMediaDataCachePath] error:nil];
+         [FCFileManager removeFilesInDirectoryAtPath:[NHFileManager localCurrentUserRequestCachePath]];
         [[SDImageCache sharedImageCache] clearDiskOnCompletion:^{
             dispatch_async(dispatch_get_main_queue(), ^{
                 if(completion){

@@ -442,7 +442,11 @@ static void *kBufferingRatioKVOKey = &kBufferingRatioKVOKey;
         } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
             float a = image.size.width;
             float b = image.size.height;
-            ShowImage_HH = (self.width -10)*b/a;//600/4;
+            if(a > 0)
+                ShowImage_HH = (self.width -10)*b/a;//600/4;
+            else
+                ShowImage_HH = 0;
+            
             float image_height = height;
             NSLog(@"----width--%f----height--%f-------",a,b);
 
@@ -616,33 +620,11 @@ static void *kBufferingRatioKVOKey = &kBufferingRatioKVOKey;
     
     NSInteger section = indexPath.section;
     AnswerItem *aItem = _optionArray.modelItemArray[section];
+ 
+    [cell setSelected:aItem.isChecked animated:NO];
     
-       
-    if (aItem.isChecked){
-//    if ([selectedPaths indexOfObject:indexPath] != NSNotFound){
-//        for (UIView *label  in cell.subviews) {
-//            
-//            if([label isKindOfClass:[UILabel class]]){
-//                [(UILabel *)label setTextColor:WhiteColor];
-//            }
-//        }
-
-        [cell setSelected:YES animated:NO];
-       
-    }
-    else
-    {
-//        for (UIView *label  in cell.subviews) {
-//            
-//            if([label isKindOfClass:[UILabel class]]){
-//                [(UILabel *)label setTextColor:JXColor(0x61, 0x61, 0x61, 1)];
-//            }
-//        }
-        [cell setSelected:NO animated:NO];
-    }
-   
     if(self.testItem.et_code != LZTestFillInTheBlankType)
-       [(AnswerCell *)cell setCellStyle:aItem.isChecked];
+        [(AnswerCell *)cell setCellStyle:aItem.isChecked];
     
 }
 
@@ -661,14 +643,14 @@ static void *kBufferingRatioKVOKey = &kBufferingRatioKVOKey;
     cell.tag = row;
     cell.isEditModel = self.isEditModel;
     cell.type = self.testItem.et_code;
-    cell.userAnswer = self.testSubItem.userAnswer;
+    cell.userAnswer = [NSString stringWithString:self.testSubItem.userAnswer];
     cell.answer = self.testSubItem.answer;
-    cell.editAnswer = self.testSubItem.editAnswer;
-    __weak typeof(self) wself = self;
-    cell.textEditedhandler =  ^(NSString *text) {
-        //        [self dismissViewControllerAnimated:YES completion:nil];
-        wself.testSubItem.editAnswer = [NSMutableString stringWithString:text];
-    };
+//    cell.editAnswer = self.testSubItem.editAnswer;
+//    __weak typeof(self) wself = self;
+//    cell.textEditedhandler =  ^(NSString *text) {
+//        //        [self dismissViewControllerAnimated:YES completion:nil];
+//        wself.testSubItem.editAnswer = [NSMutableString stringWithString:text];
+//    };
     
     
     [cell setAnswerItem:aItem];
@@ -732,8 +714,8 @@ static void *kBufferingRatioKVOKey = &kBufferingRatioKVOKey;
     
     if(self.isEditModel == Edited_Status)
     {
-        self.testSubItem.editAnswer = nil;
-        self.testSubItem.editAnswer = [NSMutableString string];
+//        self.testSubItem.editAnswer = nil;
+//        self.testSubItem.editAnswer = [NSMutableString string];
     }
     else if(self.isEditModel == NotEditEnable_Status)
     {

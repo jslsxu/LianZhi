@@ -278,7 +278,7 @@
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     [params setValue:childId forKey:@"child_id"];
     
-    NSString *urlString = [NSString stringWithFormat:@"http://202.99.67.172/evaluating.manage/mobileStudyExplain.htm?uid=%@&subject_code=%ld",childId,(long)self.currentTabIndex];
+    NSString *urlString = [NSString stringWithFormat:@"http://uc.edugate.cn/evaluating.manage/mobileStudyExplain.htm?uid=%@&subject_code=%ld",childId,(long)self.currentTabIndex];
 //    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] init];
     NSString *url = [NSString appendUrl:urlString withParams:nil];
     [instructionVC setUrl:[NSURL URLWithString:url]];
@@ -459,12 +459,8 @@
     {
         [self  showEmptyView:NO];
     }
+    
     // 顶部学力图标签字段 的更新
-//    NSUInteger total = 0;
-//    for(ScoreItem *item in subItem.skills.modelItemArray)
-//    {
-//        total = total + [item.score integerValue];
-//    }
     NSUInteger average = subItem.average;
     
     self.studyLabel.text = [NSString stringWithFormat:@"%@学力图（%lu）",subItem.name,average];
@@ -551,14 +547,14 @@
 
             [wself.analysisModel parseData:childWrapper type:REQUEST_REFRESH];
 
-            [wself  updateData:self.currentTabIndex];
+            [wself  updateData:wself.currentTabIndex];
             
             [wself saveCache];
         }
   
     } fail:^(NSString *errMsg) {
         // 网络不给力的时候读取缓存
-        [self loadCache];
+        [wself loadCache];
     }];
     
 }

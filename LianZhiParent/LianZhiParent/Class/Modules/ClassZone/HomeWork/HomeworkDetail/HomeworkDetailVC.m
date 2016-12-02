@@ -108,11 +108,13 @@
 
 
 - (void)requestHomeworkDetail{
+    MBProgressHUD * hud = [MBProgressHUD showMessag:nil toView:self.view];
     __weak typeof(self) wself = self;
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.eid forKey:@"eid"];
     
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/detail" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        [hud hide:NO];
         HomeworkItem *homeworkItem = [HomeworkItem nh_modelWithJson:responseObject.data];
         [wself setHomeworkItem:homeworkItem];
         [wself saveHomeworkDetail];
@@ -125,7 +127,7 @@
             [alertView showAnimated:YES completionHandler:nil];
         }
     } fail:^(NSString *errMsg) {
-        
+        [hud hide:NO];
     }];
 }
 

@@ -83,19 +83,19 @@
     if(testItem.praxis.modelItemArray.count >0 &&  testItem.praxis.modelItemArray.count == 1)
     {
         TestSubItem *subItem = [testItem.praxis.modelItemArray firstObject];
-        
+        subItem.status = LZTestUnknown;
     
         if(subItem.is_correct == nil || [subItem.is_correct isEqualToString:@""])
-            subItem.status = LZTestNoAnswer;
+            subItem.status = subItem.status | LZTestNoAnswer;
         else
         {
             if([subItem.is_correct isEqualToString:@"0"])
             {
-                subItem.status = LZTestCorrect;
+                subItem.status = subItem.status | LZTestCorrect;
             }
             else
             {
-                subItem.status = LZTestWrong;
+                subItem.status = subItem.status | LZTestWrong;
             }
         }
         
@@ -103,19 +103,19 @@
     }
     else
     {
-        LZTestStatus status = LZTestNoAnswer;
+        LZTestStatus status = LZTestUnknown;
         for(TestSubItem *subItem in testItem.praxis.modelItemArray)
         {
             if(subItem.is_correct == nil || [subItem.is_correct isEqualToString:@""]){
-                status = LZTestNoAnswer;
+                status = status | LZTestNoAnswer;
             }
             else if([subItem.is_correct isEqualToString:@"0"])
             {
-                status = LZTestCorrect;
+                status = status | LZTestCorrect;
             }
             else
             {
-                status = LZTestWrong;
+                status = status | LZTestWrong;
                 break;
             }
             
@@ -134,18 +134,17 @@
             [resultLabel setTextColor:WhiteColor];
             resultLabel.layer.borderColor = ClearColor.CGColor;
             break;
-        case LZTestWrong:
-            [resultLabel setBackgroundColor:RedResultColor];
-            [resultLabel setTextColor:WhiteColor];
-            resultLabel.layer.borderColor = ClearColor.CGColor;
-            break;
-        default:
-        {
+        case LZTestNoAnswer:
             [resultLabel setBackgroundColor:ClearColor];
             resultLabel.layer.borderWidth = 1;
             resultLabel.layer.borderColor = GreenLblColor.CGColor;
             [resultLabel setTextColor:GreenLblColor];
-            
+            break;
+        default:
+        {
+            [resultLabel setBackgroundColor:RedResultColor];
+            [resultLabel setTextColor:WhiteColor];
+            resultLabel.layer.borderColor = ClearColor.CGColor;
         }
             break;
     }
@@ -388,7 +387,7 @@
 
 #pragma mark <UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSLog(@"progress %f", self.scrollView.parallaxHeader.progress);
+//    NSLog(@"progress %f", self.scrollView.parallaxHeader.progress);
 }
 
 
@@ -541,6 +540,7 @@
     testVC.rootVC = self;
     testVC.isEditModel = NotEditEnable_Status;
     testVC.qItem = self.qItem;
+    testVC.qItem.status = Complated_Status;
     testVC.testModel = self.testResultitem;
     [testVC toTestViewPage:indexPath.row];
     [CurrentROOTNavigationVC pushViewController:testVC animated:YES];
@@ -552,6 +552,7 @@
     TestBaseVC *testVC = [[TestBaseVC alloc] init];
     testVC.rootVC = self;
     testVC.qItem = self.qItem;
+    testVC.qItem.status = Complated_Status;
     testVC.isEditModel = NotEditEnable_Status;
     testVC.testModel = self.testResultitem;
     [CurrentROOTNavigationVC pushViewController:testVC animated:YES];

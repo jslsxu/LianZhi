@@ -16,7 +16,7 @@
 
 @property (nonatomic, assign) LZTestType type;
 @property (nonatomic, assign) EditModel_Status isEditModel;
-@property (nonatomic, copy) NSString *editAnswer;
+//@property (nonatomic, copy) NSString *editAnswer;
 @property (nonatomic, copy) NSString *userAnswer;
 @property (nonatomic, copy) NSString *answer;
 @property (nonatomic, strong) UIImageView *conrrectImage;

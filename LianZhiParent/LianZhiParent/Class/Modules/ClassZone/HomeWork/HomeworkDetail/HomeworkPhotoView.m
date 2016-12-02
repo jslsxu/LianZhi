@@ -30,6 +30,8 @@
             height = width;
         }
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(margin, spaceYStart, width, height)];
+        [imageView.layer setBorderColor:[UIColor colorWithHexString:@"f4f4f4"].CGColor];
+        [imageView.layer setBorderWidth:kLineHeight];
         [imageView setBackgroundColor:[UIColor colorWithHexString:@"eeeeee"]];
         [imageView setUserInteractionEnabled:YES];
         [imageView setContentMode:UIViewContentModeScaleAspectFill];

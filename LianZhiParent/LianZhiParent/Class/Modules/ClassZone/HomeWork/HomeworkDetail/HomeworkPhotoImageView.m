@@ -146,7 +146,7 @@
     self.maximumZoomScale = 1;
     self.minimumZoomScale = 1;
     self.zoomScale = 1;
-
+    
     
     // Sizes
     CGSize boundsSize = self.bounds.size;
@@ -166,34 +166,14 @@
         //minScale = 1.0;
     }
     
-    // Calculate Max
-    CGFloat maxScale = 4.0; // Allow double scale
-    // on high resolution screens we have double the pixel density, so we will be seeing every pixel if we limit the
-    // maximum zoom scale to 0.5.
-    if ([UIScreen instancesRespondToSelector:@selector(scale)]) {
-        maxScale = maxScale / [[UIScreen mainScreen] scale];
-        
-        if (maxScale < minScale) {
-            maxScale = minScale * 2;
-        }
-    }
     
     // Calculate Max Scale Of Double Tap
     CGFloat maxDoubleTapZoomScale = 4.0 * minScale; // Allow double scale
-    // on high resolution screens we have double the pixel density, so we will be seeing every pixel if we limit the
-    // maximum zoom scale to 0.5.
-    if ([UIScreen instancesRespondToSelector:@selector(scale)]) {
-        maxDoubleTapZoomScale = maxDoubleTapZoomScale / [[UIScreen mainScreen] scale];
-        
-        if (maxDoubleTapZoomScale < minScale) {
-            maxDoubleTapZoomScale = minScale * 2;
-        }
-    }
+    
     
     // Set
-    self.maximumZoomScale = maxScale;
+    self.maximumZoomScale = 4;
     self.minimumZoomScale = minScale;
-    NSLog(@"max scale is %f, min scale is %f",maxScale, minScale);
     self.zoomScale = minScale;
     self.maximumDoubleTapZoomScale = maxDoubleTapZoomScale;
     

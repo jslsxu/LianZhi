@@ -150,7 +150,7 @@
             }
         }
     }
-    CGFloat rightRate = 1 - wrongNum / self.homeworkItem.enums;
+    CGFloat rightRate = (self.homeworkItem.enums - wrongNum) / self.homeworkItem.enums;
     return MAX(rightRate, 0);
 }
 

@@ -10,7 +10,7 @@
 #import "NSDate+convenience.h"
 #import "CalendarMonthIndicator.h"
 
-#define kCalendarItemHeight                 32
+#define kCalendarItemHeight                 34
 @implementation CalendarDayView
 
 - (instancetype)initWithFrame:(CGRect)frame{
@@ -41,7 +41,7 @@
         CGFloat itemWidth = MIN(self.width, self.height);
         _curDateIndicator = [[UIView alloc] initWithFrame:CGRectMake((self.width - itemWidth) / 2, (self.height - itemWidth) / 2, itemWidth, itemWidth)];
         [_curDateIndicator.layer setCornerRadius:_curDateIndicator.width / 2];
-        [_curDateIndicator.layer setBorderWidth:2];
+        [_curDateIndicator.layer setBorderWidth:1.5];
         [_curDateIndicator.layer setBorderColor:kCommonParentTintColor.CGColor];
         [_curDateIndicator.layer setMasksToBounds:YES];
         [_curDateIndicator setHidden:YES];
@@ -72,7 +72,7 @@
 - (void)setHasNew:(BOOL)hasNew{
     _hasNew = hasNew;
     [_redDot setHidden:!_hasNew];
-    [_redDot setOrigin:CGPointMake(_dayLabel.right + 2, _dayLabel.top)];
+    [_redDot setOrigin:CGPointMake(_dayLabel.right, _dayLabel.top)];
 }
 
 @end

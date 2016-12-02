@@ -225,7 +225,7 @@ DNImagePickerControllerDelegate>
     }
     
     if(self.homeWorkEntity.targets.count == 0){
-        [ProgressHUD showHintText:@"请选择发送对象"];
+        [ProgressHUD showHintText:@"请选择接收班级"];
         return NO;
     }
     
@@ -351,7 +351,7 @@ DNImagePickerControllerDelegate>
         [_commentView setPlaceHolder:@"输入你要布置的作业内容:"];
         [_commentView setMaxWordsNum:[self.homeWorkEntity maxCommentWordsNum]];
         [_commentView setContent:self.homeWorkEntity.words];
-        [_commentView setUserInteractionEnabled:!self.homeWorkEntity.forward];
+        [_commentView.commentTextView setEditable:!self.homeWorkEntity.forward];
         [_commentView setTextViewWillChangeHeight:^(CGFloat height) {
             @strongify(self)
             [self adjustPosition];

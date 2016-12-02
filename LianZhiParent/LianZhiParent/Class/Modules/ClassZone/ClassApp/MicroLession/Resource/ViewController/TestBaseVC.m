@@ -46,7 +46,6 @@
         [self.answerTextTxtField setTextColor:[UIColor colorWithHexString:@"616161"]];
         [self.answerTextTxtField setPlaceholder:@"点击这里答题"];
         [self.answerTextTxtField setKeyboardType:UIKeyboardTypeDefault];
-//        [self.answerTextTxtField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         self.answerTextTxtField.hidden = YES;
         self.answerTextTxtField.delegate = self;
         [self addSubview:self.answerTextTxtField];
@@ -87,7 +86,9 @@
             self.answerTextTxtField.hidden = NO;
             self.answerTextLabel.hidden = YES;
             self.selectionStyle = UITableViewCellSelectionStyleNone;
-//            self.answerTextTxtField.text = self.userAnswer;
+            
+            if(aItem.isChecked)
+                self.answerTextTxtField.text = aItem.name;
         }
         else
         {
@@ -129,6 +130,7 @@
                     self.answerTextTxtField.text = useranswerStr;
                     if(useranswerStr && ![useranswerStr isEqualToString:@""])
                     {
+                        aItem.isChecked = YES;
                         self.selected = YES;
                     }
                     
@@ -190,22 +192,20 @@
         // 非编辑模式，只读 需要显示对与错
         self.conrrectImage.hidden = YES;
         self.titleLabel.hidden = NO;
-        NSArray * editUseranswerArray = [self.editAnswer componentsSeparatedByString:@"^"];
+//        NSArray * editUseranswerArray = [self.editAnswer componentsSeparatedByString:@"^"];
         self.titleLabel.text = aItem.tag;
       
         
         if(self.type == LZTestFillInTheBlankType)
         {//填空题
             self.answerTextLabel.hidden = YES;
-            NSInteger tag = [aItem.tag integerValue];
+//            NSInteger tag = [aItem.tag integerValue];
             self.answerTextTxtField.enabled = YES;
             self.answerTextTxtField.hidden = NO;
             self.selectionStyle = UITableViewCellSelectionStyleNone;
-            if(editUseranswerArray.count > tag -1){
-                
-                NSString *answerStr =  [editUseranswerArray objectAtIndex:tag-1];
-                self.answerTextTxtField.text = answerStr;
-            }
+            if(aItem.isChecked)
+                self.answerTextTxtField.text = aItem.name;
+  
         }
         else
         {
@@ -213,10 +213,10 @@
             self.answerTextTxtField.hidden = YES;
             self.answerTextLabel.text = aItem.name;
             self.selectionStyle = UITableViewCellSelectionStyleGray;
-            if([editUseranswerArray containsObject:aItem.tag])
-            {
-                aItem.isChecked = YES;
-            }
+//            if([editUseranswerArray containsObject:aItem.tag])
+//            {
+//                aItem.isChecked = YES;
+//            }
 
         }
 
@@ -233,9 +233,9 @@
     NSString *trimmedString = [textField.text stringByTrimmingCharactersInSet:
     [NSCharacterSet whitespaceAndNewlineCharacterSet]]; // stri
     self.aItem.name = trimmedString;
-    if (_textEditedhandler) {
-        _textEditedhandler(trimmedString);
-    }
+//    if (_textEditedhandler) {
+//        _textEditedhandler(trimmedString);
+//    }
     
     if(self.aItem.name.length > 0)
     {
@@ -262,8 +262,7 @@
 {
 
 }
-@property (nonatomic, strong) SwipeView *testView;
-//@property (nonatomic, strong) ZYBannerView *testView;  //下部试题视图
+@property(nonatomic,strong)SwipeView *testView;
 @property(nonatomic,strong)UILabel *nameLabel;   //顶部头视图 题型标签
 @property(nonatomic,strong)UILabel *pageLabel;   //顶部头视图 页数标签
 @property(nonatomic,strong)UIView  *headView;    //顶部头视图
@@ -321,10 +320,6 @@
 {
     [super viewDidDisappear:animated];
     
-    if(self.qItem.status == NotComplated_Status){
-        [self getAnswerString];
-        [self saveCache];
-    }
 }
 
 
@@ -384,6 +379,12 @@
     
 }
 
+- (EmptyHintView *)emptyView{
+    if(!_emptyView){
+        _emptyView = [[EmptyHintView alloc] initWithImage:@"NoInfo" title:@"网络不给力"];
+    }
+    return _emptyView;
+}
 
 #pragma mark -- 私有方法
 -(void)toTestViewPage:(NSUInteger)index
@@ -393,6 +394,22 @@
     
     [self.testView scrollToPage:index duration:0.0f];
 }
+
+- (void)back{
+    NSLog(@"back");
+    
+    [self.view endEditing:YES];
+    
+    if(self.qItem.status == NotComplated_Status){
+        [self getAnswerString];
+        [self saveCache];
+    }
+    
+    [CurrentROOTNavigationVC popViewControllerAnimated:YES];
+}
+
+
+
 //交卷按钮点击 传入代理
 -(void)commitButtonClick:(UIButton*)button
 {
@@ -481,7 +498,10 @@
     {
         greenLength = greenStartRange.location - 0;
     }
-     [attrString setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18],NSForegroundColorAttributeName :greencolor} range:NSMakeRange(0,greenLength)];
+    
+    [attrString setAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:18],
+                                NSForegroundColorAttributeName :greencolor}
+                        range:NSMakeRange(0,greenLength)];
     
 //    [attrString addAttribute:NSForegroundColorAttributeName
 //                       value:greencolor
@@ -596,27 +616,22 @@
 // 获取学力相关数据
 - (void)getTestData
 {
-    
-    NSString *childId = [UserCenter sharedInstance].curChild.uid;
-    
+
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setValue:childId forKey:@"child_id"];  // 当前孩子id
+    NSString *childId = [UserCenter sharedInstance].curChild.uid;
     NSString  *sqid = self.qItem.sq_id == nil ? @"":self.qItem.sq_id;
     NSString  *again = [NSString stringWithFormat:@"%ld",(long)self.isAgain];
     NSString  *subject_code = [NSString stringWithFormat:@"%ld",(long)self.subjectCode];
+    [params setValue:childId forKey:@"child_id"];  // 当前孩子id
     [params setValue:sqid forKey:@"sq_id"];        // 当前sq_id   闯关答案ID
     [params setValue:again forKey:@"again"];       // 0 第一次答题 1 重新答题 2 错题重答
     [params setValue:subject_code forKey:@"subject_code"];
-    
-    
-//    if(self.subjectCode == 1 && DEBUG)
-//        [params setValue:@"300" forKey:@"q_id"];  //闯关ID
-//    else
-        [params setValue:self.qItem.q_id forKey:@"q_id"];  //self.qItem.q_id
+    [params setValue:self.qItem.q_id forKey:@"q_id"];  //self.qItem.q_id
     
     __weak typeof(self) wself = self;
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在获取信息" toView:self.view];
-    
+    [self showEmptyView:NO
+     ];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"evaluation/startQuestions"
                                                     method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil
                                                 completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
@@ -624,8 +639,6 @@
         if(responseObject){
             [wself.testModel parseData:responseObject type:REQUEST_REFRESH];
             wself.qItem.sq_id = wself.testModel.sq_id;
-            
-//            if(wself.qItem.status == UnLocked_Status)
             wself.qItem.status = NotComplated_Status;
             
             [wself.testView reloadData];
@@ -638,7 +651,10 @@
         
     } fail:^(NSString *errMsg) {
         [hud hide:YES];
-        [ProgressHUD showHintText:errMsg];
+        
+        BOOL isShow = wself.testModel.praxisList.modelItemArray.count == 0;
+        [self showEmptyView:isShow];
+//        [ProgressHUD showHintText:errMsg];
     }];
     
 }
@@ -710,9 +726,8 @@
             if(!answerStr){
                 answerStr = [NSMutableString string];
             }
-            
-            subItem.editAnswer = answerStr;
-            
+
+            subItem.userAnswer = answerStr;
             [answer setValue:answerStr forKey:@"answer"];
             [answer setValue:subItem.answer forKey:@"qanswer"];
         

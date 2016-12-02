@@ -51,12 +51,11 @@
 //    self.progressColor = [UIColor greenColor];
     self.animationDuration = 3;
     self.pathWidth = self.bounds.size.width / 1.15;
-    
-    [self shadowImageView];
+ 
     [self trackLayer];
     [self progressLayer];
 //    [self gradientLayer];
-    [self loadGesture];
+
 }
 
 #pragma mark - Load
@@ -78,18 +77,15 @@
     CGFloat layerWidth = self.pathWidth;
     CGFloat layerX = (self.bounds.size.width - layerWidth)/2;
     layer.frame = CGRectMake(layerX, layerX, layerWidth, layerWidth);
-    layer.fillColor = [UIColor clearColor].CGColor;
+    layer.fillColor = nil;//[UIColor clearColor].CGColor;
     layer.strokeColor = color.CGColor;
-    layer.lineCap = kCALineCapButt;
+    layer.lineCap = kCALineCapRound;
     layer.lineWidth = self.lineWidth;
     [self setProgress];
 //    layer.path = self.path.CGPath;
 }
 
-- (void)loadGesture {
-    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(didPan:)];
-    [self addGestureRecognizer:pan];
-}
+
 
 #pragma mark - Gesture Action
 
@@ -104,6 +100,7 @@
 - (void)updatePercent:(NSString *)percent animation:(BOOL)animationed {
     
     self.percent = [percent floatValue];
+   
     [self.progressLayer removeAllAnimations];
     
     if (!animationed) {
@@ -111,20 +108,25 @@
         [CATransaction setDisableActions:YES];
         [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
         [CATransaction setAnimationDuration:1];
+        self.progressLayer.strokeStart = 0;
+        self.progressLayer.strokeEnd =  1;
         
-        self.progressLayer.strokeEnd =  self.percent / 100.0;
-        
+        [self loadProgressLayer:_progressLayer WithColor:self.progressColor];
         [CATransaction commit];
+        
+        
     } else {
         CABasicAnimation *animation= [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
         animation.fromValue = @(0.0);
         animation.toValue = @(self.percent / 100.);
-        animation.duration = self.animationDuration * self.percent / 100;
+        animation.duration = self.animationDuration * self.percent / 100.0;
         animation.removedOnCompletion = YES;
         animation.delegate = self;
         animation.timingFunction    = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
 
-        self.progressLayer.strokeEnd = self.percent / 100;
+        self.progressLayer.strokeStart = 0;
+        self.progressLayer.strokeEnd =  1;
+        [self loadProgressLayer:_progressLayer WithColor:self.progressColor];
         [self.progressLayer addAnimation:animation forKey:@"strokeEndAnimation"];
     }
 }
@@ -185,10 +187,10 @@
     if (!_progressLayer) {
         _progressLayer = [CAShapeLayer layer];
         _progressLayer.frame = self.bounds;
-        self.progressLayer.strokeEnd = self.percent / 100;
+        self.progressLayer.strokeEnd = self.percent / 100.0;
         [self.layer addSublayer:_progressLayer];
     }
-    [self loadProgressLayer:_progressLayer WithColor:self.progressColor];
+   
     return _progressLayer;
 }
 
@@ -229,7 +231,7 @@
         CGFloat halfWidth = self.pathWidth / 2;
         _path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(halfWidth, halfWidth)
                                                radius:(self.pathWidth - self.lineWidth)/2
-                                           startAngle:0      //-M_PI/2*3
+                                           startAngle:0     //-M_PI/2*3
                                              endAngle:2*M_PI //M_PI/2
                                             clockwise:YES];
     }
@@ -239,7 +241,7 @@
 - (void)setProgress  {
     _progressPath = nil;
     CGFloat halfWidth = self.pathWidth / 2;
-    _progressPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(halfWidth, halfWidth) radius:(self.pathWidth - self.lineWidth)/2 startAngle:- M_PI_2 endAngle:(M_PI * 2) * (self.percent / 100) - M_PI_2 clockwise:YES];
+    _progressPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(halfWidth, halfWidth) radius:(self.pathWidth - self.lineWidth)/2 startAngle: -M_PI_2 endAngle:((M_PI * 2) * (self.percent / 100.0) - M_PI_2 )  clockwise:YES]; //- M_PI_2
     _progressLayer.path = _progressPath.CGPath;
    
 }

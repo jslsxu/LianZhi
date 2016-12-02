@@ -79,20 +79,21 @@ typedef NS_ENUM(NSInteger, EditModel_Status) {
 };
 
 
-typedef NS_ENUM(NSInteger, LZTestStatus) {
-    LZTestNoAnswer,             // 未做
-    LZTestCorrect,             // 正确
-    LZTestWrong,               // 错误
-    LZTestWithAnswer,          // 已做过
+typedef NS_OPTIONS(NSInteger, LZTestStatus) {
+    LZTestUnknown = 0,
+    LZTestNoAnswer = 1 << 0,           // 未做
+    LZTestCorrect = 1 << 1,            // 正确
+    LZTestWrong = 1 << 2,              // 错误
+    LZTestWithAnswer= 1 << 3,          // 已做过
     
 };
 
 
 typedef NS_ENUM(NSInteger, LZQuestionType) {
     LZQuestionFirst = 0,               // 第一次做题
-    LZQuestionRetrain,             // 重新答题
-    LZQuestionWrongAgain,          // 错题加练
-    LZQuestionUnknown              // 未知
+    LZQuestionRetrain,                 // 重新答题
+    LZQuestionWrongAgain,              // 错题加练
+    LZQuestionUnknown                  // 未知
 };
 
 #endif

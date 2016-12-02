@@ -259,18 +259,18 @@ static UIView *currentView = nil;
 
     //create the title label centered with multiple lines
     //and custom color
-    UILabel *titleLabel = [[UILabel alloc] init];
-    titleLabel.text = title;
-    titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleLabel.textColor = titleColor;
-
-    //set the number of lines to 0 (unlimited)
-    //set a maximum size to the label
-    //then get the size that fits the maximum size
-    titleLabel.numberOfLines = 0;
-    CGSize requiredSize = CGSizeMake(width - kInsetValue, height - kInsetValue);
-    titleLabel.frame = CGRectMake(width/2 - requiredSize.width / 2, kInsetValue, requiredSize.width, requiredSize.height);
-    [alertView addSubview:titleLabel];
+//    UILabel *titleLabel = [[UILabel alloc] init];
+//    titleLabel.text = title;
+//    titleLabel.textAlignment = NSTextAlignmentCenter;
+//    titleLabel.textColor = titleColor;
+//
+//    //set the number of lines to 0 (unlimited)
+//    //set a maximum size to the label
+//    //then get the size that fits the maximum size
+//    titleLabel.numberOfLines = 0;
+//    CGSize requiredSize = CGSizeMake(width - kInsetValue, height - kInsetValue);
+//    titleLabel.frame = CGRectMake(width/2 - requiredSize.width / 2, kInsetValue, requiredSize.width, requiredSize.height);
+//    [alertView addSubview:titleLabel];
     [resultView addSubview:alertView];
     //check wether the alert is of custom type or not
     //if it is, set the custom view
@@ -283,7 +283,8 @@ static UIView *currentView = nil;
     
     if (tap) {
         //tap the alert view to hide and remove it from the superview
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:[LZCustomAlertView class] action:@selector(hideAlertByTap:)];
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:
+                                              [LZCustomAlertView class] action:@selector(hideAlertByTap:)];
         tapGesture.numberOfTapsRequired = 1;
         tapGesture.numberOfTouchesRequired = 1;
         [resultView addGestureRecognizer:tapGesture];

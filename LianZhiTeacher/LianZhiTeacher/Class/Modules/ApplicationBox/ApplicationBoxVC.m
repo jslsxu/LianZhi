@@ -19,6 +19,7 @@
 #import "NotificationSendVC.h"
 #import "NotificationHistoryVC.h"
 #import "TestWebVC.h"
+#import "LZMicrolessonVCViewController.h"
 #define kBannerHeight               (kScreenWidth * 29 / 64)
 
 @implementation ApplicationBoxHeaderView
@@ -356,9 +357,17 @@
     NSString *url = item.url;
     if([url hasPrefix:@"http"])
     {
-//        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:url]];
-//        [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
-        TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:@"http://125.39.80.78:3000/app/ios/?userId=1421660&userRole=S"]];
+        NSURL *path = [NSURL URLWithString:url];
+        NSString *host = path.host;
+        TNBaseWebViewController *webVC = nil;
+        if([host isEqualToString:@"lzmicrolesson.edugate.cn"]){
+            //url = @" http://125.39.80.78:3000/app/ios/?userId=1060240&userRole=T";
+            webVC = [[LZMicrolessonVCViewController alloc] initWithUrl:[NSURL URLWithString:url]];
+        }
+        else
+        {
+            webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:url]];
+        }
         [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
     }
     else if([url hasPrefix:@"lianzhi://"])

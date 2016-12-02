@@ -13,6 +13,7 @@
 		370F33D71A78795000FED3C2 /* AboutVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33D21A78795000FED3C2 /* AboutVC.m */; };
 		370F33D81A78795000FED3C2 /* ContactServiceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33D41A78795000FED3C2 /* ContactServiceVC.m */; };
 		370F33D91A78795000FED3C2 /* PersonalSettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33D61A78795000FED3C2 /* PersonalSettingVC.m */; };
+		3715737B1DE5EA93007A942B /* LZMicrolessonVCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 371572D11DE5EA93007A942B /* LZMicrolessonVCViewController.m */; };
 		3719A7441AA2319000FBDC2A /* NewEditionPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = 3719A7431AA2319000FBDC2A /* NewEditionPreview.m */; };
 		371C6DAB1A7015AF00FA4AEC /* PublishArticleVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 371C6DA21A7015AF00FA4AEC /* PublishArticleVC.m */; };
 		371C6DAC1A7015AF00FA4AEC /* PublishAudioVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 371C6DA41A7015AF00FA4AEC /* PublishAudioVC.m */; };
@@ -494,6 +495,8 @@
 		370F33D41A78795000FED3C2 /* ContactServiceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactServiceVC.m; sourceTree = "<group>"; };
 		370F33D51A78795000FED3C2 /* PersonalSettingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalSettingVC.h; sourceTree = "<group>"; };
 		370F33D61A78795000FED3C2 /* PersonalSettingVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalSettingVC.m; sourceTree = "<group>"; };
+		371572D01DE5EA93007A942B /* LZMicrolessonVCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZMicrolessonVCViewController.h; sourceTree = "<group>"; };
+		371572D11DE5EA93007A942B /* LZMicrolessonVCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZMicrolessonVCViewController.m; sourceTree = "<group>"; };
 		3719A7421AA2319000FBDC2A /* NewEditionPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewEditionPreview.h; sourceTree = "<group>"; };
 		3719A7431AA2319000FBDC2A /* NewEditionPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewEditionPreview.m; sourceTree = "<group>"; };
 		371C6DA11A7015AF00FA4AEC /* PublishArticleVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishArticleVC.h; sourceTree = "<group>"; };
@@ -1428,6 +1431,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		371572CF1DE5EA93007A942B /* MicroLession */ = {
+			isa = PBXGroup;
+			children = (
+				371572D01DE5EA93007A942B /* LZMicrolessonVCViewController.h */,
+				371572D11DE5EA93007A942B /* LZMicrolessonVCViewController.m */,
+			);
+			path = MicroLession;
+			sourceTree = "<group>";
+		};
 		371C6D891A700DBA00FA4AEC /* PhotoPicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -1580,6 +1592,7 @@
 				3793F5131B7B2CF400501F77 /* ApplicationBoxVC.m */,
 				8DE7186E1DAC94FF0080476D /* TestWebVC.h */,
 				8DE7186F1DAC94FF0080476D /* TestWebVC.m */,
+				371572CF1DE5EA93007A942B /* MicroLession */,
 			);
 			path = ApplicationBox;
 			sourceTree = "<group>";
@@ -3855,6 +3868,7 @@
 				3736CEB41C508D31004DB2D2 /* InterestVC.m in Sources */,
 				8D867C541D2F7A840020A21C /* XMNAlbumModel.m in Sources */,
 				37DEE4F01A57C24A009A8771 /* PersonalInfoVC.m in Sources */,
+				3715737B1DE5EA93007A942B /* LZMicrolessonVCViewController.m in Sources */,
 				37FD6E751BBC51DF00C83AB4 /* ClassMemberVC.m in Sources */,
 				8DE718531DABA6020080476D /* HomeworkDetailView.m in Sources */,
 				3728A73B1B9D376300310457 /* MFWFace.m in Sources */,

@@ -140,7 +140,7 @@
         _statusLabel.text = @"查看";
         
         //设置星星视图的样式
-        starRating = [[EDStarRating alloc] initWithFrame:CGRectMake(20, height/2 - 10, self.width-30, 15.0)];
+        starRating = [[EDStarRating alloc] initWithFrame:CGRectMake(self.width * 0.17, height/2 - 5, self.width * 0.66, 15.0)];
         starRating.starImage = [UIImage imageNamed:@"StarEmpty"];
         starRating.starHighlightedImage = [UIImage imageNamed:@"StarFull"];
         starRating.maxRating = 3.0;
@@ -214,8 +214,6 @@
     // 设置顶部Tabbar 的视图
     [self addHeadViewTitle];
 
-  
- 
 }
 
 - (void)didReceiveMemoryWarning {

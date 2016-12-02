@@ -8,7 +8,6 @@
 
 #import "LZMicrolessonVCViewController.h"
 #import <AVFoundation/AVFoundation.h>
-#import "ResourceDefine.h"
 
 #define web365User @"11078" // 连枝web 365 转换用的用户ID
 
@@ -48,7 +47,7 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
     self.webView.navigationDelegate = self;
 
     self.sanFrameView = [[UIView alloc] init];
-    self.sanFrameView.frame = CGRectMake(0, 0, WIDTH, HEIGHT);
+    self.sanFrameView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
     self.sanFrameView.hidden = YES;
     [self.view addSubview:self.sanFrameView];
     [super viewDidLoad];
@@ -269,27 +268,27 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
     }
 }
 
--(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects
-      fromConnection:(AVCaptureConnection *)connection
-{
-    if (metadataObjects != nil && [metadataObjects count] > 0) {
-        AVMetadataMachineReadableCodeObject *metadataObj = [metadataObjects objectAtIndex:0];
-        NSString *result;
-        if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeQRCode]) {
-            result = metadataObj.stringValue;
-            [self performSelectorOnMainThread:@selector(cancelButtonPressed) withObject:nil waitUntilDone:NO];
-//            [self cancelButtonPressed];
-            [self confirmScan:result];
-           
-        } else {
-            NSLog(@"不是二维码");
-            
-            
-        }
-        
-        
-    }
-}
+//-(void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects
+//      fromConnection:(AVCaptureConnection *)connection
+//{
+//    if (metadataObjects != nil && [metadataObjects count] > 0) {
+//        AVMetadataMachineReadableCodeObject *metadataObj = [metadataObjects objectAtIndex:0];
+//        NSString *result;
+//        if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeQRCode]) {
+//            result = metadataObj.stringValue;
+//            [self performSelectorOnMainThread:@selector(cancelButtonPressed) withObject:nil waitUntilDone:NO];
+////            [self cancelButtonPressed];
+//            [self confirmScan:result];
+//           
+//        } else {
+//            NSLog(@"不是二维码");
+//            
+//            
+//        }
+//        
+//        
+//    }
+//}
 
 - (void)reportScanResult:(NSString *)result
 {
@@ -308,49 +307,49 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
     _lastResult = YES;
 }
 
-// 获取学力相关数据
-- (void)confirmScan:(NSString *)linkUrl
-{
-    if (!linkUrl || linkUrl.length <= 0) {
-        return;
-    }
-//    NSString *childId = [UserCenter sharedInstance].curChild.uid;
-    
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    
-    [params setValue:@"18649130140" forKey:@"username"];
-    [params setValue:@"123456" forKey:@"password"];
-    [params setValue:_resourceId forKey:@"resourceId"];
-    [params setValue:_bookId forKey:@"bookId"];
-    [params setValue:[OpenUDID value] forKey:@"udid"];
-    [params setValue:[UserCenter sharedInstance].curChild.uid forKey:@"child_id"];
-    [params setValue:[UserCenter sharedInstance].userData.accessToken forKey:@"verify"];
-    [params setValue:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"version"];
-    [params setValue:@"1" forKey:@"platform"];
-    
-//    __weak typeof(self) wself = self;
-    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在获取信息" toView:self.view];
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    // 2.利用AFN管理者发送请求
-  
-    [manager POST:linkUrl parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"请求成功---%@", responseObject);
-        [hud hide:YES];
-        if(responseObject)
-        {
-//            NSLog(@"%@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-         NSLog(@"请求失败---%@", error);
-       
-         [hud hide:YES];
-        
-         [ProgressHUD showHintText:error.description];
-    }];
-    
-   
-    
-}
+//// 获取学力相关数据
+//- (void)confirmScan:(NSString *)linkUrl
+//{
+//    if (!linkUrl || linkUrl.length <= 0) {
+//        return;
+//    }
+////    NSString *childId = [UserCenter sharedInstance].curChild.uid;
+//    
+//    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+//    
+//    [params setValue:@"18649130140" forKey:@"username"];
+//    [params setValue:@"123456" forKey:@"password"];
+//    [params setValue:_resourceId forKey:@"resourceId"];
+//    [params setValue:_bookId forKey:@"bookId"];
+//    [params setValue:[OpenUDID value] forKey:@"udid"];
+//    [params setValue:[UserCenter sharedInstance].curChild.uid forKey:@"child_id"];
+//    [params setValue:[UserCenter sharedInstance].userData.accessToken forKey:@"verify"];
+//    [params setValue:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"version"];
+//    [params setValue:@"1" forKey:@"platform"];
+//    
+////    __weak typeof(self) wself = self;
+//    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在获取信息" toView:self.view];
+//    
+//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+//    // 2.利用AFN管理者发送请求
+//  
+//    [manager POST:linkUrl parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        NSLog(@"请求成功---%@", responseObject);
+//        [hud hide:YES];
+//        if(responseObject)
+//        {
+////            NSLog(@"%@", [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
+//        }
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//         NSLog(@"请求失败---%@", error);
+//       
+//         [hud hide:YES];
+//        
+//         [ProgressHUD showHintText:error.description];
+//    }];
+//    
+//   
+//    
+//}
 
 @end

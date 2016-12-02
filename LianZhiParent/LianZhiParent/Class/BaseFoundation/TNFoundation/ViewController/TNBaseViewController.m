@@ -54,7 +54,14 @@
     
     UINavigationController *nav = self.navigationController;
     if(nav.viewControllers.count > 1){
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"NavBack"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+        UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [backButton setFrame:CGRectMake(0, 0, 44, 44)];
+        [backButton setImage:[UIImage imageNamed:@"NavBack"] forState:UIControlStateNormal];
+        [backButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+        [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+        self.navigationItem.leftBarButtonItem = leftItem;
     }
 }
 

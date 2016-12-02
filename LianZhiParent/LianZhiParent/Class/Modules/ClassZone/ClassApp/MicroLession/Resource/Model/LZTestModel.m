@@ -33,7 +33,7 @@
     self.stem = [dataWrapper getStringForKey:@"stem"];
     self.answer = [dataWrapper getStringForKey:@"answer"];
     self.answerCount = [dataWrapper getIntegerForKey:@"answerCount"];
-    self.editAnswer = [NSMutableString string];
+//    self.editAnswer = [NSMutableString string];
     self.userAnswer = [dataWrapper getStringForKey:@"useranswer"];
     self.is_correct = [dataWrapper getStringForKey:@"is_correct"];
     TNDataWrapper *listWrapper = [dataWrapper getDataWrapperForKey:@"option"];
@@ -73,6 +73,7 @@
     self.soundAudioItem = item;
     
 }
+
 
 
 @end
@@ -189,13 +190,29 @@
     BOOL  isCompleted = YES;
     for(TestItem *item in self.praxisList.modelItemArray)
     {
-        for(TestSubItem *subItem in item.praxis.modelItemArray){
-             if (!subItem.userAnswer || [subItem.userAnswer isEqualToString:@""])
-             {
-                 isCompleted = NO;
-                 return isCompleted;
-             }
+        if(item.et_code == LZTestFillInTheBlankType)
+        {
+            for(TestSubItem *subItem in item.praxis.modelItemArray){
+                for(AnswerItem *answerItem in subItem.option.modelItemArray)
+                {
+                    if(answerItem.isChecked == NO){
+                        isCompleted = NO;
+                        return isCompleted;
+                    }
+                }
+            }
         }
+        else
+        {
+            for(TestSubItem *subItem in item.praxis.modelItemArray){
+                if (!subItem.userAnswer || [subItem.userAnswer isEqualToString:@""])
+                {
+                    isCompleted = NO;
+                    return isCompleted;
+                }
+            }
+        }
+        
     }
     
     return isCompleted;
