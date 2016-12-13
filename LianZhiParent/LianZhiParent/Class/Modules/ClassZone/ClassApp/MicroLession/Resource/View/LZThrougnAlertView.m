@@ -130,8 +130,7 @@
             testVC.rootVC = trainingVC;
             testVC.subjectCode = wself.subjectCode;
             testVC.isAgain = LZQuestionRetrain;
-            
-            
+       
             testVC.isEditModel = (wself.qItem.status == NotComplated_Status)? Edited_Status:EditEnable_Status;
             testVC.rootVC = trainingVC;
             testVC.qItem = wself.qItem;
@@ -247,11 +246,11 @@
         return;
     
     //设置字体
-    NSRange range = [string rangeOfString:@"关"];
-    UIFont *boldFont = [UIFont boldSystemFontOfSize:20]; //设置所有的字体
+//    NSRange range = [string rangeOfString:@"关"];
+//    UIFont *boldFont = [UIFont boldSystemFontOfSize:20]; //设置所有的字体
     UIFont *bigBoldFont = [UIFont boldSystemFontOfSize:34];
     
-    long sectionLocation = range.location - 1 > length ?  1 : range.location - 1;
+//    long sectionLocation = range.location - 1 > length ?  1 : range.location - 1;
     [attrString addAttribute:NSFontAttributeName value:bigBoldFont range:NSMakeRange(0, length)];
 //    [attrString addAttribute:NSFontAttributeName value:bigBoldFont range:NSMakeRange(1, sectionLocation)];//设置Text这四个字母的字体为粗体
     

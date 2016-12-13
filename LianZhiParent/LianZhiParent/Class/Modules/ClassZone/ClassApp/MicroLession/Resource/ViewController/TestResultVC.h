@@ -37,7 +37,7 @@
 @property (nonatomic, weak)id<SelectAnswerDelegate> selectDelegate;
 @property (nonatomic, strong)TestItem *item;
 
-- (void)setSubItem:(TNModelItem *)modelItem Index:(NSUInteger)index;
+- (void)setSubItem:(TNModelItem *)modelItem;
 @end
 
 
@@ -47,6 +47,6 @@
 
 @property (nonatomic, weak)UIViewController *rootVC;
 @property (nonatomic, copy)LZTestModel *testResultitem;
-@property (nonatomic, copy) QuestionItem *qItem;
+@property (nonatomic, copy)QuestionItem *qItem;
 
 @end

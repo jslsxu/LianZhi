@@ -417,6 +417,15 @@ static SystemSoundID shake_sound_male_id = 0;
     [MobClick startWithConfigure:UMConfigInstance];
 }
 
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    if (_allowRotation == 1) {
+        return UIInterfaceOrientationMaskLandscapeRight|UIInterfaceOrientationMaskLandscapeLeft;
+        
+    }else {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+}
 
 #pragma mark - Reachability
 - (void)startReachability

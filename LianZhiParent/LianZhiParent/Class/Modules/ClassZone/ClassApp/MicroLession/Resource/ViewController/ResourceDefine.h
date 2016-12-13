@@ -72,9 +72,9 @@ typedef NS_ENUM(NSInteger, ThroughTraining_Status) {
 };
 
 typedef NS_ENUM(NSInteger, EditModel_Status) {
-    NotEditEnable_Status = 0,        // 允许编辑
+    NotEditEnable_Status = 0,        // 不允许编辑
     Edited_Status,                   // 有做过的题目，允许编辑
-    EditEnable_Status,               // 不允许编辑
+    EditEnable_Status,               // 允许编辑
     Unknown_EditStatus
 };
 

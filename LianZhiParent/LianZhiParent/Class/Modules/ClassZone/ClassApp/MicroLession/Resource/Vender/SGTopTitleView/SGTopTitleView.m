@@ -276,6 +276,31 @@ static CGFloat const indicatorHeight = 2;
     }
 }
 
+
+-(void) setLabelStyle:(UILabel *)label  TestStatus:(LZTestStatus)status
+{
+    switch (status) {
+        case LZTestCorrect:
+            [label setBackgroundColor:GreenResultInstructionColor];
+            [label setTextColor:WhiteColor];
+            label.layer.borderColor = ClearColor.CGColor;
+            break;
+        case LZTestNoAnswer:
+            [label setBackgroundColor:ClearColor];
+            label.layer.borderWidth = 1;
+            label.layer.borderColor = GreenLblColor.CGColor;
+            [label setTextColor:GreenLblColor];
+            break;
+        default:
+        {
+            [label setBackgroundColor:RedResultColor];
+            [label setTextColor:WhiteColor];
+            label.layer.borderColor = ClearColor.CGColor;
+        }
+            break;
+    }
+}
+
 /** 滚动标题选中颜色改变以及指示器位置变化 */
 - (void)scrollTitleLabelSelecteded:(UILabel *)label {
     

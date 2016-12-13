@@ -25,6 +25,7 @@
 @interface QuestionSelectTypeView : UIView
 <UITableViewDataSource, UITableViewDelegate>
 
+@property (nonatomic, assign) NSUInteger qcount;
 @property (nonatomic, assign) CGFloat viewHeight;
 @property (nonatomic, assign)LZTestType et_code;
 @property(nonatomic,strong) UIView * questionView;

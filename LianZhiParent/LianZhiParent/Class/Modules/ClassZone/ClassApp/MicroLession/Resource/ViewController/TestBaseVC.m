@@ -15,6 +15,8 @@
 #import "LZTestModel.h"
 #import "ThroughTrainingVC.h"
 #import "ResourceMainVC.h"
+#import "ParamUtil.h"
+
 @implementation AnswerCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -23,7 +25,7 @@
     if(self)
     {
         [self setBackgroundColor:[UIColor clearColor]];
-        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, 70, 40)];
+        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, 50, 40)];
         [self.titleLabel setTextColor:[UIColor colorWithHexString:@"616161"]];
         [self.titleLabel setFont:[UIFont boldSystemFontOfSize:18]];
         [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
@@ -33,15 +35,15 @@
         self.conrrectImage = [[UIImageView alloc] initWithFrame:CGRectMake(20, 5, 40, 40)];
         [self addSubview:self.conrrectImage];
         
-        self.answerTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(85, 2, WIDTH - 100.f, 46)];
+        self.answerTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 2, WIDTH - 90.f, 46)];
         [self.answerTextLabel setTextColor:[UIColor colorWithHexString:@"616161"]];
-        [self.answerTextLabel setFont:[UIFont systemFontOfSize:18]];
+        [self.answerTextLabel setFont:[UIFont systemFontOfSize:16]];
         [self.answerTextLabel setTextAlignment:NSTextAlignmentLeft];
         self.answerTextLabel.numberOfLines = 0;
-
+//        self.answerTextLabel.adjustsFontSiz·eToFitWidth = YES; // 这是主要讲的。
         [self addSubview:self.answerTextLabel];
         
-        self.answerTextTxtField  = [[UITextField alloc] initWithFrame:CGRectMake(85, 5, WIDTH - 100.f, 40)];
+        self.answerTextTxtField  = [[UITextField alloc] initWithFrame:CGRectMake(75, 5, WIDTH - 90.f, 40)];
         [self.answerTextTxtField setFont:[UIFont systemFontOfSize:16]];
         [self.answerTextTxtField setTextColor:[UIColor colorWithHexString:@"616161"]];
         [self.answerTextTxtField setPlaceholder:@"点击这里答题"];
@@ -50,7 +52,7 @@
         self.answerTextTxtField.delegate = self;
         [self addSubview:self.answerTextTxtField];
                 
-       self.sepLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 5, 2, 40)];
+       self.sepLabel = [[UILabel alloc] initWithFrame:CGRectMake(65, 5, 2, 40)];
         [self.sepLabel setBackgroundColor:AnswerSepLineColor];
 
         [self addSubview:self.sepLabel];
@@ -260,10 +262,11 @@
 @interface TestBaseVC ()<SwipeViewDataSource, SwipeViewDelegate>
 //<ZYBannerViewDataSource, ZYBannerViewDelegate>
 {
-
+    UITapGestureRecognizer *recognizer;
 }
 @property(nonatomic,strong)SwipeView *testView;
 @property(nonatomic,strong)UILabel *nameLabel;   //顶部头视图 题型标签
+@property(nonatomic,strong)UILabel *titleLabel;   //顶部头视图 题型标签
 @property(nonatomic,strong)UILabel *pageLabel;   //顶部头视图 页数标签
 @property(nonatomic,strong)UIView  *headView;    //顶部头视图
 
@@ -275,7 +278,7 @@
     [super viewDidLoad];
     
     [self setHeadView];
- 
+    
     // 配置测试视图
     [self setupTestView:0];
 
@@ -283,7 +286,7 @@
 
     if(self.isEditModel){
 
-        if(self.qItem.status == NotComplated_Status)
+        if(self.qItem.status == NotComplated_Status && self.isAgain == LZQuestionFirst)
         {
             [self loadCache];
             
@@ -360,15 +363,21 @@
         _headView.frame = CGRectMake(0, 0, self.view.width, 48);
         _headView.backgroundColor = [UIColor whiteColor];
         // 题型显示标签
-        self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,  5, 200, 38)];
+        self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,  5, 150, 38)];
         [self.nameLabel setTextColor:JXColor(0x45,0x45,0x45,1)];
         
         [self.nameLabel setFont:[UIFont boldSystemFontOfSize:15]];
         [self.nameLabel setTextAlignment:NSTextAlignmentLeft];
         [_headView addSubview:self.nameLabel];
         
+//        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(WIDTH/2 + 50 , 5, 100, 38)];
+//        [self.titleLabel setTextColor:JXColor(0x45,0x45,0x45,1)];
+//        
+//        [self.titleLabel setFont:[UIFont boldSystemFontOfSize:15]];
+//        [self.titleLabel setTextAlignment:NSTextAlignmentLeft];
+//        [_headView addSubview:self.titleLabel];
         // 页码显示标签
-        self.pageLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 120, 5, 100, 38)];
+        self.pageLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 160, 5, 140, 38)];
         
         [self.pageLabel setFont:[UIFont boldSystemFontOfSize:15]];
         [self.pageLabel setTextAlignment:NSTextAlignmentRight];
@@ -381,7 +390,15 @@
 
 - (EmptyHintView *)emptyView{
     if(!_emptyView){
-        _emptyView = [[EmptyHintView alloc] initWithImage:@"NoInfo" title:@"网络不给力"];
+        _emptyView = [[EmptyHintView alloc] initWithImage:@"NoInfo" title:@"网络不给力,点击空白处重新加载"];
+        
+        recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                    action:@selector(getTestData)];
+        //使用一根手指双击时，才触发点按手势识别器
+        recognizer.numberOfTapsRequired = 1;
+        recognizer.numberOfTouchesRequired = 1;
+        [self.view addGestureRecognizer:recognizer];
+        recognizer.enabled = NO;
     }
     return _emptyView;
 }
@@ -400,12 +417,54 @@
     
     [self.view endEditing:YES];
     
-    if(self.qItem.status == NotComplated_Status){
-        [self getAnswerString];
-        [self saveCache];
+    if(self.isEditModel == NotEditEnable_Status)
+    {
+        [CurrentROOTNavigationVC popViewControllerAnimated:YES];
+        
+    }
+    else
+    {
+        if(self.qItem.status == NotComplated_Status && self.isAgain == LZQuestionFirst){
+            [self getAnswerString];
+            [self saveCache];
+        }
+        else if(self.qItem.status == NotComplated_Status){
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:@"您确定放弃本次答题吗？" preferredStyle:UIAlertControllerStyleAlert];
+            
+            // Create the actions.
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+                NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
+            }];
+            
+            UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                
+                for (UIViewController *temp in self.navigationController.viewControllers) {
+                    if ([temp isKindOfClass:[ResourceMainVC class]]) {
+                        ResourceMainVC *testVC  = (ResourceMainVC *)temp;
+                        
+                        [self.navigationController popToViewController:testVC animated:YES];
+                    }
+                }
+                
+            }];
+            
+            // Add the actions.
+            [alertController addAction:cancelAction];
+            [alertController addAction:otherAction];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+            
+            return;
+        }
+        for (UIViewController *temp in self.navigationController.viewControllers) {
+            if ([temp isKindOfClass:[ResourceMainVC class]]) {
+                ResourceMainVC *testVC  = (ResourceMainVC *)temp;
+                
+                [self.navigationController popToViewController:testVC animated:YES];
+            }
+        }
     }
     
-    [CurrentROOTNavigationVC popViewControllerAnimated:YES];
 }
 
 
@@ -472,6 +531,14 @@
         self.nameLabel.text = @"";
     }
   
+//    if(self.isAgain == LZQuestionWrongAgain)
+//    {
+//        self.titleLabel.text = @"错题加练";
+//    }
+//    else
+//    {
+//         self.titleLabel.text = @"";
+//    }
     NSString *string = page;
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:string];
     NSUInteger length = [string length];
@@ -503,12 +570,23 @@
                                 NSForegroundColorAttributeName :greencolor}
                         range:NSMakeRange(0,greenLength)];
     
-//    [attrString addAttribute:NSForegroundColorAttributeName
-//                       value:greencolor
-//                       range:NSMakeRange(0,greenLength)];
     
+    
+    if(self.isAgain == LZQuestionWrongAgain)
+    {
+        NSMutableAttributedString *misattrString = [[NSMutableAttributedString alloc] initWithString:@"(错题加练) "];
+        [misattrString appendAttributedString:attrString];
+        self.pageLabel.attributedText = misattrString;
+        return;
+    }
     
     self.pageLabel.attributedText = attrString;
+    //    [attrString addAttribute:NSForegroundColorAttributeName
+    //                       value:greencolor
+    //                       range:NSMakeRange(0,greenLength)];
+    
+
+    
 }
 
 
@@ -563,7 +641,6 @@
         NSData *data = [NSData dataWithContentsOfFile:[self cacheFileIdName]];
         if(data.length > 0){
             self.testModel = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-           
         }
     }
 }
@@ -644,7 +721,7 @@
             [wself.testView reloadData];
             [wself saveCache];
             [wself toTestViewPage:0];
-
+            recognizer.enabled = NO;
         }
  
         [hud hide:YES];
@@ -654,6 +731,8 @@
         
         BOOL isShow = wself.testModel.praxisList.modelItemArray.count == 0;
         [self showEmptyView:isShow];
+        
+        recognizer.enabled = isShow;
 //        [ProgressHUD showHintText:errMsg];
     }];
     
@@ -744,22 +823,27 @@
 - (void)submitQuestion:(NSMutableArray *)anserList   SubmitIButton:(UIButton*)button
 {
 
-    ThroughTrainingVC *throughTrainingVC = (ThroughTrainingVC *)(self.rootVC);
-    ResourceMainVC *mainVC= (ResourceMainVC *)throughTrainingVC.baseRootVC;
-    NSString *childId = [UserCenter sharedInstance].curChild.uid;
-    NSString *class_id =  mainVC.classInfo.classID;
-    NSString *school_id =  mainVC.classInfo.school.schoolID;
+//    ThroughTrainingVC *throughTrainingVC = (ThroughTrainingVC *)(self.rootVC);
+//    ResourceMainVC *mainVC= (ResourceMainVC *)throughTrainingVC.baseRootVC;
+//    NSString *childId = [UserCenter sharedInstance].curChild.uid;
+//    NSString *class_id =  mainVC.classInfo.classID;
+//    NSString *school_id =  mainVC.classInfo.school.schoolID;
+    
+    NSMutableDictionary *params =  [[ParamUtil sharedInstance] getParam];
+    
     NSString *again =  [NSString stringWithFormat:@"%ld",(long)self.isAgain];
     NSString *q_id =  [NSString stringWithFormat:@"%lu",(unsigned long)self.testModel.q_id];
     NSString *subject_code =  [NSString stringWithFormat:@"%lu",(unsigned long)self.testModel.subject_code];
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+//    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     
-    [params setValue:childId forKey:@"child_id"];
+//    [params setValue:childId forKey:@"child_id"];
+//    [params setValue:class_id forKey:@"class_id"];
+//    [params setValue:school_id forKey:@"school_id"];
     [params setValue:q_id forKey:@"q_id"];  //self.qItem.q_id
     [params setValue:again forKey:@"again"];
-    [params setValue:class_id forKey:@"class_id"];
+    
     [params setValue:self.testModel.sq_id == nil? @"0":self.testModel.sq_id forKey:@"sq_id"];
-    [params setValue:school_id forKey:@"school_id"];
+    
     [params setValue:subject_code forKey:@"subject_code"];
     
     
@@ -839,7 +923,7 @@
         //完形填空 或者 阅读理解
         ReadingQuestionTypeView *questionView = [[ReadingQuestionTypeView alloc]initWithFrame:self.testView.bounds];
         questionView.isEditModel = self.isEditModel;
-  
+        questionView.questionOfBarView.qcount = self.testModel.qcount;
         [questionView setTestItem:item];
         
         return questionView;
@@ -848,7 +932,7 @@
     {
         QuestionSelectTypeView *questionView = [[QuestionSelectTypeView alloc]initWithFrame:self.testView.bounds];
         questionView.isEditModel = self.isEditModel;
- 
+        questionView.qcount = self.testModel.qcount;
         [questionView setTestItem:item];
      
         return questionView;
@@ -868,8 +952,24 @@
         TestItem *item = [self.testModel.praxisList.modelItemArray
                           objectAtIndex:swipeView.currentItemIndex];
         
-        NSString * page = [NSString stringWithFormat:@"%ld/%lu",(long)swipeView.currentItemIndex + 1,
-                           (unsigned long)self.testModel.praxisList.modelItemArray.count];
+        NSString * page = [NSString stringWithFormat:@"%ld/%lu",(long)item.index,
+                           (unsigned long)self.testModel.qcount];
+//        if(self.isAgain == LZQuestionWrongAgain)
+//        {
+//            page = [NSString stringWithFormat:@"%ld/%lu",(unsigned long)swipeView.currentItemIndex + 1,
+//                           (unsigned long)self.testModel.praxisList.modelItemArray.count];
+//        }
+//        else if(self.isAgain == LZQuestionRetrain)
+//        {
+//            page = [NSString stringWithFormat:@"%ld/%lu",(unsigned long)swipeView.currentItemIndex + 1,
+//                    (unsigned long)self.testModel.praxisList.modelItemArray.count];
+//        }
+//        else
+//        {
+//            page = [NSString stringWithFormat:@"%ld/%lu",(long)item.index,
+//                               (unsigned long)self.testModel.qcount];
+//
+//        }
         
         [self updateHeadView:item  Index:(NSString *)page];
     }

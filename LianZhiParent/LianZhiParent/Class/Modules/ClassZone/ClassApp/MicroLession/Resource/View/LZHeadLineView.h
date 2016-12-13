@@ -19,4 +19,5 @@
 @property(nonatomic,assign)NSInteger CurrentIndex;
 @property(nonatomic,strong)NSArray * titleArray;
 @property(nonatomic,assign)id<headLineDelegate>delegate;
+-(void)shuaxinJiemian:(NSInteger)index;
 @end

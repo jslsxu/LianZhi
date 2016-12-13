@@ -237,6 +237,7 @@
 		37DEE4F61A57C289009A8771 /* LZTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4F51A57C289009A8771 /* LZTabBarButton.m */; };
 		37DEE4FD1A57C2C0009A8771 /* ContactItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4F81A57C2C0009A8771 /* ContactItemCell.m */; };
 		37E038E81A7386D3003A3A7F /* PublishNewspaperVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E038E71A7386D3003A3A7F /* PublishNewspaperVC.m */; };
+		37E5F64A1DF7E5530062941C /* LZOfficeVCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E5F6491DF7E5530062941C /* LZOfficeVCViewController.m */; };
 		37E93F991A7DC48200AD45A1 /* TNActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93F961A7DC48200AD45A1 /* TNActionSheet.m */; };
 		37E93F9A1A7DC48200AD45A1 /* TNAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93F981A7DC48200AD45A1 /* TNAlertView.m */; };
 		37E93FC11A7E9CC600AD45A1 /* CHTCollectionViewWaterfallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FB21A7E9CC600AD45A1 /* CHTCollectionViewWaterfallLayout.m */; };
@@ -913,6 +914,8 @@
 		37DEE4F81A57C2C0009A8771 /* ContactItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactItemCell.m; sourceTree = "<group>"; };
 		37E038E61A7386D3003A3A7F /* PublishNewspaperVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishNewspaperVC.h; sourceTree = "<group>"; };
 		37E038E71A7386D3003A3A7F /* PublishNewspaperVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishNewspaperVC.m; sourceTree = "<group>"; };
+		37E5F6481DF7E5530062941C /* LZOfficeVCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZOfficeVCViewController.h; sourceTree = "<group>"; };
+		37E5F6491DF7E5530062941C /* LZOfficeVCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZOfficeVCViewController.m; sourceTree = "<group>"; };
 		37E93F951A7DC48200AD45A1 /* TNActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNActionSheet.h; sourceTree = "<group>"; };
 		37E93F961A7DC48200AD45A1 /* TNActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TNActionSheet.m; sourceTree = "<group>"; };
 		37E93F971A7DC48200AD45A1 /* TNAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TNAlertView.h; sourceTree = "<group>"; };
@@ -1436,6 +1439,8 @@
 			children = (
 				371572D01DE5EA93007A942B /* LZMicrolessonVCViewController.h */,
 				371572D11DE5EA93007A942B /* LZMicrolessonVCViewController.m */,
+				37E5F6481DF7E5530062941C /* LZOfficeVCViewController.h */,
+				37E5F6491DF7E5530062941C /* LZOfficeVCViewController.m */,
 			);
 			path = MicroLession;
 			sourceTree = "<group>";
@@ -3662,6 +3667,7 @@
 				8D867C8F1D2F97080020A21C /* DNBrowserCell.m in Sources */,
 				8DCFD6851D4B211F001EDC8A /* NotificationVideoView.m in Sources */,
 				8D867D461D3F7BF80020A21C /* NotificationSendChoiceView.m in Sources */,
+				37E5F64A1DF7E5530062941C /* LZOfficeVCViewController.m in Sources */,
 				3793FA6C1B7CFFF000501F77 /* AFSecurityPolicy.m in Sources */,
 				8D7575E11DAA92D9008E650E /* HomeworkReplySwitchView.m in Sources */,
 				379947EA1A66B430008E4B4F /* PhotoFlowModel.m in Sources */,
@@ -4149,7 +4155,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = LianZhiTeacher/LianZhiTeacher.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				DEVELOPMENT_TEAM = JRFF54BK3W;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4171,10 +4178,10 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppTeacher;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1e73bb12-5426-4577-8996-779f060f2fde";
-				PROVISIONING_PROFILE_SPECIFIER = TeacherInhouseNew;
+				PROVISIONING_PROFILE = "9661c199-b60f-4abb-bbae-234736af11e6";
+				PROVISIONING_PROFILE_SPECIFIER = TeacherDevelopment;
 			};
 			name = Debug;
 		};
@@ -4186,7 +4193,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = LianZhiTeacher/LianZhiTeacher.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				DEVELOPMENT_TEAM = JRFF54BK3W;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4208,10 +4216,10 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppTeacher;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1e73bb12-5426-4577-8996-779f060f2fde";
-				PROVISIONING_PROFILE_SPECIFIER = TeacherInhouseNew;
+				PROVISIONING_PROFILE = "9661c199-b60f-4abb-bbae-234736af11e6";
+				PROVISIONING_PROFILE_SPECIFIER = TeacherDevelopment;
 			};
 			name = Release;
 		};

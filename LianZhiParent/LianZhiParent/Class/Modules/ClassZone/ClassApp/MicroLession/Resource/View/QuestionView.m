@@ -389,8 +389,18 @@ static void *kBufferingRatioKVOKey = &kBufferingRatioKVOKey;
     textView.editable = NO;
     
     [_questionView addSubview:textView];
+    
+//    if(self.testItem.et_code != LZTestReadingComprehensionType &&
+//       self.testItem.et_code != LZTestClozetestType)
+//    {
+//        NSString *stemStr = [NSString stringWithFormat:@"(题号) %ld/%lu \r\n %@",(long)self.testItem.index, self.qcount,subItem.stem];
+//        textView.text = stemStr;
+//    }
+//    else
+//    {
+//        textView.text = subItem.stem;
+//    }
     textView.text = subItem.stem;
-   
     height = height + 10;
     // 听力类型的题干
     if(subItem.soundAudioItem && subItem.soundAudioItem.audioUrl &&
@@ -803,9 +813,8 @@ static void *kBufferingRatioKVOKey = &kBufferingRatioKVOKey;
         NSString  *page = [NSString stringWithFormat:@"1/%lu",(unsigned long)_testItem.praxis.modelItemArray.count];
         [self updateBarPage:page];
   
-        for(int index = 0; index < _testItem.praxis.modelItemArray.count;){
-            [self.titles addObject:[NSString stringWithFormat:@"%d",index + 1]];
-            index ++;
+        for(TestSubItem *subItem in _testItem.praxis.modelItemArray){
+            [self.titles addObject:[NSString stringWithFormat:@"%ld",(long)subItem.index]];
         }
         _topTitleView.scrollTitleArr = nil;
         _topTitleView.scrollTitleArr = [NSArray arrayWithArray:_titles];
@@ -818,6 +827,7 @@ static void *kBufferingRatioKVOKey = &kBufferingRatioKVOKey;
 
 -(void)updateBarPage:(NSString *)page
 {
+    self.introLabel.hidden = YES;
 //    NSString *string = @"6/28";
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:page];
     NSUInteger length = [page length];

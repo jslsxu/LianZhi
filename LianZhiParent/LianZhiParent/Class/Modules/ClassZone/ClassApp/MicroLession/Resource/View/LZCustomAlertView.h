@@ -42,13 +42,7 @@ typedef enum {
     FVAlertTypeCustom,
 } FVAlertType;
 
-/**
- * Displays a custom alert view. It can contain either a title or a custom UIView
- * The view is customisable and has 4 default modes:
- * - FVAlertTypeLoading - displays a UIActivityIndicator
- * - FVAlertTypeDone/Error/Warning - displays a checkmark/cross/exclamation point
- * - FVAlertTypeCustom - lets the user to customise the view
- */
+
 @interface LZAlertAction : NSObject
 
 + (instancetype)actionWithTitle:(NSString *)title style:(UIAlertActionStyle)style handler:(void (^)(LZAlertAction *action))handler;
@@ -75,7 +69,7 @@ typedef NS_ENUM(NSInteger, LZAlertViewButtonType) {
 @property (nonatomic) LZAlertViewButtonType type;
 @property (nonatomic,strong) LZAlertAction *action;
 @property (nonatomic) CGFloat cornerRadius;
-
+@property (nonatomic) BOOL isNeedLayoutSubviews;
 @end
 
 
@@ -87,7 +81,7 @@ typedef NS_ENUM(NSInteger, LZAlertViewButtonType) {
  * @return the current FVCustomAlertView
  */
 + (UIView *)currentView;
-
++ (UIView *)myContentView;
 /**
  * Creates a new view and adds it to the view. Use hideAlertFromView to hide it.
  * Adds the view on top of all of the views.
@@ -122,45 +116,6 @@ typedef NS_ENUM(NSInteger, LZAlertViewButtonType) {
                    type:(FVAlertType)type
                allowTap:(BOOL)tap;
 
-/**
- * Creates a default loading view
- * with the activity indicator from pictures 1.png 2.png...20.png
- * @param view The view that the alertView will be added to
- * @param title The title shown on the top of the alert view
- * @param blur If set, tbe background will have a blur effect
- * @param tap Allow the user to tap to dismiss
- */
-+ (void)showDefaultLoadingAlertOnView:(UIView *)view withTitle:(NSString *)title withBlur:(BOOL)blur allowTap:(BOOL)tap;
-
-/**
- * Creates a default done view
- * with a checkmark and a title
- * @param view The view that the alertView will be added to
- * @param title The title shown on the top of the alert view
- * @param blur If set, tbe background will have a blur effect
- * @param tap Allow the user to tap to dismiss
- */
-+ (void)showDefaultDoneAlertOnView:(UIView *)view withTitle:(NSString *)title withBlur:(BOOL)blur allowTap:(BOOL)tap;
-
-/**
- * Creates a default done view
- * with a cross (X) and a title
- * @param view The view that the alertView will be added to
- * @param title The title shown on the top of the alert view
- * @param blur If set, tbe background will have a blur effect
- * @param tap Allow the user to tap to dismiss
- */
-+ (void)showDefaultErrorAlertOnView:(UIView *)view withTitle:(NSString *)title withBlur:(BOOL)blur allowTap:(BOOL)tap;
-
-/**
- * Creates a default done view
- * with an exclamation point (!) and a title
- * @param view The view that the alertView will be added to
- * @param title The title shown on the top of the alert view
- * @param blur If set, tbe background will have a blur effect
- * @param tap Allow the user to tap to dismiss
- */
-+ (void)showDefaultWarningAlertOnView:(UIView *)view withTitle:(NSString *)title withBlur:(BOOL)blur allowTap:(BOOL)tap;
 
 /**
  * Hides the active view on the specified view.
@@ -170,7 +125,6 @@ typedef NS_ENUM(NSInteger, LZAlertViewButtonType) {
 + (void)hideAlertFromView:(UIView *)view fading:(BOOL)fading;
 
 + (void)createActionButtons:(NSArray *)actions Status:(ThroughTraining_Status)status;
-+ (void)setActionButtons:(NSArray *)actionButtons;
 + (void)closeClick:(UIButton*)sender;
 + (void)setActionButtonEnable:(BOOL)enable;
 @end

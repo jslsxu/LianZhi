@@ -62,6 +62,14 @@
 {
      [_headLineView setCurrentIndex:CurrentIndex];
 }
+
+-(void)initViewCurrentIndex
+{
+    // 改变currentIndex
+//    _headLineView.CurrentIndex= 0;
+    // 刷新界面
+    [_headLineView shuaxinJiemian:self.currentIndex];
+}
 //设置顶部菜单按钮视图滑动事件处理
 - (void)handleSwipes:(UISwipeGestureRecognizer *)sender
 {

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ResultHeaderView : UIView  
+@interface ResultHeaderView : UICollectionReusableView  
 
 @property(nonatomic,strong)UIImageView * bgView;
 

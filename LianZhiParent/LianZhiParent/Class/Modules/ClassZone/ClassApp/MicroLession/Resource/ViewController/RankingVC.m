@@ -16,7 +16,7 @@
 #import "AcademicAnalysisVC.h"
 #import "ResourceMainVC.h"
 #import "UINavigationBar+BackgroundColor.h"
-
+#import "ParamUtil.h"
 @implementation RankingCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -90,6 +90,7 @@
         [_levelLabel setTextColor:GreenLineColor];
         [_idLabel setTextColor:LightGrayLblColor];
         [_unitLabel setTextColor:GreenLineColor];
+        self.backgroundColor = WhiteColor;
     } else {
         [_levelLabel setTextColor:OrangeColor];
         [_idLabel setTextColor:OrangeColor];
@@ -651,28 +652,28 @@ UITableViewDataSource,UITableViewDelegate,UIGestureRecognizerDelegate>
 // 获取学力相关数据
 - (void)getRankingList
 {
-    ResourceMainVC *mainVC = nil;
-
-    for (UIViewController *temp in self.navigationController.viewControllers) {
-        if ([temp isKindOfClass:[ResourceMainVC class]]) {
-            mainVC  = (ResourceMainVC *)temp;
-            break;
-        }
-    }
-
-    NSString *childId = [UserCenter sharedInstance].curChild.uid;
-    NSString *class_id =  mainVC.classInfo.classID;
-    NSString *school_id =  mainVC.classInfo.school.schoolID;
-    
+//    ResourceMainVC *mainVC = nil;
+//
+//    for (UIViewController *temp in self.navigationController.viewControllers) {
+//        if ([temp isKindOfClass:[ResourceMainVC class]]) {
+//            mainVC  = (ResourceMainVC *)temp;
+//            break;
+//        }
+//    }
+//
+//    NSString *childId = [UserCenter sharedInstance].curChild.uid;
+//    NSString *class_id =  mainVC.classInfo.classID;
+//    NSString *school_id =  mainVC.classInfo.school.schoolID;
+    NSMutableDictionary *params =  [[ParamUtil sharedInstance] getParam];
 //    subjectcodeIndex =  subjectcodeIndex;  //subjectcodeIndex == 0? 1 :
     NSString *subject_code =  [NSString stringWithFormat:@"%lu",(unsigned long)subjectcodeIndex];
     NSString *rank_type =  [NSString stringWithFormat:@"%lu",(unsigned long)ranktypeIndex + 1];
     
     
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setValue:childId forKey:@"child_id"];   //当前孩子id
-    [params setValue:class_id forKey:@"class_id"];  //当前班级id
-    [params setValue:school_id forKey:@"school_id"];  //当前学校id
+//    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+//    [params setValue:childId forKey:@"child_id"];   //当前孩子id
+//    [params setValue:class_id forKey:@"class_id"];  //当前班级id
+//    [params setValue:school_id forKey:@"school_id"];  //当前学校id
     
     skillcodeIndex = skillcodeIndex == nil?@"0":skillcodeIndex;
     [params setValue:skillcodeIndex forKey:@"skill_code"];  //技能ID

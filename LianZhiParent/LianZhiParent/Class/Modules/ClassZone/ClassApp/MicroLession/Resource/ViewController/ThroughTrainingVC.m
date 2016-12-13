@@ -11,12 +11,14 @@
 #import "Masonry.h"
 #import "ResourceDefine.h"
 #import "TestBaseVC.h"
+#import "TestResultVC.h"
 #import "LZQuestionsModel.h"
 #import "HKPieChartView.h"
 #import "LZThrougnAlertView.h"
 #import "ResourceMainVC.h"
 #import "LZTestModel.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
+#import "ParamUtil.h"
 
 @implementation ThroughTrainingCell
 - (instancetype)initWithFrame:(CGRect)frame
@@ -257,7 +259,7 @@
 {
     [self setTitleArray:@[@"语文",@"数学",@"英语"]];
     
-    [self setHeadViewCurrentIndex:self.currentIndex];
+    [self initViewCurrentIndex];
 }
 
 //取消右侧导航按钮
@@ -416,20 +418,24 @@
 
 // 按下集合石图之后的弹框处理
 - (void)showCustomUIAlertView:(QuestionItem *)item{
-    
-    LZThrougnAlertView *alertView = [[LZThrougnAlertView alloc]initWithViewController:self
-                                     Status:item.status];
-    [alertView setItem:item];
-
-    
+ 
     if(item.status == Complated_Status)
     {
-        NSInteger count = (long)item.qcount - (long)item.correctNum > 0 ?  item.qcount - item.correctNum : 0;
-        
-        BOOL enable = (count == 0?NO:YES);
-        [alertView setActionButtonEnable:enable];
+//        NSInteger count = (long)item.qcount - (long)item.correctNum > 0 ?  item.qcount - item.correctNum : 0;
+//        
+//        BOOL enable = (count == 0?NO:YES);
+//        [alertView setActionButtonEnable:enable];
+        [self getCurrentResultData:(QuestionItem *)item];
     }
-    alertView.subjectCode = self.currentIndex  + 1;
+    else
+    {
+        LZThrougnAlertView *alertView = [[LZThrougnAlertView alloc]initWithViewController:self
+                                                                                   Status:item.status];
+        [alertView setItem:item];
+        
+        alertView.subjectCode = self.currentIndex  + 1;
+    }
+    
 }
 
 
@@ -450,7 +456,7 @@
 #pragma mark - 缓存相关
 - (BOOL)supportCache
 {
-    return YES;
+    return NO;
 }
 
 - (void)loadCache
@@ -497,6 +503,54 @@
 
 #pragma mark - 获取数据
 // 获取学力相关数据
+- (void)getCurrentResultData:(QuestionItem *)item
+{
+    
+    NSString *sq_id =  [NSString stringWithFormat:@"%@",item.sq_id];
+    NSString *q_id =  [NSString stringWithFormat:@"%@",item.q_id];
+   
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+
+    [params setValue:q_id forKey:@"q_id"];  //self.qItem.q_id
+    [params setValue:sq_id forKey:@"sq_id"];
+
+
+    __weak typeof(self) wself = self;
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在获取上次试卷结果" toView:self.view];
+    
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"evaluation/getStudentAnswer?" method:REQUEST_POST
+                                                      type:REQUEST_REFRESH withParams:params observer:nil
+                                                completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                                                    
+                                                    if(responseObject){
+                                                        LZTestModel *testModel = [[LZTestModel alloc]init];
+                                                        [testModel parseData:responseObject type:REQUEST_REFRESH];
+                                                      
+                                                        TestResultVC *resultVC = [[TestResultVC alloc]init];
+                                                        resultVC.testResultitem = testModel;
+                                                        resultVC.qItem = item;
+                                                        resultVC.rootVC = wself;
+                                                        resultVC.title = item.chapter_name;
+                                                        [CurrentROOTNavigationVC pushViewController:resultVC animated:YES];
+                                                    }
+                                                    
+                                               
+                                                    [hud hide:YES];
+                                                    
+                                                } fail:^(NSString *errMsg) {
+                                                    dispatch_async(dispatch_get_main_queue(), ^(){
+                                                    
+                                                        [hud hide:YES];
+                                                        [ProgressHUD showHintText:errMsg];
+                                                        
+                                                    });
+                                                    
+                                                }];
+    
+}
+
+
+// 获取学力相关数据
 - (void)getThroughTrainingData
 {
     if(_isGetThroughTrainingDataing)
@@ -506,23 +560,26 @@
     
     [self showEmptyView:NO];
     _isGetThroughTrainingDataing = YES;
-    NSString *childId = [UserCenter sharedInstance].curChild.uid;
+    
+    NSMutableDictionary *params =  [[ParamUtil sharedInstance] getParam];
+    
+//    NSString *childId = [UserCenter sharedInstance].curChild.uid;
     NSString *subject_id = [NSString stringWithFormat:@"%lu",(self.currentIndex + 1)];
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setValue:childId forKey:@"child_id"];
+//    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+//    [params setValue:childId forKey:@"child_id"];
     [params setValue:subject_id forKey:@"subject_code"];
     
-    ResourceMainVC *mainVC = nil;
-    
-    for (UIViewController *temp in self.navigationController.viewControllers) {
-        if ([temp isKindOfClass:[ResourceMainVC class]]) {
-            mainVC  = (ResourceMainVC *)temp;
-            break;
-        }
-    }
-    
-    NSString *class_id =  mainVC.classInfo.classID;
-    [params setValue:class_id forKey:@"class_id"];
+//    ResourceMainVC *mainVC = nil;
+//    
+//    for (UIViewController *temp in self.navigationController.viewControllers) {
+//        if ([temp isKindOfClass:[ResourceMainVC class]]) {
+//            mainVC  = (ResourceMainVC *)temp;
+//            break;
+//        }
+//    }
+//    
+//    NSString *class_id =  mainVC.classInfo.classID;
+//    [params setValue:class_id forKey:@"class_id"];
     
     __weak typeof(self) wself = self;
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在获取信息" toView:self.view];

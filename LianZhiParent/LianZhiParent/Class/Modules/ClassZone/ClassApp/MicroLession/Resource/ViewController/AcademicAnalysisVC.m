@@ -17,7 +17,7 @@
 
 #import "LZStudyLevelModel.h"
 #import "ResourceMainVC.h"
-
+#import "ParamUtil.h"
 
 #define  pieContentHeight   125
 #define  menuContentHeight  48
@@ -119,7 +119,7 @@
 {
     [self setTitleArray:@[@"综合",@"语文",@"数学",@"英语"]];
     
-     [self setHeadViewCurrentIndex:self.currentIndex];
+    [self setHeadViewCurrentIndex:self.currentIndex];
 }
 
 //添加雷达图右侧说明按钮
@@ -527,17 +527,18 @@
 // 获取学力相关数据
 - (void)getAnalysis
 {
-
-    NSString *childId = [UserCenter sharedInstance].curChild.uid;
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setValue:childId forKey:@"child_id"];
     
-    NSString *class_id =  ((ResourceMainVC *)self.baseRootVC).classInfo.classID;
-    [params setValue:class_id forKey:@"class_id"];
+//    NSString *childId = [UserCenter sharedInstance].curChild.uid;
+//    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+//    [params setValue:childId forKey:@"child_id"];
+//    
+//    NSString *class_id =  ((ResourceMainVC *)self.baseRootVC).classInfo.classID;
+//    [params setValue:class_id forKey:@"class_id"];
+//    
+//    NSString *school_id =  ((ResourceMainVC *)self.baseRootVC).classInfo.school.schoolID;
+//    [params setValue:school_id forKey:@"school_id"];
     
-    NSString *school_id =  ((ResourceMainVC *)self.baseRootVC).classInfo.school.schoolID;
-    [params setValue:school_id forKey:@"school_id"];
-    
+    NSMutableDictionary *params =  [[ParamUtil sharedInstance] getParam];
     __weak typeof(self) wself = self;
 
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"evaluation/getAnalysis" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {

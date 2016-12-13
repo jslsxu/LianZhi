@@ -13,7 +13,7 @@
 #import "LearningTasksVC.h"
 #import "ResourceDefine.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
-
+#import "ParamUtil.h"
 @interface ResourceMainVC ()
 
 @end
@@ -31,8 +31,8 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = JXColor(0xf7,0xf7,0xf9,1);
     NSMutableArray *subVCs = [[NSMutableArray alloc] initWithCapacity:0];
-    NSArray *subVCArray = @[@"AcademicAnalysisVC" ,@"ThroughTrainingVC" ]; //,@"LearningTasksVC"
-    
+//    NSArray *subVCArray = @[@"AcademicAnalysisVC",@"ThroughTrainingVC"]; //,@"LearningTasksVC"
+    NSArray *subVCArray = @[@"ThroughTrainingVC" ,@"AcademicAnalysisVC"];
     for (NSInteger i = 0; i < subVCArray.count; i++)
     {
         NSString *className = subVCArray[i];
@@ -75,7 +75,8 @@
             view.hidden = YES;
         }
     }];
-    NSArray *tabItemTitleArray = @[@"学情分析",@"闯关训练"]; //,@"学习任务"
+    NSArray *tabItemTitleArray = @[@"闯关训练",@"学情分析"]; //,@"学习任务"
+//    NSArray *tabItemTitleArray = @[@"学情分析",@"闯关训练"];
     CGFloat tabWidth = self.view.width / tabItemTitleArray.count;
     for (NSInteger i = 0; i < tabItemTitleArray.count; i++)
     {
@@ -103,7 +104,8 @@
 - (void)selectAtIndex:(NSInteger)index
 {
     self.selectedIndex = index;
-    NSArray *tabImageNameArray = @[@"xqfx",@"cgxl"]; //,@"HomeTabHome"
+    NSArray *tabImageNameArray = @[@"cgxl",@"xqfx"]; //,@"HomeTabHome"
+//    NSArray *tabImageNameArray = @[@"xqfx",@"cgxl"]; //,@"HomeTabHome"
     for (NSInteger i = 0; i < _tabbarButtons.count; i++)
     {
         LZTabBarButton *barButton = _tabbarButtons[i];
@@ -116,14 +118,14 @@
         [barButton setTitleColor:titleColor forState:UIControlStateHighlighted];
   
     }
-    self.title = (index == 0?@"学情分析": @"闯关训练");
+    self.title = (index == 0 ? @"闯关训练":@"学情分析");
 }
 
 
 - (void)setClassInfo:(ClassInfo *)classInfo
 {
-    _classInfo = classInfo;
-    
+ 
+    [ParamUtil sharedInstance].classInfo = classInfo;
 
 }
 @end

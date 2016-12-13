@@ -13,7 +13,6 @@
 {
     NSMutableArray* _tabbarButtons;
 }
-
-@property (nonatomic, strong)ClassInfo *classInfo;
+- (void)setClassInfo:(ClassInfo *)classInfo;
 - (void)selectAtIndex:(NSInteger)index;
 @end

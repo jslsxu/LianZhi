@@ -23,6 +23,7 @@
 @property (nonatomic, assign) LZTestStatus status;
 @property (nonatomic, assign)NSInteger s_id;
 @property (nonatomic, assign)NSInteger sa_id;
+@property (nonatomic, assign)NSInteger index;
 @property (nonatomic, copy)NSString *stem;
 @property (nonatomic, copy)NSString *answer;
 @property (nonatomic, copy)NSString *userAnswer;
@@ -39,6 +40,7 @@
 @interface TestItem : TNListModel
 
 @property (nonatomic, assign)NSInteger p_id;
+@property (nonatomic, assign)NSInteger index;
 @property (nonatomic, copy)NSString * skill_code;
 @property (nonatomic, copy)NSString * skill_name;
 @property (nonatomic, copy)NSString * et_name;
@@ -66,6 +68,7 @@
 @property (nonatomic, assign)NSUInteger star;
 @property (nonatomic, copy)  NSString * sq_id;
 @property (nonatomic, assign)NSUInteger q_id;
+@property (nonatomic, assign)NSUInteger qcount;
 @property (nonatomic, assign)NSUInteger subject_code;
 @property (nonatomic, assign)NSUInteger grade_code;
 @property (nonatomic, copy)TNListModel *praxisList;

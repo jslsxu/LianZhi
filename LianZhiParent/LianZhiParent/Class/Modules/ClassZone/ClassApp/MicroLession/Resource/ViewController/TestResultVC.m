@@ -74,11 +74,11 @@
     return self;
 }
 
-- (void)setSubItem:(TNModelItem *)modelItem  Index:(NSUInteger)index
+- (void)setSubItem:(TNModelItem *)modelItem
 {
 //    CourseResultItem *courseItem = (CourseResultItem *)modelItem;
     TestItem  *testItem = (TestItem *)modelItem;
-    resultLabel.text = [NSString stringWithFormat:@"%ld",(long)index + 1];
+    resultLabel.text = [NSString stringWithFormat:@"%ld",(long)testItem.index];
     
     if(testItem.praxis.modelItemArray.count >0 &&  testItem.praxis.modelItemArray.count == 1)
     {
@@ -210,6 +210,9 @@
     [CurrentROOTNavigationVC.navigationBar setTintColor:WhiteColor];
     [CurrentROOTNavigationVC.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:WhiteColor,NSFontAttributeName:[UIFont systemFontOfSize:18]}];
     
+    //  添加排名右侧导航按钮
+//    [self addRightNaviItem];
+    
 }
 
 
@@ -234,15 +237,30 @@
     self.fd_interactivePopDisabled = NO;
 
     CurrentROOTNavigationVC.navigationBar.layer.shadowColor = [UIColor blackColor].CGColor;
-
+    
+    
     
 }
 
+//添加排名右侧导航按钮
+//-(void)addRightNaviItem
+//{
+//    CurrentROOTNavigationVC.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"下一关" style:UIBarButtonItemStylePlain target:self action:@selector(nextTextButtonClick:)];
+//}
 
 #pragma mark -- 初始化方法
+// Override 右侧导航按钮 的按下事件
+// 返回到闯关训练的下一关主画面
+//- (void)nextTextButtonClick:(UIButton*)button{
+//    
+//}
+
+
 // Override 左侧导航按钮 的按下事件
 // 返回到闯关训练的主画面
 - (void)back{
+    
+//    [self.navigationController popToRootViewControllerAnimated:YES];
     for (UIViewController *temp in self.navigationController.viewControllers) {
         if ([temp isKindOfClass:[ResourceMainVC class]]) {
             ResourceMainVC *testVC  = (ResourceMainVC *)temp;
@@ -262,18 +280,26 @@
     
     // 设置星星画面
     [head setStar:self.testResultitem.star];
+    [self.view addSubview:head];
     
+    ResultCollctionHeaderView *head2 = [[ResultCollctionHeaderView alloc]initWithFrame:CGRectMake(0,
+                                                                                        height,
+                                                                                        WIDTH,
+                                                                                        30)];
+    
+    [self.view addSubview:head2];
     // Parallax Header
-    self.collectionView.parallaxHeader.view = head;
-    self.collectionView.parallaxHeader.height = height;
-    self.collectionView.parallaxHeader.mode = MXParallaxHeaderModeFill;
-    self.collectionView.parallaxHeader.minimumHeight = 20;
+//    self.collectionView.parallaxHeader.view = head;
+//    self.collectionView.parallaxHeader.height = height;
+//    self.collectionView.parallaxHeader.mode = MXParallaxHeaderModeTop;
+//    self.collectionView.parallaxHeader.minimumHeight = 50;
+//    [self.collectionView registerClass:[ResultHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ResultHeader"];
+
     
-    
-    [self.collectionView registerClass:[ResultCollctionHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ResultCollctionHeaderViewID"];
+//    [self.collectionView registerClass:[ResultCollctionHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ResultCollctionHeaderViewID"];
     [self.collectionView registerClass:[CourseResultCell class] forCellWithReuseIdentifier:@"CourseResultCell"];
-    
-    self.collectionView.frame = CGRectMake(0, -1, self.view.frame.size.width, self.view.frame.size.height - kFooterViewHeight - 4);
+  
+    self.collectionView.frame = CGRectMake(0, height + 30 , self.view.frame.size.width, self.view.frame.size.height - kFooterViewHeight - 34 - height);
 }
 // 添加底部按钮数组视图
 -(void)addFooterView
@@ -387,7 +413,7 @@
 
 #pragma mark <UIScrollViewDelegate>
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    NSLog(@"progress %f", self.scrollView.parallaxHeader.progress);
+    NSLog(@"progress %f", self.scrollView.parallaxHeader.progress);
 }
 
 
@@ -404,46 +430,63 @@
                                   self.view.frame.size.width, kFooterViewHeight);
 }
 
-- (MXScrollView *)scrollView {
-    if(!_scrollView) {
-        _scrollView = [[MXScrollView alloc] init];
-        _scrollView.delegate = self;
-    }
-    return _scrollView;
-}
+//- (MXScrollView *)scrollView {
+//    if(!_scrollView) {
+//        _scrollView = [[MXScrollView alloc] init];
+//        _scrollView.delegate = self;
+//    }
+//    return _scrollView;
+//}
 
 #pragma mark -- 私有方法
 // 按钮点击 传入代理
 // 错题加练
 -(void)trainingMistakeButtonClick:(UIButton*)button
 {
-    for (UIViewController *temp in self.navigationController.viewControllers) {
-        if ([temp isKindOfClass:[TestBaseVC class]]) {
-            TestBaseVC *testVC  = (TestBaseVC *)temp;            
-            testVC.isAgain = LZQuestionWrongAgain;
-            testVC.isEditModel = EditEnable_Status;
-            
-            [testVC getTestData];
-            [self.navigationController popToViewController:testVC animated:YES];
-        }
-    }
+//    [CurrentROOTNavigationVC popViewControllerAnimated:NO];
+    TestBaseVC *testVC  = [[TestBaseVC alloc] init];
+    testVC.isAgain = LZQuestionWrongAgain;
+    testVC.qItem = self.qItem;
+    testVC.isEditModel = EditEnable_Status;
+//    [testVC getTestData];
+    
+    [CurrentROOTNavigationVC pushViewController:testVC  animated:YES];
+    
+//    for (UIViewController *temp in self.navigationController.viewControllers) {
+//        if ([temp isKindOfClass:[TestBaseVC class]]) {
+//            TestBaseVC *testVC  = (TestBaseVC *)temp;            
+//            testVC.isAgain = LZQuestionWrongAgain;
+//            testVC.isEditModel = EditEnable_Status;
+//            
+//            [testVC getTestData];
+//            [self.navigationController popToViewController:testVC animated:YES];
+//        }
+//    }
 }
 
 // 按钮点击 传入代理
 // 重新闯关
 -(void)reTrainingButtonClick:(UIButton*)button
 {
-    for (UIViewController *temp in self.navigationController.viewControllers) {
-        if ([temp isKindOfClass:[TestBaseVC class]]) {
-                TestBaseVC *testVC  = (TestBaseVC *)temp;
-                testVC.isAgain = LZQuestionRetrain;
-                testVC.isEditModel = EditEnable_Status;
-                [testVC getTestData];
-            
-                [self.navigationController popToViewController:temp animated:YES];
-            
-        }
-    }
+    TestBaseVC *testVC  = [[TestBaseVC alloc] init];
+    testVC.isAgain = LZQuestionRetrain;
+    testVC.isEditModel = EditEnable_Status;
+    testVC.qItem = self.qItem;
+//    [testVC getTestData];
+//    [CurrentROOTNavigationVC popViewControllerAnimated:NO];
+    [CurrentROOTNavigationVC pushViewController:testVC  animated:YES];
+    
+//    for (UIViewController *temp in self.navigationController.viewControllers) {
+//        if ([temp isKindOfClass:[TestBaseVC class]]) {
+//                TestBaseVC *testVC  = (TestBaseVC *)temp;
+//                testVC.isAgain = LZQuestionRetrain;
+//                testVC.isEditModel = EditEnable_Status;
+//                [testVC getTestData];
+//            
+//                [self.navigationController popToViewController:temp animated:YES];
+//            
+//        }
+//    }
 
 }
 
@@ -500,24 +543,50 @@
     [flowLayout setItemSize:CGSizeMake((self.view.width - 20 * 2) / 5, (self.view.width - 20 * 2) / 5)];
     [flowLayout setMinimumLineSpacing:5];
     [flowLayout setMinimumInteritemSpacing:0];
-    flowLayout.headerReferenceSize = CGSizeMake(WIDTH, 30);
+//    flowLayout.headerReferenceSize = CGSizeMake(WIDTH, 30);
 }
 
 
 #pragma mark -- UICollectionView Delegate
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
-    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
-        ResultCollctionHeaderView * view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ResultCollctionHeaderViewID" forIndexPath:indexPath];
-        return view;
-    }
-    return nil;
-}
+//这个方法是返回 Header的大小 size
+//-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+//{
+//    if(section == 0)
+//        return CGSizeMake(WIDTH, WIDTH * 208 / 320);
+//    else
+//        return CGSizeMake(WIDTH, 30);
+//}
+
+
+
+
+//- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+//{
+//    if(indexPath.section == 0)
+//    {
+//        if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+//            ResultCollctionHeaderView * view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ResultHeader" forIndexPath:indexPath];
+//            return view;
+//        }
+//    }
+//    else if(indexPath.section == 1)
+//    {
+//        if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+//            ResultCollctionHeaderView * view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"ResultCollctionHeaderViewID" forIndexPath:indexPath];
+//            return view;
+//        }
+////    }
+//    
+//    return nil;
+//}
 
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+//    if(section == 0)
+//        return 0;
+    
     return self.testResultitem.praxisList.modelItemArray.count;
 }
 
@@ -529,7 +598,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     CourseResultCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CourseResultCell" forIndexPath:indexPath];
-    [cell setSubItem:self.testResultitem.praxisList.modelItemArray[indexPath.row] Index:indexPath.row];
+    [cell setSubItem:self.testResultitem.praxisList.modelItemArray[indexPath.row]];
     return cell;
 }
 

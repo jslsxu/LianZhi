@@ -9,6 +9,7 @@
 #import "LZMicrolessonVCViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import "ResourceDefine.h"
+#import "LZOfficeVCViewController.h"
 
 #define web365User @"11078" // 连枝web 365 转换用的用户ID
 
@@ -19,11 +20,13 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
     NSString *curUrl;
     NSString *preUrl;
     UIBarButtonItem *cancelButtonItem;
+    WKUserContentController *userContentController;
 }
 @property (nonatomic,strong) AVCaptureSession *captureSession;
 @property (nonatomic,strong) UIView *sanFrameView;
 @property (nonatomic,strong) AVCaptureVideoPreviewLayer *videoPreviewLayer;
 @property (nonatomic) BOOL lastResult;
+@property (nonatomic) BOOL isLoadedWebPage;
 @property (nonatomic,strong) NSString *resourceId;
 @property (nonatomic,strong) NSString *bookId;
 
@@ -33,8 +36,9 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
 
 - (void)viewDidLoad {
     
+    self.isLoadedWebPage = NO;
     // js配置
-    WKUserContentController *userContentController = [[WKUserContentController alloc] init];
+    userContentController = [[WKUserContentController alloc] init];
     [userContentController addScriptMessageHandler:self name:@"appbox"];
     
     // WKWebView的配置
@@ -53,8 +57,14 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
     [self.view addSubview:self.sanFrameView];
     [super viewDidLoad];
     
-    cancelButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonPressed)];
+    cancelButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain
+                                                       target:self action:@selector(cancelButtonPressed)];
 
+}
+
+- (void)dealloc{
+    //这里需要注意，前面增加过的方法一定要remove掉。
+    [userContentController removeScriptMessageHandlerForName:@"appbox"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -96,9 +106,23 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
                 { // 文档打开的JS回调
                     if(body[@"filename"] )
                     {
-                        NSString * encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault, (CFStringRef)body[@"filename"], NULL, NULL,  kCFStringEncodingUTF8 ));
-                        NSString * encoded365String =  [NSString stringWithFormat:@"http://ow365.cn/?i=%@&del=1&furl=%@",web365User,encodedString];
-                        TNBaseWebViewController *webVC  = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:encoded365String]];
+                        NSString *filePathStr = [body[@"filename"] lastPathComponent];
+                        NSString * exestr = [filePathStr pathExtension];
+                        NSString * encoded365String = nil;
+                        if(exestr && [exestr isEqualToString:@"mp4"])
+                        {
+                        
+                            encoded365String = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault, (CFStringRef)body[@"filename"], NULL, NULL,  kCFStringEncodingUTF8 ));
+                            
+                            
+                        }
+                        else
+                        {
+                            NSString * encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault, (CFStringRef)body[@"filename"], NULL, NULL,  kCFStringEncodingUTF8 ));
+                            encoded365String =  [NSString stringWithFormat:@"http://ow365.cn/?i=%@&del=1&furl=%@",web365User,encodedString];
+                            
+                        }
+                        TNBaseWebViewController *webVC  = [[LZOfficeVCViewController alloc] initWithUrl:[NSURL URLWithString:encoded365String]];
         
                         [self.navigationController pushViewController:webVC animated:YES];
                     }
@@ -121,35 +145,74 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
 }
 
 - (void)back{
-    [self.webView evaluateJavaScript:@"backAction();" completionHandler:^(id object, NSError *error) {
-        NSLog(@"back pressed:");
-//        self.title = @"back";
-    }];
+    
+    if(self.isLoadedWebPage){
+        [self.webView evaluateJavaScript:@"backAction();" completionHandler:^(id object, NSError *error) {
+            NSLog(@"back pressed:");
+        }];
+    }
+    else
+    {
+         [CurrentROOTNavigationVC popViewControllerAnimated:YES];
+    }
 }
 
 -(void)customBackItemClicked
 {
-    [self.webView evaluateJavaScript:@"backAction();" completionHandler:^(id object, NSError *error) {
-        NSLog(@"back pressed:");
-//        self.title = @"back";
-    }];
+    if(self.isLoadedWebPage){
+        [self.webView evaluateJavaScript:@"backAction();" completionHandler:^(id object, NSError *error) {
+            NSLog(@"back pressed:");
+        }];
+    }
+    else
+    {
+        [CurrentROOTNavigationVC popViewControllerAnimated:YES];
+    }
 
 }
 - (void)dismiss{
     
-    [self.webView evaluateJavaScript:@"backAction();" completionHandler:^(id object, NSError *error) {
-        NSLog(@"back pressed:");
-    }];
+    if(self.isLoadedWebPage){
+        [self.webView evaluateJavaScript:@"backAction();" completionHandler:^(id object, NSError *error) {
+            NSLog(@"back pressed:");
+        }];
+    }
+    else
+    {
+        [CurrentROOTNavigationVC popViewControllerAnimated:YES];
+    }
 
 
 }
 -(void)closeItemClicked{
-    [self.webView evaluateJavaScript:@"backAction();" completionHandler:^(id object, NSError *error) {
-        NSLog(@"back pressed:");
-    }];
+    if(self.isLoadedWebPage){
+        [self.webView evaluateJavaScript:@"backAction();" completionHandler:^(id object, NSError *error) {
+            NSLog(@"back pressed:");
+        }];
+    }
+    else
+    {
+        [CurrentROOTNavigationVC popViewControllerAnimated:YES];
+    }
 
 }
 
+
+-(void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation{
+    NSLog(@"WKWebView加载完成时调用");
+    self.isLoadedWebPage = YES;
+}
+
+
+
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error{
+    self.isLoadedWebPage = NO;
+}
+
+- (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error
+{
+    self.isLoadedWebPage = NO;
+}
 // JS端调用confirm函数时，会触发此方法
 // 通过message可以拿到JS端所传的数据
 // 在iOS端显示原生alert得到YES/NO后

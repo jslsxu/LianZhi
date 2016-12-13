@@ -293,7 +293,7 @@
                 void (^openWebVC)(NSString *) = ^(NSString *url){
                     TNBaseWebViewController *webVC = nil;
                     if([host isEqualToString:@"lzmicrolesson.edugate.cn"]){
-                        //                        url = @"http://125.39.80.78:3000/app/ios/?userId=1252481&userRole=S";
+//                        url = @"http://125.39.80.78:3000/app/ios/?userId=1252481&userRole=S";
                         webVC = [[LZMicrolessonVCViewController alloc] initWithUrl:[NSURL URLWithString:url]];
                     }
                     else

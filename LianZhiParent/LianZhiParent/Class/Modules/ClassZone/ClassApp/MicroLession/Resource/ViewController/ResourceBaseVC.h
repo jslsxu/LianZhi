@@ -17,5 +17,6 @@
 
 -(void)setTitleArray:(NSArray *)titleArray;
 -(void)setHeadViewCurrentIndex:(NSInteger)CurrentIndex;
+-(void)initViewCurrentIndex;
 -(void)showAlert:(NSString *)message;
 @end

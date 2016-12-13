@@ -30,6 +30,8 @@
     
     self.s_id = [dataWrapper getIntegerForKey:@"s_id"];
     self.sa_id = [dataWrapper getIntegerForKey:@"sa_id"];
+    self.index = [dataWrapper getIntegerForKey:@"index"];
+
     self.stem = [dataWrapper getStringForKey:@"stem"];
     self.answer = [dataWrapper getStringForKey:@"answer"];
     self.answerCount = [dataWrapper getIntegerForKey:@"answerCount"];
@@ -122,6 +124,7 @@
     
     self.p_id = [data getIntegerForKey:@"p_id"];
     self.et_code = (LZTestType)([[data getStringForKey:@"et_code"] integerValue]);
+    self.index = [data getIntegerForKey:@"index"];
     self.skill_code = [data getStringForKey:@"skill_code"];
     self.skill_name = [data getStringForKey:@"skill_name"];
     self.et_name = [data getStringForKey:@"et_name"];
@@ -167,7 +170,7 @@
     self.subject_code = (LZTestType)([data getIntegerForKey:@"subject_code"]);
     self.star = [data getIntegerForKey:@"star"];
     self.sq_id = [data getStringForKey:@"sq_id"];
-
+    self.qcount = [data getIntegerForKey:@"qcount"];
     TNDataWrapper *listWrapper = [data getDataWrapperForKey:@"praxisList"];
     
     self.praxisList = [[TNListModel alloc]init];
