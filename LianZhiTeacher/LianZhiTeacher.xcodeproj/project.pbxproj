@@ -44,12 +44,11 @@
 		3728A74C1B9EE5C400310457 /* PublishGrowthTimelineVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A74B1B9EE5C400310457 /* PublishGrowthTimelineVC.m */; };
 		3728A74F1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A74E1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m */; };
 		3728A7521B9F524000310457 /* GrowthTimelineClassChangeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3728A7511B9F524000310457 /* GrowthTimelineClassChangeVC.m */; };
-		372C753B1C08661500A1D90B /* ClassAttendanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 372C753A1C08661500A1D90B /* ClassAttendanceVC.m */; };
 		373528771AD6557800C0F326 /* BaseInfoModifyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 373528751AD6557800C0F326 /* BaseInfoModifyVC.m */; };
 		3736CEB41C508D31004DB2D2 /* InterestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3736CEB11C508D31004DB2D2 /* InterestVC.m */; };
 		3736CEB51C508D31004DB2D2 /* InterestDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3736CEB31C508D31004DB2D2 /* InterestDetailVC.m */; };
-		3739713E1C40F72000425250 /* StudentAttendanceDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3739713D1C40F72000425250 /* StudentAttendanceDetailView.m */; };
 		375284121DE350560012BB33 /* teacher_login_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 375284111DE350560012BB33 /* teacher_login_bg.jpg */; };
+		3769B2851E0982B500BFA42F /* AttendanceHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3769B2841E0982B500BFA42F /* AttendanceHeaderView.m */; };
 		376FC6B51B01EFB500289DC2 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B41B01EFB500289DC2 /* libiconv.dylib */; };
 		376FC6B71B01EFBF00289DC2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B61B01EFBF00289DC2 /* CoreGraphics.framework */; };
 		376FC6B91B01EFC500289DC2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B81B01EFC500289DC2 /* AVFoundation.framework */; };
@@ -178,7 +177,6 @@
 		37C6B44D1BF2F47D0001D54F /* ClassZone.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C6B44B1BF2F47D0001D54F /* ClassZone.png */; };
 		37C6B44E1BF2F47D0001D54F /* TreeHouse.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C6B44C1BF2F47D0001D54F /* TreeHouse.png */; };
 		37C6B4501BF2F4C20001D54F /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C6B44F1BF2F4C20001D54F /* AddressBook.framework */; };
-		37C7339A1C4357E200BAD6CD /* AttendanceDateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C733991C4357E200BAD6CD /* AttendanceDateView.m */; };
 		37C88F6E1A827AD2008E44DB /* LogConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C88F6D1A827AD2008E44DB /* LogConfig.m */; };
 		37C88F771A8357E9008E44DB /* ExchangeSchoolVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C88F761A8357E9008E44DB /* ExchangeSchoolVC.m */; };
 		37C88F791A83AD08008E44DB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C88F781A83AD08008E44DB /* AudioToolbox.framework */; };
@@ -210,13 +208,6 @@
 		37D6EEF01BCBA96D000994A2 /* MyAttendanceItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EED71BCBA96D000994A2 /* MyAttendanceItem.m */; };
 		37D6EEF11BCBA96D000994A2 /* MyAttendanceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EED91BCBA96D000994A2 /* MyAttendanceModel.m */; };
 		37D6EEF21BCBA96D000994A2 /* MyAttendanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EEDB1BCBA96D000994A2 /* MyAttendanceVC.m */; };
-		37D6EEF31BCBA96D000994A2 /* AttendanceOperationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EEDF1BCBA96D000994A2 /* AttendanceOperationVC.m */; };
-		37D6EEF41BCBA96D000994A2 /* LeaveHistoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EEE11BCBA96D000994A2 /* LeaveHistoryVC.m */; };
-		37D6EEF51BCBA96D000994A2 /* LeaveRegisterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EEE31BCBA96D000994A2 /* LeaveRegisterVC.m */; };
-		37D6EEF61BCBA96D000994A2 /* RefuseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EEE51BCBA96D000994A2 /* RefuseVC.m */; };
-		37D6EEF71BCBA96D000994A2 /* StudentAttendanceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EEE81BCBA96D000994A2 /* StudentAttendanceCell.m */; };
-		37D6EEF81BCBA96D000994A2 /* StudentAttendanceHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EEEA1BCBA96D000994A2 /* StudentAttendanceHeaderView.m */; };
-		37D6EEF91BCBA96D000994A2 /* StudentAttendanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EEEC1BCBA96D000994A2 /* StudentAttendanceVC.m */; };
 		37D8FEA71AC1398400E006FC /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D8FEA61AC1398400E006FC /* libz.dylib */; };
 		37DEE4BC1A57C19C009A8771 /* MessageDetailItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4B01A57C19C009A8771 /* MessageDetailItemCell.m */; };
 		37DEE4BD1A57C19C009A8771 /* MessageDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4B21A57C19C009A8771 /* MessageDetailModel.m */; };
@@ -236,6 +227,10 @@
 		37DEE4F11A57C24A009A8771 /* SettingItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4ED1A57C24A009A8771 /* SettingItemCell.m */; };
 		37DEE4F61A57C289009A8771 /* LZTabBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4F51A57C289009A8771 /* LZTabBarButton.m */; };
 		37DEE4FD1A57C2C0009A8771 /* ContactItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DEE4F81A57C2C0009A8771 /* ContactItemCell.m */; };
+		37DF9A7A1E09983B0020B49E /* StudentsAttendanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DF9A791E09983B0020B49E /* StudentsAttendanceVC.m */; };
+		37DF9A7E1E0998B20020B49E /* StudentAttendanceDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DF9A7D1E0998B20020B49E /* StudentAttendanceDetailVC.m */; };
+		37DF9A811E099C6F0020B49E /* StudentAttendanceHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DF9A801E099C6F0020B49E /* StudentAttendanceHeaderView.m */; };
+		37DF9A841E099C8D0020B49E /* StudentAttendanceNoteView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DF9A831E099C8D0020B49E /* StudentAttendanceNoteView.m */; };
 		37E038E81A7386D3003A3A7F /* PublishNewspaperVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E038E71A7386D3003A3A7F /* PublishNewspaperVC.m */; };
 		37E5F64A1DF7E5530062941C /* LZOfficeVCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E5F6491DF7E5530062941C /* LZOfficeVCViewController.m */; };
 		37E93F991A7DC48200AD45A1 /* TNActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93F961A7DC48200AD45A1 /* TNActionSheet.m */; };
@@ -248,7 +243,6 @@
 		37E93FC61A7E9CC600AD45A1 /* PhotoBrowserInfoBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FBE1A7E9CC600AD45A1 /* PhotoBrowserInfoBar.m */; };
 		37E93FC71A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E93FC01A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m */; };
 		37EAC9EA1B82446F007BFBA1 /* CommonInputVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37EAC9E91B82446F007BFBA1 /* CommonInputVC.m */; };
-		37ED9E0E1C3B8C3A00E9F8CA /* StudentAttendanceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37ED9E0D1C3B8C3A00E9F8CA /* StudentAttendanceModel.m */; };
 		37F206D81BD87A99006466F4 /* City.db in Resources */ = {isa = PBXBuildFile; fileRef = 37F206D71BD87A99006466F4 /* City.db */; };
 		37F206E61BDCB41E006466F4 /* CityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F206E51BDCB41E006466F4 /* CityManager.m */; };
 		37F2070F1BDE015D006466F4 /* SurroundingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37F2070E1BDE015D006466F4 /* SurroundingVC.m */; };
@@ -284,6 +278,17 @@
 		37FD70BE1BBDB7B400C83AB4 /* PraiseListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FD70BD1BBDB7B400C83AB4 /* PraiseListView.m */; };
 		37FEA9651C46554500E7425B /* AccountInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FEA9641C46554500E7425B /* AccountInfoView.m */; };
 		37FEA96B1C4657E900E7425B /* GiftDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FEA96A1C4657E900E7425B /* GiftDetailView.m */; };
+		37FF16BF1E06B36A009F10EA /* AttendanceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FF16BE1E06B36A009F10EA /* AttendanceVC.m */; };
+		37FF16C21E06B3A6009F10EA /* ClassAttendanceListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FF16C11E06B3A6009F10EA /* ClassAttendanceListModel.m */; };
+		37FF16C51E06B3B6009F10EA /* ClassAttendanceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FF16C41E06B3B6009F10EA /* ClassAttendanceCell.m */; };
+		37FF16CB1E06B437009F10EA /* Calendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FF16C81E06B437009F10EA /* Calendar.m */; };
+		37FF16CC1E06B437009F10EA /* CalendarMonthIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FF16CA1E06B437009F10EA /* CalendarMonthIndicator.m */; };
+		37FF16CF1E06B5BC009F10EA /* NSDate+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FF16CE1E06B5BC009F10EA /* NSDate+convenience.m */; };
+		37FF16D21E06B60D009F10EA /* NSDate+WQCalendarLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FF16D11E06B60D009F10EA /* NSDate+WQCalendarLogic.m */; };
+		37FF16D61E06B98C009F10EA /* AttendanceNotificationListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FF16D51E06B98C009F10EA /* AttendanceNotificationListVC.m */; };
+		37FF16D91E06B9AF009F10EA /* AttendanceNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FF16D81E06B9AF009F10EA /* AttendanceNotificationCell.m */; };
+		37FF16DC1E06B9C9009F10EA /* AttendanceNotificationListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FF16DB1E06B9C9009F10EA /* AttendanceNotificationListModel.m */; };
+		37FF16E31E06C690009F10EA /* FilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37FF16E21E06C690009F10EA /* FilterView.m */; };
 		8D11AC8B1DC85B630096DCEE /* HomeworkPreviewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D11AC8A1DC85B630096DCEE /* HomeworkPreviewVC.m */; };
 		8D3D457A1D5B2118005EA8EA /* NotificationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D45791D5B2118005EA8EA /* NotificationItem.m */; };
 		8D3D457D1D5B24A6005EA8EA /* NotificationPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D3D457C1D5B24A6005EA8EA /* NotificationPreviewView.m */; };
@@ -556,17 +561,15 @@
 		3728A74E1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthTimelineStudentsSelectVC.m; sourceTree = "<group>"; };
 		3728A7501B9F524000310457 /* GrowthTimelineClassChangeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthTimelineClassChangeVC.h; sourceTree = "<group>"; };
 		3728A7511B9F524000310457 /* GrowthTimelineClassChangeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthTimelineClassChangeVC.m; sourceTree = "<group>"; };
-		372C75391C08661500A1D90B /* ClassAttendanceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassAttendanceVC.h; sourceTree = "<group>"; };
-		372C753A1C08661500A1D90B /* ClassAttendanceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassAttendanceVC.m; sourceTree = "<group>"; };
 		373528751AD6557800C0F326 /* BaseInfoModifyVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseInfoModifyVC.m; sourceTree = "<group>"; };
 		373528761AD6557800C0F326 /* BaseInfoModifyVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseInfoModifyVC.h; sourceTree = "<group>"; };
 		3736CEB01C508D31004DB2D2 /* InterestVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterestVC.h; sourceTree = "<group>"; };
 		3736CEB11C508D31004DB2D2 /* InterestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterestVC.m; sourceTree = "<group>"; };
 		3736CEB21C508D31004DB2D2 /* InterestDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterestDetailVC.h; sourceTree = "<group>"; };
 		3736CEB31C508D31004DB2D2 /* InterestDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterestDetailVC.m; sourceTree = "<group>"; };
-		3739713C1C40F72000425250 /* StudentAttendanceDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentAttendanceDetailView.h; sourceTree = "<group>"; };
-		3739713D1C40F72000425250 /* StudentAttendanceDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentAttendanceDetailView.m; sourceTree = "<group>"; };
 		375284111DE350560012BB33 /* teacher_login_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = teacher_login_bg.jpg; sourceTree = "<group>"; };
+		3769B2831E0982B500BFA42F /* AttendanceHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceHeaderView.h; sourceTree = "<group>"; };
+		3769B2841E0982B500BFA42F /* AttendanceHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceHeaderView.m; sourceTree = "<group>"; };
 		376FC6B41B01EFB500289DC2 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		376FC6B61B01EFBF00289DC2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		376FC6B81B01EFC500289DC2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -804,8 +807,6 @@
 		37C6B44B1BF2F47D0001D54F /* ClassZone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ClassZone.png; sourceTree = "<group>"; };
 		37C6B44C1BF2F47D0001D54F /* TreeHouse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TreeHouse.png; sourceTree = "<group>"; };
 		37C6B44F1BF2F4C20001D54F /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
-		37C733981C4357E200BAD6CD /* AttendanceDateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceDateView.h; sourceTree = "<group>"; };
-		37C733991C4357E200BAD6CD /* AttendanceDateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceDateView.m; sourceTree = "<group>"; };
 		37C88F6C1A827AD2008E44DB /* LogConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogConfig.h; sourceTree = "<group>"; };
 		37C88F6D1A827AD2008E44DB /* LogConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogConfig.m; sourceTree = "<group>"; };
 		37C88F751A8357E9008E44DB /* ExchangeSchoolVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExchangeSchoolVC.h; sourceTree = "<group>"; };
@@ -861,20 +862,6 @@
 		37D6EED91BCBA96D000994A2 /* MyAttendanceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAttendanceModel.m; sourceTree = "<group>"; };
 		37D6EEDA1BCBA96D000994A2 /* MyAttendanceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAttendanceVC.h; sourceTree = "<group>"; };
 		37D6EEDB1BCBA96D000994A2 /* MyAttendanceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAttendanceVC.m; sourceTree = "<group>"; };
-		37D6EEDE1BCBA96D000994A2 /* AttendanceOperationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceOperationVC.h; sourceTree = "<group>"; };
-		37D6EEDF1BCBA96D000994A2 /* AttendanceOperationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceOperationVC.m; sourceTree = "<group>"; };
-		37D6EEE01BCBA96D000994A2 /* LeaveHistoryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaveHistoryVC.h; sourceTree = "<group>"; };
-		37D6EEE11BCBA96D000994A2 /* LeaveHistoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeaveHistoryVC.m; sourceTree = "<group>"; };
-		37D6EEE21BCBA96D000994A2 /* LeaveRegisterVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaveRegisterVC.h; sourceTree = "<group>"; };
-		37D6EEE31BCBA96D000994A2 /* LeaveRegisterVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeaveRegisterVC.m; sourceTree = "<group>"; };
-		37D6EEE41BCBA96D000994A2 /* RefuseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RefuseVC.h; sourceTree = "<group>"; };
-		37D6EEE51BCBA96D000994A2 /* RefuseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RefuseVC.m; sourceTree = "<group>"; };
-		37D6EEE71BCBA96D000994A2 /* StudentAttendanceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentAttendanceCell.h; sourceTree = "<group>"; };
-		37D6EEE81BCBA96D000994A2 /* StudentAttendanceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentAttendanceCell.m; sourceTree = "<group>"; };
-		37D6EEE91BCBA96D000994A2 /* StudentAttendanceHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentAttendanceHeaderView.h; sourceTree = "<group>"; };
-		37D6EEEA1BCBA96D000994A2 /* StudentAttendanceHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentAttendanceHeaderView.m; sourceTree = "<group>"; };
-		37D6EEEB1BCBA96D000994A2 /* StudentAttendanceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentAttendanceVC.h; sourceTree = "<group>"; };
-		37D6EEEC1BCBA96D000994A2 /* StudentAttendanceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentAttendanceVC.m; sourceTree = "<group>"; };
 		37D8FEA61AC1398400E006FC /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		37DEE4AF1A57C19C009A8771 /* MessageDetailItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageDetailItemCell.h; sourceTree = "<group>"; };
 		37DEE4B01A57C19C009A8771 /* MessageDetailItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageDetailItemCell.m; sourceTree = "<group>"; };
@@ -912,6 +899,14 @@
 		37DEE4F51A57C289009A8771 /* LZTabBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LZTabBarButton.m; sourceTree = "<group>"; };
 		37DEE4F71A57C2C0009A8771 /* ContactItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactItemCell.h; sourceTree = "<group>"; };
 		37DEE4F81A57C2C0009A8771 /* ContactItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactItemCell.m; sourceTree = "<group>"; };
+		37DF9A781E09983B0020B49E /* StudentsAttendanceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentsAttendanceVC.h; sourceTree = "<group>"; };
+		37DF9A791E09983B0020B49E /* StudentsAttendanceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentsAttendanceVC.m; sourceTree = "<group>"; };
+		37DF9A7C1E0998B20020B49E /* StudentAttendanceDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentAttendanceDetailVC.h; sourceTree = "<group>"; };
+		37DF9A7D1E0998B20020B49E /* StudentAttendanceDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentAttendanceDetailVC.m; sourceTree = "<group>"; };
+		37DF9A7F1E099C6F0020B49E /* StudentAttendanceHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentAttendanceHeaderView.h; sourceTree = "<group>"; };
+		37DF9A801E099C6F0020B49E /* StudentAttendanceHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentAttendanceHeaderView.m; sourceTree = "<group>"; };
+		37DF9A821E099C8D0020B49E /* StudentAttendanceNoteView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentAttendanceNoteView.h; sourceTree = "<group>"; };
+		37DF9A831E099C8D0020B49E /* StudentAttendanceNoteView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentAttendanceNoteView.m; sourceTree = "<group>"; };
 		37E038E61A7386D3003A3A7F /* PublishNewspaperVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishNewspaperVC.h; sourceTree = "<group>"; };
 		37E038E71A7386D3003A3A7F /* PublishNewspaperVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishNewspaperVC.m; sourceTree = "<group>"; };
 		37E5F6481DF7E5530062941C /* LZOfficeVCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZOfficeVCViewController.h; sourceTree = "<group>"; };
@@ -936,8 +931,6 @@
 		37E93FC01A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoBrowserNavigationBar.m; sourceTree = "<group>"; };
 		37EAC9E81B82446F007BFBA1 /* CommonInputVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonInputVC.h; sourceTree = "<group>"; };
 		37EAC9E91B82446F007BFBA1 /* CommonInputVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonInputVC.m; sourceTree = "<group>"; };
-		37ED9E0C1C3B8C3A00E9F8CA /* StudentAttendanceModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentAttendanceModel.h; sourceTree = "<group>"; };
-		37ED9E0D1C3B8C3A00E9F8CA /* StudentAttendanceModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentAttendanceModel.m; sourceTree = "<group>"; };
 		37F206D71BD87A99006466F4 /* City.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = City.db; sourceTree = "<group>"; };
 		37F206E41BDCB41E006466F4 /* CityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityManager.h; sourceTree = "<group>"; };
 		37F206E51BDCB41E006466F4 /* CityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityManager.m; sourceTree = "<group>"; };
@@ -997,6 +990,28 @@
 		37FEA9641C46554500E7425B /* AccountInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountInfoView.m; sourceTree = "<group>"; };
 		37FEA9691C4657E900E7425B /* GiftDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GiftDetailView.h; sourceTree = "<group>"; };
 		37FEA96A1C4657E900E7425B /* GiftDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GiftDetailView.m; sourceTree = "<group>"; };
+		37FF16BD1E06B36A009F10EA /* AttendanceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceVC.h; sourceTree = "<group>"; };
+		37FF16BE1E06B36A009F10EA /* AttendanceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceVC.m; sourceTree = "<group>"; };
+		37FF16C01E06B3A6009F10EA /* ClassAttendanceListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassAttendanceListModel.h; sourceTree = "<group>"; };
+		37FF16C11E06B3A6009F10EA /* ClassAttendanceListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassAttendanceListModel.m; sourceTree = "<group>"; };
+		37FF16C31E06B3B6009F10EA /* ClassAttendanceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassAttendanceCell.h; sourceTree = "<group>"; };
+		37FF16C41E06B3B6009F10EA /* ClassAttendanceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassAttendanceCell.m; sourceTree = "<group>"; };
+		37FF16C71E06B437009F10EA /* Calendar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Calendar.h; sourceTree = "<group>"; };
+		37FF16C81E06B437009F10EA /* Calendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Calendar.m; sourceTree = "<group>"; };
+		37FF16C91E06B437009F10EA /* CalendarMonthIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarMonthIndicator.h; sourceTree = "<group>"; };
+		37FF16CA1E06B437009F10EA /* CalendarMonthIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarMonthIndicator.m; sourceTree = "<group>"; };
+		37FF16CD1E06B5BC009F10EA /* NSDate+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+convenience.h"; sourceTree = "<group>"; };
+		37FF16CE1E06B5BC009F10EA /* NSDate+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+convenience.m"; sourceTree = "<group>"; };
+		37FF16D01E06B60D009F10EA /* NSDate+WQCalendarLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+WQCalendarLogic.h"; sourceTree = "<group>"; };
+		37FF16D11E06B60D009F10EA /* NSDate+WQCalendarLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+WQCalendarLogic.m"; sourceTree = "<group>"; };
+		37FF16D41E06B98C009F10EA /* AttendanceNotificationListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceNotificationListVC.h; sourceTree = "<group>"; };
+		37FF16D51E06B98C009F10EA /* AttendanceNotificationListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceNotificationListVC.m; sourceTree = "<group>"; };
+		37FF16D71E06B9AF009F10EA /* AttendanceNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceNotificationCell.h; sourceTree = "<group>"; };
+		37FF16D81E06B9AF009F10EA /* AttendanceNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceNotificationCell.m; sourceTree = "<group>"; };
+		37FF16DA1E06B9C9009F10EA /* AttendanceNotificationListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceNotificationListModel.h; sourceTree = "<group>"; };
+		37FF16DB1E06B9C9009F10EA /* AttendanceNotificationListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceNotificationListModel.m; sourceTree = "<group>"; };
+		37FF16E11E06C690009F10EA /* FilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterView.h; sourceTree = "<group>"; };
+		37FF16E21E06C690009F10EA /* FilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterView.m; sourceTree = "<group>"; };
 		8D11AC891DC85B630096DCEE /* HomeworkPreviewVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkPreviewVC.h; sourceTree = "<group>"; };
 		8D11AC8A1DC85B630096DCEE /* HomeworkPreviewVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkPreviewVC.m; sourceTree = "<group>"; };
 		8D3D45781D5B2118005EA8EA /* NotificationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationItem.h; sourceTree = "<group>"; };
@@ -2352,51 +2367,6 @@
 			path = MyAttendance;
 			sourceTree = "<group>";
 		};
-		37D6EEDC1BCBA96D000994A2 /* StudentAttendacen */ = {
-			isa = PBXGroup;
-			children = (
-				37D6EEDD1BCBA96D000994A2 /* AttendanceOperation */,
-				37D6EEE61BCBA96D000994A2 /* StudentAttendanceVC */,
-			);
-			path = StudentAttendacen;
-			sourceTree = "<group>";
-		};
-		37D6EEDD1BCBA96D000994A2 /* AttendanceOperation */ = {
-			isa = PBXGroup;
-			children = (
-				37D6EEDE1BCBA96D000994A2 /* AttendanceOperationVC.h */,
-				37D6EEDF1BCBA96D000994A2 /* AttendanceOperationVC.m */,
-				37D6EEE01BCBA96D000994A2 /* LeaveHistoryVC.h */,
-				37D6EEE11BCBA96D000994A2 /* LeaveHistoryVC.m */,
-				37D6EEE21BCBA96D000994A2 /* LeaveRegisterVC.h */,
-				37D6EEE31BCBA96D000994A2 /* LeaveRegisterVC.m */,
-				37D6EEE41BCBA96D000994A2 /* RefuseVC.h */,
-				37D6EEE51BCBA96D000994A2 /* RefuseVC.m */,
-			);
-			path = AttendanceOperation;
-			sourceTree = "<group>";
-		};
-		37D6EEE61BCBA96D000994A2 /* StudentAttendanceVC */ = {
-			isa = PBXGroup;
-			children = (
-				37D6EEE71BCBA96D000994A2 /* StudentAttendanceCell.h */,
-				37D6EEE81BCBA96D000994A2 /* StudentAttendanceCell.m */,
-				37ED9E0C1C3B8C3A00E9F8CA /* StudentAttendanceModel.h */,
-				37ED9E0D1C3B8C3A00E9F8CA /* StudentAttendanceModel.m */,
-				37D6EEE91BCBA96D000994A2 /* StudentAttendanceHeaderView.h */,
-				37D6EEEA1BCBA96D000994A2 /* StudentAttendanceHeaderView.m */,
-				37D6EEEB1BCBA96D000994A2 /* StudentAttendanceVC.h */,
-				37D6EEEC1BCBA96D000994A2 /* StudentAttendanceVC.m */,
-				37C733981C4357E200BAD6CD /* AttendanceDateView.h */,
-				37C733991C4357E200BAD6CD /* AttendanceDateView.m */,
-				372C75391C08661500A1D90B /* ClassAttendanceVC.h */,
-				372C753A1C08661500A1D90B /* ClassAttendanceVC.m */,
-				3739713C1C40F72000425250 /* StudentAttendanceDetailView.h */,
-				3739713D1C40F72000425250 /* StudentAttendanceDetailView.m */,
-			);
-			path = StudentAttendanceVC;
-			sourceTree = "<group>";
-		};
 		37D8C7BB1A598BE800E5E2E4 /* DataStruct */ = {
 			isa = PBXGroup;
 			children = (
@@ -2407,10 +2377,10 @@
 		37DEE4A71A57BDEA009A8771 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				37FF16BB1E06B303009F10EA /* Attendance */,
 				8DFDDD8B1D93D4DD0050740B /* HomeWork */,
 				8DCFD7471D584BCF001EDC8A /* FileManager */,
 				37D6EED11BCBA96D000994A2 /* MyAttendance */,
-				37D6EEDC1BCBA96D000994A2 /* StudentAttendacen */,
 				3728A7111B9D376300310457 /* ChatVC */,
 				3793F5111B7B2CE600501F77 /* ApplicationBox */,
 				3793F50D1B7B285700501F77 /* MineVC */,
@@ -2614,6 +2584,28 @@
 			path = HomeVC;
 			sourceTree = "<group>";
 		};
+		37DF9A771E09983B0020B49E /* StudentsAttendanceVC */ = {
+			isa = PBXGroup;
+			children = (
+				37DF9A781E09983B0020B49E /* StudentsAttendanceVC.h */,
+				37DF9A791E09983B0020B49E /* StudentsAttendanceVC.m */,
+			);
+			path = StudentsAttendanceVC;
+			sourceTree = "<group>";
+		};
+		37DF9A7B1E09987D0020B49E /* StudentAttendanceDetailVC */ = {
+			isa = PBXGroup;
+			children = (
+				37DF9A7C1E0998B20020B49E /* StudentAttendanceDetailVC.h */,
+				37DF9A7D1E0998B20020B49E /* StudentAttendanceDetailVC.m */,
+				37DF9A7F1E099C6F0020B49E /* StudentAttendanceHeaderView.h */,
+				37DF9A801E099C6F0020B49E /* StudentAttendanceHeaderView.m */,
+				37DF9A821E099C8D0020B49E /* StudentAttendanceNoteView.h */,
+				37DF9A831E099C8D0020B49E /* StudentAttendanceNoteView.m */,
+			);
+			path = StudentAttendanceDetailVC;
+			sourceTree = "<group>";
+		};
 		37E93F941A7DC48200AD45A1 /* Commonviews */ = {
 			isa = PBXGroup;
 			children = (
@@ -2784,6 +2776,63 @@
 				8D7554F71D69733B00A140EE /* ContactView.m */,
 			);
 			path = ExtraInfoVC;
+			sourceTree = "<group>";
+		};
+		37FF16BB1E06B303009F10EA /* Attendance */ = {
+			isa = PBXGroup;
+			children = (
+				37DF9A7B1E09987D0020B49E /* StudentAttendanceDetailVC */,
+				37DF9A771E09983B0020B49E /* StudentsAttendanceVC */,
+				37FF16D31E06B96D009F10EA /* AttendanceNotificationVC */,
+				37FF16C61E06B437009F10EA /* Calendar */,
+				37FF16BC1E06B333009F10EA /* AttendanceVC */,
+			);
+			path = Attendance;
+			sourceTree = "<group>";
+		};
+		37FF16BC1E06B333009F10EA /* AttendanceVC */ = {
+			isa = PBXGroup;
+			children = (
+				37FF16BD1E06B36A009F10EA /* AttendanceVC.h */,
+				37FF16BE1E06B36A009F10EA /* AttendanceVC.m */,
+				37FF16C01E06B3A6009F10EA /* ClassAttendanceListModel.h */,
+				37FF16C11E06B3A6009F10EA /* ClassAttendanceListModel.m */,
+				37FF16C31E06B3B6009F10EA /* ClassAttendanceCell.h */,
+				37FF16C41E06B3B6009F10EA /* ClassAttendanceCell.m */,
+				37FF16E11E06C690009F10EA /* FilterView.h */,
+				37FF16E21E06C690009F10EA /* FilterView.m */,
+				3769B2831E0982B500BFA42F /* AttendanceHeaderView.h */,
+				3769B2841E0982B500BFA42F /* AttendanceHeaderView.m */,
+			);
+			path = AttendanceVC;
+			sourceTree = "<group>";
+		};
+		37FF16C61E06B437009F10EA /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				37FF16C71E06B437009F10EA /* Calendar.h */,
+				37FF16C81E06B437009F10EA /* Calendar.m */,
+				37FF16C91E06B437009F10EA /* CalendarMonthIndicator.h */,
+				37FF16CA1E06B437009F10EA /* CalendarMonthIndicator.m */,
+				37FF16CD1E06B5BC009F10EA /* NSDate+convenience.h */,
+				37FF16CE1E06B5BC009F10EA /* NSDate+convenience.m */,
+				37FF16D01E06B60D009F10EA /* NSDate+WQCalendarLogic.h */,
+				37FF16D11E06B60D009F10EA /* NSDate+WQCalendarLogic.m */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		37FF16D31E06B96D009F10EA /* AttendanceNotificationVC */ = {
+			isa = PBXGroup;
+			children = (
+				37FF16D41E06B98C009F10EA /* AttendanceNotificationListVC.h */,
+				37FF16D51E06B98C009F10EA /* AttendanceNotificationListVC.m */,
+				37FF16D71E06B9AF009F10EA /* AttendanceNotificationCell.h */,
+				37FF16D81E06B9AF009F10EA /* AttendanceNotificationCell.m */,
+				37FF16DA1E06B9C9009F10EA /* AttendanceNotificationListModel.h */,
+				37FF16DB1E06B9C9009F10EA /* AttendanceNotificationListModel.m */,
+			);
+			path = AttendanceNotificationVC;
 			sourceTree = "<group>";
 		};
 		4DE57A3C964C8D65901D1DC5 /* Frameworks */ = {
@@ -3682,8 +3731,10 @@
 				8DCFD74B1D584BCF001EDC8A /* NHFileManager.m in Sources */,
 				37B485071A65853C00C412D8 /* UserCenter.m in Sources */,
 				3705FF941BA2BE7200F0C6F6 /* NumIndicator.m in Sources */,
+				37FF16D61E06B98C009F10EA /* AttendanceNotificationListVC.m in Sources */,
 				8DE718561DABA6130080476D /* HomeworkTargetListView.m in Sources */,
 				8DCFD7091D50AF25001EDC8A /* ChatExtraIndividualInfoVC.m in Sources */,
+				37FF16CC1E06B437009F10EA /* CalendarMonthIndicator.m in Sources */,
 				37E93FC11A7E9CC600AD45A1 /* CHTCollectionViewWaterfallLayout.m in Sources */,
 				8D93F8B61DA00719000C15FC /* CourseSelectVC.m in Sources */,
 				8D93F8BC1DA0EB24000C15FC /* HomeworkClassContentView.m in Sources */,
@@ -3715,7 +3766,7 @@
 				37DEE4F11A57C24A009A8771 /* SettingItemCell.m in Sources */,
 				8DCF87961DB0E5EC00712042 /* HomeworkManager.m in Sources */,
 				37C355DC1A3FD5CF00B948E6 /* HomeViewController.m in Sources */,
-				372C753B1C08661500A1D90B /* ClassAttendanceVC.m in Sources */,
+				37FF16E31E06C690009F10EA /* FilterView.m in Sources */,
 				3793FA9F1B7CFFF000501F77 /* UserInfo.m in Sources */,
 				8D7554B41D68403A00A140EE /* SwitchSchoolButton.m in Sources */,
 				8DCFD70C1D50B528001EDC8A /* SearchChatMessageVC.m in Sources */,
@@ -3725,6 +3776,7 @@
 				3793FA9C1B7CFFF000501F77 /* AudioItem.m in Sources */,
 				8DCFD6BE1D4C5D90001EDC8A /* NotificationDetailVideoView.m in Sources */,
 				3793FA871B7CFFF000501F77 /* UIActionSheet+Blocks.m in Sources */,
+				37FF16D21E06B60D009F10EA /* NSDate+WQCalendarLogic.m in Sources */,
 				3793FAEB1B7CFFF000501F77 /* TNModelItem.m in Sources */,
 				37E038E81A7386D3003A3A7F /* PublishNewspaperVC.m in Sources */,
 				8D93F8BF1DA0EB5F000C15FC /* HomeworkClassSendView.m in Sources */,
@@ -3735,7 +3787,6 @@
 				8D867D541D3FE2290020A21C /* NotificationMemberSelectVC.m in Sources */,
 				3728A73C1B9D376300310457 /* ReplyBox.m in Sources */,
 				37FD6E161BB0584400C83AB4 /* ChatVoiceButton.m in Sources */,
-				37D6EEF61BCBA96D000994A2 /* RefuseVC.m in Sources */,
 				8DCFD6731D488EED001EDC8A /* ActionFadeView.m in Sources */,
 				3793FAA61B7CFFF000501F77 /* UIColor+Addition.m in Sources */,
 				8DCFD6E81D4F3CB8001EDC8A /* ChatContentVideoView.m in Sources */,
@@ -3751,6 +3802,7 @@
 				8DCFD6821D4B2112001EDC8A /* NotificationPhotoView.m in Sources */,
 				8D867D451D3F7BF80020A21C /* NotificationAudioRecordView.m in Sources */,
 				37C355D91A3FD5CF00B948E6 /* AppDelegate.m in Sources */,
+				37DF9A7E1E0998B20020B49E /* StudentAttendanceDetailVC.m in Sources */,
 				8DCFD6AE1D4C5639001EDC8A /* NotificationPreviewVC.m in Sources */,
 				37C88F7C1A83BE57008E44DB /* RelatedInfoVC.m in Sources */,
 				379947E91A66B430008E4B4F /* PhotoFlowCell.m in Sources */,
@@ -3764,7 +3816,6 @@
 				8D7555071D6DA89400A140EE /* PBImageScrollView.m in Sources */,
 				37E93FC41A7E9CC600AD45A1 /* MJPhotoProgressView.m in Sources */,
 				3793FA6D1B7CFFF000501F77 /* AFURLConnectionOperation.m in Sources */,
-				37D6EEF51BCBA96D000994A2 /* LeaveRegisterVC.m in Sources */,
 				37DEE4BE1A57C19C009A8771 /* MessageDetailVC.m in Sources */,
 				8DCFD7631D584D3B001EDC8A /* NSString+EnDeCoding.m in Sources */,
 				8DC086F71D8BF9EB008B57B2 /* SVShareManager.m in Sources */,
@@ -3775,7 +3826,9 @@
 				8DCFD6C11D4C5D9E001EDC8A /* NotificationDetailPhotoView.m in Sources */,
 				8DA0C51B1DB899CC0005B9B1 /* HomeworkPhotoView.m in Sources */,
 				37FD6E301BB4817900C83AB4 /* NewMessageCell.m in Sources */,
+				37FF16CB1E06B437009F10EA /* Calendar.m in Sources */,
 				8D7555081D6DA89400A140EE /* PBPresentAnimatedTransitioningController.m in Sources */,
+				37FF16CF1E06B5BC009F10EA /* NSDate+convenience.m in Sources */,
 				3728A6A81B98B20700310457 /* ClassZoneModel.m in Sources */,
 				3793FAF11B7CFFF000501F77 /* TaskItem.m in Sources */,
 				8DCFD75D1D584C08001EDC8A /* NHFileDownloadManager.m in Sources */,
@@ -3790,7 +3843,9 @@
 				8DCFD67F1D4AFD32001EDC8A /* NotificationVoiceView.m in Sources */,
 				3793FA661B7CFFF000501F77 /* AFHTTPRequestOperation+Associative.m in Sources */,
 				8D867C461D2F75B10020A21C /* QuickImagePickerView.m in Sources */,
+				37DF9A811E099C6F0020B49E /* StudentAttendanceHeaderView.m in Sources */,
 				8DC087571D8E47C6008B57B2 /* LGAlertViewButtonProperties.m in Sources */,
+				37FF16D91E06B9AF009F10EA /* AttendanceNotificationCell.m in Sources */,
 				3793FA881B7CFFF000501F77 /* UIAlertView+Blocks.m in Sources */,
 				8DCFD6C81D4DAD79001EDC8A /* NotificationTargetListView.m in Sources */,
 				8D7555321D71FBE600A140EE /* DakaViewController.m in Sources */,
@@ -3807,7 +3862,6 @@
 				37C8901C1A890DF9008E44DB /* ClassZoneManager.m in Sources */,
 				8DA785961CA4E35900A384F0 /* NSString+UrlParams.m in Sources */,
 				3793FA9B1B7CFFF000501F77 /* WelcomeView.m in Sources */,
-				37D6EEF91BCBA96D000994A2 /* StudentAttendanceVC.m in Sources */,
 				3793FAAA1B7CFFF000501F77 /* UIView+Frame.m in Sources */,
 				372571581A80BF8C0087F178 /* PasswordModifyVC.m in Sources */,
 				8DCFD6B51D4C5D5A001EDC8A /* NotificationDetailView.m in Sources */,
@@ -3823,7 +3877,6 @@
 				8D867C571D2F7B550020A21C /* XMNPhotoStickLayout.m in Sources */,
 				3793FA991B7CFFF000501F77 /* TGRImageZoomAnimationController.m in Sources */,
 				8DCFD6881D4B39E7001EDC8A /* NotificationContentBaseView.m in Sources */,
-				3739713E1C40F72000425250 /* StudentAttendanceDetailView.m in Sources */,
 				3793FA851B7CFFF000501F77 /* LZBadgeLabel.m in Sources */,
 				3793FAEA1B7CFFF000501F77 /* TNListModel.m in Sources */,
 				8DC087581D8E47C6008B57B2 /* LGAlertViewCell.m in Sources */,
@@ -3883,7 +3936,6 @@
 				8DCF87991DB0E91B00712042 /* HomeworkDraftManager.m in Sources */,
 				8D75551F1D6F4C5F00A140EE /* ChatTopNewMessageView.m in Sources */,
 				3793FA721B7CFFF000501F77 /* UrlHandler.m in Sources */,
-				37D6EEF31BCBA96D000994A2 /* AttendanceOperationVC.m in Sources */,
 				8DE718421DAAAEA40080476D /* HomeworkSuperSettingVC.m in Sources */,
 				378C78431AA43D6C00E171E2 /* PreviewMessageVC.m in Sources */,
 				3793FAB91B7CFFF000501F77 /* MLAudioRecorder.m in Sources */,
@@ -3907,24 +3959,25 @@
 				8DCFD6761D48A9EE001EDC8A /* MessageSegView.m in Sources */,
 				3793F5101B7B286700501F77 /* MineVC.m in Sources */,
 				3793FADF1B7CFFF000501F77 /* TNGetMoreCell.m in Sources */,
+				37FF16C21E06B3A6009F10EA /* ClassAttendanceListModel.m in Sources */,
 				8DFDDD991D93D5BB0050740B /* HomeWorkDraftVC.m in Sources */,
 				8D7555091D6DA89400A140EE /* PBViewController.m in Sources */,
 				8D867C931D2F97080020A21C /* DNUnAuthorizedTipsView.m in Sources */,
-				37D6EEF81BCBA96D000994A2 /* StudentAttendanceHeaderView.m in Sources */,
 				8DCFD75E1D584C08001EDC8A /* NHFileDownloadSession.m in Sources */,
-				37D6EEF71BCBA96D000994A2 /* StudentAttendanceCell.m in Sources */,
 				8DC087561D8E47C6008B57B2 /* LGAlertView.m in Sources */,
 				37FD6DEC1BAEE01C00C83AB4 /* UUMessageContentButton.m in Sources */,
 				3793FABD1B7CFFF000501F77 /* MLPlayVoiceButton.m in Sources */,
 				8DB8FAEA1D656E6D006B44B2 /* GiftItem.m in Sources */,
 				37DEE4C01A57C19C009A8771 /* MessageGroupListModel.m in Sources */,
 				37FD6DEB1BAEE01C00C83AB4 /* UUImageAvatarBrowser.m in Sources */,
+				37DF9A841E099C8D0020B49E /* StudentAttendanceNoteView.m in Sources */,
 				8D867C831D2F97080020A21C /* DNAsset.m in Sources */,
 				8D867BCB1D25042A0020A21C /* NHAudioTool.m in Sources */,
 				37DEE4E21A57C1D8009A8771 /* GrowthTimelineVC.m in Sources */,
 				8DFDDD961D93D5940050740B /* HomeWorkRecordListVC.m in Sources */,
 				3793FA711B7CFFF000501F77 /* HttpRequestEngine.m in Sources */,
 				37DEE4DB1A57C1D8009A8771 /* ClassAppVC.m in Sources */,
+				37FF16DC1E06B9C9009F10EA /* AttendanceNotificationListModel.m in Sources */,
 				8DCFD6FA1D4F4F2A001EDC8A /* MessageCell.m in Sources */,
 				37DEE4F61A57C289009A8771 /* LZTabBarButton.m in Sources */,
 				8D867C081D2A3A5B0020A21C /* TNBaseObject.m in Sources */,
@@ -3954,6 +4007,7 @@
 				37B485031A65853C00C412D8 /* LoginVC.m in Sources */,
 				8DCFD6EE1D4F3CF9001EDC8A /* ChatContentRevokeView.m in Sources */,
 				8DCFD6BB1D4C5D7A001EDC8A /* NotificationDetailVoiceView.m in Sources */,
+				3769B2851E0982B500BFA42F /* AttendanceHeaderView.m in Sources */,
 				37FD6DE71BAEE01C00C83AB4 /* ChatMessageModel.m in Sources */,
 				3793FAB41B7CFFF000501F77 /* MLAudioPlayer.m in Sources */,
 				8D867C911D2F97080020A21C /* DNSendButton.m in Sources */,
@@ -3983,6 +4037,7 @@
 				8DCFD6E21D4F3050001EDC8A /* ChatContentImageView.m in Sources */,
 				8D75552B1D7162FC00A140EE /* NotificationSimpleAudioRecordView.m in Sources */,
 				8DCFD6F71D4F410D001EDC8A /* ChatBubbleContentView.m in Sources */,
+				37FF16BF1E06B36A009F10EA /* AttendanceVC.m in Sources */,
 				3728A74F1B9F51E800310457 /* GrowthTimelineStudentsSelectVC.m in Sources */,
 				8D3E32B01D7D5B5A00C1BC77 /* ContactsLoadingView.m in Sources */,
 				8DA0C5271DBA2E6A0005B9B1 /* HomeworkAnylizeVC.m in Sources */,
@@ -3995,7 +4050,6 @@
 				8DCFD7461D57857C001EDC8A /* NotificationDraftManager.m in Sources */,
 				37E93FC51A7E9CC600AD45A1 /* MJPhotoView.m in Sources */,
 				8DA0C5241DB9E60A0005B9B1 /* HomeworkTeacherMark.m in Sources */,
-				37D6EEF41BCBA96D000994A2 /* LeaveHistoryVC.m in Sources */,
 				8DFDDDB11D9519010050740B /* PhoneInputVC.m in Sources */,
 				371C6DAF1A7015AF00FA4AEC /* PublishSelectionView.m in Sources */,
 				379947EB1A66B430008E4B4F /* PhotoFlowVC.m in Sources */,
@@ -4022,6 +4076,7 @@
 				3793FA921B7CFFF000501F77 /* POIItemCell.m in Sources */,
 				37D6EE381BC90C62000994A2 /* LocationChange.m in Sources */,
 				3793FAF61B7CFFF000501F77 /* Utility.m in Sources */,
+				37FF16C51E06B3B6009F10EA /* ClassAttendanceCell.m in Sources */,
 				371C6DAD1A7015AF00FA4AEC /* PublishBaseVC.m in Sources */,
 				8D867D481D3F7BF80020A21C /* NotificationTargetContentView.m in Sources */,
 				8DFDDD9F1D93D7940050740B /* PublishHomeWorkVC.m in Sources */,
@@ -4038,7 +4093,6 @@
 				8D867C511D2F7A440020A21C /* UIImage+XMNResize.m in Sources */,
 				37CA18711AB70A2F00B49B55 /* PhotoPickerItem.m in Sources */,
 				3793FA911B7CFFF000501F77 /* PoiInfoView.m in Sources */,
-				37ED9E0E1C3B8C3A00E9F8CA /* StudentAttendanceModel.m in Sources */,
 				37D6EEF01BCBA96D000994A2 /* MyAttendanceItem.m in Sources */,
 				8D867D431D3F7BF80020A21C /* NotificationSendVC.m in Sources */,
 				8DCFD7741D588322001EDC8A /* MessageFromInfo.m in Sources */,
@@ -4048,9 +4102,9 @@
 				8D93F8B91DA0B667000C15FC /* ClassSelectVC.m in Sources */,
 				8D867D471D3F7BF80020A21C /* NotificationSendTargetView.m in Sources */,
 				8DC0875B1D8E47C6008B57B2 /* LGAlertViewWindow.m in Sources */,
+				37DF9A7A1E09983B0020B49E /* StudentsAttendanceVC.m in Sources */,
 				3793FAEE1B7CFFF000501F77 /* TNBaseTableViewController.m in Sources */,
 				8D75555B1D77F8BD00A140EE /* ZYBannerFooter.m in Sources */,
-				37C7339A1C4357E200BAD6CD /* AttendanceDateView.m in Sources */,
 				37C88F7F1A83D43D008E44DB /* ReportProblemVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

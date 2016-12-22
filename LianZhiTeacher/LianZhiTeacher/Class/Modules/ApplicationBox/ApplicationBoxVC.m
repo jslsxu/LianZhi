@@ -13,13 +13,13 @@
 #import "GrowthTimelineVC.h"
 #import "PhotoFlowVC.h"
 #import "HomeWorkVC.h"
-#import "ClassAttendanceVC.h"
 #import "MyAttendanceVC.h"
 #import "LZAccountVC.h"
 #import "NotificationSendVC.h"
 #import "NotificationHistoryVC.h"
 #import "TestWebVC.h"
 #import "LZMicrolessonVCViewController.h"
+#import "AttendanceVC.h"
 #define kBannerHeight               (kScreenWidth * 29 / 64)
 
 @implementation ApplicationBoxHeaderView
@@ -472,8 +472,9 @@
         }
         else if([host isEqualToString:@"leave"])//考勤
         {
-            ClassAttendanceVC *classAttendanceVC = [[ClassAttendanceVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:classAttendanceVC animated:YES];
+//            ClassAttendanceVC *classAttendanceVC = [[ClassAttendanceVC alloc] init];
+            AttendanceVC* attendanceVC = [[AttendanceVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:attendanceVC animated:YES];
         }
         else if ([host isEqualToString:@"account"])//炼制账户
         {

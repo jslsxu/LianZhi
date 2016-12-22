@@ -10,7 +10,7 @@
 #import "NotificationSendVC.h"
 #import "POP.h"
 #import "NotificationHistoryVC.h"
-#import "ClassAttendanceVC.h"
+#import "AttendanceVC.h"
 #define kItemWidth                  66
 #define kItemHeight                 96
 
@@ -215,7 +215,7 @@
 - (void)studentAttendance{
 
     [self dismissWithCompletion:^{
-        ClassAttendanceVC *classAttendanceVC = [[ClassAttendanceVC alloc] init];
+        AttendanceVC *classAttendanceVC = [[AttendanceVC alloc] init];
         [CurrentROOTNavigationVC pushViewController:classAttendanceVC animated:YES];
     }];
 }

@@ -11,12 +11,12 @@
 #import "ActionPopView.h"
 #import "ContactVC.h"
 #import "HomeWorkVC.h"
-#import "StudentAttendanceVC.h"
 #import "NotificationSendVC.h"
 #import "NHFileManager.h"
 #import "ActionFadeView.h"
 #import "ChatMessageModel.h"
 #import "DakaViewController.h"
+#import "AttendanceNotificationListVC.h"
 @interface MessageVC ()
 @property (nonatomic, strong)MessageSegView *segView;
 @property (nonatomic, strong)NSTimer *timer;
@@ -293,10 +293,8 @@
     {
         if(groupItem.fromInfo.type == ChatTypeAttendance)
         {
-            StudentAttendanceVC *classAttendanceVC = [[StudentAttendanceVC alloc] init];
-            classAttendanceVC.classID = groupItem.fromInfo.classID;
-            classAttendanceVC.targetStudentID = groupItem.fromInfo.childID;
-            [CurrentROOTNavigationVC pushViewController:classAttendanceVC animated:YES];
+            AttendanceNotificationListVC* attendanceNotificationVC = [[AttendanceNotificationListVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:attendanceNotificationVC animated:YES];
         }
         else{
             MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];
