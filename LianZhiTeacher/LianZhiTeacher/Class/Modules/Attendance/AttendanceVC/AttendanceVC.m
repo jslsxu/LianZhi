@@ -74,6 +74,7 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
     StudentsAttendanceVC *studentsAttendanceVC = [[StudentsAttendanceVC alloc] init];
+    [studentsAttendanceVC setClassInfo:[UserCenter sharedInstance].curSchool.classes[0]];
     [self.navigationController pushViewController:studentsAttendanceVC animated:YES];
 }
 

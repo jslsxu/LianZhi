@@ -14,6 +14,7 @@ typedef NS_ENUM(NSInteger, AttendanceClassFilterType){
     AttendanceClassFilterTypeCommited = 2,
     AttendanceClassFilterTypeWuguQueqin = 3,
     AttendanceClassFilterTypeLate = 4,
+    AttendanceClassFilterTypeNum = 5,
 };
 
 @interface ClassFilterView : UIView

@@ -17,4 +17,5 @@ pod 'pop'
 pod 'XHRealTimeBlur'
 pod 'MGSwipeTableCell'
 pod 'UMengAnalytics'
+pod 'TTTAttributedLabel'
 end

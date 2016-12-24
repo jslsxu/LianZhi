@@ -32,5 +32,6 @@
 #import "LZVideoCacheManager.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <YYKit/YYKit.h>
+#import <TTTAttributedLabel.h>
 #endif
 #endif

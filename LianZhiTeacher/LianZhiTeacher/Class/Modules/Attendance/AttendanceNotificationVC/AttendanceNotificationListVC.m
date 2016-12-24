@@ -18,7 +18,7 @@
     [super viewDidLoad];
     self.title = @"学生请假通知";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"清空" style:UIBarButtonItemStylePlain target:self action:@selector(clear)];
-    [self bindTableCell:@"AttendanceNotificationCell" tableModel:@"AttendanceNotificationListModel"];
+    [self bindTableCell:@"AttendanceNotificationCell" tableModel:@"MessageDetailModel"];
     [self setSupportPullUp:YES];
     [self setSupportPullDown:YES];
     [self requestData:REQUEST_REFRESH];
@@ -33,14 +33,5 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
