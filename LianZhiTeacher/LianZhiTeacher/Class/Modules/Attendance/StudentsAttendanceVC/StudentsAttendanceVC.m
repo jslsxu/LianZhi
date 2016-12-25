@@ -128,6 +128,11 @@
 
 }
 
+- (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
+    StudentAttendanceItem* item = (StudentAttendanceItem *)modelItem;
+    StudentAttendanceDetailVC* detailVC = [[StudentAttendanceDetailVC alloc] init];
+    [self.navigationController pushViewController:detailVC animated:YES];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

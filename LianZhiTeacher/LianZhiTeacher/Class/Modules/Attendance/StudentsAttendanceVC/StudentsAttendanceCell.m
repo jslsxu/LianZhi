@@ -95,7 +95,8 @@
 }
 
 - (void)noteClicked{
-    [NoteDetailView showWithNotes:self.attendanceItem.notes];
+    StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)self.modelItem;
+    [NoteDetailView showWithNotes:attendanceItem.notes];
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width{

@@ -11,4 +11,5 @@ pod 'Masonry'
 pod 'SCRecorder'
 pod 'ReactiveCocoa'
 pod 'UMengAnalytics'
+pod 'TTTAttributedLabel'
 end

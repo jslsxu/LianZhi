@@ -283,6 +283,8 @@
 		37D6EEC81BCABF11000994A2 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6EEC71BCABF11000994A2 /* libicucore.dylib */; };
 		37D6EECA1BCABF17000994A2 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D6EEC91BCABF17000994A2 /* libstdc++.dylib */; };
 		37D6EECD1BCABF40000994A2 /* ShareActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37D6EECB1BCABF40000994A2 /* ShareActionView.m */; };
+		37DF9AB31E1012250020B49E /* AttendanceDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DF9AB21E1012250020B49E /* AttendanceDetailVC.m */; };
+		37DF9AB61E1014760020B49E /* StudentAttendanceHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37DF9AB51E1014760020B49E /* StudentAttendanceHeaderView.m */; };
 		37E5F5FA1DF7DDDA0062941C /* ParamUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E5F5521DF7DDD90062941C /* ParamUtil.m */; };
 		37E5F5FB1DF7DDDA0062941C /* UIButton+Badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E5F5541DF7DDD90062941C /* UIButton+Badge.m */; };
 		37E5F5FC1DF7DDDA0062941C /* UINavigationBar+BackgroundColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E5F5561DF7DDD90062941C /* UINavigationBar+BackgroundColor.m */; };
@@ -1055,6 +1057,10 @@
 		37D6EEC91BCABF17000994A2 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		37D6EECB1BCABF40000994A2 /* ShareActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareActionView.m; sourceTree = "<group>"; };
 		37D6EECC1BCABF40000994A2 /* ShareActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareActionView.h; sourceTree = "<group>"; };
+		37DF9AB11E1012250020B49E /* AttendanceDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceDetailVC.h; sourceTree = "<group>"; };
+		37DF9AB21E1012250020B49E /* AttendanceDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceDetailVC.m; sourceTree = "<group>"; };
+		37DF9AB41E1014760020B49E /* StudentAttendanceHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentAttendanceHeaderView.h; sourceTree = "<group>"; };
+		37DF9AB51E1014760020B49E /* StudentAttendanceHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentAttendanceHeaderView.m; sourceTree = "<group>"; };
 		37E5F5511DF7DDD90062941C /* ParamUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParamUtil.h; sourceTree = "<group>"; };
 		37E5F5521DF7DDD90062941C /* ParamUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParamUtil.m; sourceTree = "<group>"; };
 		37E5F5531DF7DDD90062941C /* UIButton+Badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Badge.h"; sourceTree = "<group>"; };
@@ -2615,6 +2621,7 @@
 		37C316351A5636AC002E847D /* ClassApp */ = {
 			isa = PBXGroup;
 			children = (
+				37DF9AAE1E1011E70020B49E /* Attendance */,
 				3712ACC21DE1D0C9000E5AF8 /* VacationHistory */,
 				3712ACD81DE1D0C9000E5AF8 /* VacationManaerVC */,
 				37C316431A56372D002E847D /* ClassAppVC.h */,
@@ -2952,6 +2959,33 @@
 				37C6B3BB1BF2DEC60001D54F /* SVSDK */,
 			);
 			path = SVShare;
+			sourceTree = "<group>";
+		};
+		37DF9AAE1E1011E70020B49E /* Attendance */ = {
+			isa = PBXGroup;
+			children = (
+				37DF9AAF1E1012120020B49E /* AttendanceDetail */,
+				37DF9AB01E1012120020B49E /* RequestLeave */,
+			);
+			path = Attendance;
+			sourceTree = "<group>";
+		};
+		37DF9AAF1E1012120020B49E /* AttendanceDetail */ = {
+			isa = PBXGroup;
+			children = (
+				37DF9AB11E1012250020B49E /* AttendanceDetailVC.h */,
+				37DF9AB21E1012250020B49E /* AttendanceDetailVC.m */,
+				37DF9AB41E1014760020B49E /* StudentAttendanceHeaderView.h */,
+				37DF9AB51E1014760020B49E /* StudentAttendanceHeaderView.m */,
+			);
+			path = AttendanceDetail;
+			sourceTree = "<group>";
+		};
+		37DF9AB01E1012120020B49E /* RequestLeave */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = RequestLeave;
 			sourceTree = "<group>";
 		};
 		37E5F54F1DF7DDD90062941C /* Resource */ = {
@@ -4226,6 +4260,7 @@
 				379B7B161C29738F0052F563 /* ClassSelectionVC.m in Sources */,
 				3728A61E1B93F36B00310457 /* MFWFace.m in Sources */,
 				3793F7E71B7CFFD900501F77 /* AmrPlayerReader.m in Sources */,
+				37DF9AB31E1012250020B49E /* AttendanceDetailVC.m in Sources */,
 				8D7554DE1D6969E300A140EE /* DNAsset.m in Sources */,
 				8D7555511D77F57E00A140EE /* ZYBannerView.m in Sources */,
 				37E5F6331DF7DDDA0062941C /* LZCustomAlertView.m in Sources */,
@@ -4398,6 +4433,7 @@
 				8D3D45CE1D5F9438005EA8EA /* ChatTeacherInfoVC.m in Sources */,
 				37B7044F1A4410CD0025D684 /* PasswordModificationVC.m in Sources */,
 				3712ACE91DE1D0C9000E5AF8 /* RequestVacationVC.m in Sources */,
+				37DF9AB61E1014760020B49E /* StudentAttendanceHeaderView.m in Sources */,
 				8D867D231D3D232C0020A21C /* LZKVStorage.m in Sources */,
 				3793F7C11B7CFFD900501F77 /* DAOverlayView.m in Sources */,
 				3720C1461A41E19D000357A5 /* SettingsVC.m in Sources */,

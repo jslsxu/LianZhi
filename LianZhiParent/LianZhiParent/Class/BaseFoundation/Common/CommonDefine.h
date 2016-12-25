@@ -26,6 +26,13 @@
 #define kWarningTextColor               [UIColor colorWithRed:164 / 255.0 green:70 / 255.0 blue:73 / 255.0 alpha:1.f]
 #define kSepLineColor                   [UIColor colorWithRed:0xE0 / 255.0 green:0xE0 / 255.0 blue:0xE0 / 255.0 alpha:1.f]
 
+#define kColor_33                       [UIColor colorWithHexString:@"333333"]
+#define kColor_66                       [UIColor colorWithHexString:@"666666"]
+#define kColor_99                       [UIColor colorWithHexString:@"999999"]
+#define kColor_cc                       [UIColor colorWithHexString:@"cccccc"]
+
+#define kRedColor                       [UIColor colorWithHexString:@"F0003A"]
+
 #define kButtonTextFont                 [UIFont systemFontOfSize:17]
 #define kCommonTextFont                 [UIFont systemFontOfSize:14]
 #define kSubTextFont                    [UIFont systemFontOfSize:11]
