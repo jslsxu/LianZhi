@@ -7,6 +7,7 @@
 //
 
 #import "AttendanceNotificationCell.h"
+#import "AttendanceNotificationItem.h"
 #define kContentFont            [UIFont systemFontOfSize:14]
 
 #define kBGTopMargin            12
@@ -75,42 +76,29 @@
     return self;
 }
 
-- (void)setFromInfo:(MessageFromInfo *)fromInfo{
-    _fromInfo = fromInfo;
-    [_avatarView sd_setImageWithURL:[NSURL URLWithString:_fromInfo.logoUrl]];
-    [_nameLabel setText:_fromInfo.name];
-    [_nameLabel sizeToFit];
-    [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.y + 5)];
-}
-
 - (void)onReloadData:(TNModelItem *)modelItem
 {
-    MessageDetailItem *item = (MessageDetailItem *)modelItem;
+    AttendanceNotificationItem *item = (AttendanceNotificationItem *)modelItem;
     if(item.is_new){
         [_bgView setBackgroundColor:[UIColor colorWithHexString:@"f4f9fa"]];
     }
     else{
         [_bgView setBackgroundColor:[UIColor whiteColor]];
     }
-    [_avatarView sd_setImageWithURL:[NSURL URLWithString:item.from_user.avatar]];
-    [_nameLabel setText:item.from_user.name];
+    [_avatarView sd_setImageWithURL:[NSURL URLWithString:item.words.child_info.avatar]];
+    [_nameLabel setText:item.words.child_info.name];
     [_nameLabel sizeToFit];
     [_nameLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.centerY - 3 - _nameLabel.height)];
-    [_timeLabel setText:item.time_str];
+    [_timeLabel setText:item.time];
     [_timeLabel sizeToFit];
     [_timeLabel setOrigin:CGPointMake(_avatarView.right + 10, _avatarView.centerY + 3 )];
     CGFloat height = _avatarView.bottom + 15;
-    NSString *content = item.words;
+    NSString *content = item.words.index_words;
     [_contentLabel setWidth:_bgView.width - kContentHMargin * 2];
     if(content.length > 0){
         [_contentLabel setHidden:NO];
         [_contentLabel setText:content];
-        if(item.type == ChatTypeLianZhiBroadcast || item.type == ChatTypeDoorEntrance){
-            [_contentLabel sizeToFit];
-        }
-        else{
-            [AttendanceNotificationCell dynamicCalculationLabelHight:_contentLabel];
-        }
+        [AttendanceNotificationCell dynamicCalculationLabelHight:_contentLabel];
         
         [_contentLabel setY:height];
         height += _contentLabel.height + 10;
@@ -118,17 +106,13 @@
     else{
         [_contentLabel setHidden:YES];
     }
-    if(item.type == ChatTypeLianZhiBroadcast || item.type == ChatTypeDoorEntrance){
-        [_extraView setHidden:YES];
-    }
-    else{
-        [_extraView setHidden:NO];
-        [_extraView setY:height];
-        
-        [_attendanceTimeLabel setText:@"请假时间:7月23日上午 - 7月23日下午"];
-        
-        height += kExtraInfoHeight;
-    }
+    
+    [_extraView setHidden:NO];
+    [_extraView setY:height];
+    
+    [_attendanceTimeLabel setText:[NSString stringWithFormat:@"请假时间:%@ - %@",item.words.from_date, item.words.to_date]];
+    
+    height += kExtraInfoHeight;
     [_bgView setHeight:height];
     
 }
@@ -142,29 +126,20 @@
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width
 {
-    MessageDetailItem *item = (MessageDetailItem *)modelItem;
+    AttendanceNotificationItem *item = (AttendanceNotificationItem *)modelItem;
     NSInteger height = kBGTopMargin + 10 + 46 + 15;
-    NSString *content = item.words;
+    NSString *content = item.words.index_words;
     if(content.length > 0){
         UILabel *contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(kContentHMargin, 0, width - kBGViewHMargin * 2 - kContentHMargin * 2, 0)];
         [contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [contentLabel setNumberOfLines:0];
         [contentLabel setFont:kContentFont];
         [contentLabel setText:content];
-        if(item.type == ChatTypeLianZhiBroadcast || item.type == ChatTypeDoorEntrance){
-            [contentLabel sizeToFit];
-        }
-        else{
-            [AttendanceNotificationCell dynamicCalculationLabelHight:contentLabel];
-        }
+        [AttendanceNotificationCell dynamicCalculationLabelHight:contentLabel];
+
         height += contentLabel.height + 10;
     }
-    if(item.type == ChatTypeLianZhiBroadcast || item.type == ChatTypeDoorEntrance){
-        
-    }
-    else{
-        height += kExtraInfoHeight;
-    }
+    height += kExtraInfoHeight;
     
     return @(height);
 }

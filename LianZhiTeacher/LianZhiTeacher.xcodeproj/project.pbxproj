@@ -55,6 +55,9 @@
 		376FC6BB1B01EFCB00289DC2 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6BA1B01EFCB00289DC2 /* CoreMedia.framework */; };
 		376FC6BD1B01EFD100289DC2 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6BC1B01EFD100289DC2 /* CoreVideo.framework */; };
 		3777092A1E273FF7001168AD /* AttendanceClassSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 377709291E273FF7001168AD /* AttendanceClassSelectVC.m */; };
+		3777092D1E275A1B001168AD /* StudentAttendanceDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 3777092C1E275A1B001168AD /* StudentAttendanceDetail.m */; };
+		377709301E27D46A001168AD /* AttendanceNotificationListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3777092F1E27D46A001168AD /* AttendanceNotificationListModel.m */; };
+		377709331E27D47E001168AD /* AttendanceNotificationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 377709321E27D47E001168AD /* AttendanceNotificationItem.m */; };
 		378C78431AA43D6C00E171E2 /* PreviewMessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 378C78421AA43D6C00E171E2 /* PreviewMessageVC.m */; };
 		3793F5041B7B27C100501F77 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3793F5031B7B27C100501F77 /* CoreLocation.framework */; };
 		3793F5061B7B27DC00501F77 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3793F5051B7B27DC00501F77 /* CoreTelephony.framework */; };
@@ -589,6 +592,12 @@
 		376FC6BC1B01EFD100289DC2 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		377709281E273FF7001168AD /* AttendanceClassSelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceClassSelectVC.h; sourceTree = "<group>"; };
 		377709291E273FF7001168AD /* AttendanceClassSelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceClassSelectVC.m; sourceTree = "<group>"; };
+		3777092B1E275A1B001168AD /* StudentAttendanceDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentAttendanceDetail.h; sourceTree = "<group>"; };
+		3777092C1E275A1B001168AD /* StudentAttendanceDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentAttendanceDetail.m; sourceTree = "<group>"; };
+		3777092E1E27D46A001168AD /* AttendanceNotificationListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceNotificationListModel.h; sourceTree = "<group>"; };
+		3777092F1E27D46A001168AD /* AttendanceNotificationListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceNotificationListModel.m; sourceTree = "<group>"; };
+		377709311E27D47E001168AD /* AttendanceNotificationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceNotificationItem.h; sourceTree = "<group>"; };
+		377709321E27D47E001168AD /* AttendanceNotificationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceNotificationItem.m; sourceTree = "<group>"; };
 		378C78411AA43D6C00E171E2 /* PreviewMessageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewMessageVC.h; sourceTree = "<group>"; };
 		378C78421AA43D6C00E171E2 /* PreviewMessageVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewMessageVC.m; sourceTree = "<group>"; };
 		3793F5031B7B27C100501F77 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -2648,6 +2657,8 @@
 				37DF9A801E099C6F0020B49E /* StudentAttendanceHeaderView.m */,
 				37DF9A821E099C8D0020B49E /* StudentAttendanceNoteView.h */,
 				37DF9A831E099C8D0020B49E /* StudentAttendanceNoteView.m */,
+				3777092B1E275A1B001168AD /* StudentAttendanceDetail.h */,
+				3777092C1E275A1B001168AD /* StudentAttendanceDetail.m */,
 			);
 			path = StudentAttendanceDetailVC;
 			sourceTree = "<group>";
@@ -2907,6 +2918,10 @@
 				37FF16D51E06B98C009F10EA /* AttendanceNotificationListVC.m */,
 				37FF16D71E06B9AF009F10EA /* AttendanceNotificationCell.h */,
 				37FF16D81E06B9AF009F10EA /* AttendanceNotificationCell.m */,
+				3777092E1E27D46A001168AD /* AttendanceNotificationListModel.h */,
+				3777092F1E27D46A001168AD /* AttendanceNotificationListModel.m */,
+				377709311E27D47E001168AD /* AttendanceNotificationItem.h */,
+				377709321E27D47E001168AD /* AttendanceNotificationItem.m */,
 			);
 			path = AttendanceNotificationVC;
 			sourceTree = "<group>";
@@ -3839,6 +3854,7 @@
 				37FD6E351BB69AFE00C83AB4 /* RegisterVC.m in Sources */,
 				37FD6DEA1BAEE01C00C83AB4 /* MessageItem.m in Sources */,
 				373528771AD6557800C0F326 /* BaseInfoModifyVC.m in Sources */,
+				377709301E27D46A001168AD /* AttendanceNotificationListModel.m in Sources */,
 				8D3D45831D5C1E94005EA8EA /* LZVideoCacheManager.m in Sources */,
 				37DEE4F11A57C24A009A8771 /* SettingItemCell.m in Sources */,
 				8DCF87961DB0E5EC00712042 /* HomeworkManager.m in Sources */,
@@ -3910,6 +3926,7 @@
 				8D7555081D6DA89400A140EE /* PBPresentAnimatedTransitioningController.m in Sources */,
 				37FF16CF1E06B5BC009F10EA /* NSDate+convenience.m in Sources */,
 				3728A6A81B98B20700310457 /* ClassZoneModel.m in Sources */,
+				3777092D1E275A1B001168AD /* StudentAttendanceDetail.m in Sources */,
 				3793FAF11B7CFFF000501F77 /* TaskItem.m in Sources */,
 				8DCFD75D1D584C08001EDC8A /* NHFileDownloadManager.m in Sources */,
 				3793FA251B7CFFF000501F77 /* YLImageView.m in Sources */,
@@ -4119,6 +4136,7 @@
 				3793FAA71B7CFFF000501F77 /* UIImage+Utility.m in Sources */,
 				37D6EEEE1BCBA96D000994A2 /* AttendanceDatePickerView.m in Sources */,
 				8DA0C50F1DB684A40005B9B1 /* HomeworkMarkFooterView.m in Sources */,
+				377709331E27D47E001168AD /* AttendanceNotificationItem.m in Sources */,
 				3793FAA21B7CFFF000501F77 /* NSObject+UnifiedPerformSelector.m in Sources */,
 				8DCFD6E21D4F3050001EDC8A /* ChatContentImageView.m in Sources */,
 				8D75552B1D7162FC00A140EE /* NotificationSimpleAudioRecordView.m in Sources */,

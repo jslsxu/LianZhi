@@ -94,8 +94,8 @@
     [logoutButton setTitle:@"退出登录" forState:UIControlStateNormal];
     [logoutButton.titleLabel setFont:[UIFont boldSystemFontOfSize:16]];
     [logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [logoutButton setBackgroundImage:[[UIImage imageWithColor:[UIColor colorWithHexString:@"E82557"] size:CGSizeMake(30, 30) cornerRadius:15] resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15)] forState:UIControlStateNormal];
     [logoutButton setFrame:CGRectMake(15, (viewParent.height - 35) / 2, viewParent.width - 15 * 2, 35)];
+    [logoutButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"E82557"] size:logoutButton.size cornerRadius:15] forState:UIControlStateNormal];
     [viewParent addSubview:logoutButton];
 }
 

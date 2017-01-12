@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "StudentAttendanceDetail.h"
 @interface StudentAttendanceHeaderView : UIView
-
+@property (nonatomic, strong)StudentAttendanceDetailInfo* info;
 @end

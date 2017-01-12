@@ -31,7 +31,7 @@
 //    self.title = text;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"清空" style:UIBarButtonItemStylePlain target:self action:@selector(clear)];
     [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 12, 0)];
-    if(self.fromInfo.type == ChatTypeAttendance){
+    if(self.fromInfo.type == ChatTypeNewAttendance){
         [self setTitle:@"学生请假通知"];
         [self bindTableCell:@"AttendanceNotificationCell" tableModel:@"MessageDetailModel"];
     }
@@ -81,7 +81,12 @@
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
 {
     HttpRequestTask *task = [[HttpRequestTask alloc] init];
-    [task setRequestUrl:@"notice/thread"];
+    if(self.fromInfo.type == ChatTypeNewAttendance){
+        [task setRequestUrl:@"notice/leave"];
+    }
+    else{
+        [task setRequestUrl:@"notice/thread"];
+    }
     [task setRequestMethod:REQUEST_GET];
     [task setRequestType:requestType];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];

@@ -20,6 +20,5 @@
     UIView*                 _sepLine;
     UILabel*                _attendanceTimeLabel;
 }
-@property (nonatomic, strong)MessageFromInfo *fromInfo;
 @property (nonatomic, copy)void (^deleteCallback)();
 @end

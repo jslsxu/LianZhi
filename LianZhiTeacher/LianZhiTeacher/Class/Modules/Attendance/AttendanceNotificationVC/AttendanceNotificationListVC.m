@@ -8,6 +8,7 @@
 
 #import "AttendanceNotificationListVC.h"
 #import "AttendanceNotificationCell.h"
+#import "AttendanceNotificationListModel.h"
 @interface AttendanceNotificationListVC ()
 
 @end
@@ -19,14 +20,35 @@
     self.title = @"学生请假通知";
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"eeeef4"]];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"清空" style:UIBarButtonItemStylePlain target:self action:@selector(clear)];
-    [self bindTableCell:@"AttendanceNotificationCell" tableModel:@"MessageDetailModel"];
+    [self bindTableCell:@"AttendanceNotificationCell" tableModel:@"AttendanceNotificationListModel"];
     [self setSupportPullUp:YES];
     [self setSupportPullDown:YES];
     [self requestData:REQUEST_REFRESH];
 }
 
 - (void)clear{
-    
+
+    @weakify(self)
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提醒" message:@"确定清空吗?" style:LGAlertViewStyleAlert buttonTitles:nil cancelButtonTitle:@"取消" destructiveButtonTitle:@"清空"];
+    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+        @strongify(self)
+        //删除消息
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setValue:self.fromInfo.uid forKey:@"from_id"];
+        [params setValue:kStringFromValue(self.fromInfo.type) forKey:@"from_type"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"notice/delete_thread" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [self.tableViewModel.modelItemArray removeAllObjects];
+            [self saveCache];
+            [self.tableView reloadData];
+        } fail:^(NSString *errMsg) {
+            
+        }];
+    }];
+    [alertView showAnimated:YES completionHandler:nil];
+
 }
 
 - (void)deleteItem:(MessageDetailItem *)detailItem
@@ -62,7 +84,7 @@
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType
 {
     HttpRequestTask *task = [[HttpRequestTask alloc] init];
-    [task setRequestUrl:@"notice/thread"];
+    [task setRequestUrl:@"notice/leave"];
     [task setRequestMethod:REQUEST_GET];
     [task setRequestType:requestType];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];

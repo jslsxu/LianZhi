@@ -248,6 +248,7 @@
         });
     } fail:^(NSString *errMsg) {
         [hud hide:YES];
+        [ProgressHUD showHintText:errMsg];
     }];
 }
 

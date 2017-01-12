@@ -284,14 +284,16 @@
 
 #pragma mark - CalendaDelegate
 - (void)calendarDateDidChange:(NSDate *)selectedDate{
+    StudentsAttendanceListModel* model = (StudentsAttendanceListModel *)self.tableViewModel;
     if([self checkDate] <= 0){
-        StudentsAttendanceListModel* model = (StudentsAttendanceListModel *)self.tableViewModel;
         [model setSortIndex:-1];
         [self requestData:REQUEST_REFRESH];
     }
     else{
         [self.attendanceEmptyView setHidden:NO];
         [self.attendanceEmptyView setDate:self.calendar.currentSelectedDate];
+        [model.modelItemArray removeAllObjects];
+        [self.tableView reloadData];
     }
 }
 
