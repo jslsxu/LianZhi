@@ -8,6 +8,7 @@
 
 #import "TNBaseViewController.h"
 
-@interface EditAttendanceVC : TNBaseViewController
+@interface EditAttendanceVC : TNBaseTableViewController
 @property (nonatomic, strong)ClassInfo* classInfo;
+@property (nonatomic, strong)NSDate* date;
 @end

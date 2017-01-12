@@ -10,59 +10,195 @@
 
 @implementation AttendanceNoteItem
 
-- (instancetype)init{
-    self = [super init];
-    if(self){
-        self.time = @"08:05";
-        self.note = @"陈琦的妈妈请假，备注:不去幼儿园了明年也是我的本命年按，我要更加努力了，感谢楼主分享";
-    }
-    return self;
-}
 @end
 
 @implementation StudentAttendanceItem
 
-- (instancetype)init{
-    self = [super init];
-    if(self){
-        self.studentInfo = [[StudentInfo alloc] init];
-        [self.studentInfo setAvatar:@"https://www.baidu.com/s?wd=美女图片库&rsv_idx=2&tn=baiduhome_pg&usm=3&ie=utf-8&rsv_cq=图片&rsv_dl=0_right_recommends_merge_20826&euri=2853269"];
-        [self.studentInfo setName:@"朱见深"];
-        
-        self.attendance = arc4random() % 2;
-        self.comment = @"明年也是我的本命年按，我要更加努力了，感谢楼主分享明年也是我的本命年按，我要更加努力了，感谢楼主分享";
-        NSMutableArray* noteArray = [NSMutableArray array];
-        for (NSInteger i = 0; i < arc4random() % 10; i++) {
-            AttendanceNoteItem* noteItem = [[AttendanceNoteItem alloc] init];
-            [noteArray addObject:noteItem];
-        }
-        self.notes = noteArray;
-    }
-    return self;
++ (NSDictionary<NSString*, id> *)modelContainerPropertyGenericClass{
+    return @{@"recode" : [AttendanceNoteItem class]};
+}
+
+- (BOOL)normalAttendance{
+    return self.status == AttendanceStatusNormal || self.status == AttendanceStatusLate;
+}
+
+- (NSDictionary *)attedanceInfo{
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    [dictionary setValue:self.child_info.uid forKey:@"child_id"];
+    [dictionary setValue:kStringFromValue(self.status) forKey:@"status"];
+    [dictionary setValue:self.mark_info forKey:@"recode"];
+    return dictionary;
 }
 @end
 
+@implementation ClassAttendanceInfo
+
+
+@end
+
 @implementation StudentsAttendanceListModel
+
 - (instancetype)init{
     self = [super init];
     if(self){
-        for (NSInteger i = 0; i < 20; i++) {
-            StudentAttendanceItem* item = [[StudentAttendanceItem alloc] init];
-            [self.modelItemArray addObject:item];
-        }
+        self.sortIndex = -1;
+        self.absenceIndex = -1;
     }
     return self;
 }
 
+- (NSInteger)attendanceNum{
+    NSInteger count = 0;
+    for (StudentAttendanceItem* item in self.modelItemArray) {
+        if([item normalAttendance]){
+            count++;
+        }
+    }
+    return count;
+}
+
+- (NSInteger)absenceNum{
+    return self.modelItemArray.count - [self attendanceNum];
+}
+
+- (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type{
+    if(type == REQUEST_REFRESH){
+        [self.modelItemArray removeAllObjects];
+    }
+    TNDataWrapper *infoWrapper = [data getDataWrapperForKey:@"info"];
+    self.info = [ClassAttendanceInfo modelWithJSON:infoWrapper.data];
+    
+    TNDataWrapper *itemsWrapper = [data getDataWrapperForKey:@"items"];
+    NSArray* items = [StudentAttendanceItem nh_modelArrayWithJson:itemsWrapper.data];
+    [self.modelItemArray addObjectsFromArray:items];
+    
+    return YES;
+}
+
+- (NSString *)titleForSection:(NSInteger)section{
+    return [self titleArray][section];
+}
+
+- (NSArray *)titleArray{
+    NSDictionary* dic = [self modelDictionary];
+    NSMutableArray* keyArray = [NSMutableArray arrayWithArray:[dic allKeys]];
+    [keyArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        NSString* key1 = (NSString *)obj1;
+        NSString* key2 = (NSString* )obj2;
+        return [key1 compare:key2];
+    }];
+    return keyArray;
+}
+
+- (NSDictionary *)modelDictionary{
+    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+    for (StudentAttendanceItem *item in self.modelItemArray) {
+        NSString* pinyin = [item.child_info.first_letter capitalizedString];
+        if([pinyin length] > 0){
+            NSString* title = [pinyin substringToIndex:1];
+            NSMutableArray* itemArray = [dic valueForKey:title];
+            if(itemArray == nil){
+                itemArray = [NSMutableArray array];
+                [dic setValue:itemArray forKey:title];
+            }
+            [itemArray addObject:item];
+        }
+    }
+    if([dic count] > 0){
+        return dic;
+    }
+    return nil;
+}
+
 - (NSInteger)numOfSections{
-    return [self.modelItemArray count];
+    if(self.sortIndex == -1){
+        return [self.titleArray count];
+    }
+    else{
+        return 1;
+    }
 }
 
 - (NSInteger)numOfRowsInSection:(NSInteger)section{
+    if(self.sortIndex == -1){
+        NSString* key = [self titleArray][section];
+        NSArray* sectionArray = [self modelDictionary][key];
+        return [sectionArray count];
+    }
+    else if(self.sortIndex == 0){
+        return [self.modelItemArray count];
+    }
+    else if(self.sortIndex == 1){
+        NSInteger count = 0;
+        for (StudentAttendanceItem *item in self.modelItemArray) {
+            if([item normalAttendance]){
+                count ++;
+            }
+        }
+        return count;
+    }
+    else if(self.sortIndex == 2){
+        NSInteger count = 0;
+        for (StudentAttendanceItem *item in self.modelItemArray) {
+            if(![item normalAttendance]){
+                count ++;
+            }
+        }
+        return count;
+    }
     return 1;
 }
 
 - (TNModelItem *)itemForIndexPath:(NSIndexPath *)indexPath{
-    return self.modelItemArray[indexPath.section];
+    if(self.sortIndex == -1){
+        NSDictionary* dic = [self modelDictionary];
+        NSArray* allKeys = [self titleArray];
+        NSString* key = allKeys[indexPath.section];
+        NSArray* sectionItems = dic[key];
+        return sectionItems[indexPath.row];
+    }
+    else if(self.sortIndex == 0){
+        return self.modelItemArray[indexPath.row];
+    }
+    else if(self.sortIndex == 1){
+        NSInteger count = 0;
+        for (StudentAttendanceItem *item in self.modelItemArray) {
+            if([item normalAttendance]){
+                count ++;
+            }
+            if(count == indexPath.row + 1){
+                return item;
+            }
+        }
+    }
+    else if(self.sortIndex == 2){
+        NSInteger count = 0;
+        for (StudentAttendanceItem *item in self.modelItemArray) {
+            if(![item normalAttendance]){
+                count ++;
+            }
+            if(count == indexPath.row + 1){
+                return item;
+            }
+        }
+    }
+    return nil;
 }
+
+- (void)setSortIndex:(NSInteger)sortIndex{
+    if(!self.attendaceEdit){
+        _sortIndex = sortIndex;
+    }
+    else{
+        if(sortIndex == 2){
+            if(self.absenceIndex < [self absenceNum] - 1){
+                self.absenceIndex ++;
+            }
+            else{
+                self.absenceIndex = 0;
+            }
+        }
+    }
+}
+
 @end

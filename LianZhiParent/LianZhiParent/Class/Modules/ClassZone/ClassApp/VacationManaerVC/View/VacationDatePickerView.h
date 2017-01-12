@@ -14,8 +14,6 @@ typedef void(^DateSelectBlk)(NSDate *date);
 {
     UIButton*       _backgroundButton;
     UIView*         _contentView;
-    UIDatePicker*   _datePicker;
-    NSDate*         _date;
 }
 @property (nonatomic, strong)DateSelectBlk callBack;
 - (instancetype)initWithFrame:(CGRect)frame andDate:(NSDate *)date minimumDate:(NSDate *)minDate;

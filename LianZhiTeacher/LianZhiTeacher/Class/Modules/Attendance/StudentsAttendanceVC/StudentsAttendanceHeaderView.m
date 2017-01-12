@@ -17,16 +17,18 @@
         self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.width, 30)];
         [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
         [self.titleLabel setFont:[UIFont systemFontOfSize:14]];
-        [self.titleLabel setText:@"当日出勤率:82%"];
-        [self.titleLabel setTextColor:kColor_33];
+        [self.titleLabel setText:@"当日出勤率:"];
+        [self.titleLabel setTextColor:[UIColor whiteColor]];
+        [self.titleLabel setBackgroundColor:[UIColor colorWithHexString:@"FAA132"]];
         [self addSubview:self.titleLabel];
         
         self.nameButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.nameButton addTarget:self action:@selector(onButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self.nameButton setFrame:CGRectMake(0, self.titleLabel.bottom, self.width / 2, 40)];
         [self.nameButton setBackgroundColor:[UIColor colorWithHexString:@"1AC082"]];
         [self.nameButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.nameButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
-        [self.nameButton setTitle:@"姓名(50)" forState:UIControlStateNormal];
+        [self.nameButton setTitle:@"姓名" forState:UIControlStateNormal];
         [self addSubview:self.nameButton];
         
         self.attendanceButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -34,8 +36,8 @@
         [self.attendanceButton setBackgroundColor:kCommonTeacherTintColor];
         [self.attendanceButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
          [self.attendanceButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
-        [self.attendanceButton setTitle:@"出勤(50)" forState:UIControlStateNormal];
-        [self.attendanceButton addTarget:self action:@selector(onAttendanceButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [self.attendanceButton setTitle:@"出勤" forState:UIControlStateNormal];
+        [self.attendanceButton addTarget:self action:@selector(onButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.attendanceButton];
         
         self.offButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -43,23 +45,38 @@
         [self.offButton setBackgroundColor:kRedColor];
         [self.offButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.offButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
-        [self.offButton setTitle:@"缺勤(50)" forState:UIControlStateNormal];
-        [self.offButton addTarget:self action:@selector(onOffButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+        [self.offButton setTitle:@"缺勤" forState:UIControlStateNormal];
+        [self.offButton addTarget:self action:@selector(onButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.offButton];
     }
     return self;
 }
 
-- (void)onAttendanceButtonClicked{
-    if(self.attendanceClickCallback){
-        self.attendanceClickCallback();
+- (void)setTitleHidden:(NSInteger)titleHidden{
+    _titleHidden = titleHidden;
+    [self.titleLabel setHidden:_titleHidden];
+    CGFloat spaceYStart = _titleHidden ? 0 : self.titleLabel.bottom;
+    [self setHeight:40 + spaceYStart];
+    [self.nameButton setY:spaceYStart];
+    [self.attendanceButton setY:spaceYStart];
+    [self.offButton setY:spaceYStart];
+}
+
+- (void)onButtonClicked:(UIButton *)button{
+    NSInteger index = 0;
+    if(button == self.nameButton){
+        index = 0;
+    }
+    else if(button == self.attendanceButton){
+        index = 1;
+    }
+    else if(button == self.offButton){
+        index = 2;
+    }
+    if(self.sortCallback){
+        self.sortCallback(index);
     }
 }
 
-- (void)onOffButtonClicked{
-    if(self.offClickCallback){
-        self.offClickCallback();
-    }
-}
 
 @end

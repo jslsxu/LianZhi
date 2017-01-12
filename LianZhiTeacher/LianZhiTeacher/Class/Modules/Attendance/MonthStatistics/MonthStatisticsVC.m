@@ -8,8 +8,10 @@
 
 #import "MonthStatisticsVC.h"
 #import "StatisticsMonthHeaderView.h"
+#import "MonthStatisticsListModel.h"
 @interface MonthStatisticsVC ()
 @property (nonatomic, strong)StatisticsMonthHeaderView* headerView;
+@property (nonatomic, strong)MBProgressHUD* hud;
 @end
 
 @implementation MonthStatisticsVC
@@ -38,9 +40,47 @@
 
 - (StatisticsMonthHeaderView *)headerView{
     if(nil == _headerView){
+        __weak typeof(self) wself = self;
         _headerView = [[StatisticsMonthHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 60)];
+        [_headerView setDateChanged:^{
+            [wself refreshOnDateChanged];
+        }];
+        [_headerView setDate:[NSDate date]];
     }
     return _headerView;
+}
+
+- (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType{
+    HttpRequestTask* task = [[HttpRequestTask alloc] init];
+    [task setRequestUrl:@"leave/nclassmonth"];
+    
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM"];
+    
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setValue:self.classInfo.classID forKey:@"class_id"];
+    [params setValue:[dateFormatter stringFromDate:self.date] forKey:@"cdate"];
+    [task setParams:params];
+    return task;
+}
+
+- (void)refreshOnDateChanged{
+    NSDate *date = self.headerView.date;
+    [self requestData:REQUEST_REFRESH];
+}
+
+- (void)TNBaseTableViewControllerRequestStart{
+    self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:NO];
+}
+
+- (void)TNBaseTableViewControllerRequestFailedWithError:(NSString *)errMsg{
+    [self.hud hide:NO];
+}
+
+- (void)TNBaseTableViewControllerRequestSuccess{
+    [self.hud hide:NO];
+    MonthStatisticsListModel* model = (MonthStatisticsListModel *)self.tableViewModel;
+    [self.headerView setClass_attendance:model.class_attendance];
 }
 
 - (void)didReceiveMemoryWarning {

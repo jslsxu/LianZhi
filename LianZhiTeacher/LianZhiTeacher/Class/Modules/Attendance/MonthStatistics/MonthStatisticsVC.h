@@ -10,4 +10,5 @@
 
 @interface MonthStatisticsVC : TNBaseTableViewController
 @property (nonatomic, strong)ClassInfo* classInfo;
+@property (nonatomic, strong)NSDate* date;
 @end

@@ -65,26 +65,26 @@
         self.attendanceNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.attendancePercentLabel.left, self.contentView.height - 15 - 15, self.contentView.width - 10 - self.attendancePercentLabel.left, 15)];
         [self.attendanceNumLabel setFont:[UIFont systemFontOfSize:14]];
         [self.contentView addSubview:self.attendanceNumLabel];
-        
-        [self setup];
     }
     return self;
 }
 
-- (void)setup{
+- (void)setInfo:(AttendanceInfo *)info{
+    _info = info;
     NSMutableAttributedString* attendancePercentStr = [[NSMutableAttributedString alloc] initWithString:@"出勤率\n" attributes:@{NSForegroundColorAttributeName : kColor_33}];
-    [attendancePercentStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"95%" attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
+    [attendancePercentStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%%", _info.attendance_rate] attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
     [self.attendancePercentLabel setAttributedText:attendancePercentStr];
     
     NSMutableAttributedString* offPercentStr = [[NSMutableAttributedString alloc] initWithString:@"缺勤率\n" attributes:@{NSForegroundColorAttributeName : kColor_33}];
-    [offPercentStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"5%" attributes:@{NSForegroundColorAttributeName : kRedColor}]];
+    [offPercentStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%%", _info.absence_rate] attributes:@{NSForegroundColorAttributeName : kRedColor}]];
     [self.offPercentLabel setAttributedText:offPercentStr];
-
+    
     NSMutableAttributedString* attendanceString = [[NSMutableAttributedString alloc] initWithString:@"出勤:" attributes:@{NSForegroundColorAttributeName : kColor_33}];
-    [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:@"1天\t\t" attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
+    [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%zd天\t\t", _info.attendance] attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
     [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:@"缺勤:" attributes:@{NSForegroundColorAttributeName : kColor_33}]];
-    [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:@"1天" attributes:@{NSForegroundColorAttributeName : kRedColor}]];
+    [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%zd天", _info.absence] attributes:@{NSForegroundColorAttributeName : kRedColor}]];
     [self.attendanceNumLabel setAttributedText:attendanceString];
 }
+
 
 @end

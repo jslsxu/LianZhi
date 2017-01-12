@@ -9,5 +9,6 @@
 #import "TNBaseViewController.h"
 
 @interface StudentAttendanceDetailVC : TNBaseViewController
-
+@property (nonatomic, strong)StudentInfo* studentInfo;
+@property (nonatomic, strong)ClassInfo* classInfo;
 @end

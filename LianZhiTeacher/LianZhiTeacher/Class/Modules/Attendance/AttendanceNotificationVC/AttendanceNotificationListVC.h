@@ -9,5 +9,5 @@
 #import "TNBaseTableViewController.h"
 
 @interface AttendanceNotificationListVC : TNBaseTableViewController
-
+@property (nonatomic, strong)MessageFromInfo *fromInfo;
 @end

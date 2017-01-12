@@ -18,4 +18,5 @@ pod 'XHRealTimeBlur'
 pod 'MGSwipeTableCell'
 pod 'UMengAnalytics'
 pod 'TTTAttributedLabel'
+pod 'WYPopoverController'
 end

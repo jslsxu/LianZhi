@@ -39,7 +39,7 @@
         [self.bgButton addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.bgButton];
         
-        self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0, self.height, self.width, 180)];
+        self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0, self.height, self.width, 270)];
         [self.contentView setBackgroundColor:[UIColor whiteColor]];
         [self setupContentView:self.contentView];
         [self addSubview:self.contentView];
@@ -165,6 +165,12 @@
             break;
         case AttendanceClassFilterTypeCommited:
             title = @"显示已提交班级";
+            break;
+        case AttendanceClassFilterTypeLate:
+            title = @"显示迟到的班级";
+            break;
+        case AttendanceClassFilterTypeWuguQueqin:
+            title = @"显示无故缺勤的班级";
             break;
         default:
             break;

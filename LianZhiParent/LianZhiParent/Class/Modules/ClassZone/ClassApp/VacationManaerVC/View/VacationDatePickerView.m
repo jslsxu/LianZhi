@@ -7,6 +7,14 @@
 //
 
 #import "VacationDatePickerView.h"
+#import <STPickerView.h>
+@interface VacationDatePickerView ()<UITableViewDelegate, UITableViewDataSource>
+@property (nonatomic, strong)NSDate *startDate;
+@property (nonatomic, strong)UITableView* dateTableView;
+@property (nonatomic, strong)UITableView* timeTableView;
+@property (nonatomic, assign)NSInteger dateIndex;
+@property (nonatomic, assign)NSInteger timeIndex;
+@end
 
 @implementation VacationDatePickerView
 
@@ -15,7 +23,21 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        _date = [self formatDate:date];
+        NSString* format = @"yyyy-MM-dd";
+        NSString* startDateString = [minDate stringWithFormat:format];
+        self.startDate = [NSDate dateWithString:startDateString format:format];
+        NSString* dateString = [date stringWithFormat:format];
+        self.timeIndex = date.hour - 7;
+        NSDate* formatStartDate = [NSDate dateWithString:startDateString format:format];
+        for (NSInteger i = 0; i < 31; i++) {
+            NSDate *curDate = [formatStartDate dateByAddingDays:i];
+            NSString* string = [curDate stringWithFormat:format];
+            if([string isEqualToString:dateString]){
+                self.dateIndex = i;
+                break;
+            }
+        }
+        
         _backgroundButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_backgroundButton setFrame:self.bounds];
         [_backgroundButton setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.5]];
@@ -23,14 +45,10 @@
         [self addSubview:_backgroundButton];
         
         _contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, 0)];
-        [_contentView setBackgroundColor:[UIColor whiteColor]];
+        [_contentView setBackgroundColor:[UIColor colorWithHexString:@"dddddd"]];
         [self setupContentView:_contentView];
         [self addSubview:_contentView];
         
-        if(minDate)
-            _datePicker.minimumDate = minDate;
-        else
-            _datePicker.minimumDate = [NSDate date];
     }
     return self;
 }
@@ -56,17 +74,36 @@
     [sepLine setBackgroundColor:[UIColor colorWithHexString:@"E0E0E0"]];
     [viewParent addSubview:sepLine];
     
-    _datePicker = [[UIDatePicker alloc] init];
-    [_datePicker setWidth:viewParent.width];
-    [_datePicker setDate:_date];
-    [_datePicker setDatePickerMode:UIDatePickerModeDateAndTime];
-    [_datePicker setMinuteInterval:30];
-    [viewParent addSubview:_datePicker];
+    UIView* selectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 50 + 60, viewParent.width, 30)];
+    [selectionView setBackgroundColor:kColor_99];
+    [viewParent addSubview:selectionView];
     
-    [viewParent setHeight:_datePicker.height + 40];
+    self.dateTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 50, viewParent.width * 2 / 3 - 20, 150) style:UITableViewStylePlain];
+    [self.dateTableView setShowsVerticalScrollIndicator:NO];
+    [self.dateTableView setBackgroundColor:[UIColor clearColor]];
+    [self.dateTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [self.dateTableView setDelegate:self];
+    [self.dateTableView setDataSource:self];
+    [self.dateTableView setContentInset:UIEdgeInsetsMake(60, 0, 60, 0)];
+    [viewParent addSubview:self.dateTableView];
+    
+    [self.dateTableView scrollToRow:self.dateIndex inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:YES];
+    
+    self.timeTableView = [[UITableView alloc] initWithFrame:CGRectMake(viewParent.width * 2 / 3+ 20, 50, viewParent.width / 3 - 20, 150) style:UITableViewStylePlain];
+    [self.timeTableView setShowsVerticalScrollIndicator:NO];
+    [self.timeTableView setBackgroundColor:[UIColor clearColor]];
+    [self.timeTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    [self.timeTableView setDelegate:self];
+    [self.timeTableView setDataSource:self];
+    [self.timeTableView setContentInset:UIEdgeInsetsMake(60, 0, 60, 0)];
+    [viewParent addSubview:self.timeTableView];
+    
+    
+    [self.timeTableView scrollToRow:self.timeIndex inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:YES];
+    
+    [viewParent setHeight:210];
     [cancelButton setFrame:CGRectMake(margin, margin, 50, 30)];
     [confirmButton setFrame:CGRectMake(viewParent.width - margin - 50,margin, 50, 30)];
-    [_datePicker setY:40];
 }
 
 - (void)show
@@ -102,33 +139,92 @@
 
 - (void)onConfirmClicked
 {
-    NSDate *selectedDate = _datePicker.date;
-    if(self.callBack)
+    NSDate* selectedDate = [self.startDate dateByAddingDays:self.dateIndex];
+    selectedDate = [selectedDate dateByAddingHours:7 + self.timeIndex];
+    if(self.callBack){
         self.callBack(selectedDate);
+    }
     [self dismiss];
 }
 
-- (NSDate *)formatDate:(NSDate *)date
-{
-    //距离date最近的一个半点
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy/MM/dd HH:mm"];
-    NSString *dateStr = [formatter stringFromDate:date];
-    NSInteger minute = [[dateStr substringWithRange:NSMakeRange(14, 2)] integerValue];
-    if(minute < 30 && minute > 0)
-    {
-        dateStr = [dateStr stringByReplacingCharactersInRange:NSMakeRange(14, 2) withString:@"30"];
-        return [formatter dateFromString:dateStr];
+- (void)handleScrollView:(UIScrollView *)scrollView{
+    CGFloat offsetY = scrollView.contentOffset.y + 60;
+    NSInteger row = (offsetY + 15) / 30;
+    row = MAX(0, row);
+    UITableView* tableView = (UITableView *)scrollView;
+    if(tableView == self.dateTableView){
+        row = MIN(30, row);
+        self.dateIndex = row;
     }
-    else if(minute > 30 && minute <= 59)
-    {
-        NSDate *nextDate = [NSDate dateWithTimeInterval:60 * 30 sinceDate:date];
-        NSString *nextDateStr = [formatter stringFromDate:nextDate];
-        nextDateStr = [nextDateStr stringByReplacingCharactersInRange:NSMakeRange(14, 2) withString:@"00"];
-        return [formatter dateFromString:nextDateStr];
+    else {
+        row = MIN(15, row);
+        self.timeIndex = row;
     }
-    return date;
-
+    [tableView scrollToRow:row inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:YES];
 }
 
+#pragma mark - UITableViewDelegate
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if(tableView == self.dateTableView){
+        return 31;
+    }
+    else{
+        return 15;
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 30;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell* cell = nil;
+    NSString* reuseID = nil;
+    if(tableView == self.dateTableView){
+        reuseID = @"DateCell";
+    }
+    else{
+        reuseID = @"TimeCell";
+    }
+    cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+    if(nil == cell){
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
+        if(tableView == self.dateTableView){
+            [cell.textLabel setTextAlignment:NSTextAlignmentRight];
+        }
+        [cell setBackgroundColor:[UIColor clearColor]];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        [cell.textLabel setFont:[UIFont systemFontOfSize:15]];
+        [cell.textLabel setTextColor:kColor_66];
+    }
+    NSInteger row = indexPath.row;
+    if(tableView == self.dateTableView){
+        NSDate *date = [self.startDate dateByAddingDays:row];
+        [cell.textLabel setText:[date stringWithFormat:@"yyyy年  MM月  dd日"]];
+    }
+    else{
+        NSString *time = [NSString stringWithFormat:@"%zd:00", 7 + row];
+        [cell.textLabel setText:time];
+    }
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
+    if(tableView == self.dateTableView){
+        self.dateIndex = indexPath.row;
+    }
+    else{
+        self.timeIndex = indexPath.row;
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    [self handleScrollView:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [self handleScrollView:scrollView];
+}
 @end

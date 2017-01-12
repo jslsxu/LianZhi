@@ -209,6 +209,7 @@
 		379B7B161C29738F0052F563 /* ClassSelectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 379B7B151C29738F0052F563 /* ClassSelectionVC.m */; };
 		37B52A1A1A73C24B005F80F2 /* LogConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B52A191A73C24B005F80F2 /* LogConfig.m */; };
 		37B5D3E71A57B23A003CA877 /* PersonalInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B5D3E61A57B23A003CA877 /* PersonalInfoVC.m */; };
+		37B604051E24F53500547AF2 /* AttendanceDetailResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B604041E24F53500547AF2 /* AttendanceDetailResponse.m */; };
 		37B7044F1A4410CD0025D684 /* PasswordModificationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B7044E1A4410CD0025D684 /* PasswordModificationVC.m */; };
 		37BC41101A43346D005038F9 /* ConfimInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37BC410F1A43346D005038F9 /* ConfimInfoVC.m */; };
 		37C316421A5636AC002E847D /* ClassZoneVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C3163E1A5636AC002E847D /* ClassZoneVC.m */; };
@@ -927,6 +928,8 @@
 		37B52A191A73C24B005F80F2 /* LogConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogConfig.m; sourceTree = "<group>"; };
 		37B5D3E51A57B23A003CA877 /* PersonalInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalInfoVC.h; sourceTree = "<group>"; };
 		37B5D3E61A57B23A003CA877 /* PersonalInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalInfoVC.m; sourceTree = "<group>"; };
+		37B604031E24F53500547AF2 /* AttendanceDetailResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceDetailResponse.h; sourceTree = "<group>"; };
+		37B604041E24F53500547AF2 /* AttendanceDetailResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceDetailResponse.m; sourceTree = "<group>"; };
 		37B7044D1A4410CD0025D684 /* PasswordModificationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordModificationVC.h; sourceTree = "<group>"; };
 		37B7044E1A4410CD0025D684 /* PasswordModificationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordModificationVC.m; sourceTree = "<group>"; };
 		37BC410E1A43346D005038F9 /* ConfimInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfimInfoVC.h; sourceTree = "<group>"; };
@@ -2965,7 +2968,6 @@
 			isa = PBXGroup;
 			children = (
 				37DF9AAF1E1012120020B49E /* AttendanceDetail */,
-				37DF9AB01E1012120020B49E /* RequestLeave */,
 			);
 			path = Attendance;
 			sourceTree = "<group>";
@@ -2977,15 +2979,10 @@
 				37DF9AB21E1012250020B49E /* AttendanceDetailVC.m */,
 				37DF9AB41E1014760020B49E /* StudentAttendanceHeaderView.h */,
 				37DF9AB51E1014760020B49E /* StudentAttendanceHeaderView.m */,
+				37B604031E24F53500547AF2 /* AttendanceDetailResponse.h */,
+				37B604041E24F53500547AF2 /* AttendanceDetailResponse.m */,
 			);
 			path = AttendanceDetail;
-			sourceTree = "<group>";
-		};
-		37DF9AB01E1012120020B49E /* RequestLeave */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = RequestLeave;
 			sourceTree = "<group>";
 		};
 		37E5F54F1DF7DDD90062941C /* Resource */ = {
@@ -4474,6 +4471,7 @@
 				8DE7186D1DABE2120080476D /* Calendar.m in Sources */,
 				3793F8271B7CFFD900501F77 /* Reachability+.m in Sources */,
 				3719A7471AA2C47800FBDC2A /* NewEditionPreview.m in Sources */,
+				37B604051E24F53500547AF2 /* AttendanceDetailResponse.m in Sources */,
 				3793F79A1B7CFFD900501F77 /* AFHTTPRequestOperation+Associative.m in Sources */,
 				37CBAF231A4724F20063F395 /* TreeHouseCell.m in Sources */,
 				8DCFD7C51D5A3D85001EDC8A /* NHFileManager.m in Sources */,

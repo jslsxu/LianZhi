@@ -12,4 +12,5 @@ pod 'SCRecorder'
 pod 'ReactiveCocoa'
 pod 'UMengAnalytics'
 pod 'TTTAttributedLabel'
+pod 'STPickerView'
 end

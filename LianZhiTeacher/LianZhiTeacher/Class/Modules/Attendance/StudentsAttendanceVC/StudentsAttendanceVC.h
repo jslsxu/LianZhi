@@ -10,4 +10,5 @@
 
 @interface StudentsAttendanceVC : TNBaseTableViewController
 @property (nonatomic, strong)ClassInfo* classInfo;
+@property (nonatomic, strong)NSArray* classInfoArray;
 @end

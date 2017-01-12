@@ -9,12 +9,15 @@
 #import "EditAttendanceCell.h"
 #import "NoteDetailView.h"
 #import "NoteView.h"
+#import "StudentsAttendanceListModel.h"
 @interface EditAttendanceCell ()
+@property (nonatomic, strong)UIView* flashView;
 @property (nonatomic, strong)AvatarView* avatar;
 @property (nonatomic, strong)UILabel* nameLabel;
 @property (nonatomic, strong)UIButton* mobileButton;
 @property (nonatomic, strong)UIButton* attendanceButton;
 @property (nonatomic, strong)UIButton* offButton;
+@property (nonatomic, strong)UIImageView* checkView;
 @property (nonatomic, strong)NoteView* noteView;
 @property (nonatomic, strong)UIButton* commentButton;
 @property (nonatomic, strong)UILabel* commentLabel;
@@ -26,6 +29,12 @@
     if(self){
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor whiteColor]];
+        
+        self.flashView = [[UIView alloc] initWithFrame:self.bounds];
+        [self.flashView setAlpha:0.f];
+        [self.flashView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
+        [self.flashView setBackgroundColor:kCommonTeacherTintColor];
+        [self addSubview:self.flashView];
         
         self.avatar = [[AvatarView alloc] initWithRadius:15];
         [self.avatar setOrigin:CGPointMake(10, 10)];
@@ -44,15 +53,16 @@
         
         self.attendanceButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.attendanceButton setFrame:CGRectMake(self.width / 2, 0, self.width / 4, 50)];
-        [self.attendanceButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
         [self.attendanceButton addTarget:self action:@selector(attendanceButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.attendanceButton];
         
         self.offButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.offButton setFrame:CGRectMake(self.attendanceButton.right, 0, self.width / 4, 50)];
-        [self.offButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
         [self.offButton addTarget:self action:@selector(attendanceButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.offButton];
+        
+        self.checkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"StudentAttendanceCheck"]];
+        [self addSubview:self.checkView];
         
         self.noteView = [[NoteView alloc] initWithFrame:CGRectMake(10, 0, self.width - 20 - 10, 20)];
         [self addSubview:self.noteView];
@@ -62,7 +72,7 @@
         
         self.commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.commentButton addTarget:self action:@selector(addComment) forControlEvents:UIControlEventTouchUpInside];
-        [self.commentButton setImage:[UIImage imageNamed:@"send_cancel"] forState:UIControlStateNormal];
+        [self.commentButton setImage:[UIImage imageNamed:@"editComment"] forState:UIControlStateNormal];
         [self.commentButton setTitleColor:kCommonTeacherTintColor forState:UIControlStateNormal];
         [self.commentButton.titleLabel setFont:[UIFont systemFontOfSize:14]];
         [self.commentButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 5, 0, 0)];
@@ -77,30 +87,34 @@
         [self.commentLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [self.commentLabel setNumberOfLines:0];
         [self addSubview:self.commentLabel];
+        
+        UIView* sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
+        [sepLine setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
+        [sepLine setBackgroundColor:kSepLineColor];
+        [self addSubview:sepLine];
     }
     return self;
 }
 
-- (void)setAttendanceItem:(StudentAttendanceItem *)attendanceItem{
-    _attendanceItem = attendanceItem;
-    [self reloadData];
-}
-
-- (void)reloadData{
-    [self.avatar sd_setImageWithURL:[NSURL URLWithString:_attendanceItem.studentInfo.avatar]];
-    [self.nameLabel setText:_attendanceItem.studentInfo.name];
+- (void)onReloadData:(TNModelItem *)modelItem{
+    StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)modelItem;
+    [self.avatar sd_setImageWithURL:[NSURL URLWithString:attendanceItem.child_info.avatar]];
+    [self.nameLabel setText:attendanceItem.child_info.name];
     [self.nameLabel sizeToFit];
     [self.nameLabel setOrigin:CGPointMake(self.avatar.right + 5, self.avatar.centerY - self.nameLabel.height / 2)];
     
     [self.mobileButton setOrigin:CGPointMake(self.nameLabel.right + 5, self.avatar.centerY - self.mobileButton.height / 2)];
-    BOOL attendance = _attendanceItem.attendance;
-    [self.attendanceButton setHidden:!attendance];
-    [self.offButton setHidden:attendance];
+    if([attendanceItem normalAttendance]){
+        [self.checkView setCenter:self.attendanceButton.center];
+    }
+    else{
+        [self.checkView setCenter:self.offButton.center];
+    }
     
     CGFloat spaceYStart = 45;
-    if([_attendanceItem.notes count] > 0){
+    if([attendanceItem.recode count] > 0){
         [self.noteView setHidden:NO];
-        [self.noteView setNoteItem:[_attendanceItem.notes lastObject]];
+        [self.noteView setNoteItem:[attendanceItem.recode lastObject]];
         [self.noteView setOrigin:CGPointMake(10, spaceYStart)];
         spaceYStart = self.noteView.bottom;
     }
@@ -110,77 +124,130 @@
     
     [self.commentButton setOrigin:CGPointMake(10, spaceYStart)];
     spaceYStart = self.commentButton.bottom;
-    if([_attendanceItem.comment length] > 0){
+    if([attendanceItem.mark_info length] > 0){
         [self.commentLabel setHidden:NO];
         [self.commentLabel setWidth:self.width - 10 * 2];
-        [self.commentLabel setText:_attendanceItem.comment];
+        [self.commentLabel setText:attendanceItem.mark_info];
         [self.commentLabel sizeToFit];
         [self.commentLabel setOrigin:CGPointMake(10, spaceYStart)];
     }
     else{
         [self.commentLabel setHidden:YES];
     }
+
 }
 
+
 - (void)noteClicked{
-    [NoteDetailView showWithNotes:self.attendanceItem.notes];
+    StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)self.modelItem;
+    [NoteDetailView showWithNotes:attendanceItem.recode];
 }
 
 - (void)onMobileClicked{
-    __weak typeof(self) wself = self;
-    NSMutableArray* mobileArray = [NSMutableArray array];
-    for (FamilyInfo *familyInfo in self.attendanceItem.studentInfo.family) {
-        [mobileArray addObject:[NSString stringWithFormat:@"%@:%@",familyInfo.name, familyInfo.mobile]];
+    StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)self.modelItem;
+    StudentInfo* studentInfo = attendanceItem.child_info;
+    NSMutableArray *familyArray = [NSMutableArray arrayWithCapacity:0];
+    for (NSInteger i = 0; i < studentInfo.family.count; i++) {
+        FamilyInfo *familyInfo = studentInfo.family[i];
+        [familyArray addObject:[NSString stringWithFormat:@"%@: %@",familyInfo.name, familyInfo.mobile]];
     }
-    LGAlertView* alertView = [[LGAlertView alloc] initWithTitle:self.attendanceItem.studentInfo.name message:nil style:LGAlertViewStyleActionSheet buttonTitles:mobileArray cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
-    [alertView setButtonsTitleColor:kCommonTeacherTintColor];
-    [alertView setCancelButtonTitleColor:kCommonTeacherTintColor];
+    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:attendanceItem.child_info.name message:nil style:LGAlertViewStyleActionSheet buttonTitles:familyArray cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
     [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setButtonsTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
+    [alertView setCancelButtonTitleColor:[UIColor colorWithHexString:@"28c4d8"]];
     [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-        FamilyInfo* familyInfo = wself.attendanceItem.studentInfo.family[index];
-        NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",familyInfo.mobile];
+        FamilyInfo *familyInfo = studentInfo.family[index];
+        NSMutableString * str = [[NSMutableString alloc] initWithFormat:@"tel://%@",familyInfo.mobile];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
     }];
     [alertView showAnimated:YES completionHandler:nil];
 }
 
 - (void)addComment{
+    StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)self.modelItem;
     __weak typeof(self) wself = self;
     UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入备注(可不填)" preferredStyle:UIAlertControllerStyleAlert];
     [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         [textField setFont:[UIFont systemFontOfSize:15]];
         [textField setTextColor:kColor_66];
-        [textField setText:wself.attendanceItem.comment];
+        [textField setText:attendanceItem.mark_info];
+        UITextPosition *endDocument = textField.endOfDocument;//获取 text的 尾部的 TextPositext
+        
+        UITextPosition *end = [textField positionFromPosition:endDocument offset:0];
+        UITextPosition *start = [textField positionFromPosition:end offset:-textField.text.length];//左－右＋
+        textField.selectedTextRange = [textField textRangeFromPosition:start toPosition:end];
     }];
     [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UITextField* textField = alertController.textFields[0];
-        wself.attendanceItem.comment = textField.text;
-        [wself reloadData];
+        attendanceItem.mark_info = textField.text;
+        if(wself.attendanceChanged){
+            wself.attendanceChanged();
+        }
     }]];
     [CurrentROOTNavigationVC presentViewController:alertController animated:YES completion:nil];
 }
 
+- (void)flash{
+    [UIView animateWithDuration:0.4 animations:^{
+        [self.flashView setAlpha:0.5];
+    }completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.4 animations:^{
+            [self.flashView setAlpha:0.f];
+        }];
+    }];
+}
+
 - (void)attendanceButtonClicked:(UIButton *)button{
+    StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)self.modelItem;
+    NSString* title = nil;
+    NSArray* reasonArray = nil;
     if(button == self.attendanceButton){
-        self.attendanceItem.attendance = YES;
+        attendanceItem.status = AttendanceStatusNormal;
+        title = nil;
+        reasonArray = @[@"正常出勤", @"迟到"];
     }
     else{
-        self.attendanceItem.attendance = NO;
+        attendanceItem.status = AttendanceStatusAbsence;
+        title = @"缺勤原因";
+        reasonArray = @[@"生病休息", @"家中有事", @"无故缺勤"];
     }
+    __weak typeof(self) wself = self;
+    LGAlertView* alertView = [[LGAlertView alloc] initWithTitle:title message:nil style:LGAlertViewStyleActionSheet buttonTitles:reasonArray cancelButtonTitle:@"关闭" destructiveButtonTitle:nil];
+    [alertView setButtonsTitleColor:kCommonTeacherTintColor];
+    [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setCancelButtonTitleColor:kCommonTeacherTintColor];
+    [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger row) {
+        if(attendanceItem.status == AttendanceStatusNormal){
+            attendanceItem.status = AttendanceStatusNormal + row;
+        }
+        else if(attendanceItem.status == AttendanceStatusAbsence){
+            if(row != 2){
+                attendanceItem.status = AttendanceStatusLeave;
+            }
+        }
+        attendanceItem.mark_info = title;
+        if(wself.attendanceChanged){
+            wself.attendanceChanged();
+        }
+    }];
+    [alertView showAnimated:YES completionHandler:nil];
+    [self onReloadData:self.modelItem];
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width{
     StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)modelItem;
     
     CGFloat height = 45;
-    if([attendanceItem.notes count] > 0){
+    if([attendanceItem.recode count] > 0){
         height += 20;
     }
     height += 30;
-    if([attendanceItem.comment length] > 0){
-        CGSize size = [attendanceItem.comment sizeForFont:[UIFont systemFontOfSize:15] size:CGSizeMake(width - 10 * 2, CGFLOAT_MAX) mode:NSLineBreakByWordWrapping];
+    if([attendanceItem.mark_info length] > 0){
+        CGSize size = [attendanceItem.mark_info sizeForFont:[UIFont systemFontOfSize:15] size:CGSizeMake(width - 10 * 2, CGFLOAT_MAX) mode:NSLineBreakByWordWrapping];
         height += size.height;
     }
     height += 5;

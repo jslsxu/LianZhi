@@ -53,7 +53,7 @@
             UILabel* timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
             [timeLabel setFont:[UIFont systemFontOfSize:14]];
             [timeLabel setTextColor:kCommonTeacherTintColor];
-            [timeLabel setText:noteItem.time];
+            [timeLabel setText:noteItem.ctime];
             [timeLabel sizeToFit];
             [timeLabel setOrigin:CGPointMake(0, spaceYStart)];
             [scrollView addSubview:timeLabel];
@@ -61,7 +61,7 @@
             spaceYStart += timeLabel.height + 5;
             
             UILabel* noteLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, scrollView.width, 0)];
-            [noteLabel setText:noteItem.note];
+            [noteLabel setText:noteItem.recode];
             [noteLabel setFont:[UIFont systemFontOfSize:14]];
             [noteLabel setTextColor:kColor_66];
             [noteLabel setNumberOfLines:0];

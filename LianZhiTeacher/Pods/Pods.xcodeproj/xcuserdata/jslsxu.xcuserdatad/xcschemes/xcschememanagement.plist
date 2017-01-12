@@ -99,6 +99,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>WYPopoverController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>XHRealTimeBlur.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -117,6 +122,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>0124324FD834E8411E78B8011696D35B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>04CF549EBEEE7BC87AEAE35397184D94</key>
 		<dict>
 			<key>primary</key>
@@ -132,12 +142,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1EF33CE44D47837326D820DCDE593276</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>20279EE49C7CC6BE47E83AC74AF3E8FE</key>
+		<key>2350347BD214778C031E040347AB9EE4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -147,17 +152,32 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>2E436D805133E9D794B4238424C32294</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3D21782CCD0EF84A86DC6DBC3836C0DB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3D84E9FC47FC61E20896009BBFB63596</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>43AFBF4F2CD231A7499E3B7813A16837</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>44630E0CB6383AD5D682AA8BEB19C77D</key>
+		<key>4D427F8E4CA4C46694940C56933F110E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>509CE2DC9908A2507180BFFD0EDA57F3</key>
+		<key>6D13FB14C75313A15BE8C243E0320F62</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -177,12 +197,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>92BE5D52E2FE59DA87163407DD7E6E63</key>
+		<key>8B990ED32326DCD2DA071A60F84E680F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9611157DD48D13B8FFFCC7B63E88BA84</key>
+		<key>92A018BDCDD32D4C0137243A1CFD78BA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>98A6846F14B66E8ABEBC6288EECEE90E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -192,17 +217,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9AA52CCD138B1AE82F68B0D12D17D507</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>9DC8D9E02903E93BD0B2FEC9D846EA20</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>A274991841E4F279A6EB52F3DDDC70A9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -218,11 +233,6 @@
 			<true/>
 		</dict>
 		<key>EE366E1E6962F82E6AEC8AE66FA66CBF</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FFA58F7B5185F4DBE40E57B1A84299A7</key>
 		<dict>
 			<key>primary</key>
 			<true/>

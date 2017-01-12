@@ -13,6 +13,6 @@
 @property (nonatomic, strong)UIButton* nameButton;
 @property (nonatomic, strong)UIButton* attendanceButton;
 @property (nonatomic, strong)UIButton* offButton;
-@property (nonatomic, copy)void (^attendanceClickCallback)();
-@property (nonatomic, copy)void (^offClickCallback)();
+@property (nonatomic, assign)NSInteger titleHidden;
+@property (nonatomic, copy)void (^sortCallback)(NSInteger sort);
 @end

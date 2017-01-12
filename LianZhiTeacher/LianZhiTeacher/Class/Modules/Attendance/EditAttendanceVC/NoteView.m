@@ -36,14 +36,14 @@
 
 - (void)setNoteItem:(AttendanceNoteItem *)noteItem{
     _noteItem = noteItem;
-    [self.timeLabel setText:_noteItem.time];
+    [self.timeLabel setText:_noteItem.ctime];
     [self.timeLabel sizeToFit];
     [self.timeLabel setOrigin:CGPointMake(0, (self.height - self.timeLabel.height) / 2)];
     
     [self.arrowImageView setOrigin:CGPointMake(self.width - self.arrowImageView.width, (self.height - self.arrowImageView.height) / 2)];
     
     [self.contentLabel setFrame:CGRectMake(self.timeLabel.right + 5, 0, self.arrowImageView.left - 5 - (self.timeLabel.right + 5), self.height)];
-    [self.contentLabel setText:_noteItem.note];
+    [self.contentLabel setText:_noteItem.recode];
     
 }
 

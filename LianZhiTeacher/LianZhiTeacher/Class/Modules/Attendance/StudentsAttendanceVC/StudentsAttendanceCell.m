@@ -34,7 +34,7 @@
         [self.nameLabel setFont:[UIFont systemFontOfSize:14]];
         [self addSubview:self.nameLabel];
         
-        self.checkMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+        self.checkMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"StudentAttendanceCheck"]];
         [self addSubview:self.checkMark];
         
         self.phoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -46,6 +46,11 @@
         self.noteView = [[NoteView alloc] initWithFrame:CGRectMake(10, 0, self.width - 20 - 10, 20)];
         [self addSubview:self.noteView];
         
+        UIView* sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
+        [sepLine setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
+        [sepLine setBackgroundColor:kSepLineColor];
+        [self addSubview:sepLine];
+        
         UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(noteClicked)];
         [self.noteView addGestureRecognizer:tapGesture];
     }
@@ -55,16 +60,16 @@
 - (void)phoneClicked{
     StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)self.modelItem;
     NSMutableArray* mobileArray = [NSMutableArray array];
-    for (FamilyInfo *familyInfo in attendanceItem.studentInfo.family) {
+    for (FamilyInfo *familyInfo in attendanceItem.child_info.family) {
         [mobileArray addObject:[NSString stringWithFormat:@"%@:%@",familyInfo.name, familyInfo.mobile]];
     }
-    LGAlertView* alertView = [[LGAlertView alloc] initWithTitle:attendanceItem.studentInfo.name message:nil style:LGAlertViewStyleActionSheet buttonTitles:mobileArray cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+    LGAlertView* alertView = [[LGAlertView alloc] initWithTitle:attendanceItem.child_info.name message:nil style:LGAlertViewStyleActionSheet buttonTitles:mobileArray cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
     [alertView setButtonsTitleColor:kCommonTeacherTintColor];
     [alertView setCancelButtonTitleColor:kCommonTeacherTintColor];
     [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-        FamilyInfo* familyInfo = attendanceItem.studentInfo.family[index];
+        FamilyInfo* familyInfo = attendanceItem.child_info.family[index];
         NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@",familyInfo.mobile];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
     }];
@@ -74,17 +79,24 @@
 - (void)onReloadData:(TNModelItem *)modelItem{
     StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)modelItem;
     [self.avatar setOrigin:CGPointMake(10, 10)];
-    [self.nameLabel setText:attendanceItem.studentInfo.name];
+    [self.avatar sd_setImageWithURL:[NSURL URLWithString:attendanceItem.child_info.avatar] placeholderImage:nil];
+    [self.nameLabel setText:attendanceItem.child_info.name];
     [self.nameLabel sizeToFit];
     [self.nameLabel setOrigin:CGPointMake(self.avatar.right + 5, self.avatar.top + (self.avatar.height - self.nameLabel.height) / 2)];
     
     [self.phoneButton setX:self.nameLabel.right + 5];
     [self.phoneButton setCenterY:self.avatar.centerY];
     
+    if([attendanceItem normalAttendance]){
+        [self.checkMark setCenter:CGPointMake(self.width * 5 / 8, 20)];
+    }
+    else{
+        [self.checkMark setCenter:CGPointMake(self.width * 7 / 8, 20)];
+    }
     CGFloat spaceYStart = 45;
-    if([attendanceItem.notes count] > 0){
+    if([attendanceItem.recode count] > 0){
         [self.noteView setHidden:NO];
-        [self.noteView setNoteItem:[attendanceItem.notes lastObject]];
+        [self.noteView setNoteItem:[attendanceItem.recode firstObject]];
         [self.noteView setOrigin:CGPointMake(10, spaceYStart)];
         spaceYStart = self.noteView.bottom + 5;
     }
@@ -96,13 +108,13 @@
 
 - (void)noteClicked{
     StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)self.modelItem;
-    [NoteDetailView showWithNotes:attendanceItem.notes];
+    [NoteDetailView showWithNotes:attendanceItem.recode];
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width{
     StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)modelItem;
     CGFloat height = 45;
-    if([attendanceItem.notes count] > 0){
+    if([attendanceItem.recode count] > 0){
         height += 20;
     }
     height += 10;

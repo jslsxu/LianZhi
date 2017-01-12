@@ -13,15 +13,15 @@
 @end
 
 @implementation MonthStatisticsListModel
-- (instancetype)init{
-    self = [super init];
-    if(self){
-        for (NSInteger i = 0; i < 10; i ++) {
-            MonthStatisticsItem *item = [[MonthStatisticsItem alloc] init];
-            [item setRow:i];
-            [self.modelItemArray addObject:item];
-        }
+
+- (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type{
+    self.class_attendance = [data getIntegerForKey:@"class_attendance"];
+    TNDataWrapper* listWrapper = [data getDataWrapperForKey:@"items"];
+    if(type == REQUEST_REFRESH){
+        [self.modelItemArray removeAllObjects];
     }
-    return self;
+    NSArray* items = [MonthStatisticsItem nh_modelArrayWithJson:listWrapper.data];
+    [self.modelItemArray addObjectsFromArray:items];
+    return YES;
 }
 @end

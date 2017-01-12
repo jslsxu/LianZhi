@@ -54,13 +54,13 @@
 - (void)onReloadData:(TNModelItem *)modelItem{
     MonthStatisticsItem* item = (MonthStatisticsItem *)modelItem;
     
-    [self.nameLabel setText:@"朱见深"];
+    [self.nameLabel setText:item.child_info.name];
     [self.nameLabel sizeToFit];
     [self.nameLabel setOrigin:CGPointMake(self.avatar.right + 5, (60 - self.nameLabel.height) / 2)];
     
-    [self.attendanceNumLabel setText:@"21"];
+    [self.attendanceNumLabel setText:kStringFromValue(item.attendance)];
     
-    [self.offNumLabel setText:@"1"];
+    [self.offNumLabel setText:kStringFromValue(item.absence)];
     
     if(item.row % 2 == 0){
         [self setBackgroundColor:[UIColor whiteColor]];

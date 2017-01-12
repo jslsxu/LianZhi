@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, AttendanceClassFilterType){
 
 @interface FilterView : UIView
 @property (nonatomic, assign)AttendanceClassFilterType filterType;
-@property (nonatomic, copy)void (^filterChanged)();
+@property (nonatomic, copy)void (^filterChanged)(AttendanceClassFilterType filterType);
 @end
 
 

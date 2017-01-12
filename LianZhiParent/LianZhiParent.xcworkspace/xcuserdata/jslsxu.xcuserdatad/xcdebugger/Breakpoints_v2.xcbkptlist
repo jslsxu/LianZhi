@@ -43,13 +43,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "LianZhiParent/AppDelegate.m"
-            timestampString = "503235555.140912"
+            filePath = "LianZhiParent/Class/Modules/ClassZone/ClassApp/VacationHistory/VacationHistoryVC.m"
+            timestampString = "505669517.614647"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "274"
-            endingLineNumber = "274"
-            landmarkName = "-application:didRegisterForRemoteNotificationsWithDeviceToken:"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
+            landmarkName = "-requestData"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

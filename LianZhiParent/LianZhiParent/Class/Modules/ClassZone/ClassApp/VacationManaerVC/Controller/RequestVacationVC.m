@@ -16,6 +16,7 @@
 @property (nonatomic, strong)NSDate *endDate;
 @property (nonatomic, strong)UILabel* startLabel;
 @property (nonatomic, strong)UILabel* endLabel;
+@property (nonatomic, strong)UTPlaceholderTextView* textView;
 @property (nonatomic, strong)UIView* bottomView;
 @end
 
@@ -35,16 +36,14 @@
     [self setupScrollView];
     
     NSDate *curDate = [NSDate date];
-    NSDateFormatter *formmater = [[NSDateFormatter alloc] init];
-    [formmater setDateFormat:@"yyyy-MM-dd"];
-    NSString *str = [formmater stringFromDate:curDate];
-    NSDate *todayDate = [formmater dateFromString:str];
+    NSString *str = [curDate stringWithFormat:@"yyyy-MM-dd"];
+    NSDate *todayDate = [NSDate dateWithString:str format:@"yyyy-MM-dd"];
     NSDate *compareDate = [todayDate dateByAddingHours:8];
     if([curDate compare:compareDate] == NSOrderedAscending){
         [self setStartDate:compareDate];
     }
     else{
-        [self setStartDate:[todayDate dateByAddingDays:1]];
+        [self setStartDate:[compareDate dateByAddingDays:1]];
     }
     
     [self setEndDate:[self.startDate dateByAddingHours:9]];
@@ -96,7 +95,7 @@
     [self.scrollView addSubview:hintLabel];
     
     
-    UIView* contentView = [[UIView alloc] initWithFrame:CGRectMake(10, hintLabel.bottom + 20, self.view.width - 10 * 2, 160)];
+    UIView* contentView = [[UIView alloc] initWithFrame:CGRectMake(10, hintLabel.bottom + 20, self.view.width - 10 * 2, 240)];
     [contentView setBackgroundColor:[UIColor whiteColor]];
     [contentView.layer setCornerRadius:10];
     [contentView.layer setMasksToBounds:YES];
@@ -110,13 +109,27 @@
     [inputLabel setOrigin:CGPointMake(10, 10)];
     [contentView addSubview:inputLabel];
     
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(6, inputLabel.bottom, contentView.width - 6 * 2, contentView.height - 10 - inputLabel.bottom)];
+    UIButton* quickButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [quickButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    [quickButton setFrame:CGRectMake(10, contentView.height - 40, contentView.width - 10 * 2, 40)];
+    [quickButton setTitleColor:kCommonParentTintColor forState:UIControlStateNormal];
+    [quickButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
+    [quickButton setTitle:@"快捷输入" forState:UIControlStateNormal];
+    [quickButton addTarget:self action:@selector(onButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [contentView addSubview:quickButton];
+    
+    UIView* sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, quickButton.y - kLineHeight, contentView.width, kLineHeight)];
+    [sepLine setBackgroundColor:kSepLineColor];
+    [contentView addSubview:sepLine];
+    
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(6, inputLabel.bottom, contentView.width - 6 * 2, sepLine.top - 10 - inputLabel.bottom)];
     [_textView setReturnKeyType:UIReturnKeyDone];
     [_textView setPlaceholder:@"请输入请假原因"];
     [_textView setFont:[UIFont systemFontOfSize:15]];
     [_textView setTextColor:[UIColor darkGrayColor]];
     [_textView setDelegate:self];
     [contentView addSubview:_textView];
+
     
     [self.scrollView setContentSize:CGSizeMake(self.view.width, contentView.bottom + 10)];
 
@@ -124,7 +137,7 @@
 
 - (UIView *)bottomView{
     if(nil == _bottomView){
-        _bottomView = [[UIView alloc] initWithFrame:CGRectMake(10, self.view.height - 60, self.view.width, 60)];
+        _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 60, self.view.width, 60)];
         [_bottomView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
         [_bottomView setBackgroundColor:[UIColor whiteColor]];
         
@@ -149,7 +162,7 @@
     _startDate = startDate;
 
     NSMutableAttributedString *startStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"起始:  %zd年%zd月%zd日  ", _startDate.year, _startDate.month, _startDate.day] attributes:@{NSForegroundColorAttributeName : kColor_66}];
-    [startStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@  8:00",[self weekdayAtIndex:_startDate.weekday]] attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
+    [startStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@  %zd:00",[self weekdayAtIndex:_startDate.weekday], [self.startDate hour]] attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
     [_startLabel setAttributedText:startStr];
 }
 
@@ -157,13 +170,26 @@
 {
     _endDate = endDate;
     NSMutableAttributedString *startStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"截止:  %zd年%zd月%zd日  ", _endDate.year, _endDate.month, _endDate.day] attributes:@{NSForegroundColorAttributeName : kColor_66}];
-    [startStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@  17:00",[self weekdayAtIndex:_endDate.weekday]] attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
+    [startStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@  %zd:00",[self weekdayAtIndex:_endDate.weekday], [self.endDate hour]] attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}]];
     [_endLabel setAttributedText:startStr];
 }
 
 - (NSString *)weekdayAtIndex:(NSInteger)weekday{
-    NSArray* weekdayArray = @[@"周一", @"周二", @"周三", @"周四", @"周五", @"周六", @"周日"];
-    return weekdayArray[weekday];
+    NSArray* weekdayArray = @[@"周日",@"周一", @"周二", @"周三", @"周四", @"周五", @"周六"];
+    return weekdayArray[weekday - 1];
+}
+
+- (void)onButtonClicked{
+    __weak typeof(self) wself = self;
+    LGAlertView* alertView = [[LGAlertView alloc] initWithTitle:@"请假原因" message:nil style:LGAlertViewStyleActionSheet buttonTitles:@[@"生病休息", @"家中有事"] cancelButtonTitle:@"关闭" destructiveButtonTitle:nil];
+    [alertView setCancelButtonTitleColor:kCommonParentTintColor];
+    [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setButtonsTitleColor:kCommonParentTintColor];
+    [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+        [wself.textView setText:title];
+    }];
+    [alertView showAnimated:YES completionHandler:nil];
 }
 
 #pragma mark - UITextViewDelegate
@@ -180,7 +206,8 @@
 #pragma mark - Actions
 - (void)onStartButtonClicked
 {
-    VacationDatePickerView *datePicker = [[VacationDatePickerView alloc] initWithFrame:[UIScreen mainScreen].bounds andDate:self.startDate ? : [NSDate date] minimumDate:[NSDate date]];
+    NSDate *curDate = [NSDate date];
+    VacationDatePickerView *datePicker = [[VacationDatePickerView alloc] initWithFrame:[UIScreen mainScreen].bounds andDate:self.startDate ? : [NSDate date] minimumDate:curDate];
     [datePicker setCallBack:^(NSDate *date){
         self.startDate = date;
     }];
@@ -189,7 +216,8 @@
 
 - (void)onEndButtonClicked
 {
-    VacationDatePickerView *datePicker = [[VacationDatePickerView alloc] initWithFrame:[UIScreen mainScreen].bounds andDate:self.endDate ? : [NSDate date] minimumDate:[NSDate date]];
+    NSDate *curDate = [NSDate date];
+    VacationDatePickerView *datePicker = [[VacationDatePickerView alloc] initWithFrame:[UIScreen mainScreen].bounds andDate:self.endDate ? : [NSDate date] minimumDate:curDate];
     [datePicker setCallBack:^(NSDate *date){
         self.endDate = date;
     }];
@@ -203,14 +231,16 @@
 
 - (void)onSend
 {
-    MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:self.view];
+    MBProgressHUD *hud = [MBProgressHUD showMessag:@"发送中" toView:self.view];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-//    [params setValue:self.classInfo.classID forKey:@"class_id"];
-//    [params setValue:self.classInfo.schoolInfo.schoolID forKey:@"school_id"];
-    [params setValue:self.startDate forKey:@"from_date"];
-    [params setValue:self.endDate forKey:@"to_date"];
+    [params setValue:self.classInfo.classID forKey:@"class_id"];
+    [params setValue:self.classInfo.school.schoolID forKey:@"school_id"];
+    NSDateFormatter* formmater = [[NSDateFormatter alloc] init];
+    [formmater setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [params setValue:[formmater stringFromDate:self.startDate] forKey:@"from_date"];
+    [params setValue:[formmater stringFromDate:self.endDate] forKey:@"to_date"];
     [params setValue:_textView.text forKey:@"words"];
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/leave" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/nleave" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:YES];
         [ProgressHUD showHintText:@"请假条已发给老师"];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

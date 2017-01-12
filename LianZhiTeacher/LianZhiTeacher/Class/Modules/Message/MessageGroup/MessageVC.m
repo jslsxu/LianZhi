@@ -291,18 +291,12 @@
     
     if([groupItem.fromInfo isNotification])
     {
-        if(groupItem.fromInfo.type == ChatTypeAttendance)
-        {
-            AttendanceNotificationListVC* attendanceNotificationVC = [[AttendanceNotificationListVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:attendanceNotificationVC animated:YES];
-        }
-        else{
-            MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];
-            [detailVC setFromInfo:groupItem.fromInfo];
-            [self.navigationController pushViewController:detailVC animated:YES];
-            [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        }
+        MessageDetailVC *detailVC = [[MessageDetailVC alloc] init];
+        [detailVC setFromInfo:groupItem.fromInfo];
+        [self.navigationController pushViewController:detailVC animated:YES];
+        [[UserCenter sharedInstance].statusManager setMsgNum:[self newMessageNum]];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+
     }
     else
     {

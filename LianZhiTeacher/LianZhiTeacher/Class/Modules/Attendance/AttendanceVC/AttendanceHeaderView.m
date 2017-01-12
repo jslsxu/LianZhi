@@ -110,18 +110,22 @@
 - (void)setModel:(ClassAttendanceListModel *)model{
     _model = model;
     NSMutableAttributedString* attendancePercentStr = [[NSMutableAttributedString alloc] initWithString:@"出勤率\n" attributes:@{NSForegroundColorAttributeName : kColor_33}];
-    [attendancePercentStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"95%" attributes:@{NSForegroundColorAttributeName : kCommonTeacherTintColor}]];
+    if([_model.all.attendance_rate length] > 0){
+        [attendancePercentStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%%", _model.all.attendance_rate] attributes:@{NSForegroundColorAttributeName : kCommonTeacherTintColor}]];
+    }
     [self.attendancePercentLabel setAttributedText:attendancePercentStr];
     
     NSMutableAttributedString* offPercentStr = [[NSMutableAttributedString alloc] initWithString:@"缺勤率\n" attributes:@{NSForegroundColorAttributeName : kColor_33}];
-    [offPercentStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"5%" attributes:@{NSForegroundColorAttributeName : kRedColor}]];
+    if([_model.all.absence_rate length] > 0){
+        [offPercentStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%%", _model.all.absence_rate] attributes:@{NSForegroundColorAttributeName : kRedColor}]];
+    }
     [self.offPercentLabel setAttributedText:offPercentStr];
     
-    [self.classNumLabel setText:@"10个"];
-    [self.totalNumLabel setText:@"1000人"];
-    [self.attendanceNumLabel setText:@"900人"];
-    [self.offNumLabel setText:@"50人"];
-    [self.uncommitLabel setText:@"目前未提交考勤的班级还有1个班"];
+    [self.classNumLabel setText:[NSString stringWithFormat:@"%zd个", _model.all.class_total]];
+    [self.totalNumLabel setText:[NSString stringWithFormat:@"%zd人", _model.all.total]];
+    [self.attendanceNumLabel setText:[NSString stringWithFormat:@"%zd人", _model.all.attendance]];
+    [self.offNumLabel setText:[NSString stringWithFormat:@"%zd人",_model.all.absence]];
+    [self.uncommitLabel setText:[NSString stringWithFormat:@"目前未提交考勤的班级还有%zd个班", _model.all.no_submit]];
 }
 
 @end

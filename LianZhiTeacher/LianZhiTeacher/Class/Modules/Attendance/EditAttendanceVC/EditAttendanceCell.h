@@ -9,5 +9,6 @@
 #import "TNTableViewCell.h"
 #import "StudentsAttendanceListModel.h"
 @interface EditAttendanceCell : TNTableViewCell
-@property (nonatomic, strong)StudentAttendanceItem* attendanceItem;
+@property (nonatomic, copy)void (^attendanceChanged)();
+- (void)flash;
 @end

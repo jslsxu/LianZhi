@@ -29,10 +29,16 @@
 //    if(self.fromInfo.label.length > 0)
 //        [text appendString:[NSString stringWithFormat:@"(%@)",self.fromInfo.label]];
 //    self.title = text;
-    self.title = @"通知记录";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"清空" style:UIBarButtonItemStylePlain target:self action:@selector(clear)];
     [self.tableView setContentInset:UIEdgeInsetsMake(0, 0, 12, 0)];
-    [self bindTableCell:@"MessageDetailItemCell" tableModel:@"MessageDetailModel"];
+    if(self.fromInfo.type == ChatTypeAttendance){
+        [self setTitle:@"学生请假通知"];
+        [self bindTableCell:@"AttendanceNotificationCell" tableModel:@"MessageDetailModel"];
+    }
+    else{
+        self.title = @"通知记录";
+        [self bindTableCell:@"MessageDetailItemCell" tableModel:@"MessageDetailModel"];
+    }
     MessageDetailModel *detailModel = (MessageDetailModel *)self.tableViewModel;
     [detailModel setAuthor:self.fromInfo.name];
     [detailModel setAvatarUrl:self.fromInfo.logoUrl];
@@ -121,7 +127,7 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
     MessageDetailItem *detailItem = (MessageDetailItem *)modelItem;
-    if(detailItem.type == ChatTypeLianZhiBroadcast || detailItem.type == ChatTypeDoorEntrance){
+    if(detailItem.type == ChatTypeLianZhiBroadcast || detailItem.type == ChatTypeDoorEntrance || detailItem.type == ChatTypeAttendance){
         
     }
     else{

@@ -16,6 +16,7 @@ PODS:
     - ReactiveCocoa/Core
   - SCRecorder (2.7.0)
   - SSZipArchive (1.6.1)
+  - STPickerView (1.0.0)
   - TTTAttributedLabel (2.0.0)
   - UMengAnalytics (4.1.0)
   - YYKit (1.0.9):
@@ -32,6 +33,7 @@ DEPENDENCIES:
   - ReactiveCocoa
   - SCRecorder
   - SSZipArchive
+  - STPickerView
   - TTTAttributedLabel
   - UMengAnalytics
   - YYKit
@@ -46,10 +48,11 @@ SPEC CHECKSUMS:
   ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
   SCRecorder: bbb521dbc222908876ec9cd9156bbc8a893bed44
   SSZipArchive: 0847403f612553a361f9b44f1c7e135cefbc668d
+  STPickerView: a8cd41817e345553882bb3e6fab2a303ba974c08
   TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
   UMengAnalytics: 19b28253793d77dff10fb7d502faad1fb6b8ce4a
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 72f21dd1284bdf5590c2d6a85725613ed8ad2803
+PODFILE CHECKSUM: 9f24626d5401268ed60c09f4126e0b5ff3b3fb19
 
 COCOAPODS: 1.1.1

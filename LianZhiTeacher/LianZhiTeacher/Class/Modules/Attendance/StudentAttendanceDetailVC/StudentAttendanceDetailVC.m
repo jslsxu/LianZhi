@@ -34,6 +34,8 @@
     [contentView setOrigin:CGPointMake(10, self.headerView.bottom + 10)];
     [_scrollView addSubview:contentView];
     [_scrollView setContentSize:CGSizeMake(_scrollView.width, contentView.bottom + 10)];
+    
+    [self requestStudentAttendance];
 }
 
 - (void)setupTitle{
@@ -121,6 +123,20 @@
     return bgView;
 }
 
+- (void)requestStudentAttendance{
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    
+    NSDate *date = self.calendar.currentSelectedDate;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    [params setValue:[formatter stringFromDate:date] forKey:@"cdate"];
+    [params setValue:self.studentInfo.name forKey:@"child_id"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+        
+    } fail:^(NSString *errMsg) {
+        
+    }];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

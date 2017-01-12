@@ -25,14 +25,12 @@
         [self.dateLabel setTextAlignment:NSTextAlignmentCenter];
         [self.dateLabel setFont:[UIFont systemFontOfSize:15]];
         [self.dateLabel setTextColor:kColor_33];
-        [self.dateLabel setText:@"2016年12月"];
         [self addSubview:self.dateLabel];
         
         self.numLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.width - 140) / 2, self.dateLabel.bottom, 140, 25)];
         [self.numLabel setTextAlignment:NSTextAlignmentCenter];
         [self.numLabel setFont:[UIFont systemFontOfSize:15]];
         [self.numLabel setTextColor:kColor_33];
-        [self.numLabel setText:@"应出勤天数:22天"];
         [self addSubview:self.numLabel];
         
         self.preButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -50,12 +48,32 @@
     return self;
 }
 
-- (void)onPre{
+- (void)setDate:(NSDate *)date{
+    _date = date;
+    [self.dateLabel setText:[date stringWithFormat:@"yyyy-MM"]];
     
+    NSString* thisMonth = [[NSDate date] stringWithFormat:@"yyyy-MM"];
+    if([thisMonth compare:self.dateLabel.text] == NSOrderedAscending){
+        [self.nextButton setEnabled:NO];
+    }
+    else{
+        [self.nextButton setEnabled:YES];
+    }
+}
+
+- (void)setClass_attendance:(NSInteger)class_attendance{
+    _class_attendance = class_attendance;
+    [self.numLabel setText:[NSString stringWithFormat:@"应出勤天数:%zd天", _class_attendance]];
+}
+
+- (void)onPre{
+    NSDate *preDate = [self.date dateByAddingMonths:-1];
+    [self setDate:preDate];
 }
 
 - (void)onNext{
-    
+    NSDate* nextDate = [self.date dateByAddingMonths:1];
+    [self setDate:nextDate];
 }
 
 @end
