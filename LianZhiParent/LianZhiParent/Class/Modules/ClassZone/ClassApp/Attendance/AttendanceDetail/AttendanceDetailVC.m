@@ -39,7 +39,7 @@
     [self.view addSubview:_scrollView];
     
     [_scrollView addSubview:[self headerView]];
-    self.contentView = [[UIView alloc] initWithFrame:CGRectMake(10, self.headerView.bottom + 10, _scrollView.width - 10 * 2, 0)];
+    self.contentView = [[UIView alloc] initWithFrame:CGRectMake(10, self.headerView.bottom, _scrollView.width - 10 * 2, 0)];
     [_scrollView addSubview:self.contentView];
     [_scrollView setContentSize:CGSizeMake(_scrollView.width, self.contentView.bottom + 10)];
     
@@ -96,7 +96,7 @@
     }
     else{
         __weak typeof(self) wself = self;
-        LGAlertView* alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:@"您确定取消2016-04-04的请假吗?" style:LGAlertViewStyleAlert buttonTitles:@[@"取消", @"确定"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+        LGAlertView* alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"您确定取消%@的请假吗?", [date stringWithFormat:@"yyyy-MM-dd"]] style:LGAlertViewStyleAlert buttonTitles:@[@"取消", @"确定"] cancelButtonTitle:nil destructiveButtonTitle:nil];
         [alertView setButtonsTitleColor:kCommonParentTintColor];
         [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
         [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
@@ -214,6 +214,7 @@
     }
     
     [self.contentView setHeight:spaceYStart];
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.width, self.contentView.bottom + 10)];
 }
 
 - (void)setDetailResponse:(AttendanceDetailResponse *)detailResponse{

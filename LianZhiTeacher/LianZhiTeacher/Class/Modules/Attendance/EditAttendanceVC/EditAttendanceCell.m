@@ -205,12 +205,12 @@
     NSString* title = nil;
     NSArray* reasonArray = nil;
     if(button == self.attendanceButton){
-        attendanceItem.status = AttendanceStatusNormal;
+        attendanceItem.newStatus = AttendanceStatusNormal;
         title = nil;
         reasonArray = @[@"正常出勤", @"迟到"];
     }
     else{
-        attendanceItem.status = AttendanceStatusAbsence;
+        attendanceItem.newStatus = AttendanceStatusAbsence;
         title = @"缺勤原因";
         reasonArray = @[@"生病休息", @"家中有事", @"无故缺勤"];
     }
@@ -221,12 +221,12 @@
     [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setCancelButtonTitleColor:kCommonTeacherTintColor];
     [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger row) {
-        if(attendanceItem.status == AttendanceStatusNormal){
-            attendanceItem.status = AttendanceStatusNormal + row;
+        if(attendanceItem.newStatus == AttendanceStatusNormal){
+            attendanceItem.newStatus = AttendanceStatusNormal + row;
         }
-        else if(attendanceItem.status == AttendanceStatusAbsence){
+        else if(attendanceItem.newStatus == AttendanceStatusAbsence){
             if(row != 2){
-                attendanceItem.status = AttendanceStatusLeave;
+                attendanceItem.newStatus = AttendanceStatusLeave;
             }
         }
         attendanceItem.mark_info = title;

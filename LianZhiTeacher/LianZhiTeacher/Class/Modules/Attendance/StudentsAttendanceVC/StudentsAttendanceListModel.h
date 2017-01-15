@@ -38,6 +38,10 @@ typedef NS_ENUM(NSInteger, AttendanceStatus){
 @property (nonatomic, copy)NSString* tuid;
 @property (nonatomic, assign)BOOL absenceHighlighted;
 
+@property (nonatomic, assign)AttendanceStatus newStatus;
+
+- (BOOL)edited;
+- (NSString*)editComment;
 - (BOOL)normalAttendance;
 - (NSDictionary *)attedanceInfo;
 @end

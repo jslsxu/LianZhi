@@ -118,7 +118,9 @@
         [params setValue:[self dateString] forKey:@"cdate"];
         NSMutableArray* leaveArray = [NSMutableArray array];
         for (StudentAttendanceItem* item in self.tableViewModel.modelItemArray) {
-            [leaveArray addObject:[item attedanceInfo]];
+            if([item edited]){
+                [leaveArray addObject:[item attedanceInfo]];
+            }
         }
         [params setValue:[leaveArray modelToJSONString] forKey:@"leave_json"];
         

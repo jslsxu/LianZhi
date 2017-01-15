@@ -8,6 +8,11 @@
 
 #import "StudentsAttendanceListModel.h"
 
+static NSString* attendanceStringFroType(AttendanceStatus status){
+    static NSString* attendanceNameArray[] = {@"正常出勤", @"迟到", @"请假", @"缺勤"};
+    return attendanceNameArray[status];
+}
+
 @implementation AttendanceNoteItem
 
 @end
@@ -18,6 +23,22 @@
     return @{@"recode" : [AttendanceNoteItem class]};
 }
 
+- (BOOL)edited{
+    return self.status != self.newStatus;
+}
+
+- (NSString *)editComment{
+    if([self edited]){
+        NSString* comment = [NSString stringWithFormat:@"%@教师提交为%@。", [UserCenter sharedInstance].userInfo.name,attendanceStringFroType(self.newStatus)];
+        NSString* markInfo = [self.mark_info stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if([markInfo length] > 0){
+            comment = [NSString stringWithFormat:@"%@ 备注:%@", comment, self.mark_info];
+        }
+        return comment;
+    }
+    return nil;
+}
+
 - (BOOL)normalAttendance{
     return self.status == AttendanceStatusNormal || self.status == AttendanceStatusLate;
 }
@@ -26,7 +47,7 @@
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [dictionary setValue:self.child_info.uid forKey:@"child_id"];
     [dictionary setValue:kStringFromValue(self.status) forKey:@"status"];
-    [dictionary setValue:self.mark_info forKey:@"recode"];
+    [dictionary setValue:[self editComment] forKey:@"recode"];
     return dictionary;
 }
 @end
@@ -70,6 +91,9 @@
     
     TNDataWrapper *itemsWrapper = [data getDataWrapperForKey:@"items"];
     NSArray* items = [StudentAttendanceItem nh_modelArrayWithJson:itemsWrapper.data];
+    for (StudentAttendanceItem* attendanceItem in items) {
+        attendanceItem.newStatus = attendanceItem.status;
+    }
     [self.modelItemArray addObjectsFromArray:items];
     
     return YES;
