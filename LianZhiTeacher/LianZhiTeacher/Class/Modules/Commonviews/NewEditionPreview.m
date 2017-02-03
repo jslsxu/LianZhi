@@ -26,7 +26,7 @@
         [mailImageView setUserInteractionEnabled:YES];
         [self addSubview:mailImageView];
         
-        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(30, 10, mailImageView.width - 30 * 2, 230)];
+        _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(30, 10, mailImageView.width - 30 * 2, 200)];
         [mailImageView addSubview:_scrollView];
         
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _scrollView.width, 25)];
@@ -37,6 +37,8 @@
         
         UILabel *notesLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, titleLabel.bottom + 10, _scrollView.width, 0)];
         [notesLabel setFont:[UIFont systemFontOfSize:14]];
+        [notesLabel setNumberOfLines:0];
+        [notesLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [notesLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
         [notesLabel setText:relaseNotes];
         

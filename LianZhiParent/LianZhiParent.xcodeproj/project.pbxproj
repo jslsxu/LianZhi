@@ -4623,7 +4623,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = LianZhiParent/LianZhiParent.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: wei xin (JRFF54BK3W)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: wei xin (VLCERZ64DD)";
 				DEVELOPMENT_TEAM = JRFF54BK3W;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;

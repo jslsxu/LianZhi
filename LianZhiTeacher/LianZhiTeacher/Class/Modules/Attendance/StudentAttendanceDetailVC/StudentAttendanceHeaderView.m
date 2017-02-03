@@ -11,6 +11,8 @@
 @interface StudentAttendanceHeaderView ()
 @property (nonatomic, strong)UIView* contentView;
 @property (nonatomic, strong)AvatarView* avatarView;
+@property (nonatomic, strong)UILabel* progressHintLabel;
+@property (nonatomic, strong)UIView* progressBG;
 @property (nonatomic, strong)UIView* progressView;
 @property (nonatomic, strong)UILabel* attendancePercentLabel;
 @property (nonatomic, strong)UILabel* offPercentLabel;
@@ -46,27 +48,32 @@
         [self.offPercentLabel setTextAlignment:NSTextAlignmentRight];
         [self.contentView addSubview:self.offPercentLabel];
         
-        UIView* progressBG = [[UIView alloc] initWithFrame:CGRectMake(self.attendancePercentLabel.right, 35, self.offPercentLabel.left - self.attendancePercentLabel.right, 10)];
-        [progressBG setBackgroundColor:[UIColor colorWithHexString:@"fc6e82"]];
-        [self.contentView addSubview:progressBG];
+        self.progressBG = [[UIView alloc] initWithFrame:CGRectMake(self.attendancePercentLabel.right, 35, self.offPercentLabel.left - self.attendancePercentLabel.right, 10)];
+        [self.progressBG setBackgroundColor:[UIColor colorWithHexString:@"fc6e82"]];
+        [self.contentView addSubview:self.progressBG];
         
-        self.progressView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, progressBG.height)];
+        self.progressView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, self.progressBG.height)];
         [self.progressView setBackgroundColor:kCommonTeacherTintColor];
-        [progressBG addSubview:self.progressView];
+        [self.progressBG addSubview:self.progressView];
         
-        UILabel* progressHintLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [progressHintLabel setText:@"月考勤记录"];
-        [progressHintLabel setFont:[UIFont systemFontOfSize:14]];
-        [progressHintLabel setTextColor:kColor_33];
-        [progressHintLabel sizeToFit];
-        [progressHintLabel setCenter:CGPointMake(progressBG.centerX, 20)];
-        [self.contentView addSubview:progressHintLabel];
+        self.progressHintLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [self.progressHintLabel setText:@"月考勤记录"];
+        [self.progressHintLabel setFont:[UIFont systemFontOfSize:14]];
+        [self.progressHintLabel setTextColor:kColor_33];
+        [self.progressHintLabel sizeToFit];
+        [self.progressHintLabel setCenter:CGPointMake(self.progressBG.centerX, 20)];
+        [self.contentView addSubview:self.progressHintLabel];
         
         self.attendanceNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.attendancePercentLabel.left, self.contentView.height - 15 - 15, self.contentView.width - 10 - self.attendancePercentLabel.left, 15)];
         [self.attendanceNumLabel setFont:[UIFont systemFontOfSize:14]];
         [self.contentView addSubview:self.attendanceNumLabel];
     }
     return self;
+}
+
+- (void)setDate:(NSDate *)date{
+    _date = date;
+    [self.progressHintLabel setText:[NSString stringWithFormat:@"%zd月考勤记录",[_date month]]];
 }
 
 - (void)setInfo:(StudentAttendanceDetailInfo *)info{
@@ -84,6 +91,13 @@
     [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:@"缺勤:" attributes:@{NSForegroundColorAttributeName : kColor_33}]];
     [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%zd天", _info.absence] attributes:@{NSForegroundColorAttributeName : kRedColor}]];
     [self.attendanceNumLabel setAttributedText:attendanceString];
+    
+    [self.progressView setWidth:self.progressBG.width * [_info.attendance_rate floatValue] / 100];
+}
+
+- (void)setStudentInfo:(StudentInfo *)studentInfo{
+    _studentInfo = studentInfo;
+    [self.avatarView sd_setImageWithURL:[NSURL URLWithString:_studentInfo.avatar] placeholderImage:nil];
 }
 
 @end

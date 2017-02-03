@@ -24,15 +24,21 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
 }
 
 - (BOOL)edited{
-    return self.status != self.newStatus;
+    if(self.status != self.newStatus){
+        return YES;
+    }
+    if([self.edit_mark length] + [self.mark_info length] > 0 && ![self.edit_mark isEqualToString:self.mark_info]){
+        return YES;
+    }
+    return NO;
 }
 
 - (NSString *)editComment{
     if([self edited]){
         NSString* comment = [NSString stringWithFormat:@"%@教师提交为%@。", [UserCenter sharedInstance].userInfo.name,attendanceStringFroType(self.newStatus)];
-        NSString* markInfo = [self.mark_info stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString* markInfo = [self.edit_mark stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if([markInfo length] > 0){
-            comment = [NSString stringWithFormat:@"%@ 备注:%@", comment, self.mark_info];
+            comment = [NSString stringWithFormat:@"%@ 备注:%@", comment, self.edit_mark];
         }
         return comment;
     }
@@ -43,10 +49,14 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
     return self.status == AttendanceStatusNormal || self.status == AttendanceStatusLate;
 }
 
+- (BOOL)editNormalAttenance{
+    return self.newStatus == AttendanceStatusNormal || self.newStatus == AttendanceStatusLate;
+}
+
 - (NSDictionary *)attedanceInfo{
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [dictionary setValue:self.child_info.uid forKey:@"child_id"];
-    [dictionary setValue:kStringFromValue(self.status) forKey:@"status"];
+    [dictionary setValue:kStringFromValue(self.newStatus) forKey:@"status"];
     [dictionary setValue:[self editComment] forKey:@"recode"];
     return dictionary;
 }
@@ -93,6 +103,7 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
     NSArray* items = [StudentAttendanceItem nh_modelArrayWithJson:itemsWrapper.data];
     for (StudentAttendanceItem* attendanceItem in items) {
         attendanceItem.newStatus = attendanceItem.status;
+        attendanceItem.edit_mark = attendanceItem.mark_time;
     }
     [self.modelItemArray addObjectsFromArray:items];
     

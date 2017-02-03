@@ -174,16 +174,24 @@
     [actionArray addObject:settingItem];
     if([self.calendar.currentSelectedDate isToday]){
         NotificationActionItem *anylizeItem = [NotificationActionItem actionItemWithTitle:@"编辑考勤" action:^{
-            EditAttendanceVC* editVC = [[EditAttendanceVC alloc] init];
-            [editVC setDate:self.calendar.currentSelectedDate];
-            [editVC setClassInfo:wself.classInfo];
-            [CurrentROOTNavigationVC pushViewController:editVC animated:YES];
+            [wself gotoEditAttendance];
         } destroyItem:NO];
         [actionArray addObject:anylizeItem];
     }
     [NotificationDetailActionView showWithActions:actionArray completion:^{
         [wself setRightbarButtonHighlighted:NO];
     }];
+}
+
+- (void)gotoEditAttendance{
+    __weak typeof(self) wself = self;
+    EditAttendanceVC* editVC = [[EditAttendanceVC alloc] init];
+    [editVC setDate:self.calendar.currentSelectedDate];
+    [editVC setClassInfo:self.classInfo];
+    [editVC setEditFinished:^{
+        [wself requestData:REQUEST_REFRESH];
+    }];
+    [CurrentROOTNavigationVC pushViewController:editVC animated:YES];
 }
 
 - (StudentsAttendanceHeaderView *)headerView{

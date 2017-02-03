@@ -154,6 +154,7 @@
 - (StudentAttendanceHeaderView* )headerView{
     if(_headerView == nil){
         _headerView = [[StudentAttendanceHeaderView alloc] initWithFrame:CGRectMake(0, 0, _scrollView.width, 0)];
+        [_headerView setDate:[[self calendar] currentSelectedDate]];
     }
     return _headerView;
 }
@@ -231,7 +232,7 @@
 
 - (void)requestAttendance{
     __weak typeof(self) wself = self;
-    MBProgressHUD* hud = [MBProgressHUD showMessag:@"" toView:self.view];
+    MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:[self view] animated:NO];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.classInfo.classID forKey:@"class_id"];
     [params setValue:self.classInfo.school.schoolID forKey:@"school_id"];
@@ -250,6 +251,7 @@
 
 #pragma mark - CalendarDelegate
 - (void)calendarDateDidChange:(NSDate *)selectedDate{
+    [self.headerView setDate:selectedDate];
     [self setDetailResponse:nil];
     [self requestAttendance];
 }

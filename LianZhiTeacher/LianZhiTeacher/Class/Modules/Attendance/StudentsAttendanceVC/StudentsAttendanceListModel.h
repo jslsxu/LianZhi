@@ -39,10 +39,11 @@ typedef NS_ENUM(NSInteger, AttendanceStatus){
 @property (nonatomic, assign)BOOL absenceHighlighted;
 
 @property (nonatomic, assign)AttendanceStatus newStatus;
-
+@property (nonatomic, copy)NSString* edit_mark;
 - (BOOL)edited;
 - (NSString*)editComment;
 - (BOOL)normalAttendance;
+- (BOOL)editNormalAttenance;
 - (NSDictionary *)attedanceInfo;
 @end
 

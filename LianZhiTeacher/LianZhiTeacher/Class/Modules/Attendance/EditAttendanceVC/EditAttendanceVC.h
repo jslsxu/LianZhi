@@ -11,4 +11,5 @@
 @interface EditAttendanceVC : TNBaseTableViewController
 @property (nonatomic, strong)ClassInfo* classInfo;
 @property (nonatomic, strong)NSDate* date;
+@property (nonatomic, copy)void (^editFinished)();
 @end

@@ -104,7 +104,7 @@
     [self.nameLabel setOrigin:CGPointMake(self.avatar.right + 5, self.avatar.centerY - self.nameLabel.height / 2)];
     
     [self.mobileButton setOrigin:CGPointMake(self.nameLabel.right + 5, self.avatar.centerY - self.mobileButton.height / 2)];
-    if([attendanceItem normalAttendance]){
+    if([attendanceItem editNormalAttenance]){
         [self.checkView setCenter:self.attendanceButton.center];
     }
     else{
@@ -114,7 +114,7 @@
     CGFloat spaceYStart = 45;
     if([attendanceItem.recode count] > 0){
         [self.noteView setHidden:NO];
-        [self.noteView setNoteItem:[attendanceItem.recode lastObject]];
+        [self.noteView setNoteItem:[attendanceItem.recode firstObject]];
         [self.noteView setOrigin:CGPointMake(10, spaceYStart)];
         spaceYStart = self.noteView.bottom;
     }
@@ -124,10 +124,10 @@
     
     [self.commentButton setOrigin:CGPointMake(10, spaceYStart)];
     spaceYStart = self.commentButton.bottom;
-    if([attendanceItem.mark_info length] > 0){
+    if([attendanceItem.edit_mark length] > 0){
         [self.commentLabel setHidden:NO];
         [self.commentLabel setWidth:self.width - 10 * 2];
-        [self.commentLabel setText:attendanceItem.mark_info];
+        [self.commentLabel setText:attendanceItem.edit_mark];
         [self.commentLabel sizeToFit];
         [self.commentLabel setOrigin:CGPointMake(10, spaceYStart)];
     }
@@ -182,7 +182,7 @@
     [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UITextField* textField = alertController.textFields[0];
-        attendanceItem.mark_info = textField.text;
+        attendanceItem.edit_mark = textField.text;
         if(wself.attendanceChanged){
             wself.attendanceChanged();
         }
@@ -229,7 +229,13 @@
                 attendanceItem.newStatus = AttendanceStatusLeave;
             }
         }
-        attendanceItem.mark_info = title;
+        if(attendanceItem.newStatus != AttendanceStatusNormal){
+            attendanceItem.edit_mark = title;
+        }
+        else{
+            attendanceItem.edit_mark = nil;
+        }
+    
         if(wself.attendanceChanged){
             wself.attendanceChanged();
         }
@@ -246,8 +252,8 @@
         height += 20;
     }
     height += 30;
-    if([attendanceItem.mark_info length] > 0){
-        CGSize size = [attendanceItem.mark_info sizeForFont:[UIFont systemFontOfSize:15] size:CGSizeMake(width - 10 * 2, CGFLOAT_MAX) mode:NSLineBreakByWordWrapping];
+    if([attendanceItem.edit_mark length] > 0){
+        CGSize size = [attendanceItem.edit_mark sizeForFont:[UIFont systemFontOfSize:15] size:CGSizeMake(width - 10 * 2, CGFLOAT_MAX) mode:NSLineBreakByWordWrapping];
         height += size.height;
     }
     height += 5;

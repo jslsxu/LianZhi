@@ -10,4 +10,5 @@
 #import "AttendanceDetailResponse.h"
 @interface StudentAttendanceHeaderView : UIView
 @property (nonatomic, strong)AttendanceInfo* info;
+@property (nonatomic, strong)NSDate* date;
 @end

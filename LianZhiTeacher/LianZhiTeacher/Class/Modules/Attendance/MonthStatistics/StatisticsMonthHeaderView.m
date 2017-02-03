@@ -7,12 +7,13 @@
 //
 
 #import "StatisticsMonthHeaderView.h"
-
+#import "StudentsAttendanceHeaderView.h"
 @interface StatisticsMonthHeaderView ()
 @property (nonatomic, strong)UIButton* preButton;
 @property (nonatomic, strong)UIButton* nextButton;
 @property (nonatomic, strong)UILabel* dateLabel;
 @property (nonatomic, strong)UILabel* numLabel;
+@property (nonatomic, strong)StudentsAttendanceHeaderView* headerView;
 @end
 
 @implementation StatisticsMonthHeaderView
@@ -34,18 +35,26 @@
         [self addSubview:self.numLabel];
         
         self.preButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.preButton setFrame:CGRectMake(self.dateLabel.left - 30, 0, 30, self.height)];
+        [self.preButton setFrame:CGRectMake(self.dateLabel.left - 30, 0, 30, 60)];
         [self.preButton setImage:[UIImage imageNamed:@"PreArrowNormal"] forState:UIControlStateNormal];
         [self.preButton addTarget:self action:@selector(onPre) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.preButton];
         
         self.nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.nextButton setFrame:CGRectMake(self.dateLabel.right, 0, 30, self.height)];
+        [self.nextButton setFrame:CGRectMake(self.dateLabel.right, 0, 30, 60)];
         [self.nextButton setImage:[UIImage imageNamed:@"NextArrowNormal"] forState:UIControlStateNormal];
         [self.nextButton addTarget:self action:@selector(onNext) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.nextButton];
+        
+        self.headerView = [[StudentsAttendanceHeaderView alloc] initWithFrame:CGRectMake(0, 60, self.width, 40)];
+        [self.headerView setTitleHidden:YES];
+        [self addSubview:self.headerView];
     }
     return self;
+}
+
+- (void)setSortChanged:(void (^)(NSInteger))sortChanged{
+    [self.headerView setSortCallback:sortChanged];
 }
 
 - (void)setDate:(NSDate *)date{
@@ -69,11 +78,17 @@
 - (void)onPre{
     NSDate *preDate = [self.date dateByAddingMonths:-1];
     [self setDate:preDate];
+    if(self.dateChanged){
+        self.dateChanged();
+    }
 }
 
 - (void)onNext{
     NSDate* nextDate = [self.date dateByAddingMonths:1];
     [self setDate:nextDate];
+    if(self.dateChanged){
+        self.dateChanged();
+    }
 }
 
 @end

@@ -10,6 +10,7 @@
 #import "StudentsAttendanceHeaderView.h"
 #import "EditAttendanceCell.h"
 #import "StudentsAttendanceListModel.h"
+#import "StudentAttendanceDetailVC.h"
 @interface EditAttendanceVC ()
 @property (nonatomic, strong)StudentsAttendanceHeaderView* headerView;
 @property (nonatomic, strong)StudentsAttendanceListModel* listModel;
@@ -123,10 +124,14 @@
             }
         }
         [params setValue:[leaveArray modelToJSONString] forKey:@"leave_json"];
-        
+        __weak typeof(self) wself = self;
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/neditleave" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             [hud hide:NO];
             [ProgressHUD showHintText:@"编辑考勤成功"];
+            if(wself.editFinished){
+                wself.editFinished();
+            }
+            [wself.navigationController popViewControllerAnimated:YES];
         } fail:^(NSString *errMsg) {
             [hud hide:NO];
         }];
@@ -185,7 +190,11 @@
 }
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
-    
+    StudentAttendanceItem* item = (StudentAttendanceItem *)modelItem;
+    StudentAttendanceDetailVC* detailVC = [[StudentAttendanceDetailVC alloc] init];
+    [detailVC setClassInfo:self.classInfo];
+    [detailVC setStudentInfo:item.child_info];
+    [self.navigationController pushViewController:detailVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

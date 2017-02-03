@@ -9,6 +9,7 @@
 #import "AttendanceHeaderView.h"
 
 @interface AttendanceHeaderView ()
+@property (nonatomic, strong)UIView* progressBG;
 @property (nonatomic, strong)UIView* progressView;
 @property (nonatomic, strong)UILabel* attendancePercentLabel;
 @property (nonatomic, strong)UILabel* offPercentLabel;
@@ -36,13 +37,13 @@
 }
 
 - (void)setupContentView:(UIView *)viewParent{
-    UIView* progressBG = [[UIView alloc] initWithFrame:CGRectMake(65, 20, viewParent.width - 65 * 2, 10)];
-    [progressBG setBackgroundColor:[UIColor colorWithHexString:@"fc6e82"]];
-    [viewParent addSubview:progressBG];
+    self.progressBG = [[UIView alloc] initWithFrame:CGRectMake(65, 20, viewParent.width - 65 * 2, 10)];
+    [self.progressBG setBackgroundColor:[UIColor colorWithHexString:@"fc6e82"]];
+    [viewParent addSubview:self.progressBG];
     
-    self.progressView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, progressBG.height)];
+    self.progressView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, self.progressBG.height)];
     [self.progressView setBackgroundColor:kCommonTeacherTintColor];
-    [progressBG addSubview:self.progressView];
+    [self.progressBG addSubview:self.progressView];
     
     self.attendancePercentLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 4, 50, 40)];
     [self.attendancePercentLabel setFont:[UIFont systemFontOfSize:14]];
@@ -120,6 +121,8 @@
         [offPercentStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%%", _model.all.absence_rate] attributes:@{NSForegroundColorAttributeName : kRedColor}]];
     }
     [self.offPercentLabel setAttributedText:offPercentStr];
+    
+    [self.progressView setWidth:self.progressBG.width * [_model.all.attendance_rate floatValue] / 100];
     
     [self.classNumLabel setText:[NSString stringWithFormat:@"%zd个", _model.all.class_total]];
     [self.totalNumLabel setText:[NSString stringWithFormat:@"%zd人", _model.all.total]];

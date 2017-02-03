@@ -12,4 +12,5 @@
 @property (nonatomic, strong)NSDate* date;
 @property (nonatomic, assign)NSInteger class_attendance;
 @property (nonatomic, copy)void (^dateChanged)();
+@property (nonatomic, copy)void (^sortChanged)(NSInteger sort);
 @end

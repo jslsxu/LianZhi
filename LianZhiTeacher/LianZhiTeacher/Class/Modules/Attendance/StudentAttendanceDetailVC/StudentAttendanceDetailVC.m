@@ -45,7 +45,7 @@
     [titleLabel setNumberOfLines:0];
     [titleLabel setTextAlignment:NSTextAlignmentCenter];
     [titleLabel setTextColor:[UIColor colorWithHexString:@"525252"]];
-    NSMutableAttributedString* titleString = [[NSMutableAttributedString alloc] initWithString:@"学生考勤\n" attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17]}];
+    NSMutableAttributedString* titleString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@考勤详情\n", self.studentInfo.name] attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17]}];
     [titleString appendAttributedString:[[NSAttributedString alloc] initWithString:@"14级01班" attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12]}]];
     [titleLabel setAttributedText:titleString];
     [titleLabel sizeToFit];
@@ -68,34 +68,37 @@
 }
 
 - (void)setupHeaderView{
+    [self.headerView setDate:self.calendar.currentSelectedDate];
     [self.headerView setInfo:self.attendanceDetail.info];
+    [self.headerView setStudentInfo:self.attendanceDetail.studentInfo];
 }
 
 - (void)setupContentView{
     [self.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.contentView setHeight:0];
+    [self.contentView setBackgroundColor:[UIColor whiteColor]];
+    [self.contentView.layer setCornerRadius:10];
+    [self.contentView.layer setMasksToBounds:YES];
+    
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    [titleLabel setFont:[UIFont systemFontOfSize:15]];
+    [titleLabel setTextColor:kColor_33];
+    [titleLabel setText:@"当日记录"];
+    [titleLabel sizeToFit];
+    [titleLabel setOrigin:CGPointMake(10, 10)];
+    [self.contentView addSubview:titleLabel];
+    
+    UILabel* dateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    [dateLabel setTextColor:kCommonTeacherTintColor];
+    [dateLabel setFont:[UIFont systemFontOfSize:14]];
+    [dateLabel setText:[self.calendar.currentSelectedDate stringWithFormat:@"yyyy年MM月dd日"]];
+    [dateLabel sizeToFit];
+    [dateLabel setOrigin:CGPointMake(self.contentView.width - 10 - dateLabel.width, 10)];
+    [self.contentView addSubview:dateLabel];
+    
+    CGFloat spaceYStart = titleLabel.bottom + 10;
+    
     if([self.attendanceDetail.recode count] > 0){
-        [self.contentView setBackgroundColor:[UIColor whiteColor]];
-        [self.contentView.layer setCornerRadius:10];
-        [self.contentView.layer setMasksToBounds:YES];
-        
-        UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [titleLabel setFont:[UIFont systemFontOfSize:15]];
-        [titleLabel setTextColor:kColor_33];
-        [titleLabel setText:@"当日记录"];
-        [titleLabel sizeToFit];
-        [titleLabel setOrigin:CGPointMake(10, 10)];
-        [self.contentView addSubview:titleLabel];
-        
-        UILabel* dateLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [dateLabel setTextColor:kCommonTeacherTintColor];
-        [dateLabel setFont:[UIFont systemFontOfSize:14]];
-        [dateLabel setText:@"2016年4月4日"];
-        [dateLabel sizeToFit];
-        [dateLabel setOrigin:CGPointMake(self.contentView.width - 10 - dateLabel.width, 10)];
-        [self.contentView addSubview:dateLabel];
-        
-        CGFloat spaceYStart = titleLabel.bottom + 10;
         for (NSInteger i = 0; i < [self.attendanceDetail.recode count]; i++) {
             AttendanceNoteItem* noteItem = self.attendanceDetail.recode[i];
             UIView* dot = [[UIView alloc] initWithFrame:CGRectMake(10, 0, 6, 6)];
@@ -126,9 +129,29 @@
             
             spaceYStart = contentLabel.bottom + 10;
         }
-        
-        [self.contentView setHeight:spaceYStart];
     }
+    else{
+        UIView* dot = [[UIView alloc] initWithFrame:CGRectMake(10, 0, 6, 6)];
+        [dot setBackgroundColor:kCommonTeacherTintColor];
+        [dot.layer setCornerRadius:3];
+        [dot.layer setMasksToBounds:YES];
+        [self.contentView addSubview:dot];
+        
+        UILabel* timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [timeLabel setTextColor:kCommonTeacherTintColor];
+        [timeLabel setFont:[UIFont systemFontOfSize:14]];
+        [timeLabel setText:@"暂无记录"];
+        [timeLabel sizeToFit];
+        [timeLabel setOrigin:CGPointMake(dot.right + 10, spaceYStart)];
+        [self.contentView addSubview:timeLabel];
+        
+        [dot setOrigin:CGPointMake(10, timeLabel.centerY - dot.height / 2)];
+        
+        spaceYStart = timeLabel.bottom + 10;
+    }
+    
+    [self.contentView setHeight:spaceYStart];
+
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.width, self.contentView.bottom + 10)];
 }
 
@@ -152,6 +175,7 @@
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/nstudent" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:NO];
         StudentAttendanceDetail* attendanceDetail = [StudentAttendanceDetail modelWithJSON:responseObject.data];
+        [attendanceDetail setStudentInfo:wself.studentInfo];
         [wself setAttendanceDetail:attendanceDetail];
     } fail:^(NSString *errMsg) {
         [hud hide:NO];

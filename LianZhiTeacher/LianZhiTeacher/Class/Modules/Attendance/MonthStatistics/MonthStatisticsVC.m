@@ -9,6 +9,7 @@
 #import "MonthStatisticsVC.h"
 #import "StatisticsMonthHeaderView.h"
 #import "MonthStatisticsListModel.h"
+#import "StudentAttendanceDetailVC.h"
 @interface MonthStatisticsVC ()
 @property (nonatomic, strong)StatisticsMonthHeaderView* headerView;
 @property (nonatomic, strong)MBProgressHUD* hud;
@@ -41,16 +42,20 @@
 - (StatisticsMonthHeaderView *)headerView{
     if(nil == _headerView){
         __weak typeof(self) wself = self;
-        _headerView = [[StatisticsMonthHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 60)];
+        _headerView = [[StatisticsMonthHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 100)];
         [_headerView setDateChanged:^{
             [wself refreshOnDateChanged];
         }];
         [_headerView setDate:[NSDate date]];
+        [_headerView setSortChanged:^(NSInteger sortType) {
+            [wself sortWithType:sortType];
+        }];
     }
     return _headerView;
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType{
+    self.date = [self.headerView date];
     HttpRequestTask* task = [[HttpRequestTask alloc] init];
     [task setRequestUrl:@"leave/nclassmonth"];
     
@@ -64,8 +69,41 @@
     return task;
 }
 
+- (void)sortWithType:(NSInteger)sortType{
+    NSMutableArray* listArray = [self.tableViewModel modelItemArray];
+    [listArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        MonthStatisticsItem* item1 = (MonthStatisticsItem *)obj1;
+        MonthStatisticsItem* item2 = (MonthStatisticsItem *)obj2;
+        if(sortType == 0){
+            return [item1.child_info.first_letter compare:item2.child_info.first_letter];
+        }
+        else if(sortType == 1){
+            if(item1.attendance > item2.attendance){
+                return NSOrderedAscending;
+            }
+            else if(item1.attendance == item2.attendance){
+                return NSOrderedSame;
+            }
+            else{
+                return NSOrderedDescending;
+            }
+        }
+        else{
+            if(item1.absence > item2.absence){
+                return NSOrderedAscending;
+            }
+            else if(item1.absence == item2.absence){
+                return NSOrderedSame;
+            }
+            else{
+                return NSOrderedDescending;
+            }
+        }
+    }];
+    [self.tableView reloadData];
+}
+
 - (void)refreshOnDateChanged{
-    NSDate *date = self.headerView.date;
     [self requestData:REQUEST_REFRESH];
 }
 
@@ -81,6 +119,14 @@
     [self.hud hide:NO];
     MonthStatisticsListModel* model = (MonthStatisticsListModel *)self.tableViewModel;
     [self.headerView setClass_attendance:model.class_attendance];
+}
+
+- (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
+    MonthStatisticsItem *item = (MonthStatisticsItem *)modelItem;
+    StudentAttendanceDetailVC* detailVC = [[StudentAttendanceDetailVC alloc] init];
+    [detailVC setClassInfo:self.classInfo];
+    [detailVC setStudentInfo:item.child_info];
+    [CurrentROOTNavigationVC pushViewController:detailVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

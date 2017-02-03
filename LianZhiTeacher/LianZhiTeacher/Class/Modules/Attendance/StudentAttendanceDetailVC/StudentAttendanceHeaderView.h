@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "StudentAttendanceDetail.h"
 @interface StudentAttendanceHeaderView : UIView
+@property (nonatomic, strong)NSDate* date;
 @property (nonatomic, strong)StudentAttendanceDetailInfo* info;
+@property (nonatomic, strong)StudentInfo* studentInfo;
 @end

@@ -296,6 +296,7 @@ static SystemSoundID shake_sound_male_id = 0;
             NSString *applicationVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
             if([applicationVersion compare:version] == NSOrderedAscending)
             {
+                [self.window endEditing:YES];
                 NewEditionPreview *preview = [[NewEditionPreview alloc] initWithVersion:version notes:releaseNotes];
                 [preview show];
             }
