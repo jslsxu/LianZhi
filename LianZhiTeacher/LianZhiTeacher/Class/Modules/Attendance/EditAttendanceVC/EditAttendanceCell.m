@@ -172,7 +172,7 @@
     [alertController addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         [textField setFont:[UIFont systemFontOfSize:15]];
         [textField setTextColor:kColor_66];
-        [textField setText:attendanceItem.mark_info];
+        [textField setText:attendanceItem.edit_mark];
         UITextPosition *endDocument = textField.endOfDocument;//获取 text的 尾部的 TextPositext
         
         UITextPosition *end = [textField positionFromPosition:endDocument offset:0];

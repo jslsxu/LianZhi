@@ -86,18 +86,18 @@
     [attendanceHintLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
     [viewParent addSubview:attendanceHintLabel];
     
-    self.attendanceNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(65, 75, viewParent.width / 2 - 65, 20)];
+    self.attendanceNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(65, 75, viewParent.width - 65, 20)];
     [self.attendanceNumLabel setFont:[UIFont systemFontOfSize:14]];
     [self.attendanceNumLabel setTextColor:kCommonTeacherTintColor];
     [viewParent addSubview:self.attendanceNumLabel];
     
-    UILabel* offNumHintLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewParent.width / 2, 75, 50, 20)];
+    UILabel* offNumHintLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, attendanceHintLabel.bottom + 5, 50, 20)];
     [offNumHintLabel setText:@"缺勤:"];
     [offNumHintLabel setFont:[UIFont systemFontOfSize:14]];
     [offNumHintLabel setTextColor:[UIColor colorWithHexString:@"333333"]];
     [viewParent addSubview:offNumHintLabel];
     
-    self.offNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewParent.width / 2 + 55, 75, viewParent.width / 2 - 65, 20)];
+    self.offNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(65, offNumHintLabel.top, viewParent.width - 65, 20)];
     [self.offNumLabel setFont:[UIFont systemFontOfSize:14]];
     [self.offNumLabel setTextColor:kRedColor];
     [viewParent addSubview:self.offNumLabel];
@@ -126,8 +126,13 @@
     
     [self.classNumLabel setText:[NSString stringWithFormat:@"%zd个", _model.all.class_total]];
     [self.totalNumLabel setText:[NSString stringWithFormat:@"%zd人", _model.all.total]];
-    [self.attendanceNumLabel setText:[NSString stringWithFormat:@"%zd人", _model.all.attendance]];
-    [self.offNumLabel setText:[NSString stringWithFormat:@"%zd人",_model.all.absence]];
+    NSMutableAttributedString* attendanceStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%zd人", _model.all.attendance] attributes:@{NSForegroundColorAttributeName : kCommonTeacherTintColor}];
+    [attendanceStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"  (其中有2人迟到)"] attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+    [self.attendanceNumLabel setAttributedText:attendanceStr];
+    
+    NSMutableAttributedString* absenceStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%zd人",_model.all.absence] attributes:@{NSForegroundColorAttributeName : kRedColor}];
+    [absenceStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"  (其中有3人无故迟到)"] attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+    [self.offNumLabel setAttributedText:absenceStr];
     [self.uncommitLabel setText:[NSString stringWithFormat:@"目前未提交考勤的班级还有%zd个班", _model.all.no_submit]];
 }
 

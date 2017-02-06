@@ -29,6 +29,7 @@ typedef NS_ENUM(NSInteger, CalendarType){
 @property (nonatomic, assign)BOOL   isChosen;
 @property (nonatomic, assign)BOOL   isCurMonth;
 @property (nonatomic, assign)BOOL   hasNew;
+@property (nonatomic, assign)BOOL   highlightedRed;
 @end
 
 @interface Calendar : UIView
@@ -36,6 +37,7 @@ typedef NS_ENUM(NSInteger, CalendarType){
 @property (nonatomic, weak)id<CalendarDelegate> delegate;
 @property (nonatomic, strong)NSDate*    date;
 @property (nonatomic, strong)NSArray*   unreadDays;
+@property (nonatomic, strong)NSArray* highlightedDate;
 - (NSDate *)currentSelectedDate;
 - (instancetype)initWithDate:(NSDate *)date;
 @end

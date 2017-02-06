@@ -45,6 +45,7 @@
 @interface ClassAttendanceListModel : TNListModel
 @property (nonatomic, strong)AllInfo* all;
 @property (nonatomic, strong)AppH5* appH5;
-@property (nonatomic, assign)AttendanceClassFilterType filterType;
+@property (nonatomic, copy)NSString* filterType;
 - (void)clear;
+- (NSArray *)filterTypeList;
 @end

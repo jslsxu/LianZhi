@@ -13,6 +13,7 @@
 #import "FilterView.h"
 #import "AttendanceHeaderView.h"
 #import "StudentsAttendanceVC.h"
+#import "EditAttendanceVC.h"
 @interface AttendanceVC ()<CalendarDelegate>
 @property (nonatomic, strong)Calendar* calendar;
 @property (nonatomic, strong)FilterView* filterView;
@@ -21,6 +22,18 @@
 @end
 
 @implementation AttendanceVC
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self){
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshWhenEdit) name:kEditAttendanceNotification object:nil];
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -35,6 +48,10 @@
     [self.tableView setTableHeaderView:[self headerView]];
     [self setSupportPullUp:YES];
     [self setSupportPullDown:YES];
+    [self requestData:REQUEST_REFRESH];
+}
+
+- (void)refreshWhenEdit{
     [self requestData:REQUEST_REFRESH];
 }
 
@@ -57,11 +74,9 @@
     if(nil == _filterView){
         __weak typeof(self) wself = self;
         _filterView = [[FilterView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
-        [_filterView setFilterType:AttendanceClassFilterTypeAll];
-        [_filterView setFilterChanged:^(AttendanceClassFilterType filterType) {
-            ClassAttendanceListModel* model = (ClassAttendanceListModel *)wself.tableViewModel;
-            [model setFilterType:filterType];
-            [wself.tableView reloadData];
+        [_filterView setFilterType:[ClassFilterView filterNameForType:AttendanceClassFilterTypeAll]];
+        [_filterView setClickCallback:^{
+            [wself showFilterListView];
         }];
         [_filterView setTop:self.view.height - _filterView.height];
         [_filterView setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
@@ -71,9 +86,22 @@
 
 - (AttendanceHeaderView *)headerView{
     if(nil == _headerView){
-        _headerView = [[AttendanceHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 150)];
+        _headerView = [[AttendanceHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 175)];
     }
     return _headerView;
+}
+
+- (void)showFilterListView{
+    ClassAttendanceListModel* listModel = (ClassAttendanceListModel *)self.tableViewModel;
+    NSArray* filterList = [listModel filterTypeList];
+    if([filterList count] > 0){
+        __weak typeof(self) wself = self;
+        [ClassFilterView showWithFilterList:filterList filterType:self.filterView.filterType completion:^(NSString *filterType) {
+            [wself.filterView setFilterType:filterType];
+            [listModel setFilterType:filterType];
+            [wself.tableView reloadData];
+        }];
+    }
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType{
@@ -96,6 +124,7 @@
     [self.hud hide:NO];
     ClassAttendanceListModel* model = (ClassAttendanceListModel *)self.tableViewModel;
     [self.headerView setModel:model];
+    [self.filterView setFilterType:[ClassFilterView filterNameForType:AttendanceClassFilterTypeAll]];
 }
 
 - (void)TNBaseTableViewControllerRequestFailedWithError:(NSString *)errMsg{

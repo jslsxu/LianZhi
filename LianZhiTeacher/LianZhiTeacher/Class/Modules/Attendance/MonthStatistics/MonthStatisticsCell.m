@@ -42,18 +42,14 @@
         [self.offNumLabel setFont:[UIFont systemFontOfSize:15]];
         [self.offNumLabel setTextColor:kRedColor];
         [self addSubview:self.offNumLabel];
-        
-        UIView* sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
-        [sepLine setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth];
-        [sepLine setBackgroundColor:kSepLineColor];
-        [self addSubview:sepLine];
+    
     }
     return self;
 }
 
 - (void)onReloadData:(TNModelItem *)modelItem{
     MonthStatisticsItem* item = (MonthStatisticsItem *)modelItem;
-    
+    [self.avatar sd_setImageWithURL:[NSURL URLWithString:item.child_info.avatar] placeholderImage:nil];
     [self.nameLabel setText:item.child_info.name];
     [self.nameLabel sizeToFit];
     [self.nameLabel setOrigin:CGPointMake(self.avatar.right + 5, (60 - self.nameLabel.height) / 2)];
@@ -61,15 +57,17 @@
     [self.attendanceNumLabel setText:kStringFromValue(item.attendance)];
     
     [self.offNumLabel setText:kStringFromValue(item.absence)];
-    
-    if(item.row % 2 == 0){
+}
+
+- (void)setRow:(NSInteger)row{
+    _row = row;
+    if(_row % 2 == 0){
         [self setBackgroundColor:[UIColor whiteColor]];
     }
     else{
         [self setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     }
 }
-
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width{
     return @(60);

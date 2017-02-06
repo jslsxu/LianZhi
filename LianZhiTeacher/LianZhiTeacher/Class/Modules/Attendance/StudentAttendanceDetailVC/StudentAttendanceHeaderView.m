@@ -74,6 +74,8 @@
 - (void)setDate:(NSDate *)date{
     _date = date;
     [self.progressHintLabel setText:[NSString stringWithFormat:@"%zd月考勤记录",[_date month]]];
+    [self.progressHintLabel sizeToFit];
+    [self.progressHintLabel setCenter:CGPointMake(self.progressBG.centerX, 20)];
 }
 
 - (void)setInfo:(StudentAttendanceDetailInfo *)info{
@@ -93,6 +95,7 @@
     [self.attendanceNumLabel setAttributedText:attendanceString];
     
     [self.progressView setWidth:self.progressBG.width * [_info.attendance_rate floatValue] / 100];
+    
 }
 
 - (void)setStudentInfo:(StudentInfo *)studentInfo{

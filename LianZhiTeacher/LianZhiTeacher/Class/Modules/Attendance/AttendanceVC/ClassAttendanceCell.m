@@ -12,7 +12,7 @@
 @property (nonatomic, strong)UIView* bgView;
 @property (nonatomic, strong)LogoView* logoView;
 @property (nonatomic, strong)UILabel* classLabel;
-@property (nonatomic, strong)UILabel* attendanceLabel;
+@property (nonatomic, strong)YYLabel* attendanceLabel;
 @property (nonatomic, strong)UILabel* teacherLabel;
 @property (nonatomic, strong)UIButton* chatButton;
 @property (nonatomic, strong)UIButton* mobileButton;
@@ -25,22 +25,23 @@
     if(self){
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         [self setBackgroundColor:[UIColor clearColor]];
-        self.bgView = [[UIView alloc] initWithFrame:CGRectMake(10, 0, self.width - 10 * 2, 85 - 10)];
+        self.bgView = [[UIView alloc] initWithFrame:CGRectMake(10, 0, self.width - 10 * 2, 90 - 10)];
         [self.bgView setBackgroundColor:[UIColor whiteColor]];
         [self.bgView.layer setCornerRadius:6];
         [self.bgView.layer setMasksToBounds:YES];
         [self addSubview:self.bgView];
         
-        self.logoView = [[LogoView alloc] initWithRadius:24];
-        [self.logoView setOrigin:CGPointMake(10, (self.bgView.height - self.logoView.height) / 2)];
+        self.logoView = [[LogoView alloc] initWithRadius:25];
+        [self.logoView setOrigin:CGPointMake(10, 15)];
         [self.bgView addSubview:self.logoView];
         
         self.classLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        [self.classLabel setFont:[UIFont systemFontOfSize:15]];
+        [self.classLabel setFont:[UIFont systemFontOfSize:16]];
         [self.bgView addSubview:self.classLabel];
         
-        self.attendanceLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        self.attendanceLabel = [[YYLabel alloc] initWithFrame:CGRectZero];
         [self.attendanceLabel setFont:[UIFont systemFontOfSize:13]];
+        [self.attendanceLabel setNumberOfLines:0];
         [self.bgView addSubview:self.attendanceLabel];
         
         self.teacherLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -78,8 +79,8 @@
     NSString* attendanceNumString = nil;
     NSString* absenceNumString = nil;
     if(attendanceItem.submit_leave){
-        attendanceNumString = [NSString stringWithFormat:@"%zd人\t", attendanceItem.attendance];
-        absenceNumString = [NSString stringWithFormat:@"%zd人", attendanceItem.absence];
+        attendanceNumString = [NSString stringWithFormat:@"%zd人    ", attendanceItem.attendance];
+        absenceNumString = [NSString stringWithFormat:@"%zd人    ", attendanceItem.absence];
     }
     else{
         attendanceNumString = @"-人";
@@ -88,13 +89,19 @@
     [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:attendanceNumString attributes:@{NSForegroundColorAttributeName : kCommonTeacherTintColor}]];
     [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:@"缺勤:" attributes:@{NSForegroundColorAttributeName : kColor_99}]];
     [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:absenceNumString attributes:@{NSForegroundColorAttributeName : kRedColor}]];
+    
+    [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n其中:3人迟到，1人无故缺勤"] attributes:@{NSForegroundColorAttributeName : kCommonTeacherTintColor}]];
+    [attendanceString setLineSpacing:2];
     [self.attendanceLabel setAttributedText:attendanceString];
     [self.attendanceLabel sizeToFit];
-    [self.attendanceLabel setOrigin:CGPointMake(self.logoView.right + 6, self.logoView.bottom - self.attendanceLabel.height)];
-    
+    [self.attendanceLabel setOrigin:CGPointMake(self.logoView.right + 6, self.classLabel.bottom + 5)];
+    NSString* name = attendanceItem.teacherName;
+    if([name isEqualToString:[UserCenter sharedInstance].userInfo.name]){
+        name = @"我";
+    }
     NSMutableAttributedString* teacherString = nil;
-    if([attendanceItem.teacherName length] > 0 && [attendanceItem.class_info.course length] > 0){
-        teacherString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ ", attendanceItem.teacherName] attributes:@{NSForegroundColorAttributeName : kColor_33}];
+    if([name length] > 0 && [attendanceItem.class_info.course length] > 0){
+        teacherString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ ", name] attributes:@{NSForegroundColorAttributeName : kColor_33}];
         [teacherString appendAttributedString:[[NSAttributedString alloc] initWithString:attendanceItem.class_info.course attributes:@{NSForegroundColorAttributeName : kColor_99}]];
 
     }
@@ -140,7 +147,7 @@
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width{
-    return @(85);
+    return @(90);
 }
 
 @end

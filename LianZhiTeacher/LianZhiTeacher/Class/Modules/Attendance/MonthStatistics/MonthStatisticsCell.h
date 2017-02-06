@@ -9,5 +9,5 @@
 #import "TNTableViewCell.h"
 
 @interface MonthStatisticsCell : TNTableViewCell
-
+@property (nonatomic, assign)NSInteger row;
 @end

@@ -187,7 +187,14 @@
     [alertView setButtonsTitleColor:kCommonParentTintColor];
     [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-        [wself.textView setText:title];
+        NSString* childName = [UserCenter sharedInstance].curChild.name;
+        if(index == 0){
+            [wself.textView setText:[NSString stringWithFormat:@"老师您好，%@生病了，需要在家休息", childName]];
+        }
+        else{
+            [wself.textView setText:[NSString stringWithFormat:@"老师您好，家中有事请，给%@请假", childName]];
+        }
+
     }];
     [alertView showAnimated:YES completionHandler:nil];
 }
@@ -224,6 +231,21 @@
     [datePicker show];
 }
 
+- (NSString *)checkRequest{
+    NSDate *curDate = [NSDate date];
+    if([curDate timeIntervalSinceDate:self.startDate] >= 0){
+        return @"起始时间应晚于当前时间";
+    }
+    if([self.endDate timeIntervalSinceDate:self.startDate] < 0){
+        return @"起始时间应晚于截止时间";
+    }
+    NSString* reason = [_textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if([reason length] == 0){
+        return @"请输入请假原因";
+    }
+    return nil;
+}
+
 - (void)onCancel
 {
     
@@ -231,25 +253,31 @@
 
 - (void)onSend
 {
-    MBProgressHUD *hud = [MBProgressHUD showMessag:@"发送中" toView:self.view];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:self.classInfo.classID forKey:@"class_id"];
-    [params setValue:self.classInfo.school.schoolID forKey:@"school_id"];
-    NSDateFormatter* formmater = [[NSDateFormatter alloc] init];
-    [formmater setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    [params setValue:[formmater stringFromDate:self.startDate] forKey:@"from_date"];
-    [params setValue:[formmater stringFromDate:self.endDate] forKey:@"to_date"];
-    [params setValue:_textView.text forKey:@"words"];
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/nleave" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-        [hud hide:YES];
-        [ProgressHUD showHintText:@"请假条已发给老师"];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [CurrentROOTNavigationVC popViewControllerAnimated:YES];
-        });
-    } fail:^(NSString *errMsg) {
-        [hud hide:YES];
-        [ProgressHUD showHintText:errMsg];
-    }];
+    NSString* errMessage = [self checkRequest];
+    if([errMessage length] > 0){
+        [ProgressHUD showHintText:errMessage];
+    }
+    else{
+        MBProgressHUD *hud = [MBProgressHUD showMessag:@"发送中" toView:self.view];
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:self.classInfo.classID forKey:@"class_id"];
+        [params setValue:self.classInfo.school.schoolID forKey:@"school_id"];
+        NSDateFormatter* formmater = [[NSDateFormatter alloc] init];
+        [formmater setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        [params setValue:[formmater stringFromDate:self.startDate] forKey:@"from_date"];
+        [params setValue:[formmater stringFromDate:self.endDate] forKey:@"to_date"];
+        [params setValue:_textView.text forKey:@"words"];
+        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/nleave" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [hud hide:YES];
+            [ProgressHUD showHintText:@"请假条已发给老师"];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [CurrentROOTNavigationVC popViewControllerAnimated:YES];
+            });
+        } fail:^(NSString *errMsg) {
+            [hud hide:YES];
+            [ProgressHUD showHintText:errMsg];
+        }];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

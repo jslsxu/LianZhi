@@ -109,6 +109,7 @@
 }
 
 - (void)cancelLeaveOnToday{
+    __weak typeof(self) wself = self;
     MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:self.view];
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [params setValue:self.classInfo.classID forKey:@"class_id"];
@@ -118,6 +119,7 @@
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/ncancel" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:NO];
         [ProgressHUD showHintText:@"取消请假成功"];
+        [wself requestAttendance];
     } fail:^(NSString *errMsg) {
         [hud hide:NO];
     }];
@@ -183,8 +185,39 @@
     [self.contentView addSubview:dateLabel];
     
     CGFloat spaceYStart = titleLabel.bottom + 10;
-    for (NSInteger i = 0; i < [self.detailResponse.recode count]; i++) {
-        AttendanceNoteItem* noteItem = self.detailResponse.recode[i];
+    if([self.detailResponse.recode count] > 0){
+        for (NSInteger i = 0; i < [self.detailResponse.recode count]; i++) {
+            AttendanceNoteItem* noteItem = self.detailResponse.recode[i];
+            UIView* dot = [[UIView alloc] initWithFrame:CGRectMake(10, 0, 6, 6)];
+            [dot setBackgroundColor:kCommonParentTintColor];
+            [dot.layer setCornerRadius:3];
+            [dot.layer setMasksToBounds:YES];
+            [self.contentView addSubview:dot];
+            
+            UILabel* timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+            [timeLabel setTextColor:kCommonParentTintColor];
+            [timeLabel setFont:[UIFont systemFontOfSize:14]];
+            [timeLabel setText:noteItem.ctime];
+            [timeLabel sizeToFit];
+            [timeLabel setOrigin:CGPointMake(dot.right + 10, spaceYStart)];
+            [self.contentView addSubview:timeLabel];
+            
+            [dot setOrigin:CGPointMake(10, timeLabel.centerY - dot.height / 2)];
+            
+            UILabel* contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(timeLabel.left, 0, self.contentView.width - 10 - timeLabel.left, 0)];
+            [contentLabel setTextColor:kColor_66];
+            [contentLabel setNumberOfLines:0];
+            [contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
+            [contentLabel setFont:[UIFont systemFontOfSize:14]];
+            [contentLabel setText:noteItem.recode];
+            [contentLabel sizeToFit];
+            [contentLabel setOrigin:CGPointMake(timeLabel.left, timeLabel.bottom + 5)];
+            [self.contentView addSubview:contentLabel];
+            
+            spaceYStart = contentLabel.bottom + 10;
+        }
+    }
+    else{
         UIView* dot = [[UIView alloc] initWithFrame:CGRectMake(10, 0, 6, 6)];
         [dot setBackgroundColor:kCommonParentTintColor];
         [dot.layer setCornerRadius:3];
@@ -194,25 +227,16 @@
         UILabel* timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [timeLabel setTextColor:kCommonParentTintColor];
         [timeLabel setFont:[UIFont systemFontOfSize:14]];
-        [timeLabel setText:noteItem.ctime];
+        [timeLabel setText:@"暂无记录"];
         [timeLabel sizeToFit];
         [timeLabel setOrigin:CGPointMake(dot.right + 10, spaceYStart)];
         [self.contentView addSubview:timeLabel];
         
         [dot setOrigin:CGPointMake(10, timeLabel.centerY - dot.height / 2)];
         
-        UILabel* contentLabel = [[UILabel alloc] initWithFrame:CGRectMake(timeLabel.left, 0, self.contentView.width - 10 - timeLabel.left, 0)];
-        [contentLabel setTextColor:kColor_66];
-        [contentLabel setNumberOfLines:0];
-        [contentLabel setLineBreakMode:NSLineBreakByWordWrapping];
-        [contentLabel setFont:[UIFont systemFontOfSize:14]];
-        [contentLabel setText:noteItem.recode];
-        [contentLabel sizeToFit];
-        [contentLabel setOrigin:CGPointMake(timeLabel.left, timeLabel.bottom + 5)];
-        [self.contentView addSubview:contentLabel];
-        
-        spaceYStart = contentLabel.bottom + 10;
+        spaceYStart = timeLabel.bottom + 10;
     }
+
     
     [self.contentView setHeight:spaceYStart];
     [self.scrollView setContentSize:CGSizeMake(self.scrollView.width, self.contentView.bottom + 10)];

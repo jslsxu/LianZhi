@@ -11,6 +11,9 @@
 #import "EditAttendanceCell.h"
 #import "StudentsAttendanceListModel.h"
 #import "StudentAttendanceDetailVC.h"
+
+NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
+
 @interface EditAttendanceVC ()
 @property (nonatomic, strong)StudentsAttendanceHeaderView* headerView;
 @property (nonatomic, strong)StudentsAttendanceListModel* listModel;
@@ -32,6 +35,7 @@
     NSString* dateString = [formatter stringFromDate:self.date];
     [self.headerView.titleLabel setText:[NSString stringWithFormat:@"%@ %@",dateString, [Utility weekdayStr:self.date]]];
     [self.tableView setSectionIndexColor:kColor_66];
+    [self.tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
     [self.tableView setFrame:CGRectMake(0, 70, self.view.width, self.view.height - 70)];
     [self bindTableCell:@"EditAttendanceCell" tableModel:@"StudentsAttendanceListModel"];
      StudentsAttendanceListModel* model = (StudentsAttendanceListModel *)self.tableViewModel;
@@ -127,7 +131,7 @@
         __weak typeof(self) wself = self;
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/neditleave" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             [hud hide:NO];
-            [ProgressHUD showHintText:@"编辑考勤成功"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kEditAttendanceNotification object:nil];
             if(wself.editFinished){
                 wself.editFinished();
             }

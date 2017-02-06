@@ -71,11 +71,18 @@
     [self.headerView setDate:self.calendar.currentSelectedDate];
     [self.headerView setInfo:self.attendanceDetail.info];
     [self.headerView setStudentInfo:self.attendanceDetail.studentInfo];
+    [self.headerView setHidden:![self.attendanceDetail isAttendanceValidate]];
 }
 
 - (void)setupContentView{
     [self.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.contentView setHeight:0];
+    if(self.headerView.hidden){
+        [self.contentView setY:10];
+    }
+    else{
+        [self.contentView setY:self.headerView.bottom];
+    }
     [self.contentView setBackgroundColor:[UIColor whiteColor]];
     [self.contentView.layer setCornerRadius:10];
     [self.contentView.layer setMasksToBounds:YES];
@@ -157,8 +164,9 @@
 
 - (void)setAttendanceDetail:(StudentAttendanceDetail *)attendanceDetail{
     _attendanceDetail = attendanceDetail;
-    [self setupContentView];
+    [self.calendar setHighlightedDate:attendanceDetail.month_leave];
     [self setupHeaderView];
+    [self setupContentView];
 }
 
 - (void)requestStudentAttendance{

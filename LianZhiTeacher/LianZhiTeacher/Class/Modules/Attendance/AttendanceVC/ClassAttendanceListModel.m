@@ -7,7 +7,7 @@
 //
 
 #import "ClassAttendanceListModel.h"
-
+#import "FilterView.h"
 @implementation AllInfo
 
 @end
@@ -36,33 +36,71 @@
     TNDataWrapper* itemsWrapper = [data getDataWrapperForKey:@"items"];
     NSArray* items = [ClassAttendanceItem nh_modelArrayWithJson:itemsWrapper.data];
     [self.modelItemArray addObjectsFromArray:items];
+    self.filterType = [ClassFilterView filterNameForType:AttendanceClassFilterTypeAll];
     return YES;
+}
+
+- (NSArray *)filterTypeList{
+    NSMutableArray* gradeArray = [NSMutableArray array];
+    for (ClassAttendanceItem* item in self.modelItemArray) {
+        NSString* gradeName = item.grade_name;
+        if([gradeName length] > 0){
+            BOOL isIn = NO;
+            for (NSString* name in gradeArray) {
+                if([name isEqualToString:gradeName]){
+                    isIn = YES;
+                }
+            }
+            if(!isIn){
+                [gradeArray addObject:gradeName];
+            }
+        }
+    }
+    NSMutableArray* gradeNameArray = [NSMutableArray array];
+    for (NSString* gradeName in gradeArray) {
+        [gradeNameArray addObject:[NSString stringWithFormat:@"显示%@",gradeName]];
+    }
+    
+    NSMutableArray* sortTypeArray = [NSMutableArray array];
+    [sortTypeArray addObject:[ClassFilterView filterNameForType:AttendanceClassFilterTypeAll]];
+    [sortTypeArray addObject:[ClassFilterView filterNameForType:AttendanceClassFilterTypeUnCommit]];
+    [sortTypeArray addObject:[ClassFilterView filterNameForType:AttendanceClassFilterTypeCommited]];
+    [sortTypeArray addObject:[ClassFilterView filterNameForType:AttendanceClassFilterTypeWuguQueqin]];
+    [sortTypeArray addObject:[ClassFilterView filterNameForType:AttendanceClassFilterTypeLate]];
+    [sortTypeArray addObjectsFromArray:gradeNameArray];
+    return sortTypeArray;
 }
 
 - (NSInteger)numOfRowsInSection:(NSInteger)section{
     NSInteger count = 0;
     for (ClassAttendanceItem *item in self.modelItemArray) {
-        if(self.filterType == AttendanceClassFilterTypeAll){
+        if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeAll]]){
             count ++;
         }
-        else if(self.filterType == AttendanceClassFilterTypeUnCommit){
+        else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeUnCommit]]){
             if(!item.submit_leave){
                 count ++;
             }
         }
-        else if(self.filterType == AttendanceClassFilterTypeLate){
+        else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeLate]]){
             if(item.late_num > 0){
                 count++;
             }
         }
-        else if(self.filterType == AttendanceClassFilterTypeCommited){
+        else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeCommited]]){
             if(item.submit_leave){
                 count ++;
             }
         }
-        else if(self.filterType == AttendanceClassFilterTypeWuguQueqin){
+        else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeWuguQueqin]]){
             if(item.noleave_num > 0){
                 count ++;
+            }
+        }
+        else{
+            NSString* gradeName = [item grade_name];
+            if([self.filterType containsString:gradeName]){
+                count++;
             }
         }
     }
@@ -72,27 +110,33 @@
 - (TNModelItem *)itemForIndexPath:(NSIndexPath *)indexPath{
     NSInteger count = 0;
     for (ClassAttendanceItem *item in self.modelItemArray) {
-        if(self.filterType == AttendanceClassFilterTypeAll){
+        if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeAll]]){
             count ++;
         }
-        else if(self.filterType == AttendanceClassFilterTypeUnCommit){
+        else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeUnCommit]]){
             if(!item.submit_leave){
                 count ++;
             }
         }
-        else if(self.filterType == AttendanceClassFilterTypeLate){
+        else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeLate]]){
             if(item.late_num > 0){
                 count++;
             }
         }
-        else if(self.filterType == AttendanceClassFilterTypeCommited){
+        else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeCommited]]){
             if(item.submit_leave){
                 count ++;
             }
         }
-        else if(self.filterType == AttendanceClassFilterTypeWuguQueqin){
+        else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeWuguQueqin]]){
             if(item.noleave_num > 0){
                 count ++;
+            }
+        }
+        else{
+            NSString* gradeName = [item grade_name];
+            if([self.filterType containsString:gradeName]){
+                count++;
             }
         }
         if(count == indexPath.row + 1){

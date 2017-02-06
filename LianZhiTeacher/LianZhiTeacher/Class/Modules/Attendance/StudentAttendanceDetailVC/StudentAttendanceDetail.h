@@ -19,4 +19,6 @@
 @property (nonatomic, strong)NSArray* recode;
 @property (nonatomic, strong)StudentAttendanceDetailInfo* info;
 @property (nonatomic, strong)StudentInfo* studentInfo;
+@property (nonatomic, strong)NSArray* month_leave;
+- (BOOL)isAttendanceValidate;
 @end

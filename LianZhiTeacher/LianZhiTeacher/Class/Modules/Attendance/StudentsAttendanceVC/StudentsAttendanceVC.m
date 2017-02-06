@@ -31,6 +31,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    [self.tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
     [self setupTitle];
     [self setRightbarButtonHighlighted:NO];
     [self.view addSubview:[self calendar]];
@@ -91,6 +92,7 @@
     UIImageView* arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ClassUpArrow"]];
     [arrow setTransform:CGAffineTransformMakeRotation(M_PI)];
     [titleView addSubview:arrow];
+    [arrow setHidden:[self.classInfoArray count] == 1];
     
     CGFloat width = classNameLabel.width + 2 + arrow.width;
     CGFloat height = MAX(classNameLabel.height, arrow.height) + 2 + titleLabel.height;
@@ -114,21 +116,23 @@
 }
 
 - (void)onTitleClicked{
-    __weak typeof(self) wself = self;
-    AttendanceClassSelectVC* classSelectVC = [[AttendanceClassSelectVC alloc] init];
-    [classSelectVC setClassArray:self.classInfoArray];
-    [classSelectVC setClassSelectCallback:^(ClassInfo *classInfo) {
-        [wself.popController dismissPopoverAnimated:YES];
-        [wself onClassChanged:classInfo];
-    }];
-    self.popController = [[WYPopoverController alloc] initWithContentViewController:classSelectVC];
-    WYPopoverTheme* theme = [WYPopoverTheme theme];
-    [theme setOverlayColor:[UIColor clearColor]];
-    [theme setTintColor:[UIColor colorWithHexString:@"333333"]];
-    [self.popController setTheme:theme];
-    [self.popController setPopoverContentSize:CGSizeMake(120, 240)];
-    UIView* titleView = self.navigationItem.titleView;
-    [self.popController presentPopoverFromRect:titleView.bounds inView:titleView permittedArrowDirections:WYPopoverArrowDirectionUp animated:YES];
+    if([self.classInfoArray count] > 1){
+        __weak typeof(self) wself = self;
+        AttendanceClassSelectVC* classSelectVC = [[AttendanceClassSelectVC alloc] init];
+        [classSelectVC setClassArray:self.classInfoArray];
+        [classSelectVC setClassSelectCallback:^(ClassInfo *classInfo) {
+            [wself.popController dismissPopoverAnimated:YES];
+            [wself onClassChanged:classInfo];
+        }];
+        self.popController = [[WYPopoverController alloc] initWithContentViewController:classSelectVC];
+        WYPopoverTheme* theme = [WYPopoverTheme theme];
+        [theme setOverlayColor:[UIColor clearColor]];
+        [theme setTintColor:[UIColor colorWithWhite:0 alpha:0.6]];
+        [self.popController setTheme:theme];
+        [self.popController setPopoverContentSize:CGSizeMake(120, 40 * MIN(6, self.classInfoArray.count))];
+        UIView* titleView = self.navigationItem.titleView;
+        [self.popController presentPopoverFromRect:titleView.bounds inView:titleView permittedArrowDirections:WYPopoverArrowDirectionUp animated:YES];
+    }
 }
 
 - (void)onClassChanged:(ClassInfo *)classInfo{
@@ -154,7 +158,7 @@
     [params setValue:self.classInfo.classID forKey:@"class_id"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/nstartleave" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:NO];
-        [wself requestData:REQUEST_REFRESH];
+        [wself gotoEditAttendance];
     } fail:^(NSString *errMsg) {
         [hud hide:NO];
         [ProgressHUD showHintText:errMsg];
@@ -167,6 +171,7 @@
     NSMutableArray* actionArray = [NSMutableArray array];
     NotificationActionItem *settingItem = [NotificationActionItem actionItemWithTitle:@"月考勤" action:^{
         MonthStatisticsVC* monthVC = [[MonthStatisticsVC alloc] init];
+        [monthVC setClassArray:wself.classInfoArray];
         [monthVC setClassInfo:wself.classInfo];
         [monthVC setDate:wself.calendar.currentSelectedDate];
         [CurrentROOTNavigationVC pushViewController:monthVC animated:YES];

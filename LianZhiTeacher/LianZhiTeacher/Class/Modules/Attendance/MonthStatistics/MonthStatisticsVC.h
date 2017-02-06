@@ -9,6 +9,7 @@
 #import "TNBaseViewController.h"
 
 @interface MonthStatisticsVC : TNBaseTableViewController
+@property (nonatomic, strong)NSArray* classArray;
 @property (nonatomic, strong)ClassInfo* classInfo;
 @property (nonatomic, strong)NSDate* date;
 @end

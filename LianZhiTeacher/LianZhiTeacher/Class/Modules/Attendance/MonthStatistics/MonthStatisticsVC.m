@@ -10,9 +10,13 @@
 #import "StatisticsMonthHeaderView.h"
 #import "MonthStatisticsListModel.h"
 #import "StudentAttendanceDetailVC.h"
+#import "AttendanceClassSelectVC.h"
+#import "MonthStatisticsCell.h"
+#import <WYPopoverController.h>
 @interface MonthStatisticsVC ()
 @property (nonatomic, strong)StatisticsMonthHeaderView* headerView;
 @property (nonatomic, strong)MBProgressHUD* hud;
+@property (nonatomic, strong)WYPopoverController *popController;
 @end
 
 @implementation MonthStatisticsVC
@@ -27,16 +31,74 @@
     [self requestData:REQUEST_REFRESH];
 }
 
+- (EmptyHintView *)emptyView{
+    if(!_emptyView){
+        _emptyView = [[EmptyHintView alloc] initWithImage:@"EmptyMonthStatistics" title:@"暂无月考勤统计"];
+    }
+    return _emptyView;
+}
+
 - (void)setupTitle{
+    
+    UIView* titleView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTitleClicked)];
+    [titleView addGestureRecognizer:tapGesture];
+    
     UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    [titleLabel setNumberOfLines:0];
     [titleLabel setTextAlignment:NSTextAlignmentCenter];
     [titleLabel setTextColor:[UIColor colorWithHexString:@"525252"]];
-    NSMutableAttributedString* titleString = [[NSMutableAttributedString alloc] initWithString:@"月考勤统计\n" attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17]}];
-    [titleString appendAttributedString:[[NSAttributedString alloc] initWithString:self.classInfo.name attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12]}]];
-    [titleLabel setAttributedText:titleString];
+    [titleLabel setFont:[UIFont systemFontOfSize:17]];
+    [titleLabel setText:@"月考勤统计"];
     [titleLabel sizeToFit];
-    [self.navigationItem setTitleView:titleLabel];
+    [titleView addSubview:titleLabel];
+    
+    UILabel* classNameLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    [classNameLabel setFont:[UIFont systemFontOfSize:12]];
+    [classNameLabel setTextColor:[UIColor colorWithHexString:@"525252"]];
+    [classNameLabel setText:self.classInfo.name];
+    [classNameLabel sizeToFit];
+    [titleView addSubview:classNameLabel];
+    
+    UIImageView* arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ClassUpArrow"]];
+    [arrow setTransform:CGAffineTransformMakeRotation(M_PI)];
+    [titleView addSubview:arrow];
+    
+    [arrow setHidden:[self.classArray count] == 1];
+    
+    CGFloat width = classNameLabel.width + 2 + arrow.width;
+    CGFloat height = MAX(classNameLabel.height, arrow.height) + 2 + titleLabel.height;
+    [titleView setSize:CGSizeMake(MAX(width, titleLabel.width), height)];
+    [titleLabel setOrigin:CGPointMake((titleView.width - titleLabel.width) / 2, 0)];
+    [classNameLabel setOrigin:CGPointMake((titleView.width - width) / 2, titleLabel.height + 2)];
+    [arrow setOrigin:CGPointMake(classNameLabel.right + 2, classNameLabel.centerY - arrow.height / 2)];
+    [self.navigationItem setTitleView:titleView];
+}
+
+- (void)onClassChanged:(ClassInfo *)classInfo{
+    [self setClassInfo:classInfo];
+    [self requestData:REQUEST_REFRESH];
+}
+
+- (void)onTitleClicked{
+    if([self.classArray count] > 1){
+        __weak typeof(self) wself = self;
+        AttendanceClassSelectVC* classSelectVC = [[AttendanceClassSelectVC alloc] init];
+        [classSelectVC setClassArray:self.classArray];
+        [classSelectVC setClassSelectCallback:^(ClassInfo *classInfo) {
+            [wself.popController dismissPopoverAnimated:YES];
+            [wself onClassChanged:classInfo];
+        }];
+        self.popController = [[WYPopoverController alloc] initWithContentViewController:classSelectVC];
+        WYPopoverTheme* theme = [WYPopoverTheme theme];
+        [theme setOverlayColor:[UIColor clearColor]];
+        [theme setTintColor:[UIColor colorWithWhite:0 alpha:0.6]];
+        [self.popController setTheme:theme];
+        [self.popController setPopoverContentSize:CGSizeMake(120, 40 * MIN(6, self.classArray.count))];
+        UIView* titleView = self.navigationItem.titleView;
+        [self.popController presentPopoverFromRect:titleView.bounds inView:titleView permittedArrowDirections:WYPopoverArrowDirectionUp animated:YES];
+   
+    }
 }
 
 - (StatisticsMonthHeaderView *)headerView{
@@ -119,6 +181,13 @@
     [self.hud hide:NO];
     MonthStatisticsListModel* model = (MonthStatisticsListModel *)self.tableViewModel;
     [self.headerView setClass_attendance:model.class_attendance];
+    [self showEmptyView:[self.tableViewModel.modelItemArray count] == 0];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    MonthStatisticsCell* cell = (MonthStatisticsCell*)[super tableView:tableView cellForRowAtIndexPath:indexPath];
+    [cell setRow:indexPath.row];
+    return cell;
 }
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{

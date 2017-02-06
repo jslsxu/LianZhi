@@ -8,6 +8,8 @@
 
 #import "TNBaseViewController.h"
 
+extern NSString* kEditAttendanceNotification;
+
 @interface EditAttendanceVC : TNBaseTableViewController
 @property (nonatomic, strong)ClassInfo* classInfo;
 @property (nonatomic, strong)NSDate* date;

@@ -9,6 +9,7 @@
 #import "AttendanceNotificationListVC.h"
 #import "AttendanceNotificationCell.h"
 #import "AttendanceNotificationListModel.h"
+#import "AttendanceVC.h"
 @interface AttendanceNotificationListVC ()
 
 @end
@@ -20,10 +21,26 @@
     self.title = @"学生请假通知";
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"eeeef4"]];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"清空" style:UIBarButtonItemStylePlain target:self action:@selector(clear)];
+    
+    UIButton* manageButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [manageButton addTarget:self action:@selector(gotoManage) forControlEvents:UIControlEventTouchUpInside];
+    [manageButton setFrame:CGRectMake(10, self.view.height - 10 - 40, self.view.width - 10 * 2, 40)];
+    [manageButton setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
+    [manageButton setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:manageButton.size cornerRadius:10] forState:UIControlStateNormal];
+    [manageButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [manageButton setTitle:@"进入学生考勤管理" forState:UIControlStateNormal];
+    [manageButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
+    [self.view addSubview:manageButton];
+    [self.tableView setFrame:CGRectMake(0, 0, self.view.width, manageButton.top - 10)];
     [self bindTableCell:@"AttendanceNotificationCell" tableModel:@"AttendanceNotificationListModel"];
     [self setSupportPullUp:YES];
     [self setSupportPullDown:YES];
     [self requestData:REQUEST_REFRESH];
+}
+
+- (void)gotoManage{
+    AttendanceVC* attendanceVC = [AttendanceVC alloc];
+    [self.navigationController pushViewController:attendanceVC animated:YES];
 }
 
 - (void)clear{

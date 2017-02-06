@@ -18,14 +18,13 @@ typedef NS_ENUM(NSInteger, AttendanceClassFilterType){
 };
 
 @interface ClassFilterView : UIView
-+ (void)showWithFilterType:(AttendanceClassFilterType)filterType completion:(void (^)(AttendanceClassFilterType filterType))completion;
-
++ (void)showWithFilterList:(NSArray *)filterList filterType:(NSString* )filterType completion:(void (^)(NSString* filterType))completion;
 + (NSString *)filterNameForType:(AttendanceClassFilterType)filterType;
 @end
 
 @interface FilterView : UIView
-@property (nonatomic, assign)AttendanceClassFilterType filterType;
-@property (nonatomic, copy)void (^filterChanged)(AttendanceClassFilterType filterType);
+@property (nonatomic, copy)NSString* filterType;
+@property (nonatomic, copy)void (^clickCallback)();
 @end
 
 

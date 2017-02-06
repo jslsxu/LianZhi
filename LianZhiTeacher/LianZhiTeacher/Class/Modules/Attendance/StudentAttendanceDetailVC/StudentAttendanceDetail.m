@@ -15,6 +15,10 @@
 
 @implementation StudentAttendanceDetail
 + (NSDictionary<NSString*, id> *)modelContainerPropertyGenericClass{
-    return @{@"recode" : [AttendanceNoteItem class]};
+    return @{@"recode" : [AttendanceNoteItem class], @"month_leave" : [NSString class]};
+}
+
+- (BOOL)isAttendanceValidate{
+    return (self.info.attendance + self.info.absence > 0);
 }
 @end

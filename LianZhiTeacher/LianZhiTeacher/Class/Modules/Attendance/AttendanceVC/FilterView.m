@@ -9,8 +9,9 @@
 #import "FilterView.h"
 
 @interface ClassFilterView ()<UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic, assign)AttendanceClassFilterType filterType;
-@property (nonatomic, copy)void (^completion)(AttendanceClassFilterType filterType);
+@property (nonatomic, strong)NSArray* filterList;
+@property (nonatomic, copy)NSString* filterType;
+@property (nonatomic, copy)void (^completion)(NSString* filterType);
 @property (nonatomic, strong)UIButton* bgButton;
 @property (nonatomic, strong)UIView* contentView;
 @property (nonatomic, strong)UITableView* tableView;
@@ -23,8 +24,9 @@
     return filterNames[filterType];
 }
 
-+ (void)showWithFilterType:(AttendanceClassFilterType)filterType completion:(void (^)(AttendanceClassFilterType filterType))completion{
++ (void)showWithFilterList:(NSArray *)filterList filterType:(NSString* )filterType completion:(void (^)(NSString* filterType))completion{
     ClassFilterView* filterView = [[ClassFilterView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [filterView setFilterList:filterList];
     [filterView setFilterType:filterType];
     [filterView setCompletion:completion];
     [filterView show];
@@ -84,7 +86,7 @@
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return AttendanceClassFilterTypeNum;
+    return [self.filterList count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -96,9 +98,9 @@
         [cell.textLabel setTextColor:kCommonTeacherTintColor];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
-    AttendanceClassFilterType filterType = indexPath.row;
-    [cell.textLabel setText:[ClassFilterView filterNameForType:filterType]];
-    if(self.filterType == filterType){
+    NSString* filterName = self.filterList[indexPath.row];
+    [cell.textLabel setText:filterName];
+    if([self.filterType isEqualToString:filterName]){
         [cell.textLabel setTextColor:kCommonTeacherTintColor];
         [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"photo_state_selected"]]];
     }
@@ -111,9 +113,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView reloadData];
-    AttendanceClassFilterType filterType = indexPath.row;
-    if(self.filterType != filterType){
-        self.filterType = filterType;
+    NSString* filterName = self.filterList[indexPath.row];
+    if(![filterName isEqualToString:self.filterType]){
+        self.filterType = filterName;
         if(self.completion){
             self.completion(self.filterType);
         }
@@ -144,7 +146,7 @@
         [self.titleLabel setTextColor:kCommonTeacherTintColor];
         [self addSubview:self.titleLabel];
         
-        self.arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+        self.arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"UpArrow"]];
         [self addSubview:self.arrow];
         
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap)];
@@ -153,30 +155,11 @@
     return self;
 }
 
-- (void)setFilterType:(AttendanceClassFilterType)filterType{
-    _filterType = filterType;
-    NSString* title = nil;
-    switch (_filterType) {
-        case AttendanceClassFilterTypeAll:
-            title = @"显示全部班级";
-            break;
-        case AttendanceClassFilterTypeUnCommit:
-            title = @"显示未提交班级";
-            break;
-        case AttendanceClassFilterTypeCommited:
-            title = @"显示已提交班级";
-            break;
-        case AttendanceClassFilterTypeLate:
-            title = @"显示迟到的班级";
-            break;
-        case AttendanceClassFilterTypeWuguQueqin:
-            title = @"显示无故缺勤的班级";
-            break;
-        default:
-            break;
-    }
+- (void)setFilterType:(NSString* )filterType{
+    _filterType = [filterType copy];
+    
     [self.titleLabel setWidth:0];
-    [self.titleLabel setText:title];
+    [self.titleLabel setText:_filterType];
     [self.titleLabel sizeToFit];
     [self.titleLabel setOrigin:CGPointMake(10, (self.height - self.titleLabel.height) / 2)];
     
@@ -184,13 +167,9 @@
 }
 
 - (void)onTap{
-    __weak typeof(self) wself = self;
-    [ClassFilterView showWithFilterType:self.filterType completion:^(AttendanceClassFilterType filterType) {
-        wself.filterType = filterType;
-        if(wself.filterChanged){
-            wself.filterChanged(filterType);
-        }
-    }];
+    if(self.clickCallback){
+        self.clickCallback();
+    }
 }
 
 @end
