@@ -245,6 +245,9 @@
 		37C88FB91A845D95008E44DB /* AddRelationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C88FB81A845D95008E44DB /* AddRelationVC.m */; };
 		37C88FF11A889A05008E44DB /* PersonalSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C88FF01A889A05008E44DB /* PersonalSetting.m */; };
 		37C890221A895342008E44DB /* StatusManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C890211A895342008E44DB /* StatusManager.m */; };
+		37C91FD81E488AB2003C4C51 /* GrowthRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FD71E488AB2003C4C51 /* GrowthRecordVC.m */; };
+		37C91FE11E49B5C7003C4C51 /* ChildGrowthInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FE01E49B5C7003C4C51 /* ChildGrowthInfoView.m */; };
+		37C91FE71E49BE2A003C4C51 /* HYBStarEvaluationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FE61E49BE2A003C4C51 /* HYBStarEvaluationView.m */; };
 		37CA18831AB70BCC00B49B55 /* AlbumGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA187A1AB70BCC00B49B55 /* AlbumGroupView.m */; };
 		37CA18841AB70BCC00B49B55 /* PhotoPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA187C1AB70BCC00B49B55 /* PhotoPickerCell.m */; };
 		37CA18851AB70BCC00B49B55 /* PhotoPickerItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA187E1AB70BCC00B49B55 /* PhotoPickerItem.m */; };
@@ -986,6 +989,12 @@
 		37C88FF01A889A05008E44DB /* PersonalSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalSetting.m; sourceTree = "<group>"; };
 		37C890201A895342008E44DB /* StatusManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusManager.h; sourceTree = "<group>"; };
 		37C890211A895342008E44DB /* StatusManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusManager.m; sourceTree = "<group>"; };
+		37C91FD61E488AB2003C4C51 /* GrowthRecordVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthRecordVC.h; sourceTree = "<group>"; };
+		37C91FD71E488AB2003C4C51 /* GrowthRecordVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthRecordVC.m; sourceTree = "<group>"; };
+		37C91FDF1E49B5C7003C4C51 /* ChildGrowthInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChildGrowthInfoView.h; sourceTree = "<group>"; };
+		37C91FE01E49B5C7003C4C51 /* ChildGrowthInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChildGrowthInfoView.m; sourceTree = "<group>"; };
+		37C91FE51E49BE2A003C4C51 /* HYBStarEvaluationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYBStarEvaluationView.h; sourceTree = "<group>"; };
+		37C91FE61E49BE2A003C4C51 /* HYBStarEvaluationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYBStarEvaluationView.m; sourceTree = "<group>"; };
 		37CA18791AB70BCC00B49B55 /* AlbumGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumGroupView.h; sourceTree = "<group>"; };
 		37CA187A1AB70BCC00B49B55 /* AlbumGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumGroupView.m; sourceTree = "<group>"; };
 		37CA187B1AB70BCC00B49B55 /* PhotoPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoPickerCell.h; sourceTree = "<group>"; };
@@ -1717,6 +1726,7 @@
 		3720C1011A419E76000357A5 /* ClassZone */ = {
 			isa = PBXGroup;
 			children = (
+				37C91FD51E488A9F003C4C51 /* GrowthRecord */,
 				8DFDDD6F1D9274AF0050740B /* GrowthTimelineNew */,
 				37F206F81BDDCADF006466F4 /* HomeWork */,
 				37C3164C1A568F34002E847D /* GrowthTimeline */,
@@ -2826,6 +2836,19 @@
 				375284131DE350740012BB33 /* parent_login_bg.jpg */,
 			);
 			path = WelcomeGuide;
+			sourceTree = "<group>";
+		};
+		37C91FD51E488A9F003C4C51 /* GrowthRecord */ = {
+			isa = PBXGroup;
+			children = (
+				37C91FD61E488AB2003C4C51 /* GrowthRecordVC.h */,
+				37C91FD71E488AB2003C4C51 /* GrowthRecordVC.m */,
+				37C91FDF1E49B5C7003C4C51 /* ChildGrowthInfoView.h */,
+				37C91FE01E49B5C7003C4C51 /* ChildGrowthInfoView.m */,
+				37C91FE51E49BE2A003C4C51 /* HYBStarEvaluationView.h */,
+				37C91FE61E49BE2A003C4C51 /* HYBStarEvaluationView.m */,
+			);
+			path = GrowthRecord;
 			sourceTree = "<group>";
 		};
 		37CA18781AB70BCC00B49B55 /* PhotoPicker */ = {
@@ -4218,9 +4241,11 @@
 				8DA0C5341DBBBAF50005B9B1 /* HomeworkClassVC.m in Sources */,
 				3728A5E71B9332FE00310457 /* ClassZoneItemCell.m in Sources */,
 				8DCFD7A21D5A3B8B001EDC8A /* ChatContentVideoView.m in Sources */,
+				37C91FE71E49BE2A003C4C51 /* HYBStarEvaluationView.m in Sources */,
 				3793F7D41B7CFFD900501F77 /* NSObject+Associative.m in Sources */,
 				37C88FB91A845D95008E44DB /* AddRelationVC.m in Sources */,
 				3793F7581B7CFFD900501F77 /* YLGIFImage.m in Sources */,
+				37C91FE11E49B5C7003C4C51 /* ChildGrowthInfoView.m in Sources */,
 				37E5F6401DF7DDDA0062941C /* ResourceInstructionVC.m in Sources */,
 				37E5F6131DF7DDDA0062941C /* MXScrollView.m in Sources */,
 				3793F7B81B7CFFD900501F77 /* AudioRecordView.m in Sources */,
@@ -4305,6 +4330,7 @@
 				8DB8FAED1D662A5A006B44B2 /* GiftItem.m in Sources */,
 				8DCFD7A01D5A3B8B001EDC8A /* ChatContentSendGiftView.m in Sources */,
 				3793F7C71B7CFFD900501F77 /* POIListModel.m in Sources */,
+				37C91FD81E488AB2003C4C51 /* GrowthRecordVC.m in Sources */,
 				3793F7B91B7CFFD900501F77 /* LZBadgeLabel.m in Sources */,
 				3793F75C1B7CFFD900501F77 /* MBProgressHUD.m in Sources */,
 				37E5F60B1DF7DDDA0062941C /* MCCircleChartView.m in Sources */,

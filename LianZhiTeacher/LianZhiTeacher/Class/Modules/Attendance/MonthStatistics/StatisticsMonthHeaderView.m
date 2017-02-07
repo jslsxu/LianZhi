@@ -25,13 +25,13 @@
         self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.width - 140) / 2, 5, 140, 25)];
         [self.dateLabel setTextAlignment:NSTextAlignmentCenter];
         [self.dateLabel setFont:[UIFont systemFontOfSize:15]];
-        [self.dateLabel setTextColor:kColor_33];
+        [self.dateLabel setTextColor:kColor_66];
         [self addSubview:self.dateLabel];
         
         self.numLabel = [[UILabel alloc] initWithFrame:CGRectMake((self.width - 140) / 2, self.dateLabel.bottom, 140, 25)];
         [self.numLabel setTextAlignment:NSTextAlignmentCenter];
         [self.numLabel setFont:[UIFont systemFontOfSize:15]];
-        [self.numLabel setTextColor:kColor_33];
+        [self.numLabel setTextColor:kColor_66];
         [self addSubview:self.numLabel];
         
         self.preButton = [UIButton buttonWithType:UIButtonTypeCustom];

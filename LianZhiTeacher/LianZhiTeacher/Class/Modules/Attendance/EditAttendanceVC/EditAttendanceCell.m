@@ -104,6 +104,21 @@
     [self.nameLabel setOrigin:CGPointMake(self.avatar.right + 5, self.avatar.centerY - self.nameLabel.height / 2)];
     
     [self.mobileButton setOrigin:CGPointMake(self.nameLabel.right + 5, self.avatar.centerY - self.mobileButton.height / 2)];
+    
+    NSString* checkStr = nil;
+    if(attendanceItem.newStatus == AttendanceStatusNormal){
+        checkStr = @"CheckMarkAttendance";
+    }
+    else if(attendanceItem.newStatus == AttendanceStatusLate){
+        checkStr = @"CheckMarkLate";
+    }
+    else if(attendanceItem.newStatus == AttendanceStatusAbsence){
+        checkStr = @"CheckMarkAbsence";
+    }
+    else if(attendanceItem.newStatus == AttendanceStatusLeave){
+        checkStr = @"CheckMarkLeave";
+    }
+    [self.checkView setImage:[UIImage imageNamed:checkStr]];
     if([attendanceItem editNormalAttenance]){
         [self.checkView setCenter:self.attendanceButton.center];
     }

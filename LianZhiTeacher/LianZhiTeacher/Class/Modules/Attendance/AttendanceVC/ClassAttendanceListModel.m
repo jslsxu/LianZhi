@@ -40,6 +40,22 @@
     return YES;
 }
 
+- (NSInteger)lateNum{
+    NSInteger num = 0;
+    for (ClassAttendanceItem *item in self.modelItemArray) {
+        num += item.late_num;
+    }
+    return num;
+}
+
+- (NSInteger)absenceWithoutReasonNum{
+    NSInteger num = 0;
+    for (ClassAttendanceItem *item in self.modelItemArray) {
+        num += item.noleave_num;
+    }
+    return num;
+}
+
 - (NSArray *)filterTypeList{
     NSMutableArray* gradeArray = [NSMutableArray array];
     for (ClassAttendanceItem* item in self.modelItemArray) {

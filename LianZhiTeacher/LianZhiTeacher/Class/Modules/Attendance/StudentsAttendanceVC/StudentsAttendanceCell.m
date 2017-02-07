@@ -34,7 +34,7 @@
         [self.nameLabel setFont:[UIFont systemFontOfSize:14]];
         [self addSubview:self.nameLabel];
         
-        self.checkMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"StudentAttendanceCheck"]];
+        self.checkMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMarkAttendance"]];
         [self addSubview:self.checkMark];
         
         self.phoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -87,6 +87,20 @@
     [self.phoneButton setX:self.nameLabel.right + 5];
     [self.phoneButton setCenterY:self.avatar.centerY];
     
+    NSString* checkStr = nil;
+    if(attendanceItem.status == AttendanceStatusNormal){
+        checkStr = @"CheckMarkAttendance";
+    }
+    else if(attendanceItem.status == AttendanceStatusLate){
+        checkStr = @"CheckMarkLate";
+    }
+    else if(attendanceItem.status == AttendanceStatusAbsence){
+        checkStr = @"CheckMarkAbsence";
+    }
+    else if(attendanceItem.status == AttendanceStatusLeave){
+        checkStr = @"CheckMarkLeave";
+    }
+    [self.checkMark setImage:[UIImage imageNamed:checkStr]];
     if([attendanceItem normalAttendance]){
         [self.checkMark setCenter:CGPointMake(self.width * 5 / 8, 20)];
     }

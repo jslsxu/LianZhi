@@ -48,7 +48,7 @@
         [self.offPercentLabel setTextAlignment:NSTextAlignmentRight];
         [self.contentView addSubview:self.offPercentLabel];
         
-        self.progressBG = [[UIView alloc] initWithFrame:CGRectMake(self.attendancePercentLabel.right, 35, self.offPercentLabel.left - self.attendancePercentLabel.right, 10)];
+        self.progressBG = [[UIView alloc] initWithFrame:CGRectMake(self.attendancePercentLabel.right, 35, self.offPercentLabel.left - self.attendancePercentLabel.right, 8)];
         [self.progressBG setBackgroundColor:[UIColor colorWithHexString:@"fc6e82"]];
         [self.contentView addSubview:self.progressBG];
         
@@ -82,10 +82,12 @@
     _info = info;
     NSMutableAttributedString* attendancePercentStr = [[NSMutableAttributedString alloc] initWithString:@"出勤率\n" attributes:@{NSForegroundColorAttributeName : kColor_33}];
     [attendancePercentStr appendAttributedString:[[NSAttributedString alloc] initWithString:[_info.attendance_rate length] > 0 ? [NSString stringWithFormat:@"%@%%", _info.attendance_rate]: @"--" attributes:@{NSForegroundColorAttributeName : kCommonTeacherTintColor}]];
+    [attendancePercentStr setLineSpacing:3];
     [self.attendancePercentLabel setAttributedText:attendancePercentStr];
     
     NSMutableAttributedString* offPercentStr = [[NSMutableAttributedString alloc] initWithString:@"缺勤率\n" attributes:@{NSForegroundColorAttributeName : kColor_33}];
     [offPercentStr appendAttributedString:[[NSAttributedString alloc] initWithString:[_info.absence_rate length] > 0 ? [NSString stringWithFormat:@"%@%%", _info.absence_rate]: @"--" attributes:@{NSForegroundColorAttributeName : kRedColor}]];
+    [offPercentStr setLineSpacing:3];
     [self.offPercentLabel setAttributedText:offPercentStr];
     
     NSMutableAttributedString* attendanceString = [[NSMutableAttributedString alloc] initWithString:@"出勤:" attributes:@{NSForegroundColorAttributeName : kColor_33}];

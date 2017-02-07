@@ -37,7 +37,7 @@
 }
 
 - (void)setupContentView:(UIView *)viewParent{
-    self.progressBG = [[UIView alloc] initWithFrame:CGRectMake(65, 20, viewParent.width - 65 * 2, 10)];
+    self.progressBG = [[UIView alloc] initWithFrame:CGRectMake(65, 22, viewParent.width - 65 * 2, 8)];
     [self.progressBG setBackgroundColor:[UIColor colorWithHexString:@"fc6e82"]];
     [viewParent addSubview:self.progressBG];
     
@@ -114,12 +114,14 @@
     if([_model.all.attendance_rate length] > 0){
         [attendancePercentStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%%", _model.all.attendance_rate] attributes:@{NSForegroundColorAttributeName : kCommonTeacherTintColor}]];
     }
+    [attendancePercentStr setLineSpacing:3];
     [self.attendancePercentLabel setAttributedText:attendancePercentStr];
     
     NSMutableAttributedString* offPercentStr = [[NSMutableAttributedString alloc] initWithString:@"缺勤率\n" attributes:@{NSForegroundColorAttributeName : kColor_33}];
     if([_model.all.absence_rate length] > 0){
         [offPercentStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%%", _model.all.absence_rate] attributes:@{NSForegroundColorAttributeName : kRedColor}]];
     }
+    [offPercentStr setLineSpacing:3];
     [self.offPercentLabel setAttributedText:offPercentStr];
     
     [self.progressView setWidth:self.progressBG.width * [_model.all.attendance_rate floatValue] / 100];
@@ -127,11 +129,15 @@
     [self.classNumLabel setText:[NSString stringWithFormat:@"%zd个", _model.all.class_total]];
     [self.totalNumLabel setText:[NSString stringWithFormat:@"%zd人", _model.all.total]];
     NSMutableAttributedString* attendanceStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%zd人", _model.all.attendance] attributes:@{NSForegroundColorAttributeName : kCommonTeacherTintColor}];
-    [attendanceStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"  (其中有2人迟到)"] attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+    if([_model lateNum] > 0){
+        [attendanceStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" (其中有%zd人迟到)", [_model lateNum]] attributes:@{NSForegroundColorAttributeName : kCommonTeacherTintColor}]];
+    }
     [self.attendanceNumLabel setAttributedText:attendanceStr];
     
     NSMutableAttributedString* absenceStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%zd人",_model.all.absence] attributes:@{NSForegroundColorAttributeName : kRedColor}];
-    [absenceStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"  (其中有3人无故迟到)"] attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+    if([_model absenceWithoutReasonNum] > 0){
+        [absenceStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" (其中有%zd人无故缺勤)", [_model absenceWithoutReasonNum]] attributes:@{NSForegroundColorAttributeName : kRedColor}]];
+    }
     [self.offNumLabel setAttributedText:absenceStr];
     [self.uncommitLabel setText:[NSString stringWithFormat:@"目前未提交考勤的班级还有%zd个班", _model.all.no_submit]];
 }

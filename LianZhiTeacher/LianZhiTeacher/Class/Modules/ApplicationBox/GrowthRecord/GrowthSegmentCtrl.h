@@ -11,6 +11,7 @@
 @interface GrowthSegmentItem : TNBaseObject
 @property (nonatomic, copy)NSString* title;
 @property (nonatomic, assign)BOOL hasNew;
++ (GrowthSegmentItem *)itemWithTitle:(NSString* )title hasNew:(BOOL)hasNew;
 @end
 
 @interface GrowthSegmentCell : UICollectionViewCell

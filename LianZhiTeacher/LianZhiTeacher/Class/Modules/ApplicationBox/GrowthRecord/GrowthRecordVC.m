@@ -10,10 +10,9 @@
 #import "NotificationDetailActionView.h"
 #import "Calendar.h"
 #import "GrowthRecordCell.h"
-@interface GrowthRecordVC ()<CalendarDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface GrowthRecordVC ()<CalendarDelegate>
 @property (nonatomic, strong)UIButton* moreButton;
 @property (nonatomic, strong)Calendar* calendar;
-@property (nonatomic, strong)UITableView* tableView;
 @end
 
 @implementation GrowthRecordVC
@@ -21,11 +20,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setTitle:@"家园手册"];
-    
+    [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     [self setRightbarButtonHighlighted:NO];
     [self.view addSubview:[self calendar]];
     
-    UIView* bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 50, self.view.width, 50)];
+    UIView* bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 60, self.view.width, 60)];
+    [bottomView setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
     [bottomView setBackgroundColor:[UIColor whiteColor]];
     
     UIButton* editButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -38,14 +38,10 @@
     
     [self.view addSubview:bottomView];
     
-    UITableView* tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, self.calendar.bottom + 10, self.view.width, bottomView.top - self.calendar.bottom + 10) style:UITableViewStylePlain];
-    [tableView setDelegate:self];
-    [tableView setDataSource:self];
-    [tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
-    [self.view addSubview:tableView];
-    self.tableView = tableView;
-    
-    [self requestGrowthRecord];
+    [self.tableView setFrame:CGRectMake(0, self.calendar.bottom + 10, self.view.width, bottomView.top - self.calendar.bottom + 10)];
+    [self bindTableCell:@"GrowthRecordCell" tableModel:@"GrowthClassListModel"];
+
+//    [self requestData:REQUEST_REFRESH];
 }
 
 - (Calendar *)calendar{
@@ -89,21 +85,13 @@
     
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 3;
+#pragma mark - CalendarDelegate
+- (void)calendarHeightWillChange:(CGFloat)height{
+    
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 200;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString* reuseID = @"GrowthRecordCell";
-    GrowthRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
-    if(nil == cell){
-        cell = [[GrowthRecordCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
-    }
-    return cell;
+- (void)calendarDateDidChange:(NSDate *)selectedDate{
+    
 }
 
 - (void)didReceiveMemoryWarning {

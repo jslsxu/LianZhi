@@ -10,6 +10,12 @@
 
 #define kHMargin 20
 @implementation GrowthSegmentItem
++ (GrowthSegmentItem *)itemWithTitle:(NSString* )title hasNew:(BOOL)hasNew{
+    GrowthSegmentItem *item = [[GrowthSegmentItem alloc] init];
+    [item setTitle:title];
+    [item setHasNew:hasNew];
+    return item;
+}
 @end
 
 @interface GrowthSegmentCell ()
@@ -52,6 +58,8 @@
 - (void)setItemSelected:(BOOL)itemSelected{
     _itemSelected = itemSelected;
     [self.indicator setHidden:!_itemSelected];
+    
+    [self.titleLabel setTextColor:_itemSelected ? kCommonTeacherTintColor : [UIColor colorWithHexString:@"333333"]];
 }
 
 @end
@@ -65,7 +73,16 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if(self){
-        self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds];
+        
+        UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc] init];
+        [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+        [layout setSectionInset:UIEdgeInsetsMake(0, 20, 0, 20)];
+        [layout setMinimumInteritemSpacing:0];
+        [layout setMinimumLineSpacing:0];
+        
+        self.collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:layout];
+        [self.collectionView setShowsHorizontalScrollIndicator:NO];
+        [self.collectionView setBackgroundColor:[UIColor whiteColor]];
         [self.collectionView setDelegate:self];
         [self.collectionView setDataSource:self];
         [self.collectionView registerClass:[GrowthSegmentCell class] forCellWithReuseIdentifier:@"GrowthSegmentCell"];
@@ -76,6 +93,13 @@
         [self addSubview:sepLine];
     }
     return self;
+}
+
+- (void)setSegments:(NSArray *)segments{
+    _segments = segments;
+    UICollectionViewFlowLayout* layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
+    [layout setItemSize:CGSizeMake((self.width - 20 * 2) / [_segments count], self.height)];
+    [self.collectionView reloadData];
 }
 
 #pragma mark - UICollectionView
@@ -94,6 +118,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     if(self.selectedIndex != indexPath.row){
         self.selectedIndex = indexPath.row;
+        [collectionView reloadData];
         if(self.indexChanged){
             self.indexChanged(self.selectedIndex);
         }

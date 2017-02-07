@@ -72,7 +72,6 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
 - (instancetype)init{
     self = [super init];
     if(self){
-        self.sortIndex = -1;
         self.absenceIndex = -1;
     }
     return self;
@@ -115,14 +114,19 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
 }
 
 - (NSArray *)titleArray{
-    NSDictionary* dic = [self modelDictionary];
-    NSMutableArray* keyArray = [NSMutableArray arrayWithArray:[dic allKeys]];
-    [keyArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-        NSString* key1 = (NSString *)obj1;
-        NSString* key2 = (NSString* )obj2;
-        return [key1 compare:key2];
-    }];
-    return keyArray;
+    if(self.sortIndex == 0){
+        NSDictionary* dic = [self modelDictionary];
+        NSMutableArray* keyArray = [NSMutableArray arrayWithArray:[dic allKeys]];
+        [keyArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            NSString* key1 = (NSString *)obj1;
+            NSString* key2 = (NSString* )obj2;
+            return [key1 compare:key2];
+        }];
+        return keyArray;
+    }
+    else{
+        return nil;
+    }
 }
 
 - (NSDictionary *)modelDictionary{
@@ -146,7 +150,7 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
 }
 
 - (NSInteger)numOfSections{
-    if(self.sortIndex == -1){
+    if(self.sortIndex == 0){
         return [self.titleArray count];
     }
     else{
@@ -155,13 +159,10 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
 }
 
 - (NSInteger)numOfRowsInSection:(NSInteger)section{
-    if(self.sortIndex == -1){
+    if(self.sortIndex == 0){
         NSString* key = [self titleArray][section];
         NSArray* sectionArray = [self modelDictionary][key];
         return [sectionArray count];
-    }
-    else if(self.sortIndex == 0){
-        return [self.modelItemArray count];
     }
     else if(self.sortIndex == 1){
         NSInteger count = 0;
@@ -185,15 +186,12 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
 }
 
 - (TNModelItem *)itemForIndexPath:(NSIndexPath *)indexPath{
-    if(self.sortIndex == -1){
+    if(self.sortIndex == 0){
         NSDictionary* dic = [self modelDictionary];
         NSArray* allKeys = [self titleArray];
         NSString* key = allKeys[indexPath.section];
         NSArray* sectionItems = dic[key];
         return sectionItems[indexPath.row];
-    }
-    else if(self.sortIndex == 0){
-        return self.modelItemArray[indexPath.row];
     }
     else if(self.sortIndex == 1){
         NSInteger count = 0;

@@ -90,7 +90,16 @@
     [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:@"缺勤:" attributes:@{NSForegroundColorAttributeName : kColor_99}]];
     [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:absenceNumString attributes:@{NSForegroundColorAttributeName : kRedColor}]];
     
-    [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n其中:3人迟到，1人无故缺勤"] attributes:@{NSForegroundColorAttributeName : kCommonTeacherTintColor}]];
+    if(attendanceItem.late_num + attendanceItem.noleave_num > 0){
+        [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n其中:" attributes:@{NSForegroundColorAttributeName : kColor_99}]];
+        if(attendanceItem.late_num > 0){
+            NSString* formatStr = attendanceItem.noleave_num > 0 ? @"%zd人迟到，" : @"%zd人迟到";
+            [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:formatStr,attendanceItem.late_num] attributes:@{NSForegroundColorAttributeName : kCommonTeacherTintColor}]];
+        }
+        if(attendanceItem.noleave_num > 0){
+            [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%zd人无故缺勤", attendanceItem.noleave_num] attributes:@{NSForegroundColorAttributeName : kRedColor}]];
+        }
+    }
     [attendanceString setLineSpacing:2];
     [self.attendanceLabel setAttributedText:attendanceString];
     [self.attendanceLabel sizeToFit];

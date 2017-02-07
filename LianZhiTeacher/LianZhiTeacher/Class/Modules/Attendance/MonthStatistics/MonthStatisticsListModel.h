@@ -17,4 +17,7 @@
 
 @interface MonthStatisticsListModel : TNListModel
 @property(nonatomic, assign)NSInteger class_attendance;
+@property (nonatomic, assign)NSInteger sortIndex;
+- (NSString *)titleForSection:(NSInteger)section;
+- (NSArray *)titleArray;
 @end

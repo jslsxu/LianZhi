@@ -8,6 +8,7 @@
 
 #import "ClassAppVC.h"
 #import "GrowthTimelineVC.h"
+#import "GrowthRecordVC.h"
 #import "ContactListVC.h"
 #import "AttendanceDetailVC.h"
 #import "ClassZoneVC.h"
@@ -379,9 +380,11 @@
                         }
                         else if([host isEqualToString:@"record"])
                         {
-                            GrowthTimelineVC *growthTimeLineVC = [[GrowthTimelineVC alloc] init];
-                            [growthTimeLineVC setClassInfo:classInfo];
-                            [CurrentROOTNavigationVC pushViewController:growthTimeLineVC animated:YES];
+                            GrowthRecordVC* recordVC = [[GrowthRecordVC alloc] init];
+                            [CurrentROOTNavigationVC pushViewController:recordVC animated:YES];
+//                            GrowthTimelineVC *growthTimeLineVC = [[GrowthTimelineVC alloc] init];
+//                            [growthTimeLineVC setClassInfo:classInfo];
+//                            [CurrentROOTNavigationVC pushViewController:growthTimeLineVC animated:YES];
                         }
                         else if([host isEqualToString:@"leave"])
                         {

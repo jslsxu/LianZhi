@@ -193,6 +193,8 @@
 		37C890271A8963BD008E44DB /* StatusManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C890261A8963BD008E44DB /* StatusManager.m */; };
 		37C91FCE1E4847B7003C4C51 /* GrowthRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FCD1E4847B7003C4C51 /* GrowthRecordCell.m */; };
 		37C91FD11E4848FD003C4C51 /* GrowthSegmentCtrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FD01E4848FD003C4C51 /* GrowthSegmentCtrl.m */; };
+		37C91FDB1E48C357003C4C51 /* GrowthClassListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FDA1E48C357003C4C51 /* GrowthClassListModel.m */; };
+		37C91FDE1E496972003C4C51 /* DDCollectionViewHorizontalLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FDD1E496972003C4C51 /* DDCollectionViewHorizontalLayout.m */; };
 		37CA18701AB70A2F00B49B55 /* AlbumGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA18681AB70A2F00B49B55 /* AlbumGroupView.m */; };
 		37CA18711AB70A2F00B49B55 /* PhotoPickerItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA186A1AB70A2F00B49B55 /* PhotoPickerItem.m */; };
 		37CA18721AB70A2F00B49B55 /* PhotoPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA186B1AB70A2F00B49B55 /* PhotoPickerCell.m */; };
@@ -856,6 +858,10 @@
 		37C91FCD1E4847B7003C4C51 /* GrowthRecordCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthRecordCell.m; sourceTree = "<group>"; };
 		37C91FCF1E4848FD003C4C51 /* GrowthSegmentCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthSegmentCtrl.h; sourceTree = "<group>"; };
 		37C91FD01E4848FD003C4C51 /* GrowthSegmentCtrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthSegmentCtrl.m; sourceTree = "<group>"; };
+		37C91FD91E48C357003C4C51 /* GrowthClassListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthClassListModel.h; sourceTree = "<group>"; };
+		37C91FDA1E48C357003C4C51 /* GrowthClassListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthClassListModel.m; sourceTree = "<group>"; };
+		37C91FDC1E496972003C4C51 /* DDCollectionViewHorizontalLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDCollectionViewHorizontalLayout.h; sourceTree = "<group>"; };
+		37C91FDD1E496972003C4C51 /* DDCollectionViewHorizontalLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDCollectionViewHorizontalLayout.m; sourceTree = "<group>"; };
 		37CA18681AB70A2F00B49B55 /* AlbumGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumGroupView.m; sourceTree = "<group>"; };
 		37CA18691AB70A2F00B49B55 /* AlbumGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumGroupView.h; sourceTree = "<group>"; };
 		37CA186A1AB70A2F00B49B55 /* PhotoPickerItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoPickerItem.m; sourceTree = "<group>"; };
@@ -1658,6 +1664,10 @@
 				37C91FCD1E4847B7003C4C51 /* GrowthRecordCell.m */,
 				37C91FCF1E4848FD003C4C51 /* GrowthSegmentCtrl.h */,
 				37C91FD01E4848FD003C4C51 /* GrowthSegmentCtrl.m */,
+				37C91FD91E48C357003C4C51 /* GrowthClassListModel.h */,
+				37C91FDA1E48C357003C4C51 /* GrowthClassListModel.m */,
+				37C91FDC1E496972003C4C51 /* DDCollectionViewHorizontalLayout.h */,
+				37C91FDD1E496972003C4C51 /* DDCollectionViewHorizontalLayout.m */,
 			);
 			path = GrowthRecord;
 			sourceTree = "<group>";
@@ -3910,6 +3920,7 @@
 				3793FAA61B7CFFF000501F77 /* UIColor+Addition.m in Sources */,
 				8DCFD6E81D4F3CB8001EDC8A /* ChatContentVideoView.m in Sources */,
 				3793FAF31B7CFFF000501F77 /* Reachability+.m in Sources */,
+				37C91FDB1E48C357003C4C51 /* GrowthClassListModel.m in Sources */,
 				37E93FC71A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m in Sources */,
 				3793FA691B7CFFF000501F77 /* AFHTTPSessionManager.m in Sources */,
 				8DCFD6F11D4F3D35001EDC8A /* ChatContentFaceView.m in Sources */,
@@ -4201,6 +4212,7 @@
 				8DCFD6651D43CCA6001EDC8A /* YYInfiniteScrollView.m in Sources */,
 				3736CEB51C508D31004DB2D2 /* InterestDetailVC.m in Sources */,
 				8D867C5A1D2F82120020A21C /* UIView+Animations.m in Sources */,
+				37C91FDE1E496972003C4C51 /* DDCollectionViewHorizontalLayout.m in Sources */,
 				37FD6E311BB4817900C83AB4 /* NewMessageModel.m in Sources */,
 				3728A7361B9D376300310457 /* FaceSelectView.m in Sources */,
 				8DA0C50B1DB534480005B9B1 /* HomeworkMarkHeaderView.m in Sources */,

@@ -42,6 +42,7 @@
     
     [self.tableView setFrame:CGRectMake(0, self.headerView.bottom, self.view.width, self.view.height - self.headerView.bottom)];
     [self.tableView setSectionIndexColor:kColor_66];
+    [self.tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
     [self bindTableCell:@"StudentsAttendanceCell" tableModel:@"StudentsAttendanceListModel"];
     [self requestData:REQUEST_REFRESH];
 }
@@ -248,7 +249,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     StudentsAttendanceListModel* model = (StudentsAttendanceListModel *)self.tableViewModel;
-    if(model.sortIndex == -1){
+    if(model.sortIndex == 0){
         return 20;
     }
     else{
@@ -299,7 +300,7 @@
 - (void)calendarDateDidChange:(NSDate *)selectedDate{
     StudentsAttendanceListModel* model = (StudentsAttendanceListModel *)self.tableViewModel;
     if([self checkDate] <= 0){
-        [model setSortIndex:-1];
+        [model setSortIndex:0];
         [self requestData:REQUEST_REFRESH];
     }
     else{

@@ -48,4 +48,6 @@
 @property (nonatomic, copy)NSString* filterType;
 - (void)clear;
 - (NSArray *)filterTypeList;
+- (NSInteger)lateNum;
+- (NSInteger)absenceWithoutReasonNum;
 @end

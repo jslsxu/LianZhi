@@ -149,6 +149,8 @@
         [sendButton setFrame:CGRectInset(_bottomView.bounds, 10, 10)];
         [sendButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
         [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [sendButton setImage:[UIImage imageNamed:@"SendRequest"] forState:UIControlStateNormal];
+        [sendButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 5)];
         [sendButton setTitle:@"给班主任发送" forState:UIControlStateNormal];
         [sendButton addTarget:self action:@selector(onSend) forControlEvents:UIControlEventTouchUpInside];
         [sendButton setBackgroundImage:[UIImage imageWithColor:kCommonParentTintColor size:sendButton.size cornerRadius:5] forState:UIControlStateNormal];

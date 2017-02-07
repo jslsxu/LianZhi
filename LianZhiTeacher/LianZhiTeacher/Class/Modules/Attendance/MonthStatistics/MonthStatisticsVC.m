@@ -27,6 +27,8 @@
     [self setupTitle];
     [self.view addSubview:[self headerView]];
     [self.tableView setFrame:CGRectMake(0, self.headerView.height, self.view.width, self.view.height - self.headerView.height)];
+    [self.tableView setSectionIndexColor:kColor_66];
+    [self.tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
     [self bindTableCell:@"MonthStatisticsCell" tableModel:@"MonthStatisticsListModel"];
     [self requestData:REQUEST_REFRESH];
 }
@@ -110,7 +112,9 @@
         }];
         [_headerView setDate:[NSDate date]];
         [_headerView setSortChanged:^(NSInteger sortType) {
-            [wself sortWithType:sortType];
+            MonthStatisticsListModel *model = (MonthStatisticsListModel *)wself.tableViewModel;
+            [model setSortIndex:sortType];
+            [wself.tableView reloadData];
         }];
     }
     return _headerView;
@@ -129,40 +133,6 @@
     [params setValue:[dateFormatter stringFromDate:self.date] forKey:@"cdate"];
     [task setParams:params];
     return task;
-}
-
-- (void)sortWithType:(NSInteger)sortType{
-    NSMutableArray* listArray = [self.tableViewModel modelItemArray];
-    [listArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-        MonthStatisticsItem* item1 = (MonthStatisticsItem *)obj1;
-        MonthStatisticsItem* item2 = (MonthStatisticsItem *)obj2;
-        if(sortType == 0){
-            return [item1.child_info.first_letter compare:item2.child_info.first_letter];
-        }
-        else if(sortType == 1){
-            if(item1.attendance > item2.attendance){
-                return NSOrderedAscending;
-            }
-            else if(item1.attendance == item2.attendance){
-                return NSOrderedSame;
-            }
-            else{
-                return NSOrderedDescending;
-            }
-        }
-        else{
-            if(item1.absence > item2.absence){
-                return NSOrderedAscending;
-            }
-            else if(item1.absence == item2.absence){
-                return NSOrderedSame;
-            }
-            else{
-                return NSOrderedDescending;
-            }
-        }
-    }];
-    [self.tableView reloadData];
 }
 
 - (void)refreshOnDateChanged{
@@ -184,9 +154,43 @@
     [self showEmptyView:[self.tableViewModel.modelItemArray count] == 0];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    MonthStatisticsListModel* model = (MonthStatisticsListModel *)self.tableViewModel;
+    if(model.sortIndex == 0){
+        return 20;
+    }
+    else{
+        return 0;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView* headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 20)];
+    [headerView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
+    UILabel* headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, headerView.width - 10 * 2, headerView.height)];
+    [headerLabel setFont:[UIFont boldSystemFontOfSize:16]];
+    [headerLabel setTextColor:kColor_66];
+    MonthStatisticsListModel* model = (MonthStatisticsListModel *)self.tableViewModel;
+    NSArray* titleArray = [model titleArray];
+    [headerLabel setText:titleArray[section]];
+    [headerView addSubview:headerLabel];
+    return headerView;
+}
+
+- (NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView{
+    MonthStatisticsListModel* model = (MonthStatisticsListModel *)self.tableViewModel;
+    return [model titleArray];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    MonthStatisticsListModel* model = (MonthStatisticsListModel *)self.tableViewModel;
     MonthStatisticsCell* cell = (MonthStatisticsCell*)[super tableView:tableView cellForRowAtIndexPath:indexPath];
-    [cell setRow:indexPath.row];
+    if(model.sortIndex == 0){
+        [cell setRow:0];
+    }
+    else{
+        [cell setRow:indexPath.row];
+    }
     return cell;
 }
 

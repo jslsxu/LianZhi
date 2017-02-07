@@ -25,7 +25,7 @@
         self.nameButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.nameButton addTarget:self action:@selector(onButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self.nameButton setFrame:CGRectMake(0, self.titleLabel.bottom, self.width / 2, 40)];
-        [self.nameButton setBackgroundColor:[UIColor colorWithHexString:@"1AC082"]];
+        [self.nameButton setBackgroundColor:[UIColor colorWithHexString:@"8BC53D"]];
         [self.nameButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [self.nameButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
         [self.nameButton setTitle:@"姓名" forState:UIControlStateNormal];
