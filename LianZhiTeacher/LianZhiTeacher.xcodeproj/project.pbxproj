@@ -47,7 +47,6 @@
 		373528771AD6557800C0F326 /* BaseInfoModifyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 373528751AD6557800C0F326 /* BaseInfoModifyVC.m */; };
 		3736CEB41C508D31004DB2D2 /* InterestVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3736CEB11C508D31004DB2D2 /* InterestVC.m */; };
 		3736CEB51C508D31004DB2D2 /* InterestDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3736CEB31C508D31004DB2D2 /* InterestDetailVC.m */; };
-		3745E39B1E45CCA1001FA6D6 /* GrowthRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3745E39A1E45CCA1001FA6D6 /* GrowthRecordVC.m */; };
 		375284121DE350560012BB33 /* teacher_login_bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 375284111DE350560012BB33 /* teacher_login_bg.jpg */; };
 		3769B2851E0982B500BFA42F /* AttendanceHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3769B2841E0982B500BFA42F /* AttendanceHeaderView.m */; };
 		376FC6B51B01EFB500289DC2 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 376FC6B41B01EFB500289DC2 /* libiconv.dylib */; };
@@ -191,10 +190,15 @@
 		37C890191A89091A008E44DB /* PersonalSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C890181A89091A008E44DB /* PersonalSetting.m */; };
 		37C8901C1A890DF9008E44DB /* ClassZoneManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C8901B1A890DF9008E44DB /* ClassZoneManager.m */; };
 		37C890271A8963BD008E44DB /* StatusManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C890261A8963BD008E44DB /* StatusManager.m */; };
-		37C91FCE1E4847B7003C4C51 /* GrowthRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FCD1E4847B7003C4C51 /* GrowthRecordCell.m */; };
-		37C91FD11E4848FD003C4C51 /* GrowthSegmentCtrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FD01E4848FD003C4C51 /* GrowthSegmentCtrl.m */; };
-		37C91FDB1E48C357003C4C51 /* GrowthClassListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FDA1E48C357003C4C51 /* GrowthClassListModel.m */; };
-		37C91FDE1E496972003C4C51 /* DDCollectionViewHorizontalLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FDD1E496972003C4C51 /* DDCollectionViewHorizontalLayout.m */; };
+		37C920081E4ABBAD003C4C51 /* DDCollectionViewHorizontalLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FFE1E4ABBAD003C4C51 /* DDCollectionViewHorizontalLayout.m */; };
+		37C920091E4ABBAD003C4C51 /* GrowthClassListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C920001E4ABBAD003C4C51 /* GrowthClassListModel.m */; };
+		37C9200A1E4ABBAD003C4C51 /* GrowthRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C920021E4ABBAD003C4C51 /* GrowthRecordCell.m */; };
+		37C9200B1E4ABBAD003C4C51 /* GrowthRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C920041E4ABBAD003C4C51 /* GrowthRecordVC.m */; };
+		37C9200C1E4ABBAD003C4C51 /* GrowthSegmentCtrl.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C920061E4ABBAD003C4C51 /* GrowthSegmentCtrl.m */; };
+		37C9200F1E4ABE35003C4C51 /* GrowthRecordBrowseVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C9200E1E4ABE35003C4C51 /* GrowthRecordBrowseVC.m */; };
+		37C920121E4ABE44003C4C51 /* PublishGrowthRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C920111E4ABE44003C4C51 /* PublishGrowthRecordVC.m */; };
+		37C920151E4ABF3B003C4C51 /* GrowthRecordChildSwitchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C920141E4ABF3B003C4C51 /* GrowthRecordChildSwitchView.m */; };
+		37C920181E4AC92C003C4C51 /* GrowthRecordChildSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C920171E4AC92C003C4C51 /* GrowthRecordChildSelectVC.m */; };
 		37CA18701AB70A2F00B49B55 /* AlbumGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA18681AB70A2F00B49B55 /* AlbumGroupView.m */; };
 		37CA18711AB70A2F00B49B55 /* PhotoPickerItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA186A1AB70A2F00B49B55 /* PhotoPickerItem.m */; };
 		37CA18721AB70A2F00B49B55 /* PhotoPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA186B1AB70A2F00B49B55 /* PhotoPickerCell.m */; };
@@ -587,8 +591,6 @@
 		3736CEB11C508D31004DB2D2 /* InterestVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterestVC.m; sourceTree = "<group>"; };
 		3736CEB21C508D31004DB2D2 /* InterestDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InterestDetailVC.h; sourceTree = "<group>"; };
 		3736CEB31C508D31004DB2D2 /* InterestDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InterestDetailVC.m; sourceTree = "<group>"; };
-		3745E3991E45CCA1001FA6D6 /* GrowthRecordVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthRecordVC.h; sourceTree = "<group>"; };
-		3745E39A1E45CCA1001FA6D6 /* GrowthRecordVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthRecordVC.m; sourceTree = "<group>"; };
 		375284111DE350560012BB33 /* teacher_login_bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = teacher_login_bg.jpg; sourceTree = "<group>"; };
 		3769B2831E0982B500BFA42F /* AttendanceHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceHeaderView.h; sourceTree = "<group>"; };
 		3769B2841E0982B500BFA42F /* AttendanceHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceHeaderView.m; sourceTree = "<group>"; };
@@ -854,14 +856,24 @@
 		37C8901B1A890DF9008E44DB /* ClassZoneManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassZoneManager.m; sourceTree = "<group>"; };
 		37C890251A8963BD008E44DB /* StatusManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusManager.h; sourceTree = "<group>"; };
 		37C890261A8963BD008E44DB /* StatusManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusManager.m; sourceTree = "<group>"; };
-		37C91FCC1E4847B7003C4C51 /* GrowthRecordCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthRecordCell.h; sourceTree = "<group>"; };
-		37C91FCD1E4847B7003C4C51 /* GrowthRecordCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthRecordCell.m; sourceTree = "<group>"; };
-		37C91FCF1E4848FD003C4C51 /* GrowthSegmentCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthSegmentCtrl.h; sourceTree = "<group>"; };
-		37C91FD01E4848FD003C4C51 /* GrowthSegmentCtrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthSegmentCtrl.m; sourceTree = "<group>"; };
-		37C91FD91E48C357003C4C51 /* GrowthClassListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthClassListModel.h; sourceTree = "<group>"; };
-		37C91FDA1E48C357003C4C51 /* GrowthClassListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthClassListModel.m; sourceTree = "<group>"; };
-		37C91FDC1E496972003C4C51 /* DDCollectionViewHorizontalLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDCollectionViewHorizontalLayout.h; sourceTree = "<group>"; };
-		37C91FDD1E496972003C4C51 /* DDCollectionViewHorizontalLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDCollectionViewHorizontalLayout.m; sourceTree = "<group>"; };
+		37C91FFD1E4ABBAD003C4C51 /* DDCollectionViewHorizontalLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDCollectionViewHorizontalLayout.h; sourceTree = "<group>"; };
+		37C91FFE1E4ABBAD003C4C51 /* DDCollectionViewHorizontalLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDCollectionViewHorizontalLayout.m; sourceTree = "<group>"; };
+		37C91FFF1E4ABBAD003C4C51 /* GrowthClassListModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthClassListModel.h; sourceTree = "<group>"; };
+		37C920001E4ABBAD003C4C51 /* GrowthClassListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthClassListModel.m; sourceTree = "<group>"; };
+		37C920011E4ABBAD003C4C51 /* GrowthRecordCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthRecordCell.h; sourceTree = "<group>"; };
+		37C920021E4ABBAD003C4C51 /* GrowthRecordCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthRecordCell.m; sourceTree = "<group>"; };
+		37C920031E4ABBAD003C4C51 /* GrowthRecordVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthRecordVC.h; sourceTree = "<group>"; };
+		37C920041E4ABBAD003C4C51 /* GrowthRecordVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthRecordVC.m; sourceTree = "<group>"; };
+		37C920051E4ABBAD003C4C51 /* GrowthSegmentCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthSegmentCtrl.h; sourceTree = "<group>"; };
+		37C920061E4ABBAD003C4C51 /* GrowthSegmentCtrl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthSegmentCtrl.m; sourceTree = "<group>"; };
+		37C9200D1E4ABE35003C4C51 /* GrowthRecordBrowseVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthRecordBrowseVC.h; sourceTree = "<group>"; };
+		37C9200E1E4ABE35003C4C51 /* GrowthRecordBrowseVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthRecordBrowseVC.m; sourceTree = "<group>"; };
+		37C920101E4ABE44003C4C51 /* PublishGrowthRecordVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishGrowthRecordVC.h; sourceTree = "<group>"; };
+		37C920111E4ABE44003C4C51 /* PublishGrowthRecordVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishGrowthRecordVC.m; sourceTree = "<group>"; };
+		37C920131E4ABF3B003C4C51 /* GrowthRecordChildSwitchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthRecordChildSwitchView.h; sourceTree = "<group>"; };
+		37C920141E4ABF3B003C4C51 /* GrowthRecordChildSwitchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthRecordChildSwitchView.m; sourceTree = "<group>"; };
+		37C920161E4AC92C003C4C51 /* GrowthRecordChildSelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthRecordChildSelectVC.h; sourceTree = "<group>"; };
+		37C920171E4AC92C003C4C51 /* GrowthRecordChildSelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthRecordChildSelectVC.m; sourceTree = "<group>"; };
 		37CA18681AB70A2F00B49B55 /* AlbumGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumGroupView.m; sourceTree = "<group>"; };
 		37CA18691AB70A2F00B49B55 /* AlbumGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumGroupView.h; sourceTree = "<group>"; };
 		37CA186A1AB70A2F00B49B55 /* PhotoPickerItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoPickerItem.m; sourceTree = "<group>"; };
@@ -1658,16 +1670,8 @@
 		3745E3981E45CC43001FA6D6 /* GrowthRecord */ = {
 			isa = PBXGroup;
 			children = (
-				3745E3991E45CCA1001FA6D6 /* GrowthRecordVC.h */,
-				3745E39A1E45CCA1001FA6D6 /* GrowthRecordVC.m */,
-				37C91FCC1E4847B7003C4C51 /* GrowthRecordCell.h */,
-				37C91FCD1E4847B7003C4C51 /* GrowthRecordCell.m */,
-				37C91FCF1E4848FD003C4C51 /* GrowthSegmentCtrl.h */,
-				37C91FD01E4848FD003C4C51 /* GrowthSegmentCtrl.m */,
-				37C91FD91E48C357003C4C51 /* GrowthClassListModel.h */,
-				37C91FDA1E48C357003C4C51 /* GrowthClassListModel.m */,
-				37C91FDC1E496972003C4C51 /* DDCollectionViewHorizontalLayout.h */,
-				37C91FDD1E496972003C4C51 /* DDCollectionViewHorizontalLayout.m */,
+				37C91FFC1E4ABBAD003C4C51 /* GrowthRecordVC */,
+				37C920071E4ABBAD003C4C51 /* PublishGrowthRecord */,
 			);
 			path = GrowthRecord;
 			sourceTree = "<group>";
@@ -2379,6 +2383,38 @@
 				37C6B44C1BF2F47D0001D54F /* TreeHouse.png */,
 			);
 			path = ShareImage;
+			sourceTree = "<group>";
+		};
+		37C91FFC1E4ABBAD003C4C51 /* GrowthRecordVC */ = {
+			isa = PBXGroup;
+			children = (
+				37C91FFD1E4ABBAD003C4C51 /* DDCollectionViewHorizontalLayout.h */,
+				37C91FFE1E4ABBAD003C4C51 /* DDCollectionViewHorizontalLayout.m */,
+				37C91FFF1E4ABBAD003C4C51 /* GrowthClassListModel.h */,
+				37C920001E4ABBAD003C4C51 /* GrowthClassListModel.m */,
+				37C920011E4ABBAD003C4C51 /* GrowthRecordCell.h */,
+				37C920021E4ABBAD003C4C51 /* GrowthRecordCell.m */,
+				37C920031E4ABBAD003C4C51 /* GrowthRecordVC.h */,
+				37C920041E4ABBAD003C4C51 /* GrowthRecordVC.m */,
+				37C920051E4ABBAD003C4C51 /* GrowthSegmentCtrl.h */,
+				37C920061E4ABBAD003C4C51 /* GrowthSegmentCtrl.m */,
+			);
+			path = GrowthRecordVC;
+			sourceTree = "<group>";
+		};
+		37C920071E4ABBAD003C4C51 /* PublishGrowthRecord */ = {
+			isa = PBXGroup;
+			children = (
+				37C9200D1E4ABE35003C4C51 /* GrowthRecordBrowseVC.h */,
+				37C9200E1E4ABE35003C4C51 /* GrowthRecordBrowseVC.m */,
+				37C920131E4ABF3B003C4C51 /* GrowthRecordChildSwitchView.h */,
+				37C920141E4ABF3B003C4C51 /* GrowthRecordChildSwitchView.m */,
+				37C920101E4ABE44003C4C51 /* PublishGrowthRecordVC.h */,
+				37C920111E4ABE44003C4C51 /* PublishGrowthRecordVC.m */,
+				37C920161E4AC92C003C4C51 /* GrowthRecordChildSelectVC.h */,
+				37C920171E4AC92C003C4C51 /* GrowthRecordChildSelectVC.m */,
+			);
+			path = PublishGrowthRecord;
 			sourceTree = "<group>";
 		};
 		37CCE2531B8B05A3007BFA4F /* View */ = {
@@ -3880,6 +3916,7 @@
 				8D867BCC1D25042A0020A21C /* amrFileCodec.mm in Sources */,
 				37D6EEF21BCBA96D000994A2 /* MyAttendanceVC.m in Sources */,
 				37C01B111A6C245500C8F454 /* DatePickerView.m in Sources */,
+				37C920151E4ABF3B003C4C51 /* GrowthRecordChildSwitchView.m in Sources */,
 				37C890271A8963BD008E44DB /* StatusManager.m in Sources */,
 				8DCFD7601D584C08001EDC8A /* NHFileServer.m in Sources */,
 				37CCE2561B8B0649007BFA4F /* ActionPopView.m in Sources */,
@@ -3897,6 +3934,7 @@
 				8D7554B41D68403A00A140EE /* SwitchSchoolButton.m in Sources */,
 				8DCFD70C1D50B528001EDC8A /* SearchChatMessageVC.m in Sources */,
 				8D3D457A1D5B2118005EA8EA /* NotificationItem.m in Sources */,
+				37C9200C1E4ABBAD003C4C51 /* GrowthSegmentCtrl.m in Sources */,
 				3728A6AB1B98B22700310457 /* ResponseModel.m in Sources */,
 				3793FA891B7CFFF000501F77 /* CameraMaskView.m in Sources */,
 				3793FA9C1B7CFFF000501F77 /* AudioItem.m in Sources */,
@@ -3906,7 +3944,6 @@
 				37FF16D21E06B60D009F10EA /* NSDate+WQCalendarLogic.m in Sources */,
 				3793FAEB1B7CFFF000501F77 /* TNModelItem.m in Sources */,
 				37E038E81A7386D3003A3A7F /* PublishNewspaperVC.m in Sources */,
-				37C91FCE1E4847B7003C4C51 /* GrowthRecordCell.m in Sources */,
 				8D93F8BF1DA0EB5F000C15FC /* HomeworkClassSendView.m in Sources */,
 				8D41BBEB1D86D1B50062CD0E /* EmptyHintView.m in Sources */,
 				8D7555451D76C22300A140EE /* DNVideoBrowserCell.m in Sources */,
@@ -3920,7 +3957,6 @@
 				3793FAA61B7CFFF000501F77 /* UIColor+Addition.m in Sources */,
 				8DCFD6E81D4F3CB8001EDC8A /* ChatContentVideoView.m in Sources */,
 				3793FAF31B7CFFF000501F77 /* Reachability+.m in Sources */,
-				37C91FDB1E48C357003C4C51 /* GrowthClassListModel.m in Sources */,
 				37E93FC71A7E9CC600AD45A1 /* PhotoBrowserNavigationBar.m in Sources */,
 				3793FA691B7CFFF000501F77 /* AFHTTPSessionManager.m in Sources */,
 				8DCFD6F11D4F3D35001EDC8A /* ChatContentFaceView.m in Sources */,
@@ -3954,10 +3990,10 @@
 				3793FAE91B7CFFF000501F77 /* TNDataWrapper.m in Sources */,
 				8D867C8A1D2F97080020A21C /* UIView+DNImagePicker.m in Sources */,
 				3793FAF01B7CFFF000501F77 /* TNBaseWebViewController.m in Sources */,
-				37C91FD11E4848FD003C4C51 /* GrowthSegmentCtrl.m in Sources */,
 				8DCFD6C11D4C5D9E001EDC8A /* NotificationDetailPhotoView.m in Sources */,
 				8DA0C51B1DB899CC0005B9B1 /* HomeworkPhotoView.m in Sources */,
 				37FD6E301BB4817900C83AB4 /* NewMessageCell.m in Sources */,
+				37C920181E4AC92C003C4C51 /* GrowthRecordChildSelectVC.m in Sources */,
 				37FF16CB1E06B437009F10EA /* Calendar.m in Sources */,
 				8D7555081D6DA89400A140EE /* PBPresentAnimatedTransitioningController.m in Sources */,
 				37FF16CF1E06B5BC009F10EA /* NSDate+convenience.m in Sources */,
@@ -3993,7 +4029,6 @@
 				8D3D45C41D5F5F43005EA8EA /* ChatParentInfoVC.m in Sources */,
 				37D6EE371BC90C62000994A2 /* DestinationVC.m in Sources */,
 				3728A7391B9D376300310457 /* HPTextViewInternal.m in Sources */,
-				3745E39B1E45CCA1001FA6D6 /* GrowthRecordVC.m in Sources */,
 				8DCFD76B1D587B1C001EDC8A /* MessageNotificationDetailVC.m in Sources */,
 				37C8901C1A890DF9008E44DB /* ClassZoneManager.m in Sources */,
 				8DA785961CA4E35900A384F0 /* NSString+UrlParams.m in Sources */,
@@ -4128,6 +4163,7 @@
 				3793FA931B7CFFF000501F77 /* POIListModel.m in Sources */,
 				8DCFD75C1D584C08001EDC8A /* NHFileCache.m in Sources */,
 				3793FADD1B7CFFF000501F77 /* LoadingView.m in Sources */,
+				37C920081E4ABBAD003C4C51 /* DDCollectionViewHorizontalLayout.m in Sources */,
 				3793FAA01B7CFFF000501F77 /* NSObject+Associative.m in Sources */,
 				3793FAA91B7CFFF000501F77 /* UIImageView+URLWithAnimation.m in Sources */,
 				8D3D45C11D5F5F20005EA8EA /* ChatTeacherInfoVC.m in Sources */,
@@ -4141,6 +4177,7 @@
 				8D867C821D2F97080020A21C /* DNAlbumTableViewController.m in Sources */,
 				37D6EEEF1BCBA96D000994A2 /* MyAttendanceCell.m in Sources */,
 				3793FA971B7CFFF000501F77 /* UTPlaceholderTextView.m in Sources */,
+				37C920091E4ABBAD003C4C51 /* GrowthClassListModel.m in Sources */,
 				8DCFD76E1D5882AB001EDC8A /* VideoItem.m in Sources */,
 				37B485031A65853C00C412D8 /* LoginVC.m in Sources */,
 				8DCFD6EE1D4F3CF9001EDC8A /* ChatContentRevokeView.m in Sources */,
@@ -4166,6 +4203,7 @@
 				8D867C871D2F97080020A21C /* DNPhotoBrowser.m in Sources */,
 				8D867C881D2F97080020A21C /* NSURL+DNIMagePickerUrlEqual.m in Sources */,
 				37F28AF21C45F8F200CC459A /* LZAccountVC.m in Sources */,
+				37C920121E4ABE44003C4C51 /* PublishGrowthRecordVC.m in Sources */,
 				3728A73A1B9D376300310457 /* InputBarView.m in Sources */,
 				8D7554F81D69733B00A140EE /* ContactView.m in Sources */,
 				371C6DAE1A7015AF00FA4AEC /* PublishPhotoVC.m in Sources */,
@@ -4174,6 +4212,7 @@
 				37D6EEEE1BCBA96D000994A2 /* AttendanceDatePickerView.m in Sources */,
 				8DA0C50F1DB684A40005B9B1 /* HomeworkMarkFooterView.m in Sources */,
 				377709331E27D47E001168AD /* AttendanceNotificationItem.m in Sources */,
+				37C9200F1E4ABE35003C4C51 /* GrowthRecordBrowseVC.m in Sources */,
 				3793FAA21B7CFFF000501F77 /* NSObject+UnifiedPerformSelector.m in Sources */,
 				8DCFD6E21D4F3050001EDC8A /* ChatContentImageView.m in Sources */,
 				8D75552B1D7162FC00A140EE /* NotificationSimpleAudioRecordView.m in Sources */,
@@ -4193,6 +4232,8 @@
 				37E93FC51A7E9CC600AD45A1 /* MJPhotoView.m in Sources */,
 				8DA0C5241DB9E60A0005B9B1 /* HomeworkTeacherMark.m in Sources */,
 				8DFDDDB11D9519010050740B /* PhoneInputVC.m in Sources */,
+				37C9200B1E4ABBAD003C4C51 /* GrowthRecordVC.m in Sources */,
+				37C9200A1E4ABBAD003C4C51 /* GrowthRecordCell.m in Sources */,
 				371C6DAF1A7015AF00FA4AEC /* PublishSelectionView.m in Sources */,
 				379947EB1A66B430008E4B4F /* PhotoFlowVC.m in Sources */,
 				37E93FC61A7E9CC600AD45A1 /* PhotoBrowserInfoBar.m in Sources */,
@@ -4212,7 +4253,6 @@
 				8DCFD6651D43CCA6001EDC8A /* YYInfiniteScrollView.m in Sources */,
 				3736CEB51C508D31004DB2D2 /* InterestDetailVC.m in Sources */,
 				8D867C5A1D2F82120020A21C /* UIView+Animations.m in Sources */,
-				37C91FDE1E496972003C4C51 /* DDCollectionViewHorizontalLayout.m in Sources */,
 				37FD6E311BB4817900C83AB4 /* NewMessageModel.m in Sources */,
 				3728A7361B9D376300310457 /* FaceSelectView.m in Sources */,
 				8DA0C50B1DB534480005B9B1 /* HomeworkMarkHeaderView.m in Sources */,

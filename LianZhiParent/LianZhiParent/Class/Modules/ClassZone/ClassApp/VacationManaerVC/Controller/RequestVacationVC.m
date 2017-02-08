@@ -255,6 +255,7 @@
 
 - (void)onSend
 {
+    __weak typeof(self) wself = self;
     NSString* errMessage = [self checkRequest];
     if([errMessage length] > 0){
         [ProgressHUD showHintText:errMessage];
@@ -272,6 +273,9 @@
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/nleave" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             [hud hide:YES];
             [ProgressHUD showHintText:@"请假条已发给老师"];
+            if(wself.completion){
+                wself.completion();
+            }
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [CurrentROOTNavigationVC popViewControllerAnimated:YES];
             });

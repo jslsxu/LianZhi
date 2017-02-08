@@ -187,9 +187,11 @@
     MonthStatisticsCell* cell = (MonthStatisticsCell*)[super tableView:tableView cellForRowAtIndexPath:indexPath];
     if(model.sortIndex == 0){
         [cell setRow:0];
+        [cell setShowSepLine:YES];
     }
     else{
         [cell setRow:indexPath.row];
+        [cell setShowSepLine:NO];
     }
     return cell;
 }

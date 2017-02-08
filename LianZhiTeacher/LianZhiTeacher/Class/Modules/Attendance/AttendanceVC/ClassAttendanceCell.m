@@ -12,7 +12,7 @@
 @property (nonatomic, strong)UIView* bgView;
 @property (nonatomic, strong)LogoView* logoView;
 @property (nonatomic, strong)UILabel* classLabel;
-@property (nonatomic, strong)YYLabel* attendanceLabel;
+@property (nonatomic, strong)UILabel* attendanceLabel;
 @property (nonatomic, strong)UILabel* teacherLabel;
 @property (nonatomic, strong)UIButton* chatButton;
 @property (nonatomic, strong)UIButton* mobileButton;
@@ -39,7 +39,7 @@
         [self.classLabel setFont:[UIFont systemFontOfSize:16]];
         [self.bgView addSubview:self.classLabel];
         
-        self.attendanceLabel = [[YYLabel alloc] initWithFrame:CGRectZero];
+        self.attendanceLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         [self.attendanceLabel setFont:[UIFont systemFontOfSize:13]];
         [self.attendanceLabel setNumberOfLines:0];
         [self.bgView addSubview:self.attendanceLabel];
@@ -74,7 +74,6 @@
     [self.classLabel sizeToFit];
     [self.classLabel setOrigin:CGPointMake(self.logoView.right + 6, self.logoView.top)];
     
-    [self.attendanceLabel setWidth:0];
     NSMutableAttributedString* attendanceString = [[NSMutableAttributedString alloc] initWithString:@"出勤:" attributes:@{NSForegroundColorAttributeName : kColor_99}];
     NSString* attendanceNumString = nil;
     NSString* absenceNumString = nil;
@@ -100,10 +99,9 @@
             [attendanceString appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%zd人无故缺勤", attendanceItem.noleave_num] attributes:@{NSForegroundColorAttributeName : kRedColor}]];
         }
     }
-    [attendanceString setLineSpacing:2];
+    [attendanceString setLineSpacing:4];
     [self.attendanceLabel setAttributedText:attendanceString];
-    [self.attendanceLabel sizeToFit];
-    [self.attendanceLabel setOrigin:CGPointMake(self.logoView.right + 6, self.classLabel.bottom + 5)];
+    [self.attendanceLabel setFrame:CGRectMake(self.logoView.right + 6, self.classLabel.bottom + 4, self.bgView.width - 10 - (self.logoView.right + 6), self.bgView.height - 5 - (self.classLabel.bottom + 5))];
     NSString* name = attendanceItem.teacherName;
     if([name isEqualToString:[UserCenter sharedInstance].userInfo.name]){
         name = @"我";

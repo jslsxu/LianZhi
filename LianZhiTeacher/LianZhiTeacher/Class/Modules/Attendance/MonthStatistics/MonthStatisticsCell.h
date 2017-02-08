@@ -10,4 +10,5 @@
 
 @interface MonthStatisticsCell : TNTableViewCell
 @property (nonatomic, assign)NSInteger row;
+@property (nonatomic, assign)BOOL showSepLine;
 @end

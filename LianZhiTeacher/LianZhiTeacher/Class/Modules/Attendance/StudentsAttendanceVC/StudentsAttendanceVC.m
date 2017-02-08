@@ -159,7 +159,21 @@
     [params setValue:self.classInfo.classID forKey:@"class_id"];
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/nstartleave" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
         [hud hide:NO];
-        [wself gotoEditAttendance];
+        TNDataWrapper* lockWrapper = [responseObject getDataWrapperForKey:@"lock"];
+        BOOL locked = [lockWrapper getBoolForKey:@"flg"];
+        NSString* message = [lockWrapper getStringForKey:@"msg"];
+        if(locked){
+            [ProgressHUD showHintText:message];
+        }
+        else{
+            TNDataWrapper *itemsWrapper = [responseObject getDataWrapperForKey:@"items"];
+            NSArray* items = [StudentAttendanceItem nh_modelArrayWithJson:itemsWrapper.data];
+            for (StudentAttendanceItem* attendanceItem in items) {
+                attendanceItem.newStatus = attendanceItem.status;
+                attendanceItem.edit_mark = attendanceItem.mark_time;
+            }
+            [wself gotoEditAttendanceWithData:items];
+        }
     } fail:^(NSString *errMsg) {
         [hud hide:NO];
         [ProgressHUD showHintText:errMsg];
@@ -180,7 +194,7 @@
     [actionArray addObject:settingItem];
     if([self.calendar.currentSelectedDate isToday]){
         NotificationActionItem *anylizeItem = [NotificationActionItem actionItemWithTitle:@"编辑考勤" action:^{
-            [wself gotoEditAttendance];
+            [wself startAttendance];
         } destroyItem:NO];
         [actionArray addObject:anylizeItem];
     }
@@ -189,11 +203,12 @@
     }];
 }
 
-- (void)gotoEditAttendance{
+- (void)gotoEditAttendanceWithData:(NSArray *)items{
     __weak typeof(self) wself = self;
     EditAttendanceVC* editVC = [[EditAttendanceVC alloc] init];
     [editVC setDate:self.calendar.currentSelectedDate];
     [editVC setClassInfo:self.classInfo];
+    [editVC setStudentAttendanceArray:items];
     [editVC setEditFinished:^{
         [wself requestData:REQUEST_REFRESH];
     }];

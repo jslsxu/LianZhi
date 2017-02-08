@@ -245,9 +245,11 @@
 		37C88FB91A845D95008E44DB /* AddRelationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C88FB81A845D95008E44DB /* AddRelationVC.m */; };
 		37C88FF11A889A05008E44DB /* PersonalSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C88FF01A889A05008E44DB /* PersonalSetting.m */; };
 		37C890221A895342008E44DB /* StatusManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C890211A895342008E44DB /* StatusManager.m */; };
-		37C91FD81E488AB2003C4C51 /* GrowthRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FD71E488AB2003C4C51 /* GrowthRecordVC.m */; };
-		37C91FE11E49B5C7003C4C51 /* ChildGrowthInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FE01E49B5C7003C4C51 /* ChildGrowthInfoView.m */; };
-		37C91FE71E49BE2A003C4C51 /* HYBStarEvaluationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FE61E49BE2A003C4C51 /* HYBStarEvaluationView.m */; };
+		37C91FF51E4AB569003C4C51 /* ChildGrowthInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FED1E4AB569003C4C51 /* ChildGrowthInfoView.m */; };
+		37C91FF61E4AB569003C4C51 /* ChildPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FEF1E4AB569003C4C51 /* ChildPhotoView.m */; };
+		37C91FF71E4AB569003C4C51 /* GrowthRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FF11E4AB569003C4C51 /* GrowthRecordVC.m */; };
+		37C91FF81E4AB569003C4C51 /* HYBStarEvaluationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FF31E4AB569003C4C51 /* HYBStarEvaluationView.m */; };
+		37C91FFB1E4AB57A003C4C51 /* RecordReplyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C91FFA1E4AB57A003C4C51 /* RecordReplyVC.m */; };
 		37CA18831AB70BCC00B49B55 /* AlbumGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA187A1AB70BCC00B49B55 /* AlbumGroupView.m */; };
 		37CA18841AB70BCC00B49B55 /* PhotoPickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA187C1AB70BCC00B49B55 /* PhotoPickerCell.m */; };
 		37CA18851AB70BCC00B49B55 /* PhotoPickerItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 37CA187E1AB70BCC00B49B55 /* PhotoPickerItem.m */; };
@@ -989,12 +991,16 @@
 		37C88FF01A889A05008E44DB /* PersonalSetting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalSetting.m; sourceTree = "<group>"; };
 		37C890201A895342008E44DB /* StatusManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusManager.h; sourceTree = "<group>"; };
 		37C890211A895342008E44DB /* StatusManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusManager.m; sourceTree = "<group>"; };
-		37C91FD61E488AB2003C4C51 /* GrowthRecordVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthRecordVC.h; sourceTree = "<group>"; };
-		37C91FD71E488AB2003C4C51 /* GrowthRecordVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthRecordVC.m; sourceTree = "<group>"; };
-		37C91FDF1E49B5C7003C4C51 /* ChildGrowthInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChildGrowthInfoView.h; sourceTree = "<group>"; };
-		37C91FE01E49B5C7003C4C51 /* ChildGrowthInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChildGrowthInfoView.m; sourceTree = "<group>"; };
-		37C91FE51E49BE2A003C4C51 /* HYBStarEvaluationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYBStarEvaluationView.h; sourceTree = "<group>"; };
-		37C91FE61E49BE2A003C4C51 /* HYBStarEvaluationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYBStarEvaluationView.m; sourceTree = "<group>"; };
+		37C91FEC1E4AB569003C4C51 /* ChildGrowthInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChildGrowthInfoView.h; sourceTree = "<group>"; };
+		37C91FED1E4AB569003C4C51 /* ChildGrowthInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChildGrowthInfoView.m; sourceTree = "<group>"; };
+		37C91FEE1E4AB569003C4C51 /* ChildPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChildPhotoView.h; sourceTree = "<group>"; };
+		37C91FEF1E4AB569003C4C51 /* ChildPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChildPhotoView.m; sourceTree = "<group>"; };
+		37C91FF01E4AB569003C4C51 /* GrowthRecordVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthRecordVC.h; sourceTree = "<group>"; };
+		37C91FF11E4AB569003C4C51 /* GrowthRecordVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthRecordVC.m; sourceTree = "<group>"; };
+		37C91FF21E4AB569003C4C51 /* HYBStarEvaluationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYBStarEvaluationView.h; sourceTree = "<group>"; };
+		37C91FF31E4AB569003C4C51 /* HYBStarEvaluationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYBStarEvaluationView.m; sourceTree = "<group>"; };
+		37C91FF91E4AB57A003C4C51 /* RecordReplyVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordReplyVC.h; sourceTree = "<group>"; };
+		37C91FFA1E4AB57A003C4C51 /* RecordReplyVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordReplyVC.m; sourceTree = "<group>"; };
 		37CA18791AB70BCC00B49B55 /* AlbumGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumGroupView.h; sourceTree = "<group>"; };
 		37CA187A1AB70BCC00B49B55 /* AlbumGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumGroupView.m; sourceTree = "<group>"; };
 		37CA187B1AB70BCC00B49B55 /* PhotoPickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoPickerCell.h; sourceTree = "<group>"; };
@@ -2841,14 +2847,34 @@
 		37C91FD51E488A9F003C4C51 /* GrowthRecord */ = {
 			isa = PBXGroup;
 			children = (
-				37C91FD61E488AB2003C4C51 /* GrowthRecordVC.h */,
-				37C91FD71E488AB2003C4C51 /* GrowthRecordVC.m */,
-				37C91FDF1E49B5C7003C4C51 /* ChildGrowthInfoView.h */,
-				37C91FE01E49B5C7003C4C51 /* ChildGrowthInfoView.m */,
-				37C91FE51E49BE2A003C4C51 /* HYBStarEvaluationView.h */,
-				37C91FE61E49BE2A003C4C51 /* HYBStarEvaluationView.m */,
+				37C91FEB1E4AB569003C4C51 /* RecordVC */,
+				37C91FF41E4AB569003C4C51 /* ReplyVC */,
 			);
 			path = GrowthRecord;
+			sourceTree = "<group>";
+		};
+		37C91FEB1E4AB569003C4C51 /* RecordVC */ = {
+			isa = PBXGroup;
+			children = (
+				37C91FEC1E4AB569003C4C51 /* ChildGrowthInfoView.h */,
+				37C91FED1E4AB569003C4C51 /* ChildGrowthInfoView.m */,
+				37C91FEE1E4AB569003C4C51 /* ChildPhotoView.h */,
+				37C91FEF1E4AB569003C4C51 /* ChildPhotoView.m */,
+				37C91FF01E4AB569003C4C51 /* GrowthRecordVC.h */,
+				37C91FF11E4AB569003C4C51 /* GrowthRecordVC.m */,
+				37C91FF21E4AB569003C4C51 /* HYBStarEvaluationView.h */,
+				37C91FF31E4AB569003C4C51 /* HYBStarEvaluationView.m */,
+			);
+			path = RecordVC;
+			sourceTree = "<group>";
+		};
+		37C91FF41E4AB569003C4C51 /* ReplyVC */ = {
+			isa = PBXGroup;
+			children = (
+				37C91FF91E4AB57A003C4C51 /* RecordReplyVC.h */,
+				37C91FFA1E4AB57A003C4C51 /* RecordReplyVC.m */,
+			);
+			path = ReplyVC;
 			sourceTree = "<group>";
 		};
 		37CA18781AB70BCC00B49B55 /* PhotoPicker */ = {
@@ -3901,7 +3927,7 @@
 				TargetAttributes = {
 					37C356011A3FD67300B948E6 = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = JRFF54BK3W;
+						DevelopmentTeam = ZNQ7SU9FMT;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -4173,6 +4199,7 @@
 				3793F7A51B7CFFD900501F77 /* HttpRequestEngine.m in Sources */,
 				37F207071BDDD596006466F4 /* HomeWorkCell.m in Sources */,
 				37CA18861AB70BCC00B49B55 /* PhotoPickerModel.m in Sources */,
+				37C91FF51E4AB569003C4C51 /* ChildGrowthInfoView.m in Sources */,
 				37F207131BDE0816006466F4 /* LZAccountVC.m in Sources */,
 				3793F80F1B7CFFD900501F77 /* BGTableViewCell.m in Sources */,
 				8D867C241D2A6C530020A21C /* NHAudioConverter.m in Sources */,
@@ -4241,11 +4268,9 @@
 				8DA0C5341DBBBAF50005B9B1 /* HomeworkClassVC.m in Sources */,
 				3728A5E71B9332FE00310457 /* ClassZoneItemCell.m in Sources */,
 				8DCFD7A21D5A3B8B001EDC8A /* ChatContentVideoView.m in Sources */,
-				37C91FE71E49BE2A003C4C51 /* HYBStarEvaluationView.m in Sources */,
 				3793F7D41B7CFFD900501F77 /* NSObject+Associative.m in Sources */,
 				37C88FB91A845D95008E44DB /* AddRelationVC.m in Sources */,
 				3793F7581B7CFFD900501F77 /* YLGIFImage.m in Sources */,
-				37C91FE11E49B5C7003C4C51 /* ChildGrowthInfoView.m in Sources */,
 				37E5F6401DF7DDDA0062941C /* ResourceInstructionVC.m in Sources */,
 				37E5F6131DF7DDDA0062941C /* MXScrollView.m in Sources */,
 				3793F7B81B7CFFD900501F77 /* AudioRecordView.m in Sources */,
@@ -4330,7 +4355,6 @@
 				8DB8FAED1D662A5A006B44B2 /* GiftItem.m in Sources */,
 				8DCFD7A01D5A3B8B001EDC8A /* ChatContentSendGiftView.m in Sources */,
 				3793F7C71B7CFFD900501F77 /* POIListModel.m in Sources */,
-				37C91FD81E488AB2003C4C51 /* GrowthRecordVC.m in Sources */,
 				3793F7B91B7CFFD900501F77 /* LZBadgeLabel.m in Sources */,
 				3793F75C1B7CFFD900501F77 /* MBProgressHUD.m in Sources */,
 				37E5F60B1DF7DDDA0062941C /* MCCircleChartView.m in Sources */,
@@ -4374,6 +4398,7 @@
 				37FD70B81BBDB29B00C83AB4 /* PraiseListView.m in Sources */,
 				8DA0C5451DBE619C0005B9B1 /* HomeworkNotificationCell.m in Sources */,
 				3728A61C1B93F36B00310457 /* HPGrowingTextView.m in Sources */,
+				37C91FF71E4AB569003C4C51 /* GrowthRecordVC.m in Sources */,
 				37CBAF1B1A4724930063F395 /* PublishArticleVC.m in Sources */,
 				37E5F6431DF7DDDA0062941C /* TestResultVC.m in Sources */,
 				8DA0C53C1DBDEB6B0005B9B1 /* HomeworkTeacherMark.m in Sources */,
@@ -4396,6 +4421,7 @@
 				37C356081A3FD67300B948E6 /* main.m in Sources */,
 				3793F80B1B7CFFD900501F77 /* UIImage+WebP.m in Sources */,
 				37E5F63F1DF7DDDA0062941C /* ResourceBaseVC.m in Sources */,
+				37C91FFB1E4AB57A003C4C51 /* RecordReplyVC.m in Sources */,
 				37E93FDF1A7E9CF200AD45A1 /* PhotoBrowserNavigationBar.m in Sources */,
 				37CFA5B81A4AF2A70061D7B8 /* MessageDetailModel.m in Sources */,
 				8DA0C5481DBE61E30005B9B1 /* HomeworkNotificationListModel.m in Sources */,
@@ -4463,11 +4489,13 @@
 				37CFA5B21A4AF27C0061D7B8 /* MessageDetailVC.m in Sources */,
 				8D7554E91D6969E300A140EE /* DNAssetsViewCell.m in Sources */,
 				3793F8081B7CFFD900501F77 /* UIButton+WebCache.m in Sources */,
+				37C91FF81E4AB569003C4C51 /* HYBStarEvaluationView.m in Sources */,
 				37D6EE231BC90338000994A2 /* DestinationVC.m in Sources */,
 				37E5F64F1DF7F1F70062941C /* LZMicrolessonVCViewController.m in Sources */,
 				8DCFD7D91D5ADD94001EDC8A /* NJKWebViewProgressView.m in Sources */,
 				8D7554EE1D6969E300A140EE /* DNTapDetectingImageView.m in Sources */,
 				3793F7A11B7CFFD900501F77 /* AFURLConnectionOperation.m in Sources */,
+				37C91FF61E4AB569003C4C51 /* ChildPhotoView.m in Sources */,
 				37FD6DC41BAE7C7F00C83AB4 /* MessageItem.m in Sources */,
 				37E5F6191DF7DDDA0062941C /* UIView+SGExtension.m in Sources */,
 				37FD70BB1BBDB42A00C83AB4 /* TreeHouseItemDetailVC.m in Sources */,
@@ -4604,8 +4632,8 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = LianZhiParent/LianZhiParent.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
-				DEVELOPMENT_TEAM = JRFF54BK3W;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				DEVELOPMENT_TEAM = ZNQ7SU9FMT;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4631,10 +4659,10 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "94ab3bcd-94d1-4af8-80ec-a6ca66e7728b";
-				PROVISIONING_PROFILE_SPECIFIER = ParentDevelopment;
+				PROVISIONING_PROFILE = "079cfdb2-ea73-4931-a35a-4c6ce8a6fb8a";
+				PROVISIONING_PROFILE_SPECIFIER = ParentInhouseNew;
 			};
 			name = Debug;
 		};
@@ -4648,9 +4676,9 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = LianZhiParent/LianZhiParent.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: wei xin (VLCERZ64DD)";
-				DEVELOPMENT_TEAM = JRFF54BK3W;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				DEVELOPMENT_TEAM = ZNQ7SU9FMT;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4676,10 +4704,10 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "94ab3bcd-94d1-4af8-80ec-a6ca66e7728b";
-				PROVISIONING_PROFILE_SPECIFIER = ParentDevelopment;
+				PROVISIONING_PROFILE = "079cfdb2-ea73-4931-a35a-4c6ce8a6fb8a";
+				PROVISIONING_PROFILE_SPECIFIER = ParentInhouseNew;
 			};
 			name = Release;
 		};

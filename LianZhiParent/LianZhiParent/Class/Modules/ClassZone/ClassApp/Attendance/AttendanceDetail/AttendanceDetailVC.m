@@ -126,8 +126,12 @@
 }
 
 - (void)requestLeave{
+    __weak typeof(self) wself = self;
     RequestVacationVC* requestVC = [[RequestVacationVC alloc] init];
     [requestVC setClassInfo:self.classInfo];
+    [requestVC setCompletion:^{
+        [wself requestAttendance];
+    }];
     [self.navigationController pushViewController:requestVC animated:YES];
 }
 

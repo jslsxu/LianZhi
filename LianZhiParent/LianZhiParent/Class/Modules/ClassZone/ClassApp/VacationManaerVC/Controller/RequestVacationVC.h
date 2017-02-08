@@ -11,4 +11,5 @@
 #import "ChildInfo.h"
 @interface RequestVacationVC : TNBaseViewController
 @property (nonatomic, strong)ClassInfo* classInfo;
+@property (nonatomic, copy)void (^completion)();
 @end

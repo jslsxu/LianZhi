@@ -22,6 +22,9 @@ NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
 
 @implementation EditAttendanceVC
 
+- (void)dealloc{
+    [self unlockEdit];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
@@ -39,8 +42,9 @@ NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
     [self.tableView setFrame:CGRectMake(0, 70, self.view.width, self.view.height - 70)];
     [self bindTableCell:@"EditAttendanceCell" tableModel:@"StudentsAttendanceListModel"];
      StudentsAttendanceListModel* model = (StudentsAttendanceListModel *)self.tableViewModel;
+    [model.modelItemArray removeAllObjects];
+    [model.modelItemArray addObjectsFromArray:self.studentAttendanceArray];
     [model setAttendaceEdit:YES];
-    [self requestData:REQUEST_REFRESH];
 }
 
 - (void)setupTitle{
@@ -101,6 +105,13 @@ NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
     [formatter setDateFormat:@"yyyy-MM-dd"];
     NSString* dateString = [formatter stringFromDate:self.date];
     return dateString;
+}
+
+- (void)unlockEdit{
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setValue:[self.date stringWithFormat:@"yyyy-MM-dd"] forKey:@"cdate"];
+    [params setValue:self.classInfo.classID forKey:@"class_id"];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:nil fail:nil];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType{

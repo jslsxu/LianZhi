@@ -21,6 +21,8 @@ typedef NS_ENUM(NSInteger, GrowthStatusType){
 @property (nonatomic, copy)NSString* avatar;
 @property (nonatomic, copy)NSString* name;
 @property (nonatomic, assign)GrowthStatusType status;
+@property (nonatomic, assign)BOOL selected;
+@property (nonatomic, assign)CGFloat score;
 @end
 
 @interface GrowthClassInfo : TNBaseObject

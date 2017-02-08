@@ -35,7 +35,7 @@
     return self;
 }
 
-- (void)setStudentInfo:(StudentInfo *)studentInfo{
+- (void)setStudentInfo:(GrowthStudentInfo *)studentInfo{
     _studentInfo = studentInfo;
     
     [self.avatarView sd_setImageWithURL:[NSURL URLWithString:_studentInfo.avatar] placeholderImage:nil];

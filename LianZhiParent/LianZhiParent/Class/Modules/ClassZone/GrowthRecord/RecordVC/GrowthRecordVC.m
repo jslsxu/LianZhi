@@ -9,6 +9,7 @@
 #import "GrowthRecordVC.h"
 #import "Calendar.h"
 #import "ChildGrowthInfoView.h"
+#import "RecordReplyVC.h"
 @interface GrowthRecordVC ()<CalendarDelegate>
 @property (nonatomic, strong)Calendar* calendar;
 @property (nonatomic, strong)UIScrollView* scrollView;
@@ -53,13 +54,19 @@
     return _infoView;
 }
 
-- (void)reply{
+- (void)requestGrowthRecord{
     
+}
+
+- (void)reply{
+    RecordReplyVC* recordReplyVC = [[RecordReplyVC alloc] init];
+    TNBaseNavigationController* nav = [[TNBaseNavigationController alloc] initWithRootViewController:recordReplyVC];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 #pragma mark - CalendarDelegate
 - (void)calendarDateDidChange:(NSDate *)selectedDate{
-    
+    [self requestGrowthRecord];
 }
 
 - (void)calendarHeightWillChange:(CGFloat)height{

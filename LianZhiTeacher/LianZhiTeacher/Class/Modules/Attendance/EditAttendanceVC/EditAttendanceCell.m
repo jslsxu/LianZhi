@@ -61,7 +61,7 @@
         [self.offButton addTarget:self action:@selector(attendanceButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.offButton];
         
-        self.checkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"StudentAttendanceCheck"]];
+        self.checkView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMarkAttendance"]];
         [self addSubview:self.checkView];
         
         self.noteView = [[NoteView alloc] initWithFrame:CGRectMake(10, 0, self.width - 20 - 10, 20)];

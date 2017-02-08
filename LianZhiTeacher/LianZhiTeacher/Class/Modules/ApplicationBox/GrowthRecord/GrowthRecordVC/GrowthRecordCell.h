@@ -7,9 +7,9 @@
 //
 
 #import "TNTableViewCell.h"
-
+#import "GrowthClassListModel.h"
 @interface GrowthStudentCell : UICollectionViewCell
-@property (nonatomic, strong)StudentInfo* studentInfo;
+@property (nonatomic, strong)GrowthStudentInfo* studentInfo;
 @end
 
 @interface GrowthRecordCell : TNTableViewCell

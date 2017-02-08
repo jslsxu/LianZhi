@@ -22,6 +22,7 @@
     }
     NSArray* items = [MonthStatisticsItem nh_modelArrayWithJson:listWrapper.data];
     [self.modelItemArray addObjectsFromArray:items];
+    [self setSortIndex:self.sortIndex];
     return YES;
 }
 

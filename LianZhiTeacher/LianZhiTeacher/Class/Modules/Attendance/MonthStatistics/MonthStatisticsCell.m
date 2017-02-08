@@ -13,6 +13,7 @@
 @property (nonatomic, strong)UILabel* nameLabel;
 @property (nonatomic, strong)UILabel* attendanceNumLabel;
 @property (nonatomic, strong)UILabel* offNumLabel;
+@property (nonatomic, strong)UIView* sepLine;
 @end
 
 @implementation MonthStatisticsCell
@@ -43,6 +44,10 @@
         [self.offNumLabel setTextColor:kRedColor];
         [self addSubview:self.offNumLabel];
     
+        self.sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
+        [self.sepLine setBackgroundColor:kSepLineColor];
+        [self.sepLine setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
+        [self addSubview:self.sepLine];
     }
     return self;
 }
@@ -67,6 +72,11 @@
     else{
         [self setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     }
+}
+
+- (void)setShowSepLine:(BOOL)showSepLine{
+    _showSepLine = showSepLine;
+    [self.sepLine setHidden:!self.showSepLine];
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width{

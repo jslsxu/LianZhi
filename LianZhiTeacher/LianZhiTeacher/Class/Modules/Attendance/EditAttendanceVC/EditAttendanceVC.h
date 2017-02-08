@@ -14,4 +14,5 @@ extern NSString* kEditAttendanceNotification;
 @property (nonatomic, strong)ClassInfo* classInfo;
 @property (nonatomic, strong)NSDate* date;
 @property (nonatomic, copy)void (^editFinished)();
+@property (nonatomic, strong)NSArray* studentAttendanceArray;
 @end
