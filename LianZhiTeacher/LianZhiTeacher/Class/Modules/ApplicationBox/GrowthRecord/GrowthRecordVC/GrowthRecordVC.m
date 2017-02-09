@@ -10,6 +10,7 @@
 #import "NotificationDetailActionView.h"
 #import "Calendar.h"
 #import "GrowthRecordCell.h"
+#import "PublishGrowthRecordVC.h"
 @interface GrowthRecordVC ()<CalendarDelegate>
 @property (nonatomic, strong)UIButton* moreButton;
 @property (nonatomic, strong)Calendar* calendar;
@@ -29,6 +30,7 @@
     [bottomView setBackgroundColor:[UIColor whiteColor]];
     
     UIButton* editButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [editButton addTarget:self action:@selector(publishRecord) forControlEvents:UIControlEventTouchUpInside];
     [editButton setFrame:CGRectMake(10, 10, bottomView.width - 10 * 2, bottomView.height - 10 * 2)];
     [editButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [editButton.titleLabel setFont:[UIFont systemFontOfSize:16]];
@@ -77,6 +79,11 @@
     [NotificationDetailActionView showWithActions:actionArray completion:^{
         [wself setRightbarButtonHighlighted:NO];
     }];
+}
+
+- (void)publishRecord{
+    PublishGrowthRecordVC* publishRecordVC = [[PublishGrowthRecordVC alloc] init];
+    [CurrentROOTNavigationVC pushViewController:publishRecordVC animated:YES];
 }
 
 - (void)requestGrowthRecord{

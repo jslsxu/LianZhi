@@ -45,6 +45,7 @@ NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
     [model.modelItemArray removeAllObjects];
     [model.modelItemArray addObjectsFromArray:self.studentAttendanceArray];
     [model setAttendaceEdit:YES];
+    [self.tableView reloadData];
 }
 
 - (void)setupTitle{
@@ -111,20 +112,8 @@ NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [params setValue:[self.date stringWithFormat:@"yyyy-MM-dd"] forKey:@"cdate"];
     [params setValue:self.classInfo.classID forKey:@"class_id"];
-    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:nil fail:nil];
+    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/nunlock" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:nil fail:nil];
 }
-
-- (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType{
-    HttpRequestTask *task = [[HttpRequestTask alloc] init];
-    task.requestUrl = @"leave/nclass";
-    
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:[self dateString] forKey:@"cdate"];
-    [params setValue:self.classInfo.classID forKey:@"class_id"];
-    [task setParams:params];
-    return task;
-}
-
 
 - (void)commit{
     if([self.tableViewModel.modelItemArray count] > 0){
@@ -155,7 +144,6 @@ NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
 }
 
 #pragma mark - UITableViewDelegate
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView* headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.width, 20)];
     [headerView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];

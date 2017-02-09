@@ -19,4 +19,5 @@
 
 @interface GrowthRecordChildSelectVC : TNBaseViewController
 @property (nonatomic, strong)NSArray* classArray;
+@property (nonatomic, copy)void (^selectChanged)();
 @end

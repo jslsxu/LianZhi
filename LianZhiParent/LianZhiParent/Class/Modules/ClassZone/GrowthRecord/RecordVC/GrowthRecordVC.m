@@ -22,7 +22,7 @@
     [super viewDidLoad];
     [self setTitle:@"家园手册"];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"回复" style:UIBarButtonItemStyleDone target:self action:@selector(reply)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"回复" style:UIBarButtonItemStylePlain target:self action:@selector(reply)];
     [self.view addSubview:[self calendar]];
     [self.view addSubview:[self scrollView]];
     [self.scrollView addSubview:[self infoView]];

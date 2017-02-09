@@ -6,13 +6,13 @@
 //  Copyright © 2017年 jslsxu. All rights reserved.
 //
 
-#import "GrowthRecordBrowseVC.h"
+#import "GrowthRecordDetailVC.h"
 #import "Calendar.h"
-@interface GrowthRecordBrowseVC ()<CalendarDelegate>
+@interface GrowthRecordDetailVC ()<CalendarDelegate>
 @property (nonatomic, strong)Calendar* calendar;
 @end
 
-@implementation GrowthRecordBrowseVC
+@implementation GrowthRecordDetailVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];

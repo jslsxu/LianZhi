@@ -10,6 +10,7 @@
 #import "AttendanceNotificationCell.h"
 #import "AttendanceNotificationListModel.h"
 #import "AttendanceVC.h"
+#import "StudentsAttendanceVC.h"
 @interface AttendanceNotificationListVC ()
 
 @end
@@ -139,6 +140,11 @@
     }];
 }
 
+- (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
+//    MessageDetailItem *detailItem = (MessageDetailItem *)modelItem;
+//    StudentsAttendanceVC* attendanceVC = [[StudentsAttendanceVC alloc] init];
+//    [attendanceVC setClassInfo:detailItem];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

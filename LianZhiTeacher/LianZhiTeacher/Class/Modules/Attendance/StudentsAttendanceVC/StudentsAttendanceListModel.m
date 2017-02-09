@@ -24,6 +24,9 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
 }
 
 - (BOOL)edited{
+    if(!self.teacher_edit){
+        return YES;
+    }
     if(self.status != self.newStatus){
         return YES;
     }

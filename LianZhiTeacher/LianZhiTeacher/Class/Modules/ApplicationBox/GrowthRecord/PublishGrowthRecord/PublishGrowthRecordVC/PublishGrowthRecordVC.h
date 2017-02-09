@@ -9,5 +9,5 @@
 #import "TNBaseViewController.h"
 
 @interface PublishGrowthRecordVC : TNBaseViewController
-
+@property (nonatomic, strong)NSDate* date;
 @end
