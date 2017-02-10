@@ -122,6 +122,7 @@
         [wself requestAttendance];
     } fail:^(NSString *errMsg) {
         [hud hide:NO];
+        [ProgressHUD showHintText:errMsg];
     }];
 }
 
@@ -150,6 +151,8 @@
         [requestButton setBackgroundImage:[UIImage imageWithColor:kCommonParentTintColor size:requestButton.size cornerRadius:5] forState:UIControlStateNormal];
         [requestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [requestButton.titleLabel setFont:[UIFont systemFontOfSize:18]];
+        [requestButton setImage:[UIImage imageNamed:@"RequestLeave"] forState:UIControlStateNormal];
+        [requestButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 5)];
         [requestButton setTitle:@"在线请假" forState:UIControlStateNormal];
         [requestButton addTarget:self action:@selector(requestLeave) forControlEvents:UIControlEventTouchUpInside];
         [_bottomView addSubview:requestButton];
@@ -272,6 +275,7 @@
         [hud hide:NO];
         AttendanceDetailResponse* response = [AttendanceDetailResponse nh_modelWithJson:responseObject.data];
         [wself setDetailResponse:response];
+        [wself.calendar setHighlightedDate:response.month_leave];
     } fail:^(NSString *errMsg) {
         [hud hide:NO];
     }];

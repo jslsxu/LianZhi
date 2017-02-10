@@ -87,77 +87,71 @@
     return sortTypeArray;
 }
 
-- (NSInteger)numOfRowsInSection:(NSInteger)section{
-    NSInteger count = 0;
+- (void)setFilterType:(NSString *)filterType{
+    _filterType = [filterType copy];
+    self.filterClassArray = [self classArrayWithFilter];
+}
+
+- (NSArray *)classArrayWithFilter{
+    NSMutableArray* filterClassArray = [NSMutableArray array];
     for (ClassAttendanceItem *item in self.modelItemArray) {
         if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeAll]]){
-            count ++;
+            [filterClassArray addObject:item];
         }
         else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeUnCommit]]){
             if(!item.submit_leave){
-                count ++;
+                [filterClassArray addObject:item];
             }
         }
         else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeLate]]){
             if(item.late_num > 0){
-                count++;
+                [filterClassArray addObject:item];
             }
         }
         else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeCommited]]){
             if(item.submit_leave){
-                count ++;
+                [filterClassArray addObject:item];
             }
         }
         else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeWuguQueqin]]){
             if(item.noleave_num > 0){
-                count ++;
+               [filterClassArray addObject:item];
             }
         }
         else{
             NSString* gradeName = [item grade_name];
             if([self.filterType containsString:gradeName]){
-                count++;
+                [filterClassArray addObject:item];
             }
         }
     }
-    return count;
+    NSString* curTeacherID = [UserCenter sharedInstance].userInfo.uid;
+    [filterClassArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        ClassAttendanceItem* item1 = (ClassAttendanceItem *)obj1;
+        ClassAttendanceItem* item2 = (ClassAttendanceItem *)obj2;
+        if([item1.teacherID isEqualToString:curTeacherID] && [item2.teacherID isEqualToString:curTeacherID]){
+            return [[item1.class_info.name transformToPinyin] compare:[item2.class_info.name transformToPinyin]];
+        }
+        else if([item1.teacherID isEqualToString:curTeacherID]){
+            return NSOrderedAscending;
+        }
+        else if([item2.teacherID isEqualToString:curTeacherID]){
+            return NSOrderedDescending;
+        }
+        else{
+            return [[item1.class_info.name transformToPinyin] compare:[item2.class_info.name transformToPinyin]];
+        }
+    }];
+    return filterClassArray;
+}
+
+- (NSInteger)numOfRowsInSection:(NSInteger)section{
+    return [self.filterClassArray count];
 }
 
 - (TNModelItem *)itemForIndexPath:(NSIndexPath *)indexPath{
-    NSInteger count = 0;
-    for (ClassAttendanceItem *item in self.modelItemArray) {
-        if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeAll]]){
-            count ++;
-        }
-        else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeUnCommit]]){
-            if(!item.submit_leave){
-                count ++;
-            }
-        }
-        else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeLate]]){
-            if(item.late_num > 0){
-                count++;
-            }
-        }
-        else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeCommited]]){
-            if(item.submit_leave){
-                count ++;
-            }
-        }
-        else if([self.filterType isEqualToString:[ClassFilterView filterNameForType:AttendanceClassFilterTypeWuguQueqin]]){
-            if(item.noleave_num > 0){
-                count ++;
-            }
-        }
-        else{
-            NSString* gradeName = [item grade_name];
-            if([self.filterType containsString:gradeName]){
-                count++;
-            }
-        }
-        if(count == indexPath.row + 1){
-            return item;
-        }
+    if([self.filterClassArray count] > 0){
+        return [self.filterClassArray objectAtIndex:indexPath.row];
     }
     return nil;
 }

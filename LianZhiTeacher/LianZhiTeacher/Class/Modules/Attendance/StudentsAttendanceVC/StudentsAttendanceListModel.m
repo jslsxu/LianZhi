@@ -108,7 +108,8 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
         attendanceItem.edit_mark = attendanceItem.mark_time;
     }
     [self.modelItemArray addObjectsFromArray:items];
-    
+    self.submit_leave = [data getBoolForKey:@"submit_leave"];
+    [self setSortIndex:0];
     return YES;
 }
 
@@ -167,24 +168,27 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
         NSArray* sectionArray = [self modelDictionary][key];
         return [sectionArray count];
     }
-    else if(self.sortIndex == 1){
-        NSInteger count = 0;
-        for (StudentAttendanceItem *item in self.modelItemArray) {
-            if([item normalAttendance]){
-                count ++;
-            }
-        }
-        return count;
+    else{
+        return [self.modelItemArray count];
     }
-    else if(self.sortIndex == 2){
-        NSInteger count = 0;
-        for (StudentAttendanceItem *item in self.modelItemArray) {
-            if(![item normalAttendance]){
-                count ++;
-            }
-        }
-        return count;
-    }
+//    else if(self.sortIndex == 1){
+//        NSInteger count = 0;
+//        for (StudentAttendanceItem *item in self.modelItemArray) {
+//            if([item normalAttendance]){
+//                count ++;
+//            }
+//        }
+//        return count;
+//    }
+//    else if(self.sortIndex == 2){
+//        NSInteger count = 0;
+//        for (StudentAttendanceItem *item in self.modelItemArray) {
+//            if(![item normalAttendance]){
+//                count ++;
+//            }
+//        }
+//        return count;
+//    }
     return 1;
 }
 
@@ -196,34 +200,72 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
         NSArray* sectionItems = dic[key];
         return sectionItems[indexPath.row];
     }
-    else if(self.sortIndex == 1){
-        NSInteger count = 0;
-        for (StudentAttendanceItem *item in self.modelItemArray) {
-            if([item normalAttendance]){
-                count ++;
-            }
-            if(count == indexPath.row + 1){
-                return item;
-            }
-        }
+    else{
+        return [self.modelItemArray objectAtIndex:indexPath.row];
     }
-    else if(self.sortIndex == 2){
-        NSInteger count = 0;
-        for (StudentAttendanceItem *item in self.modelItemArray) {
-            if(![item normalAttendance]){
-                count ++;
-            }
-            if(count == indexPath.row + 1){
-                return item;
-            }
-        }
-    }
+//    else if(self.sortIndex == 1){
+//        NSInteger count = 0;
+//        for (StudentAttendanceItem *item in self.modelItemArray) {
+//            if([item normalAttendance]){
+//                count ++;
+//            }
+//            if(count == indexPath.row + 1){
+//                return item;
+//            }
+//        }
+//    }
+//    else if(self.sortIndex == 2){
+//        NSInteger count = 0;
+//        for (StudentAttendanceItem *item in self.modelItemArray) {
+//            if(![item normalAttendance]){
+//                count ++;
+//            }
+//            if(count == indexPath.row + 1){
+//                return item;
+//            }
+//        }
+//    }
     return nil;
 }
 
 - (void)setSortIndex:(NSInteger)sortIndex{
     if(!self.attendaceEdit){
         _sortIndex = sortIndex;
+        [self.modelItemArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            StudentAttendanceItem* item1 = (StudentAttendanceItem *)obj1;
+            StudentAttendanceItem* item2 = (StudentAttendanceItem *)obj2;
+            if(_sortIndex == 0){
+                return [item1.child_info.first_letter compare:item2.child_info.first_letter];
+            }
+            else if(_sortIndex == 1){
+                if([item1 normalAttendance] && [item2 normalAttendance]){
+                    return [item1.child_info.first_letter compare:item2.child_info.first_letter];
+                }
+                else if([item1 normalAttendance]){
+                    return NSOrderedAscending;
+                }
+                else if([item2 normalAttendance]){
+                    return NSOrderedDescending;
+                }
+                else{
+                    return [item1.child_info.first_letter compare:item2.child_info.first_letter];
+                }
+            }
+            else{
+                if(![item1 normalAttendance] && ![item2 normalAttendance]){
+                    return [item1.child_info.first_letter compare:item2.child_info.first_letter];
+                }
+                else if(![item1 normalAttendance]){
+                    return NSOrderedAscending;
+                }
+                else if(![item2 normalAttendance]){
+                    return NSOrderedDescending;
+                }
+                else{
+                    return [item1.child_info.first_letter compare:item2.child_info.first_letter];
+                }
+            }
+        }];
     }
     else{
         if(sortIndex == 2){

@@ -11,4 +11,5 @@
 @interface NSString (Validate)
 - (BOOL)isEmailAddress;
 - (BOOL)isPhoneNumberValidate;
+- (NSString *)transformToPinyin;
 @end

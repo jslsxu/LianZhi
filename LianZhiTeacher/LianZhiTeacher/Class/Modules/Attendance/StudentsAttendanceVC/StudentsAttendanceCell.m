@@ -61,7 +61,7 @@
     StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)self.modelItem;
     NSMutableArray* mobileArray = [NSMutableArray array];
     for (FamilyInfo *familyInfo in attendanceItem.child_info.family) {
-        [mobileArray addObject:[NSString stringWithFormat:@"%@:%@",familyInfo.name, familyInfo.mobile]];
+        [mobileArray addObject:[NSString stringWithFormat:@"%@:%@",familyInfo.relation, familyInfo.mobile]];
     }
     LGAlertView* alertView = [[LGAlertView alloc] initWithTitle:attendanceItem.child_info.name message:nil style:LGAlertViewStyleActionSheet buttonTitles:mobileArray cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
     [alertView setButtonsTitleColor:kCommonTeacherTintColor];

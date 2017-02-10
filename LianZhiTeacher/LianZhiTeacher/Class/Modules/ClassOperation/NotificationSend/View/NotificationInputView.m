@@ -33,6 +33,14 @@
     [_sendButton setHidden:_sendHidden];
 }
 
+- (void)setOnlyPhotoLibrary:(BOOL)onlyPhotoLibrary{
+    _onlyPhotoLibrary = onlyPhotoLibrary;
+    if([_actionButtonArray count] > 2){
+        UIButton* captureButton = _actionButtonArray[2];
+        [captureButton setHidden:_onlyPhotoLibrary];
+    }
+}
+
 - (void)setForward:(BOOL)forward{
     _forward = forward;
     for (UIButton *button in _actionButtonArray) {
@@ -66,7 +74,15 @@
     _recordView = nil;
     if(!_photoView){
         @weakify(self);
-        _photoView = [[QuickImagePickerView alloc] initWithMaxImageCount:9 - self.photoNum() videoCount:1 - self.videoNum() videoEnabled:!self.onlyPhoto];
+        NSInteger photoNum = 0;
+        if(self.photoNum){
+            photoNum = self.photoNum();
+        }
+        NSInteger videoNum = 0;
+        if(self.videoNum){
+            videoNum = self.videoNum();
+        }
+        _photoView = [[QuickImagePickerView alloc] initWithMaxImageCount:9 - photoNum videoCount:1 - videoNum videoEnabled:!self.onlyPhoto];
         [_photoView setOrigin:CGPointMake(0, kActionBarHeight)];
         [_photoView setOnClickAlbum:^{
             @strongify(self);
@@ -85,7 +101,11 @@
 
 - (void)setupActionView:(UIView *)viewParent
 {
-    for (NSInteger i = 0; i < 3; i++) {
+    NSInteger actionNum = 3;
+    if(self.onlyPhotoLibrary){
+        actionNum = 2;
+    }
+    for (NSInteger i = 0; i < actionNum; i++) {
         UIButton *actionButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [actionButton setFrame:CGRectMake(50 * i, 0, 50, viewParent.height)];
         [actionButton addTarget:self action:@selector(onActionButtonClicked:) forControlEvents:UIControlEventTouchUpInside];

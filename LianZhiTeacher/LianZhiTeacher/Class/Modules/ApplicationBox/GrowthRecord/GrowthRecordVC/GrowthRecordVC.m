@@ -40,7 +40,7 @@
     
     [self.view addSubview:bottomView];
     
-    [self.tableView setFrame:CGRectMake(0, self.calendar.bottom + 10, self.view.width, bottomView.top - self.calendar.bottom + 10)];
+    [self.tableView setFrame:CGRectMake(0, self.calendar.bottom + 10, self.view.width, bottomView.top - (self.calendar.bottom + 10))];
     [self bindTableCell:@"GrowthRecordCell" tableModel:@"GrowthClassListModel"];
 
 //    [self requestData:REQUEST_REFRESH];
@@ -83,6 +83,7 @@
 
 - (void)publishRecord{
     PublishGrowthRecordVC* publishRecordVC = [[PublishGrowthRecordVC alloc] init];
+    [publishRecordVC setDate:[self.calendar currentSelectedDate]];
     [CurrentROOTNavigationVC pushViewController:publishRecordVC animated:YES];
 }
 

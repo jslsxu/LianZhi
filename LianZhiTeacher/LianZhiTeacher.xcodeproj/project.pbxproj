@@ -58,6 +58,7 @@
 		3777092D1E275A1B001168AD /* StudentAttendanceDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 3777092C1E275A1B001168AD /* StudentAttendanceDetail.m */; };
 		377709301E27D46A001168AD /* AttendanceNotificationListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3777092F1E27D46A001168AD /* AttendanceNotificationListModel.m */; };
 		377709331E27D47E001168AD /* AttendanceNotificationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 377709321E27D47E001168AD /* AttendanceNotificationItem.m */; };
+		378948381E4C3A4F00C7E131 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 378948371E4C3A4F00C7E131 /* UIImage+Additions.m */; };
 		378C78431AA43D6C00E171E2 /* PreviewMessageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 378C78421AA43D6C00E171E2 /* PreviewMessageVC.m */; };
 		3792B2B31E4B2D8C000549C7 /* GrowthRecordDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3792B2AB1E4B2D8C000549C7 /* GrowthRecordDetailVC.m */; };
 		3792B2B41E4B2D8C000549C7 /* GrowthRecordChildSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3792B2AD1E4B2D8C000549C7 /* GrowthRecordChildSelectVC.m */; };
@@ -612,6 +613,8 @@
 		3777092F1E27D46A001168AD /* AttendanceNotificationListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceNotificationListModel.m; sourceTree = "<group>"; };
 		377709311E27D47E001168AD /* AttendanceNotificationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceNotificationItem.h; sourceTree = "<group>"; };
 		377709321E27D47E001168AD /* AttendanceNotificationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceNotificationItem.m; sourceTree = "<group>"; };
+		378948361E4C3A4F00C7E131 /* UIImage+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Additions.h"; sourceTree = "<group>"; };
+		378948371E4C3A4F00C7E131 /* UIImage+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Additions.m"; sourceTree = "<group>"; };
 		378C78411AA43D6C00E171E2 /* PreviewMessageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewMessageVC.h; sourceTree = "<group>"; };
 		378C78421AA43D6C00E171E2 /* PreviewMessageVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewMessageVC.m; sourceTree = "<group>"; };
 		3792B2AA1E4B2D8C000549C7 /* GrowthRecordDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthRecordDetailVC.h; sourceTree = "<group>"; };
@@ -2025,6 +2028,8 @@
 				3793F9691B7CFFEF00501F77 /* UIColor+Addition.m */,
 				3793F96A1B7CFFEF00501F77 /* UIImage+Utility.h */,
 				3793F96B1B7CFFEF00501F77 /* UIImage+Utility.m */,
+				378948361E4C3A4F00C7E131 /* UIImage+Additions.h */,
+				378948371E4C3A4F00C7E131 /* UIImage+Additions.m */,
 				8DCFD7611D584D3B001EDC8A /* NSString+EnDeCoding.h */,
 				8DCFD7621D584D3B001EDC8A /* NSString+EnDeCoding.m */,
 				3793F96C1B7CFFEF00501F77 /* UIImageView */,
@@ -4305,6 +4310,7 @@
 				37D6EE381BC90C62000994A2 /* LocationChange.m in Sources */,
 				3793FAF61B7CFFF000501F77 /* Utility.m in Sources */,
 				37FF16C51E06B3B6009F10EA /* ClassAttendanceCell.m in Sources */,
+				378948381E4C3A4F00C7E131 /* UIImage+Additions.m in Sources */,
 				371C6DAD1A7015AF00FA4AEC /* PublishBaseVC.m in Sources */,
 				8D867D481D3F7BF80020A21C /* NotificationTargetContentView.m in Sources */,
 				8DFDDD9F1D93D7940050740B /* PublishHomeWorkVC.m in Sources */,

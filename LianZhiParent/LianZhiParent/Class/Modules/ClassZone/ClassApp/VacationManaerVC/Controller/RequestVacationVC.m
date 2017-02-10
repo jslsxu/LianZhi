@@ -191,10 +191,10 @@
     [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
         NSString* childName = [UserCenter sharedInstance].curChild.name;
         if(index == 0){
-            [wself.textView setText:[NSString stringWithFormat:@"老师您好，%@生病了，需要在家休息", childName]];
+            [wself.textView setText:[NSString stringWithFormat:@"老师您好，%@生病了，需要在家休息。", childName]];
         }
         else{
-            [wself.textView setText:[NSString stringWithFormat:@"老师您好，家中有事请，给%@请假", childName]];
+            [wself.textView setText:[NSString stringWithFormat:@"老师您好，家中有事请，给%@请假。", childName]];
         }
 
     }];

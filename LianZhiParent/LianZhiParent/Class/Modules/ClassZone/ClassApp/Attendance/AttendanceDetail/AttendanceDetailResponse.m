@@ -19,6 +19,6 @@
 
 @implementation AttendanceDetailResponse
 + (NSDictionary<NSString*, id> *)modelContainerPropertyGenericClass{
-    return @{@"recode" : [AttendanceNoteItem class]};
+    return @{@"recode" : [AttendanceNoteItem class], @"month_leave" : [NSString class]};
 }
 @end

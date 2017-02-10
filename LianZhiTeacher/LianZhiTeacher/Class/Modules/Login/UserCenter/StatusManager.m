@@ -95,7 +95,8 @@ NSString *const kTimelineNewCommentNotification = @"TimelineNewCommentNotificati
         NSNumber *number = self.appLeave[key];
         leaveNum += number.integerValue;
     }
-    self.leaveNum = leaveNum;
+    //不显示leavenum
+//    self.leaveNum = leaveNum;
     self.missionMsg = [dataWrapper getStringForKey:@"mission_msg"];
     self.changed = [dataWrapper getIntegerForKey:@"changed"];
     self.found = [dataWrapper getBoolForKey:@"found"];

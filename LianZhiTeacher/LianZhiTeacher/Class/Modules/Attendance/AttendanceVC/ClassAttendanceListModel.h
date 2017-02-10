@@ -46,6 +46,7 @@
 @property (nonatomic, strong)AllInfo* all;
 @property (nonatomic, strong)AppH5* appH5;
 @property (nonatomic, copy)NSString* filterType;
+@property (nonatomic, strong)NSArray* filterClassArray;
 - (void)clear;
 - (NSArray *)filterTypeList;
 - (NSInteger)lateNum;

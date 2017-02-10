@@ -23,4 +23,5 @@
 @interface AttendanceDetailResponse : TNBaseObject
 @property (nonatomic, strong)NSArray* recode;
 @property (nonatomic, strong)AttendanceInfo *info;
+@property (nonatomic, strong)NSArray* month_leave;
 @end

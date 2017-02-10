@@ -294,7 +294,8 @@
     [self.headerView.attendanceButton setTitle:[NSString stringWithFormat:@"出勤(%zd)", model.info.attendance] forState:UIControlStateNormal];
     [self.headerView.offButton setTitle:[NSString stringWithFormat:@"缺勤(%zd)", [model.info absence]] forState:UIControlStateNormal];
     if([self checkDate] <= 0){
-        [self.attendanceEmptyView setHidden:[model.modelItemArray count] != 0];
+        //今天和之前的
+        [self.attendanceEmptyView setHidden:model.submit_leave];
         [self.attendanceEmptyView setDate:self.calendar.currentSelectedDate];
     }
 }

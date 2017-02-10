@@ -55,6 +55,7 @@ typedef NS_ENUM(NSInteger, AttendanceStatus){
 @end
 @interface StudentsAttendanceListModel : TNListModel
 @property (nonatomic, strong)ClassAttendanceInfo* info;
+@property (nonatomic, assign)BOOL submit_leave;
 @property (nonatomic, assign)NSInteger sortIndex;
 @property (nonatomic, assign)BOOL attendaceEdit;
 @property (nonatomic, assign)NSInteger absenceIndex;

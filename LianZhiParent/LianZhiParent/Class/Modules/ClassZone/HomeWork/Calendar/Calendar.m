@@ -69,6 +69,17 @@
     [_dayLabel setTextColor:_isCurMonth ? [UIColor colorWithHexString:@"222222"] : [UIColor colorWithHexString:@"cccccc"]];
 }
 
+- (void)setHighlightedRed:(BOOL)highlightedRed{
+    _highlightedRed = highlightedRed;
+    if(_highlightedRed){
+        [_dayLabel setTextColor:kRedColor];
+    }
+    else{
+        [_dayLabel setTextColor:_isCurMonth ? [UIColor colorWithHexString:@"222222"] : [UIColor colorWithHexString:@"cccccc"]];
+    }
+}
+
+
 - (void)setHasNew:(BOOL)hasNew{
     _hasNew = hasNew;
     [_redDot setHidden:!_hasNew];
@@ -189,6 +200,11 @@
 - (void)setDate:(NSDate *)date{
     _date = date;
     [self updateSubviews:YES];
+}
+
+- (void)setHighlightedDate:(NSArray *)highlightedDate{
+    _highlightedDate = highlightedDate;
+    [self.collectionView reloadData];
 }
 
 - (void)setCalendarType:(CalendarType)calendarType{
@@ -316,8 +332,16 @@
     NSDate *date = self.dateArray[indexPath.row];
     [cell setDate:date];
     [cell setIsChosen:date.month == self.selectedDate.month && date.day == self.selectedDate.day && date.year == self.selectedDate.year];
-    [cell setIsCurMonth:date.month == self.date.month];
+    [cell setIsCurMonth:date.year == self.date.year && date.month == self.date.month];
     [cell setHasNew:[self hasNewForDate:date]];
+    NSString* dateString = [date stringWithFormat:@"yyyy-MM-dd"];
+    BOOL isIn = NO;
+    for (NSString* leaveString in self.highlightedDate) {
+        if([dateString isEqualToString:leaveString]){
+            isIn = YES;
+        }
+    }
+    [cell setHighlightedRed:isIn];
     return cell;
 }
 

@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "UIImage+Additions.h"
 @interface UIImage (Utility)
 
 + (UIImage*)fastImageWithData:(NSData*)data;

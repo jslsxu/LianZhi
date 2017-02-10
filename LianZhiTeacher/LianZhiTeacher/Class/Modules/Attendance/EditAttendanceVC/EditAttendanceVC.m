@@ -68,9 +68,9 @@ NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
             if(sortType == 2){
                 StudentsAttendanceListModel* model = (StudentsAttendanceListModel *)wself.tableViewModel;
                 [model setSortIndex:sortType];
-                NSDictionary* modelDic = [model modelDictionary];
                 NSInteger count = -1;
-                NSArray* keys = [modelDic allKeys];
+                NSArray* keys = [model titleArray];
+                NSDictionary* modelDic = [model modelDictionary];
                 NSIndexPath *indexPath;
                 for (StudentAttendanceItem* item in model.modelItemArray) {
                     [item setAbsenceHighlighted:NO];
@@ -83,15 +83,16 @@ NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
                             count++;
                             if(count == model.absenceIndex){
                                 [item setAbsenceHighlighted:YES];
-                                indexPath = [NSIndexPath indexPathForRow:i inSection:[keys indexOfObject:key]];
+                                NSInteger section = [keys indexOfObject:key];
+                                indexPath = [NSIndexPath indexPathForRow:i inSection:section];
                                 break;
                             }
                         }
                     }
                 }
-                
+
                 [wself.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     EditAttendanceCell *cell = [wself.tableView cellForRowAtIndexPath:indexPath];
                     [cell flash];
                 });   
@@ -138,6 +139,12 @@ NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
             [wself.navigationController popViewControllerAnimated:YES];
         } fail:^(NSString *errMsg) {
             [hud hide:NO];
+            LGAlertView* alertView = [[LGAlertView alloc] initWithTitle:@"超过编辑考勤时间，请重新编辑考勤" message:nil style:LGAlertViewStyleAlert buttonTitles:@[@"确定"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+            [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+            [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                [self.navigationController popViewControllerAnimated:YES];
+            }];
+            [alertView showAnimated:YES completionHandler:nil];
         }];
     }
 

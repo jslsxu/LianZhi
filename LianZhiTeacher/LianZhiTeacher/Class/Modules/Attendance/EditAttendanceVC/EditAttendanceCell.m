@@ -52,12 +52,16 @@
         [self addSubview:self.mobileButton];
         
         self.attendanceButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.attendanceButton setFrame:CGRectMake(self.width / 2, 0, self.width / 4, 50)];
+        [self.attendanceButton.layer setBorderColor:kSepLineColor.CGColor];
+        [self.attendanceButton.layer setBorderWidth:kLineHeight];
+        [self.attendanceButton setFrame:CGRectMake(self.width / 2, 10, self.width / 4, 30)];
         [self.attendanceButton addTarget:self action:@selector(attendanceButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.attendanceButton];
         
         self.offButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [self.offButton setFrame:CGRectMake(self.attendanceButton.right, 0, self.width / 4, 50)];
+        [self.offButton.layer setBorderColor:kSepLineColor.CGColor];
+        [self.offButton.layer setBorderWidth:kLineHeight];
+        [self.offButton setFrame:CGRectMake(self.attendanceButton.right, 10, self.width / 4, 30)];
         [self.offButton addTarget:self action:@selector(attendanceButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:self.offButton];
         
@@ -164,7 +168,7 @@
     NSMutableArray *familyArray = [NSMutableArray arrayWithCapacity:0];
     for (NSInteger i = 0; i < studentInfo.family.count; i++) {
         FamilyInfo *familyInfo = studentInfo.family[i];
-        [familyArray addObject:[NSString stringWithFormat:@"%@: %@",familyInfo.name, familyInfo.mobile]];
+        [familyArray addObject:[NSString stringWithFormat:@"%@: %@",familyInfo.relation, familyInfo.mobile]];
     }
     LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:attendanceItem.child_info.name message:nil style:LGAlertViewStyleActionSheet buttonTitles:familyArray cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
     [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
@@ -219,30 +223,50 @@
     StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)self.modelItem;
     NSString* title = nil;
     NSArray* reasonArray = nil;
+    NSString* destructiveTitle = nil;
     if(button == self.attendanceButton){
-        attendanceItem.newStatus = AttendanceStatusNormal;
         title = nil;
         reasonArray = @[@"正常出勤", @"迟到"];
+        if(![attendanceItem editNormalAttenance]){
+            attendanceItem.newStatus = AttendanceStatusNormal;
+            attendanceItem.edit_mark = nil;
+            if(self.attendanceChanged){
+                self.attendanceChanged();
+            }
+        }
     }
     else{
-        attendanceItem.newStatus = AttendanceStatusAbsence;
         title = @"缺勤原因";
-        reasonArray = @[@"生病休息", @"家中有事", @"无故缺勤"];
+        reasonArray = @[@"生病休息", @"家中有事"];
+        destructiveTitle = @"无故缺勤";
+        if([attendanceItem editNormalAttenance]){
+            attendanceItem.newStatus = AttendanceStatusAbsence;
+            attendanceItem.edit_mark = destructiveTitle;
+            if(self.attendanceChanged){
+                self.attendanceChanged();
+            }
+        }
     }
     __weak typeof(self) wself = self;
-    LGAlertView* alertView = [[LGAlertView alloc] initWithTitle:title message:nil style:LGAlertViewStyleActionSheet buttonTitles:reasonArray cancelButtonTitle:@"关闭" destructiveButtonTitle:nil];
+    LGAlertView* alertView = [[LGAlertView alloc] initWithTitle:title message:nil style:LGAlertViewStyleActionSheet buttonTitles:reasonArray cancelButtonTitle:@"关闭" destructiveButtonTitle:destructiveTitle];
     [alertView setButtonsTitleColor:kCommonTeacherTintColor];
     [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setDestructiveButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setCancelButtonBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setCancelButtonTitleColor:kCommonTeacherTintColor];
+    [alertView setDestructiveHandler:^(LGAlertView *alertView) {
+        attendanceItem.newStatus = AttendanceStatusAbsence;
+        attendanceItem.edit_mark = destructiveTitle;
+        if(wself.attendanceChanged){
+            wself.attendanceChanged();
+        }
+    }];
     [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger row) {
-        if(attendanceItem.newStatus == AttendanceStatusNormal){
+        if([attendanceItem editNormalAttenance]){
             attendanceItem.newStatus = AttendanceStatusNormal + row;
         }
-        else if(attendanceItem.newStatus == AttendanceStatusAbsence){
-            if(row != 2){
-                attendanceItem.newStatus = AttendanceStatusLeave;
-            }
+        else{
+            attendanceItem.newStatus = AttendanceStatusLeave;
         }
         if(attendanceItem.newStatus != AttendanceStatusNormal){
             attendanceItem.edit_mark = title;

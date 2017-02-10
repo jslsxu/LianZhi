@@ -475,9 +475,13 @@
         }
         else if([host isEqualToString:@"leave"])//考勤
         {
-//            ClassAttendanceVC *classAttendanceVC = [[ClassAttendanceVC alloc] init];
-            AttendanceVC* attendanceVC = [[AttendanceVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:attendanceVC animated:YES];
+            if([[[UserCenter sharedInstance].curSchool allClasses] count] == 0){
+                [ProgressHUD showHintText:@"暂时没有班级"];
+            }
+            else{
+                AttendanceVC* attendanceVC = [[AttendanceVC alloc] init];
+                [CurrentROOTNavigationVC pushViewController:attendanceVC animated:YES];
+            }
         }
         else if ([host isEqualToString:@"account"])//炼制账户
         {

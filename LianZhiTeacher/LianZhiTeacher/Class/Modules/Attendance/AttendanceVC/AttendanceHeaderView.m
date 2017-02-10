@@ -37,7 +37,7 @@
 }
 
 - (void)setupContentView:(UIView *)viewParent{
-    self.progressBG = [[UIView alloc] initWithFrame:CGRectMake(65, 22, viewParent.width - 65 * 2, 8)];
+    self.progressBG = [[UIView alloc] initWithFrame:CGRectMake(65, 30, viewParent.width - 65 * 2, 8)];
     [self.progressBG setBackgroundColor:[UIColor colorWithHexString:@"fc6e82"]];
     [viewParent addSubview:self.progressBG];
     
@@ -121,6 +121,7 @@
     if([_model.all.absence_rate length] > 0){
         [offPercentStr appendAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%%", _model.all.absence_rate] attributes:@{NSForegroundColorAttributeName : kRedColor}]];
     }
+    [offPercentStr setAlignment:NSTextAlignmentRight];
     [offPercentStr setLineSpacing:3];
     [self.offPercentLabel setAttributedText:offPercentStr];
     

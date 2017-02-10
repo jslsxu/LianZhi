@@ -22,4 +22,13 @@
     NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", mobile];
     return  [regextestmobile evaluateWithObject:self];
 }
+
+- (NSString *)transformToPinyin
+{
+    NSMutableString *pinyin = [self mutableCopy];
+    CFStringTransform((__bridge CFMutableStringRef)pinyin, NULL, kCFStringTransformMandarinLatin, NO);
+    CFStringTransform((__bridge CFMutableStringRef)pinyin, NULL, kCFStringTransformStripCombiningMarks, NO);
+    NSLog(@"%@", pinyin);
+    return [pinyin lowercaseString];
+}
 @end

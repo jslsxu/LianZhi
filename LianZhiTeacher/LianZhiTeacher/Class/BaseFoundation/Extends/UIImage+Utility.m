@@ -6,7 +6,6 @@
 //
 
 #import "UIImage+Utility.h"
-
 #import <Accelerate/Accelerate.h>
 
 @implementation UIImage (Utility)
@@ -444,17 +443,7 @@
 
 + (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size cornerRadius:(CGFloat)cornerRadius
 {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
-    [view.layer setCornerRadius:cornerRadius];
-    [view.layer setMasksToBounds:YES];
-    [view setBackgroundColor:color];
-    
-    UIGraphicsBeginImageContextWithOptions(size,NO,0);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    [view.layer renderInContext:context];
-    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return theImage;
+    return [UIImage add_imageWithColor:color size:size cornerRadius:cornerRadius];
 }
 
 + (UIImage *)coverImageForVideo:(NSURL *)url{

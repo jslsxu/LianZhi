@@ -61,24 +61,27 @@
         NSArray* sectionArray = [self modelDictionary][key];
         return [sectionArray count];
     }
-    else if(self.sortIndex == 1){
-        NSInteger count = 0;
-        for (MonthStatisticsItem *item in self.modelItemArray) {
-            if([item attendance] > 0){
-                count ++;
-            }
-        }
-        return count;
+    else{
+        return [self.modelItemArray count];
     }
-    else if(self.sortIndex == 2){
-        NSInteger count = 0;
-        for (MonthStatisticsItem *item in self.modelItemArray) {
-            if([item absence] > 0){
-                count ++;
-            }
-        }
-        return count;
-    }
+//    else if(self.sortIndex == 1){
+//        NSInteger count = 0;
+//        for (MonthStatisticsItem *item in self.modelItemArray) {
+//            if([item attendance] > 0){
+//                count ++;
+//            }
+//        }
+//        return count;
+//    }
+//    else if(self.sortIndex == 2){
+//        NSInteger count = 0;
+//        for (MonthStatisticsItem *item in self.modelItemArray) {
+//            if([item absence] > 0){
+//                count ++;
+//            }
+//        }
+//        return count;
+//    }
     return 1;
 }
 
@@ -110,28 +113,31 @@
         NSArray* sectionItems = dic[key];
         return sectionItems[indexPath.row];
     }
-    else if(self.sortIndex == 1){
-        NSInteger count = 0;
-        for (MonthStatisticsItem *item in self.modelItemArray) {
-            if([item attendance] > 0){
-                count ++;
-            }
-            if(count == indexPath.row + 1){
-                return item;
-            }
-        }
+    else{
+        return [self.modelItemArray objectAtIndex:indexPath.row];
     }
-    else if(self.sortIndex == 2){
-        NSInteger count = 0;
-        for (MonthStatisticsItem *item in self.modelItemArray) {
-            if([item absence] > 0){
-                count ++;
-            }
-            if(count == indexPath.row + 1){
-                return item;
-            }
-        }
-    }
+//    else if(self.sortIndex == 1){
+//        NSInteger count = 0;
+//        for (MonthStatisticsItem *item in self.modelItemArray) {
+//            if([item attendance] > 0){
+//                count ++;
+//            }
+//            if(count == indexPath.row + 1){
+//                return item;
+//            }
+//        }
+//    }
+//    else if(self.sortIndex == 2){
+//        NSInteger count = 0;
+//        for (MonthStatisticsItem *item in self.modelItemArray) {
+//            if([item absence] > 0){
+//                count ++;
+//            }
+//            if(count == indexPath.row + 1){
+//                return item;
+//            }
+//        }
+//    }
     return nil;
 }
 

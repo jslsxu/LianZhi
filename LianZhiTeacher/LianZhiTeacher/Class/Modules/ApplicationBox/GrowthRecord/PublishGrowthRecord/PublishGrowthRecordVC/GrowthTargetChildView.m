@@ -45,17 +45,18 @@
         
         UIButton* addButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [addButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-        [addButton setFrame:CGRectMake(self.width - 40, 0, 40, 40)];
+        [addButton setFrame:CGRectMake(self.width - 40, 5, 40, 30)];
         [addButton addTarget:self action:@selector(addTargets) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:addButton];
         
-        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, addButton.left - 10, 40)];
-        [self.titleLabel setFont:[UIFont systemFontOfSize:15]];
+        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, addButton.left - 10, 30)];
+        [self.titleLabel setFont:[UIFont systemFontOfSize:14]];
         [self.titleLabel setTextColor:[UIColor colorWithHexString:@"666666"]];
+        [self.titleLabel setText:[NSString stringWithFormat:@"接收学生(%zd人)", [self.studentArray count]]];
         [self addSubview:self.titleLabel];
         
         UIView* hintView = [[UIView alloc] initWithFrame:CGRectMake(10, self.titleLabel.bottom, self.width - 10 * 2, 20)];
-        NSArray* colorArray = @[@"", @"", @"", @""];
+        NSArray* colorArray = @[@"27BBCD", @"FFC82C", @"27BBCD", @"F0003A"];
         NSArray* typeArray = @[@"未发送", @"已发送", @"已反馈", @"未出勤"];
         CGFloat spaceXStart = 0;
         for (NSInteger i = 0; i < 4; i++) {
@@ -65,7 +66,7 @@
             [dot.layer setMasksToBounds:YES];
             [hintView addSubview:dot];
             
-            spaceXStart = dot.right + 2;
+            spaceXStart = dot.right + 3;
             
             UILabel* typeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
             [typeLabel setText:typeArray[i]];
@@ -78,6 +79,13 @@
             spaceXStart = typeLabel.right + 10;
         }
         [self addSubview:hintView];
+        
+        [self addSubview:[self collectionView]];
+        
+        UIView* sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
+        [sepLine setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
+        [sepLine setBackgroundColor:kSepLineColor];
+        [self addSubview:sepLine];
     }
     return self;
 }
@@ -96,6 +104,11 @@
         [_collectionView registerClass:[GrowthTargetChildItemView class] forCellWithReuseIdentifier:@"GrowthTargetChildItemView"];
     }
     return _collectionView;
+}
+
+- (void)setStudentArray:(NSArray *)studentArray{
+    _studentArray = studentArray;
+    [self.collectionView reloadData];
 }
 
 - (void)addTargets{

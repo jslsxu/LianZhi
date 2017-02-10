@@ -78,8 +78,11 @@
 }
 
 - (void)onClassChanged:(ClassInfo *)classInfo{
-    [self setClassInfo:classInfo];
-    [self requestData:REQUEST_REFRESH];
+    if(![self.classInfo.classID isEqualToString:classInfo.classID]){
+        [self setClassInfo:classInfo];
+        [self setupTitle];
+        [self requestData:REQUEST_REFRESH];
+    }
 }
 
 - (void)onTitleClicked{
@@ -191,7 +194,7 @@
     }
     else{
         [cell setRow:indexPath.row];
-        [cell setShowSepLine:NO];
+        [cell setShowSepLine:indexPath.row + 1 == [self tableView:tableView numberOfRowsInSection:0]];
     }
     return cell;
 }

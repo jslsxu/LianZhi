@@ -76,7 +76,7 @@
         [_dayLabel setTextColor:kRedColor];
     }
     else{
-        [_dayLabel setTextColor:[UIColor colorWithHexString:@"222222"]];
+        [_dayLabel setTextColor:_isCurMonth ? [UIColor colorWithHexString:@"222222"] : [UIColor colorWithHexString:@"cccccc"]];
     }
 }
 
@@ -332,7 +332,7 @@
     NSDate *date = self.dateArray[indexPath.row];
     [cell setDate:date];
     [cell setIsChosen:date.month == self.selectedDate.month && date.day == self.selectedDate.day && date.year == self.selectedDate.year];
-    [cell setIsCurMonth:date.month == self.date.month];
+    [cell setIsCurMonth:date.year == self.date.year && date.month == self.date.month];
     [cell setHasNew:[self hasNewForDate:date]];
     NSString* dateString = [date stringWithFormat:@"yyyy-MM-dd"];
     BOOL isIn = NO;
