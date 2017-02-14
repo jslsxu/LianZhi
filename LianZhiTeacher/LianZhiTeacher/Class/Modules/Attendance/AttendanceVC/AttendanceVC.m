@@ -91,6 +91,13 @@
     return _headerView;
 }
 
+- (EmptyHintView *)emptyView{
+    if(nil == _emptyView){
+        _emptyView = [[EmptyHintView alloc] initWithImage:@"AttendanceEmpty" title:@"暂时没有学生考勤"];
+    }
+    return _emptyView;
+}
+
 - (void)showFilterListView{
     ClassAttendanceListModel* listModel = (ClassAttendanceListModel *)self.tableViewModel;
     NSArray* filterList = [listModel filterTypeList];
@@ -125,10 +132,16 @@
     ClassAttendanceListModel* model = (ClassAttendanceListModel *)self.tableViewModel;
     [self.headerView setModel:model];
     [self.filterView setFilterType:[ClassFilterView filterNameForType:AttendanceClassFilterTypeAll]];
+    BOOL empty = [model.modelItemArray count] == 0;
+    [self showEmptyView:empty];
+    [self.headerView setHidden:empty];
 }
 
 - (void)TNBaseTableViewControllerRequestFailedWithError:(NSString *)errMsg{
     [self.hud hide:NO];
+    BOOL empty = [self.tableViewModel.modelItemArray count] == 0;
+    [self showEmptyView:empty];
+    [self.headerView setHidden:empty];
 }
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{

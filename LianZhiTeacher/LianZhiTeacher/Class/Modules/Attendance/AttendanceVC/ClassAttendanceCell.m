@@ -102,20 +102,18 @@
     [attendanceString setLineSpacing:4];
     [self.attendanceLabel setAttributedText:attendanceString];
     [self.attendanceLabel setFrame:CGRectMake(self.logoView.right + 6, self.classLabel.bottom + 4, self.bgView.width - 10 - (self.logoView.right + 6), self.bgView.height - 5 - (self.classLabel.bottom + 5))];
-    NSString* name = attendanceItem.teacherName;
-    if([name isEqualToString:[UserCenter sharedInstance].userInfo.name]){
-        name = @"我";
-    }
+    TeacherInfo* teacherInfo = [attendanceItem showTeacherInfo];
+    NSString* name = teacherInfo.name;
     NSMutableAttributedString* teacherString = nil;
-    if([name length] > 0 && [attendanceItem.class_info.course length] > 0){
+    if([name length] > 0 && [teacherInfo.course length] > 0){
         teacherString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ ", name] attributes:@{NSForegroundColorAttributeName : kColor_33}];
-        [teacherString appendAttributedString:[[NSAttributedString alloc] initWithString:attendanceItem.class_info.course attributes:@{NSForegroundColorAttributeName : kColor_99}]];
+        [teacherString appendAttributedString:[[NSAttributedString alloc] initWithString:teacherInfo.course attributes:@{NSForegroundColorAttributeName : kColor_99}]];
 
     }
     [self.teacherLabel setAttributedText:teacherString];
     [self.teacherLabel sizeToFit];
     [self.teacherLabel setOrigin:CGPointMake(self.bgView.width - 10 - self.teacherLabel.width, 15)];
-    if(attendanceItem.is_admin && !attendanceItem.submit_leave && [attendanceItem.teacherID length] > 0){
+    if([attendanceItem showContact]){
         [self.mobileButton setHidden:NO];
         [self.chatButton setHidden:NO];
     }
@@ -128,29 +126,57 @@
 }
 
 - (void)onMobileClicked{
+    NSString* curUid = [UserCenter sharedInstance].userInfo.uid;
+    NSMutableArray* targetTeachers = [NSMutableArray array];
     ClassAttendanceItem* attendanceItem = (ClassAttendanceItem *)self.modelItem;
-    NSString* mobile = attendanceItem.mobile;
-    LGAlertView *alertView = [[LGAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"确定拨打电话%@吗", mobile] style:LGAlertViewStyleAlert buttonTitles:@[@"取消", @"拨打电话"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+    NSMutableArray* titleArray = [NSMutableArray array];
+    for (TeacherInfo* teacherInfo in attendanceItem.teacherArray) {
+        if(![teacherInfo.uid isEqualToString:curUid]){
+            [targetTeachers addObject:teacherInfo];
+            [titleArray addObject:[NSString stringWithFormat:@"%@:%@",teacherInfo.name, teacherInfo.mobile]];
+        }
+    }
+    LGAlertView* alertView = [[LGAlertView alloc] initWithTitle:nil message:attendanceItem.class_info.name style:LGAlertViewStyleActionSheet buttonTitles:titleArray cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+    [alertView setButtonsTitleColor:kCommonTeacherTintColor];
+    [alertView setCancelButtonTitleColor:kCommonTeacherTintColor];
     [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
     [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
     [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
-        if(index == 1){
-            NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@", mobile];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
-        }
+        TeacherInfo* teacherInfo = targetTeachers[index];
+        NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel://%@", teacherInfo.mobile];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
     }];
     [alertView showAnimated:YES completionHandler:nil];
+    
 }
 
 - (void)onChatClicked{
+    NSMutableArray* targetTeachers = [NSMutableArray array];
     ClassAttendanceItem* attendanceItem = (ClassAttendanceItem *)self.modelItem;
-    JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-    [chatVC setTo_objid:[UserCenter sharedInstance].curSchool.schoolID];
-    [chatVC setTargetID:attendanceItem.teacherID];
-    [chatVC setChatType:ChatTypeTeacher];
-    [chatVC setMobile:attendanceItem.mobile];
-    [chatVC setName:attendanceItem.teacherName];
-    [ApplicationDelegate popAndPush:chatVC];
+    NSMutableArray* titleArray = [NSMutableArray array];
+    for (TeacherInfo* teacherInfo in attendanceItem.teacherArray) {
+        if(![teacherInfo.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid]){
+            [targetTeachers addObject:teacherInfo];
+            [titleArray addObject:[NSString stringWithFormat:@"与\"%@\"教师聊天",teacherInfo.name]];
+        }
+    }
+    LGAlertView* alertView = [[LGAlertView alloc] initWithTitle:nil message:attendanceItem.class_info.name style:LGAlertViewStyleActionSheet buttonTitles:titleArray cancelButtonTitle:@"取消" destructiveButtonTitle:nil];
+    [alertView setCancelButtonFont:[UIFont systemFontOfSize:18]];
+    [alertView setButtonsTitleColor:kCommonTeacherTintColor];
+    [alertView setCancelButtonTitleColor:kCommonTeacherTintColor];
+    [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
+    [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+        TeacherInfo* teacherInfo = targetTeachers[index];
+        JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
+        [chatVC setTo_objid:[UserCenter sharedInstance].curSchool.schoolID];
+        [chatVC setTargetID:teacherInfo.uid];
+        [chatVC setChatType:ChatTypeTeacher];
+        [chatVC setMobile:teacherInfo.mobile];
+        [chatVC setName:teacherInfo.name];
+        [ApplicationDelegate popAndPush:chatVC];
+    }];
+    [alertView showAnimated:YES completionHandler:nil];
+    
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width{

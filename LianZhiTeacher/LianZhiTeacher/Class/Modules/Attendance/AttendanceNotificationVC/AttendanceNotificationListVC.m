@@ -69,7 +69,7 @@
 
 }
 
-- (void)deleteItem:(MessageDetailItem *)detailItem
+- (void)deleteItem:(AttendanceNotificationItem *)detailItem
 {
     
     @weakify(self)
@@ -110,7 +110,7 @@
     [params setValue:[NSString stringWithFormat:@"%ld",(long)self.fromInfo.type] forKey:@"from_type"];
     if(requestType == REQUEST_GETMORE)
     {
-        MessageDetailModel *detailModel = (MessageDetailModel *)self.tableViewModel;
+        AttendanceNotificationListModel *detailModel = (AttendanceNotificationListModel *)self.tableViewModel;
         [params setValue:@"old" forKey:@"mode"];
         [params setValue:detailModel.minID forKey:@"min_id"];
     }
@@ -132,7 +132,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     AttendanceNotificationCell *itemCell = (AttendanceNotificationCell *)cell;
-    MessageDetailItem *detailItem = (MessageDetailItem *)itemCell.modelItem;
+    AttendanceNotificationItem *detailItem = (AttendanceNotificationItem *)itemCell.modelItem;
     @weakify(self)
     [itemCell setDeleteCallback:^{
         @strongify(self)
@@ -141,9 +141,10 @@
 }
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
-//    MessageDetailItem *detailItem = (MessageDetailItem *)modelItem;
-//    StudentsAttendanceVC* attendanceVC = [[StudentsAttendanceVC alloc] init];
-//    [attendanceVC setClassInfo:detailItem];
+    AttendanceNotificationItem *detailItem = (AttendanceNotificationItem *)modelItem;
+    StudentsAttendanceVC* attendanceVC = [[StudentsAttendanceVC alloc] init];
+    [attendanceVC setClassInfo:detailItem.words.class_info];
+    [self.navigationController pushViewController:attendanceVC animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

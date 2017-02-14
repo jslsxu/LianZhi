@@ -66,7 +66,7 @@
     [arrow setTransform:CGAffineTransformMakeRotation(M_PI)];
     [titleView addSubview:arrow];
     
-    [arrow setHidden:[self.classArray count] == 1];
+    [arrow setHidden:[self.classArray count] <= 1];
     
     CGFloat width = classNameLabel.width + 2 + arrow.width;
     CGFloat height = MAX(classNameLabel.height, arrow.height) + 2 + titleLabel.height;

@@ -9,6 +9,7 @@
 #import "TNModelItem.h"
 
 @interface AttendanceNotificationContent : TNBaseObject
+@property (nonatomic, strong)ClassInfo* class_info;
 @property (nonatomic, strong)StudentInfo* child_info;
 @property (nonatomic, copy)NSString* index_words;
 @property (nonatomic, copy)NSString* notice_words;

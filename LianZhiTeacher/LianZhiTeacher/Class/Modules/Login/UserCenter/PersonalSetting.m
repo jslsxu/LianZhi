@@ -16,6 +16,8 @@ NSString *const kPersonalSettingKey = @"PersonalSettingKey";
     self = [super init];
     if(self)
     {
+        self.soundOn = YES;
+        self.shakeOn = YES;
         self.wifiSend = YES;
         self.autoSave = YES;
     }

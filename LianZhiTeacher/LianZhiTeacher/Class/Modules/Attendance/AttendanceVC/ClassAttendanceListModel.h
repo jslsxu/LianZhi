@@ -30,11 +30,13 @@
 @property (nonatomic, assign)BOOL is_admin;
 @property (nonatomic, strong)ClassInfo* class_info;
 @property (nonatomic, copy)NSString* schoolID;
-@property (nonatomic, copy)NSString* teacherID;
-@property (nonatomic, copy)NSString* mobile;
-@property (nonatomic, copy)NSString* teacherName;
+@property (nonatomic, strong)NSArray* teacherArray;
 @property (nonatomic, copy)NSString* grade_id;
 @property (nonatomic, copy)NSString* grade_name;
+
+- (TeacherInfo*)showTeacherInfo;
+- (BOOL)isMine;
+- (BOOL)showContact;
 @end
 
 @interface AppH5 : TNBaseObject

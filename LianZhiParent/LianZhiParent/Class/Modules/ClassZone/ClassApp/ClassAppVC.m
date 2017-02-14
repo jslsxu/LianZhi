@@ -80,6 +80,7 @@
 @property (nonatomic, copy)NSString *classBadge;    //班博客
 @property (nonatomic, assign)NSInteger recordNum;       //成长记录
 @property (nonatomic, assign)NSInteger appPractice; //练习
+@property (nonatomic, assign)NSInteger appLeave;        //考勤
 @property (nonatomic, weak)ApplicationBoxHeaderView*    headerView;
 @end
 
@@ -146,6 +147,7 @@
 //        recordNum += noticeItem.num;
 //    }
     self.recordNum = [[UserCenter sharedInstance].statusManager newCountForClassRecord];
+    self.appLeave = [[UserCenter sharedInstance].statusManager hasNewAttendanceInfoForChildID:[UserCenter sharedInstance].curChild.uid];
     
     NSArray *classNewCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
     NSInteger classZoneNum = 0;
@@ -197,6 +199,14 @@
         if([url.host isEqualToString:@"practice"])
         {
             appItem.badge = [[UserCenter sharedInstance].statusManager hasNewExerciseForChildID:[[UserCenter sharedInstance] curChild].uid] ? @"" : nil;
+        }
+        if([url.host isEqualToString:@"leave"]){
+            if(self.appLeave > 0){
+                appItem.badge = @"";
+            }
+            else{
+                appItem.badge = nil;
+            }
         }
     }
     [self.collectionView reloadData];
@@ -253,6 +263,12 @@
         if([url.host isEqualToString:@"practice"])
         {
             appItem.badge = [[UserCenter sharedInstance].statusManager hasNewExerciseForChildID:[[UserCenter sharedInstance] curChild].uid] > 0 ? @"" : nil;
+        }
+        if([url.host isEqualToString:@"leave"]){
+            if(self.appLeave > 0)
+                appItem.badge = @"";
+            else
+                appItem.badge = nil;
         }
     }
 
@@ -380,11 +396,11 @@
                         }
                         else if([host isEqualToString:@"record"])
                         {
-                            GrowthRecordVC* recordVC = [[GrowthRecordVC alloc] init];
-                            [CurrentROOTNavigationVC pushViewController:recordVC animated:YES];
-//                            GrowthTimelineVC *growthTimeLineVC = [[GrowthTimelineVC alloc] init];
-//                            [growthTimeLineVC setClassInfo:classInfo];
-//                            [CurrentROOTNavigationVC pushViewController:growthTimeLineVC animated:YES];
+//                            GrowthRecordVC* recordVC = [[GrowthRecordVC alloc] init];
+//                            [CurrentROOTNavigationVC pushViewController:recordVC animated:YES];
+                            GrowthTimelineVC *growthTimeLineVC = [[GrowthTimelineVC alloc] init];
+                            [growthTimeLineVC setClassInfo:classInfo];
+                            [CurrentROOTNavigationVC pushViewController:growthTimeLineVC animated:YES];
                         }
                         else if([host isEqualToString:@"leave"])
                         {

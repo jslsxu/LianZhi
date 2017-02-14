@@ -132,6 +132,7 @@ NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
         __weak typeof(self) wself = self;
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/neditleave" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             [hud hide:NO];
+            [ProgressHUD showHintText:@"考勤编辑成功"];
             [[NSNotificationCenter defaultCenter] postNotificationName:kEditAttendanceNotification object:nil];
             if(wself.editFinished){
                 wself.editFinished();
@@ -139,12 +140,16 @@ NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
             [wself.navigationController popViewControllerAnimated:YES];
         } fail:^(NSString *errMsg) {
             [hud hide:NO];
-            LGAlertView* alertView = [[LGAlertView alloc] initWithTitle:@"超过编辑考勤时间，请重新编辑考勤" message:nil style:LGAlertViewStyleAlert buttonTitles:@[@"确定"] cancelButtonTitle:nil destructiveButtonTitle:nil];
+            LGAlertView* alertView = [[LGAlertView alloc] initWithTitle:errMsg message:nil style:LGAlertViewStyleAlert buttonTitles:@[@"确定"] cancelButtonTitle:nil destructiveButtonTitle:nil];
             [alertView setButtonsBackgroundColorHighlighted:[UIColor colorWithHexString:@"dddddd"]];
             [alertView setActionHandler:^(LGAlertView *alertView, NSString *title, NSUInteger index) {
+                if(wself.editFinished){
+                    wself.editFinished();
+                }
                 [self.navigationController popViewControllerAnimated:YES];
             }];
             [alertView showAnimated:YES completionHandler:nil];
+        
         }];
     }
 

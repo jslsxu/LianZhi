@@ -21,6 +21,7 @@
 #import "TestWebVC.h"
 #import "LZMicrolessonVCViewController.h"
 #import "AttendanceVC.h"
+#import "StudentsAttendanceVC.h"
 #define kBannerHeight               (kScreenWidth * 29 / 64)
 
 @implementation ApplicationBoxHeaderView
@@ -438,24 +439,24 @@
         }
         else if([host isEqualToString:@"record"])//家园手册
         {
-            GrowthRecordVC* growthRecordVC = [[GrowthRecordVC alloc] init];
-            [CurrentROOTNavigationVC pushViewController:growthRecordVC animated:YES];
-//            if([UserCenter sharedInstance].curSchool.classes.count == 0)
-//            {
-//                ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
-//                [selectionVC setSelection:^(ClassInfo *classInfo) {
-//                    GrowthTimelineVC *growthTimelineVC = [[GrowthTimelineVC alloc] init];
-//                    [growthTimelineVC setClassID:classInfo.classID];
-//                    [growthTimelineVC setTitle:classInfo.name];
-//                    [CurrentROOTNavigationVC pushViewController:growthTimelineVC animated:YES];
-//                }];
-//                [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];
-//            }
-//            else
-//            {
-//                PublishGrowthTimelineVC *publishGrowthTimelineVC = [[PublishGrowthTimelineVC alloc] init];
-//                [CurrentROOTNavigationVC pushViewController:publishGrowthTimelineVC animated:YES];
-//            }
+//            GrowthRecordVC* growthRecordVC = [[GrowthRecordVC alloc] init];
+//            [CurrentROOTNavigationVC pushViewController:growthRecordVC animated:YES];
+            if([UserCenter sharedInstance].curSchool.classes.count == 0)
+            {
+                ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
+                [selectionVC setSelection:^(ClassInfo *classInfo) {
+                    GrowthTimelineVC *growthTimelineVC = [[GrowthTimelineVC alloc] init];
+                    [growthTimelineVC setClassID:classInfo.classID];
+                    [growthTimelineVC setTitle:classInfo.name];
+                    [CurrentROOTNavigationVC pushViewController:growthTimelineVC animated:YES];
+                }];
+                [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];
+            }
+            else
+            {
+                PublishGrowthTimelineVC *publishGrowthTimelineVC = [[PublishGrowthTimelineVC alloc] init];
+                [CurrentROOTNavigationVC pushViewController:publishGrowthTimelineVC animated:YES];
+            }
             
         }
         else if([host isEqualToString:@"class_album"])//版相册
@@ -475,8 +476,14 @@
         }
         else if([host isEqualToString:@"leave"])//考勤
         {
-            if([[[UserCenter sharedInstance].curSchool allClasses] count] == 0){
+            NSArray* allClassArray = [[UserCenter sharedInstance].curSchool allClasses];
+            if([allClassArray count] == 0){
                 [ProgressHUD showHintText:@"暂时没有班级"];
+            }
+            else if([allClassArray count] == 1){
+                StudentsAttendanceVC *studentsAttendanceVC = [[StudentsAttendanceVC alloc] init];
+                [studentsAttendanceVC setClassInfo:[allClassArray firstObject]];
+                [self.navigationController pushViewController:studentsAttendanceVC animated:YES];
             }
             else{
                 AttendanceVC* attendanceVC = [[AttendanceVC alloc] init];

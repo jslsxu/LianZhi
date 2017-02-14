@@ -22,6 +22,10 @@
 
 @implementation RequestVacationVC
 
+- (void)dealloc{
+    [self resignKeyboard];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
@@ -30,6 +34,7 @@
     [self.view addSubview:[self bottomView]];
 
     self.scrollView = [[UITouchScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.bottomView.top)];
+    [self.scrollView setAlwaysBounceVertical:YES];
     [self.scrollView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
     [self.view addSubview:self.scrollView];
     
@@ -47,6 +52,7 @@
     }
     
     [self setEndDate:[self.startDate dateByAddingHours:9]];
+    [self addKeyboardNotifications];
 }
 
 - (void)setupScrollView{
@@ -99,7 +105,7 @@
     [contentView setBackgroundColor:[UIColor whiteColor]];
     [contentView.layer setCornerRadius:10];
     [contentView.layer setMasksToBounds:YES];
-    [self.view addSubview:contentView];
+    [self.scrollView addSubview:contentView];
     
     UILabel* inputLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     [inputLabel setFont:[UIFont systemFontOfSize:15]];
@@ -157,6 +163,29 @@
         [_bottomView addSubview:sendButton];
     }
     return _bottomView;
+}
+
+- (void)onKeyboardWillShow:(NSNotification *)note{
+    NSDictionary *userInfo = [note userInfo];
+    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    NSInteger keyboardHeight = keyboardRect.size.height;
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.scrollView setContentInset:UIEdgeInsetsMake(0, 0, keyboardHeight - self.bottomView.height, 0)];
+    }];
+}
+
+- (void)onKeyboardWillHide:(NSNotification *)note{
+    NSDictionary *userInfo = [note userInfo];
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.scrollView setContentInset:UIEdgeInsetsZero];
+    }];
 }
 
 - (void)setStartDate:(NSDate *)startDate
@@ -261,7 +290,7 @@
         [ProgressHUD showHintText:errMessage];
     }
     else{
-        MBProgressHUD *hud = [MBProgressHUD showMessag:@"发送中" toView:self.view];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         [params setValue:self.classInfo.classID forKey:@"class_id"];
         [params setValue:self.classInfo.school.schoolID forKey:@"school_id"];

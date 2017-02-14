@@ -98,8 +98,7 @@
     if(content.length > 0){
         [_contentLabel setHidden:NO];
         [_contentLabel setText:content];
-        [AttendanceNotificationCell dynamicCalculationLabelHight:_contentLabel];
-        
+        [_contentLabel sizeToFit];
         [_contentLabel setY:height];
         height += _contentLabel.height + 10;
     }
@@ -135,7 +134,7 @@
         [contentLabel setNumberOfLines:0];
         [contentLabel setFont:kContentFont];
         [contentLabel setText:content];
-        [AttendanceNotificationCell dynamicCalculationLabelHight:contentLabel];
+        [contentLabel sizeToFit];
 
         height += contentLabel.height + 10;
     }
@@ -143,31 +142,5 @@
     
     return @(height);
 }
-
-+ (void)dynamicCalculationLabelHight:(UILabel*) label{
-    NSInteger n = 3;
-    CGSize labelSize = {0, 0};
-    labelSize = [self ZFYtextHeightFromTextString:label.text width:label.frame.size.width fontSize:label.font.pointSize];
-    // NSLog(@"%f",label.font.pointSize);//获取 label的字体大小 //NSLog(@"%f",label.font.lineHeight);//获取label的在不同字体下的时候所需要的行高 //NSLog(@"%f",labelSize.height);//label计算行高
-    CGFloat rate = label.font.lineHeight; //每一行需要的高度
-    CGRect frame= label.frame;
-    if (labelSize.height>rate*n)
-    {
-        frame.size.height = rate*n;
-    }
-    else
-    {
-        frame.size.height = labelSize.height;
-    }
-    label.frame = frame;
-}
-
-+ (CGSize)ZFYtextHeightFromTextString:(NSString *)text width:(CGFloat)textWidth fontSize:(CGFloat)size{
-    NSDictionary *dict = @{NSFontAttributeName:[UIFont systemFontOfSize:size]};
-    CGRect rect = [text boundingRectWithSize:CGSizeMake(textWidth, MAXFLOAT) options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin attributes:dict context:nil];
-    CGSize size1 = [text sizeWithAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:size]}];
-    return CGSizeMake(size1.width, rect.size.height);
-}
-
 
 @end

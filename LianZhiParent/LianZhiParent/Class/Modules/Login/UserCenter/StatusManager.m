@@ -74,7 +74,6 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
     TNDataWrapper *practiceWrapper = [dataWrapper getDataWrapperForKey:@"app_exercises"];
     self.appExercise = practiceWrapper.data;
     self.missionMsg = [dataWrapper getStringForKey:@"mission_msg"];
-    self.appLeave = [dataWrapper getIntegerForKey:@"app_leave"];
     self.changed = [dataWrapper getIntegerForKey:@"changed"];
     self.found = [dataWrapper getBoolForKey:@"found"];
     self.around = [dataWrapper getBoolForKey:@"around"];
@@ -92,6 +91,14 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
             [newFeedsArray addObject:feedNotice];
         }
         self.feedClassesNew = newFeedsArray;
+    }
+    
+    TNDataWrapper* leaveWrapper = [dataWrapper getDataWrapperForKey:@"app_nleave"];
+    if([leaveWrapper.data isKindOfClass:[NSDictionary class]]){
+        self.appLeave = leaveWrapper.data;
+    }
+    else{
+        self.appLeave = nil;
     }
     
     TNDataWrapper *newClassRecordWrapper = [dataWrapper getDataWrapperForKey:@"new_class_record"];
@@ -280,6 +287,24 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
     return [num integerValue];
 }
 
+- (NSInteger)hasNewAttendanceInfoForChildID:(NSString *)childID{
+    NSDictionary* attendanceInfo = self.appLeave[childID];
+    NSInteger num = 0;
+    NSArray* classArray = [UserCenter sharedInstance].curChild.classes;
+    for (NSString* key in attendanceInfo.allKeys) {
+        BOOL inClass = NO;
+        for (ClassInfo *classInfo in classArray) {
+            if([classInfo.classID isEqualToString:key]){
+                inClass = YES;
+            }
+        }
+        if(inClass){
+            num += [attendanceInfo[key] integerValue];
+        }
+    }
+    return num;
+}
+
 - (BOOL)hasNewForChildID:(NSString *)childID{
     NSInteger newCount = 0;
     for (NoticeItem *noticeItem in self.notice) {
@@ -335,6 +360,7 @@ NSString *const kUserInfoVCNeedRefreshNotificaiotn = @"UserInfoVCNeedRefreshNoti
         }
     }
     
+    newCount += [self hasNewExerciseForChildID:childID];
     newCount += [self hasNewExerciseForChildID:childID];
     return newCount;
 }

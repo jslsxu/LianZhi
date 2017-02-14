@@ -15,7 +15,36 @@
 @implementation ClassAttendanceItem
 
 + (NSDictionary<NSString* ,id > *)modelCustomPropertyMapper{
-    return @{@"teacherID" : @"class_info.teacherId",@"schoolID" : @"class_info.school_id", @"teacherName" : @"class_info.teacherName", @"mobile" : @"class_info.teacherMobile"};
+    return @{@"teacherID" : @"class_info.teacherId",@"schoolID" : @"class_info.school_id", @"teacherArray" : @"class_info.teacherInfo"};
+}
+
++ (NSDictionary<NSString*, id> *)modelContainerPropertyGenericClass{
+    return @{@"teacherArray" : [TeacherInfo class]};
+}
+
+- (TeacherInfo*)showTeacherInfo{
+    if([self.teacherArray count] > 0){
+        for (TeacherInfo* teacherInfo in self.teacherArray) {
+            if([teacherInfo.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid]){
+                return teacherInfo;
+            }
+        }
+    }
+    return [self.teacherArray firstObject];
+}
+- (BOOL)showContact{
+    BOOL includeMe = NO;
+    for (TeacherInfo *teacherInfo in self.teacherArray) {
+        if([teacherInfo.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid]){
+            includeMe = YES;
+        }
+    }
+    
+    return self.is_admin && !self.submit_leave && [self showTeacherInfo] && !includeMe;
+}
+
+- (BOOL)isMine{
+    return [[self showTeacherInfo].uid isEqualToString:[UserCenter sharedInstance].userInfo.uid];
 }
 @end
 
@@ -72,6 +101,11 @@
             }
         }
     }
+    [gradeArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        NSString* gradename1 = (NSString*)obj1;
+        NSString* gradename2 = (NSString*)obj2;
+        return [[gradename1 transformToPinyin] compare:[gradename2 transformToPinyin]];
+    }];
     NSMutableArray* gradeNameArray = [NSMutableArray array];
     for (NSString* gradeName in gradeArray) {
         [gradeNameArray addObject:[NSString stringWithFormat:@"显示%@",gradeName]];
@@ -125,17 +159,17 @@
             }
         }
     }
-    NSString* curTeacherID = [UserCenter sharedInstance].userInfo.uid;
+
     [filterClassArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
         ClassAttendanceItem* item1 = (ClassAttendanceItem *)obj1;
         ClassAttendanceItem* item2 = (ClassAttendanceItem *)obj2;
-        if([item1.teacherID isEqualToString:curTeacherID] && [item2.teacherID isEqualToString:curTeacherID]){
+        if([item1 isMine] && [item2 isMine]){
             return [[item1.class_info.name transformToPinyin] compare:[item2.class_info.name transformToPinyin]];
         }
-        else if([item1.teacherID isEqualToString:curTeacherID]){
+        else if([item1 isMine]){
             return NSOrderedAscending;
         }
-        else if([item2.teacherID isEqualToString:curTeacherID]){
+        else if([item2 isMine]){
             return NSOrderedDescending;
         }
         else{

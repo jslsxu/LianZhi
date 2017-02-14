@@ -114,6 +114,8 @@ static NSArray *tabDatas = nil;
         //练习
         classZoneNum += [[UserCenter sharedInstance].statusManager hasNewExerciseForChildID:[UserCenter sharedInstance] .curChild.uid];
         
+        //考勤
+        classZoneNum += [[UserCenter sharedInstance].statusManager hasNewAttendanceInfoForChildID:[UserCenter sharedInstance].curChild.uid];
         //树屋回复
 //        NSArray *treeNewCommentArray = [UserCenter sharedInstance].statusManager.treeNewCommentArray;
 //        NSInteger treeAlertNum = 0;

@@ -110,7 +110,7 @@
 
 - (void)cancelLeaveOnToday{
     __weak typeof(self) wself = self;
-    MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:self.view];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     [params setValue:self.classInfo.classID forKey:@"class_id"];
     [params setValue:self.classInfo.school.schoolID forKey:@"school_id"];
@@ -204,7 +204,11 @@
             UILabel* timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
             [timeLabel setTextColor:kCommonParentTintColor];
             [timeLabel setFont:[UIFont systemFontOfSize:14]];
-            [timeLabel setText:noteItem.ctime];
+            NSMutableAttributedString* timeString = [[NSMutableAttributedString alloc] initWithString:noteItem.ctime attributes:@{NSForegroundColorAttributeName : kCommonParentTintColor}];
+            if(noteItem.ctype == NoteTypeLeave){
+                [timeString appendAttributedString:[[NSAttributedString alloc] initWithString:noteItem.unread ? @"  教师未读" : @"  教师已读" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+            }
+            [timeLabel setAttributedText:timeString];
             [timeLabel sizeToFit];
             [timeLabel setOrigin:CGPointMake(dot.right + 10, spaceYStart)];
             [self.contentView addSubview:timeLabel];
@@ -276,9 +280,21 @@
         AttendanceDetailResponse* response = [AttendanceDetailResponse nh_modelWithJson:responseObject.data];
         [wself setDetailResponse:response];
         [wself.calendar setHighlightedDate:response.month_leave];
+        [self showEmptyView:NO];
+        [self.scrollView setHidden:NO];
     } fail:^(NSString *errMsg) {
         [hud hide:NO];
+        [self showEmptyView:YES];
+        [self.scrollView setHidden:YES];
     }];
+}
+
+
+- (EmptyHintView *)emptyView{
+    if(nil == _emptyView){
+        _emptyView = [[EmptyHintView alloc] initWithImage:@"AttendanceEmpty" title:@"暂时没有学生考勤"];
+    }
+    return _emptyView;
 }
 
 #pragma mark - CalendarDelegate

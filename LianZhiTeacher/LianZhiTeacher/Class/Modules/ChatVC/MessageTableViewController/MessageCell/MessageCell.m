@@ -66,9 +66,9 @@
         UITapGestureRecognizer *avatarTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onAvatarClick)];
         [_avatarView addGestureRecognizer:avatarTapGesture];
         
-        _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        [_indicatorView setHidesWhenStopped:YES];
-        [self addSubview:_indicatorView];
+//        _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+//        [_indicatorView setHidesWhenStopped:YES];
+//        [self addSubview:_indicatorView];
         
         _sendFailImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
         [_sendFailImageView setContentMode:UIViewContentModeCenter];
@@ -136,21 +136,21 @@
     }
     if(self.messageItem.isMyMessage){
         [self.chatContentView setOrigin:CGPointMake(_avatarView.left - kChatHMargin - self.chatContentView.width, spaceYStart)];
-        [_indicatorView setCenter:CGPointMake(self.chatContentView.left - kChatIndicatorWidth / 2, self.chatContentView.centerY)];
+        [_sendFailImageView setCenter:CGPointMake(self.chatContentView.left - kChatIndicatorWidth / 2, self.chatContentView.centerY)];
     }
     else{
         [self.chatContentView setOrigin:CGPointMake(_avatarView.right + kChatHMargin, spaceYStart)];
-        [_indicatorView setCenter:CGPointMake(self.chatContentView.right + kChatIndicatorWidth / 2, self.chatContentView.centerY)];
+        [_sendFailImageView setCenter:CGPointMake(self.chatContentView.right + kChatIndicatorWidth / 2, self.chatContentView.centerY)];
     }
-    [_sendFailImageView setCenter:_indicatorView.center];
-    if(MessageStatusSending == _messageItem.messageStatus)
-    {
-        [_indicatorView startAnimating];
-    }
-    else
-    {
-        [_indicatorView stopAnimating];
-    }
+//    [_sendFailImageView setCenter:_indicatorView.center];
+//    if(MessageStatusSending == _messageItem.messageStatus)
+//    {
+//        [_indicatorView startAnimating];
+//    }
+//    else
+//    {
+//        [_indicatorView stopAnimating];
+//    }
     [_sendFailImageView setHidden:MessageStatusFailed != _messageItem.messageStatus];
 }
 

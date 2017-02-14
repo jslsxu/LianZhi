@@ -65,7 +65,7 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 @property (nonatomic, strong)NSArray *treeNewCommentArray;
 @property (nonatomic, assign)NSInteger msgNum;
 @property (nonatomic, strong)NSDictionary *appExercise;
-@property (nonatomic, assign)NSInteger appLeave;
+@property (nonatomic, assign)NSDictionary* appLeave;
 
 - (NSInteger)newCountForClassFeed;
 - (NSInteger)newCountForClassRecord;
@@ -73,5 +73,6 @@ typedef NS_ENUM(NSInteger, ChangedType) {
 - (NSInteger)newCountForTreeComment;
 - (NSInteger)newCountForNotice;
 - (NSInteger)hasNewExerciseForChildID:(NSString *)childID;
+- (NSInteger)hasNewAttendanceInfoForChildID:(NSString *)childID;
 - (BOOL)hasNewForChildID:(NSString *)childID;
 @end
