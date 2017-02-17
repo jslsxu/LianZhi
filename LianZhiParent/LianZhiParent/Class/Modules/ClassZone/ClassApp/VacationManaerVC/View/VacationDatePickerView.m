@@ -157,7 +157,7 @@
         self.dateIndex = row;
     }
     else {
-        row = MIN(15, row);
+        row = MIN(14, row);
         self.timeIndex = row;
     }
     [tableView scrollToRow:row inSection:0 atScrollPosition:UITableViewScrollPositionNone animated:YES];

@@ -32,4 +32,5 @@ typedef NS_ENUM(NSInteger, NoteType){
 @property (nonatomic, strong)NSArray* recode;
 @property (nonatomic, strong)AttendanceInfo *info;
 @property (nonatomic, strong)NSArray* month_leave;
+@property (nonatomic, strong)NSArray* teacher_submit;
 @end

@@ -280,6 +280,8 @@
         AttendanceDetailResponse* response = [AttendanceDetailResponse nh_modelWithJson:responseObject.data];
         [wself setDetailResponse:response];
         [wself.calendar setHighlightedDate:response.month_leave];
+
+        [wself.calendar setUnreadDays:response.teacher_submit];
         [self showEmptyView:NO];
         [self.scrollView setHidden:NO];
     } fail:^(NSString *errMsg) {
