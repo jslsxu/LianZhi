@@ -39,12 +39,12 @@
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     self.title = @"学生考勤";
+    [self bindTableCell:@"ClassAttendanceCell" tableModel:@"ClassAttendanceListModel"];
     [self.view addSubview:[self calendar]];
     [self.view addSubview:[self filterView]];
     
     [self.tableView setFrame:CGRectMake(0, self.calendar.bottom, self.view.width, self.filterView.top - self.calendar.bottom)];
     [self.tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
-    [self bindTableCell:@"ClassAttendanceCell" tableModel:@"ClassAttendanceListModel"];
     [self.tableView setTableHeaderView:[self headerView]];
     [self setSupportPullUp:YES];
     [self setSupportPullDown:YES];
@@ -73,8 +73,9 @@
 - (FilterView *)filterView{
     if(nil == _filterView){
         __weak typeof(self) wself = self;
+        ClassAttendanceListModel *listModel = (ClassAttendanceListModel *)self.tableViewModel;
         _filterView = [[FilterView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
-        [_filterView setFilterType:[ClassFilterView filterNameForType:AttendanceClassFilterTypeAll]];
+        [_filterView setFilterType:[listModel filterType]];
         [_filterView setClickCallback:^{
             [wself showFilterListView];
         }];
@@ -103,7 +104,7 @@
     NSArray* filterList = [listModel filterTypeList];
     if([filterList count] > 0){
         __weak typeof(self) wself = self;
-        [ClassFilterView showWithFilterList:filterList filterType:self.filterView.filterType completion:^(NSString *filterType) {
+        [ClassFilterView showWithFilterList:filterList filterType:listModel.filterType completion:^(NSString *filterType) {
             [wself.filterView setFilterType:filterType];
             [listModel setFilterType:filterType];
             [wself.tableView reloadData];
@@ -131,7 +132,7 @@
     [self.hud hide:NO];
     ClassAttendanceListModel* model = (ClassAttendanceListModel *)self.tableViewModel;
     [self.headerView setModel:model];
-    [self.filterView setFilterType:[ClassFilterView filterNameForType:AttendanceClassFilterTypeAll]];
+    [self.filterView setFilterType:[model filterType]];
     BOOL empty = [model.modelItemArray count] == 0;
     [self showEmptyView:empty];
     [self.headerView setHidden:empty];

@@ -30,5 +30,7 @@ typedef CF_ENUM(NSInteger, GenderType) {
 @property (nonatomic, assign)BOOL actived;
 @property (nonatomic, assign)BOOL selected;
 @property (nonatomic, assign)BOOL has_read;
+@property (nonatomic, copy)NSString* pinyin;
+- (NSString *)namePinyin;
 @end
 

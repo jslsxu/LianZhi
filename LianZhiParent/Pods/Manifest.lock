@@ -1,5 +1,6 @@
 PODS:
   - Bugtags (1.3.1)
+  - CryptoSwift (0.6.7)
   - FCFileManager (1.0.18)
   - FDFullscreenPopGesture (1.1)
   - FMDB (2.6.2):
@@ -25,6 +26,7 @@ PODS:
 
 DEPENDENCIES:
   - Bugtags
+  - CryptoSwift
   - FCFileManager
   - FDFullscreenPopGesture
   - FMDB
@@ -40,6 +42,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Bugtags: a2f1671df9dacfdfd53fa59d3e6ffe7575bb2212
+  CryptoSwift: 685ae257941e5447474348a2b545583e1a16b573
   FCFileManager: 3d13576da1f709d37460bd7669cdf07b9d6d8bc3
   FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
@@ -53,6 +56,6 @@ SPEC CHECKSUMS:
   UMengAnalytics: 19b28253793d77dff10fb7d502faad1fb6b8ce4a
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: 9f24626d5401268ed60c09f4126e0b5ff3b3fb19
+PODFILE CHECKSUM: e07c613c818bda277559576ac314867fba9b39a7
 
 COCOAPODS: 1.1.1

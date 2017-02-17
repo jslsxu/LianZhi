@@ -67,6 +67,7 @@ typedef NS_ENUM(NSInteger, NoteType){
 @property (nonatomic, assign)NSInteger sortIndex;
 @property (nonatomic, assign)BOOL attendaceEdit;
 @property (nonatomic, assign)NSInteger absenceIndex;
+- (void)sortModelList:(NSInteger)sortIndex;
 - (NSDictionary *)modelDictionary;
 - (NSString *)titleForSection:(NSInteger)section;
 - (NSArray *)titleArray;

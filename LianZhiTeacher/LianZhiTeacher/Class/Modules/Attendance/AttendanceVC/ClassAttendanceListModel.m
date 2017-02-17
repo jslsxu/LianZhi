@@ -8,6 +8,8 @@
 
 #import "ClassAttendanceListModel.h"
 #import "FilterView.h"
+
+#define kSavedFilterTypeKey         @"SavedFilterType"
 @implementation AllInfo
 
 @end
@@ -54,6 +56,23 @@
 
 @implementation ClassAttendanceListModel
 
+- (void)initFilterType{
+    NSString* savedFilterType = [self savedFilterType];
+    NSArray* filterArray = [self filterTypeList];
+    BOOL isIn = NO;
+    for (NSString* filter in filterArray) {
+        if([filter isEqualToString:savedFilterType]){
+            isIn = YES;
+        }
+    }
+    if(isIn){
+        [self setFilterType:savedFilterType];
+    }
+    else{
+        self.filterType = [ClassFilterView filterNameForType:AttendanceClassFilterTypeAll];
+    }
+}
+
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type{
     if(type == REQUEST_REFRESH){
         [self.modelItemArray removeAllObjects];
@@ -65,7 +84,8 @@
     TNDataWrapper* itemsWrapper = [data getDataWrapperForKey:@"items"];
     NSArray* items = [ClassAttendanceItem nh_modelArrayWithJson:itemsWrapper.data];
     [self.modelItemArray addObjectsFromArray:items];
-    self.filterType = [ClassFilterView filterNameForType:AttendanceClassFilterTypeAll];
+    
+    [self initFilterType];
     return YES;
 }
 
@@ -123,6 +143,7 @@
 
 - (void)setFilterType:(NSString *)filterType{
     _filterType = [filterType copy];
+    [self saveFilterType];
     self.filterClassArray = [self classArrayWithFilter];
 }
 
@@ -194,5 +215,17 @@
     [self.modelItemArray removeAllObjects];
     [self setAppH5:nil];
     [self setAll:nil];
+}
+
+- (NSString *)savedFilterType{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString* filterType = [userDefaults stringForKey:kSavedFilterTypeKey];
+    return filterType;
+}
+
+- (void)saveFilterType{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setValue:self.filterType forKey:kSavedFilterTypeKey];
+    [userDefaults synchronize];
 }
 @end

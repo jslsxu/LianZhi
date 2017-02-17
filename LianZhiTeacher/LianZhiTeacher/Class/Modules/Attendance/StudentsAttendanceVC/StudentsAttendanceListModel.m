@@ -109,7 +109,7 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
     }
     [self.modelItemArray addObjectsFromArray:items];
     self.submit_leave = [data getBoolForKey:@"submit_leave"];
-    [self setSortIndex:0];
+    [self setSortIndex:self.sortIndex];
     return YES;
 }
 
@@ -136,7 +136,7 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
 - (NSDictionary *)modelDictionary{
     NSMutableDictionary* dic = [NSMutableDictionary dictionary];
     for (StudentAttendanceItem *item in self.modelItemArray) {
-        NSString* pinyin = [item.child_info.first_letter capitalizedString];
+        NSString* pinyin = [[item.child_info namePinyin] capitalizedString];
         if([pinyin length] > 0){
             NSString* title = [pinyin substringToIndex:1];
             NSMutableArray* itemArray = [dic valueForKey:title];
@@ -231,41 +231,7 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
 - (void)setSortIndex:(NSInteger)sortIndex{
     if(!self.attendaceEdit){
         _sortIndex = sortIndex;
-        [self.modelItemArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
-            StudentAttendanceItem* item1 = (StudentAttendanceItem *)obj1;
-            StudentAttendanceItem* item2 = (StudentAttendanceItem *)obj2;
-            if(_sortIndex == 0){
-                return [item1.child_info.first_letter compare:item2.child_info.first_letter];
-            }
-            else if(_sortIndex == 1){
-                if([item1 normalAttendance] && [item2 normalAttendance]){
-                    return [item1.child_info.first_letter compare:item2.child_info.first_letter];
-                }
-                else if([item1 normalAttendance]){
-                    return NSOrderedAscending;
-                }
-                else if([item2 normalAttendance]){
-                    return NSOrderedDescending;
-                }
-                else{
-                    return [item1.child_info.first_letter compare:item2.child_info.first_letter];
-                }
-            }
-            else{
-                if(![item1 normalAttendance] && ![item2 normalAttendance]){
-                    return [item1.child_info.first_letter compare:item2.child_info.first_letter];
-                }
-                else if(![item1 normalAttendance]){
-                    return NSOrderedAscending;
-                }
-                else if(![item2 normalAttendance]){
-                    return NSOrderedDescending;
-                }
-                else{
-                    return [item1.child_info.first_letter compare:item2.child_info.first_letter];
-                }
-            }
-        }];
+        [self sortModelList:_sortIndex];
     }
     else{
         if(sortIndex == 2){
@@ -277,6 +243,44 @@ static NSString* attendanceStringFroType(AttendanceStatus status){
             }
         }
     }
+}
+
+- (void)sortModelList:(NSInteger)sortIndex{
+    [self.modelItemArray sortUsingComparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+        StudentAttendanceItem* item1 = (StudentAttendanceItem *)obj1;
+        StudentAttendanceItem* item2 = (StudentAttendanceItem *)obj2;
+        if(sortIndex == 0){
+            return [[item1.child_info namePinyin] compare:[item2.child_info namePinyin]];
+        }
+        else if(sortIndex == 1){
+            if([item1 normalAttendance] && [item2 normalAttendance]){
+                return [[item1.child_info namePinyin] compare:[item2.child_info namePinyin]];
+            }
+            else if([item1 normalAttendance]){
+                return NSOrderedAscending;
+            }
+            else if([item2 normalAttendance]){
+                return NSOrderedDescending;
+            }
+            else{
+                return [[item1.child_info namePinyin] compare:[item2.child_info namePinyin]];
+            }
+        }
+        else{
+            if(![item1 normalAttendance] && ![item2 normalAttendance]){
+                return [[item1.child_info namePinyin] compare:[item2.child_info namePinyin]];
+            }
+            else if(![item1 normalAttendance]){
+                return NSOrderedAscending;
+            }
+            else if(![item2 normalAttendance]){
+                return NSOrderedDescending;
+            }
+            else{
+                return [[item1.child_info namePinyin] compare:[item2.child_info namePinyin]];
+            }
+        }
+    }];
 }
 
 @end

@@ -8,7 +8,7 @@
 
 #import "NotificationSimpleAudioRecordView.h"
 #import "UIView+Animations.h"
-#import <POP.h>
+#import "POP.h"
 #import "NHAudioTool.h"
 
 #define kRecordMaxTime              60

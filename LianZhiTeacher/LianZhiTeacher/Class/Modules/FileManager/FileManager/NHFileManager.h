@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <FCFileManager.h>
+#import "FCFileManager.h"
 static NSString *const NHFIleManagerAmrExtensionKey = @"amr";
 static NSString *const NHFIleManagerWavExtensionKey = @"wav";
 static NSString *const LZCache = @"LZCache";

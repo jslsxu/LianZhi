@@ -201,7 +201,7 @@
     [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         UITextField* textField = alertController.textFields[0];
-        attendanceItem.edit_mark = textField.text;
+        attendanceItem.edit_mark = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if(wself.attendanceChanged){
             wself.attendanceChanged();
         }

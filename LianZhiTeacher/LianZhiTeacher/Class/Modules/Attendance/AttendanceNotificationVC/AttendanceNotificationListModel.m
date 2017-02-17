@@ -10,6 +10,10 @@
 
 @implementation AttendanceNotificationListModel
 
+- (BOOL)hasMoreData{
+    return self.has_next;
+}
+
 - (NSString *)minID
 {
     AttendanceNotificationItem *lastItem = [self.modelItemArray lastObject];

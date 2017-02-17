@@ -15,7 +15,7 @@
 #import "StudentsAttendanceHeaderView.h"
 #import "StudentsAttendanceListModel.h"
 #import "StudentsAttendanceEmptyView.h"
-#import <WYPopoverController.h>
+#import "WYPopoverController.h"
 #import "AttendanceClassSelectVC.h"
 @interface StudentsAttendanceVC ()< CalendarDelegate>
 @property (nonatomic, strong)StudentsAttendanceHeaderView* headerView;
@@ -316,7 +316,6 @@
 - (void)calendarDateDidChange:(NSDate *)selectedDate{
     StudentsAttendanceListModel* model = (StudentsAttendanceListModel *)self.tableViewModel;
     if([self checkDate] <= 0){
-        [model setSortIndex:0];
         [self requestData:REQUEST_REFRESH];
     }
     else{

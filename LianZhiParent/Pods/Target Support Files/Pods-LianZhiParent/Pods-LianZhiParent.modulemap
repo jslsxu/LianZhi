@@ -1,0 +1,6 @@
+framework module Pods_LianZhiParent {
+  umbrella header "Pods-LianZhiParent-umbrella.h"
+
+  export *
+  module * { export * }
+}

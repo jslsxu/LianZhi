@@ -9,22 +9,25 @@
 #import "LZMicrolessonVCViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import "LZOfficeVCViewController.h"
+#import "LZCameraScanView.h"
+#import "LianZhiTeacher-Swift.h"
 
+//#ifdef DEBUG
+//#define web365User @"11655" // 连枝web 365 转换用的用户ID  debug
+//#else
 #define web365User @"11078" // 连枝web 365 转换用的用户ID
-
+//#endif
 static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
 
-@interface LZMicrolessonVCViewController ()<WKScriptMessageHandler,AVCaptureMetadataOutputObjectsDelegate>{
+@interface LZMicrolessonVCViewController ()<WKScriptMessageHandler,
+    AVCaptureMetadataOutputObjectsDelegate,WKNavigationDelegate>{
     WKWebViewConfiguration *configuration;
-    NSString *curUrl;
-    NSString *preUrl;
     UIBarButtonItem *cancelButtonItem;
     WKUserContentController *userContentController;
 }
 @property (nonatomic,strong) AVCaptureSession *captureSession;
 @property (nonatomic,strong) UIView *sanFrameView;
 @property (nonatomic,strong) AVCaptureVideoPreviewLayer *videoPreviewLayer;
-@property (nonatomic) BOOL lastResult;
 @property (nonatomic) BOOL isLoadedWebPage;
 @property (nonatomic,strong) NSString *resourceId;
 @property (nonatomic,strong) NSString *bookId;
@@ -36,26 +39,11 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
 - (void)viewDidLoad {
     
     self.isLoadedWebPage = NO;
-    // js配置
-    userContentController = [[WKUserContentController alloc] init];
-    [userContentController addScriptMessageHandler:self name:@"appbox"];
     
-    // WKWebView的配置
-    configuration = [[WKWebViewConfiguration alloc] init];
-    configuration.userContentController = userContentController;
+    [self addWebView];
     
-    self.webView = nil;
-    self.webView = [[WKWebView alloc] initWithFrame:self.view.frame configuration:configuration];
-    self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    self.webView.backgroundColor = [UIColor whiteColor];
-    self.webView.navigationDelegate = self;
-
-    self.sanFrameView = [[UIView alloc] init];
-    self.sanFrameView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
-    self.sanFrameView.hidden = YES;
-    [self.view addSubview:self.sanFrameView];
     [super viewDidLoad];
-    
+
     cancelButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain
                                                        target:self action:@selector(cancelButtonPressed)];
 
@@ -69,6 +57,8 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    appDelegate.allowRotation = 0;
 
 }
 - (void)didReceiveMemoryWarning {
@@ -76,13 +66,54 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
     // Dispose of any resources that can be recreated.
 }
 
+-(void)addWebView{
+ 
+    // js配置
+    userContentController = [[WKUserContentController alloc] init];
+    [userContentController addScriptMessageHandler:self name:@"appbox"];
+    
+    // WKWebView的配置
+    configuration = [[WKWebViewConfiguration alloc] init];
+    configuration.userContentController = userContentController;
+    
+    self.webView = [[WKWebView alloc] initWithFrame:self.view.frame configuration:configuration];
+    self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    self.webView.backgroundColor = [UIColor whiteColor];
+    self.webView.navigationDelegate = self;
+ 
+}
+    
 //添加排名右侧导航按钮
 -(void)addRightNaviItem
 {
-    
     self.navigationItem.rightBarButtonItem = cancelButtonItem;
 }
 
+-(UIView *)sanFrameView
+{
+    if(!_sanFrameView){
+        _sanFrameView = [[UIView alloc] init];
+        _sanFrameView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight  - 49);
+        _sanFrameView.hidden = YES;
+        [self.view addSubview:_sanFrameView];
+      
+    }
+    return _sanFrameView;
+}
+    
+// 添加扫描框  绿色
+-(void)addCameraScanView
+{
+    UIView *cameraScanViewView = [_sanFrameView viewWithTag:1000];
+    [cameraScanViewView removeFromSuperview];
+    
+    //设置扫描界面（包括扫描界面之外的部分置灰，扫描边框等的设置）,后面设置
+    LZCameraScanView *clearView = [[LZCameraScanView alloc]initWithFrame:self.sanFrameView.frame];
+    clearView.tag = 1000;
+    [self.sanFrameView addSubview:clearView];
+
+}
+    
 // 从web界面中接收到一个脚本时调用
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message
 {
@@ -94,30 +125,46 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
             
                 if([body[@"action"] isEqualToString:@"goto"])
                 { // 返回的JS回调
-                    preUrl = curUrl;
-                    curUrl = body[@"page"];
+                    NSString *curUrl = body[@"page"];
                     
-                    if(body[@"page"] && [curUrl isEqualToString:@"home"]
-                       && [preUrl isEqualToString:@"home"])
+                    if(body[@"page"] && [curUrl isEqualToString:@"home"])
                         [CurrentROOTNavigationVC popViewControllerAnimated:YES];
                 }
                 else if([body[@"action"] isEqualToString:@"play"])
                 { // 文档打开的JS回调
                     if(body[@"filename"] )
                     {
-                        NSString *filePathStr = [body[@"filename"] lastPathComponent];
+                        NSString* filename = body[@"filename"];
+                        NSString *decryptedUrl = @"";
+                        
+                        if(![filename hasPrefix:@"http://"])
+                        {// AES 解密处理
+                            CryptoHelper *cryptoHelper = [[CryptoHelper alloc] init];
+                            
+                            decryptedUrl = [cryptoHelper decryptWithEncryptedString:filename];
+                        }
+                        else
+                            decryptedUrl = filename;
+
+                        NSLog(@"filename = %@ \r\n",filename);
+                        NSLog(@"decryptedUrl = %@",decryptedUrl);
+                        
+                        if ([decryptedUrl isEqualToString:@""])
+                            return;
+                        
+                        NSString *filePathStr = [decryptedUrl lastPathComponent];
                         NSString * exestr = [filePathStr pathExtension];
                         NSString * encoded365String = nil;
                         if(exestr && [exestr isEqualToString:@"mp4"])
                         {
                         
-                            encoded365String = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault, (CFStringRef)body[@"filename"], NULL, NULL,  kCFStringEncodingUTF8 ));
+                            encoded365String = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault, (CFStringRef)decryptedUrl, NULL, NULL,  kCFStringEncodingUTF8 ));
                             
                             
                         }
                         else
                         {
-                            NSString * encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault, (CFStringRef)body[@"filename"], NULL, NULL,  kCFStringEncodingUTF8 ));
+                            NSString * encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault, (CFStringRef)decryptedUrl, NULL, NULL,  kCFStringEncodingUTF8 ));
                             encoded365String =  [NSString stringWithFormat:@"http://ow365.cn/?i=%@&del=1&furl=%@",web365User,encodedString];
                             
                         }
@@ -126,17 +173,20 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
                         [self.navigationController pushViewController:webVC animated:YES];
                     }
                 }
-             /*  暂时屏蔽
+                //  投影 回调
                 else if([body[@"action"] isEqualToString:@"slideshow"])
                 {// 投影打开的JS回调
                     if(body[@"resourceId"] && body[@"bookId"])
                     {
                         self.resourceId = body[@"resourceId"];
                         self.bookId = body[@"bookId"];
+                        
                         [self startReading];
+                        [self addCameraScanView];
+
                     }
                 }
-             */
+        
             
             }
      
@@ -265,12 +315,10 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
 }
 
 
-
+#pragma mark - 扫描二维码相关处理
 - (BOOL)startReading
 {
     // 获取 AVCaptureDevice 实例
-  
-    
     NSError * error;
     AVCaptureDevice *captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     // 初始化输入流
@@ -280,7 +328,7 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
         return NO;
     }
     
-    _sanFrameView.hidden = NO;
+    self.sanFrameView.hidden = NO;
     self.webView.hidden = YES;
     [self addRightNaviItem];
     
@@ -340,35 +388,75 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
         if ([[metadataObj type] isEqualToString:AVMetadataObjectTypeQRCode]) {
             result = metadataObj.stringValue;
             [self performSelectorOnMainThread:@selector(cancelButtonPressed) withObject:nil waitUntilDone:NO];
-//            [self cancelButtonPressed];
-//            [self confirmScan:result];
+            [self confirmScan:result];
            
         } else {
             NSLog(@"不是二维码");
-            
-            
+ 
         }
-        
-        
     }
 }
 
-- (void)reportScanResult:(NSString *)result
+
+
+// 网页版连枝课堂验证登录
+- (void)confirmScan:(NSString *)linkUrl
 {
-    [self stopReading];
-    if (!_lastResult) {
+    if (!linkUrl || linkUrl.length <= 0) {
         return;
     }
-    self.lastResult = NO;
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"二维码扫描"
-                                                    message:result
-                                                   delegate:nil
-                                          cancelButtonTitle:@"取消"
-                                          otherButtonTitles: nil];
-    [alert show];
-    // 以下处理了结果，继续下次扫描
-    _lastResult = YES;
-}
+    
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
 
+    [params setValue:_resourceId forKey:@"resourceId"];
+    [params setValue:_bookId forKey:@"bookId"];
+    [params setValue:[OpenUDID value] forKey:@"udid"];
+    [params setValue:[UserCenter sharedInstance].userData.accessToken forKey:@"token"];
+    [params setValue:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"version"];
+//    [params setValue:@"3.1.0.11(F)" forKey:@"version"];
+    [params setValue:@"1" forKey:@"platform"];
+    
+    __block MBProgressHUD *hud = nil;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        hud = [MBProgressHUD showMessag:@"正在验证信息" toView:self.view];
+    });
+
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    // 2.利用AFN管理者发送请求
+  
+    [manager POST:linkUrl parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"请求成功---%@", responseObject);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hide:YES];
+            
+            NSDictionary * dic = (NSDictionary *)responseObject;
+            if(dic && dic[@"message"])
+            {
+                NSString *errMsg = dic[@"message"];
+                [ProgressHUD showHintText:errMsg];
+            }
+            else
+            {
+                [ProgressHUD showHintText:@"网页版连枝课堂登录成功"];
+            }
+        });
+        
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+         NSLog(@"请求失败---%@", error);
+       
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hide:YES];
+            
+            [ProgressHUD showHintText:error.description];
+        });
+
+        
+    }];
+    
+   
+    
+}
 
 @end

@@ -31,6 +31,6 @@
 #import "LGAlertView.h"
 #import "LZVideoCacheManager.h"
 #import <YYKit/YYKit.h>
-#import <TTTAttributedLabel.h>
+#import "TTTAttributedLabel.h"
 #endif
 #endif

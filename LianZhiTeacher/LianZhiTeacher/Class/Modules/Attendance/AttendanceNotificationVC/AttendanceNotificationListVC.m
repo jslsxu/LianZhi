@@ -40,7 +40,7 @@
 }
 
 - (void)gotoManage{
-    AttendanceVC* attendanceVC = [AttendanceVC alloc];
+    AttendanceVC* attendanceVC = [[AttendanceVC alloc] init];
     [self.navigationController pushViewController:attendanceVC animated:YES];
 }
 

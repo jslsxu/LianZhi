@@ -1,0 +1,6 @@
+framework module STPickerView {
+  umbrella header "STPickerView-umbrella.h"
+
+  export *
+  module * { export * }
+}

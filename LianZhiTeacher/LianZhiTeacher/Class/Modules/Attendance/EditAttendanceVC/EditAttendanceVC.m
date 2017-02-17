@@ -45,6 +45,7 @@ NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
     [model.modelItemArray removeAllObjects];
     [model.modelItemArray addObjectsFromArray:self.studentAttendanceArray];
     [model setAttendaceEdit:YES];
+    [model sortModelList:0];
     [self.tableView reloadData];
 }
 

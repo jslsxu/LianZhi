@@ -13,6 +13,13 @@
 {
     [self modelSetWithJSON:dataWrapper.data];
 }
+
+- (NSString *)namePinyin{
+    if(!self.pinyin){
+        self.pinyin = [self.name transformToPinyin];
+    }
+    return self.pinyin;
+}
 + (NSDictionary<NSString *, id> *)modelCustomPropertyMapper{
     return @{@"uid" : @"id",
              @"avatar":@[@"head", @"avatar"]

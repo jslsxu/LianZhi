@@ -1,3 +1,4 @@
+use_frameworks!
 platform:ios,'8.0'
 target "LianZhiTeacher" do
 pod "FCFileManager"
@@ -19,4 +20,5 @@ pod 'MGSwipeTableCell'
 pod 'UMengAnalytics'
 pod 'TTTAttributedLabel'
 pod 'WYPopoverController'
+pod 'CryptoSwift'
 end
