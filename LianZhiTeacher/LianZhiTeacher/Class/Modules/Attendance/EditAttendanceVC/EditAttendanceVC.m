@@ -11,6 +11,7 @@
 #import "EditAttendanceCell.h"
 #import "StudentsAttendanceListModel.h"
 #import "StudentAttendanceDetailVC.h"
+#import "NoteDetailView.h"
 
 NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
 
@@ -206,11 +207,8 @@ NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
 }
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath{
-    StudentAttendanceItem* item = (StudentAttendanceItem *)modelItem;
-    StudentAttendanceDetailVC* detailVC = [[StudentAttendanceDetailVC alloc] init];
-    [detailVC setClassInfo:self.classInfo];
-    [detailVC setStudentInfo:item.child_info];
-    [self.navigationController pushViewController:detailVC animated:YES];
+    StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)modelItem;
+    [NoteDetailView showWithNotes:attendanceItem.recode];
 }
 
 - (void)didReceiveMemoryWarning {

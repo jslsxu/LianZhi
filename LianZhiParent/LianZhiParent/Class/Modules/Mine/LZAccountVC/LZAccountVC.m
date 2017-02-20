@@ -147,7 +147,7 @@
     [exchangeButton setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"E82557"] size:exchangeButton.size cornerRadius:16] forState:UIControlStateNormal];
     [exchangeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [exchangeButton.titleLabel setFont:[UIFont systemFontOfSize:15]];
-    [exchangeButton setTitle:@"连枝币兑换活动" forState:UIControlStateNormal];
+    [exchangeButton setTitle:@"兑换奖品" forState:UIControlStateNormal];
     [exchangeButton addTarget:self action:@selector(onExchangeClicked) forControlEvents:UIControlEventTouchUpInside];
     [headerView addSubview:exchangeButton];
     

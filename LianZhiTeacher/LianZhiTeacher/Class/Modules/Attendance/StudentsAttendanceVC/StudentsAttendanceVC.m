@@ -230,8 +230,25 @@
 
 - (void)updateSubviews{
     [self.headerView setTop:self.calendar.height + 10];
-    [self.tableView setFrame:CGRectMake(0, self.headerView.bottom, self.view.width, self.view.height - self.headerView.bottom)];
+    BOOL emptyShow = !self.attendanceEmptyView.hidden;
+    CGFloat spaceYStart = self.headerView.bottom;
+    if(emptyShow){
+        spaceYStart = self.headerView.top;
+    }
+    [self.tableView setFrame:CGRectMake(0, spaceYStart, self.view.width, self.view.height - spaceYStart)];
     [self.attendanceEmptyView setFrame:self.tableView.frame];
+}
+
+- (void)showAttendanceEmptyView:(BOOL)show{
+    CGFloat spaceYStart = self.headerView.bottom;
+    if(show){
+        spaceYStart = self.headerView.top;
+    }
+    [self.attendanceEmptyView setHidden:!show];
+    [self.headerView setHidden:show];
+    [self.tableView setFrame:CGRectMake(0, spaceYStart, self.view.width, self.view.height - spaceYStart)];
+    [self.attendanceEmptyView setFrame:self.tableView.frame];
+    [self.attendanceEmptyView setDate:self.calendar.currentSelectedDate];
 }
 
 - (HttpRequestTask *)makeRequestTaskWithType:(REQUEST_TYPE)requestType{
@@ -286,17 +303,14 @@
     
     BOOL empty = [self.tableViewModel.modelItemArray count] == 0;
     StudentsAttendanceListModel *model = (StudentsAttendanceListModel *)self.tableViewModel;
-    [self showEmptyView:empty];
     [self.headerView setTitleHidden:empty];
-    [self updateSubviews];
     [self.headerView.titleLabel setText:[NSString stringWithFormat:@"当日出勤率:%@%%",model.info.rate]];
     [self.headerView.nameButton setTitle:[NSString stringWithFormat:@"姓名(%zd)", [self.tableViewModel.modelItemArray count]] forState:UIControlStateNormal];
     [self.headerView.attendanceButton setTitle:[NSString stringWithFormat:@"出勤(%zd)", model.info.attendance] forState:UIControlStateNormal];
     [self.headerView.offButton setTitle:[NSString stringWithFormat:@"缺勤(%zd)", [model.info absence]] forState:UIControlStateNormal];
     if([self checkDate] <= 0){
         //今天和之前的
-        [self.attendanceEmptyView setHidden:model.submit_leave];
-        [self.attendanceEmptyView setDate:self.calendar.currentSelectedDate];
+        [self showAttendanceEmptyView:!model.submit_leave];
     }
 }
 
@@ -319,8 +333,7 @@
         [self requestData:REQUEST_REFRESH];
     }
     else{
-        [self.attendanceEmptyView setHidden:NO];
-        [self.attendanceEmptyView setDate:self.calendar.currentSelectedDate];
+        [self showAttendanceEmptyView:YES];
         [model.modelItemArray removeAllObjects];
         [self.tableView reloadData];
     }

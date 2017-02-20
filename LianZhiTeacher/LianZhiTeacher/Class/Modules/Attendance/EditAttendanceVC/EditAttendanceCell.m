@@ -71,8 +71,8 @@
         self.noteView = [[NoteView alloc] initWithFrame:CGRectMake(10, 0, self.width - 20 - 10, 20)];
         [self addSubview:self.noteView];
         
-        UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(noteClicked)];
-        [self.noteView addGestureRecognizer:tapGesture];
+//        UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(noteClicked)];
+//        [self.noteView addGestureRecognizer:tapGesture];
         
         self.commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [self.commentButton addTarget:self action:@selector(addComment) forControlEvents:UIControlEventTouchUpInside];
@@ -157,10 +157,10 @@
 }
 
 
-- (void)noteClicked{
-    StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)self.modelItem;
-    [NoteDetailView showWithNotes:attendanceItem.recode];
-}
+//- (void)noteClicked{
+//    StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)self.modelItem;
+//    [NoteDetailView showWithNotes:attendanceItem.recode];
+//}
 
 - (void)onMobileClicked{
     StudentAttendanceItem* attendanceItem = (StudentAttendanceItem *)self.modelItem;
