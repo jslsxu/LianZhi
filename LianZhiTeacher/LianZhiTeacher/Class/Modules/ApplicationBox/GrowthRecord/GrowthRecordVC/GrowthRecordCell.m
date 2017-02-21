@@ -10,6 +10,7 @@
 #import "GrowthSegmentCtrl.h"
 #import "GrowthClassListModel.h"
 #import "DDCollectionViewHorizontalLayout.h"
+#import "GrowthRecordDetailVC.h"
 @interface GrowthStudentCell ()
 @property (nonatomic, strong)AvatarView* avatarView;
 @property (nonatomic, strong)UILabel* nameLabel;
@@ -156,6 +157,10 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     GrowthClassInfo* classInfo = (GrowthClassInfo *)self.modelItem;
     NSArray* students = classInfo.students;
+    GrowthRecordDetailVC* detailVC = [[GrowthRecordDetailVC alloc] init];
+    [detailVC setStudentArray:students];
+    [detailVC setStudentInfo:students[indexPath.row]];
+    [CurrentROOTNavigationVC pushViewController:detailVC animated:YES];
 }
 
 + (NSNumber *)cellHeight:(TNModelItem *)modelItem cellWidth:(NSInteger)width{

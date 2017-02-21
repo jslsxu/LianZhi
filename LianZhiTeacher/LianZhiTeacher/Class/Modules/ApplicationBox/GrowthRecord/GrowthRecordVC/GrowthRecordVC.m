@@ -14,6 +14,7 @@
 @interface GrowthRecordVC ()<CalendarDelegate>
 @property (nonatomic, strong)UIButton* moreButton;
 @property (nonatomic, strong)Calendar* calendar;
+@property (nonatomic, strong)UIView* bottomView;
 @end
 
 @implementation GrowthRecordVC
@@ -37,11 +38,12 @@
     [editButton setTitle:@"批量评价" forState:UIControlStateNormal];
     [editButton setBackgroundImage:[UIImage imageWithColor:kCommonTeacherTintColor size:editButton.size cornerRadius:10] forState:UIControlStateNormal];
     [bottomView addSubview:editButton];
-    
     [self.view addSubview:bottomView];
+    self.bottomView = bottomView;
     
     [self.tableView setFrame:CGRectMake(0, self.calendar.bottom + 10, self.view.width, bottomView.top - (self.calendar.bottom + 10))];
     [self bindTableCell:@"GrowthRecordCell" tableModel:@"GrowthClassListModel"];
+    [self setSupportPullDown:YES];
 
 //    [self requestData:REQUEST_REFRESH];
 }
@@ -95,7 +97,7 @@
 
 #pragma mark - CalendarDelegate
 - (void)calendarHeightWillChange:(CGFloat)height{
-    
+    [self.tableView setFrame:CGRectMake(0, height + 10, self.view.width, self.bottomView.top - height - 10)];
 }
 
 - (void)calendarDateDidChange:(NSDate *)selectedDate{

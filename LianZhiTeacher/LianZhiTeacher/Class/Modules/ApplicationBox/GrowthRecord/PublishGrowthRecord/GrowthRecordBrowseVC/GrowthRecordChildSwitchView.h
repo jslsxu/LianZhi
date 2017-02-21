@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "GrowthClassListModel.h"
 @interface GrowthRecordChildCell : UICollectionViewCell
-
+@property (nonatomic, strong)GrowthStudentInfo* studentInfo;
 @end
 
 @interface GrowthRecordChildSwitchView : UIView

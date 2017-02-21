@@ -12,9 +12,11 @@
 #import "RecordPublishPhotoView.h"
 #import "NotificationInputView.h"
 #import "GrowthTargetChildView.h"
+#import "RecordInfoView.h"
 @interface PublishGrowthRecordVC ()<NotificationInputDelegate, UIScrollViewDelegate>
 @property (nonatomic, strong)UITouchScrollView* scrollView;
 @property (nonatomic, strong)GrowthTargetChildView* targetView;
+@property (nonatomic, strong)RecordInfoView*    recordInfoView;
 @property (nonatomic, strong)RecordPublishCommentView* commentView;
 @property (nonatomic, strong)RecordPublishVoiceView* voiceView;
 @property (nonatomic, strong)RecordPublishPhotoView* photoView;
@@ -24,6 +26,18 @@
 @end
 
 @implementation PublishGrowthRecordVC
+
+- (void)dealloc{
+    [self resignKeyboard];
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if(self){
+        [self addKeyboardNotifications];
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -55,15 +69,50 @@
     [dateLabel addSubview:sepLine];
 }
 
+- (void)onKeyboardWillShow:(NSNotification *)notification{
+    NSDictionary *userInfo = [notification userInfo];
+    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    NSInteger keyboardHeight = keyboardRect.size.height;
+    [self onSwipe];
+    [UIView animateWithDuration:animationDuration animations:^{
+        [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, keyboardHeight - kActionBarHeight, 0)];
+    }completion:^(BOOL finished) {
+    }];
+    
+}
+
+- (void)onKeyboardWillHide:(NSNotification *)notification{
+    NSDictionary *userInfo = [notification userInfo];
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    [UIView animateWithDuration:animationDuration animations:^{
+        [_scrollView setContentInset:UIEdgeInsetsZero];
+    }completion:^(BOOL finished) {
+        
+    }];
+}
+
+- (void)onSwipe{
+    if(_inputView.actionType != ActionTypeNone){
+        [_inputView setActionType:ActionTypeNone];
+    }
+}
+
 - (UIScrollView *)scrollView{
     if(nil == _scrollView){
-        _scrollView = [[UITouchScrollView alloc] initWithFrame:CGRectMake(0, 40, self.view.width, self.view.height - 40)];
+        _scrollView = [[UITouchScrollView alloc] initWithFrame:CGRectMake(0, 40, self.view.width, self.view.height - kActionBarHeight - 40)];
         [_scrollView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
         [_scrollView setAlwaysBounceVertical:YES];
         [_scrollView setShowsVerticalScrollIndicator:NO];
         [_scrollView setDelegate:self];
         
         [_scrollView addSubview:[self targetView]];
+        [_scrollView addSubview:[self recordInfoView]];
         [_scrollView addSubview:[self commentView]];
         [_scrollView addSubview:[self voiceView]];
         [_scrollView addSubview:[self photoView]];
@@ -78,6 +127,13 @@
         [_targetView setStudentArray:self.studentArray];
     }
     return _targetView;
+}
+
+- (RecordInfoView *)recordInfoView{
+    if(nil == _recordInfoView){
+        _recordInfoView = [[RecordInfoView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
+    }
+    return _recordInfoView;
 }
 
 - (NotificationInputView *)inputView{
@@ -112,6 +168,8 @@
         [_commentView setTextViewWillChangeHeight:^(CGFloat height) {
             
         }];
+        [_commentView.layer setBorderColor:[UIColor redColor].CGColor];
+        [_commentView.layer setBorderWidth:1];
     }
     return _commentView;
 }
@@ -135,6 +193,9 @@
     
     [self.targetView setY:spaceYStart];
     spaceYStart = self.targetView.bottom;
+    
+    [self.recordInfoView setY:spaceYStart];
+    spaceYStart = self.recordInfoView.bottom;
     
     [self.commentView setY:spaceYStart];
     spaceYStart = self.commentView.bottom;

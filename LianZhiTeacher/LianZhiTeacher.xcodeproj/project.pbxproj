@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		370156081E5C445500235EE7 /* HYBStarEvaluationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 370156051E5C445500235EE7 /* HYBStarEvaluationView.m */; };
+		370156091E5C445500235EE7 /* RecordInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 370156071E5C445500235EE7 /* RecordInfoView.m */; };
 		3705FF941BA2BE7200F0C6F6 /* NumIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3705FF931BA2BE7200F0C6F6 /* NumIndicator.m */; };
 		3707E6711C041EFB00944B8D /* MyGiftVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3707E6701C041EFB00944B8D /* MyGiftVC.m */; };
 		370F33D71A78795000FED3C2 /* AboutVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33D21A78795000FED3C2 /* AboutVC.m */; };
@@ -523,6 +525,10 @@
 /* Begin PBXFileReference section */
 		0DFE116D358F8B53171F7C11 /* Pods-LianZhiTeacher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LianZhiTeacher.release.xcconfig"; path = "Pods/Target Support Files/Pods-LianZhiTeacher/Pods-LianZhiTeacher.release.xcconfig"; sourceTree = "<group>"; };
 		12BAF958CB1E5D40BB0B5AF4 /* Pods-LianZhiTeacher.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LianZhiTeacher.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LianZhiTeacher/Pods-LianZhiTeacher.debug.xcconfig"; sourceTree = "<group>"; };
+		370156041E5C445500235EE7 /* HYBStarEvaluationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HYBStarEvaluationView.h; sourceTree = "<group>"; };
+		370156051E5C445500235EE7 /* HYBStarEvaluationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HYBStarEvaluationView.m; sourceTree = "<group>"; };
+		370156061E5C445500235EE7 /* RecordInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordInfoView.h; sourceTree = "<group>"; };
+		370156071E5C445500235EE7 /* RecordInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordInfoView.m; sourceTree = "<group>"; };
 		3705FF921BA2BE7200F0C6F6 /* NumIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumIndicator.h; sourceTree = "<group>"; };
 		3705FF931BA2BE7200F0C6F6 /* NumIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumIndicator.m; sourceTree = "<group>"; };
 		3707E66F1C041EFB00944B8D /* MyGiftVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyGiftVC.h; sourceTree = "<group>"; };
@@ -1545,6 +1551,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		370156031E5C445500235EE7 /* RecordInfoView */ = {
+			isa = PBXGroup;
+			children = (
+				370156041E5C445500235EE7 /* HYBStarEvaluationView.h */,
+				370156051E5C445500235EE7 /* HYBStarEvaluationView.m */,
+				370156061E5C445500235EE7 /* RecordInfoView.h */,
+				370156071E5C445500235EE7 /* RecordInfoView.m */,
+			);
+			path = RecordInfoView;
+			sourceTree = "<group>";
+		};
 		371572CF1DE5EA93007A942B /* MicroLession */ = {
 			isa = PBXGroup;
 			children = (
@@ -2467,6 +2484,7 @@
 		37C920071E4ABBAD003C4C51 /* PublishGrowthRecord */ = {
 			isa = PBXGroup;
 			children = (
+				370156031E5C445500235EE7 /* RecordInfoView */,
 				3792B2A91E4B2D8C000549C7 /* GrowthRecordBrowseVC */,
 				3792B2B01E4B2D8C000549C7 /* PublishGrowthRecordVC */,
 			);
@@ -3926,6 +3944,7 @@
 				3793FAA51B7CFFF000501F77 /* NSString+Validate.m in Sources */,
 				8D3D45C71D5F7EEF005EA8EA /* ContactInfoHeaderCell.m in Sources */,
 				8DE718701DAC94FF0080476D /* TestWebVC.m in Sources */,
+				370156081E5C445500235EE7 /* HYBStarEvaluationView.m in Sources */,
 				37CA18701AB70A2F00B49B55 /* AlbumGroupView.m in Sources */,
 				37F207161BE0BBFF006466F4 /* UITouchScrollView.m in Sources */,
 				37DEE4C11A57C19C009A8771 /* MessageVC.m in Sources */,
@@ -4037,6 +4056,7 @@
 				8DCFD7011D503DD2001EDC8A /* NJKWebViewProgressView.m in Sources */,
 				3793FA9D1B7CFFF000501F77 /* PhotoItem.m in Sources */,
 				37DEE4BF1A57C19C009A8771 /* MessageGroupItemCell.m in Sources */,
+				370156091E5C445500235EE7 /* RecordInfoView.m in Sources */,
 				8D7555071D6DA89400A140EE /* PBImageScrollView.m in Sources */,
 				37E93FC41A7E9CC600AD45A1 /* MJPhotoProgressView.m in Sources */,
 				3793FA6D1B7CFFF000501F77 /* AFURLConnectionOperation.m in Sources */,
@@ -4459,7 +4479,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = LianZhiTeacher/LianZhiTeacher.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: wei xin (JRFF54BK3W)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				DEVELOPMENT_TEAM = JRFF54BK3W;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4485,8 +4505,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6a73cb8f-b575-40dc-b48e-ec03e6e7353f";
-				PROVISIONING_PROFILE_SPECIFIER = LianZhiTeacherDistribution;
+				PROVISIONING_PROFILE = "9661c199-b60f-4abb-bbae-234736af11e6";
+				PROVISIONING_PROFILE_SPECIFIER = TeacherDevelopment;
 				SWIFT_OBJC_BRIDGING_HEADER = "LianZhiTeacher/Class/Modules/ApplicationBox/MicroLession/LianZhiTeacher-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -4502,7 +4522,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = LianZhiTeacher/LianZhiTeacher.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: wei xin (JRFF54BK3W)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
 				DEVELOPMENT_TEAM = JRFF54BK3W;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4528,8 +4548,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6a73cb8f-b575-40dc-b48e-ec03e6e7353f";
-				PROVISIONING_PROFILE_SPECIFIER = LianZhiTeacherDistribution;
+				PROVISIONING_PROFILE = "9661c199-b60f-4abb-bbae-234736af11e6";
+				PROVISIONING_PROFILE_SPECIFIER = TeacherDevelopment;
 				SWIFT_OBJC_BRIDGING_HEADER = "LianZhiTeacher/Class/Modules/ApplicationBox/MicroLession/LianZhiTeacher-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};

@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "GrowthClassListModel.h"
 @interface GrowthTargetChildItemView : UICollectionViewCell
+@property (nonatomic, strong)GrowthStudentInfo* studentInfo;
 @property (nonatomic, copy)void (^itemRemoved)();
 @end
 

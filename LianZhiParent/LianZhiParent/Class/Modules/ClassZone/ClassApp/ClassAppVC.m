@@ -396,11 +396,8 @@
                         }
                         else if([host isEqualToString:@"record"])
                         {
-//                            GrowthRecordVC* recordVC = [[GrowthRecordVC alloc] init];
-//                            [CurrentROOTNavigationVC pushViewController:recordVC animated:YES];
-                            GrowthTimelineVC *growthTimeLineVC = [[GrowthTimelineVC alloc] init];
-                            [growthTimeLineVC setClassInfo:classInfo];
-                            [CurrentROOTNavigationVC pushViewController:growthTimeLineVC animated:YES];
+                            GrowthRecordVC* recordVC = [[GrowthRecordVC alloc] init];
+                            [CurrentROOTNavigationVC pushViewController:recordVC animated:YES];
                         }
                         else if([host isEqualToString:@"leave"])
                         {

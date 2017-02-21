@@ -19,9 +19,29 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if(self){
+        self.avatarView = [[AvatarView alloc] initWithRadius:20];
+        [self.avatarView setOrigin:CGPointMake((self.width - self.avatarView.width) / 2, 10)];
+        [self addSubview:self.avatarView];
         
+        self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.avatarView.bottom, self.width, 20)];
+        [self.nameLabel setTextAlignment:NSTextAlignmentCenter];
+        [self.nameLabel setFont:[UIFont systemFontOfSize:13]];
+        [self.nameLabel setTextColor:kColor_66];
+        [self addSubview:self.nameLabel];
+        
+        self.removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.removeButton setImage:[UIImage imageNamed:@"media_delete"] forState:UIControlStateNormal];
+        [self.removeButton setFrame:CGRectMake(self.avatarView.right - 15, self.avatarView.top - 15, 30, 30)];
+        [self.removeButton addTarget:self action:@selector(onDelete) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:self.removeButton];
     }
     return self;
+}
+
+- (void)setStudentInfo:(GrowthStudentInfo *)studentInfo{
+    _studentInfo = studentInfo;
+    [self.avatarView sd_setImageWithURL:[NSURL URLWithString:_studentInfo.avatar] placeholderImage:nil];
+    [self.nameLabel setText:_studentInfo.name];
 }
 
 - (void)onDelete{
@@ -95,12 +115,17 @@
         DDCollectionViewHorizontalLayout* layout = [[DDCollectionViewHorizontalLayout alloc] init];
         [layout setRowCount:2];
         [layout setItemCountPerRow:5];
+        [layout setMinimumLineSpacing:0];
+        [layout setMinimumInteritemSpacing:0];
+        [layout setItemSize:CGSizeMake(self.width / 5, 80)];
         [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
         
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 60, self.width, 160)];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 60, self.width, 160) collectionViewLayout:layout];
         [_collectionView setDelegate:self];
         [_collectionView setDataSource:self];
         [_collectionView setBackgroundColor:[UIColor whiteColor]];
+        [_collectionView setShowsHorizontalScrollIndicator:NO];
+        [_collectionView setPagingEnabled:YES];
         [_collectionView registerClass:[GrowthTargetChildItemView class] forCellWithReuseIdentifier:@"GrowthTargetChildItemView"];
     }
     return _collectionView;
@@ -126,6 +151,8 @@
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     GrowthTargetChildItemView* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"GrowthTargetChildItemView" forIndexPath:indexPath];
+    GrowthStudentInfo* studentInfo = self.studentArray[indexPath.row];
+    [cell setStudentInfo:studentInfo];
     [cell setItemRemoved:^{
         
     }];

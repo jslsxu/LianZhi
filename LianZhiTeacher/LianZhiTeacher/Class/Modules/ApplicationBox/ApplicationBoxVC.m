@@ -439,24 +439,8 @@
         }
         else if([host isEqualToString:@"record"])//家园手册
         {
-//            GrowthRecordVC* growthRecordVC = [[GrowthRecordVC alloc] init];
-//            [CurrentROOTNavigationVC pushViewController:growthRecordVC animated:YES];
-            if([UserCenter sharedInstance].curSchool.classes.count == 0)
-            {
-                ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
-                [selectionVC setSelection:^(ClassInfo *classInfo) {
-                    GrowthTimelineVC *growthTimelineVC = [[GrowthTimelineVC alloc] init];
-                    [growthTimelineVC setClassID:classInfo.classID];
-                    [growthTimelineVC setTitle:classInfo.name];
-                    [CurrentROOTNavigationVC pushViewController:growthTimelineVC animated:YES];
-                }];
-                [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];
-            }
-            else
-            {
-                PublishGrowthTimelineVC *publishGrowthTimelineVC = [[PublishGrowthTimelineVC alloc] init];
-                [CurrentROOTNavigationVC pushViewController:publishGrowthTimelineVC animated:YES];
-            }
+            GrowthRecordVC* growthRecordVC = [[GrowthRecordVC alloc] init];
+            [CurrentROOTNavigationVC pushViewController:growthRecordVC animated:YES];
             
         }
         else if([host isEqualToString:@"class_album"])//版相册
