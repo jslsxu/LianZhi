@@ -76,6 +76,11 @@
         [self.collectionView setPagingEnabled:YES];
         [self.collectionView registerClass:[GrowthRecordChildCell class] forCellWithReuseIdentifier:@"GrowthRecordChildCell"];
         [self addSubview:self.collectionView];
+        
+        UIView* sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, self.height - kLineHeight, self.width, kLineHeight)];
+        [sepLine setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
+        [sepLine setBackgroundColor:kSepLineColor];
+        [self addSubview:sepLine];
     }
     return self;
 }

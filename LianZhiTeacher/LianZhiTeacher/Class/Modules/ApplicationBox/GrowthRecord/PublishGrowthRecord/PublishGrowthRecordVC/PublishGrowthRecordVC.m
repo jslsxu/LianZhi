@@ -103,7 +103,7 @@
     }
 }
 
-- (UIScrollView *)scrollView{
+- (UITouchScrollView *)scrollView{
     if(nil == _scrollView){
         _scrollView = [[UITouchScrollView alloc] initWithFrame:CGRectMake(0, 40, self.view.width, self.view.height - kActionBarHeight - 40)];
         [_scrollView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];

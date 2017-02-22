@@ -59,6 +59,7 @@
 		3777092D1E275A1B001168AD /* StudentAttendanceDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 3777092C1E275A1B001168AD /* StudentAttendanceDetail.m */; };
 		377709301E27D46A001168AD /* AttendanceNotificationListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3777092F1E27D46A001168AD /* AttendanceNotificationListModel.m */; };
 		377709331E27D47E001168AD /* AttendanceNotificationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 377709321E27D47E001168AD /* AttendanceNotificationItem.m */; };
+		3787FFE91E5C64C20042EF7F /* ParentReplyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3787FFE81E5C64C20042EF7F /* ParentReplyView.m */; };
 		378948381E4C3A4F00C7E131 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 378948371E4C3A4F00C7E131 /* UIImage+Additions.m */; };
 		3789800E1E56AD9A00E116D7 /* LZCameraScanView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3789800D1E56AD9A00E116D7 /* LZCameraScanView.m */; };
 		378980181E56C46000E116D7 /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378980171E56C46000E116D7 /* CryptoHelper.swift */; };
@@ -621,6 +622,8 @@
 		3777092F1E27D46A001168AD /* AttendanceNotificationListModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceNotificationListModel.m; sourceTree = "<group>"; };
 		377709311E27D47E001168AD /* AttendanceNotificationItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttendanceNotificationItem.h; sourceTree = "<group>"; };
 		377709321E27D47E001168AD /* AttendanceNotificationItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttendanceNotificationItem.m; sourceTree = "<group>"; };
+		3787FFE71E5C64C20042EF7F /* ParentReplyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParentReplyView.h; sourceTree = "<group>"; };
+		3787FFE81E5C64C20042EF7F /* ParentReplyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParentReplyView.m; sourceTree = "<group>"; };
 		378948361E4C3A4F00C7E131 /* UIImage+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Additions.h"; sourceTree = "<group>"; };
 		378948371E4C3A4F00C7E131 /* UIImage+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Additions.m"; sourceTree = "<group>"; };
 		3789800C1E56AD9A00E116D7 /* LZCameraScanView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LZCameraScanView.h; sourceTree = "<group>"; };
@@ -1730,6 +1733,8 @@
 				3792B2AD1E4B2D8C000549C7 /* GrowthRecordChildSelectVC.m */,
 				3792B2AE1E4B2D8C000549C7 /* GrowthRecordChildSwitchView.h */,
 				3792B2AF1E4B2D8C000549C7 /* GrowthRecordChildSwitchView.m */,
+				3787FFE71E5C64C20042EF7F /* ParentReplyView.h */,
+				3787FFE81E5C64C20042EF7F /* ParentReplyView.m */,
 			);
 			path = GrowthRecordBrowseVC;
 			sourceTree = "<group>";
@@ -3783,7 +3788,7 @@
 		37C355C81A3FD5CF00B948E6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = jslsxu;
 				TargetAttributes = {
 					37C355CF1A3FD5CF00B948E6 = {
@@ -4109,6 +4114,7 @@
 				8DCFD76B1D587B1C001EDC8A /* MessageNotificationDetailVC.m in Sources */,
 				37C8901C1A890DF9008E44DB /* ClassZoneManager.m in Sources */,
 				8DA785961CA4E35900A384F0 /* NSString+UrlParams.m in Sources */,
+				3787FFE91E5C64C20042EF7F /* ParentReplyView.m in Sources */,
 				3793FA9B1B7CFFF000501F77 /* WelcomeView.m in Sources */,
 				3793FAAA1B7CFFF000501F77 /* UIView+Frame.m in Sources */,
 				372571581A80BF8C0087F178 /* PasswordModifyVC.m in Sources */,
@@ -4466,6 +4472,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PROVISIONING_PROFILE = "6a73cb8f-b575-40dc-b48e-ec03e6e7353f";
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -4474,6 +4481,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 12BAF958CB1E5D40BB0B5AF4 /* Pods-LianZhiTeacher.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -4499,6 +4507,58 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/NHAudioTool/VoiceConvert/lib",
 				);
 				NEW_SETTING = "";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/CTAssetsPickerController/CTAssetsPickerController.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/CryptoSwift/CryptoSwift.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/DACircularProgress/DACircularProgress.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/FCFileManager/FCFileManager.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/FDFullscreenPopGesture/FDFullscreenPopGesture.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/FMDB/FMDB.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/MBProgressHUD/MBProgressHUD.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/MGSwipeTableCell/MGSwipeTableCell.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/MJRefresh/MJRefresh.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/MWPhotoBrowser/MWPhotoBrowser.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/Masonry/Masonry.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/ReactiveCocoa/ReactiveCocoa.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/SCRecorder/SCRecorder.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/SDWebImage/SDWebImage.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/SSZipArchive/SSZipArchive.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/SWTableViewCell/SWTableViewCell.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/TTTAttributedLabel/TTTAttributedLabel.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/WYPopoverController/WYPopoverController.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/XHRealTimeBlur/XHRealTimeBlur.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/YYKit/YYKit.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/pop/pop.framework/Headers\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Bugtags\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/UMengAnalytics\"",
+					"-Wno-ambiguous-macro",
+				);
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"$(inherited)",
@@ -4517,6 +4577,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0DFE116D358F8B53171F7C11 /* Pods-LianZhiTeacher.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
@@ -4542,6 +4603,58 @@
 					"$(PROJECT_DIR)/LianZhiTeacher/Class/BaseFoundation/NHAudioTool/VoiceConvert/lib",
 				);
 				NEW_SETTING = "";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/CTAssetsPickerController/CTAssetsPickerController.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/CryptoSwift/CryptoSwift.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/DACircularProgress/DACircularProgress.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/FCFileManager/FCFileManager.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/FDFullscreenPopGesture/FDFullscreenPopGesture.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/FMDB/FMDB.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/MBProgressHUD/MBProgressHUD.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/MGSwipeTableCell/MGSwipeTableCell.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/MJRefresh/MJRefresh.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/MWPhotoBrowser/MWPhotoBrowser.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/Masonry/Masonry.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/ReactiveCocoa/ReactiveCocoa.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/SCRecorder/SCRecorder.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/SDWebImage/SDWebImage.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/SSZipArchive/SSZipArchive.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/SWTableViewCell/SWTableViewCell.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/TTTAttributedLabel/TTTAttributedLabel.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/WYPopoverController/WYPopoverController.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/XHRealTimeBlur/XHRealTimeBlur.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/YYKit/YYKit.framework/Headers\"",
+					"-iquote",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/pop/pop.framework/Headers\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Bugtags\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/UMengAnalytics\"",
+					"-Wno-ambiguous-macro",
+				);
 				OTHER_LDFLAGS = (
 					"-all_load",
 					"$(inherited)",

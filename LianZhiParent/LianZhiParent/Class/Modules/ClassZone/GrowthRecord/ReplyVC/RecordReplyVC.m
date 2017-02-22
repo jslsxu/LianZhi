@@ -10,11 +10,13 @@
 #import "RecordReplyCommentView.h"
 #import "RecordReplyVoiceView.h"
 #import "RecordReplyPhotoView.h"
-@interface RecordReplyVC ()
+#import "NotificationInputView.h"
+@interface RecordReplyVC ()<NotificationInputDelegate>
 @property (nonatomic, strong)UIScrollView* scrollView;
 @property (nonatomic, strong)RecordReplyCommentView* commentView;
 @property (nonatomic, strong)RecordReplyVoiceView* voiceView;
 @property (nonatomic, strong)RecordReplyPhotoView* photoView;
+@property (nonatomic, strong)NotificationInputView* inputView;
 @end
 
 @implementation RecordReplyVC
@@ -25,12 +27,16 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(send)];
     
+    [self.view addSubview:[self inputView]];
     [self.view addSubview:[self scrollView]];
+    [self.scrollView setFrame:CGRectMake(0, 0, self.view.width, self.inputView.top)];
+    [self.view bringSubviewToFront:self.inputView];
 }
 
 - (UIScrollView *)scrollView{
     if(nil == _scrollView){
         _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+        [_scrollView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
         [_scrollView setAlwaysBounceVertical:YES];
         [_scrollView setShowsVerticalScrollIndicator:NO];
         
@@ -83,6 +89,16 @@
     return _photoView;
 }
 
+- (NotificationInputView *)inputView{
+    if(nil == _inputView){
+        _inputView = [[NotificationInputView alloc] initWithFrame:CGRectMake(0, self.view.height - 64 - kActionBarHeight, self.view.width, kActionBarHeight)];
+        [_inputView setSendHidden:YES];
+        [_inputView setOnlyPhotoLibrary:YES];
+        [_inputView setDelegate:self];
+    }
+    return _inputView;
+}
+
 - (void)cancel{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -90,6 +106,39 @@
 - (void)send{
     
 }
+
+#pragma mark - NotificationInputViewDelegate
+
+- (void)notificationInputDidWillChangeHeight:(CGFloat)height{
+    [UIView animateWithDuration:kActionAnimationDuration animations:^{
+        [_inputView setY:self.view.height - height];
+        [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, height, 0)];
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+- (void)notificationInputPhoto:(NotificationInputView *)inputView{
+    
+}
+
+- (void)notificationInputQuickPhoto:(NSArray *)photoArray fullImage:(BOOL)isFullImage{
+    
+}
+
+- (void)notificationInputVideo:(NotificationInputView *)inputView
+{
+    
+}
+
+- (void)notificationInputAudio:(NotificationInputView *)inputView audioItem:(AudioItem *)audioItem{
+    
+}
+
+- (void)notificationInputSend{
+    
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -138,11 +138,11 @@
     NSArray *formatterDateArray = @[@"今天",@"昨天",@"前天"];
     for (NSInteger i = 0; i < 3; i++)
     {
-        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
         
         NSDateComponents *comps = nil;
         
-        comps = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
+        comps = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:[NSDate date]];
         
         NSDateComponents *adcomps = [[NSDateComponents alloc] init];
         
