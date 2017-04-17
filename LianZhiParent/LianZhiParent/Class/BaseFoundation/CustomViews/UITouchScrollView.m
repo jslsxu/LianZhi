@@ -12,6 +12,9 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if(self.onTouch){
+        self.onTouch();
+    }
     [[UIApplication sharedApplication].keyWindow endEditing:YES];
 }
 

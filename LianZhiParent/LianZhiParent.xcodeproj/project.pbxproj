@@ -10,6 +10,7 @@
 		3705FF971BA2CCEF00F0C6F6 /* NumIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3705FF951BA2CCEF00F0C6F6 /* NumIndicator.m */; };
 		3705FF9A1BA2D65600F0C6F6 /* SwitchClassVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3705FF991BA2D65600F0C6F6 /* SwitchClassVC.m */; };
 		3707E66E1C041E6E00944B8D /* MyGiftVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3707E66D1C041E6E00944B8D /* MyGiftVC.m */; };
+		370BB51D1E601BCB00E4FB74 /* GrowthRecordReplyAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 370BB51C1E601BCB00E4FB74 /* GrowthRecordReplyAlertView.m */; };
 		370F33C81A780E8900FED3C2 /* ContactServiceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33C71A780E8900FED3C2 /* ContactServiceVC.m */; };
 		370F33D01A78140B00FED3C2 /* AboutVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33CF1A78140B00FED3C2 /* AboutVC.m */; };
 		3712ACDF1DE1D0C9000E5AF8 /* CalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3712ACC51DE1D0C9000E5AF8 /* CalendarView.m */; };
@@ -584,6 +585,8 @@
 		3705FF991BA2D65600F0C6F6 /* SwitchClassVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchClassVC.m; sourceTree = "<group>"; };
 		3707E66C1C041E6E00944B8D /* MyGiftVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyGiftVC.h; sourceTree = "<group>"; };
 		3707E66D1C041E6E00944B8D /* MyGiftVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyGiftVC.m; sourceTree = "<group>"; };
+		370BB51B1E601BCB00E4FB74 /* GrowthRecordReplyAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowthRecordReplyAlertView.h; sourceTree = "<group>"; };
+		370BB51C1E601BCB00E4FB74 /* GrowthRecordReplyAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowthRecordReplyAlertView.m; sourceTree = "<group>"; };
 		370F33C61A780E8900FED3C2 /* ContactServiceVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactServiceVC.h; sourceTree = "<group>"; };
 		370F33C71A780E8900FED3C2 /* ContactServiceVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactServiceVC.m; sourceTree = "<group>"; };
 		370F33CE1A78140B00FED3C2 /* AboutVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutVC.h; sourceTree = "<group>"; };
@@ -3047,6 +3050,8 @@
 				3792B2C11E4C028D000549C7 /* RecordReplyVoiceView.m */,
 				3792B2C31E4C029A000549C7 /* RecordReplyPhotoView.h */,
 				3792B2C41E4C029A000549C7 /* RecordReplyPhotoView.m */,
+				370BB51B1E601BCB00E4FB74 /* GrowthRecordReplyAlertView.h */,
+				370BB51C1E601BCB00E4FB74 /* GrowthRecordReplyAlertView.m */,
 				3787FFEA1E5D3A990042EF7F /* InputView */,
 			);
 			path = ReplyVC;
@@ -4384,6 +4389,7 @@
 				37E5F62E1DF7DDDA0062941C /* TPKeyboardAvoidingTableView.m in Sources */,
 				37C3164F1A568F4A002E847D /* GrowthTimelineVC.m in Sources */,
 				37E5F6271DF7DDDA0062941C /* DOUAudioVisualizer.m in Sources */,
+				370BB51D1E601BCB00E4FB74 /* GrowthRecordReplyAlertView.m in Sources */,
 				8DC0873D1D8C4930008B57B2 /* PBImageController.m in Sources */,
 				8DFDDDA91D9507420050740B /* PhoneInputVC.m in Sources */,
 				8D3D45D01D5F9438005EA8EA /* ContactInfoHeaderCell.m in Sources */,

@@ -76,7 +76,10 @@
 - (void)setCurrentPhotoIndex:(NSUInteger)currentPhotoIndex
 {
     _currentPhotoIndex = currentPhotoIndex;
-    PhotoItem *photoItem = [self.photos objectAtIndex:_currentPhotoIndex];
+    PhotoItem *photoItem = nil;
+    if([self.photos count] > _currentPhotoIndex){
+        photoItem = [self.photos objectAtIndex:_currentPhotoIndex];
+    }
     [_navBar setPhoto:photoItem];
     [_infoBar setPhotoItem:photoItem];
 }

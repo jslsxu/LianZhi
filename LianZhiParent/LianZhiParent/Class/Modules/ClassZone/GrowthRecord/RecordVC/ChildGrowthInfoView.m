@@ -127,7 +127,8 @@
 }
 
 - (void)showRule{
-    
+    TNBaseWebViewController *webVC = [[TNBaseWebViewController alloc] initWithUrl:[NSURL URLWithString:@"https://www.baidu.com"]];
+    [CurrentROOTNavigationVC pushViewController:webVC animated:YES];
 }
 
 @end

@@ -14,5 +14,6 @@
 @end
 
 @interface GrowthTargetChildView : UIView
+@property (nonatomic, copy)void (^addTargetCallback)();
 @property (nonatomic, strong)NSArray* studentArray;
 @end

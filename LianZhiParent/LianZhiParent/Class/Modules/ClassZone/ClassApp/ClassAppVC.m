@@ -277,6 +277,9 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
+    GrowthRecordVC* recordVC = [[GrowthRecordVC alloc] init];
+    [CurrentROOTNavigationVC pushViewController:recordVC animated:YES];
+    return;
     ClassAppItem *appItem = (ClassAppItem *)modelItem;
     NSString *actionUrl = appItem.actionUrl;
     if([actionUrl length] > 0)

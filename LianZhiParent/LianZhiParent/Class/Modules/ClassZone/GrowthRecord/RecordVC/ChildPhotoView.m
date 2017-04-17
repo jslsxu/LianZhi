@@ -45,7 +45,10 @@
         [self addSubview:titleLabel];
         
         UICollectionViewFlowLayout* layout = [[UICollectionViewFlowLayout alloc] init];
+        [layout setSectionInset:UIEdgeInsetsMake(0, 15, 0, 15)];
         [layout setItemSize:CGSizeMake(80, 80)];
+        [layout setMinimumLineSpacing:0];
+        [layout setMinimumInteritemSpacing:0];
         [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
         
         UICollectionView* collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, titleLabel.bottom, self.width, 80) collectionViewLayout:layout];
@@ -53,6 +56,7 @@
         [collectionView setDataSource:self];
         [collectionView setBackgroundColor:[UIColor whiteColor]];
         [collectionView registerClass:[ChildPhotoItemView class] forCellWithReuseIdentifier:@"ChildPhotoItemView"];
+        [collectionView setShowsHorizontalScrollIndicator:NO];
         [self addSubview:collectionView];
         [self setCollectionView:collectionView];
     }

@@ -62,7 +62,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
-        self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, 50)];
+        self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, 60)];
         [self addSubview:self.headerView];
         
         UIView* topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.headerView.width, kLineHeight)];
@@ -118,8 +118,8 @@
     return self;
 }
 
-- (void)onReloadData:(TNModelItem *)modelItem{
-    GrowthClassInfo* classInfo = (GrowthClassInfo *)modelItem;
+- (void)setClassInfo:(GrowthClassInfo *)classInfo{
+    _classInfo = classInfo;
     [self.avatarView sd_setImageWithURL:[NSURL URLWithString:[classInfo logo]] placeholderImage:nil];
     [self.classNameLabel setText:classInfo.name];
     [self.classNameLabel sizeToFit];
@@ -141,21 +141,19 @@
 #pragma mark - UICollectionView
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    GrowthClassInfo* classInfo = (GrowthClassInfo *)self.modelItem;
-    return [classInfo.students count];
+    return [self.classInfo.students count];
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     GrowthRecordChildSelectItemCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"GrowthRecordChildSelectItemCell" forIndexPath:indexPath];
-    GrowthClassInfo* classInfo = (GrowthClassInfo *)self.modelItem;
-    NSArray* students = classInfo.students;
+
+    NSArray* students = self.classInfo.students;
     [cell setStudentInfo:students[indexPath.row]];
     return cell;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    GrowthClassInfo* classInfo = (GrowthClassInfo *)self.modelItem;
-    NSArray* students = classInfo.students;
+    NSArray* students = self.classInfo.students;
     GrowthStudentInfo* studentInfo = students[indexPath.row];
     [studentInfo setSelected:!studentInfo.selected];
     [collectionView reloadItemsAtIndexPaths:@[indexPath]];
@@ -179,6 +177,12 @@
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if(self){
+        NSMutableArray* classArray = [NSMutableArray array];
+        for (NSInteger i = 0; i < 5; i++) {
+            GrowthClassInfo* classInfo = [[GrowthClassInfo alloc] init];
+            [classArray addObject:classInfo];
+        }
+        [self setClassArray:classArray];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectChange) name:kStudentSelectedStatusChangedNotification object:nil];
     }
     return self;
@@ -190,15 +194,16 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(finish)];
     [self.view addSubview:[self tableView]];
     [self.view addSubview:[self bottomView]];
-    [self.tableView setFrame:CGRectMake(0, 0, self.view.width, self.bottomView.top)];
 }
 
 - (UITableView* )tableView{
     if(nil == _tableView){
         _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
         [_tableView setDelegate:self];
         [_tableView setDataSource:self];
         [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+        [_tableView setContentInset:UIEdgeInsetsMake(0, 0, 40, 0)];
     }
     return _tableView;
 }
@@ -206,6 +211,7 @@
 - (UIView *)bottomView{
     if(nil == _bottomView){
         _bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.height - 40, self.view.width, 40)];
+        [_bottomView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.7]];
         [_bottomView setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
         
         UIButton* selectButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -261,7 +267,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 250;
+    return 260;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{

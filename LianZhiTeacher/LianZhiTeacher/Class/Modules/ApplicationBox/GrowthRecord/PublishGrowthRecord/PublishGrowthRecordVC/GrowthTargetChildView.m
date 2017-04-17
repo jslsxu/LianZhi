@@ -64,7 +64,7 @@
     if(self){
         
         UIButton* addButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [addButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        [addButton setImage:[UIImage imageNamed:@"add_target"] forState:UIControlStateNormal];
         [addButton setFrame:CGRectMake(self.width - 40, 5, 40, 30)];
         [addButton addTarget:self action:@selector(addTargets) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:addButton];
@@ -137,11 +137,9 @@
 }
 
 - (void)addTargets{
-    GrowthRecordChildSelectVC* childSelectVC = [[GrowthRecordChildSelectVC alloc] init];
-    [childSelectVC setSelectChanged:^{
-        
-    }];
-    [CurrentROOTNavigationVC pushViewController:childSelectVC animated:YES];
+    if(self.addTargetCallback){
+        self.addTargetCallback();
+    }
 }
 
 #pragma mark - UICollectionViewDelegate

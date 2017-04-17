@@ -13,6 +13,7 @@
 #import "NotificationInputView.h"
 #import "GrowthTargetChildView.h"
 #import "RecordInfoView.h"
+#import "GrowthRecordChildSelectVC.h"
 @interface PublishGrowthRecordVC ()<NotificationInputDelegate, UIScrollViewDelegate>
 @property (nonatomic, strong)UITouchScrollView* scrollView;
 @property (nonatomic, strong)GrowthTargetChildView* targetView;
@@ -124,6 +125,13 @@
 - (GrowthTargetChildView *)targetView{
     if(nil == _targetView){
         _targetView = [[GrowthTargetChildView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 215)];
+        [_targetView setAddTargetCallback:^{
+            GrowthRecordChildSelectVC* childSelectVC = [[GrowthRecordChildSelectVC alloc] init];
+            [childSelectVC setSelectChanged:^{
+                
+            }];
+            [CurrentROOTNavigationVC pushViewController:childSelectVC animated:YES];
+        }];
         [_targetView setStudentArray:self.studentArray];
     }
     return _targetView;

@@ -10,10 +10,12 @@
 #import "Calendar.h"
 #import "ChildGrowthInfoView.h"
 #import "RecordReplyVC.h"
+#import "ChildPhotoView.h"
 @interface GrowthRecordVC ()<CalendarDelegate>
 @property (nonatomic, strong)Calendar* calendar;
 @property (nonatomic, strong)UIScrollView* scrollView;
 @property (nonatomic, strong)ChildGrowthInfoView* infoView;
+@property (nonatomic, strong)ChildPhotoView* photoView;
 @end
 
 @implementation GrowthRecordVC
@@ -25,8 +27,6 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"回复" style:UIBarButtonItemStylePlain target:self action:@selector(reply)];
     [self.view addSubview:[self calendar]];
     [self.view addSubview:[self scrollView]];
-    [self.scrollView addSubview:[self infoView]];
-    [self.scrollView setContentSize:CGSizeMake(self.scrollView.width, self.infoView.bottom)];
 }
 
 - (Calendar *)calendar{
@@ -43,6 +43,10 @@
         [_scrollView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight];
         [_scrollView setShowsVerticalScrollIndicator:NO];
         [_scrollView setAlwaysBounceVertical:YES];
+        
+        [_scrollView addSubview:[self infoView]];
+        [_scrollView addSubview:[self photoView]];
+        [self setupScrollContent];
     }
     return _scrollView;
 }
@@ -52,6 +56,23 @@
         _infoView = [[ChildGrowthInfoView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
     }
     return _infoView;
+}
+
+- (ChildPhotoView *)photoView{
+    if(nil == _photoView){
+        _photoView = [[ChildPhotoView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
+    }
+    return _photoView;
+}
+
+- (void)setupScrollContent{
+    CGFloat spaceYStart = 0;
+    [self.infoView setY:spaceYStart];
+    spaceYStart = self.infoView.bottom;
+    
+    [self.photoView setY:spaceYStart];
+    spaceYStart = self.photoView.bottom;
+    [self.scrollView setContentSize:CGSizeMake(self.scrollView.width, spaceYStart)];
 }
 
 - (void)requestGrowthRecord{

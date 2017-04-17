@@ -11,8 +11,8 @@
 #import "RecordReplyVoiceView.h"
 #import "RecordReplyPhotoView.h"
 #import "NotificationInputView.h"
-@interface RecordReplyVC ()<NotificationInputDelegate>
-@property (nonatomic, strong)UIScrollView* scrollView;
+@interface RecordReplyVC ()<NotificationInputDelegate, UIScrollViewDelegate>
+@property (nonatomic, strong)UITouchScrollView* scrollView;
 @property (nonatomic, strong)RecordReplyCommentView* commentView;
 @property (nonatomic, strong)RecordReplyVoiceView* voiceView;
 @property (nonatomic, strong)RecordReplyPhotoView* photoView;
@@ -35,10 +35,15 @@
 
 - (UIScrollView *)scrollView{
     if(nil == _scrollView){
-        _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+        __weak typeof(self) wself = self;
+        _scrollView = [[UITouchScrollView alloc] initWithFrame:self.view.bounds];
         [_scrollView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
         [_scrollView setAlwaysBounceVertical:YES];
         [_scrollView setShowsVerticalScrollIndicator:NO];
+        [_scrollView setDelegate:self];
+        [_scrollView setOnTouch:^{
+            [wself onSwipe];
+        }];
         
         [_scrollView addSubview:[self commentView]];
         [_scrollView addSubview:[self voiceView]];
@@ -99,12 +104,23 @@
     return _inputView;
 }
 
+- (void)onSwipe{
+    if(_inputView.actionType != ActionTypeNone){
+        [_inputView setActionType:ActionTypeNone];
+    }
+}
+
 - (void)cancel{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)send{
     
+}
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [self onSwipe];
 }
 
 #pragma mark - NotificationInputViewDelegate

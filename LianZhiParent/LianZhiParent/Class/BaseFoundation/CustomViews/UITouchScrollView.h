@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface UITouchScrollView : UIScrollView
-
+@property (nonatomic, copy)void (^onTouch)();
 @end

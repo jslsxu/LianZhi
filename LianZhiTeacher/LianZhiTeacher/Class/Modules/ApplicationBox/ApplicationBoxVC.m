@@ -355,6 +355,9 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
+    GrowthRecordVC* growthRecordVC = [[GrowthRecordVC alloc] init];
+    [CurrentROOTNavigationVC pushViewController:growthRecordVC animated:YES];
+    return;
     ApplicationItem *item = (ApplicationItem *)modelItem;
     NSString *url = item.url;
     if([url hasPrefix:@"http"])
