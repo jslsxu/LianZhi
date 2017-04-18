@@ -85,12 +85,8 @@
 {
     [_scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     NSInteger width = _scrollView.width - kBorderMargin * 2;
-    _bgView = [[UIView alloc] initWithFrame:CGRectMake(kBorderMargin, kBorderMargin, width, width)];
-    [_scrollView addSubview:_bgView];
-    
-    [self setupImageView];
-    
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, _bgView.bottom + 20, _bgView.width, 100)];
+
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, kBorderMargin, width, 100)];
     [_textView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     [_textView.layer setCornerRadius:10];
     [_textView.layer setMasksToBounds:YES];
@@ -100,7 +96,7 @@
     [_textView setPlaceholder:@"记录下与学生们美好的回忆"];
     [_scrollView addSubview:_textView];
     
-    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(10, _textView.bottom, _bgView.width, 40)];
+    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(10, _textView.bottom, width, 40)];
     [_poiInfoView setParentVC:self];
     [_scrollView addSubview:_poiInfoView];
     
@@ -117,7 +113,11 @@
     [optionLabel setTextColor:[UIColor colorWithHexString:@"999999"]];
     [_scrollView addSubview:optionLabel];
     
-    [_scrollView setContentSize:CGSizeMake(_scrollView.width, MAX(self.view.height - 64, _sendButton.bottom))];
+    _bgView = [[UIView alloc] initWithFrame:CGRectMake(kBorderMargin, kBorderMargin + _sendButton.bottom, width, width)];
+    [_scrollView addSubview:_bgView];
+    [self setupImageView];
+    
+    [_scrollView setContentSize:CGSizeMake(_scrollView.width, MAX(self.view.height - 64, _bgView.bottom))];
 }
 
 - (void)setupImageView
@@ -127,7 +127,7 @@
     [_imageItemViewArray removeAllObjects];
     NSInteger innerMargin = 6;
     CGFloat width = (_bgView.width - innerMargin * 2) / 3;
-    NSInteger num = 9;
+    NSInteger num = 15;
     NSInteger row = MAX((num + 2) / 3, 1);
     for (NSInteger i = 0; i < num;i++)
     {
@@ -152,13 +152,14 @@
             UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
             [imageView addGestureRecognizer:tapGesture];
         }
+        [_bgView setHeight:imageView.bottom + innerMargin];
     }
-    if(_imageArray.count < 9)
+    if(_imageArray.count < num)
     {
         NSInteger num = _imageArray.count;
         row = num / 3;
         NSInteger column = num % 3;
-        [_pickerView setFrame:CGRectMake( column * (width + innerMargin),(width + innerMargin) * row, width, width)];
+        [_pickerView setFrame:CGRectMake( column * (width + innerMargin), (width + innerMargin) * row, width, width)];
         [_bgView addSubview:_pickerView];
     }
 }

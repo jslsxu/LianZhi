@@ -7,6 +7,7 @@
 //
 
 #import "PhotoFlowVC.h"
+#import "CHTCollectionViewWaterfallLayout.h"
 #import "AlbumGroupView.h"
 #import "PhotoPickerCell.h"
 #import "PublishImageItem.h"

@@ -79,5 +79,11 @@
     }
 }
 
+- (NSString *)day{
+    if([self.time length] > 10){
+        return [self.time substringToIndex:10];
+    }
+    return self.time;
+}
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "PhotoFlowVC.h"
-
+#import "PhotoFlowHeaderView.h"
 @implementation PhotoFlowVC
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -33,7 +33,7 @@
     self.title = @"相册";
     [self setSupportPullDown:YES];
     [self setSupportPullUp:YES];
-    
+    [self.collectionView registerClass:[PhotoFlowHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PhotoFlowHeaderView"];
     [self requestData:REQUEST_REFRESH];
     
 }
@@ -68,14 +68,12 @@
 
 - (void)TNBaseCollectionViewControllerModifyLayout:(UICollectionViewFlowLayout *)layout
 {
-    CHTCollectionViewWaterfallLayout *waterfallLayout = [[CHTCollectionViewWaterfallLayout alloc] init];
-    waterfallLayout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
-    waterfallLayout.columnCount = 2;
-    waterfallLayout.headerHeight = 5;
-    waterfallLayout.footerHeight = 5;
-    waterfallLayout.minimumColumnSpacing = 6;
-    waterfallLayout.minimumInteritemSpacing = 6;
-    _layout = waterfallLayout;
+    CGFloat innerMargin = 4;
+    NSInteger itemWidth = (self.view.width - innerMargin * 3) / 4;
+    innerMargin = (self.view.width - itemWidth * 4) / 3;
+    layout.minimumLineSpacing = innerMargin;
+    layout.minimumInteritemSpacing = innerMargin;
+    layout.itemSize = CGSizeMake(itemWidth, itemWidth);
 }
 
 - (void)TNBaseTableViewControllerRequestSuccess
@@ -84,11 +82,31 @@
     [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"%ld张",(long)flowModel.total] style:UIBarButtonItemStylePlain target:nil action:nil]];
 }
 
-#pragma mark - CHTCollectionViewDelegateWaterfallLayout
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    PhotoItem *item = [[self.collectionViewModel modelItemArray] objectAtIndex:indexPath.row];
-    
-    return CGSizeMake(147, item.height * 147 / item.width);
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
+    PhotoFlowModel *flowModel = (PhotoFlowModel *)self.collectionViewModel;
+    BOOL showYear = [flowModel showYearForSection:section];
+    return CGSizeMake(collectionView.width, showYear ? kYearHeight + kDayHeight : kDayHeight);
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
+    if([kind isEqualToString:UICollectionElementKindSectionHeader]){
+        PhotoFlowHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PhotoFlowHeaderView" forIndexPath:indexPath];
+        NSString* headerTitle = [self.collectionViewModel dataOfHeaderForSection:indexPath.section];
+        PhotoFlowModel *flowModel = (PhotoFlowModel *)self.collectionViewModel;
+        BOOL showYear = [flowModel showYearForSection:indexPath.section];
+        NSString* yearStr = [NSString stringWithFormat:@"%@年", [headerTitle substringToIndex:4]];
+        [headerView setYear:showYear ? yearStr : nil];
+        NSString* dateStr = [headerTitle substringWithRange:NSMakeRange(5, 5)];
+        NSString* monthStr = [dateStr substringToIndex:2];
+        NSString* dayStr = [dateStr substringFromIndex:3];
+        NSString* showDayStr = [NSString stringWithFormat:@"%@%zd月%zd日", yearStr, [monthStr integerValue], [dayStr integerValue]];
+        if(!showYear){
+            showDayStr = [NSString stringWithFormat:@"%zd月%zd日", [monthStr integerValue], [dayStr integerValue]];
+        }
+        [headerView setDay:showDayStr];
+        return headerView;
+    }
+    return nil;
 }
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
@@ -105,5 +123,6 @@
     }];
     [self.navigationController pushViewController:browser animated:YES];
 }
+
 
 @end

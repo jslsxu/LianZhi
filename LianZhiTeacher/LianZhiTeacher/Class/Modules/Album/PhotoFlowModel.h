@@ -12,4 +12,5 @@
 @interface PhotoFlowModel : TNListModel
 @property (nonatomic, assign)NSInteger total;
 @property (nonatomic, assign)BOOL forPhotoPicker;
+- (BOOL)showYearForSection:(NSInteger)section;
 @end

@@ -39,7 +39,7 @@
     [_navBar setDelegate:self];
     [self.view addSubview:_navBar];
     
-    _infoBar = [[PhotoBrowserInfoBar alloc] initWithFrame:CGRectMake(0, self.view.height - 32, self.view.width, 32)];
+    _infoBar = [[PhotoBrowserInfoBar alloc] initWithFrame:CGRectMake(0, self.view.height - 100, self.view.width, 100)];
     [self.view addSubview:_infoBar];
     
     [self.view setBackgroundColor:[UIColor colorWithRed:42 / 255.0 green:42 / 255.0 blue:42 / 255.0 alpha:1.f]];
