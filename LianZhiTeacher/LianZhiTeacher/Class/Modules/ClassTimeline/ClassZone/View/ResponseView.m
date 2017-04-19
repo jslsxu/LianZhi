@@ -73,6 +73,22 @@
 
 @end
 @implementation PraiseView
++ (CGFloat)praiseHeightForPraiseArray:(NSArray *)praiseArray width:(CGFloat)width{
+    if(praiseArray.count > 0){
+        NSInteger leftMargin = 30;
+        NSInteger itemWIdth = 22;
+        NSInteger innerMargin = 5;
+        NSInteger num = praiseArray.count;
+        NSInteger countPerRow = (width - leftMargin) / (innerMargin + itemWIdth);
+        NSInteger row = (num + countPerRow - 1) / countPerRow;
+        return innerMargin + (innerMargin + itemWIdth) * row;
+    }
+    else{
+        return 0;
+    }
+    
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -82,10 +98,11 @@
         [_praiseImageView setOrigin:CGPointMake(10, (self.height - _praiseImageView.height) / 2)];
         [self addSubview:_praiseImageView];
         
-        _praiseListView = [[UIView alloc] initWithFrame:CGRectMake(_praiseImageView.right + 5, 0, self.width - 10 - (_praiseImageView.right + 5), kPraiseViewHeight)];
+        _praiseListView = [[UIView alloc] initWithFrame:CGRectMake(30, 0, self.width - 30, kPraiseViewHeight)];
         [self addSubview:_praiseListView];
         
         _sepLine = [[UIView alloc] initWithFrame:CGRectMake(0, kPraiseViewHeight, self.width, kLineHeight)];
+        [_sepLine setAutoresizingMask:UIViewAutoresizingFlexibleTopMargin];
         [_sepLine setBackgroundColor:[UIColor colorWithHexString:@"D8D8D8"]];
         [self addSubview:_sepLine];
     }
@@ -98,22 +115,21 @@
     [_praiseListView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     NSInteger itemWIdth = 22;
     NSInteger innerMargin = 5;
-    NSInteger num = MIN(_praiseArray.count, 6);
-    NSInteger spaceXStart = 0;
+    NSInteger num = _praiseArray.count;
+    NSInteger countPerRow = _praiseListView.width / (innerMargin + itemWIdth);
+    CGFloat height = 0;
     for (NSInteger i = 0; i < num; i++)
     {
+        NSInteger row = i / countPerRow;
+        NSInteger column = i - row * countPerRow;
         UserInfo *userInfo = _praiseArray[i];
-        AvatarView *avatar = [[AvatarView alloc] initWithFrame:CGRectMake(spaceXStart, (_praiseListView.height - itemWIdth) / 2, itemWIdth, itemWIdth)];
+        AvatarView *avatar = [[AvatarView alloc] initWithFrame:CGRectMake( (itemWIdth + innerMargin) * column, innerMargin + (itemWIdth + innerMargin) * row, itemWIdth, itemWIdth)];
         [avatar sd_setImageWithURL:[NSURL URLWithString:userInfo.avatar]];
         [_praiseListView addSubview:avatar];
-        spaceXStart += (itemWIdth + innerMargin);
+        height = avatar.bottom + innerMargin;
     }
-    if(_praiseArray.count > 6)
-    {
-        UIImageView *moreView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ActionPraiseMore"]];
-        [moreView setOrigin:CGPointMake(spaceXStart, (_praiseListView.height - moreView.height) / 2)];
-        [_praiseListView addSubview:moreView];
-    }
+    [_praiseListView setHeight:height];
+    [self setHeight:height];
 }
 
 @end
@@ -131,7 +147,7 @@
     NSArray *responseArray = responseModel.responseArray;
     if(praiseArray.count > 0)
     {
-        height += kPraiseViewHeight;
+        height += [PraiseView praiseHeightForPraiseArray:praiseArray width:width];
     }
     
     NSInteger tableHeight = 0;
@@ -199,7 +215,7 @@
     {
         [_praiseView setHidden:NO];
         [_praiseView setPraiseArray:praiseArray];
-        height += kPraiseViewHeight;
+        height += _praiseView.height;
     }
     else
         [_praiseView setHidden:YES];

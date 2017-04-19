@@ -306,7 +306,7 @@ DNImagePickerControllerDelegate>
 - (NotificationSendChoiceView *)timerSendView{
     @weakify(self);
     if(_timerSendView == nil){
-        _timerSendView = [[NotificationSendChoiceView alloc] initWithFrame:CGRectMake(0, _smsChoiceView.bottom, _scrollView.width, 0) title:@"定时发送"];
+        _timerSendView = [[NotificationSendChoiceView alloc] initWithFrame:CGRectMake(0, _smsChoiceView.bottom, _scrollView.width, 54) title:@"定时发送"];
         [_timerSendView setInfoAction:^{
             [NotificationSelectTimeView showWithCompletion:^(NSInteger timeInterval) {
                 @strongify(self);
@@ -507,6 +507,11 @@ DNImagePickerControllerDelegate>
     
     if([self.sendEntity.words length] == 0){
         [ProgressHUD showHintText:@"请输入通知内容"];
+        return NO;
+    }
+    
+    if(self.sendEntity.delaySend && self.sendEntity.delaySendTime == 0){
+        [ProgressHUD showHintText:@"请选择时间"];
         return NO;
     }
     return YES;

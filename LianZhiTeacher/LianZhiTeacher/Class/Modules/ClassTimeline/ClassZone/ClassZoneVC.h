@@ -47,7 +47,6 @@ extern NSString *const kPublishPhotoItemKey;
 @interface ClassZoneVC : TNBaseTableViewController<PublishZoneItemDelegate, ReplyBoxDelegate, ClassZoneItemCellDelegate>
 {
     ClassZoneHeaderView*            _headerView;
-    UIView*                      _publishToolBar;
     NSMutableArray*                 _buttonItems;
     ReplyBox*                       _replyBox;
 }

@@ -13,6 +13,7 @@
 #import "NewMessageVC.h"
 #import "FeedItemDetailVC.h"
 #import "ActionPopView.h"
+#import "PublishVideoVC.h"
 
 #define kClassZoneShown         @"ClassZoneShown"
 
@@ -356,39 +357,6 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     [self requestData:REQUEST_REFRESH];
 }
 
-- (void)setupToolBar:(UIView *)viewParent
-{
-    [_buttonItems makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    if(_buttonItems == nil)
-        _buttonItems = [NSMutableArray array];
-    else
-        [_buttonItems removeAllObjects];
-    
-    [viewParent setBackgroundColor:[UIColor whiteColor]];
-    
-    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewParent.width, kLineHeight)];
-    [topLine setBackgroundColor:[UIColor colorWithHexString:@"d7d7d7"]];
-    [viewParent addSubview:topLine];
-    
-    NSArray *titleArray = @[@"发文字",@"发照片",@"发语音",@"编辑板报"];
-    NSArray *imageArray = @[@"PostText",@"PostPhoto",@"PostAudio",@"EditBlackBoard"];
-    ClassZoneModel *zoneModel = (ClassZoneModel *)self.tableViewModel;
-    NSInteger actionCount = zoneModel.canEdit ? 4 : 3;
-    CGFloat tabWidth = self.view.width / actionCount;
-    for (NSInteger i = 0; i < actionCount; i++)
-    {
-        LZTabBarButton *barButton = [[LZTabBarButton alloc] initWithFrame:CGRectMake(tabWidth * i, 0, tabWidth, viewParent.height)];
-        [barButton.titleLabel setFont:[UIFont systemFontOfSize:12]];
-        [barButton setTitle:titleArray[i] forState:UIControlStateNormal];
-        [barButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        [barButton setTitleColor:kCommonTeacherTintColor forState:UIControlStateHighlighted];
-        [barButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Normal",imageArray[i]]] forState:UIControlStateNormal];
-        [barButton setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@Highlighted",imageArray[i]]] forState:UIControlStateHighlighted];
-        [barButton addTarget:self action:@selector(onToolBarButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [viewParent addSubview:barButton];
-        [_buttonItems addObject:barButton];
-    }
-}
 
 - (void)addUserGuide
 {
@@ -413,55 +381,14 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (void)onAddClicked
 {
     ClassZoneModel *zoneModel = (ClassZoneModel *)self.tableViewModel;
-    NSInteger actionCount = zoneModel.canEdit ? 4 : 3;
-    NSArray *titleArray = @[@"发文字",@"发照片",@"发语音",@"编辑板报"];
-    NSArray *imageArray = @[@"ClassZoneText",@"ClassZonePhoto",@"ClassZoneAudio",@"ClassZoneNewspapper"];
+    NSInteger actionCount = zoneModel.canEdit ? 5 : 4;
+    NSArray *titleArray = @[@"发文字",@"发照片",@"发语音",@"发视频",@"编辑板报"];
+    NSArray *imageArray = @[@"ClassZoneText",@"ClassZonePhoto",@"ClassZoneAudio",@"ClassZoneAudio",@"ClassZoneNewspapper"];
     ActionPopView *actionPopView = [[ActionPopView alloc] initWithImageArray:[imageArray subarrayWithRange:NSMakeRange(0, actionCount)] titleArray:[titleArray subarrayWithRange:NSMakeRange(0, actionCount)]];
     [actionPopView setDelegate:self];
     [actionPopView show];
 }
 
-
-- (void)onToolBarButtonClicked:(UIButton *)button
-{
-    NSInteger index = [_buttonItems indexOfObject:button];
-    PublishBaseVC *publishVC = nil;
-    if(index == 0)
-    {
-        publishVC = [[PublishArticleVC alloc] init];
-    }
-    else if(index == 1)
-    {
-        publishVC = [[PublishPhotoVC alloc] init];
-    }
-    else if(index == 2)
-    {
-        publishVC = [[PublishAudioVC alloc] init];
-    }
-    else
-    {
-        ClassZoneModel *zoneModel = (ClassZoneModel *)self.tableViewModel;
-        if(zoneModel.canEdit)
-        {
-            PublishNewspaperVC *newspaperVC = [[PublishNewspaperVC alloc] init];
-            [newspaperVC setDelegate:self];
-            [newspaperVC setClassInfo:self.classInfo];
-            [newspaperVC setNewsPaper:zoneModel.newsPaper];
-            publishVC = newspaperVC;
-        }
-        else
-        {
-            [ProgressHUD showHintText:@"只有班主任才能修改黑板报"];
-            return;
-        }
-    }
-    [publishVC setDelegate:self];
-    [publishVC setClassInfo:self.classInfo];
-    TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:publishVC];
-    [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:^{
-        
-    }];
-}
 
 - (void)onStatusChanged
 {
@@ -557,6 +484,9 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     {
         publishVC = [[PublishAudioVC alloc] init];
     }
+    else if(index == 3){
+        publishVC = [[PublishVideoVC alloc] init];
+    }
     else
     {
         ClassZoneModel *zoneModel = (ClassZoneModel *)self.tableViewModel;
@@ -576,10 +506,11 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     }
     [publishVC setDelegate:self];
     [publishVC setClassInfo:self.classInfo];
-    TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:publishVC];
-    [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:^{
-        
-    }];
+    [self.navigationController pushViewController:publishVC animated:YES];
+//    TNBaseNavigationController *navVC = [[TNBaseNavigationController alloc] initWithRootViewController:publishVC];
+//    [CurrentROOTNavigationVC presentViewController:navVC animated:YES completion:^{
+//        
+//    }];
 
 }
 
@@ -626,7 +557,6 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
         newsPaper = [NSString stringWithFormat:@"热烈庆祝我们班率先引用连枝APP智能客户端这里是我们 %@ 的掌上根据地。就让我们一起努力经营好这个大家庭吧",self.classInfo.name];
     [_headerView setNewsPaper:newsPaper];
     
-    [self setupToolBar:_publishToolBar];
 }
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath

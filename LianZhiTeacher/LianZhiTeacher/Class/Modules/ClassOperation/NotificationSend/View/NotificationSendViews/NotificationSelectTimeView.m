@@ -66,6 +66,9 @@
 }
 
 - (void)setDate:(NSDate *)date{
+    if(!date){
+        date = [NSDate date];
+    }
     if([date timeIntervalSinceDate:_datePicker.minimumDate] >= 0){
         [_datePicker setDate:date];
     }

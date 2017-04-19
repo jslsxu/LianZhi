@@ -193,6 +193,7 @@
 		37C6B44E1BF2F47D0001D54F /* TreeHouse.png in Resources */ = {isa = PBXBuildFile; fileRef = 37C6B44C1BF2F47D0001D54F /* TreeHouse.png */; };
 		37C6B4501BF2F4C20001D54F /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C6B44F1BF2F4C20001D54F /* AddressBook.framework */; };
 		37C792501EA60CDF001546BE /* PhotoFlowHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C7924F1EA60CDF001546BE /* PhotoFlowHeaderView.m */; };
+		37C792561EA700A8001546BE /* PublishVideoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C792551EA700A8001546BE /* PublishVideoVC.m */; };
 		37C88F6E1A827AD2008E44DB /* LogConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C88F6D1A827AD2008E44DB /* LogConfig.m */; };
 		37C88F771A8357E9008E44DB /* ExchangeSchoolVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C88F761A8357E9008E44DB /* ExchangeSchoolVC.m */; };
 		37C88F791A83AD08008E44DB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C88F781A83AD08008E44DB /* AudioToolbox.framework */; };
@@ -874,6 +875,8 @@
 		37C6B44F1BF2F4C20001D54F /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		37C7924E1EA60CDF001546BE /* PhotoFlowHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoFlowHeaderView.h; sourceTree = "<group>"; };
 		37C7924F1EA60CDF001546BE /* PhotoFlowHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFlowHeaderView.m; sourceTree = "<group>"; };
+		37C792541EA700A8001546BE /* PublishVideoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublishVideoVC.h; sourceTree = "<group>"; };
+		37C792551EA700A8001546BE /* PublishVideoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublishVideoVC.m; sourceTree = "<group>"; };
 		37C88F6C1A827AD2008E44DB /* LogConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogConfig.h; sourceTree = "<group>"; };
 		37C88F6D1A827AD2008E44DB /* LogConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogConfig.m; sourceTree = "<group>"; };
 		37C88F751A8357E9008E44DB /* ExchangeSchoolVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExchangeSchoolVC.h; sourceTree = "<group>"; };
@@ -1595,6 +1598,8 @@
 				371C6DAA1A7015AF00FA4AEC /* PublishSelectionView.m */,
 				37E038E61A7386D3003A3A7F /* PublishNewspaperVC.h */,
 				37E038E71A7386D3003A3A7F /* PublishNewspaperVC.m */,
+				37C792541EA700A8001546BE /* PublishVideoVC.h */,
+				37C792551EA700A8001546BE /* PublishVideoVC.m */,
 			);
 			path = Publish;
 			sourceTree = "<group>";
@@ -4308,6 +4313,7 @@
 				8DE718501DABA3980080476D /* HomeworkDetailVC.m in Sources */,
 				8DCFD6AB1D4B60D0001EDC8A /* NotificationDetailActionView.m in Sources */,
 				8D867D571D4128F10020A21C /* VideoRecordView.m in Sources */,
+				37C792561EA700A8001546BE /* PublishVideoVC.m in Sources */,
 				37EAC9EA1B82446F007BFBA1 /* CommonInputVC.m in Sources */,
 				37CA18731AB70A2F00B49B55 /* PhotoPickerModel.m in Sources */,
 				37DEE4DA1A57C1D8009A8771 /* ClassAppModel.m in Sources */,

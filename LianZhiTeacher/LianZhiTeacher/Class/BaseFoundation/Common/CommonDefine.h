@@ -9,9 +9,6 @@
 #ifndef BaseFoundation_CommonDefine_h
 #define BaseFoundation_CommonDefine_h
 
-#define kScreenWidth                    [UIScreen mainScreen].bounds.size.width
-#define kScreenHeight                   [UIScreen mainScreen].bounds.size.height
-
 #define RunTimeSysVersion               ([[UIDevice currentDevice].systemVersion floatValue])
 #define IS_IOS8_LATER                   (RunTimeSysVersion >= 8.0f)
 
