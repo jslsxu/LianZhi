@@ -226,7 +226,9 @@
 
 #pragma mark -
 #pragma mark UICollectionViewDelegate
-
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+    return [_collectionViewModel numOfSections];
+}
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {

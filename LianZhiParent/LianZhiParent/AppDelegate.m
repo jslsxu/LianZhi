@@ -16,7 +16,8 @@
 #import <Bugtags/Bugtags.h>
 #import <UserNotifications/UserNotifications.h>
 #import "UMMobClick/MobClick.h"
-
+#import "OpenShare.h"
+#import "OpenShareHeader.h"
 static SystemSoundID shake_sound_male_id = 0;
 
 #define kBaseInfoModifyKey                  @"BaseInfoModifyKey"
@@ -85,7 +86,7 @@ static SystemSoundID shake_sound_male_id = 0;
     [self.window setBackgroundColor:kCommonBackgroundColor];
     [self cleanOldData];
     [Bugtags startWithAppKey:kBugtagsKey invocationEvent:[self isInhouse] ? BTGInvocationEventBubble : BTGInvocationEventNone];
-    [[SVShareManager sharedInstance] initialize];
+    [self registerShare];
     [self setupCommonHandler];
     [self registerThirdParty];
     [self registerUmeng];
@@ -131,6 +132,11 @@ static SystemSoundID shake_sound_male_id = 0;
     return YES;
 }
 
+- (void)registerShare{
+    [OpenShare connectQQWithAppId:AppKey_QZone];
+    [OpenShare connectWeiboWithAppKey:AppKey_SinaWeibo];
+    [OpenShare connectWeixinWithAppId:AppKey_Weixin];
+}
 
 - (void)setupCommonAppearance
 {
@@ -278,6 +284,13 @@ static SystemSoundID shake_sound_male_id = 0;
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     [self handleNotification:userInfo];
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options{
+    if([OpenShare handleOpenURL:url]){
+        return YES;
+    }
+    return NO;
 }
 
 - (void)checkNewVersion

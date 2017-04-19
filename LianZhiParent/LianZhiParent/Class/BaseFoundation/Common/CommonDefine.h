@@ -67,4 +67,29 @@
 
 #define kBugtagsKey                         @"18842ccaef5c44136335788e1c0de1b3"
 #define kUmentAppKey                        @"57e9f56c67e58e2d8e001fc3"
+
+/**
+ *  Weixin
+ */
+#define AppKey_Weixin       @"wx7b4dfff6299dc03d"
+#define AppSecret_Weixin    @"be3024278615b729973054fd7ed7650e"
+
+/**
+ *  SinaWeibo
+ */
+#define AppKey_SinaWeibo @"460455511"
+#define AppSecret_SinaWeibo @"62c3d7036d6c96c9a9a1080b0c2aecbc"
+//#define kSinaWeiboSourceApplication @"com.sina.weibo"
+#define kSinaWeiboRedirectURI @"http://www.sina.com"
+
+//#define AppKey_SinaWeibo @"568898243"
+//#define AppSecret_SinaWeibo @"38a4f8204cc784f81f9f0daaf31e02e3"
+////#define kSinaWeiboSourceApplication @"com.sina.weibo"
+//#define kSinaWeiboRedirectURI @"http://www.sharesdk.cn"
+
+/**
+ *  QQ & QZone
+ */
+#define AppKey_QZone    @"1104828207" // 这个key实际是QQ开放平台的AppId
+#define AppSecret_QZone    @"yEo5LXHSNtvhRQxu" // QQ没有secret,这个是AppKey
 #endif

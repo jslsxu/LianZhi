@@ -10,6 +10,6 @@
 #import "CHTCollectionViewWaterfallLayout.h"
 #import "MJPhotoBrowser.h"
 #import "PhotoFlowModel.h"
-@interface PhotoFlowVC : TNBaseCollectionViewController<CHTCollectionViewDelegateWaterfallLayout>
+@interface PhotoFlowVC : TNBaseCollectionViewController
 @property (nonatomic, copy)NSString *classID;
 @end

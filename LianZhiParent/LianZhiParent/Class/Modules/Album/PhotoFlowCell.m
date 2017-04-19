@@ -14,10 +14,11 @@
     self = [super initWithFrame:frame];
     if(self)
     {
+        [self setBackgroundColor:[UIColor colorWithHexString:@"ddddddd"]];
         [self setClipsToBounds:YES];
+        [self setBackgroundColor:[UIColor lightGrayColor]];
         _imageView = [[UIImageView alloc] initWithFrame:self.bounds];
-        [_imageView setContentMode:UIViewContentModeScaleAspectFit];
-        [_imageView setBackgroundColor:[UIColor clearColor]];
+        [_imageView setContentMode:UIViewContentModeScaleAspectFill];
         [_imageView setClipsToBounds:YES];
         [self addSubview:_imageView];
     }

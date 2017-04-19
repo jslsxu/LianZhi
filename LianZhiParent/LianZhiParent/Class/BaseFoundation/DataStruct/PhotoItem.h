@@ -30,4 +30,5 @@
 - (id)initWithDataWrapper:(TNDataWrapper *)dataWrapper;
 - (BOOL)isLocal;
 - (BOOL)isSame:(PhotoItem *)object;
+- (NSString *)day;
 @end
