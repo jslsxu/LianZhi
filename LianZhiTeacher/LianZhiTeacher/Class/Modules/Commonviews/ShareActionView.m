@@ -7,6 +7,7 @@
 //
 
 #import "ShareActionView.h"
+#import "OpenShareHeader.h"
 #define kShareViewWidth             270
 #define kShareViewHeight            240
 @interface ShareActionView ()
@@ -90,32 +91,71 @@
 - (void)onActionButtonClicked:(LZTabBarButton *)button
 {
     NSInteger index = [_shareArray indexOfObject:button];
-    NSArray *typeArray = @[@(SSDKPlatformSubTypeWechatSession),@(SSDKPlatformSubTypeWechatTimeline),@(SSDKPlatformSubTypeQZone),@(SSDKPlatformSubTypeQQFriend),@(SSDKPlatformTypeSinaWeibo), @(SSDKPlatformTypeCopy)];
-    SSDKPlatformType shareType = (SSDKPlatformType)[typeArray[index] integerValue];
-    if(shareType != SSDKPlatformTypeCopy)
-    {
-        UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:self.imageUrl];
-        if(!image)
-            image = self.image;
-        [[SVShareManager sharedInstance] shareWithType:shareType image:image imageUrl:self.imageUrl title:self.title content:self.content url:self.url result:^(SSDKPlatformType type, SSDKResponseState state, NSString *errorMsg) {
-            if(SSDKResponseStateSuccess == state)
-            {
-                [ProgressHUD showSuccess:@"分享成功"];
-                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/share" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                    
-                } fail:^(NSString *errMsg) {
-                    
-                }];
-            }
-            else if(errorMsg.length > 0)
-                [ProgressHUD showHintText:errorMsg];
-        }];
-    }
-    else
-    {
+    if(index == 5){
         UIPasteboard *pboard = [UIPasteboard generalPasteboard];
         pboard.string = self.url;
         [ProgressHUD showHintText:@"已复制到剪切板"];
+    }
+    else{
+        void (^success)() = ^(){
+            [ProgressHUD showSuccess:@"分享成功"];
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"user/share" method:REQUEST_GET type:REQUEST_REFRESH withParams:nil observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                
+            } fail:^(NSString *errMsg) {
+                
+            }];
+        };
+        void (^fail)() = ^(){
+            [ProgressHUD showHintText:@"分享失败"];
+        };
+        OSMessage *message = [OSMessage new];
+        message.title = self.title;
+        message.desc = self.content;
+        if([message.desc length] == 0){
+            message.desc = message.title;
+        }
+        message.link = self.url;
+        UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:self.imageUrl];
+        if(!image)
+            image = [UIImage imageNamed:@"AppIcon"];
+        message.image = image;
+        message.thumbnail = image;
+        message.multimediaType = OSMultimediaTypeNews;
+        if(index == 0){
+            [OpenShare shareToWeixinSession:message Success:^(OSMessage *message) {
+                success();
+            } Fail:^(OSMessage *message, NSError *error) {
+                fail();
+            }];
+        }
+        else if(index == 1){
+            [OpenShare shareToWeixinTimeline:message Success:^(OSMessage *message) {
+                success();
+            } Fail:^(OSMessage *message, NSError *error) {
+                fail();
+            }];
+        }
+        else if(index == 2){
+            [OpenShare shareToQQZone:message Success:^(OSMessage *message) {
+                success();
+            } Fail:^(OSMessage *message, NSError *error) {
+                fail();
+            }];
+        }
+        else if(index == 3){
+            [OpenShare shareToQQFriends:message Success:^(OSMessage *message) {
+                success();
+            } Fail:^(OSMessage *message, NSError *error) {
+                fail();
+            }];
+        }
+        else if(index == 4){
+            [OpenShare shareToWeibo:message Success:^(OSMessage *message) {
+                success();
+            } Fail:^(OSMessage *message, NSError *error) {
+                fail();
+            }];
+        }
     }
     [self dismiss];
 }

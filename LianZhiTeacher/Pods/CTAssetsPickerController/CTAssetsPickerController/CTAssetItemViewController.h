@@ -1,9 +1,8 @@
 /*
- CTAssetItemViewController.h
  
- The MIT License (MIT)
+ MIT License (MIT)
  
- Copyright (c) 2013 Clement CN Tsang
+ Copyright (c) 2015 Clement CN Tsang
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -26,29 +25,19 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <AssetsLibrary/AssetsLibrary.h>
-
-@protocol CTAssetItemViewControllerDataSource;
-
-
+#import <Photos/Photos.h>
 
 
 
 @interface CTAssetItemViewController : UIViewController
 
-+ (CTAssetItemViewController *)assetItemViewControllerForPageIndex:(NSInteger)pageIndex;
+@property (nonatomic, assign) BOOL allowsSelection;
+@property (nonatomic, strong, readonly) PHAsset *asset;
+@property (nonatomic, strong, readonly) UIImage *image;
 
-@property (nonatomic, weak) id<CTAssetItemViewControllerDataSource> dataSource;
-@property (nonatomic, assign) NSInteger pageIndex;
++ (CTAssetItemViewController *)assetItemViewControllerForAsset:(PHAsset *)asset;
 
-@end
-
-
-
-
-
-@protocol CTAssetItemViewControllerDataSource <NSObject>
-@required
-- (ALAsset *)assetAtIndex:(NSUInteger)index;
+- (void)playAsset:(id)sender;
+- (void)pauseAsset:(id)sender;
 
 @end

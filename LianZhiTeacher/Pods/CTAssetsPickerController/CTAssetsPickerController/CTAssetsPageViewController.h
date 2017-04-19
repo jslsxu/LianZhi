@@ -1,9 +1,8 @@
 /*
- CTAssetsPageViewController.h
  
- The MIT License (MIT)
+ MIT License (MIT)
  
- Copyright (c) 2013 Clement CN Tsang
+ Copyright (c) 2015 Clement CN Tsang
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +25,7 @@
  */
 
 #import <UIKit/UIKit.h>
-
+#import <Photos/Photos.h>
 
 
 
@@ -48,12 +47,21 @@
  */
 
 /**
- *  Initializes a newly created view controller with an array of asset items.
+ *  Initializes a newly created view controller with a fetech result.
  *
- *  @param assets An array of `ALAsset` objects.
+ *  @param fetchResult A fetch result of `PHAsset` objects.
+ *
+ *  @return An instance of `CTAssetPageViewController` initialized to show the asset items in `fetchResult`.
+ */
+- (instancetype)initWithFetchResult:(PHFetchResult *)fetchResult;
+
+/**
+ *  Initializes a newly created view controller with an array of assets.
+ *
+ *  @param assets An array of `PHAsset` objects.
  *
  *  @return An instance of `CTAssetPageViewController` initialized to show the asset items in `assets`.
  */
-- (id)initWithAssets:(NSArray *)assets;
+- (instancetype)initWithAssets:(NSArray *)assets;
 
 @end

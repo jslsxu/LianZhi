@@ -19,6 +19,8 @@
 #import <Bugtags/Bugtags.h>
 #import <UserNotifications/UserNotifications.h>
 #import "UMMobClick/MobClick.h"
+#import "OpenShare.h"
+#import "OpenShareHeader.h"
 
 static SystemSoundID shake_sound_male_id = 0;
 @interface AppDelegate ()<WelComeViewDelegate>
@@ -62,14 +64,13 @@ static SystemSoundID shake_sound_male_id = 0;
     
     [self cleanOldData];
     [Bugtags startWithAppKey:kBugtagsKey invocationEvent:[self isInhouse] ?  BTGInvocationEventBubble : BTGInvocationEventNone];
-    [[SVShareManager sharedInstance] initialize];
     [[TaskUploadManager sharedInstance] start];
     [MAMapServices sharedServices].apiKey = [self curAutoNaviKey];
     [self setupCommonHandler];
     [self registerSound];           //注册声音
     [self registerUmeng];
     [self registerRemoteNotification];
-    
+    [self registerShare];
     if([self isNewVersion])
     {
         [self logout];
@@ -115,6 +116,12 @@ static SystemSoundID shake_sound_male_id = 0;
     else{
         return self.homeVC.selectedViewController;
     }
+}
+
+- (void)registerShare{
+    [OpenShare connectQQWithAppId:AppKey_QZone];
+    [OpenShare connectWeiboWithAppKey:AppKey_SinaWeibo];
+    [OpenShare connectWeixinWithAppId:AppKey_Weixin];
 }
 
 - (void)setupCommonHandler
@@ -336,6 +343,13 @@ static SystemSoundID shake_sound_male_id = 0;
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     [self handleNotification:userInfo];
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options{
+    if([OpenShare handleOpenURL:url]){
+        return YES;
+    }
+    return NO;
 }
 
 - (void)registerSound

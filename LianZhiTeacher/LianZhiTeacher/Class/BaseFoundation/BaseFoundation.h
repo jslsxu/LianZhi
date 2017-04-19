@@ -9,7 +9,6 @@
 #import "SynthesizeSingleton.h"
 #import "Extends.h"
 #import "Utility.h"
-#import "SVShareManager.h"
 #import <MAMapKit/MAMapKit.h> 
 #import <AMapSearchKit/AMapSearchAPI.h>
 #import "Reachability.h"
