@@ -101,7 +101,7 @@
 
 - (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
 {
-    NSInteger index = indexPath.row;
+    NSInteger index = [self.collectionViewModel.modelItemArray indexOfObject:modelItem];
     MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
     [browser setPhotos:self.collectionViewModel.modelItemArray];
     [browser setCurrentPhotoIndex:index];
