@@ -16,7 +16,6 @@
 #import "PasswordModificationVC.h"
 #include "BaseInfoModifyVC.h"
 #import "RelatedInfoVC.h"
-#import <Bugtags/Bugtags.h>
 #import <UserNotifications/UserNotifications.h>
 #import "UMMobClick/MobClick.h"
 #import "OpenShare.h"
@@ -63,7 +62,7 @@ static SystemSoundID shake_sound_male_id = 0;
     [self setupCommonAppearance];
     
     [self cleanOldData];
-    [Bugtags startWithAppKey:kBugtagsKey invocationEvent:[self isInhouse] ?  BTGInvocationEventBubble : BTGInvocationEventNone];
+//    [Bugtags startWithAppKey:kBugtagsKey invocationEvent:[self isInhouse] ?  BTGInvocationEventBubble : BTGInvocationEventNone];
     [[TaskUploadManager sharedInstance] start];
     [MAMapServices sharedServices].apiKey = [self curAutoNaviKey];
     [self setupCommonHandler];

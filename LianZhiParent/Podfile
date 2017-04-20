@@ -7,7 +7,6 @@ pod 'YYKit'
 pod 'SSZipArchive'
 pod 'MJRefresh'
 pod "FDFullscreenPopGesture"
-pod 'Bugtags'
 pod 'Masonry'
 pod 'SCRecorder'
 pod 'ReactiveCocoa'

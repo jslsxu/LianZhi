@@ -13,7 +13,6 @@
 #import "MessageDetailVC.h"
 #import "PasswordModificationVC.h"
 #import "BaseInfoModifyVC.h"
-#import <Bugtags/Bugtags.h>
 #import <UserNotifications/UserNotifications.h>
 #import "UMMobClick/MobClick.h"
 #import "OpenShare.h"
@@ -85,7 +84,7 @@ static SystemSoundID shake_sound_male_id = 0;
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window setBackgroundColor:kCommonBackgroundColor];
     [self cleanOldData];
-    [Bugtags startWithAppKey:kBugtagsKey invocationEvent:[self isInhouse] ? BTGInvocationEventBubble : BTGInvocationEventNone];
+//    [Bugtags startWithAppKey:kBugtagsKey invocationEvent:[self isInhouse] ? BTGInvocationEventBubble : BTGInvocationEventNone];
     [self registerShare];
     [self setupCommonHandler];
     [self registerThirdParty];

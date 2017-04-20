@@ -3714,7 +3714,6 @@
 				37C355CC1A3FD5CF00B948E6 /* Sources */,
 				37C355CD1A3FD5CF00B948E6 /* Frameworks */,
 				37C355CE1A3FD5CF00B948E6 /* Resources */,
-				8DB8FAE71D655CA4006B44B2 /* Bugtags dsym Auto upload */,
 				56855FA404AB9088CAA14FA1 /* [CP] Embed Pods Frameworks */,
 				7559B16AB7974565D0E40348 /* [CP] Copy Pods Resources */,
 			);
@@ -3860,20 +3859,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LianZhiTeacher/Pods-LianZhiTeacher-resources.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		8DB8FAE71D655CA4006B44B2 /* Bugtags dsym Auto upload */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bugtags dsym Auto upload";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "SKIP_DEBUG_BUILDS=1     #在Debug模式下编译是否自动上传符号表 0 上传 1不上传\nSKIP_SIMULATOR_BUILDS=1 #在模拟器环境下编译是否自动上传符号表 0上传 1不上传\nAPP_KEY=\"642ba56fcae0559e4e33f717e3bbd980\"              #请填写应用的App Key\nAPP_SECRET=\"4e45480680106ccffd8960358ec9d26e\"           #请填写应用的App Secret，可向应用创建者索要\nSCRIPT_SRC=$(find \"$PROJECT_DIR\" -name 'Bugtags_dsym_autoupload.sh' | head -1)\nif [ ! \"${SCRIPT_SRC}\" ]; then\necho \"Bugtags: err: script not found. Make sure that you're including Bugtags.bundle in your project directory\"\nexit 1\nfi\nsource \"${SCRIPT_SRC}\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 

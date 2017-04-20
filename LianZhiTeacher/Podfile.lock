@@ -1,7 +1,4 @@
 PODS:
-  - Bugtags (2.2.2):
-    - Bugtags/Core (= 2.2.2)
-  - Bugtags/Core (2.2.2)
   - CryptoSwift (0.6.8)
   - CTAssetsPickerController (3.3.1):
     - PureLayout (~> 3.0.0)
@@ -43,7 +40,6 @@ PODS:
   - YYKit/no-arc (1.0.9)
 
 DEPENDENCIES:
-  - Bugtags
   - CryptoSwift
   - CTAssetsPickerController
   - FCFileManager
@@ -65,7 +61,6 @@ DEPENDENCIES:
   - YYKit
 
 SPEC CHECKSUMS:
-  Bugtags: bc4e3f55ee72b859380c3b298431dbd4b4075818
   CryptoSwift: f21ea03ed3a94e79d241648ce26652cd4810508a
   CTAssetsPickerController: b1d1d50ab87cf6b8b13531de5f4530482e7e53ed
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
@@ -90,6 +85,6 @@ SPEC CHECKSUMS:
   XHRealTimeBlur: 661fadd5691ba2d349758e8fd5fbdb499ac55f8c
   YYKit: 7cda43304a8dc3696c449041e2cb3107b4e236e7
 
-PODFILE CHECKSUM: a4dc044136a737b299985576f26ae260506594e4
+PODFILE CHECKSUM: e5f9ba77e4a4dc5bbe02c429edfae4f860975762
 
 COCOAPODS: 1.1.1
