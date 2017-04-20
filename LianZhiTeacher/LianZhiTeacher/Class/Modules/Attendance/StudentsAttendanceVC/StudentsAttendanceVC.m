@@ -162,10 +162,8 @@
         TNDataWrapper* lockWrapper = [responseObject getDataWrapperForKey:@"lock"];
         BOOL locked = [lockWrapper getBoolForKey:@"flg"];
         NSString* message = [lockWrapper getStringForKey:@"msg"];
-        if(locked){
-            [ProgressHUD showHintText:message];
-        }
-        else{
+        
+        if(!locked){
             TNDataWrapper *itemsWrapper = [responseObject getDataWrapperForKey:@"items"];
             NSArray* items = [StudentAttendanceItem nh_modelArrayWithJson:itemsWrapper.data];
             for (StudentAttendanceItem* attendanceItem in items) {
@@ -173,6 +171,9 @@
                 attendanceItem.edit_mark = attendanceItem.mark_time;
             }
             [wself gotoEditAttendanceWithData:items];
+        }
+        if([message length] > 0){
+            [ProgressHUD showHintText:message];
         }
     } fail:^(NSString *errMsg) {
         [hud hide:NO];

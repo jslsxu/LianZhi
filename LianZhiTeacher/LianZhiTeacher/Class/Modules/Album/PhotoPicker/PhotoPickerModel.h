@@ -8,6 +8,6 @@
 
 #import "PhotoFlowModel.h"
 #import "PhotoPickerItem.h"
-@interface PhotoPickerModel : PhotoFlowModel
-
+@interface PhotoPickerModel : TNListModel
+@property (nonatomic, assign)NSInteger total;
 @end

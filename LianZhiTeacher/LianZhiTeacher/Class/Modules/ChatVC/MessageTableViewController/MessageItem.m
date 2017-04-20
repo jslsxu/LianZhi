@@ -61,7 +61,7 @@
 
 - (MessageFrom)from{
     MessageFrom fromType;
-    if([self.user.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid])
+    if([self.user.uid isEqualToString:[UserCenter sharedInstance].userInfo.uid] && [self.user.name isEqualToString:[UserCenter sharedInstance].userInfo.name])
         fromType = UUMessageFromMe;
     else
         fromType = UUMessageFromOther;

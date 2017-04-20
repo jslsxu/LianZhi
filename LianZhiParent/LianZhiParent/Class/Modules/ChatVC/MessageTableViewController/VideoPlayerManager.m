@@ -7,31 +7,23 @@
 //
 
 #import "VideoPlayerManager.h"
-#import <MediaPlayer/MediaPlayer.h>
+#import "VideoPlayerVC.h"
 
 @implementation VideoPlayerManager
 SYNTHESIZE_SINGLETON_FOR_CLASS(VideoPlayerManager)
-- (void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
+
 
 - (BOOL)isPlaying{
-    return _isPlaying;
+    return [VideoPlayerVC isPlaying];
 }
 
 - (void)playWithUrl:(NSURL *)url{
     BOOL exist = NO;
     exist = url && [[NSFileManager defaultManager] fileExistsAtPath:url.path];
     if(exist){
-        if(!_isPlaying){
-            _isPlaying = YES;
-            MPMoviePlayerViewController *playerVC = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
-            [CurrentROOTNavigationVC presentMoviePlayerViewControllerAnimated:playerVC];
-            
-            [[NSNotificationCenter defaultCenter] removeObserver:playerVC
-                                                            name:MPMoviePlayerPlaybackDidFinishNotification object:playerVC.moviePlayer];
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(videoFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:playerVC.moviePlayer];
+        if(![VideoPlayerVC isPlaying]){
+            VideoPlayerVC *playerVC = [[VideoPlayerVC alloc] initWithVideoUrl:url];
+            [CurrentROOTNavigationVC presentViewController:playerVC animated:YES completion:nil];
         }
     }
     else{
@@ -39,12 +31,4 @@ SYNTHESIZE_SINGLETON_FOR_CLASS(VideoPlayerManager)
     }
 }
 
-- (void)videoFinished:(NSNotification *)notification{
-    _isPlaying = NO;
-//    NSInteger value = [[notification.userInfo valueForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] intValue];
-//    if (value == MPMovieFinishReasonUserExited) {
-        [CurrentROOTNavigationVC dismissMoviePlayerViewControllerAnimated];
-//    }
-     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 @end

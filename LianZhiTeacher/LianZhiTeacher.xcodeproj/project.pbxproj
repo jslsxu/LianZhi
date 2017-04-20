@@ -200,6 +200,7 @@
 		37C7927C1EA76F0C001546BE /* OpenShare+Weibo.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C792731EA76F0C001546BE /* OpenShare+Weibo.m */; };
 		37C7927D1EA76F0C001546BE /* OpenShare+Weixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C792751EA76F0C001546BE /* OpenShare+Weixin.m */; };
 		37C7927E1EA76F0C001546BE /* OpenShare.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C792771EA76F0C001546BE /* OpenShare.m */; };
+		37C792991EA86072001546BE /* VideoPlayerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C792981EA86072001546BE /* VideoPlayerVC.m */; };
 		37C88F6E1A827AD2008E44DB /* LogConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C88F6D1A827AD2008E44DB /* LogConfig.m */; };
 		37C88F771A8357E9008E44DB /* ExchangeSchoolVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C88F761A8357E9008E44DB /* ExchangeSchoolVC.m */; };
 		37C88F791A83AD08008E44DB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C88F781A83AD08008E44DB /* AudioToolbox.framework */; };
@@ -883,6 +884,8 @@
 		37C792761EA76F0C001546BE /* OpenShare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenShare.h; sourceTree = "<group>"; };
 		37C792771EA76F0C001546BE /* OpenShare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenShare.m; sourceTree = "<group>"; };
 		37C792781EA76F0C001546BE /* OpenShareHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenShareHeader.h; sourceTree = "<group>"; };
+		37C792971EA86072001546BE /* VideoPlayerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayerVC.h; sourceTree = "<group>"; };
+		37C792981EA86072001546BE /* VideoPlayerVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerVC.m; sourceTree = "<group>"; };
 		37C88F6C1A827AD2008E44DB /* LogConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogConfig.h; sourceTree = "<group>"; };
 		37C88F6D1A827AD2008E44DB /* LogConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogConfig.m; sourceTree = "<group>"; };
 		37C88F751A8357E9008E44DB /* ExchangeSchoolVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExchangeSchoolVC.h; sourceTree = "<group>"; };
@@ -1751,6 +1754,7 @@
 		3793F82B1B7CFFEF00501F77 /* BaseFoundation */ = {
 			isa = PBXGroup;
 			children = (
+				37C792961EA86062001546BE /* VideoPlayer */,
 				8D7554F91D6DA89400A140EE /* PhotoBrowser */,
 				8D867C3F1D2E8D130020A21C /* ImagePicker */,
 				8D867BB31D25042A0020A21C /* NHAudioTool */,
@@ -2456,6 +2460,15 @@
 				37C792781EA76F0C001546BE /* OpenShareHeader.h */,
 			);
 			path = OpenShare;
+			sourceTree = "<group>";
+		};
+		37C792961EA86062001546BE /* VideoPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				37C792971EA86072001546BE /* VideoPlayerVC.h */,
+				37C792981EA86072001546BE /* VideoPlayerVC.m */,
+			);
+			path = VideoPlayer;
 			sourceTree = "<group>";
 		};
 		37C91FFC1E4ABBAD003C4C51 /* GrowthRecordVC */ = {
@@ -4099,6 +4112,7 @@
 				3793FA831B7CFFF000501F77 /* ActionSelectView.m in Sources */,
 				37C7927C1EA76F0C001546BE /* OpenShare+Weibo.m in Sources */,
 				3793FA961B7CFFF000501F77 /* SimpleImageScanView.m in Sources */,
+				37C792991EA86072001546BE /* VideoPlayerVC.m in Sources */,
 				8DCFD6D21D4DE2BB001EDC8A /* NotificationHistoryVC.m in Sources */,
 				8DCFD6A81D4B60B9001EDC8A /* NotificationDetailVC.m in Sources */,
 				37DEE4BC1A57C19C009A8771 /* MessageDetailItemCell.m in Sources */,

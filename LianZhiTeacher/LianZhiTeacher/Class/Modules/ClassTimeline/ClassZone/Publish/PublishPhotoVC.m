@@ -304,7 +304,6 @@
         [self setupScrollView];
 
     }
-    [self.navigationController popToRootViewControllerAnimated:NO];
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 

@@ -10,6 +10,10 @@
 
 @implementation PhotoPickerModel
 
+- (BOOL)hasMoreData{
+    return self.total > [self.modelItemArray count];
+}
+
 - (BOOL)parseData:(TNDataWrapper *)data type:(REQUEST_TYPE)type
 {
     if(type == REQUEST_REFRESH)
