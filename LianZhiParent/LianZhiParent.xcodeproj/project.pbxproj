@@ -242,6 +242,7 @@
 		37C792921EA77151001546BE /* OpenShare.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C7928B1EA77151001546BE /* OpenShare.m */; };
 		37C792951EA7731A001546BE /* PhotoFlowHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C792941EA7731A001546BE /* PhotoFlowHeaderView.m */; };
 		37C7929D1EA8B667001546BE /* VideoPlayerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C7929C1EA8B667001546BE /* VideoPlayerVC.m */; };
+		37C792A51EA9A23B001546BE /* AudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C792A41EA9A23B001546BE /* AudioManager.m */; };
 		37C88F821A83DF0D008E44DB /* ReportProblemVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C88F811A83DF0D008E44DB /* ReportProblemVC.m */; };
 		37C88FB91A845D95008E44DB /* AddRelationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C88FB81A845D95008E44DB /* AddRelationVC.m */; };
 		37C88FF11A889A05008E44DB /* PersonalSetting.m in Sources */ = {isa = PBXBuildFile; fileRef = 37C88FF01A889A05008E44DB /* PersonalSetting.m */; };
@@ -997,6 +998,8 @@
 		37C792941EA7731A001546BE /* PhotoFlowHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoFlowHeaderView.m; sourceTree = "<group>"; };
 		37C7929B1EA8B667001546BE /* VideoPlayerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPlayerVC.h; sourceTree = "<group>"; };
 		37C7929C1EA8B667001546BE /* VideoPlayerVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPlayerVC.m; sourceTree = "<group>"; };
+		37C792A31EA9A23B001546BE /* AudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioManager.h; sourceTree = "<group>"; };
+		37C792A41EA9A23B001546BE /* AudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioManager.m; sourceTree = "<group>"; };
 		37C88F801A83DF0D008E44DB /* ReportProblemVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportProblemVC.h; sourceTree = "<group>"; };
 		37C88F811A83DF0D008E44DB /* ReportProblemVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportProblemVC.m; sourceTree = "<group>"; };
 		37C88FB71A845D95008E44DB /* AddRelationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRelationVC.h; sourceTree = "<group>"; };
@@ -2623,6 +2626,7 @@
 		3793FD9F1B7DE00D00501F77 /* ChatVC */ = {
 			isa = PBXGroup;
 			children = (
+				37C792A21EA9A22F001546BE /* AudioManager */,
 				372BFC411BA6B2E8006DBCCC /* ExtraInfoVC */,
 				3728A60E1B93F36B00310457 /* Input */,
 				3728A5EE1B93EB8D00310457 /* MessageTableViewController */,
@@ -2817,6 +2821,15 @@
 				37C7929C1EA8B667001546BE /* VideoPlayerVC.m */,
 			);
 			path = VideoPlayer;
+			sourceTree = "<group>";
+		};
+		37C792A21EA9A22F001546BE /* AudioManager */ = {
+			isa = PBXGroup;
+			children = (
+				37C792A31EA9A23B001546BE /* AudioManager.h */,
+				37C792A41EA9A23B001546BE /* AudioManager.m */,
+			);
+			path = AudioManager;
 			sourceTree = "<group>";
 		};
 		37C88F891A8445FA008E44DB /* WelcomeGuide */ = {
@@ -4407,6 +4420,7 @@
 				37C356081A3FD67300B948E6 /* main.m in Sources */,
 				3793F80B1B7CFFD900501F77 /* UIImage+WebP.m in Sources */,
 				37E5F63F1DF7DDDA0062941C /* ResourceBaseVC.m in Sources */,
+				37C792A51EA9A23B001546BE /* AudioManager.m in Sources */,
 				37C91FFB1E4AB57A003C4C51 /* RecordReplyVC.m in Sources */,
 				37E93FDF1A7E9CF200AD45A1 /* PhotoBrowserNavigationBar.m in Sources */,
 				37CFA5B81A4AF2A70061D7B8 /* MessageDetailModel.m in Sources */,

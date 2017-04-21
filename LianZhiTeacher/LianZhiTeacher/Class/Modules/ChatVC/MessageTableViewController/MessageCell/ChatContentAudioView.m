@@ -7,7 +7,7 @@
 //
 
 #import "ChatContentAudioView.h"
-
+#import "AudioManager.h"
 #define kDurationWidth          50
 
 @implementation ChatContentAudioView
@@ -23,6 +23,12 @@
         _playButton = [[ChatVoiceButton alloc] init];
         [_playButton addTarget:self action:@selector(onAudioClicked) forControlEvents:UIControlEventTouchUpInside];
         [_bubbleBackgroundView addSubview:_playButton];
+        
+        _redDot = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 4, 4)];
+        [_redDot setBackgroundColor:kRedColor];
+        [_redDot.layer setCornerRadius:2];
+        [_redDot.layer setMasksToBounds:YES];
+        [self addSubview:_redDot];
     }
     return self;
 }
@@ -34,6 +40,8 @@
     }
     else{
         [_playButton setVoiceWithURL:[NSURL URLWithString:audioItem.audioUrl] withAutoPlay:YES];
+        [[AudioManager sharedInstance] readAudio:audioItem.audioUrl];
+        [_redDot setHidden:YES];
     }
 }
 
@@ -44,7 +52,8 @@
     [_playButton setFrame:_bubbleBackgroundView.bounds];
     [_durationLabel setText:[Utility formatStringForTime:messageItem.content.exinfo.voice.timeSpan]];
     [_durationLabel sizeToFit];
-    [self setSize:CGSizeMake(_bubbleBackgroundView.width + 5 + _durationLabel.width, 32)];
+    [self setSize:CGSizeMake(_bubbleBackgroundView.width + 5 + _durationLabel.width + 5, 32)];
+    [_redDot setHidden:YES];
     if(messageItem.from == UUMessageFromMe)
     {
         _playButton.type = MLPlayVoiceButtonTypeRight;
@@ -53,9 +62,13 @@
     }
     else
     {
+        if(![[AudioManager sharedInstance] audioHasBeenRead:messageItem.content.exinfo.voice.audioUrl]){
+            [_redDot setHidden:NO];
+        }
         _playButton.type = MLPlayVoiceButtonTypeLeft;
         [_bubbleBackgroundView setOrigin:CGPointMake(0, 0)];
         [_durationLabel setOrigin:CGPointMake(_bubbleBackgroundView.right + 5, (self.height - _durationLabel.height) / 2)];
+        [_redDot setOrigin:CGPointMake(_durationLabel.right, _durationLabel.top)];
     }
 }
 

@@ -8,7 +8,7 @@
 
 #import "ChatMessageModel.h"
 #import "NHFileManager.h"
-
+#import "AudioManager.h"
 @implementation UpdateItem
 
 
@@ -324,6 +324,9 @@
         //添加到前面
         for (NSInteger i = newMessageArray.count - 1; i >= 0; i--) {
             MessageItem *messageItem = newMessageArray[i];
+            if(!messageItem.isRead && [messageItem.content.exinfo.voice.audioUrl length] > 0){
+                [[AudioManager sharedInstance] addAudioUrl:messageItem.content.exinfo.voice.audioUrl];
+            }
             if(messageItem.content.uniqueId.integerValue > newMid.integerValue){
                 newMid = messageItem.content.uniqueId;
             }

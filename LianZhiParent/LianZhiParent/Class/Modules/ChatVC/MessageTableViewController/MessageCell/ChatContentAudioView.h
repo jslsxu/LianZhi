@@ -12,5 +12,6 @@
 {
     UILabel*            _durationLabel;
     ChatVoiceButton*    _playButton;
+    UIView*             _redDot;
 }
 @end

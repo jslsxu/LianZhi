@@ -40,7 +40,7 @@
     [self.view addSubview:_poiInfoView];
     
     __weak typeof(self) wself = self;
-    self.videoView = [[VideoItemView alloc] initWithFrame:CGRectMake(10, _poiInfoView.bottom + 20, 80, 80)];
+    self.videoView = [[VideoItemView alloc] initWithFrame:CGRectMake(10, _poiInfoView.bottom + 20, 100, 100)];
     [self.videoView setDeleteCallback:^{
         [wself removeVideo];
     }];
@@ -49,6 +49,27 @@
     
     self.addButton = [[UIButton alloc] initWithFrame:self.videoView.frame];
     [self.addButton addTarget:self action:@selector(onAddVideoClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.addButton.layer setCornerRadius:10];
+    [self.addButton.layer setBorderWidth:1];
+    [self.addButton.layer setBorderColor:kColor_99.CGColor];
+    [self.addButton.layer setMasksToBounds:YES];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"AddHomeWorkPhoto"]];
+    [self.addButton addSubview:imageView];
+    
+    UILabel* titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    [titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [titleLabel setTextColor:kColor_66];
+    [titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [titleLabel setNumberOfLines:0];
+    [titleLabel setLineBreakMode:NSLineBreakByWordWrapping];
+    [titleLabel setText:@"上传视频\n(最长10秒)"];
+    [titleLabel sizeToFit];
+    [self.addButton addSubview:titleLabel];
+    
+    NSInteger height = titleLabel.height + 5 + imageView.height;
+    [imageView setOrigin:CGPointMake((self.addButton.width - imageView.width) / 2, (self.addButton.height - height) / 2)];
+    [titleLabel setOrigin:CGPointMake((self.addButton.width - titleLabel.width) / 2, imageView.bottom + 5)];
     [self.view addSubview:self.addButton];
 }
 
@@ -158,15 +179,13 @@
     if(imageAssets.count > 0){
         __weak typeof(self) wself = self;
         ALAsset *asset = imageAssets[0];
-        NSString *coverUrl = [NHFileManager getTmpImagePath];
         ALAssetRepresentation *representation = asset.defaultRepresentation;
         UIImage *coverImage = [UIImage imageWithCGImage:[representation fullScreenImage] scale:1.f orientation:UIImageOrientationUp];
         BOOL shouldSend = [Utility checkVideo:asset];
         if(!shouldSend){
             return;
         }
-        NSData *imageData = UIImageJPEGRepresentation(coverImage, 0.8);
-        [imageData writeToFile:coverUrl atomically:YES];
+       
         NSString *filePath = [[representation url] absoluteString];
         NSString *tmpPath = [NHFileManager tmpVideoPathForPath:filePath];
         NSInteger duration = [[asset valueForProperty:ALAssetPropertyDuration] integerValue];
@@ -183,7 +202,7 @@
                 if(AVAssetExportSessionStatusCompleted == exportSession.status){
                     VideoItem *videoItem = [[VideoItem alloc] init];
                     [videoItem setVideoUrl:tmpPath];
-                    [videoItem setCoverUrl:coverUrl];
+                    [videoItem setCoverImage:coverImage];
                     [videoItem setVideoTime:duration];
                     [videoItem setCoverWidth:coverImage.size.width];
                     [videoItem setCoverHeight:coverImage.size.height];
