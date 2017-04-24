@@ -47,7 +47,7 @@
     [task setObserver:self];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.classID forKey:@"class_id"];
-    [params setValue:@"20" forKey:@"num"];
+    [params setValue:@"40" forKey:@"num"];
     if(requestType == REQUEST_REFRESH)
         [params setValue:@"0" forKey:@"start"];
     else
@@ -84,13 +84,15 @@
         NSString* headerTitle = [self.collectionViewModel dataOfHeaderForSection:indexPath.section];
         PhotoFlowModel *flowModel = (PhotoFlowModel *)self.collectionViewModel;
         BOOL showYear = [flowModel showYearForSection:indexPath.section];
-        NSString* yearStr = [NSString stringWithFormat:@"%@年", [headerTitle substringToIndex:4]];
+        NSString* titleYear = [headerTitle substringToIndex:4];
+        NSString* yearStr = [NSString stringWithFormat:@"%@年", titleYear];
         [headerView setYear:showYear ? yearStr : nil];
+        NSInteger currentYear = [[NSDate date] year];
         NSString* dateStr = [headerTitle substringWithRange:NSMakeRange(5, 5)];
         NSString* monthStr = [dateStr substringToIndex:2];
         NSString* dayStr = [dateStr substringFromIndex:3];
         NSString* showDayStr = [NSString stringWithFormat:@"%@%zd月%zd日", yearStr, [monthStr integerValue], [dayStr integerValue]];
-        if(!showYear){
+        if(currentYear == [yearStr integerValue]){
             showDayStr = [NSString stringWithFormat:@"%zd月%zd日", [monthStr integerValue], [dayStr integerValue]];
         }
         [headerView setDay:showDayStr];

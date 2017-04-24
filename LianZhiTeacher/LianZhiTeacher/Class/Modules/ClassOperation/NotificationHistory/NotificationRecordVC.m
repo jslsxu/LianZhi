@@ -158,7 +158,7 @@
         
         NSMutableAttributedString *stateStr = [[NSMutableAttributedString alloc] initWithString:@"发送:"];
         [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_notificationItem.sent_num) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
-        [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 已读:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
+        [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人 App消息已读:" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
         [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:kStringFromValue(_notificationItem.read_num) attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"28c4d8"]}]];
         [stateStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"人" attributes:@{NSForegroundColorAttributeName : [UIColor colorWithHexString:@"999999"]}]];
         [_stateLabel setAttributedText:stateStr];

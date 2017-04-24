@@ -27,7 +27,7 @@
     [task setRequestType:requestType];
     [task setObserver:self];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    [params setValue:@(20) forKey:@"num"];
+    [params setValue:@(40) forKey:@"num"];
     [params setValue:@(requestType == REQUEST_REFRESH ? 0 : self.collectionViewModel.modelItemArray.count) forKey:@"start"];
     [task setParams:params];
     return task;

@@ -331,14 +331,14 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 
 - (void)setupSubviews
 {
-    BOOL teach = NO;
-    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
-    {
-        if([classInfo.classID isEqualToString:self.classInfo.classID])
-            teach = YES;
-    }
-    if(teach)
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ActionAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddClicked)];
+//    BOOL teach = NO;
+//    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
+//    {
+//        if([classInfo.classID isEqualToString:self.classInfo.classID])
+//            teach = YES;
+//    }
+//    if(teach)
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ActionAdd"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddClicked)];
     
     [self.tableView setHeight:self.view.height];
     

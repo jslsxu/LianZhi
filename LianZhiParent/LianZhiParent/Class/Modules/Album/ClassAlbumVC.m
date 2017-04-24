@@ -19,7 +19,7 @@
     [task setObserver:self];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:self.classID forKey:@"class_id"];
-    [params setValue:@"20" forKey:@"num"];
+    [params setValue:@"40" forKey:@"num"];
     if(requestType == REQUEST_REFRESH)
         [params setValue:@"0" forKey:@"start"];
     else
@@ -28,16 +28,6 @@
     return task;
 }
 
-- (void)TNBaseTableViewControllerItemSelected:(TNModelItem *)modelItem atIndex:(NSIndexPath *)indexPath
-{
-    NSInteger index = indexPath.row;
-    MJPhotoBrowser *browser = [[MJPhotoBrowser alloc] init];
-    [browser setBrowserType:PhotoBrowserTypeZone];
-    [browser setPhotos:self.collectionViewModel.modelItemArray];
-    [browser setCurrentPhotoIndex:index];
-    [browser setClassID:self.classID];
-    [self.navigationController pushViewController:browser animated:YES];
-}
 
 - (BOOL)supportCache
 {
