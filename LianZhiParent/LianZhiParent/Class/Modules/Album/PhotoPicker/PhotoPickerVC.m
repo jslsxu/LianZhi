@@ -258,7 +258,9 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [self.collectionViewModel modelItemArray].count;
+    NSInteger num = [self.collectionViewModel modelItemArray].count;
+    [self.navigationItem.rightBarButtonItem setTitle:[NSString stringWithFormat:@"%ld张",(long)_selectedArray.count]];
+    return num;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath

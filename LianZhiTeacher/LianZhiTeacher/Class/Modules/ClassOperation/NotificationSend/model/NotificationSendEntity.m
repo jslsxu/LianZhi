@@ -191,9 +191,9 @@
     [params setValue:[NSString stringWithJSONObject:groupsArray] forKey:@"groups"];
     [params setValue:self.words forKey:@"words"];
     [params setValue:kStringFromValue(self.sendSms) forKey:@"sms"];
-//    if(self.delaySend){
-//        [params setValue:kStringFromValue(self.delaySendTime) forKey:@"time_to_send"];
-//    }
+    if(self.delaySend){
+        [params setValue:kStringFromValue(self.delaySendTime) forKey:@"time_to_send"];
+    }
     if(self.videoArray.count > 0){
         VideoItem *videoItem = self.videoArray[0];
         [params setValue:kStringFromValue(videoItem.videoTime) forKey:@"video_time"];

@@ -45,9 +45,15 @@ typedef NS_ENUM(NSInteger, SelectedType){
 @property (nonatomic, assign)BOOL showFocus;
 @end
 
+@interface GradeInfo : TNModelItem
+@property (nonatomic, copy)NSString* gradeId;
+@property (nonatomic, copy)NSString* gradeName;
+@end
+
 @interface ClassInfo : TNModelItem
 @property (nonatomic, copy)NSString *course;
 @property (nonatomic, copy)NSString *grade;
+@property (nonatomic, copy)NSString* gradeId;
 @property (nonatomic, copy)NSString *classID;
 @property (nonatomic, copy)NSString *name;
 @property (nonatomic, copy)NSString *logo;

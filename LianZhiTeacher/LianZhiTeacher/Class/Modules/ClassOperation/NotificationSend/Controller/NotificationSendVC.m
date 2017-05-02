@@ -16,6 +16,7 @@
 #import "NotificationPreviewVC.h"
 #import "NotificationManager.h"
 #import "NotificationDraftManager.h"
+#import "NotificationScopeVC.h"
 #define kNotificationMaxPhotoNum        9
 
 @interface NotificationSendVC ()<NotificationInputDelegate,
@@ -430,6 +431,8 @@ DNImagePickerControllerDelegate>
     }];
     [self.navigationController pushViewController:targetSelectVC animated:YES];
 
+//    NotificationScopeVC* scopeVC = [[NotificationScopeVC alloc] init];
+//    [self.navigationController pushViewController:scopeVC animated:YES];
 }
 
 - (void)deleteUserInfo:(UserInfo *)userInfo{

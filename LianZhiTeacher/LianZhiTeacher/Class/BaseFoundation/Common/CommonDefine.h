@@ -46,6 +46,12 @@
 #define DSLog(...)
 #endif
 
+#ifdef DEBUG
+#define NNSLog(FORMAT, ...) fprintf(stderr,"%s\n",[[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+#else
+#define NNSLog(...)
+#endif
+
 #define kStringFromValue(value)          ([@(value) description])
 
 #define kCommonMaxNum                    500

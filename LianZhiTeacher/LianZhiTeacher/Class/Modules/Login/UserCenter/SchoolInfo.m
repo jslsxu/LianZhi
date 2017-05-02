@@ -177,6 +177,14 @@
 
 @end
 
+@implementation GradeInfo
+
+- (void)parseData:(TNDataWrapper *)dataWrapper{
+    [self modelSetWithJSON:dataWrapper.data];
+}
+
+@end
+
 @implementation ClassInfo
 
 - (BOOL)isEqual:(id)object

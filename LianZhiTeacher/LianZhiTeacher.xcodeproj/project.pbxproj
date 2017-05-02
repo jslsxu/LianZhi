@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		370373BD1EB4A11E00A24BC7 /* NotificationScopeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370373BC1EB4A11E00A24BC7 /* NotificationScopeVC.m */; };
+		370373C01EB4AA5100A24BC7 /* NotificationGradeSelectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370373BF1EB4AA5100A24BC7 /* NotificationGradeSelectVC.m */; };
 		3705FF941BA2BE7200F0C6F6 /* NumIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3705FF931BA2BE7200F0C6F6 /* NumIndicator.m */; };
 		3707E6711C041EFB00944B8D /* MyGiftVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3707E6701C041EFB00944B8D /* MyGiftVC.m */; };
 		370F33D71A78795000FED3C2 /* AboutVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 370F33D21A78795000FED3C2 /* AboutVC.m */; };
@@ -520,6 +522,10 @@
 /* Begin PBXFileReference section */
 		0DFE116D358F8B53171F7C11 /* Pods-LianZhiTeacher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LianZhiTeacher.release.xcconfig"; path = "Pods/Target Support Files/Pods-LianZhiTeacher/Pods-LianZhiTeacher.release.xcconfig"; sourceTree = "<group>"; };
 		12BAF958CB1E5D40BB0B5AF4 /* Pods-LianZhiTeacher.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LianZhiTeacher.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LianZhiTeacher/Pods-LianZhiTeacher.debug.xcconfig"; sourceTree = "<group>"; };
+		370373BB1EB4A11E00A24BC7 /* NotificationScopeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationScopeVC.h; sourceTree = "<group>"; };
+		370373BC1EB4A11E00A24BC7 /* NotificationScopeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationScopeVC.m; sourceTree = "<group>"; };
+		370373BE1EB4AA5100A24BC7 /* NotificationGradeSelectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationGradeSelectVC.h; sourceTree = "<group>"; };
+		370373BF1EB4AA5100A24BC7 /* NotificationGradeSelectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationGradeSelectVC.m; sourceTree = "<group>"; };
 		3705FF921BA2BE7200F0C6F6 /* NumIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumIndicator.h; sourceTree = "<group>"; };
 		3705FF931BA2BE7200F0C6F6 /* NumIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NumIndicator.m; sourceTree = "<group>"; };
 		3707E66F1C041EFB00944B8D /* MyGiftVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyGiftVC.h; sourceTree = "<group>"; };
@@ -3330,10 +3336,14 @@
 			children = (
 				8D867D341D3F7BF80020A21C /* NotificationSendVC.h */,
 				8D867D351D3F7BF80020A21C /* NotificationSendVC.m */,
+				370373BB1EB4A11E00A24BC7 /* NotificationScopeVC.h */,
+				370373BC1EB4A11E00A24BC7 /* NotificationScopeVC.m */,
 				8DCFD6AC1D4C5639001EDC8A /* NotificationPreviewVC.h */,
 				8DCFD6AD1D4C5639001EDC8A /* NotificationPreviewVC.m */,
 				8D867D521D3FE2290020A21C /* NotificationMemberSelectVC.h */,
 				8D867D531D3FE2290020A21C /* NotificationMemberSelectVC.m */,
+				370373BE1EB4AA5100A24BC7 /* NotificationGradeSelectVC.h */,
+				370373BF1EB4AA5100A24BC7 /* NotificationGradeSelectVC.m */,
 				8D3D457B1D5B24A6005EA8EA /* NotificationPreviewView.h */,
 				8D3D457C1D5B24A6005EA8EA /* NotificationPreviewView.m */,
 			);
@@ -3916,6 +3926,7 @@
 				8DE718561DABA6130080476D /* HomeworkTargetListView.m in Sources */,
 				8DCFD7091D50AF25001EDC8A /* ChatExtraIndividualInfoVC.m in Sources */,
 				37FF16CC1E06B437009F10EA /* CalendarMonthIndicator.m in Sources */,
+				370373BD1EB4A11E00A24BC7 /* NotificationScopeVC.m in Sources */,
 				37E93FC11A7E9CC600AD45A1 /* CHTCollectionViewWaterfallLayout.m in Sources */,
 				8D93F8B61DA00719000C15FC /* CourseSelectVC.m in Sources */,
 				8D93F8BC1DA0EB24000C15FC /* HomeworkClassContentView.m in Sources */,
@@ -4320,6 +4331,7 @@
 				37C792501EA60CDF001546BE /* PhotoFlowHeaderView.m in Sources */,
 				8D7555061D6DA89400A140EE /* PBImageScrollerViewController.m in Sources */,
 				8D93F8B91DA0B667000C15FC /* ClassSelectVC.m in Sources */,
+				370373C01EB4AA5100A24BC7 /* NotificationGradeSelectVC.m in Sources */,
 				8D867D471D3F7BF80020A21C /* NotificationSendTargetView.m in Sources */,
 				8DC0875B1D8E47C6008B57B2 /* LGAlertViewWindow.m in Sources */,
 				37DF9A7A1E09983B0020B49E /* StudentsAttendanceVC.m in Sources */,

@@ -8,6 +8,7 @@
 
 #import "NotificationDetailVideoView.h"
 #import <MediaPlayer/MediaPlayer.h>
+#import "VideoPlayerManager.h"
 @interface VideoItemView ()
 @property (nonatomic, strong)UIImageView *coverImageView;
 @property (nonatomic, strong)UIView   *darkCoverView;
@@ -77,13 +78,7 @@
 }
 
 - (void)showPlayerWithUrl:(NSURL *)url{
-    if(url){
-        MPMoviePlayerViewController *playerVC = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
-        [CurrentROOTNavigationVC presentMoviePlayerViewControllerAnimated:playerVC];
-    }
-    else{
-        [ProgressHUD showHintText:@"视频不存在"];
-    }
+    [[VideoPlayerManager sharedInstance] playWithUrl:url];
 }
 
 @end

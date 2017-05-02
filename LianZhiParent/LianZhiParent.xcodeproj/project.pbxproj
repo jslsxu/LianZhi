@@ -3932,7 +3932,7 @@
 				TargetAttributes = {
 					37C356011A3FD67300B948E6 = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = JRFF54BK3W;
+						DevelopmentTeam = ZNQ7SU9FMT;
 						LastSwiftMigration = 0810;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -4635,8 +4635,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = LianZhiParent/LianZhiParent.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
-				DEVELOPMENT_TEAM = JRFF54BK3W;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				DEVELOPMENT_TEAM = ZNQ7SU9FMT;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4662,10 +4662,10 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "94ab3bcd-94d1-4af8-80ec-a6ca66e7728b";
-				PROVISIONING_PROFILE_SPECIFIER = ParentDevelopment;
+				PROVISIONING_PROFILE = "079cfdb2-ea73-4931-a35a-4c6ce8a6fb8a";
+				PROVISIONING_PROFILE_SPECIFIER = ParentInhouseNew;
 				SWIFT_OBJC_BRIDGING_HEADER = "LianZhiParent/Class/Modules/ClassZone/ClassApp/MicroLession/LianZhiParent-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -4683,9 +4683,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = LianZhiParent/LianZhiParent.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: wei xin (VLCERZ64DD)";
-				DEVELOPMENT_TEAM = JRFF54BK3W;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
+				DEVELOPMENT_TEAM = ZNQ7SU9FMT;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -4711,10 +4711,10 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppParent;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppParent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "94ab3bcd-94d1-4af8-80ec-a6ca66e7728b";
-				PROVISIONING_PROFILE_SPECIFIER = ParentDevelopment;
+				PROVISIONING_PROFILE = "079cfdb2-ea73-4931-a35a-4c6ce8a6fb8a";
+				PROVISIONING_PROFILE_SPECIFIER = ParentInhouseNew;
 				SWIFT_OBJC_BRIDGING_HEADER = "LianZhiParent/Class/Modules/ClassZone/ClassApp/MicroLession/LianZhiParent-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};

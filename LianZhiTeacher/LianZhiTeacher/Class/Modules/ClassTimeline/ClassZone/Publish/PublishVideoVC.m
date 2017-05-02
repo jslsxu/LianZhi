@@ -21,10 +21,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"发视频";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(send)];
     
     UIView* inputBG = [[UIView alloc] initWithFrame:CGRectMake(10, 10, self.view.width - 10 * 2, 100)];
-    [inputBG setBackgroundColor:kColor_cc];
+    [inputBG setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     [inputBG.layer setCornerRadius:15];
     [inputBG.layer setMasksToBounds:YES];
     [self.view addSubview:inputBG];
@@ -86,8 +85,13 @@
     [self.addButton setHidden:NO];
 }
 
-- (void)send{
-    
+- (void)onSendClicked{
+    if(self.videoItem){
+        
+    }
+    else{
+        [ProgressHUD showHintText:@"您还没有选择视频"];
+    }
 }
 
 - (void)onAddVideoClicked{

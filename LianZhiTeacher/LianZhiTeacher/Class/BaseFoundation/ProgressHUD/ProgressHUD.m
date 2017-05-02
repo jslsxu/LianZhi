@@ -49,7 +49,17 @@
     if(text.length == 0){
         return;
     }
-    [[self shared] hudMake:text];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    hud.animationType = MBProgressHUDAnimationZoomIn;
+    hud.color = [UIColor colorWithWhite:0 alpha:0.6];
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText = text;
+    // 隐藏时候从父控件中移除
+    hud.removeFromSuperViewOnHide = YES;
+    // YES代表需要蒙版效果
+    hud.dimBackground = NO;
+    [hud hide:NO afterDelay:2];
+//    [[self shared] hudMake:text];
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------

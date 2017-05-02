@@ -381,9 +381,9 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (void)onAddClicked
 {
     ClassZoneModel *zoneModel = (ClassZoneModel *)self.tableViewModel;
-    NSInteger actionCount = zoneModel.canEdit ? 5 : 4;
-    NSArray *titleArray = @[@"发文字",@"发照片",@"发语音",@"发视频",@"编辑板报"];
-    NSArray *imageArray = @[@"ClassZoneText",@"ClassZonePhoto",@"ClassZoneAudio",@"ClassZoneAudio",@"ClassZoneNewspapper"];
+    NSInteger actionCount = zoneModel.canEdit ? 4 : 3;
+    NSArray *titleArray = @[@"发文字",@"发照片",@"发语音",@"编辑板报"];
+    NSArray *imageArray = @[@"ClassZoneText",@"ClassZonePhoto",@"ClassZoneAudio",@"ClassZoneNewspapper"];
     ActionPopView *actionPopView = [[ActionPopView alloc] initWithImageArray:[imageArray subarrayWithRange:NSMakeRange(0, actionCount)] titleArray:[titleArray subarrayWithRange:NSMakeRange(0, actionCount)]];
     [actionPopView setDelegate:self];
     [actionPopView show];
@@ -484,9 +484,9 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     {
         publishVC = [[PublishAudioVC alloc] init];
     }
-    else if(index == 3){
-        publishVC = [[PublishVideoVC alloc] init];
-    }
+//    else if(index == 3){
+//        publishVC = [[PublishVideoVC alloc] init];
+//    }
     else
     {
         ClassZoneModel *zoneModel = (ClassZoneModel *)self.tableViewModel;

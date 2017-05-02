@@ -134,14 +134,17 @@ NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
         __weak typeof(self) wself = self;
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/neditleave" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             [hud hide:NO];
-            NSString* msg = [responseObject getStringForKey:@"err_msg"];
-            if([msg length] > 0){
-                [ProgressHUD showHintText:msg];
+            NSString *missionMsg = [UserCenter sharedInstance].statusManager.missionMsg;
+            if(missionMsg.length == 0){
+                NSString* msg = [responseObject getStringForKey:@"err_msg"];
+                if([msg length] > 0){
+                    [ProgressHUD showHintText:msg];
+                }
+                else{
+                    [ProgressHUD showHintText:@"考勤编辑成功"];
+                }
             }
-            else{
-                [ProgressHUD showHintText:@"考勤编辑成功"];
-            }
-        
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:kEditAttendanceNotification object:nil];
             if(wself.editFinished){
                 wself.editFinished();
