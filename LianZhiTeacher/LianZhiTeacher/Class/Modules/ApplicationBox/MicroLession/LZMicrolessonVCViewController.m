@@ -20,10 +20,11 @@
 static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
 
 @interface LZMicrolessonVCViewController ()<WKScriptMessageHandler,
-    AVCaptureMetadataOutputObjectsDelegate,WKNavigationDelegate>{
+AVCaptureMetadataOutputObjectsDelegate,WKNavigationDelegate>{
     WKWebViewConfiguration *configuration;
     UIBarButtonItem *cancelButtonItem;
     WKUserContentController *userContentController;
+    BOOL  isForceBack;
 }
 @property (nonatomic,strong) AVCaptureSession *captureSession;
 @property (nonatomic,strong) UIView *sanFrameView;
@@ -43,10 +44,10 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
     [self addWebView];
     
     [super viewDidLoad];
-
+    
     cancelButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain
                                                        target:self action:@selector(cancelButtonPressed)];
-
+    
 }
 
 - (void)dealloc{
@@ -59,7 +60,7 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
     [super viewWillAppear:animated];
     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     appDelegate.allowRotation = 0;
-
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -67,7 +68,7 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
 }
 
 -(void)addWebView{
- 
+    
     // js配置
     userContentController = [[WKUserContentController alloc] init];
     [userContentController addScriptMessageHandler:self name:@"appbox"];
@@ -80,9 +81,9 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
     self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     self.webView.backgroundColor = [UIColor whiteColor];
     self.webView.navigationDelegate = self;
- 
-}
     
+}
+
 //添加排名右侧导航按钮
 -(void)addRightNaviItem
 {
@@ -96,11 +97,11 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
         _sanFrameView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight  - 49);
         _sanFrameView.hidden = YES;
         [self.view addSubview:_sanFrameView];
-      
+        
     }
     return _sanFrameView;
 }
-    
+
 // 添加扫描框  绿色
 -(void)addCameraScanView
 {
@@ -111,139 +112,137 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
     LZCameraScanView *clearView = [[LZCameraScanView alloc]initWithFrame:self.sanFrameView.frame];
     clearView.tag = 1000;
     [self.sanFrameView addSubview:clearView];
-
-}
     
+}
+
 // 从web界面中接收到一个脚本时调用
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message
 {
     NSDictionary * body = (NSDictionary *)message.body;
- 
+    
     if(body){
         if([body.allKeys containsObject:@"action"])
         {
             
-                if([body[@"action"] isEqualToString:@"goto"])
-                { // 返回的JS回调
-                    NSString *curUrl = body[@"page"];
-                    
-                    if(body[@"page"] && [curUrl isEqualToString:@"home"])
-                        [CurrentROOTNavigationVC popViewControllerAnimated:YES];
-                }
-                else if([body[@"action"] isEqualToString:@"play"])
-                { // 文档打开的JS回调
-                    if(body[@"filename"] )
-                    {
-                        NSString* filename = body[@"filename"];
-                        NSString *decryptedUrl = @"";
-                        
-                        if(![filename hasPrefix:@"http://"])
-                        {// AES 解密处理
-                            CryptoHelper *cryptoHelper = [[CryptoHelper alloc] init];
-                            
-                            decryptedUrl = [cryptoHelper decryptWithEncryptedString:filename];
-                        }
-                        else
-                            decryptedUrl = filename;
-
-                        NSLog(@"filename = %@ \r\n",filename);
-                        NSLog(@"decryptedUrl = %@",decryptedUrl);
-                        
-                        if ([decryptedUrl isEqualToString:@""])
-                            return;
-                        
-                        NSString *filePathStr = [decryptedUrl lastPathComponent];
-                        NSString * exestr = [filePathStr pathExtension];
-                        NSString * encoded365String = nil;
-                        if(exestr && [exestr isEqualToString:@"mp4"])
-                        {
-                        
-                            encoded365String = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault, (CFStringRef)decryptedUrl, NULL, NULL,  kCFStringEncodingUTF8 ));
-                            
-                            
-                        }
-                        else
-                        {
-                            NSString * encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault, (CFStringRef)decryptedUrl, NULL, NULL,  kCFStringEncodingUTF8 ));
-                            encoded365String =  [NSString stringWithFormat:@"http://ow365.cn/?i=%@&del=1&furl=%@",web365User,encodedString];
-                            
-                        }
-                        TNBaseWebViewController *webVC  = [[LZOfficeVCViewController alloc] initWithUrl:[NSURL URLWithString:encoded365String]];
-        
-                        [self.navigationController pushViewController:webVC animated:YES];
-                    }
-                }
-                //  投影 回调
-                else if([body[@"action"] isEqualToString:@"slideshow"])
-                {// 投影打开的JS回调
-                    if(body[@"resourceId"] && body[@"bookId"])
-                    {
-                        self.resourceId = body[@"resourceId"];
-                        self.bookId = body[@"bookId"];
-                        
-                        [self startReading];
-                        [self addCameraScanView];
-
-                    }
-                }
-        
-            
+            if([body[@"action"] isEqualToString:@"goto"])
+            { // 返回的JS回调
+                isForceBack = NO;
+                NSString *curUrl = body[@"page"];
+                
+                if(body[@"page"] && [curUrl isEqualToString:@"home"])
+                    [CurrentROOTNavigationVC popViewControllerAnimated:YES];
             }
-     
+            else if([body[@"action"] isEqualToString:@"play"])
+            { // 文档打开的JS回调
+                isForceBack = NO;
+                if(body[@"filename"] )
+                {
+                    NSString* filename = body[@"filename"];
+                    NSString *decryptedUrl = @"";
+                    
+                    if(![filename hasPrefix:@"http://"])
+                    {// AES 解密处理
+                        CryptoHelper *cryptoHelper = [[CryptoHelper alloc] init];
+                        
+                        decryptedUrl = [cryptoHelper decryptWithEncryptedString:filename];
+                    }
+                    else
+                        decryptedUrl = filename;
+                    
+                    NSLog(@"filename = %@ \r\n",filename);
+                    NSLog(@"decryptedUrl = %@",decryptedUrl);
+                    
+                    if ([decryptedUrl isEqualToString:@""])
+                        return;
+                    
+                    NSString *filePathStr = [decryptedUrl lastPathComponent];
+                    NSString * exestr = [filePathStr pathExtension];
+                    NSString * encoded365String = nil;
+                    if(exestr && [exestr isEqualToString:@"mp4"])
+                    {
+                        
+                        encoded365String = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault, (CFStringRef)decryptedUrl, NULL, NULL,  kCFStringEncodingUTF8 ));
+                        
+                        
+                    }
+                    else
+                    {
+                        NSString * encodedString = (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes( kCFAllocatorDefault, (CFStringRef)decryptedUrl, NULL, NULL,  kCFStringEncodingUTF8 ));
+                        encoded365String =  [NSString stringWithFormat:@"http://ow365.cn/?i=%@&del=1&furl=%@",web365User,encodedString];
+                        
+                    }
+                    TNBaseWebViewController *webVC  = [[LZOfficeVCViewController alloc] initWithUrl:[NSURL URLWithString:encoded365String]];
+                    
+                    [self.navigationController pushViewController:webVC animated:YES];
+                }
+            }
+            //  投影 回调
+            else if([body[@"action"] isEqualToString:@"slideshow"])
+            {// 投影打开的JS回调
+                isForceBack = NO;
+                if(body[@"resourceId"] && body[@"bookId"])
+                {
+                    self.resourceId = body[@"resourceId"];
+                    self.bookId = body[@"bookId"];
+                    
+                    [self startReading];
+                    [self addCameraScanView];
+                    
+                }
+            }
+            else if([body[@"action"] isEqualToString:@"timeout"]){
+                NSLog(@"reason is %@",body[@"reason"]);
+                isForceBack = YES;
+                //[self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
+            }
+            
         }
+    }
+}
+
+- (void)customBack
+{
+    NetworkStatus status = [ApplicationDelegate.hostReach currentReachabilityStatus];
+    if(status == NotReachable)
+    {
+        [CurrentROOTNavigationVC popViewControllerAnimated:YES];
+    }
+    else if (isForceBack)
+    {
+        isForceBack = NO;
+        [CurrentROOTNavigationVC popViewControllerAnimated:YES];
+    }
+    else if(self.isLoadedWebPage){
+        [self.webView evaluateJavaScript:@"backAction();" completionHandler:^(id object, NSError *error) {
+            NSLog(@"back pressed:");
+        }];
+    }
+    else
+    {
+        [CurrentROOTNavigationVC popViewControllerAnimated:YES];
+    }
+    
+    
 }
 
 - (void)back{
     
-    if(self.isLoadedWebPage){
-        [self.webView evaluateJavaScript:@"backAction();" completionHandler:^(id object, NSError *error) {
-            NSLog(@"back pressed:");
-        }];
-    }
-    else
-    {
-         [CurrentROOTNavigationVC popViewControllerAnimated:YES];
-    }
+    [self customBack];
 }
 
 -(void)customBackItemClicked
 {
-    if(self.isLoadedWebPage){
-        [self.webView evaluateJavaScript:@"backAction();" completionHandler:^(id object, NSError *error) {
-            NSLog(@"back pressed:");
-        }];
-    }
-    else
-    {
-        [CurrentROOTNavigationVC popViewControllerAnimated:YES];
-    }
-
+    [self customBack];
+    
 }
 - (void)dismiss{
     
-    if(self.isLoadedWebPage){
-        [self.webView evaluateJavaScript:@"backAction();" completionHandler:^(id object, NSError *error) {
-            NSLog(@"back pressed:");
-        }];
-    }
-    else
-    {
-        [CurrentROOTNavigationVC popViewControllerAnimated:YES];
-    }
-
-
+    [self customBack];
+    
 }
--(void)closeItemClicked{
-    if(self.isLoadedWebPage){
-        [self.webView evaluateJavaScript:@"backAction();" completionHandler:^(id object, NSError *error) {
-            NSLog(@"back pressed:");
-        }];
-    }
-    else
-    {
-        [CurrentROOTNavigationVC popViewControllerAnimated:YES];
-    }
 
+-(void)closeItemClicked{
+    [self customBack];
 }
 
 
@@ -353,7 +352,7 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
     [_videoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
     [_videoPreviewLayer setFrame:_sanFrameView.layer.bounds];
     
-   
+    
     [_sanFrameView.layer addSublayer:_videoPreviewLayer];
     // 开始会话
     [_captureSession startRunning];
@@ -389,10 +388,10 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
             result = metadataObj.stringValue;
             [self performSelectorOnMainThread:@selector(cancelButtonPressed) withObject:nil waitUntilDone:NO];
             [self confirmScan:result];
-           
+            
         } else {
             NSLog(@"不是二维码");
- 
+            
         }
     }
 }
@@ -407,23 +406,23 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
     }
     
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-
+    
     [params setValue:_resourceId forKey:@"resourceId"];
     [params setValue:_bookId forKey:@"bookId"];
     [params setValue:[OpenUDID value] forKey:@"udid"];
     [params setValue:[UserCenter sharedInstance].userData.accessToken forKey:@"token"];
     [params setValue:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"version"];
-//    [params setValue:@"3.1.0.11(F)" forKey:@"version"];
+    //    [params setValue:@"3.1.0.11(F)" forKey:@"version"];
     [params setValue:@"1" forKey:@"platform"];
     
     __block MBProgressHUD *hud = nil;
     dispatch_async(dispatch_get_main_queue(), ^{
         hud = [MBProgressHUD showMessag:@"正在验证信息" toView:self.view];
     });
-
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     // 2.利用AFN管理者发送请求
-  
+    
     [manager POST:linkUrl parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"请求成功---%@", responseObject);
         
@@ -444,18 +443,18 @@ static const char *kScanQRCodeQueueName = "ScanQRCodeQueue";
         
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-         NSLog(@"请求失败---%@", error);
-       
+        NSLog(@"请求失败---%@", error);
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [hud hide:YES];
             
             [ProgressHUD showHintText:error.description];
         });
-
+        
         
     }];
     
-   
+    
     
 }
 

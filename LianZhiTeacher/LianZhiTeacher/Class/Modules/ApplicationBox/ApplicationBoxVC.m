@@ -274,7 +274,7 @@
     //新动态
     NSArray *newCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
     NSInteger commentNum = 0;
-    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
+    for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.allClasses)
     {
         for (TimelineCommentItem *commentItem in newCommentArray)
         {
@@ -391,57 +391,65 @@
         }
         else if([host isEqualToString:@"class"])//班博客
         {
-            NSMutableDictionary *classInfoDic = [NSMutableDictionary dictionary];
-            //新动态
-            NSArray *newCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
-            
-            for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.classes)
-            {
-                NSString *badge = nil;
-                NSInteger commentNum = 0;
-                for (TimelineCommentItem *commentItem in newCommentArray)
+            if([[UserCenter sharedInstance].curSchool.allClasses count] > 1){
+                NSMutableDictionary *classInfoDic = [NSMutableDictionary dictionary];
+                //新动态
+                NSArray *newCommentArray = [UserCenter sharedInstance].statusManager.classNewCommentArray;
+                
+                for (ClassInfo *classInfo in [UserCenter sharedInstance].curSchool.allClasses)
                 {
-                    if([commentItem.classID isEqualToString:classInfo.classID] && commentItem.alertInfo.num > 0)
-                        commentNum += commentItem.alertInfo.num;
+                    NSString *badge = nil;
+                    NSInteger commentNum = 0;
+                    for (TimelineCommentItem *commentItem in newCommentArray)
+                    {
+                        if([commentItem.classID isEqualToString:classInfo.classID] && commentItem.alertInfo.num > 0)
+                            commentNum += commentItem.alertInfo.num;
+                    }
+                    
+                    if(commentNum > 0)
+                        badge = kStringFromValue(commentNum);
+                    else
+                    {
+                        //新日志
+                        NSArray *newFeedArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
+                        NSInteger num = 0;
+                        for (ClassFeedNotice *noticeItem in newFeedArray)
+                        {
+                            if([noticeItem.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID] && [noticeItem.classID isEqualToString:classInfo.classID])
+                            {
+                                num += noticeItem.num;
+                            }
+                        }
+                        if(num > 0)
+                            badge = @"";
+                        else
+                            badge = nil;
+                    }
+                    [classInfoDic setValue:badge forKey:classInfo.classID];
                 }
                 
-                if(commentNum > 0)
-                    badge = kStringFromValue(commentNum);
-                else
-                {
-                    //新日志
-                    NSArray *newFeedArray = [UserCenter sharedInstance].statusManager.feedClassesNew;
-                    NSInteger num = 0;
-                    for (ClassFeedNotice *noticeItem in newFeedArray)
-                    {
-                        if([noticeItem.schoolID isEqualToString:[UserCenter sharedInstance].curSchool.schoolID] && [noticeItem.classID isEqualToString:classInfo.classID])
-                        {
-                            num += noticeItem.num;
-                        }
-                    }
-                    if(num > 0)
-                        badge = @"";
-                    else
-                        badge = nil;
-                }
-                [classInfoDic setValue:badge forKey:classInfo.classID];
+                ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
+                [selectionVC setShowNew:YES];
+                [selectionVC setClassInfoDic:classInfoDic];
+                [selectionVC setSelection:^(ClassInfo *classInfo) {
+                    ClassZoneVC *classZoneVC = [[ClassZoneVC alloc] init];
+                    [classZoneVC setClassInfo:classInfo];
+                    [CurrentROOTNavigationVC pushViewController:classZoneVC animated:YES];
+                }];
+                [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];
             }
-            
-            ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
-            [selectionVC setShowNew:YES];
-            [selectionVC setClassInfoDic:classInfoDic];
-            [selectionVC setSelection:^(ClassInfo *classInfo) {
+            else{
+                ClassInfo* classInfo = [UserCenter sharedInstance].curSchool.allClasses[0];
                 ClassZoneVC *classZoneVC = [[ClassZoneVC alloc] init];
                 [classZoneVC setClassInfo:classInfo];
                 [CurrentROOTNavigationVC pushViewController:classZoneVC animated:YES];
-            }];
-            [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];
+            }
         }
         else if([host isEqualToString:@"record"])//家园手册
         {
 //            GrowthRecordVC* growthRecordVC = [[GrowthRecordVC alloc] init];
 //            [CurrentROOTNavigationVC pushViewController:growthRecordVC animated:YES];
-            if([UserCenter sharedInstance].curSchool.classes.count == 0)
+            if([UserCenter sharedInstance].curSchool.allClasses.count == 0)
             {
                 ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
                 [selectionVC setSelection:^(ClassInfo *classInfo) {
@@ -461,13 +469,21 @@
         }
         else if([host isEqualToString:@"class_album"])//版相册
         {
-            ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
-            [selectionVC setSelection:^(ClassInfo *classInfo) {
+            if([[UserCenter sharedInstance].curSchool.allClasses count] > 1){
+                ClassSelectionVC *selectionVC = [[ClassSelectionVC alloc] init];
+                [selectionVC setSelection:^(ClassInfo *classInfo) {
+                    PhotoFlowVC *albumVC = [[PhotoFlowVC alloc] init];
+                    [albumVC setClassID:classInfo.classID];
+                    [CurrentROOTNavigationVC pushViewController:albumVC animated:YES];
+                }];
+                [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];
+            }
+            else{
+                ClassInfo* classInfo = [UserCenter sharedInstance].curSchool.allClasses[0];
                 PhotoFlowVC *albumVC = [[PhotoFlowVC alloc] init];
                 [albumVC setClassID:classInfo.classID];
                 [CurrentROOTNavigationVC pushViewController:albumVC animated:YES];
-            }];
-            [CurrentROOTNavigationVC pushViewController:selectionVC animated:YES];
+            }
         }
         else if([host isEqualToString:@"practice"])//联系
         {

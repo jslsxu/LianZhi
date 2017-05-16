@@ -26,17 +26,17 @@
         [_relationLabel setTextColor:kCommonParentTintColor];
         [self addSubview:_relationLabel];
         
-        _phoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_phoneButton addTarget:self action:@selector(onPhoneClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_phoneButton setImage:[UIImage imageNamed:@"contact_telephone"] forState:UIControlStateNormal];
-        [_phoneButton setImage:[UIImage imageNamed:@"contact_telephone_disabled"] forState:UIControlStateDisabled];
-        [self addSubview:_phoneButton];
-        
-        _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
-        [_chatButton setImage:[UIImage imageNamed:@"contact_chat"] forState:UIControlStateNormal];
-        [_chatButton setImage:[UIImage imageNamed:@"contact_chat_disabled"] forState:UIControlStateDisabled];
-        [self addSubview:_chatButton];
+//        _phoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_phoneButton addTarget:self action:@selector(onPhoneClicked) forControlEvents:UIControlEventTouchUpInside];
+//        [_phoneButton setImage:[UIImage imageNamed:@"contact_telephone"] forState:UIControlStateNormal];
+//        [_phoneButton setImage:[UIImage imageNamed:@"contact_telephone_disabled"] forState:UIControlStateDisabled];
+//        [self addSubview:_phoneButton];
+//        
+//        _chatButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_chatButton addTarget:self action:@selector(onChatClicked) forControlEvents:UIControlEventTouchUpInside];
+//        [_chatButton setImage:[UIImage imageNamed:@"contact_chat"] forState:UIControlStateNormal];
+//        [_chatButton setImage:[UIImage imageNamed:@"contact_chat_disabled"] forState:UIControlStateDisabled];
+//        [self addSubview:_chatButton];
         
         _sepLine = [[UIView alloc] initWithFrame:CGRectZero];
         [_sepLine setBackgroundColor:[UIColor colorWithHexString:@"eaeaea"]];

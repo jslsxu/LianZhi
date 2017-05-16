@@ -268,7 +268,7 @@
         return @"起始时间应晚于当前时间";
     }
     if([self.endDate timeIntervalSinceDate:self.startDate] < 0){
-        return @"起始时间应晚于截止时间";
+        return @"起始时间应早于截止时间";
     }
     NSString* reason = [_textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if([reason length] == 0){
@@ -301,7 +301,10 @@
         [params setValue:_textView.text forKey:@"words"];
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"leave/nleave" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             [hud hide:YES];
-            [ProgressHUD showHintText:@"请假条已发给老师"];
+            NSString *missionMsg = [UserCenter sharedInstance].statusManager.missionMsg;
+            if(missionMsg.length == 0){
+                [ProgressHUD showHintText:@"请假条已发给老师"];
+            }
             if(wself.completion){
                 wself.completion();
             }

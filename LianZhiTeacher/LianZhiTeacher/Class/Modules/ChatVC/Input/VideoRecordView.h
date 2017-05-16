@@ -11,6 +11,7 @@
 @interface VideoRecordView : UIView
 {
     UIButton*       _bgButton;
+    UILabel*        _statusLabel;
     UIView*         _contentView;
     UIView*         _previewView;
     UIView*         _progressView;

@@ -22,6 +22,7 @@
     UIView*             _sepLine;
 }
 @property (nonatomic, strong)NSArray *praiseArray;
++ (CGFloat)praiseHeightForPraiseArray:(NSArray *)praiseArray width:(CGFloat)width;
 @end
 
 @protocol ResponseDelegate <NSObject>

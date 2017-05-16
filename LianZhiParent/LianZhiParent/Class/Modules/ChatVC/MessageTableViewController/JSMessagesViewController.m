@@ -744,6 +744,7 @@ static NSString *topChatID = nil;
         else{
             ChatTeacherInfoVC *teacherInfoVC = [[ChatTeacherInfoVC alloc] init];
             [teacherInfoVC setUid:userInfo.uid];
+            [teacherInfoVC setLabel:self.name];
             [self.navigationController pushViewController:teacherInfoVC animated:YES];
         }
     }

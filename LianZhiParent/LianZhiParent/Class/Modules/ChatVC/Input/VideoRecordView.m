@@ -41,6 +41,12 @@
         [_contentView setBackgroundColor:[UIColor darkGrayColor]];
         [self addSubview:_contentView];
         
+        _statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, _contentView.top - 30, self.width, 30)];
+        [_statusLabel setFont:[UIFont systemFontOfSize:16]];
+        [_statusLabel setTextAlignment:NSTextAlignmentCenter];
+        [_statusLabel setTextColor:[UIColor whiteColor]];
+        [self addSubview:_statusLabel];
+        
         _previewView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _contentView.width, _contentView.height - 60)];
         [_contentView addSubview:_previewView];
         
@@ -58,7 +64,9 @@
         [_captureButton.titleLabel setFont:[UIFont systemFontOfSize:13]];
         [_captureButton setFrame:CGRectMake((_contentView.width - 50) / 2, _previewView.height + (60 - 50) / 2, 50, 50)];
         [_captureButton addTarget:self action:@selector(startCapture) forControlEvents:UIControlEventTouchDown];
-        [_captureButton addTarget:self action:@selector(recordButtonDragExit) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchDragExit];
+        [_captureButton addTarget:self action:@selector(captureFinished) forControlEvents:UIControlEventTouchUpInside];
+        [_captureButton addTarget:self action:@selector(recordButtonDragExit) forControlEvents:UIControlEventTouchDragExit];
+        [_captureButton addTarget:self action:@selector(recordButtonTouchUpOutside) forControlEvents:UIControlEventTouchUpOutside];
         [_contentView addSubview:_captureButton];
         
         _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -107,6 +115,7 @@
 
 - (void)startCapture{
     [_recorder record];
+    [_statusLabel setText:@"向上滑动，取消发送"];
 }
 
 - (void)stopCapture{
@@ -115,12 +124,27 @@
     
 }
 
-- (void)recordButtonDragExit{
+- (void)captureFinished{
     if(_recorder.isRecording){
+        __weak typeof(self) wself = self;
         [_recorder pause:^{
-            [self saveCapture];
+            [wself saveCapture];
         }];
     }
+}
+
+- (void)recordButtonDragExit{
+    [_statusLabel setText:@"松开手指，取消发送"];
+}
+
+- (void)recordButtonTouchUpOutside{
+    if(_recorder.isRecording){
+        __weak typeof(self) wself = self;
+        [_recorder pause:^{
+            [wself dismiss];
+        }];
+    }
+    [_statusLabel setText:nil];
 }
 
 - (void)saveCapture {

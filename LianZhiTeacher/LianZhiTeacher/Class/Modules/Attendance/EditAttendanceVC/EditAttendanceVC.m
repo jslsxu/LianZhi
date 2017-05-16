@@ -136,13 +136,7 @@ NSString* kEditAttendanceNotification = @"EditAttendanceNotification";
             [hud hide:NO];
             NSString *missionMsg = [UserCenter sharedInstance].statusManager.missionMsg;
             if(missionMsg.length == 0){
-                NSString* msg = [responseObject getStringForKey:@"err_msg"];
-                if([msg length] > 0){
-                    [ProgressHUD showHintText:msg];
-                }
-                else{
-                    [ProgressHUD showHintText:@"考勤编辑成功"];
-                }
+                [ProgressHUD showHintText:@"考勤编辑成功"];
             }
             
             [[NSNotificationCenter defaultCenter] postNotificationName:kEditAttendanceNotification object:nil];

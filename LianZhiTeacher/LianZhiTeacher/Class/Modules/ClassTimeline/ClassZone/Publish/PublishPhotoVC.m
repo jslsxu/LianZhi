@@ -242,7 +242,7 @@
 {
     [self dismissViewControllerAnimated:YES completion:nil];
     [_imageArray addObjectsFromArray:selectedArray];
-    [self setupScrollView];
+    [self setupImageView];
 }
 
 - (void)photoPickerVCDidCancel:(PhotoPickerVC *)photoPickerVC
@@ -268,7 +268,7 @@
         PublishImageItem *imageItem = [[PublishImageItem alloc] init];
         [imageItem setImage:image];
         [_imageArray addObject:imageItem];
-        [self setupScrollView];
+        [self setupImageView];
 
     }
     [picker dismissViewControllerAnimated:YES completion:nil];

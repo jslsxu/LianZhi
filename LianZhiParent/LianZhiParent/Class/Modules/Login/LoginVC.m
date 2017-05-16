@@ -38,6 +38,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [ApplicationDelegate setupCommonAppearance];
     UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"parent_login_bg.jpg"]];
     [bgImageView setFrame:self.view.bounds];
     [bgImageView setContentMode:UIViewContentModeScaleAspectFill];

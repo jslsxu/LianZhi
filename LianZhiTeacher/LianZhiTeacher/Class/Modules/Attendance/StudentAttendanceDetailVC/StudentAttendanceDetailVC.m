@@ -46,7 +46,7 @@
     [titleLabel setTextAlignment:NSTextAlignmentCenter];
     [titleLabel setTextColor:[UIColor colorWithHexString:@"525252"]];
     NSMutableAttributedString* titleString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@考勤详情\n", self.studentInfo.name] attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17]}];
-    [titleString appendAttributedString:[[NSAttributedString alloc] initWithString:@"14级01班" attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12]}]];
+    [titleString appendAttributedString:[[NSAttributedString alloc] initWithString:[self.classInfo name] attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:12]}]];
     [titleLabel setAttributedText:titleString];
     [titleLabel sizeToFit];
     [self.navigationItem setTitleView:titleLabel];

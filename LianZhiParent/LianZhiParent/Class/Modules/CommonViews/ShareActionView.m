@@ -115,17 +115,15 @@
             message.desc = message.title;
         }
         message.link = self.url;
+//        UIImage *image = [UIImage imageNamed:@"AppLogo"];
         UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:self.imageUrl];
         if(image){
-            if(image.size.width * image.size.height > 160 * 160){
-                image = [image resize:CGSizeMake(160, 160)];
-            }
+            image = [image resize:CGSizeMake(160, 160)];
         }
         else{
             image = [UIImage imageNamed:@"AppLogo"];
         }
         message.image = image;
-        message.thumbnail = image;
         message.multimediaType = OSMultimediaTypeNews;
         if(index == 0){
             [OpenShare shareToWeixinSession:message Success:^(OSMessage *message) {

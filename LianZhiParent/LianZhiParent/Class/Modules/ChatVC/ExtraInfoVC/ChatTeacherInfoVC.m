@@ -140,9 +140,22 @@
 }
 
 - (void)chat{
+    NSString* toObjid = self.toObjid;
+    if([toObjid length] == 0){
+        NSArray* childClasses = [UserCenter sharedInstance].curChild.classes;
+        for (ContactSchoolInfo* schoolInfo in self.teacherInfo.schools) {
+            for (ContactClassInfo *classInfo in schoolInfo.classes) {
+                for (ClassInfo *classItem in childClasses) {
+                    if([classInfo.class_name isEqualToString:classItem.name] && [schoolInfo.name isEqualToString:classItem.school.schoolName]){
+                        toObjid = classItem.classID;
+                    }
+                }
+            }
+        }
+    }
     JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
     [chatVC setChatType:ChatTypeTeacher];
-    [chatVC setTo_objid:self.toObjid];
+    [chatVC setTo_objid:toObjid];
     [chatVC setTargetID:self.teacherInfo.uid];
     [chatVC setMobile:self.teacherInfo.mobile];
     [chatVC setName:self.teacherInfo.name];

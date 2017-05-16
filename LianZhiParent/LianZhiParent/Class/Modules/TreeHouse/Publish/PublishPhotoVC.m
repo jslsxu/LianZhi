@@ -9,18 +9,13 @@
 #import "PublishPhotoVC.h"
 #import "TreeHousePublishManager.h"
 #define kBorderMargin                   16
-
+#define kMaxPhotoNum                    15
 #define kBaseTag                        1000
 @interface PublishPhotoVC ()<UITextViewDelegate>
 
 @end
 
 @implementation PublishPhotoVC
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -46,55 +41,16 @@
     
     _pickerView = [[PhotoPickerView alloc] initWithFrame:CGRectMake(0, 0, 82, 82)];
     [_pickerView setDelegate:self];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
 
     [self setupScrollView];
-}
-
-#pragma mark KeyboardNotification
-- (void)onKeyboardShow:(NSNotification *)notification
-{
-    NSDictionary *userInfo = [notification userInfo];
-    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGRect keyboardRect = [aValue CGRectValue];
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
-    NSInteger keyboardHeight = keyboardRect.size.height;
-    CGPoint textOrigin = [_textView convertPoint:CGPointZero toView:_scrollView];
-    [UIView animateWithDuration:animationDuration animations:^{
-        [_scrollView setContentInset:UIEdgeInsetsMake(0, 0, keyboardHeight, 0)];
-        [_scrollView setContentOffset:CGPointMake(0, textOrigin.y + _textView.height + keyboardHeight - _scrollView.height)];
-    }completion:^(BOOL finished) {
-    }];
-}
-
-- (void)onKeyboardHide:(NSNotification *)notification
-{
-    NSDictionary *userInfo = [notification userInfo];
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
-    [UIView animateWithDuration:animationDuration animations:^{
-        [_scrollView setContentOffset:CGPointZero];
-    }completion:^(BOOL finished) {
-        [_scrollView setContentInset:UIEdgeInsetsZero];
-    }];
 }
 
 - (void)setupScrollView
 {
     [_scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     NSInteger width = _scrollView.width - kBorderMargin * 2;
-    _bgView = [[UIView alloc] initWithFrame:CGRectMake(kBorderMargin, kBorderMargin, width, width)];
-    [_scrollView addSubview:_bgView];
-    
-    [self setupImageView];
-    
-    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, _bgView.bottom + 20, _bgView.width, 100)];
+    CGFloat spaceYStart = kBorderMargin;
+    _textView = [[UTPlaceholderTextView alloc] initWithFrame:CGRectMake(kBorderMargin, spaceYStart, width, 100)];
     [_textView setBackgroundColor:[UIColor colorWithHexString:@"ebebeb"]];
     [_textView.layer setCornerRadius:10];
     [_textView.layer setMasksToBounds:YES];
@@ -105,13 +61,23 @@
     [_textView setText:self.words];
     [_scrollView addSubview:_textView];
     
-    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(kBorderMargin, _textView.bottom, _bgView.width, 40)];
+    spaceYStart = _textView.bottom;
+    
+    _poiInfoView = [[PoiInfoView alloc] initWithFrame:CGRectMake(kBorderMargin, spaceYStart, width, 40)];
     [_poiInfoView setParentVC:self];
     if(self.poiItem)
         [_poiInfoView setPoiItem:self.poiItem];
     [_scrollView addSubview:_poiInfoView];
     
-    [_scrollView setContentSize:CGSizeMake(_scrollView.width, MAX(self.view.height - 64, _poiInfoView.bottom))];
+    spaceYStart = _poiInfoView.bottom + 5;
+    
+    _bgView = [[UIView alloc] initWithFrame:CGRectMake(kBorderMargin, spaceYStart, width, width)];
+    [_scrollView addSubview:_bgView];
+    
+    [self setupImageView];
+    spaceYStart = _bgView.bottom + kBorderMargin;
+    
+    [_scrollView setContentSize:CGSizeMake(_scrollView.width, MAX(self.view.height - 64, spaceYStart))];
 }
 
 - (void)setupImageView
@@ -121,7 +87,7 @@
     [_imageItemViewArray removeAllObjects];
     NSInteger innerMargin = 6;
     CGFloat width = (_bgView.width - innerMargin * 2) / 3;
-    NSInteger num = 9;
+    NSInteger num = kMaxPhotoNum;
     NSInteger row = MAX((num + 2) / 3, 1);
     for (NSInteger i = 0; i < num;i++)
     {
@@ -146,8 +112,9 @@
             UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
             [imageView addGestureRecognizer:tapGesture];
         }
+        [_bgView setHeight:imageView.bottom + innerMargin];
     }
-    if(_imageArray.count < 9)
+    if(_imageArray.count < kMaxPhotoNum)
     {
         NSInteger num = _imageArray.count;
         row = num / 3;
@@ -288,7 +255,7 @@
 {
     [self.view endEditing:YES];
     PhotoPickerVC *photoPickerVC = [[PhotoPickerVC alloc] init];
-    [photoPickerVC setMaxToSelected:9 - _imageArray.count];
+    [photoPickerVC setMaxToSelected:kMaxPhotoNum - _imageArray.count];
     [photoPickerVC setDelegate:self];
     UINavigationController *navigationVC = [[UINavigationController alloc] initWithRootViewController:photoPickerVC];
     [self presentViewController:navigationVC animated:YES completion:nil];
@@ -308,7 +275,7 @@
 {
     [self dismissViewControllerAnimated:YES completion:nil];
     [_imageArray addObjectsFromArray:selectedArray];
-    [self setupScrollView];
+    [self setupImageView];
 }
 
 - (void)photoPickerVCDidCancel:(PhotoPickerVC *)photoPickerVC
@@ -320,12 +287,12 @@
 #pragma mark - UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    if(_imageArray.count == 9)
+    if(_imageArray.count == kMaxPhotoNum)
     {
         TNButtonItem *item = [TNButtonItem itemWithTitle:@"确定" action:^{
             
         }];
-        TNAlertView *alertView  = [[TNAlertView alloc] initWithTitle:@"最多发9张照片" buttonItems:@[item]];
+        TNAlertView *alertView  = [[TNAlertView alloc] initWithTitle:[NSString stringWithFormat:@"最多发%zd张照片",kMaxPhotoNum] buttonItems:@[item]];
         [alertView show];
     }
     else
@@ -335,7 +302,7 @@
         PublishImageItem *imageItem = [[PublishImageItem alloc] init];
         [imageItem setImage:image];
         [_imageArray addObject:imageItem];
-        [self setupScrollView];
+        [self setupImageView];
     }
     [self.navigationController popToRootViewControllerAnimated:NO];
     [picker dismissViewControllerAnimated:YES completion:^{

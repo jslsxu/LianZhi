@@ -397,6 +397,7 @@
                 }
                 [wself.tableView reloadData];
                 [wself.alertAllButton setEnabled:[wself canAlertAll]];
+                [ProgressHUD showHintText:@"提醒成功"];
             } fail:^(NSString *errMsg) {
                 [ProgressHUD showHintText:errMsg];
             }];
@@ -427,6 +428,7 @@
             [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"exercises/send_notice" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:wself completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
                 classInfo.send_notice = NO;
                 [wself.tableView reloadData];
+                [ProgressHUD showHintText:@"提醒成功"];
             } fail:^(NSString *errMsg) {
                 [ProgressHUD showHintText:errMsg];
             }];

@@ -18,7 +18,7 @@
 @property (nonatomic, assign)BOOL logouted;
 //屏幕方向
 @property (nonatomic, assign) NSInteger allowRotation;
-
+- (void)setupCommonAppearance;
 - (void)playSound;
 - (void)logout;
 - (void)popAndPush:(UIViewController *)viewController;

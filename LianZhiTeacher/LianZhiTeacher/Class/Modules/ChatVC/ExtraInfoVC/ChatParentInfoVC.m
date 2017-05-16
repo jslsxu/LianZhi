@@ -187,12 +187,23 @@
 
 - (void)chat{
     JSMessagesViewController *chatVC = [[JSMessagesViewController alloc] init];
-    [chatVC setTo_objid:self.childID];
+    NSString* childID = self.childID;
+    if([childID length] == 0){
+        for (ContactParentChildInfo* childInfo in self.parentInfo.children) {
+            if([self.label containsString:childInfo.name]){
+                childID = childInfo.uid;
+            }
+        }
+    }
+    [chatVC setTo_objid:childID];
     [chatVC setTargetID:self.parentInfo.uid];
     [chatVC setChatType:ChatTypeParents];
     [chatVC setMobile:self.parentInfo.mobile];
-//    [chatVC setName:self.parentInfo.name];
-    [chatVC setName:self.label];
+    NSString* name = self.label;
+    if([name length] == 0){
+        name = self.parentInfo.name;
+    }
+    [chatVC setName:name];
     [ApplicationDelegate popAndPush:chatVC];
 }
 

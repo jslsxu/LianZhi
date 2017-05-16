@@ -36,4 +36,5 @@
 @property (nonatomic, strong)ContactTeacherInfo *teacherInfo;
 @property (nonatomic, copy)NSString *uid;
 @property (nonatomic, copy)NSString *toObjid;
+@property (nonatomic, copy)NSString *label;
 @end

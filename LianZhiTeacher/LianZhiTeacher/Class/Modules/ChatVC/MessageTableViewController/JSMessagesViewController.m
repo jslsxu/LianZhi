@@ -740,6 +740,7 @@ static NSString *topChatID = nil;
         NSRange range = [userInfo.name rangeOfString:@"老师"];
         if(range.location == NSNotFound){
             ChatParentInfoVC *parentInfoVC = [[ChatParentInfoVC alloc] init];
+            [parentInfoVC setLabel:userInfo.name];
             [parentInfoVC setUid:userInfo.uid];
             [self.navigationController pushViewController:parentInfoVC animated:YES];
         }
