@@ -62,6 +62,64 @@
 }
 @end
 
+@interface MineCell ()
+@property (nonatomic, strong)UIImageView* logoView;
+@property (nonatomic, strong)UILabel*       titleLabel;
+@property (nonatomic, strong)UILabel*       newlabel;
+@end
+
+@implementation MineCell
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if(self){
+        self.logoView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [self addSubview:self.logoView];
+        
+        self.titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [self.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        [self.titleLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
+        [self addSubview:self.titleLabel];
+        
+        [self addSubview:[self newlabel]];
+        
+        [self setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+    }
+    return self;
+}
+
+- (void)setimage:(UIImage *)image title:(NSString *)title{
+    [self.logoView setImage:image];
+    [self.logoView sizeToFit];
+    [self.logoView setOrigin:CGPointMake(20, (self.height - self.logoView.height) / 2)];
+    
+    [self.titleLabel setText:title];
+    [self.titleLabel sizeToFit];
+    [self.titleLabel setOrigin:CGPointMake(self.logoView.right + 15, (self.height - self.titleLabel.height) / 2)];
+}
+
+- (UILabel *)newlabel{
+    if(_newlabel == nil){
+        _newlabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_newlabel setBackgroundColor:[UIColor colorWithHexString:@"F0003A"]];
+        [_newlabel setTextColor:[UIColor whiteColor]];
+        [_newlabel setText:@"new"];
+        [_newlabel setFont:[UIFont systemFontOfSize:12]];
+        [_newlabel setTextAlignment:NSTextAlignmentCenter];
+        [_newlabel sizeToFit];
+        [_newlabel setSize:CGSizeMake(_newlabel.width + 10, (int)_newlabel.height + 4)];
+        [_newlabel.layer setCornerRadius:_newlabel.height / 2];
+        [_newlabel.layer setMasksToBounds:YES];
+    }
+    return _newlabel;
+}
+
+- (void)setHasNew:(BOOL)hasNew{
+    _hasNew = hasNew;
+    [self.newlabel setHidden:!_hasNew];
+    [self.newlabel setOrigin:CGPointMake(self.titleLabel.right + 10, (self.height - self.titleLabel.height) / 2)];
+}
+
+@end
 
 @interface MineVC ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong)NSArray *titleArray;
@@ -180,20 +238,19 @@
     }
     else
     {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
-        if(nil == cell)
+        reuseID = @"PersonalCell";
+        MineCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+        if(cell == nil)
         {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
-            [cell.textLabel setTextColor:[UIColor colorWithHexString:@"2c2c2c"]];
-            [cell.textLabel setFont:[UIFont systemFontOfSize:14]];
-            [cell setAccessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"RightArrow"]]];
+            cell = [[MineCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseID];
         }
+
         NSInteger row = indexPath.row;
         if(section > 0)
         {
-            NSString *title = self.titleArray[section - 1][row];
-            [cell.textLabel setText:title];
-            [cell.imageView setImage:[UIImage imageNamed:self.imageArray[section - 1][row]]];
+            [cell setimage:[UIImage imageNamed:self.imageArray[section - 1][row]] title:self.titleArray[section - 1][row]];
+            [cell setHasNew:indexPath.row == 0 && indexPath.section == 2 && ApplicationDelegate.needUpdate];
+            [cell setHasNew:indexPath.row == 0 && indexPath.section == 2 && ApplicationDelegate.needUpdate];
         }
         return cell;
     }
@@ -211,8 +268,13 @@
     }
     else
     {
-        TNBaseViewController *actionVC = [[NSClassFromString(self.actionArray[section - 1][row]) alloc] init];
-        [CurrentROOTNavigationVC pushViewController:actionVC animated:YES];
+        if(indexPath.row == 0 && indexPath.section == 2 && ApplicationDelegate.needUpdate){
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kTeacherClientAppStoreUrl]];
+        }
+        else{
+            TNBaseViewController *actionVC = [[NSClassFromString(self.actionArray[section - 1][row]) alloc] init];
+            [CurrentROOTNavigationVC pushViewController:actionVC animated:YES];
+        }
     }
 }
 @end

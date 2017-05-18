@@ -18,6 +18,7 @@
 @property (nonatomic, strong)HomeViewController *homeVC;
 @property (nonatomic, assign)BOOL logouted;
 @property (nonatomic, assign) NSInteger allowRotation;
+@property (nonatomic, assign)BOOL needUpdate;
 - (void)setupCommonAppearance;
 - (void)loginSuccess;
 - (void)logout;

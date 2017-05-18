@@ -140,6 +140,9 @@ static NSArray *tabDatas = nil;
     LZTabBarButton *discoveryButton = _tabbarButtons[3];
     DiscoveryVC *discoveryVC = self.subVCArray[3];
     [discoveryButton setBadgeValue:discoveryVC.hasNew ? @"" : nil];
+    
+    LZTabBarButton *mineButton = _tabbarButtons[4];
+    [mineButton setBadgeValue:ApplicationDelegate.needUpdate ? @"" : nil];
 }
 
 - (void)onNewMsgNumChanged

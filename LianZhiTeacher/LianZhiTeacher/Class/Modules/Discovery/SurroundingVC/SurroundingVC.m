@@ -127,7 +127,7 @@
             }];
         }];
         TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除这条评论?" buttonItems:@[cancelItem, deleteItem]];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除评论，会删除相应积分，确认删除吗？" buttonItems:@[cancelItem, deleteItem]];
         [alertView show];
     }
     else

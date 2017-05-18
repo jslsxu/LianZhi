@@ -122,6 +122,8 @@ static NSArray *tabDatas = nil;
         else
             [appTabButton setBadgeValue:nil];
     }
+    LZTabBarButton *mineButton = _tabbarButtons[4];
+    [mineButton setBadgeValue:ApplicationDelegate.needUpdate ? @"" : nil];
 }
 
 

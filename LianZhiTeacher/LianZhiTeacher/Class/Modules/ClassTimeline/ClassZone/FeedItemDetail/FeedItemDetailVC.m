@@ -315,7 +315,7 @@
 
 - (void)onDelete
 {
-    TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"保留" action:nil];
+    TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
     TNButtonItem *confirmItem = [TNButtonItem itemWithTitle:@"删除" action:^{
         MBProgressHUD *hud = [MBProgressHUD showMessag:@"" toView:[UIApplication sharedApplication].keyWindow];
         NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
@@ -335,7 +335,7 @@
             [ProgressHUD showHintText:errMsg];
         }];
     }];
-    TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"确定删除原创内容?" buttonItems:@[cancelItem,confirmItem]];
+    TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除博客，会删除相应积分，确认删除吗？" buttonItems:@[cancelItem,confirmItem]];
     [alertView show];
 }
 
@@ -351,30 +351,43 @@
         BOOL praised = [self.zoneItem.responseModel praised];
         
         __weak typeof(self) wself = self;
-        [[HttpRequestEngine sharedInstance] makeRequestFromUrl:praised ? @"fav/del" : @"fav/send" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-            if(praised)//取消成功
-            {
-                [wself.zoneItem.responseModel removePraise];
-                [_praiseView setPraiseArray:wself.zoneItem.responseModel.praiseArray];
-                [_tableView reloadData];
-                [wself setupToolBar:_toolBar];
-            }
-            else
-            {
-                if(responseObject.count > 0)
+        void (^praiseCation)() = ^{
+            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:praised ? @"fav/del" : @"fav/send" method:REQUEST_GET type:REQUEST_REFRESH withParams:params observer:self completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                if(praised)//取消成功
                 {
-                    UserInfo *userInfo = [[UserInfo alloc] init];
-                    TNDataWrapper *userWrapper = [responseObject getDataWrapperForIndex:0];
-                    [userInfo parseData:userWrapper];
-                    [wself.zoneItem.responseModel addPraiseUser:userInfo];
+                    [wself.zoneItem.responseModel removePraise];
                     [_praiseView setPraiseArray:wself.zoneItem.responseModel.praiseArray];
                     [_tableView reloadData];
                     [wself setupToolBar:_toolBar];
                 }
-            }
-        } fail:^(NSString *errMsg) {
-            [ProgressHUD showHintText:errMsg];
-        }];
+                else
+                {
+                    if(responseObject.count > 0)
+                    {
+                        UserInfo *userInfo = [[UserInfo alloc] init];
+                        TNDataWrapper *userWrapper = [responseObject getDataWrapperForIndex:0];
+                        [userInfo parseData:userWrapper];
+                        [wself.zoneItem.responseModel addPraiseUser:userInfo];
+                        [_praiseView setPraiseArray:wself.zoneItem.responseModel.praiseArray];
+                        [_tableView reloadData];
+                        [wself setupToolBar:_toolBar];
+                    }
+                }
+            } fail:^(NSString *errMsg) {
+                [ProgressHUD showHintText:errMsg];
+            }];
+        };
+        if(praised){
+            TNButtonItem* deleteItem = [TNButtonItem itemWithTitle:@"删除" action:^{
+                praiseCation();
+            }];
+            TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+            TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除点赞，会删除相应积分，确认删除吗？" buttonItems:@[cancelItem, deleteItem]];
+            [alertView show];
+        }
+        else{
+            praiseCation();
+        }
     }
     else if(index == 1)
     {
@@ -520,7 +533,7 @@
             }];
         }];
         TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除这条评论?" buttonItems:@[cancelItem, deleteItem]];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除评论，会删除相应积分，确认删除吗？" buttonItems:@[cancelItem, deleteItem]];
         [alertView show];
     }
     else

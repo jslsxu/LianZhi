@@ -16,6 +16,7 @@
 @property (nonatomic, strong) TNBaseNavigationController *rootNavigation;
 @property (nonatomic, weak)HomeViewController *homeVC;
 @property (nonatomic, assign)BOOL logouted;
+@property (nonatomic, assign)BOOL needUpdate;
 //屏幕方向
 @property (nonatomic, assign) NSInteger allowRotation;
 - (void)setupCommonAppearance;

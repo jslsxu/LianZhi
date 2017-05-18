@@ -67,7 +67,7 @@
             [params setValue:kStringFromValue(poiItem.poiInfo.location.latitude) forKey:@"latitude"];
             [params setValue:kStringFromValue(poiItem.poiInfo.location.longitude) forKey:@"longitude"];
         }
-        MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在发送" toView:self.view];
+        MBProgressHUD *hud = [MBProgressHUD showMessag:@"正在发送" toView:[UIApplication sharedApplication].keyWindow];
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"tree/post_content" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
             TNDataWrapper *infoWrapper = [responseObject getDataWrapperForKey:@"info"];
             if(infoWrapper.count > 0)
@@ -79,7 +79,7 @@
             }
             [hud hide:NO];
             [ProgressHUD showSuccess:@"发布成功"];
-            [self performSelector:@selector(onBack) withObject:nil afterDelay:2];
+            [self back];
         } fail:^(NSString *errMsg) {
             [hud hide:NO];
             [ProgressHUD showError:errMsg];

@@ -192,7 +192,7 @@
             }
             else if(asset)
             {
-                [publishItem setImage:[UIImage formatAsset:asset]];
+                [publishItem setImage:[UIImage imageWithCGImage:[asset.defaultRepresentation fullScreenImage]]];
             }
             [resultArray addObject:publishItem];
         }

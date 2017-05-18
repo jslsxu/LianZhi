@@ -18,6 +18,11 @@
 - (void)refresh;
 @end
 
+@interface MineCell : UITableViewCell
+@property (nonatomic, assign)BOOL hasNew;
+- (void)setimage:(UIImage *)image title:(NSString *)title;
+@end
+
 @interface MineVC : TNBaseViewController<UITableViewDataSource, UITableViewDelegate>
 {
     UITableView*    _tableView;

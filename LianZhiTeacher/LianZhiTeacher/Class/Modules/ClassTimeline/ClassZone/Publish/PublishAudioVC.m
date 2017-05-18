@@ -126,9 +126,11 @@
             [params setValue:kStringFromValue(poiItem.poiInfo.location.longitude) forKey:@"longitude"];
         }
         
+        MBProgressHUD* hud = [MBProgressHUD showMessag:@"正在发送" toView:[UIApplication sharedApplication].keyWindow];
         [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"class/post_content" withParams:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
             [formData appendPartWithFileData:amrData name:@"voice" fileName:@"voice" mimeType:@"audio/AMR"];
         } completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+            [hud hide:NO];
              TNDataWrapper *infoWrapper = [responseObject getDataWrapperForKey:@"info"];
             if(infoWrapper.count > 0)
             {
@@ -142,6 +144,7 @@
 //            [self performSelector:@selector(onBack) withObject:nil afterDelay:2];
             [self onBack];
         } fail:^(NSString *errMsg) {
+             [hud hide:NO];
             [ProgressHUD showHintText:errMsg];
         }];
     }

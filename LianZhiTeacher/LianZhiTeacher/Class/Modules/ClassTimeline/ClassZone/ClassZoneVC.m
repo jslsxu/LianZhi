@@ -605,7 +605,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             }];
         }];
         TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除这条评论?" buttonItems:@[cancelItem, deleteItem]];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除评论，会删除相应积分，确认删除吗？" buttonItems:@[cancelItem, deleteItem]];
         [alertView show];
     }
     else
@@ -650,12 +650,17 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
             }
             else
             {
-                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"fav/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                    [wself.targetZoneItem.responseModel removePraise];
-                    [wself.tableView reloadData];
-                } fail:^(NSString *errMsg) {
-                    
+                TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除" action:^{
+                    [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"fav/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:params observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                        [wself.targetZoneItem.responseModel removePraise];
+                        [wself.tableView reloadData];
+                    } fail:^(NSString *errMsg) {
+                        
+                    }];
                 }];
+                TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+                TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除点赞，会删除相应积分，确认删除吗？" buttonItems:@[cancelItem, deleteItem]];
+                [alertView show];
             }
         }
         else if(index == 1)
@@ -711,7 +716,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
 - (void)onClassZoneItemDelete:(ClassZoneItem *)item{
     if(!item.newSent)
     {
-        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"保留" action:nil];
+        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
         TNButtonItem *confirmItem = [TNButtonItem itemWithTitle:@"删除" action:^{
             NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
             [params setValue:self.classInfo.classID forKey:@"class_id"];
@@ -728,7 +733,7 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
                 
             }];
         }];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"确定删除原创内容?" buttonItems:@[cancelItem,confirmItem]];
+        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除博客，会删除相应积分，确认删除吗？" buttonItems:@[cancelItem,confirmItem]];
         [alertView show];
     }
     else
