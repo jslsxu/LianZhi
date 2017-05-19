@@ -117,18 +117,20 @@
     if([[UserCenter sharedInstance].userInfo.uid isEqualToString:responseItem.sendUser.uid])
     {
         ClassZoneItem *zoneItem = (ClassZoneItem *)cell.modelItem;
-        TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除" action:^{
-            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : zoneItem.itemID, @"types" : @"0"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                [ProgressHUD showSuccess:@"删除成功"];
-                [zoneItem.responseModel removeResponse:responseItem];
-                [self.tableView reloadData];
-            } fail:^(NSString *errMsg) {
-                [ProgressHUD showHintText:errMsg];
+        if([responseItem.commentItem.commentId length] > 0){
+            TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除" action:^{
+                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : zoneItem.itemID, @"types" : @"0"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                    [ProgressHUD showSuccess:@"删除成功"];
+                    [zoneItem.responseModel removeResponse:responseItem];
+                    [self.tableView reloadData];
+                } fail:^(NSString *errMsg) {
+                    [ProgressHUD showHintText:errMsg];
+                }];
             }];
-        }];
-        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除评论，会删除相应积分，确认删除吗？" buttonItems:@[cancelItem, deleteItem]];
-        [alertView show];
+            TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消" action:nil];
+            TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除评论，会删除相应积分，确认删除吗？" buttonItems:@[cancelItem, deleteItem]];
+            [alertView show];
+        }
     }
     else
     {

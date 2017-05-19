@@ -181,23 +181,26 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSMutableArray *resultArray = [[NSMutableArray alloc] initWithCapacity:0];
         for (PhotoPickerItem *item in _selectedArray) {
-            PublishImageItem *publishItem = [[PublishImageItem alloc] init];
-            PhotoItem *photoItem = item.photoItem;
-            ALAsset *asset = item.asset;
-            if(photoItem)
-            {
-                [publishItem setThumbnailUrl:photoItem.small];
-                [publishItem setOriginalUrl:photoItem.big];
-                [publishItem setPhotoID:photoItem.photoID];
+            @autoreleasepool {
+                PublishImageItem *publishItem = [[PublishImageItem alloc] init];
+                PhotoItem *photoItem = item.photoItem;
+                ALAsset *asset = item.asset;
+                if(photoItem)
+                {
+                    [publishItem setThumbnailUrl:photoItem.small];
+                    [publishItem setOriginalUrl:photoItem.big];
+                    [publishItem setPhotoID:photoItem.photoID];
+                }
+                else if(asset)
+                {
+                    [publishItem setImage:[UIImage formatAsset:asset]];
+                }
+                [resultArray addObject:publishItem];
+
             }
-            else if(asset)
-            {
-                [publishItem setImage:[UIImage imageWithCGImage:[asset.defaultRepresentation fullScreenImage]]];
-            }
-            [resultArray addObject:publishItem];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            [hud removeFromSuperview];
+            [hud hide:NO];
             if([self.delegate respondsToSelector:@selector(photoPickerVC:didFinished:)])
                 [self.delegate photoPickerVC:self didFinished:resultArray];
         });
@@ -287,7 +290,7 @@
             [_selectedArray removeObject:[self itemSelected:pickerItem]];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[NSString stringWithFormat:@"%ld张",(long)_selectedArray.count] style:UIBarButtonItemStylePlain target:nil action:nil];
         [_confirmButton setEnabled:_selectedArray.count > 0];
-        [self.collectionView reloadData];
+        [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
     }
 }
 

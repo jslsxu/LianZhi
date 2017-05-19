@@ -440,19 +440,21 @@ NSString *const kPublishPhotoItemKey = @"PublishPhotoItemKey";
     if([[UserCenter sharedInstance].userInfo.uid isEqualToString:responseItem.sendUser.uid])
     {
         __weak typeof(self) wself = self;
-        TreehouseItem *zoneItem = (TreehouseItem *)cell.modelItem;
-        TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除评论" action:^{
-            [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : zoneItem.itemID, @"types" : @"1"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
-                [ProgressHUD showSuccess:@"删除成功"];
-                [zoneItem.responseModel removeResponse:responseItem];
-                [wself.tableView reloadData];
-            } fail:^(NSString *errMsg) {
-                [ProgressHUD showHintText:errMsg];
+        if([responseItem.commentItem.commentId length] > 0){
+            TreehouseItem *zoneItem = (TreehouseItem *)cell.modelItem;
+            TNButtonItem *deleteItem = [TNButtonItem itemWithTitle:@"删除评论" action:^{
+                [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"comment/del" method:REQUEST_POST type:REQUEST_REFRESH withParams:@{@"id" : responseItem.commentItem.commentId,@"feed_id" : zoneItem.itemID, @"types" : @"1"} observer:nil completion:^(AFHTTPRequestOperation *operation, TNDataWrapper *responseObject) {
+                    [ProgressHUD showSuccess:@"删除成功"];
+                    [zoneItem.responseModel removeResponse:responseItem];
+                    [wself.tableView reloadData];
+                } fail:^(NSString *errMsg) {
+                    [ProgressHUD showHintText:errMsg];
+                }];
             }];
-        }];
-        TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消返回" action:nil];
-        TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除这条评论?" buttonItems:@[cancelItem, deleteItem]];
-        [alertView show];
+            TNButtonItem *cancelItem = [TNButtonItem itemWithTitle:@"取消返回" action:nil];
+            TNAlertView *alertView = [[TNAlertView alloc] initWithTitle:@"删除这条评论?" buttonItems:@[cancelItem, deleteItem]];
+            [alertView show];
+        }
     }
     else
     {
