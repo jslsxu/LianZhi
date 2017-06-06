@@ -483,6 +483,7 @@ static NSString *topChatID = nil;
         [messageParam setValue:self.to_objid forKey:@"to_objid"];
     [messageParam setValue:self.targetID forKey:@"to_id"];
     [messageParam setValue:kStringFromValue(self.chatType) forKey:@"to_type"];
+    [messageParam setValue:self.name forKey:@"target_name"];
     return messageParam;
 }
 

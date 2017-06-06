@@ -237,6 +237,10 @@
     for (NSString *key in params.allKeys) {
         [sendParams setValue:params[key] forKey:key];
     }
+    NSString* targetname = commonParams[@"target_name"];
+    if(self.content.type == UUMessageTypeGift){
+        [sendParams setValue:targetname forKey:@"content"];
+    }
     NSData *voiceData = nil;
     NSData *imageData = nil;
     NSData *videoData = nil;

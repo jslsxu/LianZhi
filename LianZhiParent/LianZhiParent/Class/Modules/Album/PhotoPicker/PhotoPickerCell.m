@@ -42,7 +42,14 @@
     [_checkMark setCenter:CGPointMake(self.width - 24, 24)];
     if(item.asset)
     {
-        [_imageView setImage:[UIImage imageWithCGImage:[_item.asset defaultRepresentation].fullScreenImage scale:1.f orientation:UIImageOrientationUp]];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            CGImageRef imageRef = [_item.asset aspectRatioThumbnail];
+            UIImage* image = [UIImage imageWithCGImage:imageRef scale:1.f orientation:UIImageOrientationUp];
+            [item.photoItem setImage:image];
+            dispatch_async_on_main_queue(^{
+                [_imageView setImage:image];
+            });
+        });
     }
     else
         [_imageView sd_setImageWithURL:[NSURL URLWithString:item.photoItem.small] placeholderImage:nil];

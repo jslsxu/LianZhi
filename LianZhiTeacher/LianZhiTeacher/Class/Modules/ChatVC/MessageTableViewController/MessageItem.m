@@ -237,6 +237,10 @@
     for (NSString *key in params.allKeys) {
         [sendParams setValue:params[key] forKey:key];
     }
+    NSString* targetname = commonParams[@"target_name"];
+    if(self.content.type == UUMessageTypeGift && [targetname length] > 0){
+        [sendParams setValue:targetname forKey:@"content"];
+    }
     @weakify(self)
     MessageType messageType = self.content.type;
     [[HttpRequestEngine sharedInstance] makeRequestFromUrl:@"sms/send" withParams:sendParams constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {

@@ -102,7 +102,7 @@
     [waterButton setImage:[UIImage imageNamed:timelineItem.water ? @"DrinkAbnormal" : @"DrinkNormal"] forState:UIControlStateNormal];
     
     UIButton *sleepButton = _statusArray[4];
-    [sleepButton setImage:[UIImage imageNamed:timelineItem.sleep ? @"SleepAbNormal" : @"SleepNormal"] forState:UIControlStateNormal];
+    [sleepButton setImage:[UIImage imageNamed:timelineItem.sleep ? @"SleepAbnormal" : @"SleepNormal"] forState:UIControlStateNormal];
 
     
     NSString *content = timelineItem.content;

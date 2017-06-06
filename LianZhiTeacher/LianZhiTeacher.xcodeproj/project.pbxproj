@@ -3760,7 +3760,7 @@
 				TargetAttributes = {
 					37C355CF1A3FD5CF00B948E6 = {
 						CreatedOnToolsVersion = 6.1;
-						DevelopmentTeam = ZNQ7SU9FMT;
+						DevelopmentTeam = JRFF54BK3W;
 						LastSwiftMigration = 0810;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -4444,8 +4444,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = LianZhiTeacher/LianZhiTeacher.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
-				DEVELOPMENT_TEAM = ZNQ7SU9FMT;
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				DEVELOPMENT_TEAM = JRFF54BK3W;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4468,10 +4468,10 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppTeacher;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1e73bb12-5426-4577-8996-779f060f2fde";
-				PROVISIONING_PROFILE_SPECIFIER = TeacherInhouseNew;
+				PROVISIONING_PROFILE = "786d24a3-7f8e-4de5-a865-3ebc5fa57dc1";
+				PROVISIONING_PROFILE_SPECIFIER = TeacherDevelopment;
 				SWIFT_OBJC_BRIDGING_HEADER = "LianZhiTeacher/Class/Modules/ApplicationBox/MicroLession/LianZhiTeacher-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -4488,8 +4488,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = LianZhiTeacher/LianZhiTeacher.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tianjin Century Technology Co., Ltd.";
-				DEVELOPMENT_TEAM = ZNQ7SU9FMT;
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei xin (VLCERZ64DD)";
+				DEVELOPMENT_TEAM = JRFF54BK3W;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4512,10 +4512,10 @@
 					"-all_load",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.inhouse.EdugateAppTeacher;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.edugate.EdugateAppTeacher;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1e73bb12-5426-4577-8996-779f060f2fde";
-				PROVISIONING_PROFILE_SPECIFIER = TeacherInhouseNew;
+				PROVISIONING_PROFILE = "786d24a3-7f8e-4de5-a865-3ebc5fa57dc1";
+				PROVISIONING_PROFILE_SPECIFIER = TeacherDevelopment;
 				SWIFT_OBJC_BRIDGING_HEADER = "LianZhiTeacher/Class/Modules/ApplicationBox/MicroLession/LianZhiTeacher-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
